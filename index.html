@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Ringeliste</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ringeliste">
+<meta name="theme-color" content="#0E6E6E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='22'%20fill='%230E6E6E'/%3E%3Ctext%20x='50'%20y='68'%20font-family='Arial'%20font-size='54'%20font-weight='700'%20fill='white'%20text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='22'%20fill='%230E6E6E'/%3E%3Ctext%20x='50'%20y='68'%20font-family='Arial'%20font-size='54'%20font-weight='700'%20fill='white'%20text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F6F8;
+  --surface: #FFFFFF;
+  --ink: #14171F;
+  --ink-muted: #5B6472;
+  --ink-faint: #828B96;
+  --border: #E2E5EA;
+  --brand: #0E6E6E;
+  --overdue: #C0392B;
+  --today: #C2750C;
+  --st-new: #5B6472;
+  --st-callback: #C2750C;
+  --st-no: #94A0AE;
+  --st-won: #15803D;
+  --st-noanswer: #5B7FA6;
+  --st-wrong: #8B5E5E;
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+* , *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  min-height: 100vh;
+}
+#app { max-width: 600px; margin: 0 auto; }
+.topbar { position: sticky; top: 0; z-index: 10; background: var(--bg); padding: 14px 20px 6px; }
+.topbar-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--brand); }
+.view { padding: 8px 16px 24px; }
+.view-title { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 600; margin: 4px 0 16px; }
+.hero { text-align: center; padding: 22px 0 18px; }
+.hero-number { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 64px; line-height: 1; color: var(--ink); }
+.hero-label { font-size: 14px; color: var(--ink-muted); margin-top: 4px; }
+.section-label { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin: 18px 2px 8px; }
+.section-label-overdue { color: var(--overdue); }
+.section-label-today { color: var(--today); }
+.card { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--ink-faint); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 10px; cursor: pointer; }
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.card-name { font-weight: 600; font-size: 15px; }
+.card-sub { font-size: 13px; color: var(--ink-muted); margin-top: 2px; }
+.card-note { font-size: 13px; color: var(--ink-muted); margin-top: 6px; line-height: 1.4; }
+.card-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; min-height: 20px; }
+.badge { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+.call-link { display: inline-flex; align-items: center; gap: 6px; color: var(--brand); font-weight: 600; font-size: 14px; text-decoration: none; }
+.call-link-big { background: var(--brand); color: #fff; padding: 13px 16px; border-radius: var(--radius-sm); justify-content: center; width: 100%; margin: 14px 0 6px; font-family: 'Space Grotesk', sans-serif; box-sizing: border-box; }
+.callback-date { font-size: 12px; color: var(--ink-faint); font-weight: 600; }
+.empty-state { text-align: center; padding: 40px 20px; color: var(--ink-muted); }
+.empty-sub { font-size: 13px; color: var(--ink-faint); margin: 4px 0 0; }
+.search-input { width: 100%; font-size: 16px; padding: 11px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); margin-bottom: 10px; }
+.filter-chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 4px; -webkit-overflow-scrolling: touch; }
+.filter-chips::-webkit-scrollbar { display: none; }
+.chip { flex: 0 0 auto; font-size: 13px; font-weight: 500; padding: 7px 13px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--ink-muted); }
+.chip-active { background: var(--brand); border-color: var(--brand); color: #fff; }
+.panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
+.panel-title { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; margin: 0 0 12px; }
+.panel-danger { border-color: #EAC4C0; }
+.form-grid { display: flex; flex-direction: column; gap: 12px; }
+label { display: block; font-size: 13px; color: var(--ink-muted); font-weight: 500; }
+input, select, textarea { display: block; width: 100%; margin-top: 5px; font-size: 16px; font-family: inherit; color: var(--ink); padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: #fff; }
+textarea { resize: vertical; min-height: 70px; }
+input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; }
+.btn { display: block; width: 100%; text-align: center; font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; padding: 13px; border-radius: var(--radius-sm); border: none; margin-top: 14px; cursor: pointer; box-sizing: border-box; }
+.btn-primary { background: var(--brand); color: #fff; }
+.btn-secondary { background: #fff; color: var(--ink); border: 1px solid var(--border); }
+.btn-danger { background: #fff; color: var(--overdue); border: 1px solid #EAC4C0; }
+.btn-row { display: flex; gap: 8px; }
+.btn-row .btn { margin-top: 10px; }
+.back-btn { background: none; border: none; color: var(--ink-muted); font-size: 14px; padding: 6px 0; margin-bottom: 6px; cursor: pointer; font-family: inherit; }
+.detail-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 4px; }
+.note-entry { padding: 10px 0; border-top: 1px solid var(--border); }
+.note-entry:first-child { border-top: none; padding-top: 0; }
+.note-date { font-size: 12px; color: var(--ink-faint); font-weight: 600; margin-bottom: 3px; }
+.note-text { font-size: 14px; line-height: 1.5; white-space: pre-wrap; }
+.proff-row { margin: 2px 0 0; }
+.link-btn { font-size: 13px; color: var(--brand); text-decoration: none; font-weight: 600; }
+.brreg-loading, .brreg-empty { font-size: 12px; color: var(--ink-faint); padding: 8px 2px; }
+.brreg-item { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; width: 100%; text-align: left; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 9px 11px; margin-top: 6px; cursor: pointer; font-family: inherit; }
+.brreg-item strong { font-size: 13px; }
+.brreg-item span { font-size: 12px; color: var(--ink-muted); }
+.import-list { max-height: 220px; overflow-y: auto; margin: 10px 0; }
+.import-row { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.stats-grid { display: flex; gap: 10px; }
+.stat { flex: 1; text-align: center; }
+.stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; }
+.stat-label { font-size: 11px; color: var(--ink-muted); margin-top: 2px; }
+.bottomnav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 20; display: flex; background: var(--surface); border-top: 1px solid var(--border); padding: 8px 8px calc(8px + env(safe-area-inset-bottom)); max-width: 600px; margin: 0 auto; }
+.navtab { flex: 1; background: none; border: none; padding: 8px 4px; font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600; color: var(--ink-faint); cursor: pointer; border-radius: 8px; }
+.navtab-active { color: var(--brand); background: rgba(14,110,110,0.08); }
+.org-tag { font-size: 11px; color: var(--brand); font-weight: 600; margin-top: 2px; }
+.filter-select { width: auto; font-size: 13px; padding: 9px 11px; margin-bottom: 10px; }
+.reveal-box { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin: 10px 0; }
+.reveal-label { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .03em; color: var(--ink-muted); margin-bottom: 8px; }
+.reveal-content p { margin: 0 0 8px; font-size: 14px; line-height: 1.5; }
+.reveal-content p:last-child { margin-bottom: 0; }
+.reveal-content strong { color: var(--brand); }
+.innvending-item { padding: 10px 0; border-top: 1px solid var(--border); }
+.innvending-item:first-child { border-top: none; padding-top: 0; }
+.innvending-q { font-weight: 600; font-size: 13px; margin-bottom: 3px; }
+.innvending-a { font-size: 13px; color: var(--ink-muted); line-height: 1.4; }
+.innvending-del { background: none; border: none; color: var(--overdue); font-size: 12px; padding: 6px 0 0; cursor: pointer; font-family: inherit; }
+.org-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 10px; cursor: pointer; }
+.org-card-name { font-weight: 600; font-size: 15px; }
+.org-card-desc { font-size: 13px; color: var(--ink-muted); margin-top: 3px; line-height: 1.4; }
+.org-card-count { font-size: 11px; color: var(--ink-faint); margin-top: 6px; }
+.tax-fact p { margin: 0 0 8px; font-size: 13px; line-height: 1.5; }
+.tax-fact p:last-child { margin-bottom: 0; }
+.generator-result { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; margin: 10px 0 0; }
+.generator-result-name { font-weight: 600; font-size: 14px; }
+.generator-result-addr { font-size: 12px; color: var(--ink-muted); margin-top: 2px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+(function() {
+  'use strict';
+
+  var STORAGE_KEY = 'ringeliste_kunder_v1';
+
+  var STATUS = {
+    ikke_kontaktet: { label: 'Ikke kontaktet', color: '#5B6472' },
+    ring_tilbake:   { label: 'Ring tilbake',    color: '#C2750C' },
+    ingen_svar:     { label: 'Ingen svar',      color: '#5B7FA6' },
+    solgt:          { label: 'Solgt',           color: '#15803D' },
+    ikke_interessert:{ label: 'Ikke interessert', color: '#94A0AE' },
+    feil_nummer:    { label: 'Feil nummer',     color: '#8B5E5E' }
+  };
+  var STATUS_ORDER = ['ikke_kontaktet','ring_tilbake','ingen_svar','solgt','ikke_interessert','feil_nummer'];
+
+  var ORG_STORAGE_KEY = 'ringeliste_organisasjoner_v1';
+  var INNV_STORAGE_KEY = 'ringeliste_generelle_innvendinger_v1';
+
+  var BRANSJER = [
+    { label: 'Alle bransjer', kode: '' },
+    { label: 'Bygg og anlegg', kode: '41,42,43' },
+    { label: 'Varehandel / butikk', kode: '47' },
+    { label: 'Overnatting og servering', kode: '55,56' },
+    { label: 'Helse- og omsorgstjenester', kode: '86,87' },
+    { label: 'Personlig tjenesteyting (frisør mm.)', kode: '96' },
+    { label: 'Eiendom', kode: '68' },
+    { label: 'Regnskap, revisjon, rådgivning', kode: '69,70' },
+    { label: 'Transport og lager', kode: '49,52' },
+    { label: 'Bilverksted og bilpleie', kode: '45.2' },
+    { label: 'Industri og produksjon', kode: '10,25,28,31' },
+    { label: 'Finans og forsikring', kode: '64,65,66' },
+    { label: 'IT og teknologi', kode: '62,63' },
+    { label: 'Kultur, idrett og fritid', kode: '90,93' }
+  ];
+
+  var TAX_HTML = '<p>Når en bedrift kjøper en støtteannonse og faktisk får en synlig annonseplass igjen, regner Skatteetaten dette som kjøp av en <strong>reklametjeneste</strong> — ikke en gave. Kostnaden er da fradragsberettiget som vanlig markedsføringskostnad (skatteloven § 6-1), <strong>uten tak</strong> — så lenge prisen står i rimelig forhold til hva annonseplassen faktisk er verdt i markedet.</p><p>Er beløpet klart høyere enn reklameverdien tilsier, regnes det overskytende som en gave. Gaver er normalt ikke fradragsberettiget, men for gaver til godkjente frivillige organisasjoner gjelder skatteloven § 6-50: fradrag for gaver til sammen inntil <strong>25 000 kr per år</strong> (krever minst 500 kr til hver organisasjon).</p><p>Praktisk for deg: så lenge annonsen er reell og prisen rimelig, er hele beløpet normalt fradragsberettiget som markedsføring — ikke begrenset av gavegrensen. Dette er generell informasjon, ikke individuell skatterådgivning — ved store beløp bør kunden sjekke med sin regnskapsfører.</p>';
+
+  function defaultOrganisasjoner() {
+    return [
+      { id: 'org-naaf', navn: 'Astma- og Allergiforbundet', kortBeskrivelse: 'Pasient- og interesseorganisasjon for astma, allergi, eksem og kols. Rundt 1,5 millioner nordmenn er rammet av disse diagnosene. Driver blant annet den nasjonale pollenvarslingen, en rådgivningstjeneste og støtter forskning.', hvorfor: 'Astma og allergi rammer stadig flere barn — annonsen støtter informasjonsarbeid, rådgivning og forskning som hjelper familier direkte.', innvendinger: [] },
+      { id: 'org-blakors', navn: 'Blå Kors', kortBeskrivelse: 'Ideell, diakonal organisasjon som arbeider mot rus- og spillavhengighet. Driver behandlingsinstitusjoner, forebygging for barn/unge og oppfølging etter behandling over store deler av Norge.', hvorfor: 'Rus rammer ikke bare den som sliter, men hele familien — Blå Kors jobber både med forebygging blant unge og behandling/oppfølging i etterkant.', innvendinger: [] },
+      { id: 'org-rodekors', navn: 'Røde Kors', kortBeskrivelse: 'Norges største humanitære organisasjon. Driver blant annet hjelpekorps/redningstjeneste, besøkstjeneste, leksehjelp, flyktningarbeid og internasjonal nødhjelp.', hvorfor: 'Lokalt og internasjonalt — Røde Kors er ofte først på stedet ved ulykker og kriser, og bygger fellesskap året rundt gjennom lokale aktiviteter.', innvendinger: [] }
+    ];
+  }
+  function defaultGenerelleInnvendinger() {
+    return [
+      { id: uid(), innvending: 'Vi har ikke budsjett for dette nå', tips: 'Ikke press på pris med en gang. Spør når neste budsjettperiode starter og avtal å ringe tilbake da. Du kan også spørre om det er rom for et mindre format.' },
+      { id: uid(), innvending: 'Vi støtter allerede en annen organisasjon', tips: 'Ikke posisjoner det som konkurranse. Anerkjenn det positivt, og spør om det er plass til å støtte mer enn én sak — det er vanlig.' },
+      { id: uid(), innvending: 'Send meg informasjon på e-post', tips: 'Klassisk avvisning. Still ett oppfølgingsspørsmål før du sender noe, og avtal et konkret tidspunkt for å ringe tilbake — ikke bare "send og håp".' },
+      { id: uid(), innvending: 'Jeg må sjekke med sjefen/styret først', tips: 'Spør hvem som faktisk bestemmer, og om du heller kan ringe direkte til vedkommende. Får du ikke det, avtal en konkret dato for ny kontakt.' },
+      { id: uid(), innvending: 'Hva får vi egentlig igjen for dette?', tips: 'Vær konkret på hva annonsen faktisk gir — hvor den vises og omtrent hvor mange som ser den — ikke bare det gode formålet alene.' },
+      { id: uid(), innvending: 'Jeg har dårlig tid akkurat nå', tips: 'Ikke press samtalen videre. Spør om et bedre tidspunkt å ringe tilbake, og få et konkret klokkeslett før du legger på.' },
+      { id: uid(), innvending: 'Er dette seriøst, er dere ekte?', tips: 'Vis ro, ikke gå i forsvar. Oppgi organisasjonsnummer, vis til organisasjonens nettside, eller tilby skriftlig bekreftelse før betaling.' },
+      { id: uid(), innvending: 'Vi har ikke hørt om denne organisasjonen', tips: 'Gi en kort, konkret forklaring av hva de faktisk gjør — bruk beskrivelsen under Org i appen, gjerne med ett konkret tall.' },
+      { id: uid(), innvending: 'Nei takk, ikke interessert', tips: 'Respekter et tydelig nei med en gang. Spør høflig om du kan ta kontakt igjen neste år, og avslutt positivt — press her skader mer enn det hjelper.' },
+      { id: uid(), innvending: 'Er dette fradragsberettiget på skatten?', tips: 'Ja, så lenge prisen står i rimelig forhold til annonseverdien regnes kjøpet som en vanlig markedsføringskostnad. Se skattefradrag-info under Org for full forklaring.' }
+    ];
+  }
+
+  var organisasjoner = [];
+  var generelleInnvendinger = [];
+  var kunder = [];
+  var state = { view: 'dashboard', selectedId: null, selectedOrgId: null, search: '', filter: 'all', orgFilter: '', importPreview: null, brregResults: [], genFirma: null, genInnvending: null, visInnvending: false };
+
+  // ---------- Storage ----------
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      kunder = raw ? JSON.parse(raw) : [];
+    } catch (e) { kunder = []; }
+  }
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(kunder)); }
+    catch (e) { alert('Kunne ikke lagre. Lagringsplassen kan være full.'); }
+  }
+  function loadOrg() {
+    try {
+      var raw = localStorage.getItem(ORG_STORAGE_KEY);
+      if (raw) { organisasjoner = JSON.parse(raw); }
+      else { organisasjoner = defaultOrganisasjoner(); saveOrg(); }
+    } catch (e) { organisasjoner = defaultOrganisasjoner(); }
+  }
+  function saveOrg() {
+    try { localStorage.setItem(ORG_STORAGE_KEY, JSON.stringify(organisasjoner)); } catch (e) {}
+  }
+  function loadInnvendinger() {
+    try {
+      var raw = localStorage.getItem(INNV_STORAGE_KEY);
+      if (raw) { generelleInnvendinger = JSON.parse(raw); }
+      else { generelleInnvendinger = defaultGenerelleInnvendinger(); saveInnvendinger(); }
+    } catch (e) { generelleInnvendinger = defaultGenerelleInnvendinger(); }
+  }
+  function saveInnvendinger() {
+    try { localStorage.setItem(INNV_STORAGE_KEY, JSON.stringify(generelleInnvendinger)); } catch (e) {}
+  }
+
+  // ---------- Helpers ----------
+  function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+  function todayStr() {
+    var d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  function esc(str) {
+    if (str == null) return '';
+    return String(str).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function truncate(str, n) {
+    if (!str) return '';
+    return str.length > n ? str.slice(0, n).trim() + '…' : str;
+  }
+  var MONTHS = ['jan','feb','mar','apr','mai','jun','jul','aug','sep','okt','nov','des'];
+  function formatDateShort(isoDate) {
+    if (!isoDate) return '';
+    var today = todayStr();
+    if (isoDate === today) return 'I dag';
+    var diffDays = Math.round((new Date(isoDate) - new Date(today)) / 86400000);
+    if (diffDays === -1) return 'I går';
+    if (diffDays === 1) return 'I morgen';
+    var parts = isoDate.split('-');
+    return parseInt(parts[2], 10) + '. ' + MONTHS[parseInt(parts[1], 10) - 1];
+  }
+  function formatDateTime(iso) {
+    var d = new Date(iso);
+    return d.getDate() + '. ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear() + ' kl. ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  }
+  function phoneIcon() {
+    return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
+  }
+  function proffUrl(navn) { return 'https://www.proff.no/bransjes%C3%B8k?q=' + encodeURIComponent(navn || ''); }
+
+  // ---------- CRUD ----------
+  function addKunde(data) {
+    var now = new Date().toISOString();
+    var k = {
+      id: uid(),
+      firma: data.firma || '',
+      kontaktperson: data.kontaktperson || '',
+      telefon: data.telefon || '',
+      epost: data.epost || '',
+      orgnr: data.orgnr || '',
+      adresse: data.adresse || '',
+      kilde: data.kilde || 'ny',
+      organisasjonId: data.organisasjonId || null,
+      status: data.status || 'ikke_kontaktet',
+      nesteOppfolging: data.nesteOppfolging || null,
+      notater: data.notater || [],
+      opprettet: now,
+      oppdatert: now
+    };
+    kunder.unshift(k);
+    save();
+    return k;
+  }
+  function updateKunde(id, patch) {
+    var k = kunder.filter(function (x) { return x.id === id; })[0];
+    if (!k) return;
+    for (var key in patch) { k[key] = patch[key]; }
+    k.oppdatert = new Date().toISOString();
+    save();
+  }
+  function deleteKunde(id) {
+    kunder = kunder.filter(function (x) { return x.id !== id; });
+    save();
+  }
+  function addNotat(id, opts) {
+    var k = kunder.filter(function (x) { return x.id === id; })[0];
+    if (!k) return;
+    if (opts.tekst) k.notater.unshift({ id: uid(), dato: new Date().toISOString(), tekst: opts.tekst });
+    if (opts.nesteOppfolging !== undefined) k.nesteOppfolging = opts.nesteOppfolging || null;
+    if (opts.status) k.status = opts.status;
+    k.oppdatert = new Date().toISOString();
+    save();
+  }
+
+  // ---------- Organisasjoner ----------
+  function orgById(id) { return organisasjoner.filter(function (x) { return x.id === id; })[0] || null; }
+  function addOrg(data) {
+    var o = { id: uid(), navn: data.navn || '', kortBeskrivelse: data.kortBeskrivelse || '', hvorfor: data.hvorfor || '', innvendinger: [] };
+    organisasjoner.push(o);
+    saveOrg();
+    return o;
+  }
+  function updateOrg(id, patch) {
+    var o = orgById(id);
+    if (!o) return;
+    for (var key in patch) { o[key] = patch[key]; }
+    saveOrg();
+  }
+  function deleteOrg(id) {
+    organisasjoner = organisasjoner.filter(function (x) { return x.id !== id; });
+    saveOrg();
+    var changed = false;
+    kunder.forEach(function (k) { if (k.organisasjonId === id) { k.organisasjonId = null; changed = true; } });
+    if (changed) save();
+  }
+  function addOrgInnvending(orgId, innvending, tips) {
+    var o = orgById(orgId);
+    if (!o) return;
+    o.innvendinger.push({ id: uid(), innvending: innvending, tips: tips });
+    saveOrg();
+  }
+  function deleteOrgInnvending(orgId, innvId) {
+    var o = orgById(orgId);
+    if (!o) return;
+    o.innvendinger = o.innvendinger.filter(function (i) { return i.id !== innvId; });
+    saveOrg();
+  }
+  function addGenerellInnvending(innvending, tips) {
+    generelleInnvendinger.push({ id: uid(), innvending: innvending, tips: tips });
+    saveInnvendinger();
+  }
+  function deleteGenerellInnvending(id) {
+    generelleInnvendinger = generelleInnvendinger.filter(function (i) { return i.id !== id; });
+    saveInnvendinger();
+  }
+
+  // ---------- Brreg ----------
+  function searchBrregLive(navn) {
+    var box = document.getElementById('brreg-suggestions');
+    if (!box) return;
+    box.innerHTML = '<div class="brreg-loading">Søker i Brønnøysundregisteret …</div>';
+    fetch('https://data.brreg.no/enhetsregisteret/api/enheter?navn=' + encodeURIComponent(navn) + '&size=5')
+      .then(function (res) { if (!res.ok) throw new Error('feil'); return res.json(); })
+      .then(function (data) {
+        state.brregResults = (data._embedded && data._embedded.enheter) || [];
+        var box2 = document.getElementById('brreg-suggestions');
+        if (!box2) return;
+        if (!state.brregResults.length) {
+          box2.innerHTML = '<div class="brreg-empty">Ingen treff i Brønnøysundregisteret.</div>';
+          return;
+        }
+        box2.innerHTML = state.brregResults.map(function (r) {
+          var adr = r.forretningsadresse || r.postadresse;
+          var adrStr = adr ? [(adr.adresse || []).join(' '), adr.postnummer, adr.poststed].filter(Boolean).join(', ') : '';
+          return '<button type="button" class="brreg-item" data-action="pick-brreg" data-id="' + esc(r.organisasjonsnummer) + '"><strong>' + esc(r.navn) + '</strong><span>' + esc(adrStr) + '</span></button>';
+        }).join('');
+      })
+      .catch(function () {
+        var box3 = document.getElementById('brreg-suggestions');
+        if (box3) box3.innerHTML = '<div class="brreg-empty">Fikk ikke kontakt med Brønnøysundregisteret. Sjekk internett.</div>';
+      });
+  }
+  function fillBrregIntoForm(enhet) {
+    var adr = enhet.forretningsadresse || enhet.postadresse;
+    var adrStr = adr ? [(adr.adresse || []).join(' '), adr.postnummer, adr.poststed].filter(Boolean).join(', ') : '';
+    var firmaInput = document.getElementById('f-firma');
+    var orgnrInput = document.getElementById('f-orgnr');
+    var adresseInput = document.getElementById('f-adresse');
+    if (firmaInput) firmaInput.value = enhet.navn || '';
+    if (orgnrInput) orgnrInput.value = enhet.organisasjonsnummer || '';
+    if (adresseInput) adresseInput.value = adrStr;
+    var box = document.getElementById('brreg-suggestions');
+    if (box) box.innerHTML = '';
+  }
+
+  // ---------- Tilfeldig firma-generator ----------
+  function adresseStr(enhet) {
+    var adr = enhet.forretningsadresse || enhet.postadresse;
+    return adr ? [(adr.adresse || []).join(' '), adr.postnummer, adr.poststed].filter(Boolean).join(', ') : '';
+  }
+  function showGeneratorError(msg) {
+    var box = document.getElementById('generator-result');
+    if (box) box.innerHTML = '<div class="brreg-empty">' + esc(msg) + '</div>';
+  }
+  function genererTilfeldigFirma() {
+    var stedInput = document.getElementById('gen-sted');
+    var bransjeSelect = document.getElementById('gen-bransje');
+    var sted = stedInput ? stedInput.value.trim() : '';
+    var bransjeKode = bransjeSelect ? bransjeSelect.value : '';
+    var params = 'underAvvikling=false&underKonkursbehandling=false';
+    if (sted) params += '&forretningsadresse.poststed=' + encodeURIComponent(sted.toUpperCase());
+    if (bransjeKode) params += '&naeringskode=' + encodeURIComponent(bransjeKode);
+
+    var box = document.getElementById('generator-result');
+    if (box) box.innerHTML = '<div class="brreg-loading">Søker i Brønnøysundregisteret …</div>';
+
+    fetch('https://data.brreg.no/enhetsregisteret/api/enheter?' + params + '&size=1&page=0')
+      .then(function (res) { if (!res.ok) throw new Error('feil'); return res.json(); })
+      .then(function (data) {
+        var total = (data.page && data.page.totalElements) || 0;
+        if (!total) { showGeneratorError('Ingen treff med disse filtrene. Prøv et annet sted eller en annen bransje.'); return; }
+        drawRandomFirma(params, total, 0);
+      })
+      .catch(function () { showGeneratorError('Fikk ikke kontakt med Brønnøysundregisteret. Sjekk internett.'); });
+  }
+  function drawRandomFirma(params, total, attempt) {
+    var maxIndex = Math.min(total, 10000) - 1;
+    var randomIndex = Math.floor(Math.random() * (maxIndex + 1));
+    var page = Math.floor(randomIndex / 20);
+    var indexInPage = randomIndex % 20;
+    fetch('https://data.brreg.no/enhetsregisteret/api/enheter?' + params + '&size=20&page=' + page)
+      .then(function (res) { if (!res.ok) throw new Error('feil'); return res.json(); })
+      .then(function (data) {
+        var enheter = (data._embedded && data._embedded.enheter) || [];
+        if (!enheter.length) { showGeneratorError('Fant ingen treff. Prøv igjen.'); return; }
+        var candidate = enheter[Math.min(indexInPage, enheter.length - 1)];
+        var alleredeKunde = kunder.some(function (k) { return k.orgnr && candidate.organisasjonsnummer && k.orgnr === candidate.organisasjonsnummer; });
+        if (alleredeKunde && attempt < 5) { drawRandomFirma(params, total, attempt + 1); return; }
+        showGeneratorResult(candidate);
+      })
+      .catch(function () { showGeneratorError('Fikk ikke kontakt med Brønnøysundregisteret. Sjekk internett.'); });
+  }
+  function pickRandomInnvending() {
+    var orgSelect = document.getElementById('gen-org');
+    var orgId = orgSelect ? orgSelect.value : '';
+    var pool = generelleInnvendinger.slice();
+    var org = orgId ? orgById(orgId) : null;
+    if (org && org.innvendinger.length) pool = pool.concat(org.innvendinger);
+    if (!pool.length) return null;
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+  function showGeneratorResult(enhet) {
+    state.genFirma = enhet;
+    state.visInnvending = false;
+    state.genInnvending = pickRandomInnvending();
+    var firmaInput = document.getElementById('f-firma');
+    var orgnrInput = document.getElementById('f-orgnr');
+    var adresseInput = document.getElementById('f-adresse');
+    if (firmaInput) firmaInput.value = enhet.navn || '';
+    if (orgnrInput) orgnrInput.value = enhet.organisasjonsnummer || '';
+    if (adresseInput) adresseInput.value = adresseStr(enhet);
+    var orgSelectGen = document.getElementById('gen-org');
+    var orgSelectForm = document.querySelector('form[data-action="add-kunde"] select[name="organisasjonId"]');
+    if (orgSelectGen && orgSelectForm) orgSelectForm.value = orgSelectGen.value;
+    renderGeneratorResult();
+  }
+  function renderGeneratorResult() {
+    var box = document.getElementById('generator-result');
+    if (!box) return;
+    var enhet = state.genFirma;
+    if (!enhet) { box.innerHTML = ''; return; }
+    var html = '<div class="generator-result"><div class="generator-result-name">' + esc(enhet.navn) + '</div><div class="generator-result-addr">' + esc(adresseStr(enhet)) + (enhet.organisasjonsnummer ? ' · ' + esc(enhet.organisasjonsnummer) : '') + '</div></div>';
+    if (state.genInnvending) {
+      if (state.visInnvending) {
+        html += '<div class="reveal-box"><div class="reveal-label">Innvending å være klar for</div><div class="reveal-content"><p><strong>' + esc(state.genInnvending.innvending) + '</strong></p><p>' + esc(state.genInnvending.tips) + '</p></div></div>';
+      } else {
+        html += '<button type="button" class="btn btn-secondary" data-action="vis-innvending">Vis innvending og tips</button>';
+      }
+    }
+    html += '<button type="button" class="btn btn-secondary" data-action="generer-firma">Prøv et annet</button>';
+    box.innerHTML = html;
+  }
+
+  // ---------- Import / export ----------
+  function previewImport() {
+    var ta = document.getElementById('import-text');
+    var text = ta ? ta.value : '';
+    var lines = text.split('\n').map(function (l) { return l.trim(); }).filter(Boolean);
+    var rows = lines.map(function (line) {
+      var parts = line.indexOf('\t') !== -1 ? line.split('\t') : line.split(',');
+      return { firma: (parts[0] || '').trim(), telefon: (parts[1] || '').trim() };
+    }).filter(function (r) { return r.firma; });
+    state.importPreview = rows;
+    var area = document.getElementById('import-preview-area');
+    if (area) area.innerHTML = importPreviewHtml();
+  }
+  function importPreviewHtml() {
+    var rows = state.importPreview || [];
+    if (!rows.length) return '<p class="empty-sub">Ingen gyldige linjer funnet.</p>';
+    var list = rows.map(function (r) { return '<div class="import-row"><strong>' + esc(r.firma) + '</strong><span>' + esc(r.telefon) + '</span></div>'; }).join('');
+    return '<div class="import-list">' + list + '</div><p class="empty-sub">' + rows.length + ' kunder klare for import.</p><div class="btn-row"><button class="btn btn-primary" data-action="import-confirm" type="button">Importer ' + rows.length + '</button><button class="btn btn-secondary" data-action="import-cancel" type="button">Avbryt</button></div>';
+  }
+  function confirmImport() {
+    var rows = state.importPreview || [];
+    var importOrgSelect = document.getElementById('import-org');
+    var importOrgId = importOrgSelect ? importOrgSelect.value : '';
+    rows.forEach(function (r) { addKunde({ firma: r.firma, telefon: r.telefon, kilde: 'eksisterende', status: 'ikke_kontaktet', organisasjonId: importOrgId || null }); });
+    state.importPreview = null;
+    state.view = 'list';
+    render();
+  }
+  function csvEscape(val) {
+    var s = String(val == null ? '' : val);
+    if (/[;"\n]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+    return s;
+  }
+  function downloadBlob(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+  function exportJSON() {
+    var payload = { kunder: kunder, organisasjoner: organisasjoner, generelleInnvendinger: generelleInnvendinger, eksportert: new Date().toISOString() };
+    var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    downloadBlob(blob, 'ringeliste-backup-' + todayStr() + '.json');
+  }
+  function exportCSV() {
+    var headers = ['Bedrift','Kontaktperson','Telefon','E-post','Org.nr','Adresse','Kilde','Organisasjon','Status','Neste oppfolging','Siste notat'];
+    var rows = kunder.map(function (k) {
+      var orgNavn = k.organisasjonId ? ((orgById(k.organisasjonId) || {}).navn || '') : '';
+      return [k.firma, k.kontaktperson, k.telefon, k.epost, k.orgnr, k.adresse, k.kilde, orgNavn, (STATUS[k.status] || {}).label || k.status, k.nesteOppfolging || '', (k.notater[0] || {}).tekst || ''];
+    });
+    var all = [headers].concat(rows);
+    var csv = all.map(function (r) { return r.map(csvEscape).join(';'); }).join('\r\n');
+    var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+    downloadBlob(blob, 'ringeliste-' + todayStr() + '.csv');
+  }
+  function setupImportFile() {
+    var fileInput = document.getElementById('import-json-file');
+    if (!fileInput) return;
+    fileInput.addEventListener('change', function (e) {
+      var file = e.target.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function (ev) {
+        try {
+          var data = JSON.parse(ev.target.result);
+          var nyeKunder, nyeOrg, nyeInnv;
+          if (Array.isArray(data)) { nyeKunder = data; nyeOrg = null; nyeInnv = null; }
+          else if (data && Array.isArray(data.kunder)) { nyeKunder = data.kunder; nyeOrg = Array.isArray(data.organisasjoner) ? data.organisasjoner : null; nyeInnv = Array.isArray(data.generelleInnvendinger) ? data.generelleInnvendinger : null; }
+          else { throw new Error('format'); }
+          var melding = 'Dette erstatter ' + kunder.length + ' kunder på enheten med ' + nyeKunder.length + ' fra filen.';
+          if (nyeOrg) melding += ' Organisasjoner og innvendinger gjenopprettes også.';
+          if (confirm(melding + ' Fortsette?')) {
+            kunder = nyeKunder; save();
+            if (nyeOrg) { organisasjoner = nyeOrg; saveOrg(); }
+            if (nyeInnv) { generelleInnvendinger = nyeInnv; saveInnvendinger(); }
+            render();
+          }
+        } catch (err) {
+          alert('Kunne ikke lese filen. Sjekk at det er en gyldig backup-fil.');
+        }
+      };
+      reader.readAsText(file);
+    });
+  }
+
+  // ---------- Render: pieces ----------
+  function kundeCard(k, showCallback) {
+    var st = STATUS[k.status] || STATUS.ikke_kontaktet;
+    var lastNote = k.notater[0];
+    var navn = k.firma || k.kontaktperson || 'Uten navn';
+    var html = '<div class="card" style="border-left-color:' + st.color + '" data-action="open-detail" data-id="' + esc(k.id) + '">';
+    html += '<div class="card-top"><div class="card-name">' + esc(navn) + '</div><span class="badge" style="color:' + st.color + ';background:' + st.color + '1A">' + st.label + '</span></div>';
+    if (k.firma && k.kontaktperson) html += '<div class="card-sub">' + esc(k.kontaktperson) + '</div>';
+    if (k.organisasjonId) {
+      var kOrg = orgById(k.organisasjonId);
+      if (kOrg) html += '<div class="org-tag">' + esc(kOrg.navn) + '</div>';
+    }
+    if (lastNote) html += '<div class="card-note">' + esc(truncate(lastNote.tekst, 80)) + '</div>';
+    html += '<div class="card-bottom">';
+    html += k.telefon ? '<a class="call-link" href="tel:' + esc(k.telefon.replace(/\s/g, '')) + '" onclick="event.stopPropagation()">' + phoneIcon() + ' ' + esc(k.telefon) + '</a>' : '<span></span>';
+    html += (showCallback && k.nesteOppfolging) ? '<span class="callback-date">' + formatDateShort(k.nesteOppfolging) + '</span>' : '';
+    html += '</div></div>';
+    return html;
+  }
+
+  function statusOptions(selected) {
+    return STATUS_ORDER.map(function (s) { return '<option value="' + s + '"' + (s === selected ? ' selected' : '') + '>' + STATUS[s].label + '</option>'; }).join('');
+  }
+  function orgOptions(selected) {
+    var html = '<option value="">Ingen valgt</option>';
+    html += organisasjoner.map(function (o) { return '<option value="' + esc(o.id) + '"' + (o.id === selected ? ' selected' : '') + '>' + esc(o.navn) + '</option>'; }).join('');
+    return html;
+  }
+
+  // ---------- Render: views ----------
+  function renderHeader() {
+    return '<header class="topbar"><span class="topbar-logo">Ringeliste</span></header>';
+  }
+
+  function renderDashboard() {
+    var today = todayStr();
+    var withDate = kunder.filter(function (k) { return k.nesteOppfolging; });
+    var overdue = withDate.filter(function (k) { return k.nesteOppfolging < today; }).sort(function (a, b) { return a.nesteOppfolging.localeCompare(b.nesteOppfolging); });
+    var dueToday = withDate.filter(function (k) { return k.nesteOppfolging === today; });
+    var total = overdue.length + dueToday.length;
+    var html = '<div class="view view-dashboard"><div class="hero"><div class="hero-number">' + total + '</div><div class="hero-label">å ringe i dag</div></div>';
+    if (overdue.length) {
+      html += '<div class="section-label section-label-overdue">Forfalt (' + overdue.length + ')</div>';
+      html += overdue.map(function (k) { return kundeCard(k, true); }).join('');
+    }
+    if (dueToday.length) {
+      html += '<div class="section-label section-label-today">I dag (' + dueToday.length + ')</div>';
+      html += dueToday.map(function (k) { return kundeCard(k, true); }).join('');
+    }
+    if (!total) {
+      html += '<div class="empty-state"><p>Ingen oppfølginger i dag.</p><p class="empty-sub">Gå til Kunder for hele listen, eller legg til en ny kunde.</p></div>';
+    }
+    html += '</div>';
+    return html;
+  }
+
+  function filteredKunder() {
+    var list = kunder;
+    if (state.filter === 'eksisterende') list = list.filter(function (k) { return k.kilde === 'eksisterende'; });
+    else if (state.filter === 'ny') list = list.filter(function (k) { return k.kilde === 'ny'; });
+    else if (state.filter.indexOf('status:') === 0) {
+      var st = state.filter.slice(7);
+      list = list.filter(function (k) { return k.status === st; });
+    }
+    if (state.orgFilter) list = list.filter(function (k) { return k.organisasjonId === state.orgFilter; });
+    if (state.search.trim()) {
+      var q = state.search.trim().toLowerCase();
+      var qDigits = q.replace(/\s/g, '');
+      list = list.filter(function (k) {
+        return (k.firma || '').toLowerCase().indexOf(q) !== -1 ||
+          (k.kontaktperson || '').toLowerCase().indexOf(q) !== -1 ||
+          (k.telefon || '').replace(/\s/g, '').indexOf(qDigits) !== -1;
+      });
+    }
+    return list.slice().sort(function (a, b) { return (b.oppdatert || '').localeCompare(a.oppdatert || ''); });
+  }
+  function chipsHtml() {
+    var filters = [{ key: 'all', label: 'Alle' }, { key: 'eksisterende', label: 'Eksisterende' }, { key: 'ny', label: 'Nye' }];
+    STATUS_ORDER.forEach(function (s) { filters.push({ key: 'status:' + s, label: STATUS[s].label }); });
+    return filters.map(function (f) { return '<button type="button" class="chip ' + (state.filter === f.key ? 'chip-active' : '') + '" data-action="set-filter" data-filter="' + f.key + '">' + f.label + '</button>'; }).join('');
+  }
+  function listResultsHtml() {
+    var list = filteredKunder();
+    if (!list.length) return '<div class="empty-state"><p>Ingen treff.</p></div>';
+    return list.map(function (k) { return kundeCard(k, true); }).join('');
+  }
+  function updateListResults() {
+    var el = document.getElementById('list-results');
+    if (el) el.innerHTML = listResultsHtml();
+    var chips = document.getElementById('filter-chips');
+    if (chips) chips.innerHTML = chipsHtml();
+  }
+  function renderListView() {
+    return '<div class="view view-list"><h1 class="view-title">Kunder</h1>' +
+      '<input type="text" id="search-input" class="search-input" placeholder="Søk navn eller telefon …" value="' + esc(state.search) + '">' +
+      (organisasjoner.length ? '<select id="org-filter-select" class="filter-select"><option value="">Alle organisasjoner</option>' + organisasjoner.map(function (o) { return '<option value="' + esc(o.id) + '"' + (state.orgFilter === o.id ? ' selected' : '') + '>' + esc(o.navn) + '</option>'; }).join('') + '</select>' : '') +
+      '<div class="filter-chips" id="filter-chips">' + chipsHtml() + '</div>' +
+      '<div id="list-results">' + listResultsHtml() + '</div></div>';
+  }
+
+  function renderDetailView(id) {
+    var k = kunder.filter(function (x) { return x.id === id; })[0];
+    if (!k) return '<div class="view"><p>Fant ikke kunden.</p></div>';
+    var st = STATUS[k.status] || STATUS.ikke_kontaktet;
+    var html = '<div class="view view-detail">';
+    html += '<button type="button" class="back-btn" data-action="back" data-back="list">&larr; Tilbake</button>';
+    html += '<div class="detail-head"><h1 class="view-title">' + esc(k.firma || k.kontaktperson || 'Uten navn') + '</h1><span class="badge" style="color:' + st.color + ';background:' + st.color + '1A">' + st.label + '</span></div>';
+    if (k.kontaktperson && k.firma) html += '<p class="empty-sub" style="margin-top:-12px;margin-bottom:14px;">' + esc(k.kontaktperson) + '</p>';
+    if (k.telefon) html += '<a class="call-link call-link-big" href="tel:' + esc(k.telefon.replace(/\s/g, '')) + '">' + phoneIcon() + ' Ring ' + esc(k.telefon) + '</a>';
+
+    html += '<form class="panel" data-action="add-notat" data-id="' + esc(k.id) + '">';
+    html += '<h2 class="panel-title">Logg samtale</h2>';
+    html += '<div class="form-grid">';
+    html += '<label>Hva ble sagt?<textarea name="tekst" rows="3" placeholder="Notat fra samtalen …"></textarea></label>';
+    html += '<label>Status<select name="status">' + statusOptions(k.status) + '</select></label>';
+    html += '<label>Neste oppfølging<input type="date" name="nesteOppfolging" value="' + (k.nesteOppfolging || '') + '"></label>';
+    html += '</div><button type="submit" class="btn btn-primary">Lagre</button></form>';
+
+    html += '<form class="panel" data-action="edit-kunde" data-id="' + esc(k.id) + '">';
+    html += '<h2 class="panel-title">Rediger info</h2>';
+    html += '<div class="form-grid">';
+    html += '<label>Bedrift<input name="firma" value="' + esc(k.firma) + '"></label>';
+    html += '<label>Kontaktperson<input name="kontaktperson" value="' + esc(k.kontaktperson) + '"></label>';
+    html += '<label>Telefon<input name="telefon" type="tel" value="' + esc(k.telefon) + '"></label>';
+    html += '<label>E-post<input name="epost" type="email" value="' + esc(k.epost) + '"></label>';
+    html += '<label>Org.nr<input name="orgnr" value="' + esc(k.orgnr) + '"></label>';
+    html += '<label>Adresse<input name="adresse" value="' + esc(k.adresse) + '"></label>';
+    html += '<label>Kilde<select name="kilde"><option value="eksisterende"' + (k.kilde === 'eksisterende' ? ' selected' : '') + '>Eksisterende kunde</option><option value="ny"' + (k.kilde === 'ny' ? ' selected' : '') + '>Ny kunde</option></select></label>';
+    html += '<label>Organisasjon<select name="organisasjonId">' + orgOptions(k.organisasjonId) + '</select></label>';
+    html += '</div>';
+    html += '<div class="proff-row"><a href="' + proffUrl(k.firma || k.kontaktperson || '') + '" target="_blank" rel="noopener" class="link-btn">Åpne på proff.no for regnskapstall →</a></div>';
+    html += '<button type="submit" class="btn btn-secondary">Lagre endringer</button></form>';
+
+    html += '<div class="panel"><h2 class="panel-title">Historikk</h2>';
+    html += k.notater.length ? k.notater.map(function (n) { return '<div class="note-entry"><div class="note-date">' + formatDateTime(n.dato) + '</div><div class="note-text">' + esc(n.tekst) + '</div></div>'; }).join('') : '<p class="empty-sub">Ingen notater ennå.</p>';
+    html += '</div>';
+
+    html += '<button type="button" class="btn btn-danger" data-action="delete-kunde" data-id="' + esc(k.id) + '">Slett kunde</button>';
+    html += '</div>';
+    return html;
+  }
+
+  function renderGeneratorPanel() {
+    var html = '<div class="panel"><h2 class="panel-title">Finn nytt firma å ringe</h2><div class="form-grid">';
+    html += '<label>Organisasjon<select id="gen-org">' + organisasjoner.map(function (o) { return '<option value="' + esc(o.id) + '">' + esc(o.navn) + '</option>'; }).join('') + '</select></label>';
+    html += '<label>Sted (valgfritt)<input id="gen-sted" autocomplete="off" placeholder="f.eks. Drammen"></label>';
+    html += '<label>Bransje (valgfritt)<select id="gen-bransje">' + BRANSJER.map(function (b) { return '<option value="' + esc(b.kode) + '">' + esc(b.label) + '</option>'; }).join('') + '</select></label>';
+    html += '</div><button type="button" class="btn btn-primary" data-action="generer-firma">Generer tilfeldig firma</button>';
+    html += '<div id="generator-result"></div></div>';
+    return html;
+  }
+
+  function renderAddView() {
+    var html = '<div class="view view-add"><h1 class="view-title">Ny kunde</h1>';
+    html += renderGeneratorPanel();
+    html += '<form class="panel" data-action="add-kunde">';
+    html += '<div class="form-grid">';
+    html += '<label>Bedrift<input name="firma" id="f-firma" autocomplete="off" placeholder="Bedriftsnavn"></label>';
+    html += '<div id="brreg-suggestions"></div>';
+    html += '<label>Kontaktperson<input name="kontaktperson" placeholder="Navn"></label>';
+    html += '<label>Telefon<input name="telefon" type="tel" placeholder="12345678"></label>';
+    html += '<label>E-post<input name="epost" type="email"></label>';
+    html += '<label>Org.nr<input name="orgnr" id="f-orgnr"></label>';
+    html += '<label>Adresse<input name="adresse" id="f-adresse"></label>';
+    html += '<label>Kilde<select name="kilde"><option value="ny">Ny kunde</option><option value="eksisterende">Eksisterende kunde</option></select></label>';
+    html += '<label>Organisasjon<select name="organisasjonId">' + orgOptions(null) + '</select></label>';
+    html += '</div><button type="submit" class="btn btn-primary">Lagre kunde</button></form>';
+
+    html += '<div class="panel"><h2 class="panel-title">Importer flere</h2>';
+    html += '<p class="empty-sub">Lim inn én kunde per linje, fra Excel eller skrevet manuelt: Bedriftsnavn, Telefon</p>';
+    html += '<textarea id="import-text" rows="5" placeholder="Eks AS, 12345678&#10;Foo Bygg, 87654321"></textarea>';
+    html += '<label>Organisasjon for disse (valgfritt)<select id="import-org">' + orgOptions(null) + '</select></label>';
+    html += '<button class="btn btn-secondary" data-action="import-preview" type="button">Forhåndsvis import</button>';
+    html += '<div id="import-preview-area">' + (state.importPreview ? importPreviewHtml() : '') + '</div>';
+    html += '</div></div>';
+    return html;
+  }
+
+  function statsHtml() {
+    var total = kunder.length;
+    var solgt = kunder.filter(function (k) { return k.status === 'solgt'; }).length;
+    var ringTilbake = kunder.filter(function (k) { return k.status === 'ring_tilbake'; }).length;
+    return '<div class="stats-grid"><div class="stat"><div class="stat-num">' + total + '</div><div class="stat-label">Kunder totalt</div></div><div class="stat"><div class="stat-num">' + solgt + '</div><div class="stat-label">Solgt</div></div><div class="stat"><div class="stat-num">' + ringTilbake + '</div><div class="stat-label">Ring tilbake</div></div></div>';
+  }
+
+  function renderToolsView() {
+    var html = '<div class="view view-tools"><h1 class="view-title">Verktøy</h1>';
+    html += '<div class="panel"><h2 class="panel-title">Statistikk</h2>' + statsHtml() + '</div>';
+    html += '<div class="panel"><h2 class="panel-title">Sikkerhetskopi</h2><p class="empty-sub">Alt lagres kun på denne telefonen/nettleseren — ingenting sendes til noen server. Last ned en kopi jevnlig i tilfelle du bytter telefon eller tømmer nettleserdata.</p>';
+    html += '<button class="btn btn-primary" data-action="export-json" type="button">Last ned backup (JSON)</button>';
+    html += '<button class="btn btn-secondary" data-action="export-csv" type="button">Last ned som regneark (CSV)</button></div>';
+    html += '<div class="panel"><h2 class="panel-title">Gjenopprett backup</h2><p class="empty-sub">Velg en tidligere nedlastet JSON-backup. Dette erstatter alt som ligger her nå.</p><input type="file" id="import-json-file" accept="application/json"></div>';
+    html += '<div class="panel panel-danger"><h2 class="panel-title">Slett alt</h2><p class="empty-sub">Fjerner alle kunder og notater fra denne enheten.</p><button class="btn btn-danger" data-action="clear-all" type="button">Slett alle data</button></div>';
+    html += '</div>';
+    return html;
+  }
+
+  function orgCard(o) {
+    return '<div class="org-card" data-action="open-org" data-id="' + esc(o.id) + '"><div class="org-card-name">' + esc(o.navn) + '</div>' +
+      (o.kortBeskrivelse ? '<div class="org-card-desc">' + esc(truncate(o.kortBeskrivelse, 110)) + '</div>' : '') +
+      '<div class="org-card-count">' + o.innvendinger.length + ' egne innvending' + (o.innvendinger.length === 1 ? '' : 'er') + '</div></div>';
+  }
+
+  function renderOrgView() {
+    var html = '<div class="view view-org"><h1 class="view-title">Organisasjoner</h1>';
+    html += '<div class="panel"><h2 class="panel-title">Skattefradrag — kort om reglene</h2><div class="tax-fact">' + TAX_HTML + '</div></div>';
+
+    html += '<div class="panel"><h2 class="panel-title">Generelle innvendinger og tips</h2>';
+    html += generelleInnvendinger.length ? generelleInnvendinger.map(function (i) {
+      return '<div class="innvending-item"><div class="innvending-q">' + esc(i.innvending) + '</div><div class="innvending-a">' + esc(i.tips) + '</div><button type="button" class="innvending-del" data-action="delete-generell-innvending" data-id="' + esc(i.id) + '">Fjern</button></div>';
+    }).join('') : '<p class="empty-sub">Ingen ennå.</p>';
+    html += '<form data-action="add-generell-innvending" class="form-grid" style="margin-top:12px;">';
+    html += '<label>Innvending<input name="innvending" placeholder="F.eks. Vi har ikke budsjett"></label>';
+    html += '<label>Tips/svar<textarea name="tips" rows="2" placeholder="Hvordan møte denne"></textarea></label>';
+    html += '<button type="submit" class="btn btn-secondary">Legg til generell innvending</button></form></div>';
+
+    html += '<h2 class="panel-title" style="margin:4px 2px 10px;">Mine organisasjoner</h2>';
+    html += organisasjoner.length ? organisasjoner.map(function (o) { return orgCard(o); }).join('') : '<p class="empty-sub" style="margin:0 2px 14px;">Ingen lagt til ennå.</p>';
+
+    html += '<form class="panel" data-action="add-org"><h2 class="panel-title">Legg til organisasjon</h2><div class="form-grid">';
+    html += '<label>Navn<input name="navn" placeholder="F.eks. Kreftforeningen"></label>';
+    html += '<label>Kort beskrivelse<textarea name="kortBeskrivelse" rows="2" placeholder="Hva jobber de med?"></textarea></label>';
+    html += '<label>Hvorfor støtte (samtalepunkt)<textarea name="hvorfor" rows="2" placeholder="Argument du kan bruke i samtalen"></textarea></label>';
+    html += '</div><button type="submit" class="btn btn-primary">Legg til organisasjon</button></form>';
+    html += '</div>';
+    return html;
+  }
+
+  function renderOrgDetailView(id) {
+    var o = orgById(id);
+    if (!o) return '<div class="view"><p>Fant ikke organisasjonen.</p></div>';
+    var html = '<div class="view view-org-detail">';
+    html += '<button type="button" class="back-btn" data-action="back" data-back="org">&larr; Tilbake</button>';
+    html += '<h1 class="view-title">' + esc(o.navn) + '</h1>';
+
+    html += '<form class="panel" data-action="edit-org" data-id="' + esc(o.id) + '"><div class="form-grid">';
+    html += '<label>Navn<input name="navn" value="' + esc(o.navn) + '"></label>';
+    html += '<label>Kort beskrivelse<textarea name="kortBeskrivelse" rows="3">' + esc(o.kortBeskrivelse) + '</textarea></label>';
+    html += '<label>Hvorfor støtte (samtalepunkt)<textarea name="hvorfor" rows="2">' + esc(o.hvorfor) + '</textarea></label>';
+    html += '</div><button type="submit" class="btn btn-secondary">Lagre endringer</button></form>';
+
+    html += '<div class="panel"><h2 class="panel-title">Egne innvendinger</h2>';
+    html += o.innvendinger.length ? o.innvendinger.map(function (i) {
+      return '<div class="innvending-item"><div class="innvending-q">' + esc(i.innvending) + '</div><div class="innvending-a">' + esc(i.tips) + '</div><button type="button" class="innvending-del" data-action="delete-org-innvending" data-id="' + esc(i.id) + '" data-org="' + esc(o.id) + '">Fjern</button></div>';
+    }).join('') : '<p class="empty-sub">Ingen egne ennå — generelle innvendinger brukes automatisk.</p>';
+    html += '<form data-action="add-org-innvending" data-id="' + esc(o.id) + '" class="form-grid" style="margin-top:12px;">';
+    html += '<label>Innvending<input name="innvending" placeholder="Spesifikk for ' + esc(o.navn) + '"></label>';
+    html += '<label>Tips/svar<textarea name="tips" rows="2"></textarea></label>';
+    html += '<button type="submit" class="btn btn-secondary">Legg til</button></form></div>';
+
+    html += '<button type="button" class="btn btn-danger" data-action="delete-org" data-id="' + esc(o.id) + '">Slett organisasjon</button>';
+    html += '</div>';
+    return html;
+  }
+
+  function renderNav() {
+    var tabs = [{ view: 'dashboard', label: 'I dag' }, { view: 'list', label: 'Kunder' }, { view: 'add', label: 'Ny' }, { view: 'org', label: 'Org' }, { view: 'tools', label: 'Verktøy' }];
+    return '<nav class="bottomnav">' + tabs.map(function (t) { var active = state.view === t.view || (t.view === 'org' && state.view === 'orgDetail'); return '<button type="button" class="navtab ' + (active ? 'navtab-active' : '') + '" data-action="nav" data-view="' + t.view + '">' + t.label + '</button>'; }).join('') + '</nav>';
+  }
+
+  function render() {
+    var app = document.getElementById('app');
+    var html = renderHeader();
+    if (state.view === 'dashboard') html += renderDashboard();
+    else if (state.view === 'list') html += renderListView();
+    else if (state.view === 'detail') html += renderDetailView(state.selectedId);
+    else if (state.view === 'add') html += renderAddView();
+    else if (state.view === 'org') html += renderOrgView();
+    else if (state.view === 'orgDetail') html += renderOrgDetailView(state.selectedOrgId);
+    else if (state.view === 'tools') html += renderToolsView();
+    html += renderNav();
+    app.innerHTML = html;
+    afterRender();
+  }
+
+  function afterRender() {
+    var searchInput = document.getElementById('search-input');
+    if (searchInput) {
+      searchInput.addEventListener('input', function () {
+        state.search = this.value;
+        updateListResults();
+      });
+    }
+    var firmaInput = document.getElementById('f-firma');
+    if (firmaInput) {
+      var timer;
+      firmaInput.addEventListener('input', function () {
+        clearTimeout(timer);
+        var val = this.value;
+        if (val.trim().length < 3) {
+          var box = document.getElementById('brreg-suggestions');
+          if (box) box.innerHTML = '';
+          return;
+        }
+        timer = setTimeout(function () { searchBrregLive(val); }, 400);
+      });
+    }
+    setupImportFile();
+    var orgFilterSelect = document.getElementById('org-filter-select');
+    if (orgFilterSelect) {
+      orgFilterSelect.addEventListener('change', function () {
+        state.orgFilter = this.value;
+        updateListResults();
+      });
+    }
+    renderGeneratorResult();
+    var logStatusSelect = document.querySelector('form[data-action="add-notat"] select[name="status"]');
+    if (logStatusSelect) {
+      logStatusSelect.addEventListener('change', function () {
+        var terminal = ['solgt', 'ikke_interessert', 'feil_nummer'];
+        if (terminal.indexOf(this.value) !== -1) {
+          var dateInput = document.querySelector('form[data-action="add-notat"] input[name="nesteOppfolging"]');
+          if (dateInput) dateInput.value = '';
+        }
+      });
+    }
+  }
+
+  // ---------- Events ----------
+  function onClick(e) {
+    var el = e.target.closest('[data-action]');
+    if (!el) return;
+    var action = el.dataset.action;
+    var id = el.dataset.id;
+
+    if (action === 'nav') {
+      state.view = el.dataset.view; state.selectedId = null; state.selectedOrgId = null; state.importPreview = null;
+      state.search = ''; state.filter = 'all'; state.orgFilter = '';
+      render();
+    } else if (action === 'open-detail') {
+      state.view = 'detail'; state.selectedId = id; render();
+    } else if (action === 'open-org') {
+      state.view = 'orgDetail'; state.selectedOrgId = id; render();
+    } else if (action === 'back') {
+      state.view = el.dataset.back || 'list'; render();
+    } else if (action === 'delete-kunde') {
+      var k = kunder.filter(function (x) { return x.id === id; })[0];
+      if (k && confirm('Slette ' + (k.firma || k.kontaktperson || 'kunden') + '? Dette kan ikke angres.')) {
+        deleteKunde(id); state.view = 'list'; render();
+      }
+    } else if (action === 'delete-org') {
+      var o = orgById(id);
+      if (o && confirm('Slette ' + o.navn + '? Egne innvendinger for denne organisasjonen forsvinner også.')) {
+        deleteOrg(id); state.view = 'org'; render();
+      }
+    } else if (action === 'delete-org-innvending') {
+      deleteOrgInnvending(el.dataset.org, id); render();
+    } else if (action === 'delete-generell-innvending') {
+      deleteGenerellInnvending(id); render();
+    } else if (action === 'generer-firma') {
+      genererTilfeldigFirma();
+    } else if (action === 'vis-innvending') {
+      state.visInnvending = true; renderGeneratorResult();
+    } else if (action === 'set-filter') {
+      state.filter = el.dataset.filter; updateListResults();
+    } else if (action === 'export-json') {
+      exportJSON();
+    } else if (action === 'export-csv') {
+      exportCSV();
+    } else if (action === 'clear-all') {
+      if (confirm('Slette ALLE kunder og notater fra denne enheten? Dette kan ikke angres.')) { kunder = []; save(); render(); }
+    } else if (action === 'pick-brreg') {
+      var enhet = state.brregResults.filter(function (r) { return r.organisasjonsnummer === id; })[0];
+      if (enhet) fillBrregIntoForm(enhet);
+    } else if (action === 'import-preview') {
+      previewImport();
+    } else if (action === 'import-confirm') {
+      confirmImport();
+    } else if (action === 'import-cancel') {
+      state.importPreview = null;
+      var area = document.getElementById('import-preview-area');
+      if (area) area.innerHTML = '';
+    }
+  }
+
+  function onSubmit(e) {
+    e.preventDefault();
+    var form = e.target;
+    var action = form.dataset.action;
+    var fd = new FormData(form);
+
+    if (action === 'add-kunde') {
+      var firma = (fd.get('firma') || '').toString().trim();
+      var kontaktperson = (fd.get('kontaktperson') || '').toString().trim();
+      if (!firma && !kontaktperson) { alert('Skriv inn minst bedriftsnavn eller kontaktperson.'); return; }
+      var k = addKunde({
+        firma: firma, kontaktperson: kontaktperson,
+        telefon: (fd.get('telefon') || '').toString().trim(),
+        epost: (fd.get('epost') || '').toString().trim(),
+        orgnr: (fd.get('orgnr') || '').toString().trim(),
+        adresse: (fd.get('adresse') || '').toString().trim(),
+        kilde: fd.get('kilde'),
+        organisasjonId: fd.get('organisasjonId') || null
+      });
+      state.genFirma = null; state.genInnvending = null;
+      state.view = 'detail'; state.selectedId = k.id; render();
+    } else if (action === 'edit-kunde') {
+      updateKunde(form.dataset.id, {
+        firma: (fd.get('firma') || '').toString().trim(),
+        kontaktperson: (fd.get('kontaktperson') || '').toString().trim(),
+        telefon: (fd.get('telefon') || '').toString().trim(),
+        epost: (fd.get('epost') || '').toString().trim(),
+        orgnr: (fd.get('orgnr') || '').toString().trim(),
+        adresse: (fd.get('adresse') || '').toString().trim(),
+        kilde: fd.get('kilde'),
+        organisasjonId: fd.get('organisasjonId') || null
+      });
+      render();
+    } else if (action === 'add-notat') {
+      addNotat(form.dataset.id, {
+        tekst: (fd.get('tekst') || '').toString().trim(),
+        nesteOppfolging: (fd.get('nesteOppfolging') || '').toString(),
+        status: fd.get('status')
+      });
+      render();
+    } else if (action === 'add-org') {
+      var navn = (fd.get('navn') || '').toString().trim();
+      if (!navn) { alert('Skriv inn navn på organisasjonen.'); return; }
+      addOrg({ navn: navn, kortBeskrivelse: (fd.get('kortBeskrivelse') || '').toString().trim(), hvorfor: (fd.get('hvorfor') || '').toString().trim() });
+      render();
+    } else if (action === 'edit-org') {
+      updateOrg(form.dataset.id, { navn: (fd.get('navn') || '').toString().trim(), kortBeskrivelse: (fd.get('kortBeskrivelse') || '').toString().trim(), hvorfor: (fd.get('hvorfor') || '').toString().trim() });
+      render();
+    } else if (action === 'add-org-innvending') {
+      var innvO = (fd.get('innvending') || '').toString().trim();
+      if (!innvO) { alert('Skriv inn en innvending.'); return; }
+      addOrgInnvending(form.dataset.id, innvO, (fd.get('tips') || '').toString().trim());
+      render();
+    } else if (action === 'add-generell-innvending') {
+      var innvG = (fd.get('innvending') || '').toString().trim();
+      if (!innvG) { alert('Skriv inn en innvending.'); return; }
+      addGenerellInnvending(innvG, (fd.get('tips') || '').toString().trim());
+      render();
+    }
+  }
+
+  // ---------- Init ----------
+  load();
+  loadOrg();
+  loadInnvendinger();
+  var appEl = document.getElementById('app');
+  appEl.addEventListener('click', onClick);
+  appEl.addEventListener('submit', onSubmit);
+  render();
+})();
+</script>
+</body>
+</html>
