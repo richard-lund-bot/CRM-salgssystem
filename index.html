@@ -173,23 +173,23 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
 
   function defaultOrganisasjoner() {
     return [
-      { id: 'org-naaf', navn: 'Astma- og Allergiforbundet', kortBeskrivelse: 'Pasient- og interesseorganisasjon for astma, allergi, eksem og kols. Rundt 1,5 millioner nordmenn er rammet av disse diagnosene. Driver blant annet den nasjonale pollenvarslingen, en rådgivningstjeneste og støtter forskning.', hvorfor: 'Astma og allergi rammer stadig flere barn — annonsen støtter informasjonsarbeid, rådgivning og forskning som hjelper familier direkte.', innvendinger: [] },
-      { id: 'org-blakors', navn: 'Blå Kors', kortBeskrivelse: 'Ideell, diakonal organisasjon som arbeider mot rus- og spillavhengighet. Driver behandlingsinstitusjoner, forebygging for barn/unge og oppfølging etter behandling over store deler av Norge.', hvorfor: 'Rus rammer ikke bare den som sliter, men hele familien — Blå Kors jobber både med forebygging blant unge og behandling/oppfølging i etterkant.', innvendinger: [] },
-      { id: 'org-rodekors', navn: 'Røde Kors', kortBeskrivelse: 'Norges største humanitære organisasjon. Driver blant annet hjelpekorps/redningstjeneste, besøkstjeneste, leksehjelp, flyktningarbeid og internasjonal nødhjelp.', hvorfor: 'Lokalt og internasjonalt — Røde Kors er ofte først på stedet ved ulykker og kriser, og bygger fellesskap året rundt gjennom lokale aktiviteter.', innvendinger: [] }
+      { id: 'org-naaf', navn: 'Astma- og Allergiforbundet', kortBeskrivelse: 'Pasient- og interesseorganisasjon for astma, allergi, eksem og kols. Rundt 1,5 millioner nordmenn er rammet av disse diagnosene. Driver blant annet den nasjonale pollenvarslingen, en rådgivningstjeneste og støtter forskning.', hvorfor: 'Astma og allergi rammer stadig flere barn — annonsen støtter informasjonsarbeid, rådgivning og forskning som hjelper familier direkte.', innvendinger: [], anbefalteNaeringer: ['Bygg og anlegg', 'Bilverksted og bilpleie', 'Helse- og omsorgstjenester', 'Industri og produksjon', 'Personlig tjenesteyting (frisør mm.)'] },
+      { id: 'org-blakors', navn: 'Blå Kors', kortBeskrivelse: 'Ideell, diakonal organisasjon som arbeider mot rus- og spillavhengighet. Driver behandlingsinstitusjoner, forebygging for barn/unge og oppfølging etter behandling over store deler av Norge.', hvorfor: 'Rus rammer ikke bare den som sliter, men hele familien — Blå Kors jobber både med forebygging blant unge og behandling/oppfølging i etterkant.', innvendinger: [], anbefalteNaeringer: ['Overnatting og servering', 'Helse- og omsorgstjenester', 'Varehandel / butikk', 'Kultur, idrett og fritid', 'Personlig tjenesteyting (frisør mm.)'] },
+      { id: 'org-rodekors', navn: 'Røde Kors', kortBeskrivelse: 'Norges største humanitære organisasjon. Driver blant annet hjelpekorps/redningstjeneste, besøkstjeneste, leksehjelp, flyktningarbeid og internasjonal nødhjelp.', hvorfor: 'Lokalt og internasjonalt — Røde Kors er ofte først på stedet ved ulykker og kriser, og bygger fellesskap året rundt gjennom lokale aktiviteter.', innvendinger: [], anbefalteNaeringer: ['Transport og lager', 'Bygg og anlegg', 'Finans og forsikring', 'Eiendom', 'Varehandel / butikk'] }
     ];
   }
   function defaultGenerelleInnvendinger() {
     return [
-      { id: uid(), innvending: 'Vi har ikke budsjett for dette nå', tips: 'Ikke press på pris med en gang. Spør når neste budsjettperiode starter og avtal å ringe tilbake da. Du kan også spørre om det er rom for et mindre format.' },
-      { id: uid(), innvending: 'Vi støtter allerede en annen organisasjon', tips: 'Ikke posisjoner det som konkurranse. Anerkjenn det positivt, og spør om det er plass til å støtte mer enn én sak — det er vanlig.' },
-      { id: uid(), innvending: 'Send meg informasjon på e-post', tips: 'Klassisk avvisning. Still ett oppfølgingsspørsmål før du sender noe, og avtal et konkret tidspunkt for å ringe tilbake — ikke bare "send og håp".' },
-      { id: uid(), innvending: 'Jeg må sjekke med sjefen/styret først', tips: 'Spør hvem som faktisk bestemmer, og om du heller kan ringe direkte til vedkommende. Får du ikke det, avtal en konkret dato for ny kontakt.' },
-      { id: uid(), innvending: 'Hva får vi egentlig igjen for dette?', tips: 'Vær konkret på hva annonsen faktisk gir — hvor den vises og omtrent hvor mange som ser den — ikke bare det gode formålet alene.' },
-      { id: uid(), innvending: 'Jeg har dårlig tid akkurat nå', tips: 'Ikke press samtalen videre. Spør om et bedre tidspunkt å ringe tilbake, og få et konkret klokkeslett før du legger på.' },
-      { id: uid(), innvending: 'Er dette seriøst, er dere ekte?', tips: 'Vis ro, ikke gå i forsvar. Oppgi organisasjonsnummer, vis til organisasjonens nettside, eller tilby skriftlig bekreftelse før betaling.' },
-      { id: uid(), innvending: 'Vi har ikke hørt om denne organisasjonen', tips: 'Gi en kort, konkret forklaring av hva de faktisk gjør — bruk beskrivelsen under Org i appen, gjerne med ett konkret tall.' },
-      { id: uid(), innvending: 'Nei takk, ikke interessert', tips: 'Respekter et tydelig nei med en gang. Spør høflig om du kan ta kontakt igjen neste år, og avslutt positivt — press her skader mer enn det hjelper.' },
-      { id: uid(), innvending: 'Er dette fradragsberettiget på skatten?', tips: 'Ja, så lenge prisen står i rimelig forhold til annonseverdien regnes kjøpet som en vanlig markedsføringskostnad. Se skattefradrag-info under Org for full forklaring.' }
+      { id: uid(), innvending: 'Åpn med et ja-spørsmål', tips: 'Start med: "Er du den som tar avgjørelser om markedsføring hos [firma]?" Det setter deg rett inn i riktig samtale og sparer tid på feil person.' },
+      { id: uid(), innvending: 'Bruk firmanavnet aktivt', tips: 'Si firmanavnet tidlig og knytt det til formålet: "Vi ønsker at [firma] skal stå som en synlig støttespiller for [org] i dette området." Det gjør det konkret og personlig.' },
+      { id: uid(), innvending: 'Gi en konkret størrelse tidlig', tips: 'Nevn beløpet og sammenlign det med noe kjent: "Vi snakker om en støtteannonse for [beløp] kr — omtrent det samme som én reklameannonse i lokalsavisa." Det gjør det lett å forholde seg til.' },
+      { id: uid(), innvending: 'Knytt det til nærmiljøet', tips: '"Vi setter sammen en kampanje for [org] i dette distriktet, og leter etter lokale bedrifter som ønsker å bli synlige støttespillere." Lokal tilhørighet treffer mange bedriftseiere.' },
+      { id: uid(), innvending: 'Trekk frem skattefradraget tidlig', tips: 'Fortell raskt at dette er fradragsberettiget som markedsføring — ikke gave. Det fjerner en vanlig skepsis og gjør at de ser det som en forretningsbeslutning, ikke veldedighet.' },
+      { id: uid(), innvending: 'Ha organisasjonen på 20 sekunder klar', tips: 'Forbered én konkret setning: hva [org] gjør og hvem de hjelper. Tall funker bra: "Røde Kors rykker ut ved over 2 000 redningsaksjoner i Norge hvert år." Det skaper relevans raskt.' },
+      { id: uid(), innvending: 'Spør om de støtter noe fra før', tips: '"Støtter dere allerede noen frivillige organisasjoner?" Svaret gir deg en inngang uansett hva de sier — og viser at du er interessert i dem, ikke bare i salget.' },
+      { id: uid(), innvending: 'Avslutt alltid med neste steg', tips: 'Ikke avslutt uten et konkret neste steg: dato for tilbakering, e-post du sender, eller bekreftelse. "Kan jeg ringe deg igjen fredag kl. 10?" er mye sterkere enn "ok, tenk på det".' },
+      { id: uid(), innvending: 'Bruk "vi" ikke "jeg"', tips: 'Si "vi jobber med" heller enn "jeg selger". Det signaliserer at du representerer noe større enn deg selv, og gir mer troverdighet i en kald samtale.' },
+      { id: uid(), innvending: 'Tilpass åpningen til bransjen', tips: 'En bilverksted-eier tenker HMS og ansvarlig arbeidsliv — koble [org] til det. En restaurant-eier tenker lokalsamfunn og omdømme. Bruk "Anbefalte bransjer" under Org for konkrete innspill.' }
     ];
   }
 
@@ -313,7 +313,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   // ---------- Organisasjoner ----------
   function orgById(id) { return organisasjoner.filter(function (x) { return x.id === id; })[0] || null; }
   function addOrg(data) {
-    var o = { id: uid(), navn: data.navn || '', kortBeskrivelse: data.kortBeskrivelse || '', hvorfor: data.hvorfor || '', innvendinger: [] };
+    var o = { id: uid(), navn: data.navn || '', kortBeskrivelse: data.kortBeskrivelse || '', hvorfor: data.hvorfor || '', innvendinger: [], anbefalteNaeringer: data.anbefalteNaeringer || [] };
     organisasjoner.push(o);
     saveOrg();
     return o;
@@ -384,9 +384,11 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     var firmaInput = document.getElementById('f-firma');
     var orgnrInput = document.getElementById('f-orgnr');
     var adresseInput = document.getElementById('f-adresse');
+    var tlfInput = document.getElementById('f-telefon');
     if (firmaInput) firmaInput.value = enhet.navn || '';
     if (orgnrInput) orgnrInput.value = enhet.organisasjonsnummer || '';
     if (adresseInput) adresseInput.value = adrStr;
+    if (tlfInput && enhet.telefon) tlfInput.value = enhet.telefon;
     var box = document.getElementById('brreg-suggestions');
     if (box) box.innerHTML = '';
   }
@@ -454,9 +456,11 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     var firmaInput = document.getElementById('f-firma');
     var orgnrInput = document.getElementById('f-orgnr');
     var adresseInput = document.getElementById('f-adresse');
+    var tlfInput = document.getElementById('f-telefon');
     if (firmaInput) firmaInput.value = enhet.navn || '';
     if (orgnrInput) orgnrInput.value = enhet.organisasjonsnummer || '';
     if (adresseInput) adresseInput.value = adresseStr(enhet);
+    if (tlfInput && enhet.telefon) tlfInput.value = enhet.telefon;
     var orgSelectGen = document.getElementById('gen-org');
     var orgSelectForm = document.querySelector('form[data-action="add-kunde"] select[name="organisasjonId"]');
     if (orgSelectGen && orgSelectForm) orgSelectForm.value = orgSelectGen.value;
@@ -467,12 +471,27 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     if (!box) return;
     var enhet = state.genFirma;
     if (!enhet) { box.innerHTML = ''; return; }
-    var html = '<div class="generator-result"><div class="generator-result-name">' + esc(enhet.navn) + '</div><div class="generator-result-addr">' + esc(adresseStr(enhet)) + (enhet.organisasjonsnummer ? ' · ' + esc(enhet.organisasjonsnummer) : '') + '</div></div>';
+    var navn = enhet.navn || '';
+    var orgnr = enhet.organisasjonsnummer || '';
+    var adr = adresseStr(enhet);
+    var html = '<div class="generator-result"><div class="generator-result-name">' + esc(navn) + '</div><div class="generator-result-addr">' + esc(adr) + (orgnr ? ' · ' + esc(orgnr) : '') + '</div>';
+    if (enhet.telefon) {
+      html += '<div style="margin-top:6px;"><a class="call-link" href="tel:' + esc(enhet.telefon.replace(/\s/g,'')) + '">' + phoneIcon() + ' ' + esc(enhet.telefon) + '</a></div>';
+    }
+    html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">';
+    if (enhet.hjemmeside) {
+      html += '<a href="' + esc(enhet.hjemmeside.startsWith('http') ? enhet.hjemmeside : 'https://' + enhet.hjemmeside) + '" target="_blank" rel="noopener" class="link-btn">🌐 Nettside</a>';
+    }
+    html += '<a href="https://www.google.com/search?q=' + encodeURIComponent(navn) + '" target="_blank" rel="noopener" class="link-btn">🔍 Google</a>';
+    html += '<a href="https://www.facebook.com/search/top?q=' + encodeURIComponent(navn) + '" target="_blank" rel="noopener" class="link-btn">📘 Facebook</a>';
+    html += '<a href="https://www.1881.no/bedrift/?query=' + encodeURIComponent(navn) + '" target="_blank" rel="noopener" class="link-btn">📞 1881</a>';
+    html += '<a href="' + esc(proffUrl(navn)) + '" target="_blank" rel="noopener" class="link-btn">📊 Proff</a>';
+    html += '</div></div>';
     if (state.genInnvending) {
       if (state.visInnvending) {
-        html += '<div class="reveal-box"><div class="reveal-label">Innvending å være klar for</div><div class="reveal-content"><p><strong>' + esc(state.genInnvending.innvending) + '</strong></p><p>' + esc(state.genInnvending.tips) + '</p></div></div>';
+        html += '<div class="reveal-box"><div class="reveal-label">Salgstips</div><div class="reveal-content"><p><strong>' + esc(state.genInnvending.innvending) + '</strong></p><p>' + esc(state.genInnvending.tips) + '</p></div></div>';
       } else {
-        html += '<button type="button" class="btn btn-secondary" data-action="vis-innvending">Vis innvending og tips</button>';
+        html += '<button type="button" class="btn btn-secondary" data-action="vis-innvending">Vis salgstips</button>';
       }
     }
     html += '<button type="button" class="btn btn-secondary" data-action="generer-firma">Prøv et annet</button>';
@@ -563,6 +582,13 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       };
       reader.readAsText(file);
     });
+  }
+
+  // ---------- Generator helpers ----------
+  function oppdaterAnbefalte() {
+    var sel = document.getElementById('gen-org');
+    var box = document.getElementById('anbefalte-bransjer');
+    if (sel && box) box.innerHTML = anbefalteNaerBadges(sel.value);
   }
 
   // ---------- Render: pieces ----------
@@ -707,9 +733,19 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     return html;
   }
 
+  function anbefalteNaerBadges(orgId) {
+    if (!orgId) return '';
+    var o = orgById(orgId);
+    if (!o || !o.anbefalteNaeringer || !o.anbefalteNaeringer.length) return '';
+    return '<div style="margin-top:10px;"><span style="font-size:12px;color:var(--ink-muted);font-weight:600;">Anbefalte bransjer for ' + esc(o.navn) + ':</span><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;">' +
+      o.anbefalteNaeringer.map(function (n) { return '<span style="font-size:12px;background:#e6f4f1;color:var(--brand);border-radius:999px;padding:3px 10px;font-weight:600;">' + esc(n) + '</span>'; }).join('') +
+      '</div></div>';
+  }
   function renderGeneratorPanel() {
+    var firstOrgId = organisasjoner.length ? organisasjoner[0].id : '';
     var html = '<div class="panel"><h2 class="panel-title">Finn nytt firma å ringe</h2><div class="form-grid">';
-    html += '<label>Organisasjon<select id="gen-org">' + organisasjoner.map(function (o) { return '<option value="' + esc(o.id) + '">' + esc(o.navn) + '</option>'; }).join('') + '</select></label>';
+    html += '<label>Organisasjon<select id="gen-org" onchange="oppdaterAnbefalte()">' + organisasjoner.map(function (o) { return '<option value="' + esc(o.id) + '">' + esc(o.navn) + '</option>'; }).join('') + '</select></label>';
+    html += '<div id="anbefalte-bransjer">' + anbefalteNaerBadges(firstOrgId) + '</div>';
     html += '<label>Sted (valgfritt)<input id="gen-sted" autocomplete="off" placeholder="f.eks. Drammen"></label>';
     html += '<label>Bransje (valgfritt)<select id="gen-bransje">' + BRANSJER.map(function (b) { return '<option value="' + esc(b.kode) + '">' + esc(b.label) + '</option>'; }).join('') + '</select></label>';
     html += '</div><button type="button" class="btn btn-primary" data-action="generer-firma">Generer tilfeldig firma</button>';
@@ -725,7 +761,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     html += '<label>Bedrift<input name="firma" id="f-firma" autocomplete="off" placeholder="Bedriftsnavn"></label>';
     html += '<div id="brreg-suggestions"></div>';
     html += '<label>Kontaktperson<input name="kontaktperson" placeholder="Navn"></label>';
-    html += '<label>Telefon<input name="telefon" type="tel" placeholder="12345678"></label>';
+    html += '<label>Telefon<input name="telefon" id="f-telefon" type="tel" placeholder="12345678"></label>';
     html += '<label>E-post<input name="epost" type="email"></label>';
     html += '<label>Org.nr<input name="orgnr" id="f-orgnr"></label>';
     html += '<label>Adresse<input name="adresse" id="f-adresse"></label>';
@@ -763,23 +799,25 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   }
 
   function orgCard(o) {
+    var anb = (o.anbefalteNaeringer || []);
     return '<div class="org-card" data-action="open-org" data-id="' + esc(o.id) + '"><div class="org-card-name">' + esc(o.navn) + '</div>' +
       (o.kortBeskrivelse ? '<div class="org-card-desc">' + esc(truncate(o.kortBeskrivelse, 110)) + '</div>' : '') +
-      '<div class="org-card-count">' + o.innvendinger.length + ' egne innvending' + (o.innvendinger.length === 1 ? '' : 'er') + '</div></div>';
+      (anb.length ? '<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;">' + anb.map(function(n){return '<span style="font-size:11px;background:#e6f4f1;color:var(--brand);border-radius:999px;padding:2px 8px;font-weight:600;">' + esc(n) + '</span>';}).join('') + '</div>' : '') +
+      '<div class="org-card-count" style="margin-top:6px;">' + o.innvendinger.length + ' egne salgstips</div></div>';
   }
 
   function renderOrgView() {
     var html = '<div class="view view-org"><h1 class="view-title">Organisasjoner</h1>';
     html += '<div class="panel"><h2 class="panel-title">Skattefradrag — kort om reglene</h2><div class="tax-fact">' + TAX_HTML + '</div></div>';
 
-    html += '<div class="panel"><h2 class="panel-title">Generelle innvendinger og tips</h2>';
+    html += '<div class="panel"><h2 class="panel-title">Salgstips for samtalen</h2>';
     html += generelleInnvendinger.length ? generelleInnvendinger.map(function (i) {
       return '<div class="innvending-item"><div class="innvending-q">' + esc(i.innvending) + '</div><div class="innvending-a">' + esc(i.tips) + '</div><button type="button" class="innvending-del" data-action="delete-generell-innvending" data-id="' + esc(i.id) + '">Fjern</button></div>';
     }).join('') : '<p class="empty-sub">Ingen ennå.</p>';
     html += '<form data-action="add-generell-innvending" class="form-grid" style="margin-top:12px;">';
-    html += '<label>Innvending<input name="innvending" placeholder="F.eks. Vi har ikke budsjett"></label>';
-    html += '<label>Tips/svar<textarea name="tips" rows="2" placeholder="Hvordan møte denne"></textarea></label>';
-    html += '<button type="submit" class="btn btn-secondary">Legg til generell innvending</button></form></div>';
+    html += '<label>Tipstittel<input name="innvending" placeholder="F.eks. Åpn med et ja-spørsmål"></label>';
+    html += '<label>Forklaring<textarea name="tips" rows="2" placeholder="Hvordan bruke tipset i praksis"></textarea></label>';
+    html += '<button type="submit" class="btn btn-secondary">Legg til salgstips</button></form></div>';
 
     html += '<h2 class="panel-title" style="margin:4px 2px 10px;">Mine organisasjoner</h2>';
     html += organisasjoner.length ? organisasjoner.map(function (o) { return orgCard(o); }).join('') : '<p class="empty-sub" style="margin:0 2px 14px;">Ingen lagt til ennå.</p>';
@@ -788,6 +826,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     html += '<label>Navn<input name="navn" placeholder="F.eks. Kreftforeningen"></label>';
     html += '<label>Kort beskrivelse<textarea name="kortBeskrivelse" rows="2" placeholder="Hva jobber de med?"></textarea></label>';
     html += '<label>Hvorfor støtte (samtalepunkt)<textarea name="hvorfor" rows="2" placeholder="Argument du kan bruke i samtalen"></textarea></label>';
+    html += '<label>Anbefalte bransjer (kommaseparert)<input name="anbefalteNaeringer" placeholder="F.eks. Bygg og anlegg, Helse- og omsorgstjenester"></label>';
     html += '</div><button type="submit" class="btn btn-primary">Legg til organisasjon</button></form>';
     html += '</div>';
     return html;
@@ -804,16 +843,17 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     html += '<label>Navn<input name="navn" value="' + esc(o.navn) + '"></label>';
     html += '<label>Kort beskrivelse<textarea name="kortBeskrivelse" rows="3">' + esc(o.kortBeskrivelse) + '</textarea></label>';
     html += '<label>Hvorfor støtte (samtalepunkt)<textarea name="hvorfor" rows="2">' + esc(o.hvorfor) + '</textarea></label>';
+    html += '<label>Anbefalte bransjer (kommaseparert)<input name="anbefalteNaeringer" value="' + esc((o.anbefalteNaeringer || []).join(', ')) + '" placeholder="F.eks. Bygg og anlegg, Helse- og omsorgstjenester"></label>';
     html += '</div><button type="submit" class="btn btn-secondary">Lagre endringer</button></form>';
 
-    html += '<div class="panel"><h2 class="panel-title">Egne innvendinger</h2>';
+    html += '<div class="panel"><h2 class="panel-title">Egne salgstips for ' + esc(o.navn) + '</h2>';
     html += o.innvendinger.length ? o.innvendinger.map(function (i) {
       return '<div class="innvending-item"><div class="innvending-q">' + esc(i.innvending) + '</div><div class="innvending-a">' + esc(i.tips) + '</div><button type="button" class="innvending-del" data-action="delete-org-innvending" data-id="' + esc(i.id) + '" data-org="' + esc(o.id) + '">Fjern</button></div>';
-    }).join('') : '<p class="empty-sub">Ingen egne ennå — generelle innvendinger brukes automatisk.</p>';
+    }).join('') : '<p class="empty-sub">Ingen egne ennå — generelle salgstips brukes automatisk.</p>';
     html += '<form data-action="add-org-innvending" data-id="' + esc(o.id) + '" class="form-grid" style="margin-top:12px;">';
-    html += '<label>Innvending<input name="innvending" placeholder="Spesifikk for ' + esc(o.navn) + '"></label>';
-    html += '<label>Tips/svar<textarea name="tips" rows="2"></textarea></label>';
-    html += '<button type="submit" class="btn btn-secondary">Legg til</button></form></div>';
+    html += '<label>Tipstittel<input name="innvending" placeholder="Spesifikt tips for ' + esc(o.navn) + '"></label>';
+    html += '<label>Forklaring<textarea name="tips" rows="2"></textarea></label>';
+    html += '<button type="submit" class="btn btn-secondary">Legg til salgstips</button></form></div>';
 
     html += '<button type="button" class="btn btn-danger" data-action="delete-org" data-id="' + esc(o.id) + '">Slett organisasjon</button>';
     html += '</div>';
@@ -983,10 +1023,14 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     } else if (action === 'add-org') {
       var navn = (fd.get('navn') || '').toString().trim();
       if (!navn) { alert('Skriv inn navn på organisasjonen.'); return; }
-      addOrg({ navn: navn, kortBeskrivelse: (fd.get('kortBeskrivelse') || '').toString().trim(), hvorfor: (fd.get('hvorfor') || '').toString().trim() });
+      var naerStrNew = (fd.get('anbefalteNaeringer') || '').toString().trim();
+      var naerArrNew = naerStrNew ? naerStrNew.split(',').map(function(s){return s.trim();}).filter(Boolean) : [];
+      addOrg({ navn: navn, kortBeskrivelse: (fd.get('kortBeskrivelse') || '').toString().trim(), hvorfor: (fd.get('hvorfor') || '').toString().trim(), anbefalteNaeringer: naerArrNew });
       render();
     } else if (action === 'edit-org') {
-      updateOrg(form.dataset.id, { navn: (fd.get('navn') || '').toString().trim(), kortBeskrivelse: (fd.get('kortBeskrivelse') || '').toString().trim(), hvorfor: (fd.get('hvorfor') || '').toString().trim() });
+      var naerStr = (fd.get('anbefalteNaeringer') || '').toString().trim();
+      var naerArr = naerStr ? naerStr.split(',').map(function(s){return s.trim();}).filter(Boolean) : [];
+      updateOrg(form.dataset.id, { navn: (fd.get('navn') || '').toString().trim(), kortBeskrivelse: (fd.get('kortBeskrivelse') || '').toString().trim(), hvorfor: (fd.get('hvorfor') || '').toString().trim(), anbefalteNaeringer: naerArr });
       render();
     } else if (action === 'add-org-innvending') {
       var innvO = (fd.get('innvending') || '').toString().trim();
