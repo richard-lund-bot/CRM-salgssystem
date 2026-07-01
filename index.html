@@ -489,12 +489,13 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     html += '</div></div>';
     if (state.genInnvending) {
       if (state.visInnvending) {
-        html += '<div class="reveal-box"><div class="reveal-label">Salgstips</div><div class="reveal-content"><p><strong>' + esc(state.genInnvending.innvending) + '</strong></p><p>' + esc(state.genInnvending.tips) + '</p></div></div>';
+        html += '<div class="reveal-box"><div class="reveal-label">Salgstips</div><div class="reveal-content"><p><strong>' + esc(state.genInnvending.innvending) + '</strong></p><p>' + esc(state.genInnvending.tips) + '</p></div><button type="button" class="btn btn-secondary" style="margin-top:8px;" data-action="ny-innvending">Nytt salgstips</button></div>';
       } else {
         html += '<button type="button" class="btn btn-secondary" data-action="vis-innvending">Vis salgstips</button>';
       }
     }
-    html += '<button type="button" class="btn btn-secondary" data-action="generer-firma">Prøv et annet</button>';
+    html += '<div class="reveal-box" style="margin-top:10px;"><div class="reveal-label">Skattefradrag — si dette til kunden</div><div class="reveal-content"><p>Støtteannonsen er fradragsberettiget som <strong>markedsføringskostnad</strong> (sktl. § 6-1) — ikke gave — så lenge prisen er rimelig i forhold til annonseverdien. <strong>Ingen øvre grense.</strong></p><p>Gaver har fradrag inntil 25 000 kr/år (sktl. § 6-50), men det gjelder ikke her — dette er reklame, og hele beløpet er fradragsberettiget. Tips: be kunden spørre sin regnskapsfører ved store beløp.</p></div></div>';
+    html += '<button type="button" class="btn btn-secondary" data-action="generer-firma">Prøv et annet firma</button>';
     box.innerHTML = html;
   }
 
@@ -958,6 +959,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       genererTilfeldigFirma();
     } else if (action === 'vis-innvending') {
       state.visInnvending = true; renderGeneratorResult();
+    } else if (action === 'ny-innvending') {
+      state.genInnvending = pickRandomInnvending(); state.visInnvending = true; renderGeneratorResult();
     } else if (action === 'set-filter') {
       state.filter = el.dataset.filter; updateListResults();
     } else if (action === 'export-json') {
