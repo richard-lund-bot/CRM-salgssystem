@@ -32,6 +32,7 @@
   --st-wrong: #8B5E5E;
   --radius: 12px;
   --radius-sm: 8px;
+  --chart: #0D9488;
 }
 * , *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -138,6 +139,17 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
 .ringe-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; }
 .ringe-name { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 600; }
 .big-start { font-size: 17px; padding: 17px; }
+.chart-row { display: flex; gap: 2px; align-items: stretch; height: 150px; }
+.chart-col { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.chart-val { height: 14px; font-size: 10px; font-weight: 600; color: var(--ink-muted); text-align: center; white-space: nowrap; overflow: visible; }
+.chart-barwrap { flex: 1; display: flex; align-items: flex-end; }
+.chart-bar { width: 100%; background: var(--chart); border-radius: 4px 4px 0 0; }
+.chart-bar-zero { width: 100%; background: var(--border); height: 2px; }
+.chart-lab { height: 15px; font-size: 10px; color: var(--ink-faint); text-align: center; margin-top: 3px; white-space: nowrap; }
+.salg-panel { background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: var(--radius-sm); padding: 12px; margin-top: 10px; }
+.salg-entry { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 9px 0; border-top: 1px solid var(--border); font-size: 14px; }
+.salg-entry:first-of-type { border-top: none; }
+.salg-belop { font-weight: 700; white-space: nowrap; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 </head>
@@ -286,7 +298,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   var organisasjoner = [];
   var generelleInnvendinger = [];
   var kunder = [];
-  var state = { view: 'dashboard', selectedId: null, selectedOrgId: null, search: '', filter: 'all', orgFilter: '', importPreview: null, brregResults: [], genFirma: null, genInnvending: null, visInnvending: false, ringeQueue: [], ringeIndex: 0, ringeTips: null, visRingTilbake: false, visSkatt: false, tipsKategori: 'salg', pendingEnhet: null };
+  var state = { view: 'dashboard', selectedId: null, selectedOrgId: null, search: '', filter: 'all', orgFilter: '', importPreview: null, brregResults: [], genFirma: null, genInnvending: null, visInnvending: false, ringeQueue: [], ringeIndex: 0, ringeTips: null, visRingTilbake: false, visSkatt: false, tipsKategori: 'salg', pendingEnhet: null, visSalg: false, salgMnd: 12 };
 
   // ---------- Storage ----------
   function load() {
@@ -335,6 +347,18 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     var d = new Date();
     d.setDate(d.getDate() + n);
     return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  function addMonthsStr(n) {
+    var d = new Date();
+    d.setMonth(d.getMonth() + n);
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  function fmtKort(n) {
+    if (n == null || isNaN(n)) return '0';
+    var abs = Math.abs(n);
+    if (abs >= 1000000) return (n / 1000000).toLocaleString('nb-NO', { maximumFractionDigits: 1 }) + ' mill';
+    if (abs >= 1000) return Math.round(n / 1000) + 'k';
+    return String(Math.round(n));
   }
   function esc(str) {
     if (str == null) return '';
@@ -728,10 +752,10 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     downloadBlob(blob, 'ringeliste-backup-' + todayStr() + '.json');
   }
   function exportCSV() {
-    var headers = ['Bedrift','Kontaktperson','Telefon','E-post','Org.nr','Adresse','Kilde','Organisasjon','Status','Neste oppfolging','Siste notat'];
+    var headers = ['Bedrift','Kontaktperson','Telefon','E-post','Org.nr','Adresse','Kilde','Organisasjon','Status','Neste oppfolging','Antall kjop','Totalt kjopt (kr)','Siste notat'];
     var rows = kunder.map(function (k) {
       var orgNavn = k.organisasjonId ? ((orgById(k.organisasjonId) || {}).navn || '') : '';
-      return [k.firma, k.kontaktperson, k.telefon, k.epost, k.orgnr, k.adresse, k.kilde, orgNavn, (STATUS[k.status] || {}).label || k.status, k.nesteOppfolging || '', (k.notater[0] || {}).tekst || ''];
+      return [k.firma, k.kontaktperson, k.telefon, k.epost, k.orgnr, k.adresse, k.kilde, orgNavn, (STATUS[k.status] || {}).label || k.status, k.nesteOppfolging || '', (k.salg || []).length, sumSalg(k), (k.notater[0] || {}).tekst || ''];
     });
     var all = [headers].concat(rows);
     var csv = all.map(function (r) { return r.map(csvEscape).join(';'); }).join('\r\n');
@@ -966,6 +990,43 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     return overdue.concat(dueToday, fresh, noAnswer).map(function (k) { return k.id; });
   }
 
+  function registrerSalg(id, belop, mnd, notat) {
+    var k = kunder.filter(function (x) { return x.id === id; })[0];
+    if (!k) return;
+    k.salg = k.salg || [];
+    k.salg.push({ id: uid(), belop: belop || 0, dato: todayStr() });
+    k.status = 'solgt';
+    k.kilde = 'eksisterende';
+    k.nesteOppfolging = addMonthsStr(mnd);
+    var tekst = 'Solgt for ' + fmtBelop(belop || 0) + '. Ny kontakt om ' + mnd + ' mnd.';
+    if (notat) tekst += ' — ' + notat;
+    k.notater.unshift({ id: uid(), dato: new Date().toISOString(), tekst: tekst });
+    k.oppdatert = new Date().toISOString();
+    save();
+  }
+
+  function slettSalg(kundeId, salgId) {
+    var k = kunder.filter(function (x) { return x.id === kundeId; })[0];
+    if (!k) return;
+    k.salg = (k.salg || []).filter(function (s) { return s.id !== salgId; });
+    save();
+  }
+
+  function alleSalg() {
+    var list = [];
+    kunder.forEach(function (k) {
+      (k.salg || []).forEach(function (s) {
+        list.push({ salgId: s.id, kundeId: k.id, navn: k.firma || k.kontaktperson || 'Uten navn', belop: s.belop || 0, dato: s.dato || '' });
+      });
+    });
+    list.sort(function (a, b) { return b.dato.localeCompare(a.dato); });
+    return list;
+  }
+
+  function sumSalg(k) {
+    return (k.salg || []).reduce(function (s, x) { return s + (x.belop || 0); }, 0);
+  }
+
   function loggUtfall(id, status, nesteDato, notat) {
     var neste = nesteDato || '';
     if (!neste && status === 'ingen_svar') neste = addDaysStr(1);
@@ -979,21 +1040,31 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
 
   function dagensStats() {
     var today = todayStr();
-    var samtaler = 0, solgt = 0, nye = 0;
+    var samtaler = 0, solgtKr = 0, solgtAntall = 0, nye = 0;
     kunder.forEach(function (k) {
       k.notater.forEach(function (n) { if (n.dato && n.dato.slice(0, 10) === today) samtaler++; });
-      if (k.status === 'solgt' && (k.oppdatert || '').slice(0, 10) === today) solgt++;
+      (k.salg || []).forEach(function (s) { if (s.dato === today) { solgtKr += s.belop || 0; solgtAntall++; } });
       if ((k.opprettet || '').slice(0, 10) === today) nye++;
     });
-    return { samtaler: samtaler, solgt: solgt, nye: nye };
+    return { samtaler: samtaler, solgtKr: solgtKr, solgtAntall: solgtAntall, nye: nye };
   }
 
   function hurtigUtfallHtml(k, context) {
     var ctx = context || 'detail';
     var html = '<div class="panel"><h2 class="panel-title">Hvordan gikk samtalen?</h2>';
     html += '<textarea id="utfall-notat" rows="2" placeholder="Notat fra samtalen (valgfritt) …"></textarea>';
+    if (state.visSalg) {
+      html += '<div class="salg-panel">';
+      html += '<label>Beløp (kr)<input id="salg-belop" type="number" inputmode="numeric" min="0" placeholder="F.eks. 5000"></label>';
+      html += '<div class="when-chips"><span style="font-size:12px;color:var(--ink-muted);font-weight:600;flex-basis:100%;">Når ringer vi kunden igjen? (neste budsjettperiode)</span>';
+      html += '<button type="button" class="chip' + (state.salgMnd === 6 ? ' chip-active' : '') + '" data-action="salg-mnd" data-mnd="6">Om 6 mnd</button>';
+      html += '<button type="button" class="chip' + (state.salgMnd === 12 ? ' chip-active' : '') + '" data-action="salg-mnd" data-mnd="12">Om 12 mnd</button>';
+      html += '</div>';
+      html += '<button type="button" class="btn btn-primary" style="background:var(--st-won);" data-action="lagre-salg" data-id="' + esc(k.id) + '" data-context="' + ctx + '">Lagre salg 🎉</button>';
+      html += '</div>';
+    }
     html += '<div class="outcome-grid">';
-    html += '<button type="button" class="outcome-btn outcome-solgt" data-action="utfall" data-id="' + esc(k.id) + '" data-status="solgt" data-context="' + ctx + '">🎉 Solgt!</button>';
+    html += '<button type="button" class="outcome-btn outcome-solgt" data-action="vis-salg">🎉 Solgt!</button>';
     html += '<button type="button" class="outcome-btn" style="color:var(--st-callback);border-color:var(--st-callback);" data-action="vis-ring-tilbake">📅 Ring tilbake</button>';
     html += '<button type="button" class="outcome-btn" style="color:var(--st-noanswer);border-color:var(--st-noanswer);" data-action="utfall" data-id="' + esc(k.id) + '" data-status="ingen_svar" data-context="' + ctx + '">📵 Ingen svar</button>';
     html += '<button type="button" class="outcome-btn" style="color:var(--st-no);" data-action="utfall" data-id="' + esc(k.id) + '" data-status="ikke_interessert" data-context="' + ctx + '">Ikke interessert</button>';
@@ -1049,7 +1120,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     if (!queue.length || i >= queue.length || !k) {
       var s = dagensStats();
       html += '<div class="empty-state"><div style="font-size:44px;">🎉</div><p style="font-weight:600;font-size:17px;margin:8px 0 0;">Lista er ferdigringt!</p>';
-      html += '<p class="empty-sub">I dag: ' + s.samtaler + ' samtaler · ' + s.solgt + ' solgt · ' + s.nye + ' nye kunder</p></div>';
+      html += '<p class="empty-sub">I dag: ' + s.samtaler + ' samtaler · ' + esc(fmtBelop(s.solgtKr)) + ' solgt (' + s.solgtAntall + ') · ' + s.nye + ' nye kunder</p></div>';
       html += '<button type="button" class="btn btn-primary big-start" data-action="fyll-og-fortsett">📞 Hent 10 nye og fortsett</button>';
       html += '<button type="button" class="btn btn-secondary" data-action="nav" data-view="dashboard">Til forsiden</button>';
       html += '</div>';
@@ -1067,6 +1138,9 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     var kOrg = k.organisasjonId ? orgById(k.organisasjonId) : null;
     if (kOrg) html += '<div class="org-tag">' + esc(kOrg.navn) + '</div>';
     if (k.adresse) html += '<div class="card-sub">' + esc(k.adresse) + '</div>';
+    if (k.salg && k.salg.length) {
+      html += '<div class="card-sub" style="color:var(--st-won);font-weight:600;">💰 Eksisterende kunde — kjøpt ' + k.salg.length + ' gang' + (k.salg.length > 1 ? 'er' : '') + ' for totalt ' + esc(fmtBelop(sumSalg(k))) + '</div>';
+    }
     if (k.notater[0]) html += '<div class="card-note">Sist: ' + esc(truncate(k.notater[0].tekst, 100)) + '</div>';
     html += researchLinksHtml(navn);
     if (k.telefon) {
@@ -1107,7 +1181,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     }
     html += '<div class="panel" style="margin-top:14px;"><h2 class="panel-title">Dagens innsats</h2><div class="stats-grid">';
     html += '<div class="stat"><div class="stat-num">' + s.samtaler + '</div><div class="stat-label">Samtaler</div></div>';
-    html += '<div class="stat"><div class="stat-num" style="color:var(--st-won);">' + s.solgt + '</div><div class="stat-label">Solgt i dag</div></div>';
+    html += '<div class="stat"><div class="stat-num" style="color:var(--st-won);">' + esc(fmtKort(s.solgtKr)) + '</div><div class="stat-label">Kr solgt i dag (' + s.solgtAntall + ')</div></div>';
     html += '<div class="stat"><div class="stat-num">' + s.nye + '</div><div class="stat-label">Nye kunder</div></div>';
     html += '</div></div>';
     if (!kunder.length) {
@@ -1125,6 +1199,90 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       html += dueToday.map(function (k) { return kundeCard(k, true); }).join('');
     }
     html += '</div>';
+    return html;
+  }
+
+  function salgChartHtml() {
+    var perDag = {};
+    for (var i = 13; i >= 0; i--) perDag[addDaysStr(-i)] = 0;
+    alleSalg().forEach(function (s) { if (perDag[s.dato] !== undefined) perDag[s.dato] += s.belop; });
+    var dager = Object.keys(perDag);
+    var max = 0;
+    dager.forEach(function (d) { if (perDag[d] > max) max = perDag[d]; });
+    if (!max) return '<p class="empty-sub" style="margin:0;">Ingen salg siste 14 dager ennå — de dukker opp her.</p>';
+    var today = todayStr();
+    var maxDag = dager.filter(function (d) { return perDag[d] === max; })[0];
+    return '<div class="chart-row">' + dager.map(function (d, idx) {
+      var sum = perDag[d];
+      var pct = max ? Math.round(sum / max * 100) : 0;
+      var visVerdi = (d === maxDag && sum > 0) || (d === today && sum > 0 && d !== maxDag);
+      var visLabel = idx === 0 || idx === 13 || d === today;
+      var lab = d === today ? 'I dag' : (parseInt(d.slice(8), 10) + '.' + parseInt(d.slice(5, 7), 10));
+      var bar = sum > 0
+        ? '<div class="chart-bar" style="height:' + Math.max(pct, 3) + '%"></div>'
+        : '<div class="chart-bar-zero"></div>';
+      return '<div class="chart-col" title="' + esc(formatDateShort(d)) + ': ' + esc(fmtBelop(sum)) + '">' +
+        '<div class="chart-val">' + (visVerdi ? esc(fmtKort(sum)) : '') + '</div>' +
+        '<div class="chart-barwrap">' + bar + '</div>' +
+        '<div class="chart-lab">' + (visLabel ? esc(lab) : '') + '</div>' +
+        '</div>';
+    }).join('') + '</div>';
+  }
+
+  function renderSalgView() {
+    var salg = alleSalg();
+    var total = salg.reduce(function (s, x) { return s + x.belop; }, 0);
+    var ukeGrense = addDaysStr(-6);
+    var mndPrefix = todayStr().slice(0, 7);
+    var uke = 0, mnd = 0;
+    salg.forEach(function (s) {
+      if (s.dato >= ukeGrense) uke += s.belop;
+      if (s.dato.slice(0, 7) === mndPrefix) mnd += s.belop;
+    });
+    var snitt = salg.length ? Math.round(total / salg.length) : 0;
+    var salgsKunder = kunder.filter(function (k) { return (k.salg || []).length > 0; });
+
+    var html = '<div class="view view-salg"><h1 class="view-title">Salg</h1>';
+    html += '<div class="hero" style="padding:10px 0 14px;"><div class="hero-number" style="font-size:40px;">' + esc(fmtBelop(total)) + '</div><div class="hero-label">solgt totalt · ' + salg.length + ' salg til ' + salgsKunder.length + ' kunder</div></div>';
+
+    html += '<div class="panel"><div class="stats-grid">';
+    html += '<div class="stat"><div class="stat-num">' + esc(fmtKort(uke)) + '</div><div class="stat-label">Kr siste 7 dager</div></div>';
+    html += '<div class="stat"><div class="stat-num">' + esc(fmtKort(mnd)) + '</div><div class="stat-label">Kr denne måneden</div></div>';
+    html += '<div class="stat"><div class="stat-num">' + esc(fmtKort(snitt)) + '</div><div class="stat-label">Snitt per salg</div></div>';
+    html += '</div></div>';
+
+    html += '<div class="panel"><h2 class="panel-title">Salg siste 14 dager (kr)</h2>' + salgChartHtml() + '</div>';
+
+    html += '<div class="panel"><h2 class="panel-title">Dine kunder — gjensalg</h2>';
+    html += '<p class="empty-sub" style="margin:0 0 8px;">Alle som har kjøpt. De ringes automatisk opp igjen når datoen kommer.</p>';
+    if (salgsKunder.length) {
+      var sortert = salgsKunder.slice().sort(function (a, b) {
+        return (a.nesteOppfolging || '9999').localeCompare(b.nesteOppfolging || '9999');
+      });
+      html += sortert.map(function (k) {
+        return '<div class="salg-entry" data-action="open-detail" data-id="' + esc(k.id) + '" style="cursor:pointer;">' +
+          '<div style="min-width:0;"><div style="font-weight:600;">' + esc(k.firma || k.kontaktperson || 'Uten navn') + '</div>' +
+          '<div style="font-size:12px;color:var(--ink-muted);">' + (k.salg.length) + ' kjøp' + (k.nesteOppfolging ? ' · ringes ' + esc(formatDateShort(k.nesteOppfolging)) : '') + '</div></div>' +
+          '<span class="salg-belop" style="color:var(--st-won);">' + esc(fmtBelop(sumSalg(k))) + '</span></div>';
+      }).join('');
+    } else {
+      html += '<p class="empty-sub">Ingen kunder ennå — de kommer når du trykker 🎉 Solgt!</p>';
+    }
+    html += '</div>';
+
+    html += '<div class="panel"><h2 class="panel-title">Salgslogg</h2>';
+    if (salg.length) {
+      html += salg.map(function (s) {
+        return '<div class="salg-entry">' +
+          '<div style="min-width:0;"><div style="font-weight:600;">' + esc(s.navn) + '</div>' +
+          '<div style="font-size:12px;color:var(--ink-muted);">' + esc(formatDateShort(s.dato)) + ' (' + esc(s.dato) + ')</div></div>' +
+          '<div style="display:flex;align-items:center;gap:10px;"><span class="salg-belop">' + esc(fmtBelop(s.belop)) + '</span>' +
+          '<button type="button" class="innvending-del" style="padding:0;" data-action="slett-salg" data-id="' + esc(s.salgId) + '" data-kunde="' + esc(s.kundeId) + '">Fjern</button></div></div>';
+      }).join('');
+    } else {
+      html += '<p class="empty-sub">Hvert salg logges her med dato og beløp.</p>';
+    }
+    html += '</div></div>';
     return html;
   }
 
@@ -1184,6 +1342,16 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     html += researchLinksHtml(k.firma || k.kontaktperson || '');
 
     html += firmainfoBoxHtml(k);
+
+    if (k.salg && k.salg.length) {
+      html += '<div class="panel"><h2 class="panel-title">💰 Kunde — kjøpshistorikk</h2>';
+      html += k.salg.slice().reverse().map(function (s) {
+        return '<div class="salg-entry"><span>' + esc(formatDateShort(s.dato)) + ' (' + esc(s.dato) + ')</span><span class="salg-belop" style="color:var(--st-won);">' + esc(fmtBelop(s.belop)) + '</span></div>';
+      }).join('');
+      html += '<div class="salg-entry" style="border-top:2px solid var(--border);"><strong>Totalt</strong><span class="salg-belop">' + esc(fmtBelop(sumSalg(k))) + '</span></div>';
+      if (k.nesteOppfolging) html += '<p class="empty-sub" style="margin-top:8px;">Neste kontakt: ' + esc(formatDateShort(k.nesteOppfolging)) + ' — dukker automatisk opp i ringekøen.</p>';
+      html += '</div>';
+    }
 
     html += hurtigUtfallHtml(k, 'detail');
 
@@ -1367,7 +1535,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   }
 
   function renderNav() {
-    var tabs = [{ view: 'dashboard', label: 'I dag' }, { view: 'list', label: 'Kunder' }, { view: 'add', label: 'Ny' }, { view: 'org', label: 'Org' }, { view: 'tools', label: 'Verktøy' }];
+    var tabs = [{ view: 'dashboard', label: 'I dag' }, { view: 'salg', label: 'Salg' }, { view: 'list', label: 'Kunder' }, { view: 'add', label: 'Ny' }, { view: 'org', label: 'Org' }, { view: 'tools', label: 'Verktøy' }];
     return '<nav class="bottomnav">' + tabs.map(function (t) { var active = state.view === t.view || (t.view === 'org' && state.view === 'orgDetail'); return '<button type="button" class="navtab ' + (active ? 'navtab-active' : '') + '" data-action="nav" data-view="' + t.view + '">' + t.label + '</button>'; }).join('') + '</nav>';
   }
 
@@ -1375,6 +1543,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     var app = document.getElementById('app');
     var html = renderHeader();
     if (state.view === 'dashboard') html += renderDashboard();
+    else if (state.view === 'salg') html += renderSalgView();
     else if (state.view === 'ringe') html += renderRingeView();
     else if (state.view === 'list') html += renderListView();
     else if (state.view === 'detail') html += renderDetailView(state.selectedId);
@@ -1449,6 +1618,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       state.view = el.dataset.view; state.selectedId = null; state.selectedOrgId = null; state.importPreview = null;
       state.search = ''; state.filter = 'all'; state.orgFilter = '';
       state.visRingTilbake = false; state.visSkatt = false; state.ringeTips = null;
+      state.visSalg = false; state.salgMnd = 12;
       render();
     } else if (action === 'start-ringemodus') {
       state.ringeQueue = byggRingeliste(); state.ringeIndex = 0; state.ringeTips = null;
@@ -1459,13 +1629,32 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       var nesteDato = whenDays !== undefined ? addDaysStr(parseInt(whenDays, 10)) : '';
       var noteEl = document.getElementById('utfall-notat');
       loggUtfall(id, el.dataset.status, nesteDato, noteEl ? noteEl.value.trim() : '');
-      state.visRingTilbake = false;
+      state.visRingTilbake = false; state.visSalg = false;
       if (el.dataset.context === 'ringe') { state.ringeIndex++; state.ringeTips = null; state.visSkatt = false; render(); window.scrollTo(0, 0); }
       else { render(); }
     } else if (action === 'vis-ring-tilbake') {
-      state.visRingTilbake = !state.visRingTilbake; render();
+      state.visRingTilbake = !state.visRingTilbake; state.visSalg = false; render();
+    } else if (action === 'vis-salg') {
+      state.visSalg = !state.visSalg; state.visRingTilbake = false; render();
+      var belopInput = document.getElementById('salg-belop');
+      if (belopInput) belopInput.focus();
+    } else if (action === 'salg-mnd') {
+      state.salgMnd = parseInt(el.dataset.mnd, 10) || 12;
+      document.querySelectorAll('[data-action="salg-mnd"]').forEach(function (c) {
+        c.classList.toggle('chip-active', c === el);
+      });
+    } else if (action === 'lagre-salg') {
+      var belopEl = document.getElementById('salg-belop');
+      var belop = belopEl ? Number(belopEl.value) || 0 : 0;
+      var salgNotatEl = document.getElementById('utfall-notat');
+      registrerSalg(el.dataset.id, belop, state.salgMnd || 12, salgNotatEl ? salgNotatEl.value.trim() : '');
+      state.visSalg = false; state.salgMnd = 12; state.visRingTilbake = false;
+      if (el.dataset.context === 'ringe') { state.ringeIndex++; state.ringeTips = null; render(); window.scrollTo(0, 0); }
+      else { render(); }
+    } else if (action === 'slett-salg') {
+      if (confirm('Fjerne dette salget fra loggen?')) { slettSalg(el.dataset.kunde, id); render(); }
     } else if (action === 'hopp-over') {
-      state.ringeIndex++; state.ringeTips = null; state.visRingTilbake = false; state.visSkatt = false; render(); window.scrollTo(0, 0);
+      state.ringeIndex++; state.ringeTips = null; state.visRingTilbake = false; state.visSkatt = false; state.visSalg = false; render(); window.scrollTo(0, 0);
     } else if (action === 'ringe-nytt-tips') {
       var qId = (state.ringeQueue || [])[state.ringeIndex];
       var qK = kunder.filter(function (x) { return x.id === qId; })[0];
