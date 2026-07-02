@@ -318,11 +318,19 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   var state = { view: 'dashboard', selectedId: null, selectedOrgId: null, search: '', filter: 'all', orgFilter: '', eierFilter: '', salgVisning: 'mine', importPreview: null, brregResults: [], ringeQueue: [], ringeIndex: 0, ringeTips: null, visRingTilbake: false, visSkatt: false, tipsKategori: 'salg', pendingEnhet: null, visSalg: false, salgMnd: 12, sisteUtfall: null };
 
   // ---------- Storage ----------
+  // Kunder kan komme fra eldre versjoner eller andres enheter via skyen —
+  // sørg for at feltene koden regner med alltid finnes.
+  function normaliserKunde(k) {
+    if (k && !Array.isArray(k.notater)) k.notater = [];
+    return k;
+  }
   function load() {
     try {
       var raw = localStorage.getItem(STORAGE_KEY);
       kunder = raw ? JSON.parse(raw) : [];
     } catch (e) { kunder = []; }
+    if (!Array.isArray(kunder)) kunder = [];
+    kunder.forEach(normaliserKunde);
   }
   function save() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(kunder)); }
@@ -404,29 +412,39 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   // ringekø reserveres pool-kundene (reservertAv) så andre ikke får dem.
   // Salg eller oppfølgingsdato gjør kunden til selgerens egen; andre utfall
   // slipper kunden tilbake i poolen.
+  var RESERVASJON_MINUTTER = 30;
+  function reservasjonUtlopt(k) {
+    return !!(k.reservertTil && new Date(k.reservertTil).getTime() < Date.now());
+  }
   function tilgjengeligFor(k, selgerId) {
     if (k.eierId && k.eierId !== selgerId) return false;
-    if (k.reservertAv && k.reservertAv !== selgerId) return false;
+    if (k.reservertAv && k.reservertAv !== selgerId && !reservasjonUtlopt(k)) return false;
     return true;
   }
+  // Merk: reservasjon/frigivelse bumper bevisst IKKE kundens oppdatert-felt.
+  // Server-lagringen (lagre_kunder) lar raden med nyest/likt tidsstempel
+  // vinne — dermed går en frigivelse av egen reservasjon gjennom (likt
+  // tidsstempel), mens en treg klient taper mot en nyere RPC-reservasjon.
   function reserverKo() {
     if (!aktivSelgerId) return;
+    var til = new Date(Date.now() + RESERVASJON_MINUTTER * 60000).toISOString();
     var changed = false;
     (state.ringeQueue || []).forEach(function (id) {
       var k = kunder.filter(function (x) { return x.id === id; })[0];
-      if (k && !k.eierId && k.reservertAv !== aktivSelgerId) { k.reservertAv = aktivSelgerId; changed = true; }
+      if (k && !k.eierId && (k.reservertAv !== aktivSelgerId || !k.reservertTil)) { k.reservertAv = aktivSelgerId; k.reservertTil = til; changed = true; }
     });
     if (changed) save();
   }
   function frigiReservasjoner(selgerId) {
     var changed = false;
     kunder.forEach(function (k) {
-      if (k.reservertAv && (!selgerId || k.reservertAv === selgerId)) { k.reservertAv = null; changed = true; }
+      if (k.reservertAv && (!selgerId || k.reservertAv === selgerId)) { k.reservertAv = null; k.reservertTil = null; changed = true; }
     });
     if (changed) save();
   }
   function oppdaterEierEtterUtfall(k, status) {
     k.reservertAv = null;
+    k.reservertTil = null;
     if (status === 'solgt' || status === 'ring_tilbake') {
       if (aktivSelgerId && (!k.eierId || k.eierId === aktivSelgerId)) k.eierId = aktivSelgerId;
     } else if (!(k.salg || []).length) {
@@ -467,6 +485,26 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       });
   }
 
+  function skyRpc(navn, body) {
+    return skyFetch('rpc/' + navn, { method: 'POST', body: body });
+  }
+
+  // Tar imot rader fra en RPC (autoritative — allerede skrevet i databasen)
+  // og legger dem rett inn lokalt uten LWW-sammenligning.
+  function skyTaImotRader(rader) {
+    if (!rader || !rader.length) return;
+    if (!sky.snapshot) sky.snapshot = { kunder: {}, selgere: {} };
+    rader.forEach(function (rad) {
+      if (rad.slettet) return;
+      normaliserKunde(rad.data);
+      var lokal = kunder.filter(function (x) { return x.id === rad.id; })[0];
+      if (lokal) kunder[kunder.indexOf(lokal)] = rad.data;
+      else kunder.unshift(rad.data);
+      sky.snapshot.kunder[rad.id] = stabilJson(rad.data);
+    });
+    save();
+  }
+
   function skyMergeKunde(rad) {
     var lokal = kunder.filter(function (x) { return x.id === rad.id; })[0];
     if (rad.slettet) {
@@ -474,7 +512,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       if (lokal) { kunder = kunder.filter(function (x) { return x.id !== rad.id; }); return true; }
       return false;
     }
-    var fjern = rad.data;
+    var fjern = normaliserKunde(rad.data);
     if (!lokal) {
       kunder.unshift(fjern);
       sky.snapshot.kunder[rad.id] = stabilJson(fjern);
@@ -572,9 +610,16 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     var rader = skyDiffRader();
     if (!rader.kunder.length && !rader.selgere.length) return;
     sky.pusher = true;
+    // Lagrer via RPC med server-side konfliktvern (nyeste oppdatert vinner);
+    // faller tilbake til vanlig upsert hvis databasen mangler funksjonen.
+    function lagreRader(tabell, liste) {
+      return skyRpc('lagre_' + tabell, { p_rader: liste }).catch(function () {
+        return skyFetch(tabell + '?on_conflict=id', { method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal', body: liste });
+      });
+    }
     var jobber = [];
-    if (rader.kunder.length) jobber.push(skyFetch('kunder?on_conflict=id', { method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal', body: rader.kunder }));
-    if (rader.selgere.length) jobber.push(skyFetch('selgere?on_conflict=id', { method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal', body: rader.selgere }));
+    if (rader.kunder.length) jobber.push(lagreRader('kunder', rader.kunder));
+    if (rader.selgere.length) jobber.push(lagreRader('selgere', rader.selgere));
     Promise.all(jobber).then(function () {
       rader.kunder.forEach(function (r) {
         if (r.slettet) delete sky.snapshot.kunder[r.id];
@@ -698,9 +743,9 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   function proffUrl(navn) { return 'https://www.proff.no/bransjes%C3%B8k?q=' + encodeURIComponent(navn || ''); }
 
   // ---------- CRUD ----------
-  function addKunde(data) {
+  function nyKundeObjekt(data) {
     var now = new Date().toISOString();
-    var k = {
+    return {
       id: uid(),
       firma: data.firma || '',
       kontaktperson: data.kontaktperson || '',
@@ -715,11 +760,15 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       firmainfo: data.firmainfo || null,
       eierId: data.eierId || null,
       reservertAv: null,
+      reservertTil: null,
       opprettetAv: aktivSelgerId,
       notater: data.notater || [],
       opprettet: now,
       oppdatert: now
     };
+  }
+  function addKunde(data) {
+    var k = nyKundeObjekt(data);
     kunder.unshift(k);
     save();
     return k;
@@ -911,13 +960,21 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     if (btnEl) { btnEl.disabled = true; btnEl.textContent = 'Henter firmaer …'; }
     saveGenPrefs({ orgId: orgId || '', sted: sted || '', bransje: bransjeKode || '' });
     hentFlereFirmaer(sted, bransjeKode, 10, function (enheter) {
-      enheter.forEach(function (e) {
-        addKunde({ firma: e.navn || '', orgnr: e.organisasjonsnummer || '', adresse: adresseStr(e), telefon: e.telefon || '', kilde: 'ny', organisasjonId: orgId || null, status: 'ikke_kontaktet', firmainfo: firmainfoFraEnhet(e, false) });
+      var kandidater = enheter.map(function (e) {
+        return nyKundeObjekt({ firma: e.navn || '', orgnr: e.organisasjonsnummer || '', adresse: adresseStr(e), telefon: e.telefon || '', kilde: 'ny', organisasjonId: orgId || null, status: 'ikke_kontaktet', firmainfo: firmainfoFraEnhet(e, false) });
       });
-      state.ringeQueue = byggRingeliste(); state.ringeIndex = 0; state.ringeTips = null;
-      state.visRingTilbake = false; state.visSkatt = false;
-      reserverKo();
-      state.view = 'ringe'; render(); window.scrollTo(0, 0);
+      if (skyAktiv()) {
+        // Sentral duplikatkontroll: databasen hopper over org.nr teamet
+        // allerede har, og reserverer resten til denne selgeren.
+        skyRpc('importer_firmaer', { p_team: sky.teamkode, p_selger: aktivSelgerId, p_firmaer: kandidater })
+          .then(function (rader) { skyTaImotRader(rader || []); })
+          .catch(function () { kandidater.forEach(function (k) { kunder.unshift(k); }); save(); })
+          .then(function () { startRingemodus(); });
+      } else {
+        kandidater.forEach(function (k) { kunder.unshift(k); });
+        save();
+        startRingemodus();
+      }
     }, function (msg) {
       alert(msg);
       if (btnEl) { btnEl.disabled = false; btnEl.textContent = 'Hent 10 nye firmaer'; }
@@ -1211,6 +1268,39 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     return overdue.concat(dueToday, fresh, noAnswer).map(function (k) { return k.id; });
   }
 
+  // Starter ringemodus. Med sky aktiv reserveres pool-kundene atomisk i
+  // databasen (reserver_pool-RPC med radlåsing), så to selgere som trykker
+  // samtidig aldri får de samme kundene. Uten nett faller vi tilbake til
+  // lokal kø som før.
+  function startRingemodus() {
+    state.ringeIndex = 0; state.ringeTips = null; state.sisteUtfall = null;
+    state.visRingTilbake = false; state.visSkatt = false; state.visSalg = false;
+    function visKo() { state.view = 'ringe'; render(); window.scrollTo(0, 0); }
+    if (skyAktiv()) {
+      skyPush();
+      var egne = byggRingeliste().filter(function (id) {
+        var k = kunder.filter(function (x) { return x.id === id; })[0];
+        return k && k.eierId === aktivSelgerId;
+      });
+      skyRpc('reserver_pool', { p_team: sky.teamkode, p_selger: aktivSelgerId, p_antall: 10, p_idag: todayStr() })
+        .then(function (rader) {
+          skyTaImotRader(rader || []);
+          var poolIds = (rader || []).map(function (r) { return r.id; }).filter(function (id) { return egne.indexOf(id) === -1; });
+          state.ringeQueue = egne.concat(poolIds);
+          visKo();
+        })
+        .catch(function () {
+          state.ringeQueue = byggRingeliste();
+          reserverKo();
+          visKo();
+        });
+    } else {
+      state.ringeQueue = byggRingeliste();
+      reserverKo();
+      visKo();
+    }
+  }
+
   function registrerSalg(id, belop, mnd, notat) {
     var k = kunder.filter(function (x) { return x.id === id; })[0];
     if (!k) return;
@@ -1260,6 +1350,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       kilde: k.kilde,
       eierId: k.eierId || null,
       reservertAv: k.reservertAv || null,
+      reservertTil: k.reservertTil || null,
       notater: k.notater.length,
       salg: (k.salg || []).length
     };
@@ -1937,10 +2028,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       state.visSalg = false; state.salgMnd = 12; state.sisteUtfall = null;
       render();
     } else if (action === 'start-ringemodus') {
-      state.ringeQueue = byggRingeliste(); state.ringeIndex = 0; state.ringeTips = null;
-      state.visRingTilbake = false; state.visSkatt = false; state.sisteUtfall = null;
-      reserverKo();
-      state.view = 'ringe'; render(); window.scrollTo(0, 0);
+      startRingemodus();
     } else if (action === 'bytt-selger') {
       frigiReservasjoner(aktivSelgerId);
       setAktivSelger(id);
@@ -2002,7 +2090,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     } else if (action === 'hopp-over') {
       var skipId = (state.ringeQueue || [])[state.ringeIndex];
       var skipK = kunder.filter(function (x) { return x.id === skipId; })[0];
-      if (skipK && skipK.reservertAv) { skipK.reservertAv = null; save(); }
+      if (skipK && skipK.reservertAv) { skipK.reservertAv = null; skipK.reservertTil = null; save(); }
       state.ringeIndex++; state.ringeTips = null; state.visRingTilbake = false; state.visSkatt = false; state.visSalg = false; render(); window.scrollTo(0, 0);
     } else if (action === 'ringe-nytt-tips') {
       var qId = (state.ringeQueue || [])[state.ringeIndex];
@@ -2062,6 +2150,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
           angreK.kilde = su.kilde;
           angreK.eierId = su.eierId;
           angreK.reservertAv = su.reservertAv;
+          angreK.reservertTil = su.reservertTil;
           if (angreK.notater.length > su.notater) angreK.notater = angreK.notater.slice(angreK.notater.length - su.notater);
           if ((angreK.salg || []).length > su.salg) angreK.salg = angreK.salg.slice(0, su.salg);
           angreK.oppdatert = new Date().toISOString();
@@ -2223,7 +2312,10 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   loadSkatteTips();
   loadMaal();
   loadSelgere();
-  frigiReservasjoner(null); // køen overlever ikke en omlasting — slipp gamle reservasjoner tilbake i poolen
+  // Køen overlever ikke en omlasting — slipp denne selgerens egne
+  // reservasjoner. Andres reservasjoner røres ikke (de kan være aktive på
+  // andre telefoner); de utløper uansett via reservertTil.
+  if (aktivSelgerId) frigiReservasjoner(aktivSelgerId);
   try { sky.teamkode = (localStorage.getItem(TEAM_STORAGE_KEY) || '').trim().toLowerCase(); } catch (e) { sky.teamkode = ''; }
   document.addEventListener('visibilitychange', function () {
     if (!document.hidden && skyAktiv()) skyPull(false).then(function (endret) { if (endret) skyForsiktigRender(); });
