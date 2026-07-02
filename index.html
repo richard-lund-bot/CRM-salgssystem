@@ -199,14 +199,94 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       { id: uid(), innvending: 'Spør om de støtter noe fra før', tips: '"Støtter dere allerede noen frivillige organisasjoner?" Svaret gir deg en inngang uansett hva de sier — og viser at du er interessert i dem, ikke bare i salget.' },
       { id: uid(), innvending: 'Avslutt alltid med neste steg', tips: 'Ikke avslutt uten et konkret neste steg: dato for tilbakering, e-post du sender, eller bekreftelse. "Kan jeg ringe deg igjen fredag kl. 10?" er mye sterkere enn "ok, tenk på det".' },
       { id: uid(), innvending: 'Bruk "vi" ikke "jeg"', tips: 'Si "vi jobber med" heller enn "jeg selger". Det signaliserer at du representerer noe større enn deg selv, og gir mer troverdighet i en kald samtale.' },
-      { id: uid(), innvending: 'Tilpass åpningen til bransjen', tips: 'En bilverksted-eier tenker HMS og ansvarlig arbeidsliv — koble [org] til det. En restaurant-eier tenker lokalsamfunn og omdømme. Bruk "Anbefalte bransjer" under Org for konkrete innspill.' }
+      { id: uid(), innvending: 'Tilpass åpningen til bransjen', tips: 'En bilverksted-eier tenker HMS og ansvarlig arbeidsliv — koble [org] til det. En restaurant-eier tenker lokalsamfunn og omdømme. Bruk "Anbefalte bransjer" under Org for konkrete innspill.' },
+      { id: uid(), innvending: 'Smil når du ringer', tips: 'Det høres faktisk i stemmen. Stå gjerne oppreist eller gå litt rundt — det gir mer energi og trygghet i stemmen enn å sitte sammensunket.' },
+      { id: uid(), innvending: 'Still spørsmål, ikke hold monolog', tips: 'Den som stiller spørsmål styrer samtalen. La kunden snakke om bedriften sin — folk sier ja til folk som er interessert i dem.' },
+      { id: uid(), innvending: 'Ring på riktig tidspunkt', tips: 'Småbedrifter tar oftest telefonen kl. 9–11 og 13–15. Unngå mandag morgen og fredag ettermiddag. Bruk dødtiden til å fylle lista med nye firmaer.' },
+      { id: uid(), innvending: 'Bekreft avtalen med en gang', tips: 'Fikk du et ja? Send bekreftelse og faktura samme dag, mens avtalen er fersk. Ventetid gir rom for ombestemmelse.' }
     ];
+  }
+
+  var SKATT_STORAGE_KEY = 'ringeliste_skattetips_v1';
+  var skatteTips = [];
+  function defaultSkatteTips() {
+    return [
+      { id: uid(), innvending: 'Hovedregelen — fullt fradrag', tips: 'Si til kunden: «Dette føres som vanlig markedsføringskostnad og er fullt fradragsberettiget — det er en annonse, ikke en gave.» (Skatteloven § 6-1, ingen øvre grense så lenge prisen er rimelig.)' },
+      { id: uid(), innvending: 'Ikke gave — gavegrensen gjelder ikke', tips: 'Gaver til frivillige organisasjoner har en fradragsgrense på 25 000 kr/år (sktl. § 6-50). Men en støtteannonse med reell annonseplass er reklame — den grensen gjelder ikke her. Hele beløpet kan føres.' },
+      { id: uid(), innvending: 'Slik føres det i regnskapet', tips: 'Be kunden gi beskjed til regnskapsføreren sin: dette føres som markedsføring/reklamekostnad, ikke som gave. Da går fradraget helt av seg selv.' },
+      { id: uid(), innvending: 'Kjøp før nyttår-argumentet', tips: 'Kostnaden reduserer årets skattepliktige resultat. Mot slutten av året: «Kjøper dere nå, får dere fradraget allerede i årets regnskap.» Sterkt argument i november/desember.' },
+      { id: uid(), innvending: 'Gjelder alle selskapsformer', tips: 'AS, enkeltpersonforetak og DA — alle får fradrag for markedsføringskostnader. Ingen kunde er «for liten» til at dette lønner seg.' },
+      { id: uid(), innvending: 'Ved store beløp — vis ro', tips: 'Spør kunden om mye? Anbefal dem å dobbeltsjekke med regnskapsføreren sin. Det koster deg ingenting, viser seriøsitet, og senker terskelen for et ja.' }
+    ];
+  }
+  function loadSkatteTips() {
+    try {
+      var raw = localStorage.getItem(SKATT_STORAGE_KEY);
+      if (raw) { skatteTips = JSON.parse(raw); }
+      else { skatteTips = defaultSkatteTips(); saveSkatteTips(); }
+    } catch (e) { skatteTips = defaultSkatteTips(); }
+  }
+  function saveSkatteTips() {
+    try { localStorage.setItem(SKATT_STORAGE_KEY, JSON.stringify(skatteTips)); } catch (e) {}
+  }
+  function addSkatteTips(tittel, tekst) {
+    skatteTips.push({ id: uid(), innvending: tittel, tips: tekst });
+    saveSkatteTips();
+  }
+  function deleteSkatteTips(id) {
+    skatteTips = skatteTips.filter(function (i) { return i.id !== id; });
+    saveSkatteTips();
+  }
+
+  function defaultOrgFakta(orgId) {
+    var fakta = {
+      'org-naaf': [
+        { tittel: '1,5 millioner rammet', tekst: 'Rundt 1,5 millioner nordmenn lever med astma, allergi, eksem eller kols — og andelen barn med allergi og astma øker. Nesten alle kunder kjenner noen som er rammet.' },
+        { tittel: 'Pollenvarslingen', tekst: 'NAAF driver den nasjonale pollenvarslingen som over en million nordmenn sjekker hver vår. Et konkret, kjent eksempel på hva pengene går til.' },
+        { tittel: 'Gratis rådgivning', tekst: 'NAAF har en gratis rådgivningstjeneste der familier får svar fra sykepleiere og fageksperter om astma, allergi og eksem.' },
+        { tittel: 'Lokal tilstedeværelse', tekst: 'NAAF har regionslag og lokallag over hele landet — støtten er også synlig lokalt der kunden driver sin bedrift.' }
+      ],
+      'org-blakors': [
+        { tittel: 'Barna det gjelder', tekst: 'Titusenvis av barn i Norge vokser opp i hjem med rusproblemer. Blå Kors driver blant annet Barnas Stasjon — et tilbud for sårbare småbarnsfamilier i flere byer.' },
+        { tittel: 'Hele løpet', tekst: 'Blå Kors jobber i alle ledd: forebygging blant unge, behandling på egne institusjoner, og oppfølging etterpå. Få organisasjoner dekker hele kjeden.' },
+        { tittel: 'Over 100 års erfaring', tekst: 'Grunnlagt i 1906 — en av Norges eldste og mest etablerte organisasjoner innen rusomsorg. Trygt og seriøst å støtte.' },
+        { tittel: 'Rammer flere enn den som drikker', tekst: 'Rus rammer familie, kolleger og arbeidsplasser. For en bedriftseier er dette også et arbeidsmiljø-argument.' }
+      ],
+      'org-rodekors': [
+        { tittel: 'Hjelpekorpset redder liv', tekst: 'Røde Kors Hjelpekorps rykker ut på leteaksjoner og redningsoppdrag over hele landet, hvert år — frivillige som stiller opp når noen ikke kommer hjem.' },
+        { tittel: 'Besøkstjenesten mot ensomhet', tekst: 'Frivillige besøker eldre og ensomme ukentlig. Et formål som treffer bredt — alle har en bestemor eller nabo dette angår.' },
+        { tittel: 'Lokalt til stede', tekst: 'Røde Kors har rundt 380 lokalforeninger — aktiviteten skjer i kundens eget nærmiljø, ikke bare nasjonalt.' },
+        { tittel: 'Først på stedet ved kriser', tekst: 'Ved flom, skred og ulykker er Røde Kors ofte først ute med hjelp. Beredskapen finansieres av nettopp slik støtte.' }
+      ]
+    };
+    return fakta[orgId] ? fakta[orgId].map(function (f) { return { id: uid(), tittel: f.tittel, tekst: f.tekst }; }) : [];
+  }
+  function addOrgFakta(orgId, tittel, tekst) {
+    var o = orgById(orgId);
+    if (!o) return;
+    o.fakta = o.fakta || [];
+    o.fakta.push({ id: uid(), tittel: tittel, tekst: tekst });
+    saveOrg();
+  }
+  function deleteOrgFakta(orgId, faktaId) {
+    var o = orgById(orgId);
+    if (!o) return;
+    o.fakta = (o.fakta || []).filter(function (f) { return f.id !== faktaId; });
+    saveOrg();
+  }
+  function mergeNyeSalgstips() {
+    var changed = false;
+    defaultGenerelleInnvendinger().forEach(function (d) {
+      var finnes = generelleInnvendinger.some(function (i) { return i.innvending === d.innvending; });
+      if (!finnes) { generelleInnvendinger.push(d); changed = true; }
+    });
+    if (changed) saveInnvendinger();
   }
 
   var organisasjoner = [];
   var generelleInnvendinger = [];
   var kunder = [];
-  var state = { view: 'dashboard', selectedId: null, selectedOrgId: null, search: '', filter: 'all', orgFilter: '', importPreview: null, brregResults: [], genFirma: null, genInnvending: null, visInnvending: false, ringeQueue: [], ringeIndex: 0, ringeTips: null, visRingTilbake: false, visSkatt: false };
+  var state = { view: 'dashboard', selectedId: null, selectedOrgId: null, search: '', filter: 'all', orgFilter: '', importPreview: null, brregResults: [], genFirma: null, genInnvending: null, visInnvending: false, ringeQueue: [], ringeIndex: 0, ringeTips: null, visRingTilbake: false, visSkatt: false, tipsKategori: 'salg' };
 
   // ---------- Storage ----------
   function load() {
@@ -225,6 +305,11 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       if (raw) { organisasjoner = JSON.parse(raw); }
       else { organisasjoner = defaultOrganisasjoner(); saveOrg(); }
     } catch (e) { organisasjoner = defaultOrganisasjoner(); }
+    var seeded = false;
+    organisasjoner.forEach(function (o) {
+      if (!o.fakta) { o.fakta = defaultOrgFakta(o.id); seeded = true; }
+    });
+    if (seeded) saveOrg();
   }
   function saveOrg() {
     try { localStorage.setItem(ORG_STORAGE_KEY, JSON.stringify(organisasjoner)); } catch (e) {}
@@ -629,7 +714,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
   }
   function exportJSON() {
-    var payload = { kunder: kunder, organisasjoner: organisasjoner, generelleInnvendinger: generelleInnvendinger, eksportert: new Date().toISOString() };
+    var payload = { kunder: kunder, organisasjoner: organisasjoner, generelleInnvendinger: generelleInnvendinger, skatteTips: skatteTips, eksportert: new Date().toISOString() };
     var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
     downloadBlob(blob, 'ringeliste-backup-' + todayStr() + '.json');
   }
@@ -664,6 +749,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
             kunder = nyeKunder; save();
             if (nyeOrg) { organisasjoner = nyeOrg; saveOrg(); }
             if (nyeInnv) { generelleInnvendinger = nyeInnv; saveInnvendinger(); }
+            if (data && Array.isArray(data.skatteTips)) { skatteTips = data.skatteTips; saveSkatteTips(); }
             render();
           }
         } catch (err) {
@@ -711,7 +797,59 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   }
 
   // ---------- Ringemodus ----------
-  var SKATT_KORT = 'Si til kunden: «Dette føres som vanlig markedsføringskostnad og er fullt fradragsberettiget — det er en annonse, ikke en gave.» (Skatteloven § 6-1, ingen øvre grense så lenge prisen er rimelig.)';
+  var TIPS_KATEGORIER = { salg: 'Salgsteknisk tips', skatt: 'Skattemessig tips', org: 'Organisasjonsinformasjon' };
+
+  function tipsPool(kat, orgId) {
+    var org = orgId ? orgById(orgId) : null;
+    if (kat === 'skatt') return skatteTips.slice();
+    if (kat === 'org') {
+      var pool = [];
+      if (org) {
+        if (org.kortBeskrivelse) pool.push({ innvending: 'Hva ' + org.navn + ' gjør', tips: org.kortBeskrivelse });
+        if (org.hvorfor) pool.push({ innvending: 'Derfor støtte ' + org.navn, tips: org.hvorfor });
+        (org.fakta || []).forEach(function (f) { pool.push({ innvending: f.tittel, tips: f.tekst }); });
+      }
+      return pool;
+    }
+    var p = generelleInnvendinger.slice();
+    if (org && org.innvendinger && org.innvendinger.length) p = p.concat(org.innvendinger);
+    return p;
+  }
+
+  function nyttTips(orgId) {
+    var pool = tipsPool(state.tipsKategori, orgId);
+    if (!pool.length) { state.ringeTips = null; return; }
+    var t = pool[Math.floor(Math.random() * pool.length)];
+    if (state.ringeTips && pool.length > 1) {
+      var guard = 0;
+      while (t.innvending === state.ringeTips.innvending && guard < 5) {
+        t = pool[Math.floor(Math.random() * pool.length)];
+        guard++;
+      }
+    }
+    state.ringeTips = t;
+  }
+
+  function tipsBoxHtml(orgId) {
+    var org = orgId ? orgById(orgId) : null;
+    var html = '<div class="reveal-box">';
+    html += '<div class="when-chips" style="margin:0 0 10px;">';
+    html += '<button type="button" class="chip ' + (state.tipsKategori === 'salg' ? 'chip-active' : '') + '" data-action="tips-kat" data-kat="salg">Salgsteknikk</button>';
+    html += '<button type="button" class="chip ' + (state.tipsKategori === 'skatt' ? 'chip-active' : '') + '" data-action="tips-kat" data-kat="skatt">Skatt</button>';
+    html += '<button type="button" class="chip ' + (state.tipsKategori === 'org' ? 'chip-active' : '') + '" data-action="tips-kat" data-kat="org">' + (org ? 'Om ' + esc(org.navn) : 'Om org') + '</button>';
+    html += '</div>';
+    html += '<div class="reveal-label">' + TIPS_KATEGORIER[state.tipsKategori] + '</div>';
+    if (state.ringeTips) {
+      html += '<div class="reveal-content"><p><strong>' + esc(state.ringeTips.innvending) + '</strong></p><p>' + esc(state.ringeTips.tips) + '</p></div>';
+      html += '<button type="button" class="btn btn-secondary" style="margin-top:8px;" data-action="ringe-nytt-tips">Nytt tips</button>';
+    } else if (state.tipsKategori === 'org') {
+      html += '<div class="reveal-content"><p>Ingen organisasjon er valgt for denne kunden. Sett organisasjon via kundekortet, eller legg til info under Org-fanen.</p></div>';
+    } else {
+      html += '<div class="reveal-content"><p>Ingen tips lagt til ennå — legg til under Org-fanen.</p></div>';
+    }
+    html += '</div>';
+    return html;
+  }
 
   function byggRingeliste() {
     var today = todayStr();
@@ -833,18 +971,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     }
     html += '</div>';
 
-    if (kOrg && kOrg.hvorfor) {
-      html += '<div class="reveal-box"><div class="reveal-label">Derfor støtte ' + esc(kOrg.navn) + '</div><div class="reveal-content"><p>' + esc(kOrg.hvorfor) + '</p></div></div>';
-    }
-    if (!state.ringeTips) state.ringeTips = pickRandomInnvending(k.organisasjonId || '');
-    if (state.ringeTips) {
-      html += '<div class="reveal-box"><div class="reveal-label">Salgstips</div><div class="reveal-content"><p><strong>' + esc(state.ringeTips.innvending) + '</strong></p><p>' + esc(state.ringeTips.tips) + '</p></div><button type="button" class="btn btn-secondary" style="margin-top:8px;" data-action="ringe-nytt-tips">Nytt salgstips</button></div>';
-    }
-    if (state.visSkatt) {
-      html += '<div class="reveal-box"><div class="reveal-label">Skatteargument</div><div class="reveal-content"><p>' + esc(SKATT_KORT) + '</p></div></div>';
-    } else {
-      html += '<button type="button" class="btn btn-secondary" data-action="vis-skatt">Vis skatteargument</button>';
-    }
+    if (!state.ringeTips) nyttTips(k.organisasjonId || '');
+    html += tipsBoxHtml(k.organisasjonId || '');
 
     html += hurtigUtfallHtml(k, 'ringe');
     html += '<button type="button" class="btn btn-secondary" data-action="hopp-over">Hopp over →</button>';
@@ -1067,6 +1195,16 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     html += '<label>Forklaring<textarea name="tips" rows="2" placeholder="Hvordan bruke tipset i praksis"></textarea></label>';
     html += '<button type="submit" class="btn btn-secondary">Legg til salgstips</button></form></div>';
 
+    html += '<div class="panel"><h2 class="panel-title">Skattemessige tips</h2>';
+    html += '<p class="empty-sub" style="margin:0 0 10px;">Vises under «Skatt»-fanen i ringemodus.</p>';
+    html += skatteTips.length ? skatteTips.map(function (i) {
+      return '<div class="innvending-item"><div class="innvending-q">' + esc(i.innvending) + '</div><div class="innvending-a">' + esc(i.tips) + '</div><button type="button" class="innvending-del" data-action="delete-skatte-tips" data-id="' + esc(i.id) + '">Fjern</button></div>';
+    }).join('') : '<p class="empty-sub">Ingen ennå.</p>';
+    html += '<form data-action="add-skatte-tips" class="form-grid" style="margin-top:12px;">';
+    html += '<label>Tipstittel<input name="tittel" placeholder="F.eks. Kjøp før nyttår-argumentet"></label>';
+    html += '<label>Forklaring<textarea name="tekst" rows="2" placeholder="Hva du sier til kunden"></textarea></label>';
+    html += '<button type="submit" class="btn btn-secondary">Legg til skattetips</button></form></div>';
+
     html += '<h2 class="panel-title" style="margin:4px 2px 10px;">Mine organisasjoner</h2>';
     html += organisasjoner.length ? organisasjoner.map(function (o) { return orgCard(o); }).join('') : '<p class="empty-sub" style="margin:0 2px 14px;">Ingen lagt til ennå.</p>';
 
@@ -1093,6 +1231,16 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     html += '<label>Hvorfor støtte (samtalepunkt)<textarea name="hvorfor" rows="2">' + esc(o.hvorfor) + '</textarea></label>';
     html += '<label>Anbefalte bransjer (kommaseparert)<input name="anbefalteNaeringer" value="' + esc((o.anbefalteNaeringer || []).join(', ')) + '" placeholder="F.eks. Bygg og anlegg, Helse- og omsorgstjenester"></label>';
     html += '</div><button type="submit" class="btn btn-secondary">Lagre endringer</button></form>';
+
+    html += '<div class="panel"><h2 class="panel-title">Organisasjonsinformasjon</h2>';
+    html += '<p class="empty-sub" style="margin:0 0 10px;">Konkrete fakta og argumenter — vises under «Om ' + esc(o.navn) + '»-fanen i ringemodus.</p>';
+    html += (o.fakta && o.fakta.length) ? o.fakta.map(function (f) {
+      return '<div class="innvending-item"><div class="innvending-q">' + esc(f.tittel) + '</div><div class="innvending-a">' + esc(f.tekst) + '</div><button type="button" class="innvending-del" data-action="delete-org-fakta" data-id="' + esc(f.id) + '" data-org="' + esc(o.id) + '">Fjern</button></div>';
+    }).join('') : '<p class="empty-sub">Ingen fakta lagt til ennå.</p>';
+    html += '<form data-action="add-org-fakta" data-id="' + esc(o.id) + '" class="form-grid" style="margin-top:12px;">';
+    html += '<label>Tittel<input name="tittel" placeholder="F.eks. Pollenvarslingen"></label>';
+    html += '<label>Fakta/argument<textarea name="tekst" rows="2" placeholder="Konkret informasjon du kan bruke i samtalen"></textarea></label>';
+    html += '<button type="submit" class="btn btn-secondary">Legg til fakta</button></form></div>';
 
     html += '<div class="panel"><h2 class="panel-title">Egne salgstips for ' + esc(o.navn) + '</h2>';
     html += o.innvendinger.length ? o.innvendinger.map(function (i) {
@@ -1203,10 +1351,19 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     } else if (action === 'ringe-nytt-tips') {
       var qId = (state.ringeQueue || [])[state.ringeIndex];
       var qK = kunder.filter(function (x) { return x.id === qId; })[0];
-      state.ringeTips = pickRandomInnvending(qK ? (qK.organisasjonId || '') : '');
+      nyttTips(qK ? (qK.organisasjonId || '') : '');
       render();
-    } else if (action === 'vis-skatt') {
-      state.visSkatt = true; render();
+    } else if (action === 'tips-kat') {
+      state.tipsKategori = el.dataset.kat;
+      state.ringeTips = null;
+      var qId2 = (state.ringeQueue || [])[state.ringeIndex];
+      var qK2 = kunder.filter(function (x) { return x.id === qId2; })[0];
+      nyttTips(qK2 ? (qK2.organisasjonId || '') : '');
+      render();
+    } else if (action === 'delete-skatte-tips') {
+      deleteSkatteTips(id); render();
+    } else if (action === 'delete-org-fakta') {
+      deleteOrgFakta(el.dataset.org, id); render();
     } else if (action === 'fyll-liste') {
       var fyllOrg = document.getElementById('fyll-org');
       var fyllSted = document.getElementById('fyll-sted');
@@ -1329,6 +1486,16 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       if (!innvG) { alert('Skriv inn en innvending.'); return; }
       addGenerellInnvending(innvG, (fd.get('tips') || '').toString().trim());
       render();
+    } else if (action === 'add-skatte-tips') {
+      var skTittel = (fd.get('tittel') || '').toString().trim();
+      if (!skTittel) { alert('Skriv inn en tittel.'); return; }
+      addSkatteTips(skTittel, (fd.get('tekst') || '').toString().trim());
+      render();
+    } else if (action === 'add-org-fakta') {
+      var faTittel = (fd.get('tittel') || '').toString().trim();
+      if (!faTittel) { alert('Skriv inn en tittel.'); return; }
+      addOrgFakta(form.dataset.id, faTittel, (fd.get('tekst') || '').toString().trim());
+      render();
     }
   }
 
@@ -1336,6 +1503,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   load();
   loadOrg();
   loadInnvendinger();
+  mergeNyeSalgstips();
+  loadSkatteTips();
   var appEl = document.getElementById('app');
   appEl.addEventListener('click', onClick);
   appEl.addEventListener('submit', onSubmit);
