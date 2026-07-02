@@ -184,6 +184,13 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   var SELGER_STORAGE_KEY = 'ringeliste_selgere_v1';
   var AKTIV_SELGER_KEY = 'ringeliste_aktiv_selger_v1';
 
+  // ---------- Skysynkronisering: konfigurasjon ----------
+  // Lim inn «anon public»-nøkkelen fra Supabase (Settings → API) for å skru
+  // på delt kundepool på tvers av enheter. Tom nøkkel = kun lokal lagring.
+  var SUPABASE_URL = 'https://rkvphgbfyfymilzwgmgp.supabase.co';
+  var SUPABASE_ANON_KEY = '';
+  var TEAM_STORAGE_KEY = 'ringeliste_teamkode_v1';
+
   var BRANSJER = [
     { label: 'Alle bransjer', kode: '' },
     { label: 'Bygg og anlegg', kode: '41,42,43' },
@@ -320,6 +327,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   function save() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(kunder)); }
     catch (e) { alert('Kunne ikke lagre. Lagringsplassen kan være full.'); }
+    skyPlanleggPush();
   }
   function loadOrg() {
     try {
@@ -362,6 +370,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   }
   function saveSelgere() {
     try { localStorage.setItem(SELGER_STORAGE_KEY, JSON.stringify(selgere)); } catch (e) {}
+    skyPlanleggPush();
   }
   function setAktivSelger(id) {
     aktivSelgerId = id || null;
@@ -424,6 +433,209 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       k.eierId = null;
     }
     save();
+  }
+
+  // ---------- Skysynkronisering (Supabase) ----------
+  // localStorage er fortsatt sannheten lokalt (appen virker offline). Med
+  // teamkode satt speiles kunder og selgere til Supabase: endringer pushes
+  // som diff mot forrige synk, og andre enheters endringer hentes ved
+  // oppstart, hvert 25. sekund og når fanen får fokus. Konflikter avgjøres
+  // av kundens oppdatert-tidsstempel (nyeste vinner). Sletting er alltid
+  // soft-delete (slettet-kolonnen) så den når alle enheter.
+  var sky = { teamkode: '', sistSynk: null, sistPull: null, feil: null, pushTimer: null, pollTimer: null, snapshot: null, pusher: false, pushIgjen: false };
+
+  function skyKonfigurert() { return !!(SUPABASE_URL && SUPABASE_ANON_KEY); }
+  function skyAktiv() { return skyKonfigurert() && !!sky.teamkode; }
+
+  // JSONB i Postgres bevarer ikke rekkefølgen på nøkler, så diffing må
+  // bruke en nøkkelsortert serialisering for å slippe evige ekko-pusher.
+  function stabilJson(v) {
+    if (v === null || typeof v !== 'object') return JSON.stringify(v) || 'null';
+    if (Array.isArray(v)) return '[' + v.map(stabilJson).join(',') + ']';
+    var keys = Object.keys(v).filter(function (k) { return v[k] !== undefined; }).sort();
+    return '{' + keys.map(function (k) { return JSON.stringify(k) + ':' + stabilJson(v[k]); }).join(',') + '}';
+  }
+
+  function skyFetch(path, opts) {
+    opts = opts || {};
+    var headers = { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY, 'Content-Type': 'application/json' };
+    if (opts.prefer) headers['Prefer'] = opts.prefer;
+    return fetch(SUPABASE_URL + '/rest/v1/' + path, { method: opts.method || 'GET', headers: headers, body: opts.body ? JSON.stringify(opts.body) : undefined })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.status === 204 ? null : res.json();
+      });
+  }
+
+  function skyMergeKunde(rad) {
+    var lokal = kunder.filter(function (x) { return x.id === rad.id; })[0];
+    if (rad.slettet) {
+      delete (sky.snapshot.kunder)[rad.id];
+      if (lokal) { kunder = kunder.filter(function (x) { return x.id !== rad.id; }); return true; }
+      return false;
+    }
+    var fjern = rad.data;
+    if (!lokal) {
+      kunder.unshift(fjern);
+      sky.snapshot.kunder[rad.id] = stabilJson(fjern);
+      return true;
+    }
+    if ((fjern.oppdatert || '') > (lokal.oppdatert || '')) {
+      kunder[kunder.indexOf(lokal)] = fjern;
+      sky.snapshot.kunder[rad.id] = stabilJson(fjern);
+      return true;
+    }
+    if (stabilJson(lokal) === stabilJson(fjern)) sky.snapshot.kunder[rad.id] = stabilJson(fjern);
+    return false;
+  }
+
+  function skyMergeSelger(rad) {
+    var lokal = selgerById(rad.id);
+    if (rad.slettet) {
+      delete (sky.snapshot.selgere)[rad.id];
+      if (lokal) { selgere = selgere.filter(function (s) { return s.id !== rad.id; }); return true; }
+      return false;
+    }
+    var fjern = rad.data;
+    if (!lokal) {
+      selgere.push(fjern);
+      sky.snapshot.selgere[rad.id] = stabilJson(fjern);
+      return true;
+    }
+    if ((fjern.oppdatert || fjern.opprettet || '') > (lokal.oppdatert || lokal.opprettet || '')) {
+      selgere[selgere.indexOf(lokal)] = fjern;
+      sky.snapshot.selgere[rad.id] = stabilJson(fjern);
+      return true;
+    }
+    if (stabilJson(lokal) === stabilJson(fjern)) sky.snapshot.selgere[rad.id] = stabilJson(fjern);
+    return false;
+  }
+
+  function skyPull(full) {
+    if (!skyAktiv()) return Promise.resolve(false);
+    var team = 'team=eq.' + encodeURIComponent(sky.teamkode);
+    var siden = (!full && sky.sistPull) ? '&sist_endret=gt.' + encodeURIComponent(sky.sistPull) : '';
+    return Promise.all([
+      skyFetch('kunder?' + team + siden + '&order=sist_endret.asc'),
+      skyFetch('selgere?' + team + siden + '&order=sist_endret.asc')
+    ]).then(function (res) {
+      var endret = false;
+      res[0].forEach(function (rad) {
+        if (skyMergeKunde(rad)) endret = true;
+        if (rad.sist_endret > (sky.sistPull || '')) sky.sistPull = rad.sist_endret;
+      });
+      res[1].forEach(function (rad) {
+        if (skyMergeSelger(rad)) endret = true;
+        if (rad.sist_endret > (sky.sistPull || '')) sky.sistPull = rad.sist_endret;
+      });
+      if (endret) {
+        if (aktivSelgerId && !selgerById(aktivSelgerId)) setAktivSelger((selgere[0] || {}).id || null);
+        save(); saveSelgere();
+      }
+      sky.sistSynk = new Date(); sky.feil = null;
+      oppdaterSkyStatus();
+      return endret;
+    }).catch(function () {
+      sky.feil = 'Får ikke kontakt med skyen — jobber lokalt og prøver igjen.';
+      oppdaterSkyStatus();
+      return false;
+    });
+  }
+
+  function skyDiffRader() {
+    var snap = sky.snapshot || { kunder: {}, selgere: {} };
+    var rader = { kunder: [], selgere: [] };
+    kunder.forEach(function (k) {
+      if (snap.kunder[k.id] !== stabilJson(k)) rader.kunder.push({ id: k.id, team: sky.teamkode, data: k, slettet: false });
+    });
+    Object.keys(snap.kunder).forEach(function (id) {
+      if (!kunder.some(function (k) { return k.id === id; })) rader.kunder.push({ id: id, team: sky.teamkode, data: JSON.parse(snap.kunder[id]), slettet: true });
+    });
+    selgere.forEach(function (s) {
+      if (snap.selgere[s.id] !== stabilJson(s)) rader.selgere.push({ id: s.id, team: sky.teamkode, data: s, slettet: false });
+    });
+    Object.keys(snap.selgere).forEach(function (id) {
+      if (!selgere.some(function (s) { return s.id === id; })) rader.selgere.push({ id: id, team: sky.teamkode, data: JSON.parse(snap.selgere[id]), slettet: true });
+    });
+    return rader;
+  }
+
+  function skyPlanleggPush(forsinkelse) {
+    if (!skyAktiv() || !sky.snapshot) return;
+    clearTimeout(sky.pushTimer);
+    sky.pushTimer = setTimeout(skyPush, forsinkelse || 1200);
+  }
+
+  function skyPush() {
+    if (!skyAktiv() || !sky.snapshot) return;
+    if (sky.pusher) { sky.pushIgjen = true; return; }
+    var rader = skyDiffRader();
+    if (!rader.kunder.length && !rader.selgere.length) return;
+    sky.pusher = true;
+    var jobber = [];
+    if (rader.kunder.length) jobber.push(skyFetch('kunder?on_conflict=id', { method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal', body: rader.kunder }));
+    if (rader.selgere.length) jobber.push(skyFetch('selgere?on_conflict=id', { method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal', body: rader.selgere }));
+    Promise.all(jobber).then(function () {
+      rader.kunder.forEach(function (r) {
+        if (r.slettet) delete sky.snapshot.kunder[r.id];
+        else sky.snapshot.kunder[r.id] = stabilJson(r.data);
+      });
+      rader.selgere.forEach(function (r) {
+        if (r.slettet) delete sky.snapshot.selgere[r.id];
+        else sky.snapshot.selgere[r.id] = stabilJson(r.data);
+      });
+      sky.sistSynk = new Date(); sky.feil = null;
+      oppdaterSkyStatus();
+    }).catch(function () {
+      sky.feil = 'Får ikke lagret til skyen — prøver igjen om litt.';
+      oppdaterSkyStatus();
+      skyPlanleggPush(10000);
+    }).then(function () {
+      sky.pusher = false;
+      if (sky.pushIgjen) { sky.pushIgjen = false; skyPlanleggPush(); }
+    });
+  }
+
+  function skyForsiktigRender() {
+    var el = document.activeElement;
+    if (el && /^(input|textarea|select)$/i.test(el.tagName)) return;
+    render();
+  }
+
+  function skyKobleTil() {
+    if (!skyAktiv()) return;
+    sky.snapshot = { kunder: {}, selgere: {} };
+    sky.sistPull = null;
+    skyPull(true).then(function (endret) {
+      skyPush();
+      if (endret) skyForsiktigRender();
+    });
+    clearInterval(sky.pollTimer);
+    sky.pollTimer = setInterval(function () {
+      skyPull(false).then(function (endret) { if (endret) skyForsiktigRender(); });
+    }, 25000);
+  }
+
+  function skyKobleFra() {
+    clearInterval(sky.pollTimer);
+    clearTimeout(sky.pushTimer);
+    sky.teamkode = ''; sky.snapshot = null; sky.sistPull = null; sky.sistSynk = null; sky.feil = null;
+    try { localStorage.setItem(TEAM_STORAGE_KEY, ''); } catch (e) {}
+  }
+
+  function skyStatusTekst() {
+    if (!skyKonfigurert()) return '';
+    if (!sky.teamkode) return 'Ikke tilkoblet';
+    if (sky.feil) return sky.feil;
+    if (!sky.sistSynk) return 'Kobler til …';
+    return 'Tilkoblet team «' + sky.teamkode + '» · sist synket ' + String(sky.sistSynk.getHours()).padStart(2, '0') + ':' + String(sky.sistSynk.getMinutes()).padStart(2, '0') + ':' + String(sky.sistSynk.getSeconds()).padStart(2, '0');
+  }
+
+  function oppdaterSkyStatus() {
+    var el = document.getElementById('sky-status-tekst');
+    if (el) el.textContent = skyStatusTekst();
+    var ikon = document.getElementById('sky-ikon');
+    if (ikon) ikon.style.opacity = sky.feil ? '0.35' : '1';
   }
 
   // ---------- Helpers ----------
@@ -1201,7 +1413,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   function renderHeader() {
     var s = aktivSelger();
     var navn = s ? esc(s.fornavn + (s.etternavn ? ' ' + s.etternavn.charAt(0) + '.' : '')) : 'Velg selger';
-    return '<header class="topbar" style="display:flex;justify-content:space-between;align-items:center;"><span class="topbar-logo">Ringeliste</span><button type="button" class="selger-btn" data-action="nav" data-view="selger">👤 ' + navn + '</button></header>';
+    var skyIkon = skyAktiv() ? '<span id="sky-ikon" title="' + esc(skyStatusTekst()) + '" style="font-size:14px;margin-right:2px;' + (sky.feil ? 'opacity:0.35;' : '') + '">☁️</span>' : '';
+    return '<header class="topbar" style="display:flex;justify-content:space-between;align-items:center;"><span class="topbar-logo">Ringeliste</span><span style="display:flex;align-items:center;gap:8px;">' + skyIkon + '<button type="button" class="selger-btn" data-action="nav" data-view="selger">👤 ' + navn + '</button></span></header>';
   }
 
   function renderDashboard() {
@@ -1474,8 +1687,30 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     return html;
   }
 
+  function skyPanelHtml() {
+    var html = '<div class="panel"><h2 class="panel-title">☁️ Skysynkronisering</h2>';
+    if (!skyKonfigurert()) {
+      html += '<p class="empty-sub" style="margin:0;">Ikke satt opp ennå. Når Supabase-nøkkelen er lagt inn i appen, kan hele teamet dele kundepool på tvers av telefoner herfra.</p></div>';
+      return html;
+    }
+    if (!sky.teamkode) {
+      html += '<p class="empty-sub" style="margin:0 0 10px;">Skriv inn teamkoden deres for å dele kundepoolen med resten av teamet. Alle med samme kode ser de samme kundene og selgerne. Kundene som ligger her fra før lastes opp automatisk.</p>';
+      html += '<form data-action="koble-team" class="form-grid">';
+      html += '<label>Teamkode<input name="teamkode" autocomplete="off" placeholder="F.eks. lund-salg-2026"></label>';
+      html += '<button type="submit" class="btn btn-primary">Koble til</button></form>';
+      html += '<p class="empty-sub" style="margin:10px 0 0;">Velg en kode som er vanskelig å gjette — den fungerer som teamets nøkkel.</p>';
+    } else {
+      html += '<p style="margin:0;font-size:14px;" id="sky-status-tekst">' + esc(skyStatusTekst()) + '</p>';
+      html += '<p class="empty-sub" style="margin:8px 0 0;">Endringer deles automatisk med alle på teamet. Appen virker også uten nett — den synker igjen når du er på nett.</p>';
+      html += '<button type="button" class="btn btn-secondary" data-action="koble-fra-team">Koble fra dette teamet</button>';
+    }
+    html += '</div>';
+    return html;
+  }
+
   function renderToolsView() {
     var html = '<div class="view view-tools"><h1 class="view-title">Verktøy</h1>';
+    html += skyPanelHtml();
     html += '<form class="panel" data-action="lagre-maal"><h2 class="panel-title">Dagsmål</h2>';
     html += '<label>Antall samtaler per dag<input name="samtaler" type="number" inputmode="numeric" min="1" value="' + maal.samtaler + '"></label>';
     html += '<button type="submit" class="btn btn-secondary">Lagre mål</button></form>';
@@ -1573,7 +1808,9 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   function renderSelgerView() {
     var html = '<div class="view view-selger"><h1 class="view-title">Selgere</h1>';
     if (!selgere.length) {
-      html += '<div class="panel"><h2 class="panel-title">Velkommen! 👋</h2><p class="empty-sub" style="margin:0;">Opprett en selgerprofil for å komme i gang. Kunder du selger til eller setter oppfølging på blir dine — resten ligger i den felles poolen som alle selgere ringer fra.</p></div>';
+      html += '<div class="panel"><h2 class="panel-title">Velkommen! 👋</h2><p class="empty-sub" style="margin:0;">Opprett en selgerprofil for å komme i gang. Kunder du selger til eller setter oppfølging på blir dine — resten ligger i den felles poolen som alle selgere ringer fra.</p>';
+      if (skyKonfigurert() && !sky.teamkode) html += '<p class="empty-sub" style="margin:8px 0 0;">Er teamet ditt allerede i gang på en annen telefon? Gå til <strong>Verktøy → Skysynkronisering</strong> og skriv inn teamkoden først, så hentes selgerne og kundene automatisk hit.</p>';
+      html += '</div>';
     }
     var aktiv = aktivSelger();
     if (aktiv) {
@@ -1614,7 +1851,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
 
   function render() {
     var app = document.getElementById('app');
-    if (!selgere.length) state.view = 'selger';
+    if (!selgere.length && state.view !== 'tools') state.view = 'selger';
     var html = renderHeader();
     if (state.view === 'selger') html += renderSelgerView();
     else if (state.view === 'dashboard') html += renderDashboard();
@@ -1843,8 +2080,15 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       exportJSON();
     } else if (action === 'export-csv') {
       exportCSV();
+    } else if (action === 'koble-fra-team') {
+      if (confirm('Koble fra teamet? Dataene blir liggende lokalt på denne enheten, men deles ikke lenger.')) {
+        skyKobleFra(); render();
+      }
     } else if (action === 'clear-all') {
-      if (confirm('Slette ALLE kunder og notater fra denne enheten? Dette kan ikke angres.')) { kunder = []; save(); render(); }
+      var clearMelding = skyAktiv()
+        ? 'Slette ALLE kunder og notater? Du er koblet til team «' + sky.teamkode + '», så dette sletter kundene for HELE teamet. Dette kan ikke angres.'
+        : 'Slette ALLE kunder og notater fra denne enheten? Dette kan ikke angres.';
+      if (confirm(clearMelding)) { kunder = []; save(); render(); }
     } else if (action === 'pick-brreg') {
       var enhet = state.brregResults.filter(function (r) { return r.organisasjonsnummer === id; })[0];
       if (enhet) fillBrregIntoForm(enhet);
@@ -1904,6 +2148,13 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
         nesteOppfolging: nyDato
       });
       render();
+    } else if (action === 'koble-team') {
+      var kode = (fd.get('teamkode') || '').toString().trim().toLowerCase();
+      if (!kode) { alert('Skriv inn en teamkode.'); return; }
+      sky.teamkode = kode;
+      try { localStorage.setItem(TEAM_STORAGE_KEY, kode); } catch (e) {}
+      skyKobleTil();
+      render();
     } else if (action === 'add-selger') {
       var sFornavn = (fd.get('fornavn') || '').toString().trim();
       var sEtternavn = (fd.get('etternavn') || '').toString().trim();
@@ -1921,6 +2172,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       if (eSelger) {
         eSelger.fornavn = eFornavn;
         eSelger.etternavn = (fd.get('etternavn') || '').toString().trim();
+        eSelger.oppdatert = new Date().toISOString();
         saveSelgere();
       }
       render();
@@ -1972,6 +2224,11 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   loadMaal();
   loadSelgere();
   frigiReservasjoner(null); // køen overlever ikke en omlasting — slipp gamle reservasjoner tilbake i poolen
+  try { sky.teamkode = (localStorage.getItem(TEAM_STORAGE_KEY) || '').trim().toLowerCase(); } catch (e) { sky.teamkode = ''; }
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden && skyAktiv()) skyPull(false).then(function (endret) { if (endret) skyForsiktigRender(); });
+  });
+  if (skyAktiv()) skyKobleTil();
   var appEl = document.getElementById('app');
   appEl.addEventListener('click', onClick);
   appEl.addEventListener('submit', onSubmit);
