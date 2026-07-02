@@ -109,6 +109,15 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
 .navtab { flex: 1; background: none; border: none; padding: 8px 4px; font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600; color: var(--ink-faint); cursor: pointer; border-radius: 8px; }
 .navtab-active { color: var(--brand); background: rgba(14,110,110,0.08); }
 .org-tag { font-size: 11px; color: var(--brand); font-weight: 600; margin-top: 2px; }
+.eier-tag { font-size: 11px; font-weight: 600; margin-top: 3px; color: #6D4FC2; }
+.pool-tag { font-size: 11px; font-weight: 600; margin-top: 3px; color: var(--ink-faint); }
+.selger-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 6px 12px; font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600; color: var(--brand); cursor: pointer; }
+.selger-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 11px 0; border-top: 1px solid var(--border); }
+.selger-row:first-of-type { border-top: none; padding-top: 0; }
+.selger-row-navn { font-weight: 600; font-size: 15px; }
+.selger-row-sub { font-size: 12px; color: var(--ink-muted); margin-top: 2px; }
+.selger-aktiv-badge { font-size: 11px; font-weight: 700; color: var(--st-won); background: rgba(21,128,61,0.1); border-radius: 999px; padding: 3px 9px; white-space: nowrap; }
+.btn-mini { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600; padding: 8px 13px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: #fff; color: var(--brand); cursor: pointer; white-space: nowrap; }
 .filter-select { width: auto; font-size: 13px; padding: 9px 11px; margin-bottom: 10px; }
 .reveal-box { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin: 10px 0; }
 .reveal-label { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .03em; color: var(--ink-muted); margin-bottom: 8px; }
@@ -172,6 +181,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
 
   var ORG_STORAGE_KEY = 'ringeliste_organisasjoner_v1';
   var INNV_STORAGE_KEY = 'ringeliste_generelle_innvendinger_v1';
+  var SELGER_STORAGE_KEY = 'ringeliste_selgere_v1';
+  var AKTIV_SELGER_KEY = 'ringeliste_aktiv_selger_v1';
 
   var BRANSJER = [
     { label: 'Alle bransjer', kode: '' },
@@ -297,7 +308,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   var organisasjoner = [];
   var generelleInnvendinger = [];
   var kunder = [];
-  var state = { view: 'dashboard', selectedId: null, selectedOrgId: null, search: '', filter: 'all', orgFilter: '', importPreview: null, brregResults: [], ringeQueue: [], ringeIndex: 0, ringeTips: null, visRingTilbake: false, visSkatt: false, tipsKategori: 'salg', pendingEnhet: null, visSalg: false, salgMnd: 12, sisteUtfall: null };
+  var state = { view: 'dashboard', selectedId: null, selectedOrgId: null, search: '', filter: 'all', orgFilter: '', eierFilter: '', salgVisning: 'mine', importPreview: null, brregResults: [], ringeQueue: [], ringeIndex: 0, ringeTips: null, visRingTilbake: false, visSkatt: false, tipsKategori: 'salg', pendingEnhet: null, visSalg: false, salgMnd: 12, sisteUtfall: null };
 
   // ---------- Storage ----------
   function load() {
@@ -334,6 +345,85 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   }
   function saveInnvendinger() {
     try { localStorage.setItem(INNV_STORAGE_KEY, JSON.stringify(generelleInnvendinger)); } catch (e) {}
+  }
+
+  // ---------- Selgere ----------
+  var selgere = [];
+  var aktivSelgerId = null;
+  function loadSelgere() {
+    try {
+      var raw = localStorage.getItem(SELGER_STORAGE_KEY);
+      selgere = raw ? JSON.parse(raw) : [];
+      if (!Array.isArray(selgere)) selgere = [];
+    } catch (e) { selgere = []; }
+    try { aktivSelgerId = localStorage.getItem(AKTIV_SELGER_KEY) || null; } catch (e) { aktivSelgerId = null; }
+    if (aktivSelgerId && !selgerById(aktivSelgerId)) aktivSelgerId = null;
+    if (!aktivSelgerId && selgere.length) setAktivSelger(selgere[0].id);
+  }
+  function saveSelgere() {
+    try { localStorage.setItem(SELGER_STORAGE_KEY, JSON.stringify(selgere)); } catch (e) {}
+  }
+  function setAktivSelger(id) {
+    aktivSelgerId = id || null;
+    try { localStorage.setItem(AKTIV_SELGER_KEY, id || ''); } catch (e) {}
+  }
+  function selgerById(id) { return selgere.filter(function (s) { return s.id === id; })[0] || null; }
+  function aktivSelger() { return selgerById(aktivSelgerId); }
+  function selgerNavn(id) {
+    var s = selgerById(id);
+    return s ? (s.fornavn + ' ' + (s.etternavn || '')).trim() : '';
+  }
+  function addSelger(fornavn, etternavn) {
+    var s = { id: uid(), fornavn: fornavn, etternavn: etternavn || '', opprettet: new Date().toISOString() };
+    selgere.push(s);
+    saveSelgere();
+    return s;
+  }
+  function selgerKundeAntall(id) {
+    return kunder.filter(function (k) { return k.eierId === id; }).length;
+  }
+  function selgerSalgSum(id) {
+    var sum = 0;
+    kunder.forEach(function (k) {
+      (k.salg || []).forEach(function (s) { if (s.selgerId === id) sum += s.belop || 0; });
+    });
+    return sum;
+  }
+
+  // ---------- Pool og eierskap ----------
+  // En kunde uten eierId ligger i den felles poolen. Når en selger bygger
+  // ringekø reserveres pool-kundene (reservertAv) så andre ikke får dem.
+  // Salg eller oppfølgingsdato gjør kunden til selgerens egen; andre utfall
+  // slipper kunden tilbake i poolen.
+  function tilgjengeligFor(k, selgerId) {
+    if (k.eierId && k.eierId !== selgerId) return false;
+    if (k.reservertAv && k.reservertAv !== selgerId) return false;
+    return true;
+  }
+  function reserverKo() {
+    if (!aktivSelgerId) return;
+    var changed = false;
+    (state.ringeQueue || []).forEach(function (id) {
+      var k = kunder.filter(function (x) { return x.id === id; })[0];
+      if (k && !k.eierId && k.reservertAv !== aktivSelgerId) { k.reservertAv = aktivSelgerId; changed = true; }
+    });
+    if (changed) save();
+  }
+  function frigiReservasjoner(selgerId) {
+    var changed = false;
+    kunder.forEach(function (k) {
+      if (k.reservertAv && (!selgerId || k.reservertAv === selgerId)) { k.reservertAv = null; changed = true; }
+    });
+    if (changed) save();
+  }
+  function oppdaterEierEtterUtfall(k, status) {
+    k.reservertAv = null;
+    if (status === 'solgt' || status === 'ring_tilbake') {
+      if (aktivSelgerId && (!k.eierId || k.eierId === aktivSelgerId)) k.eierId = aktivSelgerId;
+    } else if (!(k.salg || []).length) {
+      k.eierId = null;
+    }
+    save();
   }
 
   // ---------- Helpers ----------
@@ -411,6 +501,9 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       status: data.status || 'ikke_kontaktet',
       nesteOppfolging: data.nesteOppfolging || null,
       firmainfo: data.firmainfo || null,
+      eierId: data.eierId || null,
+      reservertAv: null,
+      opprettetAv: aktivSelgerId,
       notater: data.notater || [],
       opprettet: now,
       oppdatert: now
@@ -433,7 +526,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   function addNotat(id, opts) {
     var k = kunder.filter(function (x) { return x.id === id; })[0];
     if (!k) return;
-    if (opts.tekst) k.notater.unshift({ id: uid(), dato: new Date().toISOString(), tekst: opts.tekst });
+    if (opts.tekst) k.notater.unshift({ id: uid(), dato: new Date().toISOString(), tekst: opts.tekst, selgerId: aktivSelgerId });
     if (opts.nesteOppfolging !== undefined) k.nesteOppfolging = opts.nesteOppfolging || null;
     if (opts.status) k.status = opts.status;
     k.oppdatert = new Date().toISOString();
@@ -611,6 +704,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       });
       state.ringeQueue = byggRingeliste(); state.ringeIndex = 0; state.ringeTips = null;
       state.visRingTilbake = false; state.visSkatt = false;
+      reserverKo();
       state.view = 'ringe'; render(); window.scrollTo(0, 0);
     }, function (msg) {
       alert(msg);
@@ -659,16 +753,16 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
   }
   function exportJSON() {
-    var payload = { kunder: kunder, organisasjoner: organisasjoner, generelleInnvendinger: generelleInnvendinger, skatteTips: skatteTips, eksportert: new Date().toISOString() };
+    var payload = { kunder: kunder, organisasjoner: organisasjoner, generelleInnvendinger: generelleInnvendinger, skatteTips: skatteTips, selgere: selgere, eksportert: new Date().toISOString() };
     var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
     downloadBlob(blob, 'ringeliste-backup-' + todayStr() + '.json');
     try { localStorage.setItem(BACKUP_KEY, todayStr()); } catch (e) {}
   }
   function exportCSV() {
-    var headers = ['Bedrift','Kontaktperson','Telefon','E-post','Org.nr','Adresse','Kilde','Organisasjon','Status','Neste oppfolging','Antall kjop','Totalt kjopt (kr)','Siste notat'];
+    var headers = ['Bedrift','Kontaktperson','Telefon','E-post','Org.nr','Adresse','Kilde','Organisasjon','Selger','Status','Neste oppfolging','Antall kjop','Totalt kjopt (kr)','Siste notat'];
     var rows = kunder.map(function (k) {
       var orgNavn = k.organisasjonId ? ((orgById(k.organisasjonId) || {}).navn || '') : '';
-      return [k.firma, k.kontaktperson, k.telefon, k.epost, k.orgnr, k.adresse, k.kilde, orgNavn, (STATUS[k.status] || {}).label || k.status, k.nesteOppfolging || '', (k.salg || []).length, sumSalg(k), (k.notater[0] || {}).tekst || ''];
+      return [k.firma, k.kontaktperson, k.telefon, k.epost, k.orgnr, k.adresse, k.kilde, orgNavn, k.eierId ? (selgerNavn(k.eierId) || 'Ukjent') : '', (STATUS[k.status] || {}).label || k.status, k.nesteOppfolging || '', (k.salg || []).length, sumSalg(k), (k.notater[0] || {}).tekst || ''];
     });
     var all = [headers].concat(rows);
     var csv = all.map(function (r) { return r.map(csvEscape).join(';'); }).join('\r\n');
@@ -697,6 +791,10 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
             if (nyeOrg) { organisasjoner = nyeOrg; saveOrg(); }
             if (nyeInnv) { generelleInnvendinger = nyeInnv; saveInnvendinger(); }
             if (data && Array.isArray(data.skatteTips)) { skatteTips = data.skatteTips; saveSkatteTips(); }
+            if (data && Array.isArray(data.selgere)) {
+              selgere = data.selgere; saveSelgere();
+              if (!selgerById(aktivSelgerId)) setAktivSelger((selgere[0] || {}).id || null);
+            }
             render();
           }
         } catch (err) {
@@ -718,6 +816,12 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     if (k.organisasjonId) {
       var kOrg = orgById(k.organisasjonId);
       if (kOrg) html += '<div class="org-tag">' + esc(kOrg.navn) + '</div>';
+    }
+    if (k.eierId) {
+      var eierN = selgerNavn(k.eierId) || 'Ukjent selger';
+      html += '<div class="eier-tag">👤 ' + esc(eierN) + (k.eierId === aktivSelgerId ? ' (deg)' : '') + '</div>';
+    } else {
+      html += '<div class="pool-tag">I poolen</div>';
     }
     if (lastNote) html += '<div class="card-note">' + esc(truncate(lastNote.tekst, 80)) + '</div>';
     html += '<div class="card-bottom">';
@@ -887,10 +991,11 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
 
   function byggRingeliste() {
     var today = todayStr();
-    var overdue = kunder.filter(function (k) { return k.nesteOppfolging && k.nesteOppfolging < today; }).sort(function (a, b) { return a.nesteOppfolging.localeCompare(b.nesteOppfolging); });
-    var dueToday = kunder.filter(function (k) { return k.nesteOppfolging === today; });
-    var fresh = kunder.filter(function (k) { return !k.nesteOppfolging && k.status === 'ikke_kontaktet'; });
-    var noAnswer = kunder.filter(function (k) { return !k.nesteOppfolging && k.status === 'ingen_svar'; });
+    var mine = kunder.filter(function (k) { return tilgjengeligFor(k, aktivSelgerId); });
+    var overdue = mine.filter(function (k) { return k.nesteOppfolging && k.nesteOppfolging < today; }).sort(function (a, b) { return a.nesteOppfolging.localeCompare(b.nesteOppfolging); });
+    var dueToday = mine.filter(function (k) { return k.nesteOppfolging === today; });
+    var fresh = mine.filter(function (k) { return !k.nesteOppfolging && k.status === 'ikke_kontaktet'; });
+    var noAnswer = mine.filter(function (k) { return !k.nesteOppfolging && k.status === 'ingen_svar'; });
     return overdue.concat(dueToday, fresh, noAnswer).map(function (k) { return k.id; });
   }
 
@@ -898,13 +1003,15 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     var k = kunder.filter(function (x) { return x.id === id; })[0];
     if (!k) return;
     k.salg = k.salg || [];
-    k.salg.push({ id: uid(), belop: belop || 0, dato: todayStr() });
+    k.salg.push({ id: uid(), belop: belop || 0, dato: todayStr(), selgerId: aktivSelgerId });
     k.status = 'solgt';
     k.kilde = 'eksisterende';
     k.nesteOppfolging = addMonthsStr(mnd);
+    k.reservertAv = null;
+    if (aktivSelgerId) k.eierId = aktivSelgerId;
     var tekst = 'Solgt for ' + fmtBelop(belop || 0) + '. Ny kontakt om ' + mnd + ' mnd.';
     if (notat) tekst += ' — ' + notat;
-    k.notater.unshift({ id: uid(), dato: new Date().toISOString(), tekst: tekst });
+    k.notater.unshift({ id: uid(), dato: new Date().toISOString(), tekst: tekst, selgerId: aktivSelgerId });
     k.oppdatert = new Date().toISOString();
     save();
   }
@@ -920,7 +1027,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     var list = [];
     kunder.forEach(function (k) {
       (k.salg || []).forEach(function (s) {
-        list.push({ salgId: s.id, kundeId: k.id, navn: k.firma || k.kontaktperson || 'Uten navn', belop: s.belop || 0, dato: s.dato || '' });
+        list.push({ salgId: s.id, kundeId: k.id, navn: k.firma || k.kontaktperson || 'Uten navn', belop: s.belop || 0, dato: s.dato || '', selgerId: s.selgerId || null });
       });
     });
     list.sort(function (a, b) { return b.dato.localeCompare(a.dato); });
@@ -939,6 +1046,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       status: k.status,
       nesteOppfolging: k.nesteOppfolging,
       kilde: k.kilde,
+      eierId: k.eierId || null,
+      reservertAv: k.reservertAv || null,
       notater: k.notater.length,
       salg: (k.salg || []).length
     };
@@ -953,15 +1062,17 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       nesteOppfolging: neste,
       status: status
     });
+    var k = kunder.filter(function (x) { return x.id === id; })[0];
+    if (k) oppdaterEierEtterUtfall(k, status);
   }
 
   function dagensStats() {
     var today = todayStr();
     var samtaler = 0, solgtKr = 0, solgtAntall = 0, nye = 0;
     kunder.forEach(function (k) {
-      k.notater.forEach(function (n) { if (n.dato && n.dato.slice(0, 10) === today) samtaler++; });
-      (k.salg || []).forEach(function (s) { if (s.dato === today) { solgtKr += s.belop || 0; solgtAntall++; } });
-      if ((k.opprettet || '').slice(0, 10) === today) nye++;
+      k.notater.forEach(function (n) { if (n.dato && n.dato.slice(0, 10) === today && n.selgerId === aktivSelgerId) samtaler++; });
+      (k.salg || []).forEach(function (s) { if (s.dato === today && s.selgerId === aktivSelgerId) { solgtKr += s.belop || 0; solgtAntall++; } });
+      if ((k.opprettet || '').slice(0, 10) === today && k.opprettetAv === aktivSelgerId) nye++;
     });
     return { samtaler: samtaler, solgtKr: solgtKr, solgtAntall: solgtAntall, nye: nye };
   }
@@ -1059,6 +1170,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     if (k.firma && k.kontaktperson) html += '<div class="card-sub">' + esc(k.kontaktperson) + '</div>';
     var kOrg = k.organisasjonId ? orgById(k.organisasjonId) : null;
     if (kOrg) html += '<div class="org-tag">' + esc(kOrg.navn) + '</div>';
+    if (k.eierId === aktivSelgerId && k.eierId) html += '<div class="eier-tag">👤 Din kunde</div>';
+    else if (!k.eierId) html += '<div class="pool-tag">Fra poolen — blir din ved salg eller oppfølging</div>';
     if (k.adresse) html += '<div class="card-sub">' + esc(k.adresse) + '</div>';
     if (k.salg && k.salg.length) {
       html += '<div class="card-sub" style="color:var(--st-won);font-weight:600;">💰 Eksisterende kunde — kjøpt ' + k.salg.length + ' gang' + (k.salg.length > 1 ? 'er' : '') + ' for totalt ' + esc(fmtBelop(sumSalg(k))) + '</div>';
@@ -1086,12 +1199,14 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
 
   // ---------- Render: views ----------
   function renderHeader() {
-    return '<header class="topbar"><span class="topbar-logo">Ringeliste</span></header>';
+    var s = aktivSelger();
+    var navn = s ? esc(s.fornavn + (s.etternavn ? ' ' + s.etternavn.charAt(0) + '.' : '')) : 'Velg selger';
+    return '<header class="topbar" style="display:flex;justify-content:space-between;align-items:center;"><span class="topbar-logo">Ringeliste</span><button type="button" class="selger-btn" data-action="nav" data-view="selger">👤 ' + navn + '</button></header>';
   }
 
   function renderDashboard() {
     var today = todayStr();
-    var withDate = kunder.filter(function (k) { return k.nesteOppfolging; });
+    var withDate = kunder.filter(function (k) { return k.nesteOppfolging && tilgjengeligFor(k, aktivSelgerId); });
     var overdue = withDate.filter(function (k) { return k.nesteOppfolging < today; }).sort(function (a, b) { return a.nesteOppfolging.localeCompare(b.nesteOppfolging); });
     var dueToday = withDate.filter(function (k) { return k.nesteOppfolging === today; });
     var total = overdue.length + dueToday.length;
@@ -1134,10 +1249,10 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     return html;
   }
 
-  function salgChartHtml() {
+  function salgChartHtml(salg) {
     var perDag = {};
     for (var i = 13; i >= 0; i--) perDag[addDaysStr(-i)] = 0;
-    alleSalg().forEach(function (s) { if (perDag[s.dato] !== undefined) perDag[s.dato] += s.belop; });
+    salg.forEach(function (s) { if (perDag[s.dato] !== undefined) perDag[s.dato] += s.belop; });
     var dager = Object.keys(perDag);
     var max = 0;
     dager.forEach(function (d) { if (perDag[d] > max) max = perDag[d]; });
@@ -1162,7 +1277,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   }
 
   function renderSalgView() {
-    var salg = alleSalg();
+    var mineVisning = state.salgVisning === 'mine' && aktivSelgerId;
+    var salg = alleSalg().filter(function (s) { return !mineVisning || s.selgerId === aktivSelgerId; });
     var total = salg.reduce(function (s, x) { return s + x.belop; }, 0);
     var ukeGrense = addDaysStr(-6);
     var mndPrefix = todayStr().slice(0, 7);
@@ -1172,9 +1288,15 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       if (s.dato.slice(0, 7) === mndPrefix) mnd += s.belop;
     });
     var snitt = salg.length ? Math.round(total / salg.length) : 0;
-    var salgsKunder = kunder.filter(function (k) { return (k.salg || []).length > 0; });
+    var salgsKunder = kunder.filter(function (k) { return (k.salg || []).length > 0 && (!mineVisning || k.eierId === aktivSelgerId); });
 
     var html = '<div class="view view-salg"><h1 class="view-title">Salg</h1>';
+    if (selgere.length > 1 || !mineVisning) {
+      html += '<div class="filter-chips">';
+      html += '<button type="button" class="chip' + (mineVisning ? ' chip-active' : '') + '" data-action="salg-visning" data-visning="mine">Mine salg</button>';
+      html += '<button type="button" class="chip' + (!mineVisning ? ' chip-active' : '') + '" data-action="salg-visning" data-visning="alle">Alle selgere</button>';
+      html += '</div>';
+    }
     html += '<div class="hero" style="padding:10px 0 14px;"><div class="hero-number" style="font-size:40px;">' + esc(fmtBelop(total)) + '</div><div class="hero-label">solgt totalt · ' + salg.length + ' salg til ' + salgsKunder.length + ' kunder</div></div>';
 
     html += '<div class="panel"><div class="stats-grid">';
@@ -1183,9 +1305,9 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     html += '<div class="stat"><div class="stat-num">' + esc(fmtKort(snitt)) + '</div><div class="stat-label">Snitt per salg</div></div>';
     html += '</div></div>';
 
-    html += '<div class="panel"><h2 class="panel-title">Salg siste 14 dager (kr)</h2>' + salgChartHtml() + '</div>';
+    html += '<div class="panel"><h2 class="panel-title">Salg siste 14 dager (kr)</h2>' + salgChartHtml(salg) + '</div>';
 
-    html += '<div class="panel"><h2 class="panel-title">Dine kunder — gjensalg</h2>';
+    html += '<div class="panel"><h2 class="panel-title">' + (mineVisning ? 'Dine kunder — gjensalg' : 'Alle kunder — gjensalg') + '</h2>';
     html += '<p class="empty-sub" style="margin:0 0 8px;">Alle som har kjøpt. De ringes automatisk opp igjen når datoen kommer.</p>';
     if (salgsKunder.length) {
       var sortert = salgsKunder.slice().sort(function (a, b) {
@@ -1205,9 +1327,10 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     html += '<div class="panel"><h2 class="panel-title">Salgslogg</h2>';
     if (salg.length) {
       html += salg.map(function (s) {
+        var selgerInfo = !mineVisning && s.selgerId ? ' · ' + esc(selgerNavn(s.selgerId) || 'Ukjent selger') : '';
         return '<div class="salg-entry">' +
           '<div style="min-width:0;"><div style="font-weight:600;">' + esc(s.navn) + '</div>' +
-          '<div style="font-size:12px;color:var(--ink-muted);">' + esc(formatDateShort(s.dato)) + ' (' + esc(s.dato) + ')</div></div>' +
+          '<div style="font-size:12px;color:var(--ink-muted);">' + esc(formatDateShort(s.dato)) + ' (' + esc(s.dato) + ')' + selgerInfo + '</div></div>' +
           '<div style="display:flex;align-items:center;gap:10px;"><span class="salg-belop">' + esc(fmtBelop(s.belop)) + '</span>' +
           '<button type="button" class="innvending-del" style="padding:0;" data-action="slett-salg" data-id="' + esc(s.salgId) + '" data-kunde="' + esc(s.kundeId) + '">Fjern</button></div></div>';
       }).join('');
@@ -1220,6 +1343,9 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
 
   function filteredKunder() {
     var list = kunder;
+    if (state.eierFilter === 'mine') list = list.filter(function (k) { return k.eierId === aktivSelgerId; });
+    else if (state.eierFilter === 'pool') list = list.filter(function (k) { return !k.eierId; });
+    else if (state.eierFilter === 'andre') list = list.filter(function (k) { return k.eierId && k.eierId !== aktivSelgerId; });
     if (state.filter.indexOf('status:') === 0) {
       var st = state.filter.slice(7);
       list = list.filter(function (k) { return k.status === st; });
@@ -1253,9 +1379,13 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     if (chips) chips.innerHTML = chipsHtml();
   }
   function renderListView() {
+    var eierValg = [{ v: '', l: 'Alle kunder' }, { v: 'mine', l: 'Mine kunder' }, { v: 'pool', l: 'Poolen (ledige)' }, { v: 'andre', l: 'Andre selgeres' }];
     return '<div class="view view-list"><h1 class="view-title">Kunder</h1>' +
       '<input type="text" id="search-input" class="search-input" placeholder="Søk navn eller telefon …" value="' + esc(state.search) + '">' +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+      '<select id="eier-filter-select" class="filter-select">' + eierValg.map(function (f) { return '<option value="' + f.v + '"' + (state.eierFilter === f.v ? ' selected' : '') + '>' + f.l + '</option>'; }).join('') + '</select>' +
       (organisasjoner.length ? '<select id="org-filter-select" class="filter-select"><option value="">Alle organisasjoner</option>' + organisasjoner.map(function (o) { return '<option value="' + esc(o.id) + '"' + (state.orgFilter === o.id ? ' selected' : '') + '>' + esc(o.navn) + '</option>'; }).join('') + '</select>' : '') +
+      '</div>' +
       '<div class="filter-chips" id="filter-chips">' + chipsHtml() + '</div>' +
       '<div id="list-results">' + listResultsHtml() + '</div></div>';
   }
@@ -1296,6 +1426,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     html += '<label>Adresse<input name="adresse" value="' + esc(k.adresse) + '"></label>';
     html += '<label>Kilde<select name="kilde"><option value="eksisterende"' + (k.kilde === 'eksisterende' ? ' selected' : '') + '>Eksisterende kunde</option><option value="ny"' + (k.kilde === 'ny' ? ' selected' : '') + '>Ny kunde</option></select></label>';
     html += '<label>Organisasjon<select name="organisasjonId">' + orgOptions(k.organisasjonId) + '</select></label>';
+    html += '<label>Selger (eier)<select name="eierId"><option value="">Ingen — i poolen</option>' + selgere.map(function (s) { return '<option value="' + esc(s.id) + '"' + (s.id === k.eierId ? ' selected' : '') + '>' + esc(selgerNavn(s.id)) + '</option>'; }).join('') + '</select></label>';
     html += '<label>Neste oppfølging<input type="date" name="nesteOppfolging" value="' + (k.nesteOppfolging || '') + '"></label>';
     html += '</div>';
     html += '<div class="proff-row"><a href="' + proffUrl(k.firma || k.kontaktperson || '') + '" target="_blank" rel="noopener" class="link-btn">Åpne på proff.no for regnskapstall →</a></div>';
@@ -1439,6 +1570,43 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     return html;
   }
 
+  function renderSelgerView() {
+    var html = '<div class="view view-selger"><h1 class="view-title">Selgere</h1>';
+    if (!selgere.length) {
+      html += '<div class="panel"><h2 class="panel-title">Velkommen! 👋</h2><p class="empty-sub" style="margin:0;">Opprett en selgerprofil for å komme i gang. Kunder du selger til eller setter oppfølging på blir dine — resten ligger i den felles poolen som alle selgere ringer fra.</p></div>';
+    }
+    var aktiv = aktivSelger();
+    if (aktiv) {
+      html += '<form class="panel" data-action="edit-selger"><h2 class="panel-title">Din profil</h2>';
+      html += '<p class="empty-sub" style="margin:0 0 10px;">' + selgerKundeAntall(aktiv.id) + ' kunder · ' + esc(fmtBelop(selgerSalgSum(aktiv.id))) + ' solgt totalt</p>';
+      html += '<div class="form-grid">';
+      html += '<label>Fornavn<input name="fornavn" value="' + esc(aktiv.fornavn) + '"></label>';
+      html += '<label>Etternavn<input name="etternavn" value="' + esc(aktiv.etternavn || '') + '"></label>';
+      html += '</div><button type="submit" class="btn btn-secondary">Lagre navn</button></form>';
+    }
+    if (selgere.length) {
+      html += '<div class="panel"><h2 class="panel-title">Bytt selger</h2>';
+      html += '<p class="empty-sub" style="margin:0 0 6px;">Trykk «Bytt til» for å jobbe som en annen selger — ingen innlogging nødvendig.</p>';
+      html += selgere.map(function (s) {
+        var rad = '<div class="selger-row"><div style="min-width:0;"><div class="selger-row-navn">' + esc(selgerNavn(s.id)) + '</div>';
+        rad += '<div class="selger-row-sub">' + selgerKundeAntall(s.id) + ' kunder · ' + esc(fmtBelop(selgerSalgSum(s.id))) + ' solgt</div></div>';
+        rad += '<div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">';
+        if (s.id === aktivSelgerId) rad += '<span class="selger-aktiv-badge">Aktiv nå</span>';
+        else rad += '<button type="button" class="btn-mini" data-action="bytt-selger" data-id="' + esc(s.id) + '">Bytt til</button>';
+        rad += '<button type="button" class="innvending-del" style="padding:0;" data-action="delete-selger" data-id="' + esc(s.id) + '">Slett</button>';
+        rad += '</div></div>';
+        return rad;
+      }).join('');
+      html += '</div>';
+    }
+    html += '<form class="panel" data-action="add-selger"><h2 class="panel-title">' + (selgere.length ? 'Opprett ny selger' : 'Opprett selgerprofil') + '</h2><div class="form-grid">';
+    html += '<label>Fornavn<input name="fornavn" placeholder="F.eks. Kari"></label>';
+    html += '<label>Etternavn<input name="etternavn" placeholder="F.eks. Nordmann"></label>';
+    html += '</div><button type="submit" class="btn btn-primary">Opprett og bytt til denne</button></form>';
+    html += '</div>';
+    return html;
+  }
+
   function renderNav() {
     var tabs = [{ view: 'dashboard', label: 'I dag' }, { view: 'salg', label: 'Salg' }, { view: 'list', label: 'Kunder' }, { view: 'add', label: 'Ny' }, { view: 'org', label: 'Org' }, { view: 'tools', label: 'Verktøy' }];
     return '<nav class="bottomnav">' + tabs.map(function (t) { var active = state.view === t.view || (t.view === 'org' && state.view === 'orgDetail'); return '<button type="button" class="navtab ' + (active ? 'navtab-active' : '') + '" data-action="nav" data-view="' + t.view + '">' + t.label + '</button>'; }).join('') + '</nav>';
@@ -1446,8 +1614,10 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
 
   function render() {
     var app = document.getElementById('app');
+    if (!selgere.length) state.view = 'selger';
     var html = renderHeader();
-    if (state.view === 'dashboard') html += renderDashboard();
+    if (state.view === 'selger') html += renderSelgerView();
+    else if (state.view === 'dashboard') html += renderDashboard();
     else if (state.view === 'salg') html += renderSalgView();
     else if (state.view === 'ringe') html += renderRingeView();
     else if (state.view === 'list') html += renderListView();
@@ -1499,6 +1669,13 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
         updateListResults();
       });
     }
+    var eierFilterSelect = document.getElementById('eier-filter-select');
+    if (eierFilterSelect) {
+      eierFilterSelect.addEventListener('change', function () {
+        state.eierFilter = this.value;
+        updateListResults();
+      });
+    }
     var fyllOrgSelect = document.getElementById('fyll-org');
     if (fyllOrgSelect) {
       fyllOrgSelect.addEventListener('change', function () {
@@ -1516,15 +1693,38 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     var id = el.dataset.id;
 
     if (action === 'nav') {
+      if (state.view === 'ringe') { frigiReservasjoner(aktivSelgerId); state.ringeQueue = []; state.ringeIndex = 0; }
       state.view = el.dataset.view; state.selectedId = null; state.selectedOrgId = null; state.importPreview = null;
-      state.search = ''; state.filter = 'all'; state.orgFilter = '';
+      state.search = ''; state.filter = 'all'; state.orgFilter = ''; state.eierFilter = '';
       state.visRingTilbake = false; state.visSkatt = false; state.ringeTips = null;
       state.visSalg = false; state.salgMnd = 12; state.sisteUtfall = null;
       render();
     } else if (action === 'start-ringemodus') {
       state.ringeQueue = byggRingeliste(); state.ringeIndex = 0; state.ringeTips = null;
       state.visRingTilbake = false; state.visSkatt = false; state.sisteUtfall = null;
+      reserverKo();
       state.view = 'ringe'; render(); window.scrollTo(0, 0);
+    } else if (action === 'bytt-selger') {
+      frigiReservasjoner(aktivSelgerId);
+      setAktivSelger(id);
+      state.ringeQueue = []; state.ringeIndex = 0; state.sisteUtfall = null;
+      render();
+    } else if (action === 'delete-selger') {
+      var dSelger = selgerById(id);
+      if (dSelger && confirm('Slette selgeren ' + selgerNavn(id) + '? Kundene deres legges tilbake i poolen. Salgsloggen beholdes.')) {
+        selgere = selgere.filter(function (s) { return s.id !== id; });
+        saveSelgere();
+        var frigitt = false;
+        kunder.forEach(function (k) {
+          if (k.eierId === id) { k.eierId = null; frigitt = true; }
+          if (k.reservertAv === id) { k.reservertAv = null; frigitt = true; }
+        });
+        if (frigitt) save();
+        if (aktivSelgerId === id) setAktivSelger((selgere[0] || {}).id || null);
+        render();
+      }
+    } else if (action === 'salg-visning') {
+      state.salgVisning = el.dataset.visning; render();
     } else if (action === 'utfall') {
       var whenDays = el.dataset.when;
       var nesteDato = whenDays !== undefined ? addDaysStr(parseInt(whenDays, 10)) : '';
@@ -1563,6 +1763,9 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     } else if (action === 'slett-salg') {
       if (confirm('Fjerne dette salget fra loggen?')) { slettSalg(el.dataset.kunde, id); render(); }
     } else if (action === 'hopp-over') {
+      var skipId = (state.ringeQueue || [])[state.ringeIndex];
+      var skipK = kunder.filter(function (x) { return x.id === skipId; })[0];
+      if (skipK && skipK.reservertAv) { skipK.reservertAv = null; save(); }
       state.ringeIndex++; state.ringeTips = null; state.visRingTilbake = false; state.visSkatt = false; state.visSalg = false; render(); window.scrollTo(0, 0);
     } else if (action === 'ringe-nytt-tips') {
       var qId = (state.ringeQueue || [])[state.ringeIndex];
@@ -1620,6 +1823,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
           angreK.status = su.status;
           angreK.nesteOppfolging = su.nesteOppfolging;
           angreK.kilde = su.kilde;
+          angreK.eierId = su.eierId;
+          angreK.reservertAv = su.reservertAv;
           if (angreK.notater.length > su.notater) angreK.notater = angreK.notater.slice(angreK.notater.length - su.notater);
           if ((angreK.salg || []).length > su.salg) angreK.salg = angreK.salg.slice(0, su.salg);
           angreK.oppdatert = new Date().toISOString();
@@ -1683,6 +1888,9 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       state.pendingEnhet = null;
       state.view = 'detail'; state.selectedId = k.id; render();
     } else if (action === 'edit-kunde') {
+      var nyEier = (fd.get('eierId') || '').toString() || null;
+      var nyDato = (fd.get('nesteOppfolging') || '').toString() || null;
+      if (!nyEier && nyDato && aktivSelgerId) nyEier = aktivSelgerId;
       updateKunde(form.dataset.id, {
         firma: (fd.get('firma') || '').toString().trim(),
         kontaktperson: (fd.get('kontaktperson') || '').toString().trim(),
@@ -1692,8 +1900,29 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
         adresse: (fd.get('adresse') || '').toString().trim(),
         kilde: fd.get('kilde'),
         organisasjonId: fd.get('organisasjonId') || null,
-        nesteOppfolging: (fd.get('nesteOppfolging') || '').toString() || null
+        eierId: nyEier,
+        nesteOppfolging: nyDato
       });
+      render();
+    } else if (action === 'add-selger') {
+      var sFornavn = (fd.get('fornavn') || '').toString().trim();
+      var sEtternavn = (fd.get('etternavn') || '').toString().trim();
+      if (!sFornavn) { alert('Skriv inn fornavn.'); return; }
+      frigiReservasjoner(aktivSelgerId);
+      var nySelger = addSelger(sFornavn, sEtternavn);
+      setAktivSelger(nySelger.id);
+      state.ringeQueue = []; state.ringeIndex = 0; state.sisteUtfall = null;
+      state.view = 'dashboard';
+      render();
+    } else if (action === 'edit-selger') {
+      var eFornavn = (fd.get('fornavn') || '').toString().trim();
+      if (!eFornavn) { alert('Skriv inn fornavn.'); return; }
+      var eSelger = aktivSelger();
+      if (eSelger) {
+        eSelger.fornavn = eFornavn;
+        eSelger.etternavn = (fd.get('etternavn') || '').toString().trim();
+        saveSelgere();
+      }
       render();
     } else if (action === 'lagre-maal') {
       var nyttMaal = Number(fd.get('samtaler'));
@@ -1741,6 +1970,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   mergeNyeSalgstips();
   loadSkatteTips();
   loadMaal();
+  loadSelgere();
+  frigiReservasjoner(null); // køen overlever ikke en omlasting — slipp gamle reservasjoner tilbake i poolen
   var appEl = document.getElementById('app');
   appEl.addEventListener('click', onClick);
   appEl.addEventListener('submit', onSubmit);
