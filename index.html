@@ -417,14 +417,18 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     var box = document.getElementById('generator-result');
     if (box) box.innerHTML = '<div class="brreg-empty">' + esc(msg) + '</div>';
   }
+  function brregParams(sted, bransjeKode) {
+    var params = 'underAvvikling=false&underKonkursbehandling=false';
+    if (sted) params += '&forretningsadresse.poststed=' + encodeURIComponent(sted.toUpperCase());
+    if (bransjeKode) params += '&naeringskode=' + encodeURIComponent(bransjeKode);
+    return params;
+  }
   function genererTilfeldigFirma() {
     var stedInput = document.getElementById('gen-sted');
     var bransjeSelect = document.getElementById('gen-bransje');
     var sted = stedInput ? stedInput.value.trim() : '';
     var bransjeKode = bransjeSelect ? bransjeSelect.value : '';
-    var params = 'underAvvikling=false&underKonkursbehandling=false';
-    if (sted) params += '&forretningsadresse.poststed=' + encodeURIComponent(sted.toUpperCase());
-    if (bransjeKode) params += '&naeringskode=' + encodeURIComponent(bransjeKode);
+    var params = brregParams(sted, bransjeKode);
 
     var box = document.getElementById('generator-result');
     if (box) box.innerHTML = '<div class="brreg-loading">Søker i Brønnøysundregisteret …</div>';
@@ -515,6 +519,73 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     html += '<div class="reveal-box" style="margin-top:10px;"><div class="reveal-label">Skattefradrag — si dette til kunden</div><div class="reveal-content"><p>Støtteannonsen er fradragsberettiget som <strong>markedsføringskostnad</strong> (sktl. § 6-1) — ikke gave — så lenge prisen er rimelig i forhold til annonseverdien. <strong>Ingen øvre grense.</strong></p><p>Gaver har fradrag inntil 25 000 kr/år (sktl. § 6-50), men det gjelder ikke her — dette er reklame, og hele beløpet er fradragsberettiget. Tips: be kunden spørre sin regnskapsfører ved store beløp.</p></div></div>';
     html += '<button type="button" class="btn btn-secondary" data-action="generer-firma">Prøv et annet firma</button>';
     box.innerHTML = html;
+  }
+
+  // ---------- Fyll ringelista (bulk-generator) ----------
+  var GEN_PREFS_KEY = 'ringeliste_gen_prefs_v1';
+  function loadGenPrefs() {
+    try { return JSON.parse(localStorage.getItem(GEN_PREFS_KEY)) || {}; } catch (e) { return {}; }
+  }
+  function saveGenPrefs(p) {
+    try { localStorage.setItem(GEN_PREFS_KEY, JSON.stringify(p)); } catch (e) {}
+  }
+
+  function hentFlereFirmaer(sted, bransjeKode, antall, onDone, onError) {
+    var params = brregParams(sted, bransjeKode);
+    fetch('https://data.brreg.no/enhetsregisteret/api/enheter?' + params + '&size=1&page=0')
+      .then(function (res) { if (!res.ok) throw new Error('feil'); return res.json(); })
+      .then(function (data) {
+        var total = (data.page && data.page.totalElements) || 0;
+        if (!total) { onError('Ingen treff med disse filtrene. Prøv et annet sted eller en annen bransje.'); return; }
+        var maxIndex = Math.min(total, 10000);
+        var totalPages = Math.max(1, Math.ceil(maxIndex / 20));
+        var pages = [];
+        var tries = 0;
+        while (pages.length < Math.min(6, totalPages) && tries < 40) {
+          var pg = Math.floor(Math.random() * totalPages);
+          if (pages.indexOf(pg) === -1) pages.push(pg);
+          tries++;
+        }
+        var collected = [];
+        function hentSide(idx) {
+          if (collected.length >= antall || idx >= pages.length) {
+            if (!collected.length) onError('Fant ingen nye firmaer — alle treff er allerede i lista di. Prøv andre filtre.');
+            else onDone(collected.slice(0, antall));
+            return;
+          }
+          fetch('https://data.brreg.no/enhetsregisteret/api/enheter?' + params + '&size=20&page=' + pages[idx])
+            .then(function (res) { if (!res.ok) throw new Error('feil'); return res.json(); })
+            .then(function (d) {
+              var enheter = (d._embedded && d._embedded.enheter) || [];
+              enheter.forEach(function (e) {
+                if (collected.length >= antall) return;
+                var dup = kunder.some(function (k) { return k.orgnr && e.organisasjonsnummer && k.orgnr === e.organisasjonsnummer; }) ||
+                  collected.some(function (c) { return c.organisasjonsnummer === e.organisasjonsnummer; });
+                if (!dup) collected.push(e);
+              });
+              hentSide(idx + 1);
+            })
+            .catch(function () { hentSide(idx + 1); });
+        }
+        hentSide(0);
+      })
+      .catch(function () { onError('Fikk ikke kontakt med Brønnøysundregisteret. Sjekk internett.'); });
+  }
+
+  function fyllRingeliste(orgId, sted, bransjeKode, btnEl) {
+    if (btnEl) { btnEl.disabled = true; btnEl.textContent = 'Henter firmaer …'; }
+    saveGenPrefs({ orgId: orgId || '', sted: sted || '', bransje: bransjeKode || '' });
+    hentFlereFirmaer(sted, bransjeKode, 10, function (enheter) {
+      enheter.forEach(function (e) {
+        addKunde({ firma: e.navn || '', orgnr: e.organisasjonsnummer || '', adresse: adresseStr(e), telefon: e.telefon || '', kilde: 'ny', organisasjonId: orgId || null, status: 'ikke_kontaktet' });
+      });
+      state.ringeQueue = byggRingeliste(); state.ringeIndex = 0; state.ringeTips = null;
+      state.visRingTilbake = false; state.visSkatt = false;
+      state.view = 'ringe'; render(); window.scrollTo(0, 0);
+    }, function (msg) {
+      alert(msg);
+      if (btnEl) { btnEl.disabled = false; btnEl.textContent = 'Hent 10 nye firmaer'; }
+    });
   }
 
   // ---------- Import / export ----------
@@ -697,6 +768,18 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     return html;
   }
 
+  function fyllPanelHtml() {
+    var prefs = loadGenPrefs();
+    var html = '<div class="panel"><h2 class="panel-title">Fyll ringelista</h2>';
+    html += '<p class="empty-sub" style="margin:0 0 10px;">Henter 10 tilfeldige firmaer fra Brønnøysundregisteret rett inn i ringekøen — og starter ringingen.</p>';
+    html += '<div class="form-grid">';
+    html += '<label>Organisasjon<select id="fyll-org">' + organisasjoner.map(function (o) { return '<option value="' + esc(o.id) + '"' + (o.id === prefs.orgId ? ' selected' : '') + '>' + esc(o.navn) + '</option>'; }).join('') + '</select></label>';
+    html += '<label>Sted (valgfritt)<input id="fyll-sted" autocomplete="off" value="' + esc(prefs.sted || '') + '" placeholder="f.eks. Drammen"></label>';
+    html += '<label>Bransje (valgfritt)<select id="fyll-bransje">' + BRANSJER.map(function (b) { return '<option value="' + esc(b.kode) + '"' + (b.kode === (prefs.bransje || '') ? ' selected' : '') + '>' + esc(b.label) + '</option>'; }).join('') + '</select></label>';
+    html += '</div><button type="button" class="btn btn-primary" data-action="fyll-liste">Hent 10 nye firmaer</button></div>';
+    return html;
+  }
+
   function researchLinksHtml(navn) {
     var html = '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">';
     html += '<a href="https://www.google.com/search?q=' + encodeURIComponent(navn) + '" target="_blank" rel="noopener" class="link-btn">🔍 Google</a>';
@@ -723,7 +806,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       var s = dagensStats();
       html += '<div class="empty-state"><div style="font-size:44px;">🎉</div><p style="font-weight:600;font-size:17px;margin:8px 0 0;">Lista er ferdigringt!</p>';
       html += '<p class="empty-sub">I dag: ' + s.samtaler + ' samtaler · ' + s.solgt + ' solgt · ' + s.nye + ' nye kunder</p></div>';
-      html += '<button type="button" class="btn btn-primary" data-action="nav" data-view="add">Finn nye firmaer å ringe</button>';
+      html += '<button type="button" class="btn btn-primary big-start" data-action="fyll-og-fortsett">📞 Hent 10 nye og fortsett</button>';
       html += '<button type="button" class="btn btn-secondary" data-action="nav" data-view="dashboard">Til forsiden</button>';
       html += '</div>';
       return html;
@@ -745,7 +828,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     if (k.telefon) {
       html += '<a class="call-link call-link-big" href="tel:' + esc(k.telefon.replace(/\s/g, '')) + '">' + phoneIcon() + ' Ring ' + esc(k.telefon) + '</a>';
     } else {
-      html += '<p class="empty-sub" style="margin-top:12px;">Mangler telefonnummer — trykk 1881 over for å finne det, og legg det inn via kundekortet.</p>';
+      html += '<p class="empty-sub" style="margin-top:12px;">Mangler nummer — trykk <strong>📞 1881</strong> over, finn nummeret og lim inn her:</p>';
+      html += '<div style="display:flex;gap:8px;margin-top:8px;"><input id="ringe-tlf" type="tel" placeholder="12345678" style="margin-top:0;flex:1;"><button type="button" class="btn btn-primary" style="margin-top:0;width:auto;padding:10px 18px;" data-action="lagre-tlf" data-id="' + esc(k.id) + '">Lagre</button></div>';
     }
     html += '</div>';
 
@@ -784,14 +868,18 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     var html = '<div class="view view-dashboard"><div class="hero"><div class="hero-number">' + queueLen + '</div><div class="hero-label">i ringekøen nå</div></div>';
     if (queueLen) {
       html += '<button type="button" class="btn btn-primary big-start" data-action="start-ringemodus">📞 Start ringing</button>';
-    } else {
-      html += '<button type="button" class="btn btn-primary big-start" data-action="nav" data-view="add">Finn nytt firma å ringe</button>';
     }
     html += '<div class="panel" style="margin-top:14px;"><h2 class="panel-title">Dagens innsats</h2><div class="stats-grid">';
     html += '<div class="stat"><div class="stat-num">' + s.samtaler + '</div><div class="stat-label">Samtaler</div></div>';
     html += '<div class="stat"><div class="stat-num" style="color:var(--st-won);">' + s.solgt + '</div><div class="stat-label">Solgt i dag</div></div>';
     html += '<div class="stat"><div class="stat-num">' + s.nye + '</div><div class="stat-label">Nye kunder</div></div>';
     html += '</div></div>';
+    if (!kunder.length) {
+      html += '<div class="panel"><h2 class="panel-title">Slik kommer du i gang</h2><ol style="margin:0;padding-left:20px;font-size:14px;line-height:1.9;color:var(--ink-muted);"><li>Velg organisasjon under</li><li>Trykk «Hent 10 nye firmaer»</li><li>Ring — og trykk én knapp etter hver samtale</li></ol></div>';
+    }
+    if (queueLen < 5) {
+      html += fyllPanelHtml();
+    }
     if (overdue.length) {
       html += '<div class="section-label section-label-overdue">Forfalt (' + overdue.length + ')</div>';
       html += overdue.map(function (k) { return kundeCard(k, true); }).join('');
@@ -799,9 +887,6 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     if (dueToday.length) {
       html += '<div class="section-label section-label-today">I dag (' + dueToday.length + ')</div>';
       html += dueToday.map(function (k) { return kundeCard(k, true); }).join('');
-    }
-    if (!total && !queueLen) {
-      html += '<div class="empty-state"><p>Ingen å ringe akkurat nå.</p><p class="empty-sub">Trykk på knappen over — generatoren finner et nytt firma fra Brønnøysundregisteret på sekunder.</p></div>';
     }
     html += '</div>';
     return html;
@@ -1122,6 +1207,18 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       render();
     } else if (action === 'vis-skatt') {
       state.visSkatt = true; render();
+    } else if (action === 'fyll-liste') {
+      var fyllOrg = document.getElementById('fyll-org');
+      var fyllSted = document.getElementById('fyll-sted');
+      var fyllBransje = document.getElementById('fyll-bransje');
+      fyllRingeliste(fyllOrg ? fyllOrg.value : '', fyllSted ? fyllSted.value.trim() : '', fyllBransje ? fyllBransje.value : '', el);
+    } else if (action === 'fyll-og-fortsett') {
+      var prefs = loadGenPrefs();
+      fyllRingeliste(prefs.orgId || (organisasjoner[0] || {}).id || '', prefs.sted || '', prefs.bransje || '', el);
+    } else if (action === 'lagre-tlf') {
+      var tlfInput = document.getElementById('ringe-tlf');
+      var tlfVal = tlfInput ? tlfInput.value.trim() : '';
+      if (tlfVal) { updateKunde(el.dataset.id, { telefon: tlfVal }); render(); }
     } else if (action === 'open-detail') {
       state.view = 'detail'; state.selectedId = id; render();
     } else if (action === 'open-org') {
