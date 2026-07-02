@@ -128,6 +128,16 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
 .generator-result { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; margin: 10px 0 0; }
 .generator-result-name { font-weight: 600; font-size: 14px; }
 .generator-result-addr { font-size: 12px; color: var(--ink-muted); margin-top: 2px; }
+.outcome-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.outcome-btn { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; padding: 14px 8px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: #fff; cursor: pointer; color: var(--ink); }
+.outcome-solgt { grid-column: 1 / -1; background: var(--st-won); border-color: var(--st-won); color: #fff; font-size: 17px; padding: 16px; }
+.when-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; align-items: center; }
+.ringe-progress { font-size: 13px; font-weight: 600; color: var(--ink-muted); margin-bottom: 6px; }
+.progress-track { height: 5px; background: var(--border); border-radius: 999px; margin-bottom: 14px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--brand); border-radius: 999px; }
+.ringe-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; }
+.ringe-name { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 600; }
+.big-start { font-size: 17px; padding: 17px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 </head>
@@ -196,7 +206,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   var organisasjoner = [];
   var generelleInnvendinger = [];
   var kunder = [];
-  var state = { view: 'dashboard', selectedId: null, selectedOrgId: null, search: '', filter: 'all', orgFilter: '', importPreview: null, brregResults: [], genFirma: null, genInnvending: null, visInnvending: false };
+  var state = { view: 'dashboard', selectedId: null, selectedOrgId: null, search: '', filter: 'all', orgFilter: '', importPreview: null, brregResults: [], genFirma: null, genInnvending: null, visInnvending: false, ringeQueue: [], ringeIndex: 0, ringeTips: null, visRingTilbake: false, visSkatt: false };
 
   // ---------- Storage ----------
   function load() {
@@ -234,6 +244,11 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
   function todayStr() {
     var d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  function addDaysStr(n) {
+    var d = new Date();
+    d.setDate(d.getDate() + n);
     return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
   }
   function esc(str) {
@@ -440,9 +455,12 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       })
       .catch(function () { showGeneratorError('Fikk ikke kontakt med Brønnøysundregisteret. Sjekk internett.'); });
   }
-  function pickRandomInnvending() {
-    var orgSelect = document.getElementById('gen-org');
-    var orgId = orgSelect ? orgSelect.value : '';
+  function pickRandomInnvending(orgIdOpt) {
+    var orgId = orgIdOpt;
+    if (orgId === undefined) {
+      var orgSelect = document.getElementById('gen-org');
+      orgId = orgSelect ? orgSelect.value : '';
+    }
     var pool = generelleInnvendinger.slice();
     var org = orgId ? orgById(orgId) : null;
     if (org && org.innvendinger.length) pool = pool.concat(org.innvendinger);
@@ -621,6 +639,135 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     return html;
   }
 
+  // ---------- Ringemodus ----------
+  var SKATT_KORT = 'Si til kunden: «Dette føres som vanlig markedsføringskostnad og er fullt fradragsberettiget — det er en annonse, ikke en gave.» (Skatteloven § 6-1, ingen øvre grense så lenge prisen er rimelig.)';
+
+  function byggRingeliste() {
+    var today = todayStr();
+    var overdue = kunder.filter(function (k) { return k.nesteOppfolging && k.nesteOppfolging < today; }).sort(function (a, b) { return a.nesteOppfolging.localeCompare(b.nesteOppfolging); });
+    var dueToday = kunder.filter(function (k) { return k.nesteOppfolging === today; });
+    var fresh = kunder.filter(function (k) { return !k.nesteOppfolging && k.status === 'ikke_kontaktet'; });
+    var noAnswer = kunder.filter(function (k) { return !k.nesteOppfolging && k.status === 'ingen_svar'; });
+    return overdue.concat(dueToday, fresh, noAnswer).map(function (k) { return k.id; });
+  }
+
+  function loggUtfall(id, status, nesteDato, notat) {
+    var neste = nesteDato || '';
+    if (!neste && status === 'ingen_svar') neste = addDaysStr(1);
+    var label = (STATUS[status] || {}).label || status;
+    addNotat(id, {
+      tekst: notat ? label + ': ' + notat : 'Utfall: ' + label,
+      nesteOppfolging: neste,
+      status: status
+    });
+  }
+
+  function dagensStats() {
+    var today = todayStr();
+    var samtaler = 0, solgt = 0, nye = 0;
+    kunder.forEach(function (k) {
+      k.notater.forEach(function (n) { if (n.dato && n.dato.slice(0, 10) === today) samtaler++; });
+      if (k.status === 'solgt' && (k.oppdatert || '').slice(0, 10) === today) solgt++;
+      if ((k.opprettet || '').slice(0, 10) === today) nye++;
+    });
+    return { samtaler: samtaler, solgt: solgt, nye: nye };
+  }
+
+  function hurtigUtfallHtml(k, context) {
+    var ctx = context || 'detail';
+    var html = '<div class="panel"><h2 class="panel-title">Hvordan gikk samtalen?</h2>';
+    html += '<textarea id="utfall-notat" rows="2" placeholder="Notat fra samtalen (valgfritt) …"></textarea>';
+    html += '<div class="outcome-grid">';
+    html += '<button type="button" class="outcome-btn outcome-solgt" data-action="utfall" data-id="' + esc(k.id) + '" data-status="solgt" data-context="' + ctx + '">🎉 Solgt!</button>';
+    html += '<button type="button" class="outcome-btn" style="color:var(--st-callback);border-color:var(--st-callback);" data-action="vis-ring-tilbake">📅 Ring tilbake</button>';
+    html += '<button type="button" class="outcome-btn" style="color:var(--st-noanswer);border-color:var(--st-noanswer);" data-action="utfall" data-id="' + esc(k.id) + '" data-status="ingen_svar" data-context="' + ctx + '">📵 Ingen svar</button>';
+    html += '<button type="button" class="outcome-btn" style="color:var(--st-no);" data-action="utfall" data-id="' + esc(k.id) + '" data-status="ikke_interessert" data-context="' + ctx + '">Ikke interessert</button>';
+    html += '<button type="button" class="outcome-btn" style="color:var(--st-wrong);" data-action="utfall" data-id="' + esc(k.id) + '" data-status="feil_nummer" data-context="' + ctx + '">Feil nummer</button>';
+    html += '</div>';
+    if (state.visRingTilbake) {
+      html += '<div class="when-chips"><span style="font-size:12px;color:var(--ink-muted);font-weight:600;flex-basis:100%;">Når skal du ringe tilbake?</span>';
+      html += '<button type="button" class="chip" data-action="utfall" data-id="' + esc(k.id) + '" data-status="ring_tilbake" data-when="1" data-context="' + ctx + '">I morgen</button>';
+      html += '<button type="button" class="chip" data-action="utfall" data-id="' + esc(k.id) + '" data-status="ring_tilbake" data-when="3" data-context="' + ctx + '">Om 3 dager</button>';
+      html += '<button type="button" class="chip" data-action="utfall" data-id="' + esc(k.id) + '" data-status="ring_tilbake" data-when="7" data-context="' + ctx + '">Neste uke</button>';
+      html += '<button type="button" class="chip" data-action="utfall" data-id="' + esc(k.id) + '" data-status="ring_tilbake" data-when="14" data-context="' + ctx + '">Om 2 uker</button>';
+      html += '</div>';
+    }
+    html += '<p class="empty-sub" style="margin-top:10px;">Ett trykk lagrer utfallet' + (ctx === 'ringe' ? ' og henter neste kunde' : '') + '. «Ingen svar» settes automatisk opp igjen i morgen.</p>';
+    html += '</div>';
+    return html;
+  }
+
+  function researchLinksHtml(navn) {
+    var html = '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">';
+    html += '<a href="https://www.google.com/search?q=' + encodeURIComponent(navn) + '" target="_blank" rel="noopener" class="link-btn">🔍 Google</a>';
+    html += '<a href="https://www.facebook.com/search/top?q=' + encodeURIComponent(navn) + '" target="_blank" rel="noopener" class="link-btn">📘 Facebook</a>';
+    html += '<a href="https://www.1881.no/bedrift/?query=' + encodeURIComponent(navn) + '" target="_blank" rel="noopener" class="link-btn">📞 1881</a>';
+    html += '<a href="' + esc(proffUrl(navn)) + '" target="_blank" rel="noopener" class="link-btn">📊 Proff</a>';
+    html += '</div>';
+    return html;
+  }
+
+  function renderRingeView() {
+    var queue = state.ringeQueue || [];
+    var i = state.ringeIndex || 0;
+    var k = null;
+    while (i < queue.length) {
+      k = kunder.filter(function (x) { return x.id === queue[i]; })[0];
+      if (k) break;
+      i++;
+    }
+    state.ringeIndex = i;
+    var html = '<div class="view view-ringe">';
+    html += '<button type="button" class="back-btn" data-action="nav" data-view="dashboard">&larr; Avslutt ringemodus</button>';
+    if (!queue.length || i >= queue.length || !k) {
+      var s = dagensStats();
+      html += '<div class="empty-state"><div style="font-size:44px;">🎉</div><p style="font-weight:600;font-size:17px;margin:8px 0 0;">Lista er ferdigringt!</p>';
+      html += '<p class="empty-sub">I dag: ' + s.samtaler + ' samtaler · ' + s.solgt + ' solgt · ' + s.nye + ' nye kunder</p></div>';
+      html += '<button type="button" class="btn btn-primary" data-action="nav" data-view="add">Finn nye firmaer å ringe</button>';
+      html += '<button type="button" class="btn btn-secondary" data-action="nav" data-view="dashboard">Til forsiden</button>';
+      html += '</div>';
+      return html;
+    }
+    var st = STATUS[k.status] || STATUS.ikke_kontaktet;
+    var navn = k.firma || k.kontaktperson || 'Uten navn';
+    var pct = queue.length ? Math.round((i / queue.length) * 100) : 0;
+    html += '<div class="ringe-progress">Kunde ' + (i + 1) + ' av ' + queue.length + '</div>';
+    html += '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>';
+
+    html += '<div class="ringe-card">';
+    html += '<div class="card-top"><div class="ringe-name">' + esc(navn) + '</div><span class="badge" style="color:' + st.color + ';background:' + st.color + '1A">' + st.label + '</span></div>';
+    if (k.firma && k.kontaktperson) html += '<div class="card-sub">' + esc(k.kontaktperson) + '</div>';
+    var kOrg = k.organisasjonId ? orgById(k.organisasjonId) : null;
+    if (kOrg) html += '<div class="org-tag">' + esc(kOrg.navn) + '</div>';
+    if (k.adresse) html += '<div class="card-sub">' + esc(k.adresse) + '</div>';
+    if (k.notater[0]) html += '<div class="card-note">Sist: ' + esc(truncate(k.notater[0].tekst, 100)) + '</div>';
+    html += researchLinksHtml(navn);
+    if (k.telefon) {
+      html += '<a class="call-link call-link-big" href="tel:' + esc(k.telefon.replace(/\s/g, '')) + '">' + phoneIcon() + ' Ring ' + esc(k.telefon) + '</a>';
+    } else {
+      html += '<p class="empty-sub" style="margin-top:12px;">Mangler telefonnummer — trykk 1881 over for å finne det, og legg det inn via kundekortet.</p>';
+    }
+    html += '</div>';
+
+    if (kOrg && kOrg.hvorfor) {
+      html += '<div class="reveal-box"><div class="reveal-label">Derfor støtte ' + esc(kOrg.navn) + '</div><div class="reveal-content"><p>' + esc(kOrg.hvorfor) + '</p></div></div>';
+    }
+    if (!state.ringeTips) state.ringeTips = pickRandomInnvending(k.organisasjonId || '');
+    if (state.ringeTips) {
+      html += '<div class="reveal-box"><div class="reveal-label">Salgstips</div><div class="reveal-content"><p><strong>' + esc(state.ringeTips.innvending) + '</strong></p><p>' + esc(state.ringeTips.tips) + '</p></div><button type="button" class="btn btn-secondary" style="margin-top:8px;" data-action="ringe-nytt-tips">Nytt salgstips</button></div>';
+    }
+    if (state.visSkatt) {
+      html += '<div class="reveal-box"><div class="reveal-label">Skatteargument</div><div class="reveal-content"><p>' + esc(SKATT_KORT) + '</p></div></div>';
+    } else {
+      html += '<button type="button" class="btn btn-secondary" data-action="vis-skatt">Vis skatteargument</button>';
+    }
+
+    html += hurtigUtfallHtml(k, 'ringe');
+    html += '<button type="button" class="btn btn-secondary" data-action="hopp-over">Hopp over →</button>';
+    html += '</div>';
+    return html;
+  }
+
   // ---------- Render: views ----------
   function renderHeader() {
     return '<header class="topbar"><span class="topbar-logo">Ringeliste</span></header>';
@@ -632,7 +779,19 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     var overdue = withDate.filter(function (k) { return k.nesteOppfolging < today; }).sort(function (a, b) { return a.nesteOppfolging.localeCompare(b.nesteOppfolging); });
     var dueToday = withDate.filter(function (k) { return k.nesteOppfolging === today; });
     var total = overdue.length + dueToday.length;
-    var html = '<div class="view view-dashboard"><div class="hero"><div class="hero-number">' + total + '</div><div class="hero-label">å ringe i dag</div></div>';
+    var queueLen = byggRingeliste().length;
+    var s = dagensStats();
+    var html = '<div class="view view-dashboard"><div class="hero"><div class="hero-number">' + queueLen + '</div><div class="hero-label">i ringekøen nå</div></div>';
+    if (queueLen) {
+      html += '<button type="button" class="btn btn-primary big-start" data-action="start-ringemodus">📞 Start ringing</button>';
+    } else {
+      html += '<button type="button" class="btn btn-primary big-start" data-action="nav" data-view="add">Finn nytt firma å ringe</button>';
+    }
+    html += '<div class="panel" style="margin-top:14px;"><h2 class="panel-title">Dagens innsats</h2><div class="stats-grid">';
+    html += '<div class="stat"><div class="stat-num">' + s.samtaler + '</div><div class="stat-label">Samtaler</div></div>';
+    html += '<div class="stat"><div class="stat-num" style="color:var(--st-won);">' + s.solgt + '</div><div class="stat-label">Solgt i dag</div></div>';
+    html += '<div class="stat"><div class="stat-num">' + s.nye + '</div><div class="stat-label">Nye kunder</div></div>';
+    html += '</div></div>';
     if (overdue.length) {
       html += '<div class="section-label section-label-overdue">Forfalt (' + overdue.length + ')</div>';
       html += overdue.map(function (k) { return kundeCard(k, true); }).join('');
@@ -641,8 +800,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       html += '<div class="section-label section-label-today">I dag (' + dueToday.length + ')</div>';
       html += dueToday.map(function (k) { return kundeCard(k, true); }).join('');
     }
-    if (!total) {
-      html += '<div class="empty-state"><p>Ingen oppfølginger i dag.</p><p class="empty-sub">Gå til Kunder for hele listen, eller legg til en ny kunde.</p></div>';
+    if (!total && !queueLen) {
+      html += '<div class="empty-state"><p>Ingen å ringe akkurat nå.</p><p class="empty-sub">Trykk på knappen over — generatoren finner et nytt firma fra Brønnøysundregisteret på sekunder.</p></div>';
     }
     html += '</div>';
     return html;
@@ -701,9 +860,12 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     html += '<div class="detail-head"><h1 class="view-title">' + esc(k.firma || k.kontaktperson || 'Uten navn') + '</h1><span class="badge" style="color:' + st.color + ';background:' + st.color + '1A">' + st.label + '</span></div>';
     if (k.kontaktperson && k.firma) html += '<p class="empty-sub" style="margin-top:-12px;margin-bottom:14px;">' + esc(k.kontaktperson) + '</p>';
     if (k.telefon) html += '<a class="call-link call-link-big" href="tel:' + esc(k.telefon.replace(/\s/g, '')) + '">' + phoneIcon() + ' Ring ' + esc(k.telefon) + '</a>';
+    html += researchLinksHtml(k.firma || k.kontaktperson || '');
+
+    html += hurtigUtfallHtml(k, 'detail');
 
     html += '<form class="panel" data-action="add-notat" data-id="' + esc(k.id) + '">';
-    html += '<h2 class="panel-title">Logg samtale</h2>';
+    html += '<h2 class="panel-title">Detaljert logg (valgfritt)</h2>';
     html += '<div class="form-grid">';
     html += '<label>Hva ble sagt?<textarea name="tekst" rows="3" placeholder="Notat fra samtalen …"></textarea></label>';
     html += '<label>Status<select name="status">' + statusOptions(k.status) + '</select></label>';
@@ -870,6 +1032,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     var app = document.getElementById('app');
     var html = renderHeader();
     if (state.view === 'dashboard') html += renderDashboard();
+    else if (state.view === 'ringe') html += renderRingeView();
     else if (state.view === 'list') html += renderListView();
     else if (state.view === 'detail') html += renderDetailView(state.selectedId);
     else if (state.view === 'add') html += renderAddView();
@@ -934,7 +1097,31 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     if (action === 'nav') {
       state.view = el.dataset.view; state.selectedId = null; state.selectedOrgId = null; state.importPreview = null;
       state.search = ''; state.filter = 'all'; state.orgFilter = '';
+      state.visRingTilbake = false; state.visSkatt = false; state.ringeTips = null;
       render();
+    } else if (action === 'start-ringemodus') {
+      state.ringeQueue = byggRingeliste(); state.ringeIndex = 0; state.ringeTips = null;
+      state.visRingTilbake = false; state.visSkatt = false;
+      state.view = 'ringe'; render(); window.scrollTo(0, 0);
+    } else if (action === 'utfall') {
+      var whenDays = el.dataset.when;
+      var nesteDato = whenDays !== undefined ? addDaysStr(parseInt(whenDays, 10)) : '';
+      var noteEl = document.getElementById('utfall-notat');
+      loggUtfall(id, el.dataset.status, nesteDato, noteEl ? noteEl.value.trim() : '');
+      state.visRingTilbake = false;
+      if (el.dataset.context === 'ringe') { state.ringeIndex++; state.ringeTips = null; state.visSkatt = false; render(); window.scrollTo(0, 0); }
+      else { render(); }
+    } else if (action === 'vis-ring-tilbake') {
+      state.visRingTilbake = !state.visRingTilbake; render();
+    } else if (action === 'hopp-over') {
+      state.ringeIndex++; state.ringeTips = null; state.visRingTilbake = false; state.visSkatt = false; render(); window.scrollTo(0, 0);
+    } else if (action === 'ringe-nytt-tips') {
+      var qId = (state.ringeQueue || [])[state.ringeIndex];
+      var qK = kunder.filter(function (x) { return x.id === qId; })[0];
+      state.ringeTips = pickRandomInnvending(qK ? (qK.organisasjonId || '') : '');
+      render();
+    } else if (action === 'vis-skatt') {
+      state.visSkatt = true; render();
     } else if (action === 'open-detail') {
       state.view = 'detail'; state.selectedId = id; render();
     } else if (action === 'open-org') {
