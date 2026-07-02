@@ -286,7 +286,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   var organisasjoner = [];
   var generelleInnvendinger = [];
   var kunder = [];
-  var state = { view: 'dashboard', selectedId: null, selectedOrgId: null, search: '', filter: 'all', orgFilter: '', importPreview: null, brregResults: [], genFirma: null, genInnvending: null, visInnvending: false, ringeQueue: [], ringeIndex: 0, ringeTips: null, visRingTilbake: false, visSkatt: false, tipsKategori: 'salg' };
+  var state = { view: 'dashboard', selectedId: null, selectedOrgId: null, search: '', filter: 'all', orgFilter: '', importPreview: null, brregResults: [], genFirma: null, genInnvending: null, visInnvending: false, ringeQueue: [], ringeIndex: 0, ringeTips: null, visRingTilbake: false, visSkatt: false, tipsKategori: 'salg', pendingEnhet: null };
 
   // ---------- Storage ----------
   function load() {
@@ -361,6 +361,12 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     var d = new Date(iso);
     return d.getDate() + '. ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear() + ' kl. ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
   }
+  function fmtBelop(n) {
+    if (n == null || isNaN(n)) return '';
+    var abs = Math.abs(n);
+    if (abs >= 1000000) return (n / 1000000).toLocaleString('nb-NO', { maximumFractionDigits: 1 }) + ' mill kr';
+    return Math.round(n).toLocaleString('nb-NO') + ' kr';
+  }
   function phoneIcon() {
     return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
   }
@@ -381,6 +387,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       organisasjonId: data.organisasjonId || null,
       status: data.status || 'ikke_kontaktet',
       nesteOppfolging: data.nesteOppfolging || null,
+      firmainfo: data.firmainfo || null,
       notater: data.notater || [],
       opprettet: now,
       oppdatert: now
@@ -489,6 +496,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     if (orgnrInput) orgnrInput.value = enhet.organisasjonsnummer || '';
     if (adresseInput) adresseInput.value = adrStr;
     if (tlfInput && enhet.telefon) tlfInput.value = enhet.telefon;
+    state.pendingEnhet = enhet;
     var box = document.getElementById('brreg-suggestions');
     if (box) box.innerHTML = '';
   }
@@ -558,6 +566,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   }
   function showGeneratorResult(enhet) {
     state.genFirma = enhet;
+    state.pendingEnhet = enhet;
     state.visInnvending = false;
     state.genInnvending = pickRandomInnvending();
     var firmaInput = document.getElementById('f-firma');
@@ -662,7 +671,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     saveGenPrefs({ orgId: orgId || '', sted: sted || '', bransje: bransjeKode || '' });
     hentFlereFirmaer(sted, bransjeKode, 10, function (enheter) {
       enheter.forEach(function (e) {
-        addKunde({ firma: e.navn || '', orgnr: e.organisasjonsnummer || '', adresse: adresseStr(e), telefon: e.telefon || '', kilde: 'ny', organisasjonId: orgId || null, status: 'ikke_kontaktet' });
+        addKunde({ firma: e.navn || '', orgnr: e.organisasjonsnummer || '', adresse: adresseStr(e), telefon: e.telefon || '', kilde: 'ny', organisasjonId: orgId || null, status: 'ikke_kontaktet', firmainfo: firmainfoFraEnhet(e, false) });
       });
       state.ringeQueue = byggRingeliste(); state.ringeIndex = 0; state.ringeTips = null;
       state.visRingTilbake = false; state.visSkatt = false;
@@ -794,6 +803,103 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     var html = '<option value="">Ingen valgt</option>';
     html += organisasjoner.map(function (o) { return '<option value="' + esc(o.id) + '"' + (o.id === selected ? ' selected' : '') + '>' + esc(o.navn) + '</option>'; }).join('');
     return html;
+  }
+
+  // ---------- Firmainfo (fra Brønnøysundregisteret) ----------
+  function firmainfoFraEnhet(enhet, full) {
+    return {
+      formaal: Array.isArray(enhet.vedtektsfestetFormaal) ? enhet.vedtektsfestetFormaal.join(' ') : (enhet.vedtektsfestetFormaal || ''),
+      bransje: (enhet.naeringskode1 && enhet.naeringskode1.beskrivelse) || '',
+      ansatte: (typeof enhet.antallAnsatte === 'number') ? enhet.antallAnsatte : null,
+      stiftet: (enhet.stiftelsesdato || enhet.registreringsdatoEnhetsregisteret || '').slice(0, 4),
+      orgform: (enhet.organisasjonsform && enhet.organisasjonsform.kode) || '',
+      hjemmeside: enhet.hjemmeside || '',
+      hentet: full ? new Date().toISOString() : null
+    };
+  }
+
+  function firmainfoInnholdHtml(k) {
+    var fi = k.firmainfo;
+    if (!fi) {
+      if (!k.orgnr) return '<p class="empty-sub" style="margin:0;">Mangler org.nr — bruk Google/Proff-lenkene for å sjekke firmaet.</p>';
+      return '<p class="empty-sub" style="margin:0;">Henter firmainfo …</p>';
+    }
+    var html = '';
+    var besk = fi.formaal || fi.bransje;
+    if (besk) html += '<p style="margin:0 0 8px;font-size:14px;line-height:1.5;">' + esc(truncate(besk, 320)) + '</p>';
+    var meta = [];
+    if (fi.formaal && fi.bransje) meta.push(fi.bransje);
+    if (fi.ansatte != null) meta.push(fi.ansatte + ' ansatte');
+    if (fi.stiftet) meta.push('Stiftet ' + fi.stiftet);
+    if (fi.orgform) meta.push(fi.orgform);
+    if (meta.length) html += '<p style="margin:0;font-size:12px;color:var(--ink-muted);">' + esc(meta.join(' · ')) + '</p>';
+    if (fi.omsetning != null || fi.resultat != null) {
+      var oko = [];
+      if (fi.omsetning != null) oko.push('Omsetning' + (fi.regnskapsAar ? ' (' + fi.regnskapsAar + ')' : '') + ': ' + fmtBelop(fi.omsetning));
+      if (fi.resultat != null) oko.push('Resultat: ' + fmtBelop(fi.resultat));
+      html += '<p style="margin:6px 0 0;font-size:12px;font-weight:600;color:var(--brand);">' + esc(oko.join(' · ')) + '</p>';
+    }
+    if (fi.hjemmeside) html += '<p style="margin:6px 0 0;"><a class="link-btn" target="_blank" rel="noopener" href="' + esc(fi.hjemmeside.indexOf('http') === 0 ? fi.hjemmeside : 'https://' + fi.hjemmeside) + '">🌐 ' + esc(fi.hjemmeside) + '</a></p>';
+    if (!html) {
+      if (!fi.hentet && k.orgnr) return '<p class="empty-sub" style="margin:0;">Henter firmainfo …</p>';
+      html = '<p class="empty-sub" style="margin:0;">Ingen beskrivelse registrert i Brønnøysundregisteret — bruk Google/Proff-lenkene.</p>';
+    }
+    return html;
+  }
+
+  function firmainfoBoxHtml(k) {
+    return '<div class="reveal-box"><div class="reveal-label">Om firmaet</div><div id="firmainfo-innhold" data-kunde="' + esc(k.id) + '">' + firmainfoInnholdHtml(k) + '</div></div>';
+  }
+
+  function oppdaterFirmainfoBox(k) {
+    var box = document.getElementById('firmainfo-innhold');
+    if (box && box.dataset.kunde === k.id) box.innerHTML = firmainfoInnholdHtml(k);
+  }
+
+  function hentFirmainfo(k) {
+    if (!k || !k.orgnr) return;
+    if (k.firmainfo && k.firmainfo.hentet) return;
+    fetch('https://data.brreg.no/enhetsregisteret/api/enheter/' + encodeURIComponent(k.orgnr))
+      .then(function (res) { if (!res.ok) throw new Error('feil'); return res.json(); })
+      .then(function (enhet) {
+        var gammel = k.firmainfo || {};
+        k.firmainfo = firmainfoFraEnhet(enhet, true);
+        if (gammel.omsetning != null) k.firmainfo.omsetning = gammel.omsetning;
+        if (gammel.resultat != null) k.firmainfo.resultat = gammel.resultat;
+        if (gammel.regnskapsAar) k.firmainfo.regnskapsAar = gammel.regnskapsAar;
+        save();
+        oppdaterFirmainfoBox(k);
+        hentRegnskap(k);
+      })
+      .catch(function () {
+        var box = document.getElementById('firmainfo-innhold');
+        if (box && box.dataset.kunde === k.id && !k.firmainfo) {
+          box.innerHTML = '<p class="empty-sub" style="margin:0;">Fikk ikke hentet firmainfo nå — bruk Google/Proff-lenkene.</p>';
+        }
+      });
+  }
+
+  function hentRegnskap(k) {
+    if (!k.orgnr || !k.firmainfo) return;
+    if (k.firmainfo.omsetning != null) { return; }
+    fetch('https://data.brreg.no/regnskapsregisteret/regnskap/' + encodeURIComponent(k.orgnr))
+      .then(function (res) { if (!res.ok) throw new Error('feil'); return res.json(); })
+      .then(function (data) {
+        try {
+          var r = Array.isArray(data) ? data[0] : ((data._embedded && data._embedded.regnskap) ? data._embedded.regnskap[0] : data);
+          if (!r) return;
+          var drift = (r.resultatregnskapResultat && r.resultatregnskapResultat.driftsresultat) || {};
+          var oms = drift.driftsinntekter ? drift.driftsinntekter.sumDriftsinntekter : null;
+          var dres = (typeof drift.driftsresultat === 'number') ? drift.driftsresultat : null;
+          if (oms == null && dres == null) return;
+          if (oms != null) k.firmainfo.omsetning = oms;
+          if (dres != null) k.firmainfo.resultat = dres;
+          if (r.regnskapsperiode && r.regnskapsperiode.tilDato) k.firmainfo.regnskapsAar = String(r.regnskapsperiode.tilDato).slice(0, 4);
+          save();
+          oppdaterFirmainfoBox(k);
+        } catch (e) {}
+      })
+      .catch(function () {});
   }
 
   // ---------- Ringemodus ----------
@@ -971,6 +1077,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     }
     html += '</div>';
 
+    html += firmainfoBoxHtml(k);
+
     if (!state.ringeTips) nyttTips(k.organisasjonId || '');
     html += tipsBoxHtml(k.organisasjonId || '');
 
@@ -1074,6 +1182,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     if (k.kontaktperson && k.firma) html += '<p class="empty-sub" style="margin-top:-12px;margin-bottom:14px;">' + esc(k.kontaktperson) + '</p>';
     if (k.telefon) html += '<a class="call-link call-link-big" href="tel:' + esc(k.telefon.replace(/\s/g, '')) + '">' + phoneIcon() + ' Ring ' + esc(k.telefon) + '</a>';
     html += researchLinksHtml(k.firma || k.kontaktperson || '');
+
+    html += firmainfoBoxHtml(k);
 
     html += hurtigUtfallHtml(k, 'detail');
 
@@ -1278,6 +1388,14 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   }
 
   function afterRender() {
+    var fiKunde = null;
+    if (state.view === 'ringe') {
+      var fiQid = (state.ringeQueue || [])[state.ringeIndex];
+      fiKunde = kunder.filter(function (x) { return x.id === fiQid; })[0];
+    } else if (state.view === 'detail') {
+      fiKunde = kunder.filter(function (x) { return x.id === state.selectedId; })[0];
+    }
+    if (fiKunde) hentFirmainfo(fiKunde);
     var searchInput = document.getElementById('search-input');
     if (searchInput) {
       searchInput.addEventListener('input', function () {
@@ -1434,16 +1552,19 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       var firma = (fd.get('firma') || '').toString().trim();
       var kontaktperson = (fd.get('kontaktperson') || '').toString().trim();
       if (!firma && !kontaktperson) { alert('Skriv inn minst bedriftsnavn eller kontaktperson.'); return; }
+      var orgnrVal = (fd.get('orgnr') || '').toString().trim();
+      var pendingFi = (state.pendingEnhet && state.pendingEnhet.organisasjonsnummer === orgnrVal && orgnrVal) ? firmainfoFraEnhet(state.pendingEnhet, false) : null;
       var k = addKunde({
         firma: firma, kontaktperson: kontaktperson,
         telefon: (fd.get('telefon') || '').toString().trim(),
         epost: (fd.get('epost') || '').toString().trim(),
-        orgnr: (fd.get('orgnr') || '').toString().trim(),
+        orgnr: orgnrVal,
         adresse: (fd.get('adresse') || '').toString().trim(),
         kilde: fd.get('kilde'),
-        organisasjonId: fd.get('organisasjonId') || null
+        organisasjonId: fd.get('organisasjonId') || null,
+        firmainfo: pendingFi
       });
-      state.genFirma = null; state.genInnvending = null;
+      state.genFirma = null; state.genInnvending = null; state.pendingEnhet = null;
       state.view = 'detail'; state.selectedId = k.id; render();
     } else if (action === 'edit-kunde') {
       updateKunde(form.dataset.id, {
