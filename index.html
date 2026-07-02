@@ -190,6 +190,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   var SUPABASE_URL = 'https://rkvphgbfyfymilzwgmgp.supabase.co';
   var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJrdnBoZ2JmeWZ5bWlsendnbWdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwMTEyMDMsImV4cCI6MjA5ODU4NzIwM30.ufVPAqsCRgaPUn9nNDdyq4YCQ4bA7LwsaJ-TVxfLAE0';
   var TEAM_STORAGE_KEY = 'ringeliste_teamkode_v1';
+  var TEAM_INFO_KEY = 'ringeliste_teaminfo_v1';
+  var INNHOLD_KEY = 'ringeliste_innhold_v1';
 
   var BRANSJER = [
     { label: 'Alle bransjer', kode: '' },
@@ -207,8 +209,6 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     { label: 'IT og teknologi', kode: '62,63' },
     { label: 'Kultur, idrett og fritid', kode: '90,93' }
   ];
-
-  var TAX_HTML = '<p>Når en bedrift kjøper en støtteannonse og faktisk får en synlig annonseplass igjen, regner Skatteetaten dette som kjøp av en <strong>reklametjeneste</strong> — ikke en gave. Kostnaden er da fradragsberettiget som vanlig markedsføringskostnad (skatteloven § 6-1), <strong>uten tak</strong> — så lenge prisen står i rimelig forhold til hva annonseplassen faktisk er verdt i markedet.</p><p>Er beløpet klart høyere enn reklameverdien tilsier, regnes det overskytende som en gave. Gaver er normalt ikke fradragsberettiget, men for gaver til godkjente frivillige organisasjoner gjelder skatteloven § 6-50: fradrag for gaver til sammen inntil <strong>25 000 kr per år</strong> (krever minst 500 kr til hver organisasjon).</p><p>Praktisk for deg: så lenge annonsen er reell og prisen rimelig, er hele beløpet normalt fradragsberettiget som markedsføring — ikke begrenset av gavegrensen. Dette er generell informasjon, ikke individuell skatterådgivning — ved store beløp bør kunden sjekke med sin regnskapsfører.</p>';
 
   function defaultOrganisasjoner() {
     return [
@@ -258,14 +258,6 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   function saveSkatteTips() {
     try { localStorage.setItem(SKATT_STORAGE_KEY, JSON.stringify(skatteTips)); } catch (e) {}
   }
-  function addSkatteTips(tittel, tekst) {
-    skatteTips.push({ id: uid(), innvending: tittel, tips: tekst });
-    saveSkatteTips();
-  }
-  function deleteSkatteTips(id) {
-    skatteTips = skatteTips.filter(function (i) { return i.id !== id; });
-    saveSkatteTips();
-  }
 
   function defaultOrgFakta(orgId) {
     var fakta = {
@@ -290,32 +282,10 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     };
     return fakta[orgId] ? fakta[orgId].map(function (f) { return { id: uid(), tittel: f.tittel, tekst: f.tekst }; }) : [];
   }
-  function addOrgFakta(orgId, tittel, tekst) {
-    var o = orgById(orgId);
-    if (!o) return;
-    o.fakta = o.fakta || [];
-    o.fakta.push({ id: uid(), tittel: tittel, tekst: tekst });
-    saveOrg();
-  }
-  function deleteOrgFakta(orgId, faktaId) {
-    var o = orgById(orgId);
-    if (!o) return;
-    o.fakta = (o.fakta || []).filter(function (f) { return f.id !== faktaId; });
-    saveOrg();
-  }
-  function mergeNyeSalgstips() {
-    var changed = false;
-    defaultGenerelleInnvendinger().forEach(function (d) {
-      var finnes = generelleInnvendinger.some(function (i) { return i.innvending === d.innvending; });
-      if (!finnes) { generelleInnvendinger.push(d); changed = true; }
-    });
-    if (changed) saveInnvendinger();
-  }
-
   var organisasjoner = [];
   var generelleInnvendinger = [];
   var kunder = [];
-  var state = { view: 'dashboard', selectedId: null, selectedOrgId: null, search: '', filter: 'all', orgFilter: '', eierFilter: '', salgVisning: 'mine', importPreview: null, brregResults: [], ringeQueue: [], ringeIndex: 0, ringeTips: null, visRingTilbake: false, visSkatt: false, tipsKategori: 'salg', pendingEnhet: null, visSalg: false, salgMnd: 12, sisteUtfall: null };
+  var state = { view: 'dashboard', selectedId: null, search: '', filter: 'all', orgFilter: '', eierFilter: '', salgVisning: 'mine', brregResults: [], ringeQueue: [], ringeIndex: 0, ringeTips: null, visRingTilbake: false, visSkatt: false, tipsKategori: 'salg', pendingEnhet: null, visSalg: false, salgMnd: 12, sisteUtfall: null, onboardFeil: null, onboardHenter: false };
 
   // ---------- Storage ----------
   // Kunder kan komme fra eldre versjoner eller andres enheter via skyen —
@@ -460,10 +430,48 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   // oppstart, hvert 25. sekund og når fanen får fokus. Konflikter avgjøres
   // av kundens oppdatert-tidsstempel (nyeste vinner). Sletting er alltid
   // soft-delete (slettet-kolonnen) så den når alle enheter.
-  var sky = { teamkode: '', sistSynk: null, sistPull: null, feil: null, pushTimer: null, pollTimer: null, snapshot: null, pusher: false, pushIgjen: false };
+  var sky = { teamkode: '', team: null, sistSynk: null, sistPull: null, feil: null, pushTimer: null, pollTimer: null, snapshot: null, pusher: false, pushIgjen: false };
 
   function skyKonfigurert() { return !!(SUPABASE_URL && SUPABASE_ANON_KEY); }
   function skyAktiv() { return skyKonfigurert() && !!sky.teamkode; }
+
+  // ---------- Backend-styrt innhold og teaminfo ----------
+  // Salgstips, skattetips og organisasjonsinfo administreres i Supabase
+  // (innhold-tabellen) og er skrivebeskyttet i appen. Radene caches lokalt
+  // for offline-start og bygges om til de samme variablene resten av appen
+  // alltid har brukt (organisasjoner, generelleInnvendinger, skatteTips).
+  var innholdRader = {};
+  function loadInnhold() {
+    try { innholdRader = JSON.parse(localStorage.getItem(INNHOLD_KEY)) || {}; } catch (e) { innholdRader = {}; }
+    byggInnholdLister();
+  }
+  function saveInnhold() {
+    try { localStorage.setItem(INNHOLD_KEY, JSON.stringify(innholdRader)); } catch (e) {}
+  }
+  function byggInnholdLister() {
+    var org = [], salg = [], skatt = [];
+    Object.keys(innholdRader).sort().forEach(function (id) {
+      var r = innholdRader[id];
+      if (!r || r.slettet || !r.data) return;
+      if (r.type === 'organisasjon') org.push(r.data);
+      else if (r.type === 'salgstips') salg.push({ id: r.id, innvending: r.data.innvending, tips: r.data.tips });
+      else if (r.type === 'skattetips') skatt.push({ id: r.id, innvending: r.data.innvending, tips: r.data.tips });
+    });
+    organisasjoner = org;
+    generelleInnvendinger = salg;
+    skatteTips = skatt;
+  }
+  function settTeamInfo(rad) {
+    sky.team = { navn: rad.navn || '', maalSamtaler: Number(rad.maal_samtaler) || 20, maalKroner: Number(rad.maal_kroner) || 10000 };
+    maal = { samtaler: sky.team.maalSamtaler, kroner: sky.team.maalKroner };
+    try { localStorage.setItem(TEAM_INFO_KEY, JSON.stringify(sky.team)); } catch (e) {}
+  }
+  function loadTeamInfo() {
+    try {
+      var t = JSON.parse(localStorage.getItem(TEAM_INFO_KEY));
+      if (t) { sky.team = t; maal = { samtaler: Number(t.maalSamtaler) || 20, kroner: Number(t.maalKroner) || 10000 }; }
+    } catch (e) {}
+  }
 
   // JSONB i Postgres bevarer ikke rekkefølgen på nøkler, så diffing må
   // bruke en nøkkelsortert serialisering for å slippe evige ekko-pusher.
@@ -555,8 +563,17 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     var siden = (!full && sky.sistPull) ? '&sist_endret=gt.' + encodeURIComponent(sky.sistPull) : '';
     return Promise.all([
       skyFetch('kunder?' + team + siden + '&order=sist_endret.asc'),
-      skyFetch('selgere?' + team + siden + '&order=sist_endret.asc')
+      skyFetch('selgere?' + team + siden + '&order=sist_endret.asc'),
+      skyFetch('innhold?' + team + siden + '&order=sist_endret.asc'),
+      skyFetch('team?kode=eq.' + encodeURIComponent(sky.teamkode))
     ]).then(function (res) {
+      if (!res[3].length) {
+        // Teamet er fjernet i backend — send enheten tilbake til onboarding.
+        skyKobleFra();
+        render();
+        return false;
+      }
+      settTeamInfo(res[3][0]);
       var endret = false;
       res[0].forEach(function (rad) {
         if (skyMergeKunde(rad)) endret = true;
@@ -566,6 +583,15 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
         if (skyMergeSelger(rad)) endret = true;
         if (rad.sist_endret > (sky.sistPull || '')) sky.sistPull = rad.sist_endret;
       });
+      if (res[2].length) {
+        res[2].forEach(function (rad) {
+          innholdRader[rad.id] = { id: rad.id, type: rad.type, data: rad.data, slettet: rad.slettet };
+          if (rad.sist_endret > (sky.sistPull || '')) sky.sistPull = rad.sist_endret;
+        });
+        saveInnhold();
+        byggInnholdLister();
+        endret = true;
+      }
       if (endret) {
         if (aktivSelgerId && !selgerById(aktivSelgerId)) setAktivSelger((selgere[0] || {}).id || null);
         save(); saveSelgere();
@@ -664,8 +690,21 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   function skyKobleFra() {
     clearInterval(sky.pollTimer);
     clearTimeout(sky.pushTimer);
-    sky.teamkode = ''; sky.snapshot = null; sky.sistPull = null; sky.sistSynk = null; sky.feil = null;
-    try { localStorage.setItem(TEAM_STORAGE_KEY, ''); } catch (e) {}
+    sky.teamkode = ''; sky.team = null; sky.snapshot = null; sky.sistPull = null; sky.sistSynk = null; sky.feil = null;
+    // Enheten tømmes lokalt — alt ligger trygt i skyen på teamets kode.
+    kunder = [];
+    selgere = [];
+    innholdRader = {};
+    byggInnholdLister();
+    setAktivSelger(null);
+    maal = { samtaler: 20, kroner: 10000 };
+    try {
+      localStorage.setItem(TEAM_STORAGE_KEY, '');
+      localStorage.removeItem(TEAM_INFO_KEY);
+      localStorage.removeItem(INNHOLD_KEY);
+      localStorage.setItem(STORAGE_KEY, '[]');
+      localStorage.setItem(SELGER_STORAGE_KEY, '[]');
+    } catch (e) {}
   }
 
   function skyStatusTekst() {
@@ -794,47 +833,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     save();
   }
 
-  // ---------- Organisasjoner ----------
+  // ---------- Organisasjoner (skrivebeskyttet — administreres i backend) ----------
   function orgById(id) { return organisasjoner.filter(function (x) { return x.id === id; })[0] || null; }
-  function addOrg(data) {
-    var o = { id: uid(), navn: data.navn || '', kortBeskrivelse: data.kortBeskrivelse || '', hvorfor: data.hvorfor || '', innvendinger: [], anbefalteNaeringer: data.anbefalteNaeringer || [] };
-    organisasjoner.push(o);
-    saveOrg();
-    return o;
-  }
-  function updateOrg(id, patch) {
-    var o = orgById(id);
-    if (!o) return;
-    for (var key in patch) { o[key] = patch[key]; }
-    saveOrg();
-  }
-  function deleteOrg(id) {
-    organisasjoner = organisasjoner.filter(function (x) { return x.id !== id; });
-    saveOrg();
-    var changed = false;
-    kunder.forEach(function (k) { if (k.organisasjonId === id) { k.organisasjonId = null; changed = true; } });
-    if (changed) save();
-  }
-  function addOrgInnvending(orgId, innvending, tips) {
-    var o = orgById(orgId);
-    if (!o) return;
-    o.innvendinger.push({ id: uid(), innvending: innvending, tips: tips });
-    saveOrg();
-  }
-  function deleteOrgInnvending(orgId, innvId) {
-    var o = orgById(orgId);
-    if (!o) return;
-    o.innvendinger = o.innvendinger.filter(function (i) { return i.id !== innvId; });
-    saveOrg();
-  }
-  function addGenerellInnvending(innvending, tips) {
-    generelleInnvendinger.push({ id: uid(), innvending: innvending, tips: tips });
-    saveInnvendinger();
-  }
-  function deleteGenerellInnvending(id) {
-    generelleInnvendinger = generelleInnvendinger.filter(function (i) { return i.id !== id; });
-    saveInnvendinger();
-  }
 
   // ---------- Brreg ----------
   function searchBrregLive(navn) {
@@ -890,14 +890,9 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     return params;
   }
   // ---------- Dagsmål og backup-vakt ----------
-  var MAAL_KEY = 'ringeliste_maal_v1';
-  var maal = { samtaler: 20 };
-  function loadMaal() {
-    try { var m = JSON.parse(localStorage.getItem(MAAL_KEY)); if (m && Number(m.samtaler) > 0) maal = { samtaler: Number(m.samtaler) }; } catch (e) {}
-  }
-  function saveMaal() {
-    try { localStorage.setItem(MAAL_KEY, JSON.stringify(maal)); } catch (e) {}
-  }
+  // Dagsmålene styres av teamet i backend (team-tabellen); dette er kun
+  // fallback-verdier for lokal modus og før første synk.
+  var maal = { samtaler: 20, kroner: 10000 };
   var BACKUP_KEY = 'ringeliste_siste_backup_v1';
   function trengerBackup() {
     if (kunder.length < 10) return false;
@@ -981,34 +976,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     });
   }
 
-  // ---------- Import / export ----------
-  function previewImport() {
-    var ta = document.getElementById('import-text');
-    var text = ta ? ta.value : '';
-    var lines = text.split('\n').map(function (l) { return l.trim(); }).filter(Boolean);
-    var rows = lines.map(function (line) {
-      var parts = line.indexOf('\t') !== -1 ? line.split('\t') : line.split(',');
-      return { firma: (parts[0] || '').trim(), telefon: (parts[1] || '').trim() };
-    }).filter(function (r) { return r.firma; });
-    state.importPreview = rows;
-    var area = document.getElementById('import-preview-area');
-    if (area) area.innerHTML = importPreviewHtml();
-  }
-  function importPreviewHtml() {
-    var rows = state.importPreview || [];
-    if (!rows.length) return '<p class="empty-sub">Ingen gyldige linjer funnet.</p>';
-    var list = rows.map(function (r) { return '<div class="import-row"><strong>' + esc(r.firma) + '</strong><span>' + esc(r.telefon) + '</span></div>'; }).join('');
-    return '<div class="import-list">' + list + '</div><p class="empty-sub">' + rows.length + ' kunder klare for import.</p><div class="btn-row"><button class="btn btn-primary" data-action="import-confirm" type="button">Importer ' + rows.length + '</button><button class="btn btn-secondary" data-action="import-cancel" type="button">Avbryt</button></div>';
-  }
-  function confirmImport() {
-    var rows = state.importPreview || [];
-    var importOrgSelect = document.getElementById('import-org');
-    var importOrgId = importOrgSelect ? importOrgSelect.value : '';
-    rows.forEach(function (r) { addKunde({ firma: r.firma, telefon: r.telefon, kilde: 'eksisterende', status: 'ikke_kontaktet', organisasjonId: importOrgId || null }); });
-    state.importPreview = null;
-    state.view = 'list';
-    render();
-  }
+  // ---------- Eksport ----------
   function csvEscape(val) {
     var s = String(val == null ? '' : val);
     if (/[;"\n]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
@@ -1039,41 +1007,6 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     downloadBlob(blob, 'ringeliste-' + todayStr() + '.csv');
     try { localStorage.setItem(BACKUP_KEY, todayStr()); } catch (e) {}
   }
-  function setupImportFile() {
-    var fileInput = document.getElementById('import-json-file');
-    if (!fileInput) return;
-    fileInput.addEventListener('change', function (e) {
-      var file = e.target.files[0];
-      if (!file) return;
-      var reader = new FileReader();
-      reader.onload = function (ev) {
-        try {
-          var data = JSON.parse(ev.target.result);
-          var nyeKunder, nyeOrg, nyeInnv;
-          if (Array.isArray(data)) { nyeKunder = data; nyeOrg = null; nyeInnv = null; }
-          else if (data && Array.isArray(data.kunder)) { nyeKunder = data.kunder; nyeOrg = Array.isArray(data.organisasjoner) ? data.organisasjoner : null; nyeInnv = Array.isArray(data.generelleInnvendinger) ? data.generelleInnvendinger : null; }
-          else { throw new Error('format'); }
-          var melding = 'Dette erstatter ' + kunder.length + ' kunder på enheten med ' + nyeKunder.length + ' fra filen.';
-          if (nyeOrg) melding += ' Organisasjoner og innvendinger gjenopprettes også.';
-          if (confirm(melding + ' Fortsette?')) {
-            kunder = nyeKunder; save();
-            if (nyeOrg) { organisasjoner = nyeOrg; saveOrg(); }
-            if (nyeInnv) { generelleInnvendinger = nyeInnv; saveInnvendinger(); }
-            if (data && Array.isArray(data.skatteTips)) { skatteTips = data.skatteTips; saveSkatteTips(); }
-            if (data && Array.isArray(data.selgere)) {
-              selgere = data.selgere; saveSelgere();
-              if (!selgerById(aktivSelgerId)) setAktivSelger((selgere[0] || {}).id || null);
-            }
-            render();
-          }
-        } catch (err) {
-          alert('Kunne ikke lese filen. Sjekk at det er en gyldig backup-fil.');
-        }
-      };
-      reader.readAsText(file);
-    });
-  }
-
   // ---------- Render: pieces ----------
   function kundeCard(k, showCallback) {
     var st = STATUS[k.status] || STATUS.ikke_kontaktet;
@@ -1501,7 +1434,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   }
 
   // ---------- Render: views ----------
-  function renderHeader() {
+  function renderHeader(enkel) {
+    if (enkel) return '<header class="topbar"><span class="topbar-logo">Ringeliste</span></header>';
     var s = aktivSelger();
     var navn = s ? esc(s.fornavn + (s.etternavn ? ' ' + s.etternavn.charAt(0) + '.' : '')) : 'Velg selger';
     var skyIkon = skyAktiv() ? '<span id="sky-ikon" title="' + esc(skyStatusTekst()) + '" style="font-size:14px;margin-right:2px;' + (sky.feil ? 'opacity:0.35;' : '') + '">☁️</span>' : '';
@@ -1520,7 +1454,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     if (queueLen) {
       html += '<button type="button" class="btn btn-primary big-start" data-action="start-ringemodus">📞 Start ringing</button>';
     }
-    if (trengerBackup()) {
+    if (!skyAktiv() && trengerBackup()) {
       html += '<div class="panel" style="margin-top:14px;border-color:#FDE68A;background:#FFFBEB;"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">';
       html += '<div style="font-size:13px;"><strong>💾 Ta backup</strong><br><span style="color:var(--ink-muted);">' + kunder.length + ' kunder ligger kun på denne enheten.</span></div>';
       html += '<button type="button" class="btn btn-secondary" style="margin:0;width:auto;padding:10px 14px;flex-shrink:0;" data-action="backup-naa">Last ned nå</button>';
@@ -1531,9 +1465,12 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     html += '<div class="stat"><div class="stat-num" style="color:var(--st-won);">' + esc(fmtKort(s.solgtKr)) + '</div><div class="stat-label">Kr solgt i dag (' + s.solgtAntall + ')</div></div>';
     html += '<div class="stat"><div class="stat-num">' + s.nye + '</div><div class="stat-label">Nye kunder</div></div>';
     html += '</div>';
-    var maalPct = Math.min(100, Math.round(s.samtaler / maal.samtaler * 100));
-    html += '<div style="margin-top:12px;"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--ink-muted);margin-bottom:5px;"><span>Dagsmål</span><span>' + s.samtaler + ' av ' + maal.samtaler + ' samtaler' + (s.samtaler >= maal.samtaler ? ' 🎉' : '') + '</span></div>';
+    var maalPct = Math.min(100, Math.round(s.samtaler / (maal.samtaler || 1) * 100));
+    html += '<div style="margin-top:12px;"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--ink-muted);margin-bottom:5px;"><span>Dagsmål samtaler</span><span>' + s.samtaler + ' av ' + maal.samtaler + (s.samtaler >= maal.samtaler ? ' 🎉' : '') + '</span></div>';
     html += '<div class="progress-track" style="margin-bottom:0;"><div class="progress-fill" style="width:' + maalPct + '%"></div></div></div>';
+    var kronePct = Math.min(100, Math.round(s.solgtKr / (maal.kroner || 1) * 100));
+    html += '<div style="margin-top:12px;"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--ink-muted);margin-bottom:5px;"><span>Dagsmål kroner</span><span>' + esc(fmtKort(s.solgtKr)) + ' av ' + esc(fmtKort(maal.kroner)) + (s.solgtKr >= maal.kroner ? ' 🎉' : '') + '</span></div>';
+    html += '<div class="progress-track" style="margin-bottom:0;"><div class="progress-fill" style="width:' + kronePct + '%;background:var(--st-won);"></div></div></div>';
     html += '</div>';
     if (!kunder.length) {
       html += '<div class="panel"><h2 class="panel-title">Slik kommer du i gang</h2><ol style="margin:0;padding-left:20px;font-size:14px;line-height:1.9;color:var(--ink-muted);"><li>Velg organisasjon under</li><li>Trykk «Hent 10 nye firmaer»</li><li>Ring — og trykk én knapp etter hver samtale</li></ol></div>';
@@ -1684,7 +1621,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   }
   function renderListView() {
     var eierValg = [{ v: '', l: 'Alle kunder' }, { v: 'mine', l: 'Mine kunder' }, { v: 'pool', l: 'Poolen (ledige)' }, { v: 'andre', l: 'Andre selgeres' }];
-    return '<div class="view view-list"><h1 class="view-title">Kunder</h1>' +
+    return '<div class="view view-list"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;"><h1 class="view-title">Kunder</h1>' +
+      '<button type="button" class="btn-mini" data-action="nav" data-view="add">+ Legg til kunde</button></div>' +
       '<input type="text" id="search-input" class="search-input" placeholder="Søk navn eller telefon …" value="' + esc(state.search) + '">' +
       '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
       '<select id="eier-filter-select" class="filter-select">' + eierValg.map(function (f) { return '<option value="' + f.v + '"' + (state.eierFilter === f.v ? ' selected' : '') + '>' + f.l + '</option>'; }).join('') + '</select>' +
@@ -1754,11 +1692,12 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       '</div></div>';
   }
   function renderAddView() {
-    var html = '<div class="view view-add"><h1 class="view-title">Ny kunde</h1>';
-    html += '<p class="empty-sub" style="margin:0 2px 12px;">Trenger du nye firmaer å ringe? Bruk «Fyll ringelista» på forsiden. Her legger du inn kunder manuelt.</p>';
+    var html = '<div class="view view-add">';
+    html += '<button type="button" class="back-btn" data-action="back" data-back="list">&larr; Tilbake</button>';
+    html += '<h1 class="view-title">Legg til kunde</h1>';
     html += '<form class="panel" data-action="add-kunde">';
     html += '<div class="form-grid">';
-    html += '<label>Bedrift<input name="firma" id="f-firma" autocomplete="off" placeholder="Bedriftsnavn"></label>';
+    html += '<label>Bedrift<input name="firma" id="f-firma" autocomplete="off" placeholder="Bedriftsnavn — søker automatisk i Brønnøysund"></label>';
     html += '<div id="brreg-suggestions"></div>';
     html += '<label>Kontaktperson<input name="kontaktperson" placeholder="Navn"></label>';
     html += '<label>Telefon<input name="telefon" id="f-telefon" type="tel" placeholder="12345678"></label>';
@@ -1767,141 +1706,53 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     html += '<label>Adresse<input name="adresse" id="f-adresse"></label>';
     html += '<label>Organisasjon<select name="organisasjonId">' + orgOptions(null) + '</select></label>';
     html += '</div><button type="submit" class="btn btn-primary">Lagre kunde</button></form>';
-
-    html += '<div class="panel"><h2 class="panel-title">Importer flere</h2>';
-    html += '<p class="empty-sub">Lim inn én kunde per linje, fra Excel eller skrevet manuelt: Bedriftsnavn, Telefon</p>';
-    html += '<textarea id="import-text" rows="5" placeholder="Eks AS, 12345678&#10;Foo Bygg, 87654321"></textarea>';
-    html += '<label>Organisasjon for disse (valgfritt)<select id="import-org">' + orgOptions(null) + '</select></label>';
-    html += '<button class="btn btn-secondary" data-action="import-preview" type="button">Forhåndsvis import</button>';
-    html += '<div id="import-preview-area">' + (state.importPreview ? importPreviewHtml() : '') + '</div>';
-    html += '</div></div>';
+    html += '</div>';
     return html;
   }
 
-  function skyPanelHtml() {
-    var html = '<div class="panel"><h2 class="panel-title">☁️ Skysynkronisering</h2>';
-    if (!skyKonfigurert()) {
-      html += '<p class="empty-sub" style="margin:0;">Ikke satt opp ennå. Når Supabase-nøkkelen er lagt inn i appen, kan hele teamet dele kundepool på tvers av telefoner herfra.</p></div>';
-      return html;
-    }
-    if (!sky.teamkode) {
-      html += '<p class="empty-sub" style="margin:0 0 10px;">Skriv inn teamkoden deres for å dele kundepoolen med resten av teamet. Alle med samme kode ser de samme kundene og selgerne. Kundene som ligger her fra før lastes opp automatisk.</p>';
-      html += '<form data-action="koble-team" class="form-grid">';
-      html += '<label>Teamkode<input name="teamkode" autocomplete="off" placeholder="F.eks. lund-salg-2026"></label>';
-      html += '<button type="submit" class="btn btn-primary">Koble til</button></form>';
-      html += '<p class="empty-sub" style="margin:10px 0 0;">Velg en kode som er vanskelig å gjette — den fungerer som teamets nøkkel.</p>';
+  // ---------- Onboarding (teamkode → selger) ----------
+  function renderOnboardingTeam() {
+    var html = '<div class="view view-onboarding"><div class="hero" style="padding-top:40px;">';
+    html += '<div style="font-size:44px;">📞</div>';
+    html += '<p style="font-family:\'Space Grotesk\',sans-serif;font-weight:700;font-size:24px;margin:10px 0 4px;">Velkommen til Ringeliste</p>';
+    html += '<p class="hero-label">Skriv inn teamkoden du har fått av teamansvarlig.</p></div>';
+    html += '<form class="panel" data-action="onboard-team"><div class="form-grid">';
+    html += '<label>Teamkode<input name="teamkode" id="onboard-kode" autocomplete="off" autocapitalize="none" placeholder="F.eks. lund-salg"></label>';
+    html += '</div>';
+    if (state.onboardFeil) html += '<p style="color:var(--overdue);font-size:13px;font-weight:600;margin:10px 0 0;">' + esc(state.onboardFeil) + '</p>';
+    html += '<button type="submit" class="btn btn-primary"' + (state.onboardHenter ? ' disabled' : '') + '>' + (state.onboardHenter ? 'Sjekker …' : 'Koble til teamet') + '</button></form>';
+    html += '<p class="empty-sub" style="text-align:center;">Uten teamkode kommer du ikke inn — spør den som administrerer systemet.</p>';
+    html += '</div>';
+    return html;
+  }
+
+  function renderOnboardingSelger() {
+    var html = '<div class="view view-onboarding"><div class="hero" style="padding-top:30px;padding-bottom:10px;">';
+    html += '<p style="font-family:\'Space Grotesk\',sans-serif;font-weight:700;font-size:24px;margin:0 0 4px;">Hvem er du?</p>';
+    html += '<p class="hero-label">' + (sky.team && sky.team.navn ? 'Team: ' + esc(sky.team.navn) : 'Velg profilen din, eller opprett en ny.') + '</p></div>';
+    if (selgere.length) {
+      html += '<div class="panel">';
+      html += selgere.map(function (s) {
+        return '<div class="selger-row"><div class="selger-row-navn">' + esc(selgerNavn(s.id)) + '</div>' +
+          '<button type="button" class="btn-mini" data-action="velg-selger" data-id="' + esc(s.id) + '">Det er meg</button></div>';
+      }).join('');
+      html += '</div>';
     } else {
-      html += '<p style="margin:0;font-size:14px;" id="sky-status-tekst">' + esc(skyStatusTekst()) + '</p>';
-      html += '<p class="empty-sub" style="margin:8px 0 0;">Endringer deles automatisk med alle på teamet. Appen virker også uten nett — den synker igjen når du er på nett.</p>';
-      html += '<button type="button" class="btn btn-secondary" data-action="koble-fra-team">Koble fra dette teamet</button>';
+      html += '<p class="empty-sub" style="text-align:center;">' + (sky.sistSynk ? 'Ingen selgere i teamet ennå — opprett den første under.' : 'Henter teamets selgere …') + '</p>';
     }
-    html += '</div>';
-    return html;
-  }
-
-  function renderToolsView() {
-    var html = '<div class="view view-tools"><h1 class="view-title">Verktøy</h1>';
-    html += skyPanelHtml();
-    html += '<form class="panel" data-action="lagre-maal"><h2 class="panel-title">Dagsmål</h2>';
-    html += '<label>Antall samtaler per dag<input name="samtaler" type="number" inputmode="numeric" min="1" value="' + maal.samtaler + '"></label>';
-    html += '<button type="submit" class="btn btn-secondary">Lagre mål</button></form>';
-    html += '<div class="panel"><h2 class="panel-title">Sikkerhetskopi</h2><p class="empty-sub">Alt lagres kun på denne telefonen/nettleseren — ingenting sendes til noen server. Last ned en kopi jevnlig i tilfelle du bytter telefon eller tømmer nettleserdata.</p>';
-    html += '<button class="btn btn-primary" data-action="export-json" type="button">Last ned backup (JSON)</button>';
-    html += '<button class="btn btn-secondary" data-action="export-csv" type="button">Last ned som regneark (CSV)</button></div>';
-    html += '<div class="panel"><h2 class="panel-title">Gjenopprett backup</h2><p class="empty-sub">Velg en tidligere nedlastet JSON-backup. Dette erstatter alt som ligger her nå.</p><input type="file" id="import-json-file" accept="application/json"></div>';
-    html += '<div class="panel panel-danger"><h2 class="panel-title">Slett alt</h2><p class="empty-sub">Fjerner alle kunder og notater fra denne enheten.</p><button class="btn btn-danger" data-action="clear-all" type="button">Slett alle data</button></div>';
-    html += '</div>';
-    return html;
-  }
-
-  function orgCard(o) {
-    var anb = (o.anbefalteNaeringer || []);
-    return '<div class="org-card" data-action="open-org" data-id="' + esc(o.id) + '"><div class="org-card-name">' + esc(o.navn) + '</div>' +
-      (o.kortBeskrivelse ? '<div class="org-card-desc">' + esc(truncate(o.kortBeskrivelse, 110)) + '</div>' : '') +
-      (anb.length ? '<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;">' + anb.map(function(n){return '<span style="font-size:11px;background:#e6f4f1;color:var(--brand);border-radius:999px;padding:2px 8px;font-weight:600;">' + esc(n) + '</span>';}).join('') + '</div>' : '') +
-      '<div class="org-card-count" style="margin-top:6px;">' + o.innvendinger.length + ' egne salgstips</div></div>';
-  }
-
-  function renderOrgView() {
-    var html = '<div class="view view-org"><h1 class="view-title">Organisasjoner</h1>';
-    html += '<div class="panel"><h2 class="panel-title">Skattefradrag — kort om reglene</h2><div class="tax-fact">' + TAX_HTML + '</div></div>';
-
-    html += '<div class="panel"><h2 class="panel-title">Salgstips for samtalen</h2>';
-    html += generelleInnvendinger.length ? generelleInnvendinger.map(function (i) {
-      return '<div class="innvending-item"><div class="innvending-q">' + esc(i.innvending) + '</div><div class="innvending-a">' + esc(i.tips) + '</div><button type="button" class="innvending-del" data-action="delete-generell-innvending" data-id="' + esc(i.id) + '">Fjern</button></div>';
-    }).join('') : '<p class="empty-sub">Ingen ennå.</p>';
-    html += '<form data-action="add-generell-innvending" class="form-grid" style="margin-top:12px;">';
-    html += '<label>Tipstittel<input name="innvending" placeholder="F.eks. Åpn med et ja-spørsmål"></label>';
-    html += '<label>Forklaring<textarea name="tips" rows="2" placeholder="Hvordan bruke tipset i praksis"></textarea></label>';
-    html += '<button type="submit" class="btn btn-secondary">Legg til salgstips</button></form></div>';
-
-    html += '<div class="panel"><h2 class="panel-title">Skattemessige tips</h2>';
-    html += '<p class="empty-sub" style="margin:0 0 10px;">Vises under «Skatt»-fanen i ringemodus.</p>';
-    html += skatteTips.length ? skatteTips.map(function (i) {
-      return '<div class="innvending-item"><div class="innvending-q">' + esc(i.innvending) + '</div><div class="innvending-a">' + esc(i.tips) + '</div><button type="button" class="innvending-del" data-action="delete-skatte-tips" data-id="' + esc(i.id) + '">Fjern</button></div>';
-    }).join('') : '<p class="empty-sub">Ingen ennå.</p>';
-    html += '<form data-action="add-skatte-tips" class="form-grid" style="margin-top:12px;">';
-    html += '<label>Tipstittel<input name="tittel" placeholder="F.eks. Kjøp før nyttår-argumentet"></label>';
-    html += '<label>Forklaring<textarea name="tekst" rows="2" placeholder="Hva du sier til kunden"></textarea></label>';
-    html += '<button type="submit" class="btn btn-secondary">Legg til skattetips</button></form></div>';
-
-    html += '<h2 class="panel-title" style="margin:4px 2px 10px;">Mine organisasjoner</h2>';
-    html += organisasjoner.length ? organisasjoner.map(function (o) { return orgCard(o); }).join('') : '<p class="empty-sub" style="margin:0 2px 14px;">Ingen lagt til ennå.</p>';
-
-    html += '<form class="panel" data-action="add-org"><h2 class="panel-title">Legg til organisasjon</h2><div class="form-grid">';
-    html += '<label>Navn<input name="navn" placeholder="F.eks. Kreftforeningen"></label>';
-    html += '<label>Kort beskrivelse<textarea name="kortBeskrivelse" rows="2" placeholder="Hva jobber de med?"></textarea></label>';
-    html += '<label>Hvorfor støtte (samtalepunkt)<textarea name="hvorfor" rows="2" placeholder="Argument du kan bruke i samtalen"></textarea></label>';
-    html += '<label>Anbefalte bransjer (kommaseparert)<input name="anbefalteNaeringer" placeholder="F.eks. Bygg og anlegg, Helse- og omsorgstjenester"></label>';
-    html += '</div><button type="submit" class="btn btn-primary">Legg til organisasjon</button></form>';
-    html += '</div>';
-    return html;
-  }
-
-  function renderOrgDetailView(id) {
-    var o = orgById(id);
-    if (!o) return '<div class="view"><p>Fant ikke organisasjonen.</p></div>';
-    var html = '<div class="view view-org-detail">';
-    html += '<button type="button" class="back-btn" data-action="back" data-back="org">&larr; Tilbake</button>';
-    html += '<h1 class="view-title">' + esc(o.navn) + '</h1>';
-
-    html += '<form class="panel" data-action="edit-org" data-id="' + esc(o.id) + '"><div class="form-grid">';
-    html += '<label>Navn<input name="navn" value="' + esc(o.navn) + '"></label>';
-    html += '<label>Kort beskrivelse<textarea name="kortBeskrivelse" rows="3">' + esc(o.kortBeskrivelse) + '</textarea></label>';
-    html += '<label>Hvorfor støtte (samtalepunkt)<textarea name="hvorfor" rows="2">' + esc(o.hvorfor) + '</textarea></label>';
-    html += '<label>Anbefalte bransjer (kommaseparert)<input name="anbefalteNaeringer" value="' + esc((o.anbefalteNaeringer || []).join(', ')) + '" placeholder="F.eks. Bygg og anlegg, Helse- og omsorgstjenester"></label>';
-    html += '</div><button type="submit" class="btn btn-secondary">Lagre endringer</button></form>';
-
-    html += '<div class="panel"><h2 class="panel-title">Organisasjonsinformasjon</h2>';
-    html += '<p class="empty-sub" style="margin:0 0 10px;">Konkrete fakta og argumenter — vises under «Om ' + esc(o.navn) + '»-fanen i ringemodus.</p>';
-    html += (o.fakta && o.fakta.length) ? o.fakta.map(function (f) {
-      return '<div class="innvending-item"><div class="innvending-q">' + esc(f.tittel) + '</div><div class="innvending-a">' + esc(f.tekst) + '</div><button type="button" class="innvending-del" data-action="delete-org-fakta" data-id="' + esc(f.id) + '" data-org="' + esc(o.id) + '">Fjern</button></div>';
-    }).join('') : '<p class="empty-sub">Ingen fakta lagt til ennå.</p>';
-    html += '<form data-action="add-org-fakta" data-id="' + esc(o.id) + '" class="form-grid" style="margin-top:12px;">';
-    html += '<label>Tittel<input name="tittel" placeholder="F.eks. Pollenvarslingen"></label>';
-    html += '<label>Fakta/argument<textarea name="tekst" rows="2" placeholder="Konkret informasjon du kan bruke i samtalen"></textarea></label>';
-    html += '<button type="submit" class="btn btn-secondary">Legg til fakta</button></form></div>';
-
-    html += '<div class="panel"><h2 class="panel-title">Egne salgstips for ' + esc(o.navn) + '</h2>';
-    html += o.innvendinger.length ? o.innvendinger.map(function (i) {
-      return '<div class="innvending-item"><div class="innvending-q">' + esc(i.innvending) + '</div><div class="innvending-a">' + esc(i.tips) + '</div><button type="button" class="innvending-del" data-action="delete-org-innvending" data-id="' + esc(i.id) + '" data-org="' + esc(o.id) + '">Fjern</button></div>';
-    }).join('') : '<p class="empty-sub">Ingen egne ennå — generelle salgstips brukes automatisk.</p>';
-    html += '<form data-action="add-org-innvending" data-id="' + esc(o.id) + '" class="form-grid" style="margin-top:12px;">';
-    html += '<label>Tipstittel<input name="innvending" placeholder="Spesifikt tips for ' + esc(o.navn) + '"></label>';
-    html += '<label>Forklaring<textarea name="tips" rows="2"></textarea></label>';
-    html += '<button type="submit" class="btn btn-secondary">Legg til salgstips</button></form></div>';
-
-    html += '<button type="button" class="btn btn-danger" data-action="delete-org" data-id="' + esc(o.id) + '">Slett organisasjon</button>';
+    html += '<form class="panel" data-action="add-selger"><h2 class="panel-title">Ny selger</h2><div class="form-grid">';
+    html += '<label>Fornavn<input name="fornavn" placeholder="F.eks. Kari"></label>';
+    html += '<label>Etternavn<input name="etternavn" placeholder="F.eks. Nordmann"></label>';
+    html += '</div><button type="submit" class="btn btn-primary">Opprett og start</button></form>';
+    html += '<p class="empty-sub" style="text-align:center;"><button type="button" class="link-btn" style="background:none;border:none;cursor:pointer;font-family:inherit;" data-action="koble-fra-team">Feil team? Bytt teamkode</button></p>';
     html += '</div>';
     return html;
   }
 
   function renderSelgerView() {
     var html = '<div class="view view-selger"><h1 class="view-title">Selgere</h1>';
-    if (!selgere.length) {
-      html += '<div class="panel"><h2 class="panel-title">Velkommen! 👋</h2><p class="empty-sub" style="margin:0;">Opprett en selgerprofil for å komme i gang. Kunder du selger til eller setter oppfølging på blir dine — resten ligger i den felles poolen som alle selgere ringer fra.</p>';
-      if (skyKonfigurert() && !sky.teamkode) html += '<p class="empty-sub" style="margin:8px 0 0;">Er teamet ditt allerede i gang på en annen telefon? Gå til <strong>Verktøy → Skysynkronisering</strong> og skriv inn teamkoden først, så hentes selgerne og kundene automatisk hit.</p>';
-      html += '</div>';
+    if (!selgere.length && !skyKonfigurert()) {
+      html += '<div class="panel"><h2 class="panel-title">Velkommen! 👋</h2><p class="empty-sub" style="margin:0;">Opprett en selgerprofil for å komme i gang. Kunder du selger til eller setter oppfølging på blir dine — resten ligger i den felles poolen som alle selgere ringer fra.</p></div>';
     }
     var aktiv = aktivSelger();
     if (aktiv) {
@@ -1931,18 +1782,45 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     html += '<label>Fornavn<input name="fornavn" placeholder="F.eks. Kari"></label>';
     html += '<label>Etternavn<input name="etternavn" placeholder="F.eks. Nordmann"></label>';
     html += '</div><button type="submit" class="btn btn-primary">Opprett og bytt til denne</button></form>';
+    if (skyAktiv()) {
+      html += '<div class="panel"><h2 class="panel-title">Team' + (sky.team && sky.team.navn ? ': ' + esc(sky.team.navn) : '') + '</h2>';
+      html += '<p style="margin:0;font-size:14px;" id="sky-status-tekst">' + esc(skyStatusTekst()) + '</p>';
+      html += '<p class="empty-sub" style="margin:8px 0 0;">Dagsmål (' + maal.samtaler + ' samtaler · ' + esc(fmtBelop(maal.kroner)) + ' per dag), salgstips og organisasjonsinfo styres av teamansvarlig i backend.</p>';
+      html += '<button class="btn btn-secondary" data-action="export-csv" type="button">Last ned kundeliste (CSV)</button>';
+      html += '<button class="btn btn-secondary" data-action="export-json" type="button">Last ned backup (JSON)</button>';
+      html += '<button type="button" class="btn btn-danger" data-action="koble-fra-team">Koble fra teamet</button>';
+      html += '</div>';
+    } else if (!skyKonfigurert()) {
+      html += '<div class="panel"><h2 class="panel-title">Sikkerhetskopi</h2>';
+      html += '<button class="btn btn-primary" data-action="export-json" type="button">Last ned backup (JSON)</button>';
+      html += '<button class="btn btn-secondary" data-action="export-csv" type="button">Last ned som regneark (CSV)</button></div>';
+    }
     html += '</div>';
     return html;
   }
 
   function renderNav() {
-    var tabs = [{ view: 'dashboard', label: 'I dag' }, { view: 'salg', label: 'Salg' }, { view: 'list', label: 'Kunder' }, { view: 'add', label: 'Ny' }, { view: 'org', label: 'Org' }, { view: 'tools', label: 'Verktøy' }];
-    return '<nav class="bottomnav">' + tabs.map(function (t) { var active = state.view === t.view || (t.view === 'org' && state.view === 'orgDetail'); return '<button type="button" class="navtab ' + (active ? 'navtab-active' : '') + '" data-action="nav" data-view="' + t.view + '">' + t.label + '</button>'; }).join('') + '</nav>';
+    var tabs = [{ view: 'dashboard', label: 'I dag' }, { view: 'list', label: 'Kunder' }, { view: 'salg', label: 'Salg' }];
+    return '<nav class="bottomnav">' + tabs.map(function (t) { var active = state.view === t.view || (t.view === 'list' && (state.view === 'add' || state.view === 'detail')); return '<button type="button" class="navtab ' + (active ? 'navtab-active' : '') + '" data-action="nav" data-view="' + t.view + '">' + t.label + '</button>'; }).join('') + '</nav>';
   }
 
   function render() {
     var app = document.getElementById('app');
-    if (!selgere.length && state.view !== 'tools') state.view = 'selger';
+    // Team-gate: uten gyldig teamkode og valgt selger kommer ingen inn.
+    if (skyKonfigurert()) {
+      if (!sky.teamkode) {
+        app.innerHTML = renderHeader(true) + renderOnboardingTeam();
+        afterRender();
+        return;
+      }
+      if (!aktivSelger()) {
+        app.innerHTML = renderHeader(true) + renderOnboardingSelger();
+        afterRender();
+        return;
+      }
+    } else if (!selgere.length) {
+      state.view = 'selger';
+    }
     var html = renderHeader();
     if (state.view === 'selger') html += renderSelgerView();
     else if (state.view === 'dashboard') html += renderDashboard();
@@ -1951,9 +1829,6 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     else if (state.view === 'list') html += renderListView();
     else if (state.view === 'detail') html += renderDetailView(state.selectedId);
     else if (state.view === 'add') html += renderAddView();
-    else if (state.view === 'org') html += renderOrgView();
-    else if (state.view === 'orgDetail') html += renderOrgDetailView(state.selectedOrgId);
-    else if (state.view === 'tools') html += renderToolsView();
     html += renderNav();
     app.innerHTML = html;
     afterRender();
@@ -1989,7 +1864,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
         timer = setTimeout(function () { searchBrregLive(val); }, 400);
       });
     }
-    setupImportFile();
+    var onboardKode = document.getElementById('onboard-kode');
+    if (onboardKode && !state.onboardHenter) onboardKode.focus();
     var orgFilterSelect = document.getElementById('org-filter-select');
     if (orgFilterSelect) {
       orgFilterSelect.addEventListener('change', function () {
@@ -2022,7 +1898,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
 
     if (action === 'nav') {
       if (state.view === 'ringe') { frigiReservasjoner(aktivSelgerId); state.ringeQueue = []; state.ringeIndex = 0; }
-      state.view = el.dataset.view; state.selectedId = null; state.selectedOrgId = null; state.importPreview = null;
+      state.view = el.dataset.view; state.selectedId = null;
       state.search = ''; state.filter = 'all'; state.orgFilter = ''; state.eierFilter = '';
       state.visRingTilbake = false; state.visSkatt = false; state.ringeTips = null;
       state.visSalg = false; state.salgMnd = 12; state.sisteUtfall = null;
@@ -2104,10 +1980,6 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       var qK2 = kunder.filter(function (x) { return x.id === qId2; })[0];
       nyttTips(qK2 ? (qK2.organisasjonId || '') : '');
       render();
-    } else if (action === 'delete-skatte-tips') {
-      deleteSkatteTips(id); render();
-    } else if (action === 'delete-org-fakta') {
-      deleteOrgFakta(el.dataset.org, id); render();
     } else if (action === 'fyll-liste') {
       var fyllOrg = document.getElementById('fyll-org');
       var fyllSted = document.getElementById('fyll-sted');
@@ -2122,8 +1994,10 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       if (tlfVal) { updateKunde(el.dataset.id, { telefon: tlfVal }); render(); }
     } else if (action === 'open-detail') {
       state.view = 'detail'; state.selectedId = id; render();
-    } else if (action === 'open-org') {
-      state.view = 'orgDetail'; state.selectedOrgId = id; render();
+    } else if (action === 'velg-selger') {
+      setAktivSelger(id);
+      state.view = 'dashboard';
+      render();
     } else if (action === 'back') {
       state.view = el.dataset.back || 'list'; render();
     } else if (action === 'delete-kunde') {
@@ -2131,15 +2005,6 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       if (k && confirm('Slette ' + (k.firma || k.kontaktperson || 'kunden') + '? Dette kan ikke angres.')) {
         deleteKunde(id); state.view = 'list'; render();
       }
-    } else if (action === 'delete-org') {
-      var o = orgById(id);
-      if (o && confirm('Slette ' + o.navn + '? Egne innvendinger for denne organisasjonen forsvinner også.')) {
-        deleteOrg(id); state.view = 'org'; render();
-      }
-    } else if (action === 'delete-org-innvending') {
-      deleteOrgInnvending(el.dataset.org, id); render();
-    } else if (action === 'delete-generell-innvending') {
-      deleteGenerellInnvending(id); render();
     } else if (action === 'angre-utfall') {
       var su = state.sisteUtfall;
       if (su) {
@@ -2170,25 +2035,14 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     } else if (action === 'export-csv') {
       exportCSV();
     } else if (action === 'koble-fra-team') {
-      if (confirm('Koble fra teamet? Dataene blir liggende lokalt på denne enheten, men deles ikke lenger.')) {
-        skyKobleFra(); render();
+      if (confirm('Koble fra teamet? Denne enheten tømmes lokalt, men alt ligger trygt i skyen på teamkoden.')) {
+        skyKobleFra();
+        state.view = 'dashboard';
+        render();
       }
-    } else if (action === 'clear-all') {
-      var clearMelding = skyAktiv()
-        ? 'Slette ALLE kunder og notater? Du er koblet til team «' + sky.teamkode + '», så dette sletter kundene for HELE teamet. Dette kan ikke angres.'
-        : 'Slette ALLE kunder og notater fra denne enheten? Dette kan ikke angres.';
-      if (confirm(clearMelding)) { kunder = []; save(); render(); }
     } else if (action === 'pick-brreg') {
       var enhet = state.brregResults.filter(function (r) { return r.organisasjonsnummer === id; })[0];
       if (enhet) fillBrregIntoForm(enhet);
-    } else if (action === 'import-preview') {
-      previewImport();
-    } else if (action === 'import-confirm') {
-      confirmImport();
-    } else if (action === 'import-cancel') {
-      state.importPreview = null;
-      var area = document.getElementById('import-preview-area');
-      if (area) area.innerHTML = '';
     }
   }
 
@@ -2237,13 +2091,30 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
         nesteOppfolging: nyDato
       });
       render();
-    } else if (action === 'koble-team') {
+    } else if (action === 'onboard-team') {
       var kode = (fd.get('teamkode') || '').toString().trim().toLowerCase();
-      if (!kode) { alert('Skriv inn en teamkode.'); return; }
-      sky.teamkode = kode;
-      try { localStorage.setItem(TEAM_STORAGE_KEY, kode); } catch (e) {}
-      skyKobleTil();
+      if (!kode) { state.onboardFeil = 'Skriv inn teamkoden.'; render(); return; }
+      state.onboardHenter = true; state.onboardFeil = null;
       render();
+      skyFetch('team?kode=eq.' + encodeURIComponent(kode))
+        .then(function (rader) {
+          state.onboardHenter = false;
+          if (!rader.length) {
+            state.onboardFeil = 'Ukjent teamkode — sjekk med teamansvarlig.';
+            render();
+            return;
+          }
+          sky.teamkode = kode;
+          try { localStorage.setItem(TEAM_STORAGE_KEY, kode); } catch (e) {}
+          settTeamInfo(rader[0]);
+          skyKobleTil();
+          render(); // videre til «Hvem er du?» — selgerlista fylles av synken
+        })
+        .catch(function () {
+          state.onboardHenter = false;
+          state.onboardFeil = 'Fikk ikke kontakt — sjekk internettforbindelsen og prøv igjen.';
+          render();
+        });
     } else if (action === 'add-selger') {
       var sFornavn = (fd.get('fornavn') || '').toString().trim();
       var sEtternavn = (fd.get('etternavn') || '').toString().trim();
@@ -2265,52 +2136,21 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
         saveSelgere();
       }
       render();
-    } else if (action === 'lagre-maal') {
-      var nyttMaal = Number(fd.get('samtaler'));
-      if (nyttMaal > 0) { maal = { samtaler: Math.round(nyttMaal) }; saveMaal(); }
-      render();
-    } else if (action === 'add-org') {
-      var navn = (fd.get('navn') || '').toString().trim();
-      if (!navn) { alert('Skriv inn navn på organisasjonen.'); return; }
-      var naerStrNew = (fd.get('anbefalteNaeringer') || '').toString().trim();
-      var naerArrNew = naerStrNew ? naerStrNew.split(',').map(function(s){return s.trim();}).filter(Boolean) : [];
-      addOrg({ navn: navn, kortBeskrivelse: (fd.get('kortBeskrivelse') || '').toString().trim(), hvorfor: (fd.get('hvorfor') || '').toString().trim(), anbefalteNaeringer: naerArrNew });
-      render();
-    } else if (action === 'edit-org') {
-      var naerStr = (fd.get('anbefalteNaeringer') || '').toString().trim();
-      var naerArr = naerStr ? naerStr.split(',').map(function(s){return s.trim();}).filter(Boolean) : [];
-      updateOrg(form.dataset.id, { navn: (fd.get('navn') || '').toString().trim(), kortBeskrivelse: (fd.get('kortBeskrivelse') || '').toString().trim(), hvorfor: (fd.get('hvorfor') || '').toString().trim(), anbefalteNaeringer: naerArr });
-      render();
-    } else if (action === 'add-org-innvending') {
-      var innvO = (fd.get('innvending') || '').toString().trim();
-      if (!innvO) { alert('Skriv inn en innvending.'); return; }
-      addOrgInnvending(form.dataset.id, innvO, (fd.get('tips') || '').toString().trim());
-      render();
-    } else if (action === 'add-generell-innvending') {
-      var innvG = (fd.get('innvending') || '').toString().trim();
-      if (!innvG) { alert('Skriv inn en innvending.'); return; }
-      addGenerellInnvending(innvG, (fd.get('tips') || '').toString().trim());
-      render();
-    } else if (action === 'add-skatte-tips') {
-      var skTittel = (fd.get('tittel') || '').toString().trim();
-      if (!skTittel) { alert('Skriv inn en tittel.'); return; }
-      addSkatteTips(skTittel, (fd.get('tekst') || '').toString().trim());
-      render();
-    } else if (action === 'add-org-fakta') {
-      var faTittel = (fd.get('tittel') || '').toString().trim();
-      if (!faTittel) { alert('Skriv inn en tittel.'); return; }
-      addOrgFakta(form.dataset.id, faTittel, (fd.get('tekst') || '').toString().trim());
-      render();
     }
   }
 
   // ---------- Init ----------
   load();
-  loadOrg();
-  loadInnvendinger();
-  mergeNyeSalgstips();
-  loadSkatteTips();
-  loadMaal();
+  if (skyKonfigurert()) {
+    // Innhold og dagsmål styres i backend — last lokal cache fra forrige synk.
+    loadInnhold();
+    loadTeamInfo();
+  } else {
+    // Lokal modus (uten Supabase-nøkkel): innebygd standardinnhold.
+    loadOrg();
+    loadInnvendinger();
+    loadSkatteTips();
+  }
   loadSelgere();
   // Køen overlever ikke en omlasting — slipp denne selgerens egne
   // reservasjoner. Andres reservasjoner røres ikke (de kan være aktive på
