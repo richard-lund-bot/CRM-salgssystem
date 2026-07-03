@@ -19,6 +19,12 @@ Kommandoen oppretter teamet (eller oppdaterer navn/mål) og kopierer standard sa
 
 **Redigere innhold**: radene ligger i `innhold`-tabellen (type `salgstips`, `skattetips` eller `organisasjon`, JSON i `data`-kolonnen). Endringer når alle telefoner innen ~25 sekunder. Sett `slettet = true` for å fjerne noe.
 
+**Kriterier for «Hent 10» fra Brønnøysundregisteret** (kolonnen `brreg_kriterier` på teamet):
+```sql
+update public.team set brreg_kriterier = brreg_kriterier || '{"minAnsatte": 0}' where kode = 'teamkoden';
+```
+Standard: MVA-registrert, 1–20 ansatte, minst 1 år gammelt, AS/ENK, og kun firmaer med registrert telefonnummer (`kunMedTelefon`). Felt som kan justeres: `mvaRegistrert`, `minAnsatte`, `maksAnsatte` (null = ingen grense), `minAlderAar`, `orgformer` (tom liste = alle), `kunMedTelefon`.
+
 **Kundedata**: `kunder`- og `selgere`-tabellene, hele objektet i `data` (jsonb).
 
 ## Oppsett fra bunnen
