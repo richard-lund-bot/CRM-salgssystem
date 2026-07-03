@@ -1455,7 +1455,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     html += tipsBoxHtml(k.organisasjonId || '');
 
     html += hurtigUtfallHtml(k, 'ringe');
-    html += '<button type="button" class="btn btn-secondary" data-action="hopp-over">Hopp over →</button>';
+    html += '<button type="button" class="btn btn-secondary" data-action="hopp-over">Utsett til i morgen →</button>';
     html += '</div>';
     return html;
   }
@@ -1991,9 +1991,18 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     } else if (action === 'slett-salg') {
       if (confirm('Fjerne dette salget fra loggen?')) { slettSalg(el.dataset.kunde, id); render(); }
     } else if (action === 'hopp-over') {
+      // «Utsett til i morgen»: slipp reservasjonen OG flytt oppfølgingen til
+      // i morgen — ellers er kunden eneste kandidat igjen og kommer rett
+      // tilbake i køen ved neste «Start ringing».
       var skipId = (state.ringeQueue || [])[state.ringeIndex];
       var skipK = kunder.filter(function (x) { return x.id === skipId; })[0];
-      if (skipK && skipK.reservertAv) { skipK.reservertAv = null; skipK.reservertTil = null; save(); }
+      if (skipK) {
+        skipK.reservertAv = null;
+        skipK.reservertTil = null;
+        skipK.nesteOppfolging = addDaysStr(1);
+        skipK.oppdatert = new Date().toISOString();
+        save();
+      }
       state.ringeIndex++; state.ringeTips = null; state.visRingTilbake = false; state.visSkatt = false; state.visSalg = false; render(); window.scrollTo(0, 0);
     } else if (action === 'ringe-nytt-tips') {
       var qId = (state.ringeQueue || [])[state.ringeIndex];
