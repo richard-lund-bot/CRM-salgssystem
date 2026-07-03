@@ -28,6 +28,15 @@ create table if not exists public.team (
   sist_endret timestamptz not null default now()
 );
 
+-- Kriterier for hvilke firmaer «Hent 10» plukker fra Brønnøysundregisteret.
+-- Styres per team herfra — endringer når telefonene innen ~25 sekunder:
+--   update public.team set brreg_kriterier = brreg_kriterier
+--     || '{"minAnsatte": 0}' where kode = 'teamkoden';
+-- Feltene: mvaRegistrert (bool), minAnsatte/maksAnsatte (tall eller null),
+-- minAlderAar (tall), orgformer (liste, tom = alle), kunMedTelefon (bool).
+alter table public.team add column if not exists brreg_kriterier jsonb not null default
+  '{"mvaRegistrert": true, "minAnsatte": 1, "maksAnsatte": 20, "minAlderAar": 1, "orgformer": ["AS", "ENK"], "kunMedTelefon": true}'::jsonb;
+
 -- Backend-styrt innhold: salgstips, skattetips og organisasjonsinfo.
 -- Appen leser kun — endringer gjøres her i Supabase (SQL/Table Editor).
 -- type: 'organisasjon' | 'salgstips' | 'skattetips'

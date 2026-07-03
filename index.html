@@ -462,7 +462,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     skatteTips = skatt;
   }
   function settTeamInfo(rad) {
-    sky.team = { navn: rad.navn || '', maalSamtaler: Number(rad.maal_samtaler) || 20, maalKroner: Number(rad.maal_kroner) || 10000 };
+    sky.team = { navn: rad.navn || '', maalSamtaler: Number(rad.maal_samtaler) || 20, maalKroner: Number(rad.maal_kroner) || 10000, kriterier: rad.brreg_kriterier || null };
     maal = { samtaler: sky.team.maalSamtaler, kroner: sky.team.maalKroner };
     try { localStorage.setItem(TEAM_INFO_KEY, JSON.stringify(sky.team)); } catch (e) {}
   }
@@ -883,11 +883,35 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     var adr = enhet.forretningsadresse || enhet.postadresse;
     return adr ? [(adr.adresse || []).join(' '), adr.postnummer, adr.poststed].filter(Boolean).join(', ') : '';
   }
+  // Standardkriterier for hvilke firmaer som er verdt å ringe. Kan
+  // overstyres per team i backend (brreg_kriterier-kolonnen i team-tabellen).
+  // - MVA-registrert = reell omsetning (minst 50 000 kr) — luker bort sovende firma
+  // - 1–20 ansatte = eieren tar telefonen, ingen sentralbord/markedsavdeling
+  // - minst 1 år gammelt = etablert økonomi
+  // - AS/ENK = kjøpsdyktige selskapsformer der fradragsargumentet treffer
+  // - kunMedTelefon = hopp over firmaer uten nummer i registeret (tidstyven)
+  var BRREG_KRITERIER_STANDARD = { mvaRegistrert: true, minAnsatte: 1, maksAnsatte: 20, minAlderAar: 1, orgformer: ['AS', 'ENK'], kunMedTelefon: true };
+  function brregKriterier() {
+    return (sky.team && sky.team.kriterier) || BRREG_KRITERIER_STANDARD;
+  }
   function brregParams(sted, bransjeKode) {
-    var params = 'underAvvikling=false&underKonkursbehandling=false';
+    var kr = brregKriterier();
+    var params = 'underAvvikling=false&underKonkursbehandling=false&underTvangsavviklingEllerTvangsopplosning=false';
+    if (kr.mvaRegistrert) params += '&registrertIMvaregisteret=true';
+    if (kr.minAnsatte != null) params += '&fraAntallAnsatte=' + encodeURIComponent(kr.minAnsatte);
+    if (kr.maksAnsatte != null) params += '&tilAntallAnsatte=' + encodeURIComponent(kr.maksAnsatte);
+    if (kr.orgformer && kr.orgformer.length) params += '&organisasjonsform=' + encodeURIComponent(kr.orgformer.join(','));
+    if (kr.minAlderAar) {
+      var d = new Date();
+      d.setFullYear(d.getFullYear() - kr.minAlderAar);
+      params += '&tilRegistreringsdatoEnhetsregisteret=' + d.toISOString().slice(0, 10);
+    }
     if (sted) params += '&forretningsadresse.poststed=' + encodeURIComponent(sted.toUpperCase());
     if (bransjeKode) params += '&naeringskode=' + encodeURIComponent(bransjeKode);
     return params;
+  }
+  function enhetTelefon(enhet) {
+    return (enhet.telefon || enhet.mobiltelefon || '').toString().trim();
   }
   // ---------- Dagsmål og backup-vakt ----------
   // Dagsmålene styres av teamet i backend (team-tabellen); dette er kun
@@ -918,9 +942,11 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
         if (!total) { onError('Ingen treff med disse filtrene. Prøv et annet sted eller en annen bransje.'); return; }
         var maxIndex = Math.min(total, 10000);
         var totalPages = Math.max(1, Math.ceil(maxIndex / 20));
+        var kr = brregKriterier();
         var pages = [];
         var tries = 0;
-        while (pages.length < Math.min(6, totalPages) && tries < 40) {
+        // Telefonfilteret forkaster en del treff, så vi prøver flere sider.
+        while (pages.length < Math.min(12, totalPages) && tries < 80) {
           var pg = Math.floor(Math.random() * totalPages);
           if (pages.indexOf(pg) === -1) pages.push(pg);
           tries++;
@@ -928,7 +954,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
         var collected = [];
         function hentSide(idx) {
           if (collected.length >= antall || idx >= pages.length) {
-            if (!collected.length) onError('Fant ingen nye firmaer — alle treff er allerede i lista di. Prøv andre filtre.');
+            if (!collected.length) onError('Fant ingen nye firmaer som oppfyller kriteriene (bl.a. registrert telefonnummer). Prøv et annet sted eller en annen bransje.');
             else onDone(collected.slice(0, antall));
             return;
           }
@@ -938,6 +964,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
               var enheter = (d._embedded && d._embedded.enheter) || [];
               enheter.forEach(function (e) {
                 if (collected.length >= antall) return;
+                if (kr.kunMedTelefon && !enhetTelefon(e)) return;
                 var dup = kunder.some(function (k) { return k.orgnr && e.organisasjonsnummer && k.orgnr === e.organisasjonsnummer; }) ||
                   collected.some(function (c) { return c.organisasjonsnummer === e.organisasjonsnummer; });
                 if (!dup) collected.push(e);
@@ -956,7 +983,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     saveGenPrefs({ orgId: orgId || '', sted: sted || '', bransje: bransjeKode || '' });
     hentFlereFirmaer(sted, bransjeKode, 10, function (enheter) {
       var kandidater = enheter.map(function (e) {
-        return nyKundeObjekt({ firma: e.navn || '', orgnr: e.organisasjonsnummer || '', adresse: adresseStr(e), telefon: e.telefon || '', kilde: 'ny', organisasjonId: orgId || null, status: 'ikke_kontaktet', firmainfo: firmainfoFraEnhet(e, false) });
+        return nyKundeObjekt({ firma: e.navn || '', orgnr: e.organisasjonsnummer || '', adresse: adresseStr(e), telefon: enhetTelefon(e), kilde: 'ny', organisasjonId: orgId || null, status: 'ikke_kontaktet', firmainfo: firmainfoFraEnhet(e, false) });
       });
       if (skyAktiv()) {
         // Sentral duplikatkontroll: databasen hopper over org.nr teamet
@@ -1351,7 +1378,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     var prefs = loadGenPrefs();
     var valgtOrg = (prefs.orgId && orgById(prefs.orgId)) ? prefs.orgId : (organisasjoner[0] || {}).id || '';
     var html = '<div class="panel"><h2 class="panel-title">Fyll ringelista</h2>';
-    html += '<p class="empty-sub" style="margin:0 0 10px;">Henter 10 tilfeldige firmaer fra Brønnøysundregisteret rett inn i ringekøen — og starter ringingen.</p>';
+    html += '<p class="empty-sub" style="margin:0 0 10px;">Henter 10 aktive firmaer med telefonnummer fra Brønnøysundregisteret rett inn i ringekøen — og starter ringingen. Kriteriene styres av teamansvarlig.</p>';
     html += '<div class="form-grid">';
     html += '<label>Organisasjon<select id="fyll-org">' + organisasjoner.map(function (o) { return '<option value="' + esc(o.id) + '"' + (o.id === valgtOrg ? ' selected' : '') + '>' + esc(o.navn) + '</option>'; }).join('') + '</select></label>';
     html += '<div id="fyll-anbefalte">' + anbefalteNaerBadges(valgtOrg) + '</div>';
