@@ -405,13 +405,6 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     });
     if (changed) save();
   }
-  function frigiReservasjoner(selgerId) {
-    var changed = false;
-    kunder.forEach(function (k) {
-      if (k.reservertAv && (!selgerId || k.reservertAv === selgerId)) { k.reservertAv = null; k.reservertTil = null; changed = true; }
-    });
-    if (changed) save();
-  }
   function oppdaterEierEtterUtfall(k, status) {
     k.reservertAv = null;
     k.reservertTil = null;
@@ -1924,7 +1917,10 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     var id = el.dataset.id;
 
     if (action === 'nav') {
-      if (state.view === 'ringe') { frigiReservasjoner(aktivSelgerId); state.ringeQueue = []; state.ringeIndex = 0; }
+      // Reservasjonene beholdes når man forlater ringemodus — køen er
+      // selgerens i 30 minutter (reservertTil), så den overlever både
+      // fanebytte og selgerbytte, og «Start ringing» henter den tilbake.
+      if (state.view === 'ringe') { state.ringeQueue = []; state.ringeIndex = 0; }
       state.view = el.dataset.view; state.selectedId = null;
       state.search = ''; state.filter = 'all'; state.orgFilter = ''; state.eierFilter = '';
       state.visRingTilbake = false; state.visSkatt = false; state.ringeTips = null;
@@ -1933,7 +1929,6 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     } else if (action === 'start-ringemodus') {
       startRingemodus();
     } else if (action === 'bytt-selger') {
-      frigiReservasjoner(aktivSelgerId);
       setAktivSelger(id);
       state.ringeQueue = []; state.ringeIndex = 0; state.sisteUtfall = null;
       render();
@@ -2155,7 +2150,6 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
       var sFornavn = (fd.get('fornavn') || '').toString().trim();
       var sEtternavn = (fd.get('etternavn') || '').toString().trim();
       if (!sFornavn) { alert('Skriv inn fornavn.'); return; }
-      frigiReservasjoner(aktivSelgerId);
       var nySelger = addSelger(sFornavn, sEtternavn);
       setAktivSelger(nySelger.id);
       state.ringeQueue = []; state.ringeIndex = 0; state.sisteUtfall = null;
@@ -2188,10 +2182,9 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
     loadSkatteTips();
   }
   loadSelgere();
-  // Køen overlever ikke en omlasting — slipp denne selgerens egne
-  // reservasjoner. Andres reservasjoner røres ikke (de kan være aktive på
-  // andre telefoner); de utløper uansett via reservertTil.
-  if (aktivSelgerId) frigiReservasjoner(aktivSelgerId);
+  // Reservasjoner overlever omlasting med vilje: «Start ringing» henter
+  // selgerens egne reserverte kunder tilbake, og alt utløper uansett
+  // automatisk via reservertTil (30 min).
   try { sky.teamkode = (localStorage.getItem(TEAM_STORAGE_KEY) || '').trim().toLowerCase(); } catch (e) { sky.teamkode = ''; }
   document.addEventListener('visibilitychange', function () {
     if (!document.hidden && skyAktiv()) skyPull(false).then(function (endret) { if (endret) skyForsiktigRender(); });
