@@ -565,15 +565,30 @@ function visFerdig(mount, okt, resultat) {
   const navnFor = (id) => bib?.ovelseMap?.get(id)?.navn || id;
   const r = resultat || { xp: 0, nyePrs: [], nivaOpp: [] };
 
+  const belIkon = (b) => (b.type === 'avatar' ? b.id : b.type === 'tema' ? '🎨' : b.type === 'tittel' ? '🏅' : b.type === 'ovelse' ? '🏋️' : '✨');
+  const belTekst = (b) => (b.type === 'avatar' ? `Ny avatar ${b.id}` : b.type === 'tema' ? `Nytt tema: ${b.navn}` : b.type === 'tittel' ? `Ny tittel: ${b.navn}` : b.type === 'ovelse' ? `Ny øvelse: ${b.navn}` : (b.navn || 'Belønning'));
+  const belonninger = r.belonninger || [];
+
   const feiringer = [];
   for (const n of r.nivaOpp || []) feiringer.push(el('div', { class: 'feiring feiring--niva' }, `⬆️ ${MODALITET_NAVN[n.modalitet] || n.modalitet} opp til nivå ${n.tilNiva}!`));
-  if (r.globalOpp) feiringer.push(el('div', { class: 'feiring' }, `🌟 Globalt nivå ${r.globalOpp}!`));
   for (const pr of r.nyePrs || []) feiringer.push(el('div', { class: 'feiring feiring--pr' }, `🏆 Ny PR: ${navnFor(pr.id)}`));
   if (r.comeback) feiringer.push(el('div', { class: 'feiring' }, '🔥 Comeback — dobbel XP!'));
 
   monter(mount,
     el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, 'Bra jobba! 🎉')),
     el('main', { class: 'innhold' },
+      // Belønningsnivå-opp: stor feiring med opplåste belønninger
+      r.globalOpp && el('div', { class: 'kort hero levelup' },
+        el('div', { class: 'levelup__glans' }),
+        el('p', { class: 'hero__eyebrow' }, 'Level opp!'),
+        el('div', { class: 'levelup__niva' }, `Nivå ${r.globalOpp}`),
+        el('div', { class: 'levelup__belonninger' },
+          ...belonninger.map((b) => el('div', { class: 'levelup__bel' },
+            el('span', { class: 'levelup__ikon' }, belIkon(b)),
+            el('span', {}, belTekst(b)),
+          )),
+        ),
+      ),
       el('div', { class: 'kort hero' },
         el('p', { class: 'hero__eyebrow' }, 'XP tjent'),
         el('div', { class: 'xp-stor' }, `+${r.xp}`),

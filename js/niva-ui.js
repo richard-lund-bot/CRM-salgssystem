@@ -9,9 +9,29 @@ import {
   raBase, effektivBase, nivaFraBase, momentum, decay, globaltNiva, streak,
   terskel, registrerGateway, bestattGateway,
 } from './niva.js';
+import {
+  nivaFraTotalXp, belonningFor, nesteBelonning, lasteTemaer, lasteAvatarer,
+  tittelFor, TEMAER, AVATARER,
+} from './belonninger.js';
 
 let _bib = null;
 export function settBib(bib) { _bib = bib; }
+
+// Ikon per belønningstype (avatar viser selve emojien).
+function belIkon(b) {
+  return b.type === 'avatar' ? b.id
+    : b.type === 'tema' ? '🎨'
+      : b.type === 'tittel' ? '🏅'
+        : b.type === 'ovelse' ? '🏋️'
+          : '✨';
+}
+function belTekst(b) {
+  return b.type === 'avatar' ? `Avatar ${b.id}`
+    : b.type === 'tema' ? `Tema: ${b.navn}`
+      : b.type === 'tittel' ? `Tittel: ${b.navn}`
+        : b.type === 'ovelse' ? `Ny øvelse: ${b.navn}`
+          : b.navn || 'Belønning';
+}
 
 // Modaliteter vi viser nivåkort for (de med reell progresjon).
 const VIS_MOD = ['STY', 'SKILL', 'HIIT', 'BASE', 'MET', 'CORE', 'PLYO', 'YOGA', 'PIL', 'STR', 'MOB'];
@@ -27,35 +47,136 @@ export function visNivaSkjerm(mount) {
   if (!profil) { location.hash = '#/hjem'; return; }
 
   const st = streak(logg, profil.ukemaal || 4, nå);
-  const gNiva = globaltNiva(profil.globalXp || 0);
 
   tegn();
 
   function tegn() {
+    const p = hentProfil();
+    const info = nivaFraTotalXp(p.globalXp || 0);
     tom(mount);
     mount.append(
       el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, 'Nivå')),
       el('main', { class: 'innhold' },
-        // Globalt + streak
-        el('div', { class: 'kort hero' },
-          el('div', { class: 'globrad' },
-            el('div', {}, el('div', { class: 'glob__tall' }, String(gNiva)), el('div', { class: 'stat__tekst' }, 'globalt nivå')),
-            el('div', {}, el('div', { class: 'glob__tall' }, String(st.uker)), el('div', { class: 'stat__tekst' }, 'ukers streak 🔥')),
-            el('div', {}, el('div', { class: 'glob__tall' }, `${st.denneUken}/${st.ukemaal}`), el('div', { class: 'stat__tekst' }, 'denne uka')),
-          ),
-        ),
-        // Nivåkort per modalitet
+        belonningsHero(p, info, st),
+        belonningsStige(p, info),
+        avatarVelger(p, info),
+        temaVelger(p, info),
+        // Fysisk kapasitet per modalitet
         el('div', { class: 'kort' },
-          el('h2', {}, 'Per treningsform'),
+          el('h2', {}, 'Kapasitet per treningsform'),
           el('div', { class: 'nivliste' },
-            ...VIS_MOD.filter((m) => profil.nivaer?.[m]).map((m) => modKort(m, profil, nå)),
+            ...VIS_MOD.filter((m) => p.nivaer?.[m]).map((m) => modKort(m, p, nå)),
           ),
-          el('p', { class: 'dempet' }, 'Base = kapasitet. Opprykk krever XP + bevis (økter på toppnivå eller gateway).'),
+          el('p', { class: 'dempet' }, 'Base = fysisk kapasitet. Opprykk krever XP + bevis (økter på toppnivå eller gateway). Egen kurve fra belønningsnivået over.'),
         ),
-        // Gateway skill-tree
-        gatewayKort(profil, nå),
+        gatewayKort(p, nå),
       ),
     );
+  }
+
+  // --- Belønningsnivå-hero (stort, hyppig, uten tak) ---
+  function belonningsHero(p, info, st) {
+    const avatar = p.innstillinger?.avatar || '💪';
+    const neste = nesteBelonning(info.niva, _bib);
+    return el('div', { class: 'kort hero nivahero' },
+      el('div', { class: 'nivahero__topp' },
+        el('div', { class: 'nivahero__avatar' }, avatar),
+        el('div', { class: 'nivahero__meta' },
+          el('div', { class: 'nivahero__niva' }, `Nivå ${info.niva}`),
+          el('div', { class: 'nivahero__tittel' }, tittelFor(info.niva)),
+        ),
+        el('div', { class: 'nivahero__streak' }, el('div', { class: 'glob__tall' }, String(st.uker)), el('div', { class: 'stat__tekst' }, 'uker 🔥')),
+      ),
+      el('div', { class: 'xpbar xpbar--stor' }, el('div', { class: 'xpbar__fyll', style: `width:${info.pct}%` })),
+      el('div', { class: 'nivahero__under' },
+        el('span', { class: 'dempet' }, `${info.inne} / ${info.tilNeste} XP`),
+        el('span', { class: 'dempet' }, `Neste: ${belIkon(neste)} ${belTekst(neste)}`),
+      ),
+    );
+  }
+
+  // --- Belønningsstige (rundt gjeldende nivå) ---
+  function belonningsStige(p, info) {
+    const fra = Math.max(2, info.niva - 2);
+    const til = info.niva + 7;
+    const rader = [];
+    for (let n = fra; n <= til; n++) {
+      const b = belonningFor(n, _bib);
+      const ulast = n <= info.niva;
+      rader.push(el('div', { class: 'stige__rad' + (ulast ? ' stige__rad--ulast' : '') + (n === info.niva ? ' stige__rad--na' : '') },
+        el('span', { class: 'stige__niva' }, String(n)),
+        el('span', { class: 'stige__ikon' }, belIkon(b)),
+        el('span', { class: 'stige__tekst' }, belTekst(b)),
+        el('span', { class: 'stige__status' }, ulast ? '✓' : '🔒'),
+      ));
+    }
+    return el('div', { class: 'kort' },
+      el('h2', {}, 'Belønninger'),
+      el('p', { class: 'dempet' }, 'Hvert nivå gir noe nytt — en øvelse, avatar, tema eller tittel. Ingen tak.'),
+      el('div', { class: 'stige' }, ...rader),
+    );
+  }
+
+  // --- Avatar-velger ---
+  function avatarVelger(p, info) {
+    const ulast = lasteAvatarer(info.niva, _bib);
+    const valgt = p.innstillinger?.avatar || '💪';
+    return el('div', { class: 'kort' },
+      el('h2', {}, 'Avatar'),
+      el('div', { class: 'avatargrid' },
+        ...AVATARER.map((a) => {
+          const er = ulast.has(a);
+          const laasNiva = laastPaNiva(a, 'avatar');
+          return el('button', {
+            class: 'avatarknapp' + (valgt === a ? ' avatarknapp--valgt' : '') + (er ? '' : ' avatarknapp--laast'),
+            type: 'button', title: er ? a : `Låses opp på nivå ${laasNiva}`,
+            onclick: er ? () => velg('avatar', a) : undefined,
+          }, er ? a : el('span', { class: 'avatarknapp__laas' }, laasNiva ? `${laasNiva}` : '🔒'));
+        }),
+      ),
+    );
+  }
+
+  // --- Tema-velger ---
+  function temaVelger(p, info) {
+    const ulast = lasteTemaer(info.niva, _bib);
+    const valgt = p.innstillinger?.tema || 'standard';
+    return el('div', { class: 'kort' },
+      el('h2', {}, 'Tema'),
+      el('div', { class: 'temaliste' },
+        ...TEMAER.map((t) => {
+          const er = ulast.has(t.id);
+          const laasNiva = laastPaNiva(t.id, 'tema');
+          return el('button', {
+            class: 'temaknapp' + (valgt === t.id ? ' temaknapp--valgt' : '') + (er ? '' : ' temaknapp--laast'),
+            type: 'button', onclick: er ? () => velg('tema', t.id) : undefined,
+          },
+            el('span', { class: 'temaknapp__prikk', style: `background:${t.prikk}` }),
+            el('span', { class: 'temaknapp__navn' }, t.navn),
+            el('span', { class: 'temaknapp__status' }, valgt === t.id ? '✓' : er ? '' : `🔒 nv ${laasNiva}`),
+          );
+        }),
+      ),
+    );
+  }
+
+  // Finn nivået en avatar/tema låses opp på (for hint).
+  function laastPaNiva(id, type) {
+    for (let n = 2; n <= 120; n++) { const b = belonningFor(n, _bib); if (b.type === type && b.id === id) return n; }
+    return null;
+  }
+
+  // Velg avatar/tema → lagre + anvend + tegn på nytt.
+  function velg(felt, verdi) {
+    const pr = hentProfil();
+    pr.innstillinger = pr.innstillinger || {};
+    pr.innstillinger[felt] = verdi;
+    lagreProfil(pr);
+    if (felt === 'tema') {
+      if (verdi && verdi !== 'standard') document.documentElement.dataset.tema = verdi;
+      else delete document.documentElement.dataset.tema;
+    }
+    tegn();
   }
 
   function modKort(m, profil, nå) {

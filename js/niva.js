@@ -9,6 +9,8 @@
 // streak er *avledet* fra datoer/logg ved lesetid (rene funksjoner) — så en
 // ferie «fryser» ingenting permanent.
 
+import { nivaFraTotalXp, belonningFor } from './belonninger.js';
+
 const DAG = 86400000;
 
 // §4b — intensitet → XP-faktor
@@ -38,11 +40,9 @@ export function terskel(niva) {
   return Math.round(100 * Math.pow(niva, 1.5));
 }
 
-/** Globalt nivå = f(total XP) med konstant 250 — ren pynt, gater ingenting. */
+/** Belønningsnivå = f(total XP) — hyppig, uten tak (kurve i belonninger.js). */
 export function globaltNiva(totalXp) {
-  let n = 1;
-  while (250 * Math.pow(n + 1, 1.5) <= (totalXp || 0)) n++;
-  return n;
+  return nivaFraTotalXp(totalXp).niva;
 }
 
 // --- Øvelsesnivå-opplåsing (§4c) ------------------------------------------
@@ -256,6 +256,9 @@ export function registrerOkt(profil, okt, bib, resultater = [], nå = Date.now()
 
   const globalFør = globaltNiva(profil.globalXp || 0);
   const globalEtter = globaltNiva(p.globalXp);
+  // Belønninger for hvert kryssede belønningsnivå (ny øvelse/avatar/tema/tittel).
+  const belonninger = [];
+  for (let n = globalFør + 1; n <= globalEtter; n++) belonninger.push(belonningFor(n, bib));
 
   return {
     profil: p,
@@ -264,6 +267,7 @@ export function registrerOkt(profil, okt, bib, resultater = [], nå = Date.now()
       nyePrs, nyeØvelser,
       nivaOpp,
       globalOpp: globalEtter > globalFør ? globalEtter : null,
+      belonninger,
       tilNesteBase: terskel(niv.base),
       bevisTeller: niv.bevisTeller,
       xpIModalitet: niv.xp,

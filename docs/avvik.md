@@ -225,3 +225,25 @@ signup; klientens upsert (`on_conflict=user_id`) håndterer dette.
 
 **Auth-oppsett er dashboard-avhengig.** Magic-link krever at Pages-URL-en står i Supabase
 sine Redirect URLs og at e-post er konfigurert — kan ikke settes fra koden. Se README.
+
+## M6 belønninger & temaer (designvalg)
+
+**To adskilte nivåsystemer.** Det fysiske kapasitetsnivået (base per modalitet,
+§12) beholdes uendret — tregt og bevis-gatet. Oppå ligger et *belønningsnivå*
+(js/belonninger.js) som er rent spill-lag: hyppig, uten tak, og gir en belønning
+hvert nivå. Dette løser «level opp ofte + unlock noe hver gang» uten å undergrave
+at det fysiske nivået skal bety noe.
+
+**Kurve.** Belønningsnivå-kostnad = `40 + 20·n` XP fra nivå n til n+1 — lavt tidlig
+(~1 nivå per økt), lineær vekst (aldri eksplosivt), aldri et tak. Erstatter den
+gamle `250·n^1,5`-globalkurven. `globaltNiva()` peker nå hit.
+
+**Belønninger er deterministiske, ikke lagret.** Alt utledes fra total-XP:
+kuraterte milepæler (temaer/avatarer/titler på faste nivåer) + øvrige nivåer fylt
+med «ny øvelse»-reveals i deterministisk rekkefølge (lette først). Ingenting kan
+mistes, og sync trenger ikke lagre stigen. Belønnings-opplåste øvelser legges til
+generatorens tilgjengelige sett (i tillegg til kapasitets-/gateway-opplåste).
+
+**Kosmetikk offline-vennlig.** Avatarer = emoji (ingen bilde-generering). Temaer =
+CSS-variabelpaletter (9 stk, inkl. ett lyst) valgt via `data-tema` på <html>. Valgt
+avatar/tema lagres i `innstillinger` og synkes med profilen.

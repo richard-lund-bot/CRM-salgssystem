@@ -16,6 +16,7 @@ import { settBib as settBibHist, visHistorikkSkjerm } from './historikk.js';
 import {
   effektivBase, raBase, nivaFraBase, momentum, streak, prsFraLogg, globaltNiva,
 } from './niva.js';
+import { nivaFraTotalXp, tittelFor } from './belonninger.js';
 import * as sync from './sync.js';
 
 const app = document.getElementById('app');
@@ -81,6 +82,7 @@ function visHjem() {
   const nå = Date.now();
 
   skjerm('Treningsapp',
+    profilstripe(profil),
     toppkort(profil, logg, nå),
     dagensForslag(profil),
     momentumStrip(profil, nå),
@@ -100,6 +102,21 @@ function velkommenKort() {
     el('h2', {}, 'Velkommen 👋'),
     el('p', {}, 'La oss sette opp profilen din — under 2 minutter.'),
     el('button', { class: 'knapp', type: 'button', onclick: startOnboarding }, 'Kom i gang'),
+  );
+}
+
+// Profilstripe: avatar + tittel + belønningsnivå, lenker til Nivå.
+function profilstripe(profil) {
+  const info = nivaFraTotalXp(profil.globalXp || 0);
+  const avatar = profil.innstillinger?.avatar || '💪';
+  return el('a', { class: 'profilstripe', href: '#/niva' },
+    el('span', { class: 'profilstripe__avatar' }, avatar),
+    el('div', { class: 'profilstripe__meta' },
+      el('span', { class: 'profilstripe__navn' }, tittelFor(info.niva)),
+      el('span', { class: 'profilstripe__niva' }, `Nivå ${info.niva}`),
+    ),
+    el('div', { class: 'profilstripe__bar' }, el('div', { class: 'xpbar' }, el('div', { class: 'xpbar__fyll', style: `width:${info.pct}%` }))),
+    el('span', { class: 'profilstripe__pil' }, '›'),
   );
 }
 
@@ -500,6 +517,12 @@ function byggTabbar() {
   ));
 }
 
+// Anvender valgt app-tema (M6). Kalles ved oppstart og når temaet endres.
+export function bruksTema(id) {
+  if (id && id !== 'standard') document.documentElement.dataset.tema = id;
+  else delete document.documentElement.dataset.tema;
+}
+
 // --- Onboarding ---
 function startOnboarding() {
   document.body.classList.add('fokusmodus');
@@ -526,6 +549,7 @@ async function start() {
   settBibKjor(bib);
   settBibNiva(bib);
   settBibHist(bib);
+  bruksTema(hentProfil()?.innstillinger?.tema);
   window.addEventListener('hashchange', navger);
 
   // Skysync: fang ev. magic-link-retur, og på en ny enhet som nettopp logget

@@ -14,6 +14,48 @@
   font-size: 16px;
 }
 
+/* ==========================================================================
+   Temaer (M6) — låses opp via belønningsstigen, velges i Nivå-skjermen.
+   data-tema settes på <html>. Overstyrer fargevariablene.
+   ========================================================================== */
+:root[data-tema="midnatt"] {
+  --bg: #0b1020; --bg-kort: #141b30; --bg-kort-2: #1c2740; --tekst: #e6ecfb;
+  --dempet: #8894b5; --aksent: #4aa3ff; --aksent-mork: #2b6fd0; --kant: #26324d;
+}
+:root[data-tema="glod"] {
+  --bg: #16100a; --bg-kort: #211812; --bg-kort-2: #2c211a; --tekst: #f4e9df;
+  --dempet: #b59a86; --aksent: #ffb347; --aksent-mork: #c77f28; --kant: #3a2c1f;
+}
+:root[data-tema="oliven"] {
+  --bg: #10140b; --bg-kort: #1a2013; --bg-kort-2: #232b19; --tekst: #eef3e4;
+  --dempet: #9aa688; --aksent: #9bc34a; --aksent-mork: #6d8f2f; --kant: #2c351f;
+}
+:root[data-tema="nordlys"] {
+  --bg: #0d0a1a; --bg-kort: #170f2b; --bg-kort-2: #201640; --tekst: #ece6fb;
+  --dempet: #9488b5; --aksent: #a06bff; --aksent-mork: #6c3fd0; --kant: #2c2450;
+}
+:root[data-tema="rodglod"] {
+  --bg: #160a0c; --bg-kort: #211215; --bg-kort-2: #2c191d; --tekst: #f7e6e8;
+  --dempet: #b58a90; --aksent: #ff5d6c; --aksent-mork: #c73847; --kant: #3a2126;
+}
+:root[data-tema="papir"] {
+  --bg: #f4f2ec; --bg-kort: #ffffff; --bg-kort-2: #ecebe3; --tekst: #1c2228;
+  --dempet: #6b7480; --aksent: #1f8f5d; --aksent-mork: #146b44; --kant: #d9d5cb; --fare: #d33;
+}
+:root[data-tema="mono"] {
+  --bg: #0e1113; --bg-kort: #181c1f; --bg-kort-2: #212629; --tekst: #e7edf3;
+  --dempet: #8b97a5; --aksent: #cfd6dd; --aksent-mork: #8b97a5; --kant: #2a3035;
+}
+:root[data-tema="gull"] {
+  --bg: #14110a; --bg-kort: #1f1a10; --bg-kort-2: #2a2316; --tekst: #f6efdd;
+  --dempet: #b7a678; --aksent: #e8c552; --aksent-mork: #b8952f; --kant: #38301d;
+}
+/* Lyst tema trenger mørk knappetekst-kontrast justert */
+:root[data-tema="papir"] .knapp { color: #f4f2ec; }
+:root[data-tema="papir"] .chip--aktiv, :root[data-tema="papir"] .ob-tggl--på { color: #f4f2ec; }
+:root[data-tema="mono"] .knapp, :root[data-tema="mono"] .chip--aktiv { color: #12161a; }
+:root[data-tema="gull"] .knapp, :root[data-tema="gull"] .chip--aktiv { color: #14110a; }
+
 * { box-sizing: border-box; }
 
 html, body {
@@ -526,3 +568,95 @@ body {
 .streakring { width: 72px; height: 72px; border-radius: 50%; border: 4px solid var(--aksent); display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 0 0 auto; }
 .streakring__tall { font-size: 1.5rem; font-weight: 800; color: var(--aksent); line-height: 1; }
 .streakring__lbl { font-size: 0.6rem; color: var(--dempet); }
+
+/* ==========================================================================
+   M6 — belønningsnivå, avatarer, temaer, level-up
+   ========================================================================== */
+
+/* Profilstripe på hjem */
+.profilstripe {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--bg-kort); border: 1px solid var(--kant); border-radius: var(--radius);
+  padding: 12px 14px; text-decoration: none; color: var(--tekst);
+}
+.profilstripe__avatar {
+  font-size: 1.8rem; width: 46px; height: 46px; flex: 0 0 auto;
+  display: grid; place-items: center; border-radius: 50%;
+  background: var(--bg-kort-2); border: 2px solid var(--aksent);
+}
+.profilstripe__meta { flex: 0 0 auto; }
+.profilstripe__navn { font-weight: 600; display: block; }
+.profilstripe__niva { font-size: 0.8rem; color: var(--aksent); }
+.profilstripe__bar { flex: 1; }
+.profilstripe__pil { color: var(--dempet); font-size: 1.3rem; }
+
+/* Nivå-hero (belønningsnivå) */
+.nivahero__topp { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.nivahero__avatar {
+  font-size: 2.4rem; width: 64px; height: 64px; flex: 0 0 auto;
+  display: grid; place-items: center; border-radius: 50%;
+  background: var(--bg-kort-2); border: 3px solid var(--aksent);
+}
+.nivahero__meta { flex: 1; }
+.nivahero__niva { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em; }
+.nivahero__tittel { color: var(--aksent); font-weight: 600; }
+.nivahero__streak { text-align: center; flex: 0 0 auto; }
+.nivahero__under { display: flex; justify-content: space-between; margin-top: 8px; gap: 10px; font-size: 0.85rem; }
+.xpbar--stor { height: 12px; border-radius: 8px; }
+
+/* Belønningsstige */
+.stige { display: flex; flex-direction: column; }
+.stige__rad {
+  display: flex; align-items: center; gap: 10px; padding: 10px 4px;
+  border-top: 1px solid var(--kant); opacity: 0.5;
+}
+.stige__rad:first-child { border-top: none; }
+.stige__rad--ulast { opacity: 1; }
+.stige__rad--na { background: var(--bg-kort-2); border-radius: 10px; padding: 10px; border: 1px solid var(--aksent); }
+.stige__niva { width: 26px; text-align: center; font-weight: 700; color: var(--dempet); flex: 0 0 auto; }
+.stige__ikon { font-size: 1.2rem; width: 28px; text-align: center; flex: 0 0 auto; }
+.stige__tekst { flex: 1; font-size: 0.9rem; }
+.stige__status { flex: 0 0 auto; font-size: 0.9rem; }
+
+/* Avatar-grid */
+.avatargrid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+.avatarknapp {
+  aspect-ratio: 1; font-size: 1.5rem; border-radius: 12px; cursor: pointer;
+  background: var(--bg-kort-2); border: 2px solid transparent; color: var(--tekst);
+  display: grid; place-items: center;
+}
+.avatarknapp--valgt { border-color: var(--aksent); }
+.avatarknapp--laast { opacity: 0.4; cursor: default; }
+.avatarknapp__laas { font-size: 0.8rem; font-weight: 700; color: var(--dempet); }
+
+/* Tema-liste */
+.temaliste { display: flex; flex-direction: column; gap: 6px; }
+.temaknapp {
+  display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px;
+  background: var(--bg-kort-2); border: 2px solid transparent; color: var(--tekst); cursor: pointer;
+  font-size: 0.95rem; text-align: left;
+}
+.temaknapp--valgt { border-color: var(--aksent); }
+.temaknapp--laast { opacity: 0.5; cursor: default; }
+.temaknapp__prikk { width: 18px; height: 18px; border-radius: 50%; flex: 0 0 auto; border: 1px solid rgba(255,255,255,0.15); }
+.temaknapp__navn { flex: 1; }
+.temaknapp__status { font-size: 0.8rem; color: var(--dempet); }
+
+/* Level-up-feiring på ferdig-skjerm */
+.levelup { position: relative; overflow: hidden; text-align: center; border-color: var(--aksent); }
+.levelup__glans {
+  position: absolute; inset: -40% -10% auto; height: 200%;
+  background: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--aksent) 30%, transparent), transparent 60%);
+  pointer-events: none;
+}
+.levelup__niva { font-size: 2.6rem; font-weight: 800; letter-spacing: -0.02em; color: var(--aksent); margin: 4px 0 12px; }
+.levelup__belonninger { display: flex; flex-direction: column; gap: 8px; position: relative; }
+.levelup__bel {
+  display: flex; align-items: center; gap: 10px; justify-content: center;
+  background: var(--bg-kort-2); border-radius: 10px; padding: 10px; font-weight: 500;
+}
+.levelup__ikon { font-size: 1.3rem; }
+@keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+.levelup__niva, .levelup__bel { animation: pop 0.35s ease-out both; }
+.levelup__bel:nth-child(2) { animation-delay: 0.08s; }
+.levelup__bel:nth-child(3) { animation-delay: 0.16s; }

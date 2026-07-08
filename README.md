@@ -17,10 +17,15 @@ Bygget ved å gjenbruke repoet og Supabase-prosjektet fra en tidligere Ringelist
 | M3 | Onboarding + generator + kjøre-UI | ✅ |
 | M4 | Logging, nivåsystem (base + momentum/decay), gateways, historikk | ✅ |
 | M5 | Skysync (magic link + last-write-wins per rad) | ✅ |
+| M6 | Belønningsnivå (uendelig), avatarer, temaer, level-up | ✅ |
 
 > Appen er offline-first: localStorage er alltid primærkilden, og alt fungerer
 > uten innlogging. Skysync er opt-in — logg inn med e-post i Innstillinger for å
 > dele profil, logg og nivå mellom enheter.
+>
+> **To nivåsystemer:** *kapasitet* per modalitet (base — tregt, meningsfylt, krever
+> bevis) og *belønningsnivå* (hyppig, uten tak — gir en ny øvelse, avatar, tema
+> eller tittel hvert nivå). Se `js/belonninger.js`.
 
 ## Kjøre lokalt
 
@@ -48,6 +53,7 @@ js/
   niva-ui.js            Nivå-skjerm (base + momentum + decay) + gateway skill-tree/test
   historikk.js          §13-visninger: heatmap, ukesvolum, donut, PR-tavle, balanse, øktlogg
   sync.js               skysync: magic-link-auth + PostgREST + last-write-wins-fletting
+  belonninger.js        belønningsnivå (uendelig kurve) + stige: øvelser/avatarer/temaer/titler
   rng.js                seeded PRNG (mulberry32) + stokk/trekk — ingen Math.random()
   ui.js                 DOM-hjelpere
   config.js             Supabase-URL/nøkkel + app-versjon
@@ -70,6 +76,7 @@ scripts/
   smoke-generator.mjs   headless test: determinisme + dekning + ikke-tomme blokker
   smoke-niva.mjs        headless test: XP, opprykk gated på bevis, momentum/decay/streak/PR/gateway
   smoke-sync.mjs        headless test: last-write-wins-fletting (profil + logg per id)
+  smoke-belonninger.mjs headless test: hyppig uendelig kurve + belønning hvert nivå
 docs/                   kildedokumenter + avvikslogg
 manifest.webmanifest    PWA-manifest
 sw.js                   service worker (offline-first)

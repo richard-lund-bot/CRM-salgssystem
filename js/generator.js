@@ -3,7 +3,14 @@
 // filtrere øvelser (utstyr i lokasjonen ∩ nivå ulåst ∩ mønster/modalitet-krav ∩
 // impact-regel) og dele med seed (v1-dealeren, nå generalisert). Ingen Math.random().
 import { lagRng, stokk, rngInt } from './rng.js';
-import { erUlast } from './niva.js';
+import { erUlast, globaltNiva } from './niva.js';
+import { belonningsOvelser } from './belonninger.js';
+
+// Øvelser låst opp via belønningsstigen (dukker opp i generatoren i tillegg til
+// de kapasitets-/gateway-ulåste).
+function belonningsSett(profil, bib) {
+  return belonningsOvelser(globaltNiva(profil?.globalXp || 0), bib);
+}
 
 // --- Lokasjon → tilgjengelig utstyr ---------------------------------------
 export function tilgjengeligUtstyr(bib, profil, lokasjonNavn) {
@@ -64,8 +71,8 @@ function kandidater(bib, filter, ctx, slakk = 0) {
     const variant = velgVariant(e, ctx.utstyrSett);
     if (!variant) continue; // ingen dekket variant på stedet
     const nv = effektivNiva(e, variant);
-    // Myk: nivåtak (base + gateway + overstyring, slakkes på nivå ≥ 2)
-    if (slakk < 2 && !erUlast(ctx.profil, e, nv, ctx.gateways, ctx.nå)) continue;
+    // Myk: nivåtak (base + gateway + belønning + overstyring, slakkes på nivå ≥ 2)
+    if (slakk < 2 && !erUlast(ctx.profil, e, nv, ctx.gateways, ctx.nå) && !ctx.rewardUnlocks.has(e.id)) continue;
     // Myk: unngå høy impact ved lav intensitet (slakkes på nivå ≥ 1)
     if (slakk < 1 && ctx.intensitet <= 2 && e.impact === 'hoy') continue;
     ut.push({ ovelse: e, variant, niva: nv });
@@ -279,6 +286,7 @@ export function genererOkt(bib, profil, valg) {
   const ctx = {
     profil,
     gateways: bib.gateways,
+    rewardUnlocks: belonningsSett(profil, bib),
     nå: valg.nå || Date.now(),
     formatMap: new Map(bib.formats.map((f) => [f.id, f])),
     utstyrSett: tilgjengeligUtstyr(bib, profil, lokasjonNavn),
@@ -316,6 +324,7 @@ export function byttOvelse(bib, profil, okt, blokkIdx, ovelseIdx) {
   const ctx = {
     profil,
     gateways: bib.gateways,
+    rewardUnlocks: belonningsSett(profil, bib),
     nå: Date.now(),
     formatMap: new Map(bib.formats.map((f) => [f.id, f])),
     utstyrSett: tilgjengeligUtstyr(bib, profil, okt.lokasjon),
@@ -352,6 +361,7 @@ export function regenererBlokk(bib, profil, okt, blokkIdx) {
   const ctx = {
     profil,
     gateways: bib.gateways,
+    rewardUnlocks: belonningsSett(profil, bib),
     nå: Date.now(),
     formatMap: new Map(bib.formats.map((f) => [f.id, f])),
     utstyrSett: tilgjengeligUtstyr(bib, profil, okt.lokasjon),
