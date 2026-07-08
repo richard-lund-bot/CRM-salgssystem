@@ -124,6 +124,8 @@ body {
 .kort--info { background: var(--bg-kort-2); }
 .kort p { margin: 0 0 8px; line-height: 1.5; }
 .dempet { color: var(--dempet); font-size: 0.9rem; }
+.dempet--ikon { display: flex; align-items: center; gap: 5px; }
+.dempet--ikon .ikon { flex: 0 0 auto; width: 1em; height: 1em; color: var(--aksent); }
 
 /* Statistikk */
 .statrad {
@@ -139,7 +141,8 @@ body {
   text-align: center;
 }
 .stat__tall { font-size: 1.5rem; font-weight: 700; color: var(--aksent); }
-.stat__tekst { font-size: 0.7rem; color: var(--dempet); margin-top: 2px; }
+.stat__tekst { font-size: 0.7rem; color: var(--dempet); margin-top: 2px; display: inline-flex; align-items: center; justify-content: center; gap: 3px; }
+.stat__tekst .ikon { width: 0.95em; height: 0.95em; color: var(--aksent); }
 
 /* Modalitetsliste */
 .modliste { display: flex; flex-direction: column; }
@@ -395,7 +398,8 @@ body {
   text-align: center; cursor: pointer; color: var(--tekst);
 }
 .ob-kort--valgt { border-color: var(--aksent); background: var(--bg-kort-2); }
-.ob-kort__ikon { font-size: 1.6rem; }
+.ob-kort__ikon { font-size: 1.6rem; color: var(--aksent); }
+.ob-kort__ikon .ikon { width: 1em; height: 1em; }
 .ob-kort__navn { font-size: 0.85rem; line-height: 1.2; }
 .ob-kort__rang {
   position: absolute; top: 8px; right: 8px;
@@ -465,6 +469,9 @@ body {
 .flate__knapper .knapp { flex: 1; }
 
 .kjor-klokke { font-size: 4rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.03em; line-height: 1; }
+.kjor-klokke-wrap { position: relative; width: 220px; height: 220px; display: grid; place-items: center; }
+.kjor-klokke-wrap .ringfremgang { position: absolute; inset: 0; width: 100%; height: 100%; }
+.kjor-klokke-wrap .kjor-klokke { position: relative; z-index: 1; }
 .pust-tall { font-size: 3rem; font-weight: 800; font-variant-numeric: tabular-nums; margin-top: -8px; }
 
 /* Guide-checklist */
@@ -475,7 +482,19 @@ body {
   padding: 14px; color: var(--tekst); cursor: pointer; font-size: 1rem;
 }
 .guide__rad--ferdig { opacity: 0.5; border-color: var(--aksent-mork); }
-.guide__hake { color: var(--aksent); font-size: 1.1rem; flex: 0 0 auto; }
+.guide__hake {
+  width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--kant);
+  display: grid; place-items: center; flex: 0 0 auto; color: #fff;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.guide__hake .ikon {
+  width: 14px; height: 14px; stroke-width: 3; opacity: 0; transform: scale(0.4);
+  transition: opacity 0.18s ease, transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.guide__rad--ferdig .guide__hake { background: var(--aksent); border-color: var(--aksent); }
+.guide__rad--ferdig .guide__hake .ikon { opacity: 1; transform: scale(1); }
+.guide__rad--puls { animation: guidebounce 0.26s ease; }
+@keyframes guidebounce { 0% { transform: scale(1); } 40% { transform: scale(0.97); } 100% { transform: scale(1); } }
 .guide__navn { flex: 1; }
 
 /* Pusteguide-ring */
@@ -499,7 +518,8 @@ body {
 
 /* Ferdig-skjerm XP */
 .xp-stor { font-size: 3.2rem; font-weight: 800; color: var(--aksent); letter-spacing: -0.02em; }
-.feiring { padding: 10px 12px; border-radius: 10px; background: var(--bg-kort-2); margin-bottom: 8px; font-weight: 500; }
+.feiring { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 10px; background: var(--bg-kort-2); margin-bottom: 8px; font-weight: 500; }
+.feiring .ikon { flex: 0 0 auto; width: 1.2em; height: 1.2em; color: var(--aksent); }
 .feiring--niva { background: rgba(45, 212, 137, 0.15); }
 .feiring--pr { background: rgba(255, 212, 121, 0.14); }
 
@@ -544,7 +564,8 @@ body {
 .gw--last { border-color: var(--kant); }
 .gw__topp { display: flex; justify-content: space-between; align-items: center; }
 .gw__navn { font-weight: 600; }
-.gw__status { font-size: 0.78rem; color: var(--dempet); flex: 0 0 auto; }
+.gw__status { font-size: 0.78rem; color: var(--dempet); flex: 0 0 auto; display: inline-flex; align-items: center; gap: 3px; }
+.gw__status .ikon { width: 0.95em; height: 0.95em; }
 .gw__krav { font-size: 0.82rem; color: var(--dempet); }
 
 /* Historikk — heatmap */
@@ -605,7 +626,8 @@ body {
 .streakkort { display: flex; align-items: center; gap: 16px; }
 .streakring { width: 72px; height: 72px; border-radius: 50%; border: 4px solid var(--aksent); display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 0 0 auto; }
 .streakring__tall { font-size: 1.5rem; font-weight: 800; color: var(--aksent); line-height: 1; }
-.streakring__lbl { font-size: 0.6rem; color: var(--dempet); }
+.streakring__lbl { font-size: 0.6rem; color: var(--dempet); display: inline-flex; align-items: center; gap: 2px; }
+.streakring__lbl .ikon { width: 1em; height: 1em; color: var(--aksent); }
 
 /* ==========================================================================
    M6 — belønningsnivå, avatarer, temaer, level-up
@@ -640,6 +662,8 @@ body {
 .nivahero__tittel { color: var(--aksent); font-weight: 600; }
 .nivahero__streak { text-align: center; flex: 0 0 auto; }
 .nivahero__under { display: flex; justify-content: space-between; margin-top: 8px; gap: 10px; font-size: 0.85rem; }
+.nivahero__neste { display: inline-flex; align-items: center; gap: 3px; }
+.nivahero__neste .ikon { width: 1.1em; height: 1.1em; color: var(--aksent); }
 .xpbar--stor { height: 12px; border-radius: 8px; }
 
 /* Belønningsstige */
@@ -652,9 +676,12 @@ body {
 .stige__rad--ulast { opacity: 1; }
 .stige__rad--na { background: var(--bg-kort-2); border-radius: 10px; padding: 10px; border: 1px solid var(--aksent); }
 .stige__niva { width: 26px; text-align: center; font-weight: 700; color: var(--dempet); flex: 0 0 auto; }
-.stige__ikon { font-size: 1.2rem; width: 28px; text-align: center; flex: 0 0 auto; }
+.stige__ikon { width: 28px; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; color: var(--aksent); }
+.stige__ikon .ikon { width: 1.2em; height: 1.2em; }
 .stige__tekst { flex: 1; font-size: 0.9rem; }
-.stige__status { flex: 0 0 auto; font-size: 0.9rem; }
+.stige__status { flex: 0 0 auto; font-size: 0.9rem; display: inline-flex; align-items: center; }
+.stige__status .ikon { width: 1.1em; height: 1.1em; }
+.stige__rad--ulast .stige__status .ikon { color: var(--aksent); }
 
 /* Avatar-grid */
 .avatargrid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
@@ -665,7 +692,8 @@ body {
 }
 .avatarknapp--valgt { border-color: var(--aksent); }
 .avatarknapp--laast { opacity: 0.4; cursor: default; }
-.avatarknapp__laas { font-size: 0.8rem; font-weight: 700; color: var(--dempet); }
+.avatarknapp__laas { font-size: 0.8rem; font-weight: 700; color: var(--dempet); display: inline-flex; align-items: center; }
+.avatarknapp__laas .ikon { width: 1.3em; height: 1.3em; }
 
 /* Tema-liste */
 .temaliste { display: flex; flex-direction: column; gap: 6px; }
@@ -678,7 +706,8 @@ body {
 .temaknapp--laast { opacity: 0.5; cursor: default; }
 .temaknapp__prikk { width: 18px; height: 18px; border-radius: 50%; flex: 0 0 auto; border: 1px solid rgba(255,255,255,0.15); }
 .temaknapp__navn { flex: 1; }
-.temaknapp__status { font-size: 0.8rem; color: var(--dempet); }
+.temaknapp__status { font-size: 0.8rem; color: var(--dempet); display: inline-flex; align-items: center; gap: 3px; flex: 0 0 auto; }
+.temaknapp__status .ikon { width: 1.1em; height: 1.1em; }
 
 /* Level-up-feiring på ferdig-skjerm */
 .levelup { position: relative; overflow: hidden; text-align: center; border-color: var(--aksent); }
@@ -693,7 +722,8 @@ body {
   display: flex; align-items: center; gap: 10px; justify-content: center;
   background: var(--bg-kort-2); border-radius: 10px; padding: 10px; font-weight: 500;
 }
-.levelup__ikon { font-size: 1.3rem; }
+.levelup__ikon { font-size: 1.3rem; flex: 0 0 auto; display: grid; place-items: center; color: var(--aksent); }
+.levelup__ikon .ikon { width: 1.3em; height: 1.3em; }
 @keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 .levelup__niva, .levelup__bel { animation: pop 0.35s ease-out both; }
 .levelup__bel:nth-child(2) { animation-delay: 0.08s; }
@@ -806,7 +836,7 @@ body {
   filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
 }
 .profilstripe__crest { width: 34px; height: 34px; flex: 0 0 auto; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)); }
-.gw__badge { width: 26px; height: 26px; flex: 0 0 auto; }
+.gw__badge { width: 26px; height: 26px; flex: 0 0 auto; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)); }
 
 /* Achievement/PR hexagon-badge (bruker crest-bildene) */
 .krestkort { display: flex; align-items: center; gap: 14px; }
@@ -822,4 +852,82 @@ body {
 .avatarknapp__bilde { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; transform: scale(1.06); }
 .avatarknapp { padding: 4px; }
 .levelup__avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; vertical-align: middle; }
+
+/* ==========================================================================
+   M9 — animasjonsverktøykasse: inngangsanimasjon, trykk-feedback, fyll-
+   overganger, level-up-konfetti. Se js/animasjon.js for tallOpp()/ring().
+   ========================================================================== */
+
+/* Inngang: direkte barn av .innhold glir/tones inn, med trinnvis forsinkelse.
+   Kun direkte barn — nøstede lister (søk, filtrering) re-render uten å trigge
+   animasjonen på nytt siden .innhold selv ikke tømmes ved slike interaksjoner. */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+.innhold > * { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.innhold > *:nth-child(1) { animation-delay: 0ms; }
+.innhold > *:nth-child(2) { animation-delay: 45ms; }
+.innhold > *:nth-child(3) { animation-delay: 90ms; }
+.innhold > *:nth-child(4) { animation-delay: 135ms; }
+.innhold > *:nth-child(5) { animation-delay: 180ms; }
+.innhold > *:nth-child(6) { animation-delay: 225ms; }
+.innhold > *:nth-child(7) { animation-delay: 270ms; }
+.innhold > *:nth-child(8) { animation-delay: 315ms; }
+.innhold > *:nth-child(9) { animation-delay: 360ms; }
+.innhold > *:nth-child(n+10) { animation-delay: 400ms; }
+
+/* Fyll-overganger: progresjon glir i stedet for å hoppe */
+.xpbar__fyll { transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+.bar__fyll { transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+.niva__p { transition: background-color 0.25s ease, transform 0.25s ease; }
+
+/* Trykk-feedback: alle tappbare rader/knapper svarer med et lite trykk */
+.listerad, .modrad, .gw, .temaknapp, .avatarknapp, .ob-kort, .okt__topp,
+.chip, .tabbar__knapp, .profilstripe, .knapp, .ikonknapp {
+  transition: transform 0.12s ease, opacity 0.12s ease, background-color 0.18s ease, border-color 0.18s ease;
+}
+.listerad:active, .modrad:active, .gw:active, .temaknapp:active,
+.avatarknapp:active, .ob-kort:active, .okt__topp:active, .chip:active,
+.profilstripe:active, .ikonknapp:active {
+  transform: scale(0.97);
+}
+.tabbar__knapp:active .tabbar__ikon { transform: scale(0.9); }
+.tabbar__ikon { transition: background 0.18s ease, transform 0.12s ease; }
+.tabbar__knapp { transition: color 0.18s ease; }
+
+/* Sirkulær fremdriftsring for timer-skjermer (satt via js/animasjon.js sin ringSett()) */
+.ringfremgang__spor { fill: none; stroke: var(--kant); }
+.ringfremgang__fyll {
+  fill: none; stroke: var(--aksent); stroke-linecap: round;
+  transform-origin: 50% 50%; transform: rotate(-90deg);
+  transition: stroke-dashoffset 0.35s linear;
+}
+
+/* Tall-opptelling (XP osv.) — selve tallendringen er JS, her kun en myk puls
+   når et nytt tall settes rett etter en telling er ferdig. */
+@keyframes tallpuls { 0% { transform: scale(1.12); } 100% { transform: scale(1); } }
+.tall--puls { animation: tallpuls 0.3s ease-out; }
+
+/* Level-up-konfetti: enkle partikler generert i JS (kjor.js), animert i CSS */
+.konfetti { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.konfetti__brikke {
+  position: absolute; top: -10px; width: 7px; height: 10px; border-radius: 2px;
+  opacity: 0; animation: konfettifall var(--konf-ms, 1400ms) ease-in var(--konf-forsinkelse, 0ms) both;
+}
+@keyframes konfettifall {
+  0% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+  100% { opacity: 0; transform: translate(var(--konf-dx, 0px), 220px) rotate(var(--konf-rot, 220deg)); }
+}
+
+/* Heatmap-celler: kort, diagonal stagger ved historikk-visning */
+.heat__c { animation: fadeInUp 0.4s ease both; }
+
+/* Respekter brukerens redusert-bevegelse-innstilling: dropp inngang/konfetti,
+   behold korte, umiddelbare overganger for status (fyll, trykk-feedback). */
+@media (prefers-reduced-motion: reduce) {
+  .innhold > *, .heat__c, .levelup__niva, .levelup__bel, .guide__rad--puls { animation: none !important; }
+  .konfetti__brikke { display: none; }
+  .xpbar__fyll, .bar__fyll, .ringfremgang__fyll { transition-duration: 0.01ms; }
+  .tabbar__knapp:active .tabbar__ikon, .listerad:active, .modrad:active, .gw:active,
+  .temaknapp:active, .avatarknapp:active, .ob-kort:active, .okt__topp:active,
+  .chip:active, .profilstripe:active, .ikonknapp:active { transform: none; }
+}
 .stige__avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }

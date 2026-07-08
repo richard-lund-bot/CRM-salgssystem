@@ -17,6 +17,7 @@ import {
   effektivBase, raBase, nivaFraBase, momentum, streak, prsFraLogg, globaltNiva,
 } from './niva.js';
 import { nivaFraTotalXp, tittelFor, tierBadge, avatarBilde, erBildeAvatar, STANDARD_AVATAR } from './belonninger.js';
+import { fyllInn } from './animasjon.js';
 import * as sync from './sync.js';
 
 const app = document.getElementById('app');
@@ -112,13 +113,15 @@ function profilstripe(profil) {
   const avatarInnhold = erBildeAvatar(avatar)
     ? el('img', { class: 'profilstripe__avatarbilde', src: avatarBilde(avatar), alt: '', loading: 'lazy' })
     : avatar;
+  const fyll = el('div', { class: 'xpbar__fyll' });
+  fyllInn(fyll, 'width', `${info.pct}%`);
   return el('a', { class: 'profilstripe', href: '#/niva' },
     el('span', { class: 'profilstripe__avatar' }, avatarInnhold),
     el('div', { class: 'profilstripe__meta' },
       el('span', { class: 'profilstripe__navn' }, tittelFor(info.niva)),
       el('span', { class: 'profilstripe__niva' }, `Nivå ${info.niva}`),
     ),
-    el('div', { class: 'profilstripe__bar' }, el('div', { class: 'xpbar' }, el('div', { class: 'xpbar__fyll', style: `width:${info.pct}%` }))),
+    el('div', { class: 'profilstripe__bar' }, el('div', { class: 'xpbar' }, fyll)),
     el('img', { class: 'profilstripe__crest', src: tierBadge(info.niva), alt: '', loading: 'lazy' }),
     el('span', { class: 'profilstripe__pil' }, ikon('chevron')),
   );
@@ -145,7 +148,7 @@ function toppkort(profil, logg, nå) {
   }
   // streak (default) + overrask
   return el('div', { class: 'kort hero streakkort' },
-    el('div', { class: 'streakring' }, el('span', { class: 'streakring__tall' }, String(st.uker)), el('span', { class: 'streakring__lbl' }, 'uker 🔥')),
+    el('div', { class: 'streakring' }, el('span', { class: 'streakring__tall' }, String(st.uker)), el('span', { class: 'streakring__lbl' }, 'uker', ikon('flamme'))),
     el('div', {},
       el('p', { class: 'hero__eyebrow' }, 'Streak'),
       el('p', {}, st.nadd ? `Målet er nådd denne uka (${st.denneUken}/${st.ukemaal}). Sterkt!` : `${st.denneUken} av ${st.ukemaal} økter denne uka.`),
@@ -490,7 +493,7 @@ function visOm() {
   skjerm('Om',
     el('div', { class: 'kort' },
       el('h2', {}, 'Treningsapp v2'),
-      el('p', {}, 'Milepæl 4: logging, XP, nivåsystem, gateways og historikk. PWA i vanilla HTML/CSS/JS.'),
+      el('p', {}, 'Adaptiv treningsgenerator med XP, nivåer, belønninger, gateways og historikk. PWA i vanilla HTML/CSS/JS.'),
       el('p', { class: 'dempet' }, `Versjon ${APP_VERSION}`),
       el('p', { class: 'dempet' }, `${bib.exercises.length} øvelser · ${bib.chains.length} kjeder · ${bib.formats.length} formater · ${bib.templates.length} maler · ${bib.gateways.length} gateways · ${bib.sequences.length} sekvenser.`),
     ),
@@ -498,10 +501,6 @@ function visOm() {
       el('h2', {}, 'Profil'),
       el('p', { class: 'dempet' }, `Motivasjon: ${(profil.motivasjon?.valg || []).join(', ') || '–'}`),
       el('p', { class: 'dempet' }, `Ukemål ${profil.ukemaal} · ${profil.ukemiks} · globalt nivå ${globaltNiva(profil.globalXp || 0)}`),
-    ),
-    el('div', { class: 'kort' },
-      el('h2', {}, 'Neste'),
-      el('ul', {}, el('li', {}, 'M2/M5: Supabase-sync av brukertilstand på tvers av enheter')),
     ),
   );
 }

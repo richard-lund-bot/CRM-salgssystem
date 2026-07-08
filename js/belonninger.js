@@ -180,3 +180,14 @@ export function lasteAvatarer(niva, bib) {
 export function nesteBelonning(niva, bib) {
   return belonningFor(niva + 1, bib);
 }
+
+// SVG-ikonnavn (fra js/ui.js sitt ikon-sett) per belønningstype — delt mellom
+// niva-ui.js og kjor.js så begge viser samme konsistente linjeikon i stedet
+// for plattform-emoji. Avatar-typen har eget bilde og trenger ikke dette.
+export function belonningIkonNavn(b) {
+  if (b.type === 'tema') return 'palett';
+  if (b.type === 'tittel') return 'medalje';
+  if (b.type === 'ovelse') return 'vekt';
+  if (b.type === 'avatar') return 'person';
+  return 'hexstjerne';
+}

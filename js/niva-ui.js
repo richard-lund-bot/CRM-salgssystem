@@ -2,7 +2,7 @@
 // decay-nedtelling, globalt nivå + streak øverst, og gateway-kartet som et
 // skill-tree (låst / ulåst / rusten). Gateway-testene er kjørbare: består du
 // kravene, låses nivåer opp umiddelbart (hurtigspor forbi XP-grinden).
-import { el, tom, chip } from './ui.js';
+import { el, tom, chip, ikon } from './ui.js';
 import { MODALITET_NAVN } from './library.js';
 import { hentProfil, lagreProfil, hentLogg } from './store.js';
 import {
@@ -12,33 +12,26 @@ import {
 import {
   nivaFraTotalXp, belonningFor, nesteBelonning, lasteTemaer, lasteAvatarer,
   tittelFor, tierBadge, tierFor, TIER_NAVN, TEMAER, AVATARER,
-  avatarBilde, erBildeAvatar, AVATAR_NAVN, STANDARD_AVATAR,
+  avatarBilde, erBildeAvatar, AVATAR_NAVN, STANDARD_AVATAR, belonningIkonNavn,
 } from './belonninger.js';
+import { fyllInn } from './animasjon.js';
 
-// Avatar som element: bilde for genererte avatarer, ellers emoji-tekst (gammel profil).
+// Avatar som element: bilde for genererte avatarer, ellers person-ikon (gammel profil).
 function avatarEl(id, klasse) {
   return erBildeAvatar(id)
     ? el('img', { class: klasse, src: avatarBilde(id), alt: '', loading: 'lazy' })
-    : el('span', { class: klasse }, id || '💪');
+    : el('span', { class: klasse }, id ? id : ikon('person'));
 }
 
 let _bib = null;
 export function settBib(bib) { _bib = bib; }
 
-// Ikon per belønningstype som STRENG (for hero-«Neste»-linja).
-function belIkon(b) {
-  return b.type === 'avatar' ? '🧑'
-    : b.type === 'tema' ? '🎨'
-      : b.type === 'tittel' ? '🏅'
-        : b.type === 'ovelse' ? '🏋️'
-          : '✨';
-}
-// Ikon som ELEMENT (avatar-belønninger vises som bilde i stigen).
+// Ikon som ELEMENT (avatar-belønninger vises som bilde i stigen, ellers SVG-linjeikon).
 function belIkonEl(b) {
   if (b.type === 'avatar' && erBildeAvatar(b.id)) {
     return el('img', { class: 'stige__avatar', src: avatarBilde(b.id), alt: '', loading: 'lazy' });
   }
-  return belIkon(b);
+  return ikon(belonningIkonNavn(b));
 }
 function belTekst(b) {
   return b.type === 'avatar' ? `Avatar: ${AVATAR_NAVN[b.id] || b.id}`
@@ -93,6 +86,8 @@ export function visNivaSkjerm(mount) {
   function belonningsHero(p, info, st) {
     const avatar = p.innstillinger?.avatar || STANDARD_AVATAR;
     const neste = nesteBelonning(info.niva, _bib);
+    const fyll = el('div', { class: 'xpbar__fyll' });
+    fyllInn(fyll, 'width', `${info.pct}%`);
     return el('div', { class: 'kort hero nivahero' },
       el('div', { class: 'nivahero__topp' },
         el('div', { class: 'nivahero__avatar' }, avatarEl(avatar, 'nivahero__avatarbilde'),
@@ -101,12 +96,12 @@ export function visNivaSkjerm(mount) {
           el('div', { class: 'nivahero__niva' }, `Nivå ${info.niva}`),
           el('div', { class: 'nivahero__tittel' }, `${tittelFor(info.niva)} · ${TIER_NAVN[tierFor(info.niva)]}-tier`),
         ),
-        el('div', { class: 'nivahero__streak' }, el('div', { class: 'glob__tall' }, String(st.uker)), el('div', { class: 'stat__tekst' }, 'uker 🔥')),
+        el('div', { class: 'nivahero__streak' }, el('div', { class: 'glob__tall' }, String(st.uker)), el('div', { class: 'stat__tekst' }, 'uker', ikon('flamme'))),
       ),
-      el('div', { class: 'xpbar xpbar--stor' }, el('div', { class: 'xpbar__fyll', style: `width:${info.pct}%` })),
+      el('div', { class: 'xpbar xpbar--stor' }, fyll),
       el('div', { class: 'nivahero__under' },
         el('span', { class: 'dempet' }, `${info.inne} / ${info.tilNeste} XP`),
-        el('span', { class: 'dempet' }, `Neste: ${belIkon(neste)} ${belTekst(neste)}`),
+        el('span', { class: 'dempet nivahero__neste' }, 'Neste:', ikon(belonningIkonNavn(neste)), belTekst(neste)),
       ),
     );
   }
@@ -123,7 +118,7 @@ export function visNivaSkjerm(mount) {
         el('span', { class: 'stige__niva' }, String(n)),
         el('span', { class: 'stige__ikon' }, belIkonEl(b)),
         el('span', { class: 'stige__tekst' }, belTekst(b)),
-        el('span', { class: 'stige__status' }, ulast ? '✓' : '🔒'),
+        el('span', { class: 'stige__status' }, ulast ? ikon('sjekk') : ikon('las')),
       ));
     }
     return el('div', { class: 'kort' },
@@ -149,7 +144,7 @@ export function visNivaSkjerm(mount) {
             onclick: er ? () => velg('avatar', a) : undefined,
           }, er
             ? el('img', { class: 'avatarknapp__bilde', src: avatarBilde(a), alt: AVATAR_NAVN[a] || a, loading: 'lazy' })
-            : el('span', { class: 'avatarknapp__laas' }, laasNiva ? `${laasNiva}` : '🔒'));
+            : el('span', { class: 'avatarknapp__laas' }, laasNiva ? `${laasNiva}` : ikon('las')));
         }),
       ),
     );
@@ -171,7 +166,9 @@ export function visNivaSkjerm(mount) {
           },
             el('span', { class: 'temaknapp__prikk', style: `background:${t.prikk}` }),
             el('span', { class: 'temaknapp__navn' }, t.navn),
-            el('span', { class: 'temaknapp__status' }, valgt === t.id ? '✓' : er ? '' : `🔒 nv ${laasNiva}`),
+            el('span', { class: 'temaknapp__status' },
+              valgt === t.id ? ikon('sjekk') : er ? null : ikon('las'),
+              valgt === t.id || er ? null : `nv ${laasNiva}`),
           );
         }),
       ),
@@ -205,6 +202,8 @@ export function visNivaSkjerm(mount) {
     const niv = profil.nivaer[m];
     const xpTil = terskel(ra);
     const pct = Math.min(100, Math.round(((niv.xp || 0) / xpTil) * 100));
+    const modXpFyll = el('div', { class: 'xpbar__fyll' });
+    fyllInn(modXpFyll, 'width', `${pct}%`);
 
     const decTekst = mom.tilstand === 'ny' ? 'ingen økter enda'
       : dec.rusten ? `rusten −${dec.trinn} · re-test gjenoppretter`
@@ -221,7 +220,7 @@ export function visNivaSkjerm(mount) {
         ),
       ),
       el('span', { class: 'niva niva--liten' }, ...[1, 2, 3, 4, 5].map((k) => el('i', { class: 'niva__p' + (k <= nivaFraBase(eff) ? ' niva__p--på' : '') }))),
-      el('div', { class: 'xpbar' }, el('div', { class: 'xpbar__fyll', style: `width:${pct}%` })),
+      el('div', { class: 'xpbar' }, modXpFyll),
       el('div', { class: 'nivrad__meta' },
         el('span', { class: 'dempet' }, `${niv.xp || 0} / ${xpTil} XP`),
         el('span', { class: 'dempet' }, decTekst),
@@ -252,7 +251,9 @@ export function visNivaSkjerm(mount) {
                 el('span', { class: 'gw__navn' },
                   erPassert && !rusten && el('img', { class: 'gw__badge', src: 'icons/badges/gull.png', alt: '', loading: 'lazy' }),
                   g.navn),
-                el('span', { class: 'gw__status' }, erPassert ? (rusten ? '🔒 rusten' : '✓ ulåst') : '🔓 test'),
+                el('span', { class: 'gw__status' },
+                  erPassert ? ikon(rusten ? 'las' : 'sjekk') : null,
+                  erPassert ? (rusten ? 'rusten' : 'ulåst') : 'test'),
               ),
               el('span', { class: 'gw__krav' }, kravTekst(g)),
             );
@@ -274,7 +275,7 @@ export function visNivaSkjerm(mount) {
         lagreProfil(ny);
         tom(mount);
         mount.append(
-          el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, 'Bestått! 🔓')),
+          el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, 'Bestått!')),
           el('main', { class: 'innhold' },
             el('div', { class: 'kort hero' },
               el('p', { class: 'hero__eyebrow' }, 'Gateway låst opp'),

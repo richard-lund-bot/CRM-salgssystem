@@ -50,11 +50,19 @@ const IKONER = {
   flamme: '<path d="M12 3c3 4 5 6 5 9a5 5 0 11-10 0c0-2 1-3 2-4"/><path d="M12 21a3 3 0 003-3c0-2-3-4-3-4"/>',
   trofe: '<path d="M7 4h10v4a5 5 0 01-10 0V4z"/><path d="M7 6H4v2a3 3 0 003 3M17 6h3v2a3 3 0 01-3 3M9 20h6M12 13v4"/>',
   hjerte: '<path d="M12 20s-7-4.5-9-9a4 4 0 017-3 4 4 0 017 3c-2 4.5-9 9-9 9z"/>',
-  gir: '<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>',
+  gir: '<circle cx="12" cy="12" r="2.7"/><path d="M12.2 2h-.4a1.8 1.8 0 00-1.8 1.8v.1a1.8 1.8 0 01-.9 1.6l-.4.2a1.8 1.8 0 01-1.8 0l-.1-.1a1.8 1.8 0 00-2.5.7l-.2.3a1.8 1.8 0 00.6 2.5l.2.1a1.8 1.8 0 01.9 1.6v.4a1.8 1.8 0 01-.9 1.6l-.2.1a1.8 1.8 0 00-.6 2.5l.2.3a1.8 1.8 0 002.5.7l.1-.1a1.8 1.8 0 011.8 0l.4.2a1.8 1.8 0 01.9 1.6v.2a1.8 1.8 0 001.8 1.8h.4a1.8 1.8 0 001.8-1.8v-.2a1.8 1.8 0 01.9-1.6l.4-.2a1.8 1.8 0 011.8 0l.1.1a1.8 1.8 0 002.5-.7l.2-.3a1.8 1.8 0 00-.6-2.5l-.2-.1a1.8 1.8 0 01-.9-1.6v-.4a1.8 1.8 0 01.9-1.6l.2-.1a1.8 1.8 0 00.6-2.5l-.2-.3a1.8 1.8 0 00-2.5-.7l-.1.1a1.8 1.8 0 01-1.8 0l-.4-.2a1.8 1.8 0 01-.9-1.6V3.8A1.8 1.8 0 0012.2 2z"/>',
   bok: '<path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 19a2 2 0 012-2h13"/>',
   sky: '<path d="M7 18a4 4 0 01-.5-8 5 5 0 019.7-1A3.5 3.5 0 0117 18z"/>',
   hexstjerne: '<path d="M12 3l7 4v10l-7 4-7-4V7z"/><path d="M12 8l1.3 2.7 3 .4-2.2 2 .5 3-2.6-1.4L9.9 16l.5-3-2.2-2 3-.4z"/>',
-  medalje: '<circle cx="12" cy="14" r="5"/><path d="M9 9L7 3M15 9l2-6M12 12v4M10.5 14h3"/>',
+  medalje: '<circle cx="12" cy="14.5" r="5"/><path d="M12 9.8L8.3 2.5M12 9.8l3.7-7.3"/><path d="M9.8 14.6l1.5 1.6 2.7-3.4"/>',
+  las: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/>',
+  sjekk: '<path d="M4 12.5l5 5L20 6" stroke-width="2.6"/>',
+  kryss: '<path d="M6 6l12 12M18 6L6 18" stroke-width="2.4"/>',
+  bytt: '<path d="M7 8h11m0 0l-3.2-3M18 8l-3.2 3" stroke-width="2.2"/><path d="M17 16H6m0 0l3.2-3M6 16l3.2 3" stroke-width="2.2"/>',
+  repeat: '<path d="M4 12a8 8 0 0113.9-5.4M20 12a8 8 0 01-13.9 5.4" stroke-width="2.2"/><path d="M17 3v4h-4M7 21v-4h4"/>',
+  terning: '<rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="8.3" cy="8.3" r="1.3" fill="currentColor" stroke="none"/><circle cx="15.7" cy="8.3" r="1.3" fill="currentColor" stroke="none"/><circle cx="8.3" cy="15.7" r="1.3" fill="currentColor" stroke="none"/><circle cx="15.7" cy="15.7" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/>',
+  palett: '<path d="M12 3a9 8 0 100 16c1.2 0 1.7-.7 1.7-1.5s-.5-1-.5-1.8c0-.9.7-1.5 1.6-1.5H16a4 4 0 004-4c0-4-3.6-7.2-8-7.2z"/><circle cx="8" cy="11" r="1.1" fill="currentColor" stroke="none"/><circle cx="8.6" cy="15" r="1.1" fill="currentColor" stroke="none"/><circle cx="13" cy="8" r="1.1" fill="currentColor" stroke="none"/><circle cx="16.2" cy="10.5" r="1.1" fill="currentColor" stroke="none"/>',
+  stjerne: '<path d="M12 3.5l2.5 5.4 5.9.7-4.4 4.1 1.2 5.9L12 16.8l-5.2 2.8 1.2-5.9-4.4-4.1 5.9-.7z"/>',
 };
 
 /** Returnerer et inline SVG-ikon (arver farge). */

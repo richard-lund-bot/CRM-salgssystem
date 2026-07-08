@@ -2,21 +2,22 @@
 // (vekter), basenivå per modalitet (ankertest — konkrete prestasjonsspørsmål,
 // aldri selvvurdering), ukemål + varighet, og første lokasjon fra en utstyrsbunke.
 // Skriver profilen til store og lar appen ta over. Kan tas på nytt fra innstillinger.
-import { el, tom, chip } from './ui.js';
+import { el, tom, chip, ikon } from './ui.js';
 import { MODALITET_NAVN } from './library.js';
 import { lagreProfil, lagreSistLokasjon } from './store.js';
 import { nivaFraBase } from './niva.js';
 
 // --- Skjerm 1: motivasjon ---------------------------------------------------
 // Hvert valg gir modalitetsvekt + formatvekt + hvilket toppkort hjem viser.
+// «ikon» er et navn fra js/ui.js sitt SVG-ikonsett (ikke emoji).
 const MOTIVASJON = [
-  { id: 'stabil', navn: 'Stabil rutine', ikon: '🔁', mod: { alle: 1 }, format: { mikro: 2, kort: 1 }, toppkort: 'streak' },
-  { id: 'mestre', navn: 'Mestre nye øvelser', ikon: '🤸', mod: { SKILL: 3, STY: 2 }, format: { gtg: 2, emom: 1, styrkehold: 1 }, toppkort: 'skilltre' },
-  { id: 'sterkere', navn: 'Bli sterkere', ikon: '💪', mod: { STY: 3 }, format: { 'straight-sets': 2, supersett: 2, complex: 1 }, toppkort: 'pr' },
-  { id: 'kondis', navn: 'Bedre kondis', ikon: '🫁', mod: { HIIT: 2, BASE: 2 }, format: { intervall: 2, '4x4': 1 }, toppkort: 'volum' },
-  { id: 'ro', navn: 'Ro / mindre stress', ikon: '🧘', mod: { REST: 3, YOGA: 2, STR: 1 }, format: { yin: 2, 'hold-flyt': 1, koherent: 1 }, toppkort: 'kveld' },
-  { id: 'fysikk', navn: 'Fysikk / se resultater', ikon: '🏋️', mod: { STY: 3, HIIT: 2 }, format: { supersett: 2, 'myo-reps': 1, 'density-block': 1 }, toppkort: 'volum' },
-  { id: 'variasjon', navn: 'Variasjon / lek', ikon: '🎲', mod: { alle: 1 }, format: {}, toppkort: 'overrask' },
+  { id: 'stabil', navn: 'Stabil rutine', ikon: 'repeat', mod: { alle: 1 }, format: { mikro: 2, kort: 1 }, toppkort: 'streak' },
+  { id: 'mestre', navn: 'Mestre nye øvelser', ikon: 'hexstjerne', mod: { SKILL: 3, STY: 2 }, format: { gtg: 2, emom: 1, styrkehold: 1 }, toppkort: 'skilltre' },
+  { id: 'sterkere', navn: 'Bli sterkere', ikon: 'vekt', mod: { STY: 3 }, format: { 'straight-sets': 2, supersett: 2, complex: 1 }, toppkort: 'pr' },
+  { id: 'kondis', navn: 'Bedre kondis', ikon: 'loper', mod: { HIIT: 2, BASE: 2 }, format: { intervall: 2, '4x4': 1 }, toppkort: 'volum' },
+  { id: 'ro', navn: 'Ro / mindre stress', ikon: 'yoga', mod: { REST: 3, YOGA: 2, STR: 1 }, format: { yin: 2, 'hold-flyt': 1, koherent: 1 }, toppkort: 'kveld' },
+  { id: 'fysikk', navn: 'Fysikk / se resultater', ikon: 'trofe', mod: { STY: 3, HIIT: 2 }, format: { supersett: 2, 'myo-reps': 1, 'density-block': 1 }, toppkort: 'volum' },
+  { id: 'variasjon', navn: 'Variasjon / lek', ikon: 'terning', mod: { alle: 1 }, format: {}, toppkort: 'overrask' },
 ];
 
 // --- Skjerm 2: ankertest ----------------------------------------------------
@@ -170,7 +171,7 @@ export function kjorOnboarding(container, bib, ferdig) {
               skjerm1();
             },
           },
-            el('span', { class: 'ob-kort__ikon' }, m.ikon),
+            el('span', { class: 'ob-kort__ikon' }, ikon(m.ikon)),
             el('span', { class: 'ob-kort__navn' }, m.navn),
             valgt && el('span', { class: 'ob-kort__rang' }, String(rang + 1)),
           );

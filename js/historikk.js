@@ -5,6 +5,7 @@ import { el, tom, ikon } from './ui.js';
 import { MODALITET_NAVN, MONSTER_NAVN } from './library.js';
 import { hentLogg, hentProfil } from './store.js';
 import { prsFraLogg, streak, ukeNokkel, globaltNiva } from './niva.js';
+import { fyllInn } from './animasjon.js';
 
 let _bib = null;
 export function settBib(bib) { _bib = bib; }
@@ -40,14 +41,16 @@ export function visHistorikkSkjerm(mount) {
 
   const st = streak(logg, profil?.ukemaal || 4, nå);
   main.append(
-    oppsummering(logg, profil, st, nå),
-    heatmapKort(logg, st, nå),
-    ukesvolumKort(logg, nå),
-    alleTiderKort(logg, profil),
-    fordelingKort(logg, profil),
-    balanseKort(logg, nå),
-    prKort(logg),
-    loggKort(logg),
+    ...[
+      oppsummering(logg, profil, st, nå),
+      heatmapKort(logg, st, nå),
+      ukesvolumKort(logg, nå),
+      alleTiderKort(logg, profil),
+      fordelingKort(logg, profil),
+      balanseKort(logg, nå),
+      prKort(logg),
+      loggKort(logg),
+    ].filter(Boolean),
   );
 }
 
@@ -89,7 +92,7 @@ function oppsummering(logg, profil, st, nå) {
     stat(logg.length, 'økter'),
     stat(Math.round(totMin / 60) + 't', 'trent'),
     stat(globaltNiva(totXp), 'nivå'),
-    stat(st.uker, 'streak 🔥'),
+    stat(st.uker, 'streak', ikon('flamme')),
   );
 }
 
@@ -119,7 +122,7 @@ function heatmapKort(logg, st, nå) {
       rutenett.append(el('i', {
         class: `heat__c heat__c--${fremtid ? 'x' : nivåFor(min)}`,
         title: `${dato.toLocaleDateString('no-NO')}${min ? ` · ${min} min` : ''}`,
-        style: `grid-row:${d + 1}; grid-column:${u + 1}`,
+        style: `grid-row:${d + 1}; grid-column:${u + 1}; animation-delay:${u * 16}ms`,
       }));
     }
   }
@@ -145,12 +148,14 @@ function ukesvolumKort(logg, nå) {
   return el('div', { class: 'kort' },
     el('h2', {}, 'Ukesvolum'),
     el('div', { class: 'bars' },
-      ...uker.map((u) => el('div', { class: 'bar' },
-        el('div', { class: 'bar__soyle', title: `${min[u]} min · ${xp[u]} XP` },
-          el('div', { class: 'bar__fyll', style: `height:${Math.round((min[u] / maks) * 100)}%` }),
-        ),
-        el('span', { class: 'bar__navn' }, u.slice(6)),
-      )),
+      ...uker.map((u) => {
+        const fyll = el('div', { class: 'bar__fyll' });
+        fyllInn(fyll, 'height', `${Math.round((min[u] / maks) * 100)}%`);
+        return el('div', { class: 'bar' },
+          el('div', { class: 'bar__soyle', title: `${min[u]} min · ${xp[u]} XP` }, fyll),
+          el('span', { class: 'bar__navn' }, u.slice(6)),
+        );
+      }),
     ),
     el('p', { class: 'dempet' }, 'Minutter per uke (siste 8).'),
   );
@@ -282,9 +287,9 @@ function oktRad(o) {
 
 function ovelseNavn(id) { return _bib?.ovelseMap?.get(id)?.navn || id; }
 
-function stat(tall, tekst) {
+function stat(tall, ...tekst) {
   return el('div', { class: 'stat' },
     el('div', { class: 'stat__tall' }, String(tall)),
-    el('div', { class: 'stat__tekst' }, tekst),
+    el('div', { class: 'stat__tekst' }, ...tekst),
   );
 }

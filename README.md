@@ -20,6 +20,7 @@ Bygget ved å gjenbruke repoet og Supabase-prosjektet fra en tidligere Ringelist
 | M6 | Belønningsnivå (uendelig), avatarer, temaer, level-up | ✅ |
 | M7 | Runna-inspirert redesign: lyst tema, SVG-ikoner, Higgsfield-app-ikon | ✅ |
 | M8 | Liquid-glass flytende bunnlinje + Higgsfield avatarer & tier-badges | ✅ |
+| M9 | Finpuss: animasjonsverktøykasse (inngang, fyll, konfetti, ring), full emoji→SVG-ikon-opprydning, ekte transparens på avatar/badge-bilder | ✅ |
 
 > Appen er offline-first: localStorage er alltid primærkilden, og alt fungerer
 > uten innlogging. Skysync er opt-in — logg inn med e-post i Innstillinger for å
@@ -57,7 +58,8 @@ js/
   sync.js               skysync: magic-link-auth + PostgREST + last-write-wins-fletting
   belonninger.js        belønningsnivå (uendelig kurve) + stige: øvelser/avatarer/temaer/titler
   rng.js                seeded PRNG (mulberry32) + stokk/trekk — ingen Math.random()
-  ui.js                 DOM-hjelpere
+  ui.js                 DOM-hjelpere + inline SVG-ikonsett
+  animasjon.js          animasjonsverktøykasse: tallOpp, lagRing, lagKonfetti, fyllInn
   config.js             Supabase-URL/nøkkel + app-versjon
 data/
   exercises.json        ~530 øvelser (mønster, modalitet, nivå, type, kjede, varianter …)
