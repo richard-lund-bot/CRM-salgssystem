@@ -13,12 +13,14 @@ Bygget ved å gjenbruke repoet og Supabase-prosjektet fra en tidligere Ringelist
 |---|---|---|
 | M0 | Riv CRM, arkiver, tøm repo + Supabase | ✅ |
 | M1 | PWA-skjelett + datakonvertering (bibliotek → `data/*.json`) | ✅ |
-| M2 | Supabase-skjema for brukertilstand | ⏳ |
+| M2 | Supabase-skjema for brukertilstand (RLS owner-only) | ✅ |
 | M3 | Onboarding + generator + kjøre-UI | ✅ |
 | M4 | Logging, nivåsystem (base + momentum/decay), gateways, historikk | ✅ |
+| M5 | Skysync (magic link + last-write-wins per rad) | ✅ |
 
-> M3–M4 kjører helt på localStorage (offline-first). M2/M5 (Supabase-sync av
-> brukertilstand på tvers av enheter) er ikke en blokker og tas senere.
+> Appen er offline-first: localStorage er alltid primærkilden, og alt fungerer
+> uten innlogging. Skysync er opt-in — logg inn med e-post i Innstillinger for å
+> dele profil, logg og nivå mellom enheter.
 
 ## Kjøre lokalt
 
@@ -45,6 +47,7 @@ js/
   niva.js               nivåmotor: XP, opprykk (XP+bevis), momentum/decay, streak, PR, gateway
   niva-ui.js            Nivå-skjerm (base + momentum + decay) + gateway skill-tree/test
   historikk.js          §13-visninger: heatmap, ukesvolum, donut, PR-tavle, balanse, øktlogg
+  sync.js               skysync: magic-link-auth + PostgREST + last-write-wins-fletting
   rng.js                seeded PRNG (mulberry32) + stokk/trekk — ingen Math.random()
   ui.js                 DOM-hjelpere
   config.js             Supabase-URL/nøkkel + app-versjon
@@ -66,6 +69,7 @@ scripts/
   gen-icons.mjs         genererer PWA-ikoner
   smoke-generator.mjs   headless test: determinisme + dekning + ikke-tomme blokker
   smoke-niva.mjs        headless test: XP, opprykk gated på bevis, momentum/decay/streak/PR/gateway
+  smoke-sync.mjs        headless test: last-write-wins-fletting (profil + logg per id)
 docs/                   kildedokumenter + avvikslogg
 manifest.webmanifest    PWA-manifest
 sw.js                   service worker (offline-first)
@@ -86,16 +90,33 @@ node scripts/validate.mjs      # sjekk referanser + tellinger (exit 0 = grønt)
 ## Data-arkitektur
 
 - **Statisk biblioteksdata** (øvelser, formater, maler, utstyr, bunker) = JSON i repoet.
-- **Brukertilstand** (profil, logg, genererte økter) = localStorage nå, Supabase-sync i M2/M5.
+- **Brukertilstand** (profil, logg, genererte økter) = localStorage primært, Supabase som sync.
 - **Offline-first:** localStorage er primærkilden; Supabase er sync. Service-workeren
   cacher app-skall + data, så appen fungerer offline etter første last.
 
-### Sync-strategi (M2/M5)
+### Sync-strategi (M2/M5) — implementert
 
 Supabase brukes kun til brukertilstand (`profiles`, `session_logs`, `generated_sessions`),
-med RLS owner-only og e-post magic link. Sync er **last-write-wins per rad** i v1: hver rad
-bærer et tidsstempel, og nyeste vinner ved konflikt. localStorage skrives først (appen
-blokkerer aldri på nett), og en synkkø tømmes mot Supabase når nett er tilgjengelig.
+med **RLS owner-only** (`auth.uid() = user_id` på all CRUD) og **e-post magic link**. Hver
+rad har en `data jsonb`-kolonne (hele klientobjektet — framtidssikkert mot skjemaendringer)
+og et `oppdatert`-stempel. Sync er **last-write-wins per rad**: klienten *henter* fjernrader,
+fletter (nyeste `oppdatert` vinner) inn i localStorage, og *skyver* den flettede tilstanden
+opp igjen. localStorage skrives alltid først — appen blokkerer aldri på nett, og alt fungerer
+uten innlogging. `js/sync.js` snakker direkte med GoTrue + PostgREST via `fetch` (ingen SDK,
+ingen byggesteg). Flett-logikken er ren og testet i `scripts/smoke-sync.mjs`.
+
+**Ta i bruk skysync (engangsoppsett i Supabase-dashbordet):**
+
+1. **Authentication → URL Configuration → Redirect URLs:** legg til GitHub Pages-URL-en
+   (f.eks. `https://<bruker>.github.io/CRM-salgssystem/`) og `http://localhost:8000` for lokal
+   testing. Magic-link-lenka returnerer hit med tokens i URL-fragmentet.
+2. **Authentication → Email:** standard Supabase-e-post fungerer for lav volum; sett opp egen
+   SMTP for produksjon. E-postbekreftelse må være på (magic link).
+3. I appen: **Innstillinger → Skysync** → skriv e-post → klikk lenka i innboksen. Samme e-post
+   på en annen enhet gir delt tilstand.
+
+Skjemaet (kolonner, RLS-policyer, `data`-payload) ligger som migrasjoner i Supabase-prosjektet
+(ref `rkvphgbfyfymilzwgmgp`).
 
 ## Arkiv
 

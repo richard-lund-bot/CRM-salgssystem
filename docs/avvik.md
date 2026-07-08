@@ -202,3 +202,26 @@ Pause-modus fryser klokka. Decay-tallene er startgjetningene fra §12c.
 **Logging.** Resultater (reps/kg/hold) er valgfrie og fanges på «Økt fullført»-skjermen;
 XP tildeles uansett fra tid × intensitet. Full per-sett-logging under kjøring er ikke
 bygget — én verdi per øvelse holder for PR-sporing i v1.
+
+## M5 skysync (designvalg)
+
+**Payload som `data jsonb`, ikke typede kolonner.** Det eksisterende M2-skjemaet har
+typede kolonner (fra §10), men de matchet ikke den ferdige klienttilstanden etter M4
+(manglet gatewaysPassert, prs, settOvelser, globalXp, samt seed/templateId/ovelseIder på
+logg). For å slippe en kolonnemigrasjon per milepæl la vi til `data jsonb not null default
+'{}'` på alle tre tabeller og lar klienten være kilden til sannhet der. De typede kolonnene
+beholdes for spørring; kun de påkrevde (dato/modalitet på logg, seed på generated) fylles.
+
+**Direkte REST, ikke supabase-js.** Klienten snakker med GoTrue + PostgREST via `fetch`
+(magic-link OTP, refresh-token, upsert med `Prefer: resolution=merge-duplicates`). Dette
+holder appen avhengighetsfri, byggestegsfri og offline-first, og gjør at nøyaktig samme
+kall kan testes headless.
+
+**Last-write-wins per rad.** Profil er én rad (nyeste `oppdatert` vinner helt); logg og
+genererte flettes per `id`. Konsekvens (dokumentert v1-tradeoff): en profilendring på enhet
+B overskriver enhet A sin eldre profil i sin helhet — ingen felt-nivå-fletting. Sletting
+synkes ikke i v1 (kun union). `handle_new_user`-trigger auto-oppretter en profiles-rad ved
+signup; klientens upsert (`on_conflict=user_id`) håndterer dette.
+
+**Auth-oppsett er dashboard-avhengig.** Magic-link krever at Pages-URL-en står i Supabase
+sine Redirect URLs og at e-post er konfigurert — kan ikke settes fra koden. Se README.

@@ -20,14 +20,29 @@ function skriv(nokkel, verdi) {
   }
 }
 
+// --- Endringsvarsling (M5-sync) ---
+// Sync-modulen registrerer en lytter her; store importerer aldri sync (unngår
+// syklisk avhengighet). Lokale skrivinger stemples med `oppdatert` for
+// last-write-wins og varsler lytteren, som planlegger en debouncet synk.
+let endringslytter = null;
+export function settEndringslytter(fn) { endringslytter = fn; }
+function varsle(type) { if (endringslytter) { try { endringslytter(type); } catch { /* ignorer */ } } }
+const nåISO = () => new Date().toISOString();
+
 // --- Profil ---
 export function hentProfil() {
   return les(LS.profil, null);
 }
 
 export function lagreProfil(profil) {
-  skriv(LS.profil, profil);
+  const stemplet = { ...profil, oppdatert: nåISO() };
+  skriv(LS.profil, stemplet);
+  varsle('profil');
+  return stemplet;
 }
+
+/** Skriv profil uten å stemple/varsle — brukes når sync henter fjernrad. */
+export function settProfilRå(profil) { skriv(LS.profil, profil); }
 
 export function harProfil() {
   return hentProfil() != null;
@@ -40,10 +55,13 @@ export function hentLogg() {
 
 export function leggTilLogg(oppforing) {
   const logg = hentLogg();
-  logg.push(oppforing);
+  logg.push({ ...oppforing, oppdatert: oppforing.oppdatert || nåISO() });
   skriv(LS.logg, logg);
+  varsle('logg');
   return logg;
 }
+
+export function settLoggRå(logg) { skriv(LS.logg, logg); }
 
 // --- Genererte økter ---
 export function hentGenererte() {
@@ -52,9 +70,12 @@ export function hentGenererte() {
 
 export function lagreGenerert(okt) {
   const alle = hentGenererte();
-  alle.unshift(okt);
+  alle.unshift({ ...okt, oppdatert: okt.oppdatert || nåISO() });
   skriv(LS.genererte, alle.slice(0, 50));
+  varsle('generert');
 }
+
+export function settGenererteRå(alle) { skriv(LS.genererte, alle); }
 
 // --- Aktiv lokasjon ---
 export function hentSistLokasjon() {

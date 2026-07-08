@@ -16,6 +16,7 @@ import { settBib as settBibHist, visHistorikkSkjerm } from './historikk.js';
 import {
   effektivBase, raBase, nivaFraBase, momentum, streak, prsFraLogg, globaltNiva,
 } from './niva.js';
+import * as sync from './sync.js';
 
 const app = document.getElementById('app');
 let bib = null;
@@ -260,6 +261,7 @@ function visInnstillinger() {
   }
 
   skjerm('Innstillinger',
+    skyKort(),
     el('div', { class: 'kort' },
       el('h2', {}, 'Ukemål'),
       el('div', { class: 'chiprad' },
@@ -311,6 +313,45 @@ function visInnstillinger() {
       }, 'Full nullstilling'),
     ),
   );
+}
+
+// Sky-synk-kort: magic-link-innlogging + synkstatus.
+function skyKort() {
+  const kort = el('div', { class: 'kort' }, el('h2', {}, 'Skysync ☁️'));
+  if (sync.erInnlogget()) {
+    const sist = sync.sistSynk();
+    kort.append(
+      el('p', {}, 'Innlogget som ', el('strong', {}, sync.brukerEpost() || 'ukjent')),
+      el('p', { class: 'dempet' }, sist ? `Sist synket ${new Date(sist).toLocaleString('no-NO')}` : 'Ikke synket ennå.'),
+      el('div', { class: 'knapprad' },
+        el('button', {
+          class: 'knapp', type: 'button',
+          onclick: async (ev) => { ev.target.textContent = 'Synker…'; await sync.synk(); visInnstillinger(); },
+        }, 'Synk nå'),
+        el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: () => { sync.loggUt(); visInnstillinger(); } }, 'Logg ut'),
+      ),
+    );
+  } else {
+    const epostfelt = el('input', { class: 'sok', type: 'email', inputmode: 'email', placeholder: 'din@epost.no', autocomplete: 'email' });
+    const status = el('p', { class: 'dempet' }, 'Del profil, logg og nivå mellom telefon og nettbrett.');
+    kort.append(
+      epostfelt,
+      el('div', { class: 'knapprad', style: 'margin-top:10px' },
+        el('button', {
+          class: 'knapp', type: 'button',
+          onclick: async () => {
+            const epost = epostfelt.value.trim();
+            if (!epost || !epost.includes('@')) { status.textContent = 'Skriv inn en gyldig e-post.'; status.className = 'varsel'; return; }
+            status.textContent = 'Sender lenke…'; status.className = 'dempet';
+            try { await sync.sendMagicLink(epost); status.textContent = `Sjekk ${epost} — klikk lenka for å logge inn.`; }
+            catch (e) { status.textContent = `Kunne ikke sende: ${e.message}`; status.className = 'varsel'; }
+          },
+        }, 'Send innloggingslenke'),
+      ),
+      status,
+    );
+  }
+  return kort;
 }
 
 function overstyrRad(m, profil, lagre) {
@@ -487,12 +528,35 @@ async function start() {
   settBibHist(bib);
   window.addEventListener('hashchange', navger);
 
+  // Skysync: fang ev. magic-link-retur, og på en ny enhet som nettopp logget
+  // inn — hent ned profilen før vi avgjør om onboarding skal kjøre.
+  try {
+    const { innlogget } = await sync.init();
+    if (innlogget && !harProfil()) await sync.synk();
+    else if (innlogget) sync.synk();
+    sync.påStatus(oppdaterSyncMerke);
+  } catch (e) {
+    console.warn('Sync utilgjengelig', e);
+  }
+
   if (!harProfil()) {
     startOnboarding();
     return;
   }
   byggTabbar();
   navger();
+}
+
+// Oppdaterer et lite synk-merke på Meny-fanen når status endrer seg.
+function oppdaterSyncMerke(status) {
+  const knapp = document.querySelector('.tabbar__knapp[data-rute="meny"] .tabbar__ikon');
+  if (!knapp) return;
+  knapp.textContent = status === 'synker' ? '🔄' : '☰';
+  // Hvis brukeren står på en skjerm som viser synket data, tegn på nytt.
+  if (status === 'synket') {
+    const rute = (location.hash.replace('#/', '') || 'hjem').split('?')[0];
+    if (['hjem', 'historikk', 'niva', 'innstillinger'].includes(rute)) navger();
+  }
 }
 
 if ('serviceWorker' in navigator) {
