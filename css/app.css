@@ -156,6 +156,8 @@ body {
   text-decoration: none;
 }
 .modrad:first-child { border-top: none; }
+.modrad--knapp { width: 100%; background: none; border: none; border-top: 1px solid var(--kant); cursor: pointer; font: inherit; }
+.modrad--knapp:first-child { border-top: none; }
 .modrad__tall {
   background: var(--bg-kort-2);
   color: var(--dempet);
@@ -307,12 +309,9 @@ body {
 .tabbar__knapp--aktiv { color: var(--aksent); }
 .tabbar__ikon {
   font-size: 1.25rem; line-height: 1; display: grid; place-items: center;
-  padding: 5px 14px; border-radius: 14px; transition: background 0.18s ease;
+  padding: 5px 14px; border-radius: 14px;
 }
-.tabbar__ikon .ikon { width: 25px; height: 25px; stroke-width: 2; }
-.tabbar__knapp--aktiv .tabbar__ikon {
-  background: color-mix(in srgb, var(--aksent) 16%, transparent);
-}
+.tabbar__ikon .ikon { width: 25px; height: 25px; stroke-width: 2; transition: stroke-width 0.18s ease; }
 .tabbar__knapp--aktiv .tabbar__ikon .ikon { stroke-width: 2.4; }
 .tabbar__knapp--synker .tabbar__ikon { animation: synkpuls 1s ease-in-out infinite; }
 @keyframes synkpuls { 50% { opacity: 0.4; } }
@@ -323,7 +322,7 @@ body {
 
 /* Fokusmodus: skjul tab-bar under onboarding/generator/review/kjøring */
 .fokusmodus .tabbar { display: none; }
-.fokusmodus body { padding-bottom: 0; }
+body.fokusmodus { padding-bottom: 0; }
 
 /* Topp med tilbake-knapp */
 .topp--kjor { display: flex; align-items: flex-start; gap: 10px; }
@@ -854,6 +853,59 @@ body {
 .levelup__avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; vertical-align: middle; }
 
 /* ==========================================================================
+   M9 — Min dag (ukestripe) + Plan-modul (månedskalender)
+   ========================================================================== */
+
+/* Min dag — ukestripe øverst, à la Runna */
+.ukestripe { display: flex; justify-content: space-between; gap: 6px; }
+.ukestripe__dag {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 8px 2px; border-radius: 12px; border: none; background: transparent;
+  color: var(--dempet); cursor: pointer; font: inherit; text-decoration: none;
+}
+.ukestripe__navn { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.03em; }
+.ukestripe__tall {
+  width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+  font-weight: 700; color: var(--tekst);
+}
+.ukestripe__dag--idag .ukestripe__tall { background: var(--aksent); color: #fff; }
+.ukestripe__prikk { width: 5px; height: 5px; border-radius: 50%; background: var(--aksent); }
+.ukestripe__prikk--usynlig { background: transparent; }
+.dagskort { display: flex; flex-direction: column; gap: 10px; }
+.dagskort__mod { font-weight: 700; font-size: 1.1rem; }
+
+/* Plan — månedskalender */
+.kalmnd__hode { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.kalmnd__hode h2 { text-transform: capitalize; margin: 0; }
+.kalmnd__ukedager {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center;
+  font-size: 0.7rem; color: var(--dempet); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.03em;
+}
+.kalmnd__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.kalmnd__dag {
+  aspect-ratio: 1; border-radius: 10px; border: none; background: var(--bg-kort-2);
+  color: var(--tekst); display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; cursor: pointer; font-size: 0.85rem;
+}
+.kalmnd__dag--tom { background: transparent; cursor: default; }
+.kalmnd__dag--idag { color: var(--aksent); font-weight: 700; }
+.kalmnd__dag--valgt { background: var(--aksent); color: #fff; }
+.kalmnd__prikk { width: 5px; height: 5px; border-radius: 50%; background: var(--aksent); }
+.kalmnd__dag--valgt .kalmnd__prikk { background: #fff; }
+
+/* Plan — dagsdetaljer + agenda */
+.plandag__liste { display: flex; flex-direction: column; gap: 8px; }
+.plandag__rad {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: var(--bg-kort-2); border-radius: 12px; padding: 10px 12px;
+}
+.plandag__rad--knapp { border: none; width: 100%; text-align: left; color: var(--tekst); font: inherit; cursor: pointer; }
+.plandag__mod { font-weight: 600; }
+.plandag__knapper { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+.plandag__form { margin-top: 4px; padding-top: 14px; border-top: 1px solid var(--kant); display: flex; flex-direction: column; gap: 10px; }
+.knapp--liten { flex: 0 0 auto; padding: 8px 16px; font-size: 0.85rem; }
+
+/* ==========================================================================
    M9 — animasjonsverktøykasse: inngangsanimasjon, trykk-feedback, fyll-
    overganger, level-up-konfetti. Se js/animasjon.js for tallOpp()/ring().
    ========================================================================== */
@@ -861,8 +913,8 @@ body {
 /* Inngang: direkte barn av .innhold glir/tones inn, med trinnvis forsinkelse.
    Kun direkte barn — nøstede lister (søk, filtrering) re-render uten å trigge
    animasjonen på nytt siden .innhold selv ikke tømmes ved slike interaksjoner. */
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
-.innhold > * { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@keyframes fadeInn { from { opacity: 0; } to { opacity: 1; } }
+.innhold > * { animation: fadeInn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
 .innhold > *:nth-child(1) { animation-delay: 0ms; }
 .innhold > *:nth-child(2) { animation-delay: 45ms; }
 .innhold > *:nth-child(3) { animation-delay: 90ms; }
@@ -881,16 +933,18 @@ body {
 
 /* Trykk-feedback: alle tappbare rader/knapper svarer med et lite trykk */
 .listerad, .modrad, .gw, .temaknapp, .avatarknapp, .ob-kort, .okt__topp,
-.chip, .tabbar__knapp, .profilstripe, .knapp, .ikonknapp {
+.chip, .tabbar__knapp, .profilstripe, .knapp, .ikonknapp,
+.kalmnd__dag, .plandag__rad--knapp, .ukestripe__dag, .modrad--knapp {
   transition: transform 0.12s ease, opacity 0.12s ease, background-color 0.18s ease, border-color 0.18s ease;
 }
 .listerad:active, .modrad:active, .gw:active, .temaknapp:active,
 .avatarknapp:active, .ob-kort:active, .okt__topp:active, .chip:active,
-.profilstripe:active, .ikonknapp:active {
+.profilstripe:active, .ikonknapp:active,
+.kalmnd__dag:active, .plandag__rad--knapp:active, .ukestripe__dag:active, .modrad--knapp:active {
   transform: scale(0.97);
 }
 .tabbar__knapp:active .tabbar__ikon { transform: scale(0.9); }
-.tabbar__ikon { transition: background 0.18s ease, transform 0.12s ease; }
+.tabbar__ikon { transition: transform 0.12s ease; }
 .tabbar__knapp { transition: color 0.18s ease; }
 
 /* Sirkulær fremdriftsring for timer-skjermer (satt via js/animasjon.js sin ringSett()) */
@@ -918,7 +972,7 @@ body {
 }
 
 /* Heatmap-celler: kort, diagonal stagger ved historikk-visning */
-.heat__c { animation: fadeInUp 0.4s ease both; }
+.heat__c { animation: fadeInn 0.4s ease both; }
 
 /* Respekter brukerens redusert-bevegelse-innstilling: dropp inngang/konfetti,
    behold korte, umiddelbare overganger for status (fyll, trykk-feedback). */
@@ -928,6 +982,7 @@ body {
   .xpbar__fyll, .bar__fyll, .ringfremgang__fyll { transition-duration: 0.01ms; }
   .tabbar__knapp:active .tabbar__ikon, .listerad:active, .modrad:active, .gw:active,
   .temaknapp:active, .avatarknapp:active, .ob-kort:active, .okt__topp:active,
-  .chip:active, .profilstripe:active, .ikonknapp:active { transform: none; }
+  .chip:active, .profilstripe:active, .ikonknapp:active,
+  .kalmnd__dag:active, .plandag__rad--knapp:active, .ukestripe__dag:active, .modrad--knapp:active { transform: none; }
 }
 .stige__avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }

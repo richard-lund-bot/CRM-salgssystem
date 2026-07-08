@@ -35,6 +35,7 @@ const IKONER = {
   lyn: '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
   graf: '<path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16l4-5 3 3 5-7"/>',
   kalender: '<rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 9h16M8 3v4M16 3v4"/>',
+  puls: '<path d="M2 12h4l2-7 4 14 3-10 2 3h5"/>',
   meny: '<path d="M4 7h16M4 12h16M4 17h16"/>',
   chevron: '<path d="M9 6l6 6-6 6"/>',
   tilbake: '<path d="M15 6l-6 6 6 6"/>',

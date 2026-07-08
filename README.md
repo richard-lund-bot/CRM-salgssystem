@@ -21,6 +21,7 @@ Bygget ved å gjenbruke repoet og Supabase-prosjektet fra en tidligere Ringelist
 | M7 | Runna-inspirert redesign: lyst tema, SVG-ikoner, Higgsfield-app-ikon | ✅ |
 | M8 | Liquid-glass flytende bunnlinje + Higgsfield avatarer & tier-badges | ✅ |
 | M9 | Finpuss: animasjonsverktøykasse (inngang, fyll, konfetti, ring), full emoji→SVG-ikon-opprydning, ekte transparens på avatar/badge-bilder | ✅ |
+| M9.1 | IA-omstrukturering: Min dag (ukestripe), Plan-modul (kalender + fyll-kalender), Aktivitet splittet i Historikk/Prestasjoner, ren tab-bar-markør | ✅ |
 
 > Appen er offline-first: localStorage er alltid primærkilden, og alt fungerer
 > uten innlogging. Skysync er opt-in — logg inn med e-post i Innstillinger for å
@@ -54,7 +55,8 @@ js/
   kjor.js               generator-input, review, kjøre-UI, resultat-logging + XP-skjerm
   niva.js               nivåmotor: XP, opprykk (XP+bevis), momentum/decay, streak, PR, gateway
   niva-ui.js            Nivå-skjerm (base + momentum + decay) + gateway skill-tree/test
-  historikk.js          §13-visninger: heatmap, ukesvolum, donut, PR-tavle, balanse, øktlogg
+  historikk.js          Aktivitet-skjerm: Historikk (heatmap/volum/donut/balanse/øktlogg) + Prestasjoner (PR-tavle/test deg selv)
+  plan.js               Plan-modul: månedskalender, planlegg økt på dato, fyll-kalender-bulk, agenda
   sync.js               skysync: magic-link-auth + PostgREST + last-write-wins-fletting
   belonninger.js        belønningsnivå (uendelig kurve) + stige: øvelser/avatarer/temaer/titler
   rng.js                seeded PRNG (mulberry32) + stokk/trekk — ingen Math.random()

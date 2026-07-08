@@ -1,10 +1,10 @@
-// Historikk (LAG 4, taksonomi §13): visninger bygget rent fra loggen + profilen.
-// Ingen rammeverk — kalender-heatmap, ukesvolum, modalitetsfordeling (donut),
-// PR-tavle, push/pull-balanse og øktlogg med detalj. Alt regnes ut lokalt.
-import { el, tom, ikon } from './ui.js';
+// Aktivitet (LAG 4, taksonomi §13): to underfaner — Historikk (kalender-
+// heatmap, ukesvolum, modalitetsfordeling, push/pull-balanse, øktlogg) og
+// Prestasjoner (PR-tavle + «test deg selv»). Alt regnes ut lokalt.
+import { el, tom, ikon, chip } from './ui.js';
 import { MODALITET_NAVN, MONSTER_NAVN } from './library.js';
-import { hentLogg, hentProfil } from './store.js';
-import { prsFraLogg, streak, ukeNokkel, globaltNiva } from './niva.js';
+import { hentLogg, hentProfil, lagreProfil, leggTilLogg } from './store.js';
+import { prsFraLogg, streak, ukeNokkel, globaltNiva, registrerOkt } from './niva.js';
 import { fyllInn } from './animasjon.js';
 
 let _bib = null;
@@ -21,14 +21,36 @@ function svgEl(tag, attrs) {
 // Palett for modalitetssegmenter (donut).
 const PALETT = ['#2dd489', '#4aa3ff', '#ffd479', '#ff8f6b', '#b98cff', '#5ad0c0', '#ff6b9d', '#9bd45a', '#8b97a5'];
 
-export function visHistorikkSkjerm(mount) {
+// --- Aktivitet-skall: segmentert Historikk/Prestasjoner ---------------------
+export function visAktivitetSkjerm(mount) {
+  const params = new URLSearchParams(location.hash.split('?')[1] || '');
+  let fane = params.get('f') === 'prestasjoner' ? 'prestasjoner' : 'historikk';
+
+  tegn();
+
+  function tegn() {
+    tom(mount);
+    const main = el('main', { class: 'innhold' });
+    mount.append(
+      el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, 'Aktivitet')),
+      main,
+    );
+    main.append(
+      el('div', { class: 'segment' },
+        el('button', { class: 'segment__knapp' + (fane === 'historikk' ? ' segment__knapp--aktiv' : ''), type: 'button', onclick: () => { fane = 'historikk'; tegn(); } }, 'Historikk'),
+        el('button', { class: 'segment__knapp' + (fane === 'prestasjoner' ? ' segment__knapp--aktiv' : ''), type: 'button', onclick: () => { fane = 'prestasjoner'; tegn(); } }, 'Prestasjoner'),
+      ),
+    );
+    if (fane === 'historikk') historikkInnhold(main);
+    else prestasjonerInnhold(main, tegn);
+  }
+}
+
+// --- Historikk-underfane -----------------------------------------------------
+function historikkInnhold(main) {
   const logg = hentLogg();
   const profil = hentProfil();
   const nå = Date.now();
-
-  tom(mount);
-  const main = el('main', { class: 'innhold' });
-  mount.append(el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, 'Historikk')), main);
 
   if (!logg.length) {
     main.append(el('div', { class: 'kort kort--info' },
@@ -48,7 +70,6 @@ export function visHistorikkSkjerm(mount) {
       alleTiderKort(logg, profil),
       fordelingKort(logg, profil),
       balanseKort(logg, nå),
-      prKort(logg),
       loggKort(logg),
     ].filter(Boolean),
   );
@@ -253,6 +274,124 @@ function prVerdi(p) {
   if (Number.isFinite(p.holdSek)) d.push(`${p.holdSek} s`);
   if (Number.isFinite(p.distKm)) d.push(`${p.distKm} km`);
   return d.join(' · ') || '—';
+}
+
+// --- Prestasjoner-underfane: PR-tavle + «test deg selv» --------------------
+const TESTBARE_TYPER = ['reps', 'hold', 'dist'];
+
+function prestasjonerInnhold(main, tegnAktivitet) {
+  main.append(
+    prKort(hentLogg()),
+    testDegSelvKort(tegnAktivitet),
+  );
+}
+
+function testDegSelvKort(tegnAktivitet) {
+  const bib = _bib;
+  const state = { sok: '', valgt: null, felt: {} };
+  const kort = el('div', { class: 'kort' },
+    el('h2', {}, 'Test deg selv'),
+    el('p', { class: 'dempet' }, 'Logg et enkeltstående resultat for en øvelse — teller som PR-forsøk, uten en hel økt.'),
+  );
+  const innhold = el('div', {});
+  kort.append(innhold);
+  tegnInnhold();
+  return kort;
+
+  function tegnInnhold() {
+    tom(innhold);
+    if (!state.valgt) { innhold.append(sokeVisning()); return; }
+    innhold.append(skjemaVisning(state.valgt));
+  }
+
+  function sokeVisning() {
+    const felt = el('input', {
+      class: 'sok', type: 'search', placeholder: 'Søk øvelse…', value: state.sok,
+      oninput: (ev) => { state.sok = ev.target.value; oppdaterListe(); },
+    });
+    const liste = el('div', { class: 'modliste' });
+    const wrap = el('div', {}, felt, liste);
+    oppdaterListe();
+    return wrap;
+
+    function oppdaterListe() {
+      tom(liste);
+      if (!state.sok.trim()) return;
+      const q = state.sok.toLowerCase();
+      const treff = (bib?.exercises || [])
+        .filter((e) => TESTBARE_TYPER.includes(e.type) && e.navn.toLowerCase().includes(q))
+        .slice(0, 12);
+      if (!treff.length) { liste.append(el('p', { class: 'dempet' }, 'Ingen treff.')); return; }
+      for (const e of treff) {
+        liste.append(el('button', {
+          class: 'modrad modrad--knapp', type: 'button',
+          onclick: () => { state.valgt = e; tegnInnhold(); },
+        },
+          el('span', { class: 'modrad__navn' }, e.navn),
+          el('span', { class: 'dempet' }, MODALITET_NAVN[e.modaliteter?.[0]] || ''),
+        ));
+      }
+    }
+  }
+
+  function skjemaVisning(e) {
+    state.felt = {};
+    const tallfelt = (nokkel, plass, etikett) => el('label', { class: 'loggfelt' },
+      el('span', { class: 'loggfelt__etikett' }, etikett),
+      el('input', {
+        class: 'loggfelt__inn', type: 'number', inputmode: 'numeric', min: '0', placeholder: plass,
+        oninput: (ev) => { state.felt[nokkel] = ev.target.value === '' ? undefined : Number(ev.target.value); },
+      }),
+    );
+    const felter = e.type === 'hold' ? [tallfelt('holdSek', 'sek', 'Hold (s)')]
+      : e.type === 'dist' ? [tallfelt('distKm', 'km', 'Distanse (km)')]
+        : [tallfelt('reps', 'reps', 'Reps'), tallfelt('last', 'kg', 'Kg')];
+    const melding = el('p', { class: 'dempet' });
+
+    return el('div', {},
+      el('div', { class: 'plandag__rad' },
+        el('span', { class: 'plandag__mod' }, e.navn),
+        el('button', { class: 'ikonknapp', type: 'button', title: 'Bytt øvelse', onclick: () => { state.valgt = null; tegnInnhold(); } }, ikon('bytt')),
+      ),
+      el('div', { class: 'loggrad' }, el('div', { class: 'loggrad__felter' }, ...felter)),
+      el('button', {
+        class: 'knapp', type: 'button',
+        onclick: () => { lagreTest(e, state.felt, melding, tegnAktivitet); },
+      }, 'Lagre resultat'),
+      melding,
+    );
+  }
+}
+
+function lagreTest(e, felt, melding, tegnAktivitet) {
+  const resultat = { id: e.id, ...felt };
+  if (!Number.isFinite(resultat.reps) && !Number.isFinite(resultat.last) && !Number.isFinite(resultat.holdSek) && !Number.isFinite(resultat.distKm)) {
+    melding.textContent = 'Skriv inn minst ett tall.';
+    melding.className = 'varsel';
+    return;
+  }
+  const testOkt = {
+    modalitet: e.modaliteter?.[0] || 'STY',
+    varighetMin: 5,
+    intensitet: 3,
+    blokker: [{ kind: 'ovelser', rolle: 'hoved', ovelser: [{ id: e.id }] }],
+  };
+  const { profil: nyProfil, resultat: xpResultat } = registrerOkt(hentProfil(), testOkt, _bib, [resultat], Date.now());
+  lagreProfil(nyProfil);
+  leggTilLogg({
+    id: `test-${Date.now()}`,
+    dato: new Date().toISOString(),
+    modalitet: testOkt.modalitet,
+    varighetMin: testOkt.varighetMin,
+    intensitet: testOkt.intensitet,
+    lokasjon: 'Test',
+    ovelseIder: [e.id],
+    resultater: [resultat],
+    xp: xpResultat.xp,
+    fullfort: true,
+    test: true,
+  });
+  tegnAktivitet();
 }
 
 // --- Øktlogg --------------------------------------------------------------

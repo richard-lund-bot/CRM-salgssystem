@@ -7,7 +7,7 @@ import { MODALITET_NAVN, MONSTER_NAVN } from './library.js';
 import { genererOkt, byttOvelse, regenerer, regenererBlokk } from './generator.js';
 import {
   hentProfil, lagreProfil, lagreGenerert, leggTilLogg, nyligeOvelseIder,
-  hentSistLokasjon, lagreSistLokasjon,
+  hentSistLokasjon, lagreSistLokasjon, settPlanStatus,
 } from './store.js';
 import { registrerOkt, INTENSITET } from './niva.js';
 import { avatarBilde, erBildeAvatar, AVATAR_NAVN, belonningIkonNavn } from './belonninger.js';
@@ -64,7 +64,7 @@ function tilbakeTopp(tittel, undertekst, påTilbake) {
 // ===========================================================================
 // 1) Generator-input
 // ===========================================================================
-const KLASSER = [['Mikro', 'mikro'], ['Kort', 'kort'], ['Standard', 'standard'], ['Lang', 'lang']];
+export const KLASSER = [['Mikro', 'mikro'], ['Kort', 'kort'], ['Standard', 'standard'], ['Lang', 'lang']];
 const INTENSITETER = [['Rolig', 1], ['Lett', 2], ['Moderat', 3], ['Hard', 4], ['Maks', 5]];
 
 export function visGeneratorSkjerm(mount, forhandsvalg = {}) {
@@ -120,6 +120,7 @@ export function visGeneratorSkjerm(mount, forhandsvalg = {}) {
               nyligeIder: [...nyligeOvelseIder(3)],
               stempel: new Date().toISOString().slice(0, 10),
             });
+            if (forhandsvalg.planId) gjeldendeOkt.planId = forhandsvalg.planId;
             location.hash = '#/review';
           } }, 'Generer økt'),
         ),
@@ -537,6 +538,7 @@ function visResultat(mount, okt) {
       xp: resultat.xp,
       fullfort: true,
     });
+    if (okt.planId) settPlanStatus(okt.planId, 'gjort');
     visFerdig(mount, okt, resultat);
   }
 
@@ -622,7 +624,7 @@ function visFerdig(mount, okt, resultat) {
       ),
       el('div', { class: 'knapprad' },
         el('button', { class: 'knapp', type: 'button', onclick: () => { location.hash = '#/hjem'; } }, 'Til hjem'),
-        el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: () => { location.hash = '#/historikk'; } }, 'Se historikk'),
+        el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: () => { location.hash = '#/aktivitet'; } }, 'Se historikk'),
       ),
     ),
   );

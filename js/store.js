@@ -77,6 +77,58 @@ export function lagreGenerert(okt) {
 
 export function settGenererteRå(alle) { skriv(LS.genererte, alle); }
 
+// --- Planlagte økter (Plan-modulen) ---
+// Rene datoer «YYYY-MM-DD» (lokal kalenderdag, ingen klokkeslett) holder
+// planlegging enkel — én eller flere planer kan ligge på samme dag.
+function nyPlanId() {
+  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+export function hentPlan() {
+  return les(LS.plan, []);
+}
+
+export function settPlanRå(liste) { skriv(LS.plan, liste); }
+
+/** Legger til en planlagt økt og returnerer den nye oppføringen. */
+export function leggTilPlan({ dato, modalitet, varighetsklasse, lokasjon }) {
+  const liste = hentPlan();
+  const ny = {
+    id: nyPlanId(), dato, modalitet, varighetsklasse: varighetsklasse || 'standard',
+    lokasjon: lokasjon || null, status: 'planlagt', opprettet: nåISO(),
+  };
+  liste.push(ny);
+  skriv(LS.plan, liste);
+  varsle('plan');
+  return ny;
+}
+
+export function fjernPlan(id) {
+  const liste = hentPlan().filter((p) => p.id !== id);
+  skriv(LS.plan, liste);
+  varsle('plan');
+  return liste;
+}
+
+export function settPlanStatus(id, status) {
+  const liste = hentPlan().map((p) => (p.id === id ? { ...p, status } : p));
+  skriv(LS.plan, liste);
+  varsle('plan');
+  return liste;
+}
+
+/** Planer for én kalenderdag «YYYY-MM-DD». */
+export function planForDato(dato) {
+  return hentPlan().filter((p) => p.dato === dato && p.status === 'planlagt');
+}
+
+/** Kommende planer fra og med `fraDato`, sortert kronologisk. */
+export function planKommende(fraDato) {
+  return hentPlan()
+    .filter((p) => p.status === 'planlagt' && p.dato >= fraDato)
+    .sort((a, b) => a.dato.localeCompare(b.dato));
+}
+
 // --- Aktiv lokasjon ---
 export function hentSistLokasjon() {
   return les(LS.sistLokasjon, null);
