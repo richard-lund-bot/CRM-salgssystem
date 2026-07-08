@@ -1,0 +1,12 @@
+{
+  "name": "treningsapp-v2",
+  "version": "0.3.0",
+  "private": true,
+  "type": "module",
+  "description": "Personlig treningsapp — genererer økter fra et bibliotek, PWA i vanilla HTML/CSS/JS.",
+  "scripts": {
+    "merge": "node scripts/merge-parts.mjs",
+    "validate": "node scripts/validate.mjs",
+    "test:gen": "node scripts/smoke-generator.mjs"
+  }
+}

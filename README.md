@@ -14,8 +14,11 @@ Bygget ved å gjenbruke repoet og Supabase-prosjektet fra en tidligere Ringelist
 | M0 | Riv CRM, arkiver, tøm repo + Supabase | ✅ |
 | M1 | PWA-skjelett + datakonvertering (bibliotek → `data/*.json`) | ✅ |
 | M2 | Supabase-skjema for brukertilstand | ⏳ |
-| M3 | Onboarding + generator + kjøre-UI | ⏳ |
+| M3 | Onboarding + generator + kjøre-UI | ✅ |
 | M4 | Logging, nivåsystem, historikk | ⏳ |
+
+> M3 kjører helt på localStorage (offline-first). M2 (Supabase-sync av brukertilstand)
+> er ikke en blokker for M3 og tas senere sammen med M4/M5.
 
 ## Kjøre lokalt
 
@@ -33,9 +36,13 @@ python3 -m http.server 8000
 index.html              app-skall
 css/app.css             stil (mørkt tema, mobil først)
 js/
-  app.js                inngang, ruter, skjermer
+  app.js                inngang, ruter, skjermer, onboarding-gate, adaptiv hjem
   library.js            laster + indekserer statiske data (offline-first)
-  store.js              brukertilstand i localStorage (Spor-mønster)
+  store.js              brukertilstand i localStorage (Spor-mønster) + profiloppslag
+  onboarding.js         5-skjerms onboarding (motivasjon, ankertest, ukemål, sted)
+  generator.js          deterministisk øktgenerator (mal → filtrerte, seedede blokker)
+  kjor.js               generator-input, review (bytt/regenerer), kjøre-UI (timer/guide/pust)
+  rng.js                seeded PRNG (mulberry32) + stokk/trekk — ingen Math.random()
   ui.js                 DOM-hjelpere
   config.js             Supabase-URL/nøkkel + app-versjon
 data/
@@ -54,6 +61,7 @@ scripts/
   validate.mjs          validerer data/ (referanser + tellinger) — kjør til grønt
   merge-parts.mjs       bygger exercises.json + sequences.json fra parts/
   gen-icons.mjs         genererer PWA-ikoner
+  smoke-generator.mjs   headless test: determinisme + dekning + ikke-tomme blokker
 docs/                   kildedokumenter + avvikslogg
 manifest.webmanifest    PWA-manifest
 sw.js                   service worker (offline-first)

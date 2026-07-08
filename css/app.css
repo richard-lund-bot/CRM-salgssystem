@@ -233,3 +233,179 @@ body {
 }
 .tabbar__knapp--aktiv { color: var(--aksent); }
 .tabbar__ikon { font-size: 1.25rem; line-height: 1; }
+
+/* ==========================================================================
+   M3 — onboarding, generator, review, kjøring
+   ========================================================================== */
+
+/* Fokusmodus: skjul tab-bar under onboarding/generator/review/kjøring */
+.fokusmodus .tabbar { display: none; }
+.fokusmodus body { padding-bottom: 0; }
+
+/* Topp med tilbake-knapp */
+.topp--kjor { display: flex; align-items: flex-start; gap: 10px; }
+.topp__tilbake {
+  background: var(--bg-kort);
+  border: 1px solid var(--kant);
+  color: var(--tekst);
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  font-size: 1.3rem; line-height: 1;
+  cursor: pointer;
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+.topp__under { margin: 2px 0 0; color: var(--dempet); font-size: 0.85rem; }
+
+/* Knapp-tilstander */
+.knapp--av, .knapp:disabled { opacity: 0.4; pointer-events: none; }
+.ikonknapp {
+  background: var(--bg-kort-2);
+  border: 1px solid var(--kant);
+  color: var(--tekst);
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  font-size: 1rem;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.ikonknapp:active { background: var(--aksent); color: #06120c; }
+
+/* Sticky bunn-knapp (generator/review) */
+.fast-bunn {
+  position: sticky;
+  bottom: 12px;
+  margin-top: 4px;
+  display: flex;
+}
+.fast-bunn .knapp { box-shadow: 0 8px 24px rgba(0,0,0,0.45); }
+
+/* Hero-kort (dagens forslag) */
+.hero { background: linear-gradient(135deg, var(--bg-kort-2), var(--bg-kort)); border-color: var(--aksent-mork); }
+.hero__eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7rem; color: var(--aksent); margin: 0 0 4px; }
+.hero__tittel { margin: 0 0 6px; font-size: 1.35rem; }
+.hero__lok { margin: 10px 0; }
+
+/* Nivåsammendrag */
+.nivliste { display: flex; flex-direction: column; gap: 2px; }
+.nivkort {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 9px 2px; border-top: 1px solid var(--kant);
+}
+.nivkort:first-child { border-top: none; }
+.nivkort__navn { font-size: 0.92rem; }
+
+/* --- Onboarding --- */
+.ob { padding: calc(env(safe-area-inset-top) + 20px) 18px 24px; min-height: 100dvh; display: flex; flex-direction: column; }
+.ob__topp { margin-bottom: 16px; }
+.ob-prikker { display: flex; gap: 6px; margin-bottom: 16px; }
+.ob-prikk { width: 26px; height: 4px; border-radius: 4px; background: var(--kant); transition: background 0.2s; }
+.ob-prikk--på { background: var(--aksent); }
+.ob__tittel { margin: 0; font-size: 1.5rem; letter-spacing: -0.02em; }
+.ob__under { margin: 6px 0 0; color: var(--dempet); font-size: 0.92rem; line-height: 1.4; }
+.ob__kropp { display: flex; flex-direction: column; gap: 14px; flex: 1; }
+.ob__bunn { display: flex; gap: 10px; margin-top: auto; padding-top: 14px; }
+
+.ob-valg { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ob-kort {
+  position: relative;
+  background: var(--bg-kort); border: 1px solid var(--kant);
+  border-radius: var(--radius); padding: 16px 12px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  text-align: center; cursor: pointer; color: var(--tekst);
+}
+.ob-kort--valgt { border-color: var(--aksent); background: var(--bg-kort-2); }
+.ob-kort__ikon { font-size: 1.6rem; }
+.ob-kort__navn { font-size: 0.85rem; line-height: 1.2; }
+.ob-kort__rang {
+  position: absolute; top: 8px; right: 8px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--aksent); color: #06120c;
+  font-size: 0.8rem; font-weight: 700;
+  display: grid; place-items: center;
+}
+
+.ob-anker { display: flex; flex-direction: column; gap: 16px; }
+.ob-sp__tekst { margin: 0 0 8px; font-weight: 600; font-size: 0.95rem; }
+
+.ob-varig { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ob-varig__kort {
+  background: var(--bg-kort); border: 1px solid var(--kant); border-radius: 12px;
+  padding: 12px; display: flex; flex-direction: column; gap: 2px; cursor: pointer; color: var(--tekst);
+}
+.ob-varig__kort--valgt { border-color: var(--aksent); background: var(--bg-kort-2); }
+.ob-varig__navn { font-weight: 600; }
+.ob-varier { display: flex; flex-wrap: wrap; gap: 8px; }
+.ob-tggl {
+  background: var(--bg-kort); border: 1px solid var(--kant); color: var(--dempet);
+  border-radius: 20px; padding: 8px 12px; font-size: 0.85rem; cursor: pointer;
+}
+.ob-tggl--på { background: var(--aksent); color: #06120c; border-color: var(--aksent); font-weight: 600; }
+
+/* --- Review: blokker --- */
+.blokk__topp { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+.blokk__hoyre { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+.blokk__rolle {
+  display: inline-block; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em;
+  padding: 3px 8px; border-radius: 6px; margin-right: 8px;
+  background: var(--bg-kort-2); color: var(--dempet);
+}
+.blokk__rolle--hoved { background: var(--aksent-mork); color: #eafff5; }
+.blokk__rolle--finisher { background: #7a3a2a; color: #ffe1d6; }
+.blokk__format { font-weight: 600; }
+.blokk__param { margin: 0 0 10px; color: var(--dempet); font-size: 0.85rem; }
+.blokk__ovelser { display: flex; flex-direction: column; gap: 2px; }
+.orad { display: flex; align-items: center; gap: 10px; padding: 9px 2px; border-top: 1px solid var(--kant); }
+.orad:first-child { border-top: none; }
+.orad__hoved { flex: 1; min-width: 0; }
+.orad__navn { font-weight: 500; }
+.orad__dose { color: var(--dempet); font-size: 0.85rem; margin-left: 6px; }
+.orad__tags { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 5px; }
+
+/* --- Kjøring --- */
+.innhold--kjor { min-height: calc(100dvh - 90px); }
+.kjor-fremgang { display: flex; gap: 5px; margin-bottom: 6px; }
+.kjor-fremgang__p { flex: 1; height: 5px; border-radius: 4px; background: var(--kant); }
+.kjor-fremgang__p.er-aktiv { background: var(--aksent); }
+.kjor-fremgang__p.er-ferdig { background: var(--aksent-mork); }
+
+.kjor-nav { display: flex; gap: 10px; margin-top: auto; padding-top: 16px; }
+
+.flate { display: flex; flex-direction: column; gap: 12px; }
+.flate--midt { align-items: center; text-align: center; padding: 10px 0; }
+.flate__param { color: var(--dempet); font-size: 0.9rem; margin: 0; }
+.flate__stor { font-size: 1.9rem; font-weight: 700; letter-spacing: -0.02em; }
+.flate__stor--arbeid { color: var(--aksent); }
+.flate__stor--hold { color: #ffd479; }
+.flate__stor--hvile { color: var(--dempet); }
+.flate__beskr { color: var(--dempet); font-size: 0.9rem; line-height: 1.5; max-width: 34ch; }
+.flate__neste { color: var(--dempet); font-size: 0.9rem; margin: 0; }
+.flate__hint { max-width: 32ch; margin: 6px auto 0; }
+.flate__knapper { display: flex; gap: 10px; width: 100%; margin-top: 6px; }
+.flate__knapper .knapp { flex: 1; }
+
+.kjor-klokke { font-size: 4rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.03em; line-height: 1; }
+.pust-tall { font-size: 3rem; font-weight: 800; font-variant-numeric: tabular-nums; margin-top: -8px; }
+
+/* Guide-checklist */
+.guide { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+.guide__rad {
+  display: flex; align-items: center; gap: 12px; text-align: left;
+  background: var(--bg-kort); border: 1px solid var(--kant); border-radius: 12px;
+  padding: 14px; color: var(--tekst); cursor: pointer; font-size: 1rem;
+}
+.guide__rad--ferdig { opacity: 0.5; border-color: var(--aksent-mork); }
+.guide__hake { color: var(--aksent); font-size: 1.1rem; flex: 0 0 auto; }
+.guide__navn { flex: 1; }
+
+/* Pusteguide-ring */
+.pustering {
+  width: 160px; height: 160px; border-radius: 50%;
+  background: radial-gradient(circle, var(--bg-kort-2), var(--bg-kort));
+  border: 3px solid var(--kant);
+  transition: transform var(--pust-sek, 4s) ease-in-out, border-color 0.3s;
+  transform: scale(0.7);
+}
+.pustering--inn { transform: scale(1.05); border-color: var(--aksent); }
+.pustering--ut { transform: scale(0.7); border-color: var(--aksent-mork); }
+.pustering--hold { border-color: #ffd479; }

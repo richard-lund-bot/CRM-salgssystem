@@ -63,6 +63,25 @@ export function hentSistLokasjon() {
 
 export function lagreSistLokasjon(navn) {
   skriv(LS.sistLokasjon, navn);
+  const profil = hentProfil();
+  if (profil && profil.aktivLokasjon !== navn && (profil.lokasjoner || []).some((l) => l.navn === navn)) {
+    lagreProfil({ ...profil, aktivLokasjon: navn });
+  }
+}
+
+// --- Profiloppslag (brukes av generatoren) ---
+/** Basenivå for en modalitet (1-4 fra onboarding). Default 2 = «grunnleggende». */
+export function nivaFor(profil, modalitet) {
+  const n = profil?.nivaer?.[modalitet]?.base;
+  return Number.isFinite(n) ? n : 2;
+}
+
+/** IDene til øvelser i de N siste kjørte øktene — generatoren unngår gjentak. */
+export function nyligeOvelseIder(antallOkter = 3) {
+  const logg = hentLogg().slice(-antallOkter);
+  const ider = new Set();
+  for (const o of logg) for (const id of o.ovelseIder || []) ider.add(id);
+  return ider;
 }
 
 /** Full nullstilling (innstillinger → full reset). */

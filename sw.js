@@ -3,7 +3,7 @@
 //   - navigasjon/HTML: network-first med cache-fallback (fersk UI når nett finnes)
 //   - data/JS/CSS/ikoner: cache-first (raskt, fungerer offline)
 // Bump CACHE_VERSION for å rulle ut ny cache.
-const CACHE_VERSION = 'trening-m1-0.1.0';
+const CACHE_VERSION = 'trening-m3-0.3.0';
 const SKALL = [
   './',
   './index.html',
@@ -13,6 +13,10 @@ const SKALL = [
   './js/store.js',
   './js/ui.js',
   './js/config.js',
+  './js/rng.js',
+  './js/generator.js',
+  './js/onboarding.js',
+  './js/kjor.js',
   './manifest.webmanifest',
   './icons/icon-192.png',
   './icons/icon-512.png',

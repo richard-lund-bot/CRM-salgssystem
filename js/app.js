@@ -1,11 +1,13 @@
-// App-inngang for Treningsapp v2 — M1-skjelett.
-// Ansvar i M1: registrere service worker, laste biblioteket offline-first,
-// og vise en fungerende bibliotek-utforsker som beviser at datalaget er komplett.
-// Onboarding (M3), generator (M3) og logging (M4) legges på i senere milepæler.
+// App-inngang for Treningsapp v2.
+// M1: PWA-skjelett + bibliotek-utforsker. M3: onboarding (gate ved oppstart),
+// generator, review og kjøre-UI. Onboarding kjøres første gang; deretter viser
+// hjem et adaptivt «Dagens forslag»-kort med én-trykks start.
 import { lastBibliotek, modalitetsoversikt, MODALITET_NAVN, MONSTER_NAVN } from './library.js';
-import { hentProfil } from './store.js';
+import { hentProfil, harProfil, hentSistLokasjon, lagreSistLokasjon, nivaFor } from './store.js';
 import { el, tom, chip } from './ui.js';
 import { APP_VERSION } from './config.js';
+import { kjorOnboarding } from './onboarding.js';
+import { settBib, visGeneratorSkjerm, visReviewSkjerm, visKjoreSkjerm } from './kjor.js';
 
 const app = document.getElementById('app');
 let bib = null;
@@ -13,13 +15,27 @@ let bib = null;
 // --- Ruter (hash-basert) ---
 const ruter = {
   hjem: visHjem,
+  ny: () => visGeneratorSkjerm(app, lesForhandsvalg()),
+  review: () => visReviewSkjerm(app),
+  kjor: () => visKjoreSkjerm(app),
   bibliotek: visBibliotek,
   kjeder: visKjeder,
   om: visOm,
 };
 
+// Ruter uten tab-bar (fokusmodus: generator, review, kjøring).
+const FOKUS = new Set(['ny', 'review', 'kjor']);
+
+function lesForhandsvalg() {
+  const params = new URLSearchParams(location.hash.split('?')[1] || '');
+  const v = {};
+  if (params.get('m')) v.modalitet = params.get('m');
+  return v;
+}
+
 function navger() {
   const rute = (location.hash.replace('#/', '') || 'hjem').split('?')[0];
+  document.body.classList.toggle('fokusmodus', FOKUS.has(rute));
   (ruter[rute] || visHjem)();
   oppdaterNav(rute);
 }
@@ -40,30 +56,17 @@ function skjerm(tittel, ...innhold) {
 }
 
 function visHjem() {
+  const profil = hentProfil();
   const teller = modalitetsoversikt(bib);
   const totalt = bib.exercises.length;
-  const profil = hentProfil();
-
-  const stat = (tall, tekst) => el('div', { class: 'stat' },
-    el('div', { class: 'stat__tall' }, String(tall)),
-    el('div', { class: 'stat__tekst' }, tekst),
-  );
 
   skjerm('Treningsapp',
-    !profil && el('div', { class: 'kort kort--info' },
-      el('p', {}, 'Velkommen. Onboarding, generator og logging kommer i neste milepæl.'),
-      el('p', { class: 'dempet' }, 'Nå kan du utforske hele øvelsesbiblioteket som er bygget inn.'),
-    ),
-    el('div', { class: 'statrad' },
-      stat(totalt, 'øvelser'),
-      stat(bib.chains.length, 'progresjonskjeder'),
-      stat(bib.equipment.length, 'utstyr'),
-      stat(bib.templates.length, 'øktmaler'),
-    ),
+    profil ? dagensForslag(profil) : velkommenKort(),
+    profil && nivaSammendrag(profil),
     el('div', { class: 'kort' },
       el('h2', {}, 'Biblioteket'),
       el('div', { class: 'modliste' },
-        ...Object.entries(teller).sort((a, b) => b[1] - a[1]).map(([m, n]) =>
+        ...Object.entries(teller).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([m, n]) =>
           el('a', { class: 'modrad', href: `#/bibliotek?m=${m}` },
             el('span', { class: 'modrad__navn' }, MODALITET_NAVN[m] || m),
             el('span', { class: 'modrad__tall' }, String(n)),
@@ -74,11 +77,79 @@ function visHjem() {
     el('div', { class: 'kort' },
       el('h2', {}, 'Snarveier'),
       el('div', { class: 'knapprad' },
-        el('a', { class: 'knapp', href: '#/bibliotek' }, 'Utforsk øvelser'),
+        el('a', { class: 'knapp knapp--sekundaer', href: '#/bibliotek' }, `Utforsk ${totalt} øvelser`),
         el('a', { class: 'knapp knapp--sekundaer', href: '#/kjeder' }, 'Progresjonskjeder'),
       ),
     ),
   );
+}
+
+function velkommenKort() {
+  return el('div', { class: 'kort kort--info' },
+    el('h2', {}, 'Velkommen 👋'),
+    el('p', {}, 'La oss sette opp profilen din — under 2 minutter.'),
+    el('button', { class: 'knapp', type: 'button', onclick: startOnboarding }, 'Kom i gang'),
+  );
+}
+
+// Adaptivt hero-kort: foreslått økt + én-trykks start + lokasjonsvelger.
+function dagensForslag(profil) {
+  const modalitet = foreslaModalitet(profil);
+  const varighet = profil.varighetsklasse || 'standard';
+  const lokasjoner = (profil.lokasjoner || []).map((l) => l.navn);
+  const aktiv = hentSistLokasjon() || profil.aktivLokasjon || lokasjoner[0];
+
+  return el('div', { class: 'kort hero' },
+    el('p', { class: 'hero__eyebrow' }, 'Dagens forslag'),
+    el('h2', { class: 'hero__tittel' }, `${MODALITET_NAVN[modalitet] || modalitet} · ${varighetNavn(varighet)}`),
+    el('p', { class: 'dempet' }, ukemiksTekst(profil)),
+    lokasjoner.length > 1 && el('div', { class: 'chiprad hero__lok' },
+      ...lokasjoner.map((navn) => chip(navn, {
+        aktiv: aktiv === navn,
+        onClick: () => { lagreSistLokasjon(navn); visHjem(); },
+      })),
+    ),
+    el('div', { class: 'knapprad' },
+      el('button', { class: 'knapp', type: 'button', onclick: () => {
+        location.hash = `#/ny?m=${modalitet}`;
+      } }, 'Sett opp økt ▶'),
+    ),
+  );
+}
+
+function nivaSammendrag(profil) {
+  const rekke = ['STY', 'HIIT', 'CORE', 'YOGA', 'STR'];
+  return el('div', { class: 'kort' },
+    el('h2', {}, 'Nivå'),
+    el('div', { class: 'nivliste' },
+      ...rekke.map((m) => el('div', { class: 'nivkort' },
+        el('span', { class: 'nivkort__navn' }, MODALITET_NAVN[m] || m),
+        el('span', { class: 'niva' }, ...[1, 2, 3, 4, 5].map((k) =>
+          el('i', { class: 'niva__p' + (k <= nivaFor(profil, m) ? ' niva__p--på' : '') }))),
+      )),
+    ),
+    el('p', { class: 'dempet' }, 'Uverifisert til første loggede bevis (M4).'),
+  );
+}
+
+function foreslaModalitet(profil) {
+  const medMal = new Set(bib.templates.map((t) => t.modalitet));
+  const vekter = profil.motivasjon?.vekter || {};
+  let best = 'STY';
+  let bestV = -Infinity;
+  for (const m of medMal) {
+    const v = vekter[m] || 0;
+    if (v > bestV) { bestV = v; best = m; }
+  }
+  return best;
+}
+
+function varighetNavn(k) {
+  return { mikro: '5–10 min', kort: '15–20 min', standard: '30–40 min', lang: '45–60 min' }[k] || k;
+}
+
+function ukemiksTekst(profil) {
+  return `${profil.ukemiks || 'Allsidig helse'} · mål ${profil.ukemaal || 4} økter/uke`;
 }
 
 function visBibliotek() {
@@ -167,36 +238,52 @@ function visKjeder() {
 }
 
 function visOm() {
+  const profil = hentProfil();
   skjerm('Om',
     el('div', { class: 'kort' },
       el('h2', {}, 'Treningsapp v2'),
-      el('p', {}, 'Milepæl 1: skjelett + datakonvertering. Bygget som PWA i vanilla HTML/CSS/JS.'),
+      el('p', {}, 'Milepæl 3: onboarding, generator og kjøre-UI. Bygget som PWA i vanilla HTML/CSS/JS.'),
       el('p', { class: 'dempet' }, `Versjon ${APP_VERSION}`),
       el('p', { class: 'dempet' }, `${bib.exercises.length} øvelser · ${bib.chains.length} kjeder · ${bib.formats.length} formater · ${bib.templates.length} maler · ${bib.gateways.length} gateways · ${bib.sequences.length} sekvenser.`),
     ),
+    profil && el('div', { class: 'kort' },
+      el('h2', {}, 'Profil'),
+      el('p', { class: 'dempet' }, `Motivasjon: ${(profil.motivasjon?.valg || []).join(', ') || '–'}`),
+      el('p', { class: 'dempet' }, `Ukemål ${profil.ukemaal} · ${profil.ukemiks}`),
+      el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: startOnboarding }, 'Ta profilen på nytt'),
+    ),
     el('div', { class: 'kort' },
-      el('h2', {}, 'Neste milepæler'),
-      el('ul', {},
-        el('li', {}, 'M2: Supabase-skjema for brukertilstand'),
-        el('li', {}, 'M3: Onboarding + generator + kjøre-UI'),
-        el('li', {}, 'M4: Logging, nivåsystem, historikk'),
-      ),
+      el('h2', {}, 'Neste milepæl'),
+      el('ul', {}, el('li', {}, 'M4: Logging, XP, nivåsystem, gateways og historikk')),
     ),
   );
 }
 
 // --- Tab-bar ---
 function byggTabbar() {
+  if (document.querySelector('.tabbar')) return;
   const tab = (rute, ikon, tekst) => el('a', {
     class: 'tabbar__knapp', href: `#/${rute}`, 'data-rute': rute,
   }, el('span', { class: 'tabbar__ikon' }, ikon), el('span', { class: 'tabbar__tekst' }, tekst));
 
   document.body.append(el('nav', { class: 'tabbar' },
     tab('hjem', '🏠', 'Hjem'),
+    tab('ny', '⚡', 'Trene'),
     tab('bibliotek', '📚', 'Bibliotek'),
     tab('kjeder', '🪜', 'Kjeder'),
     tab('om', 'ℹ️', 'Om'),
   ));
+}
+
+// --- Onboarding ---
+function startOnboarding() {
+  document.body.classList.add('fokusmodus');
+  kjorOnboarding(app, bib, () => {
+    document.body.classList.remove('fokusmodus');
+    byggTabbar();
+    location.hash = '#/hjem';
+    navger();
+  });
 }
 
 // --- Oppstart ---
@@ -211,8 +298,14 @@ async function start() {
     ));
     return;
   }
-  byggTabbar();
+  settBib(bib);
   window.addEventListener('hashchange', navger);
+
+  if (!harProfil()) {
+    startOnboarding();
+    return;
+  }
+  byggTabbar();
   navger();
 }
 
