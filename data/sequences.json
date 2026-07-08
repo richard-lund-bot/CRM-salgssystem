@@ -1,0 +1,160 @@
+[
+ {
+  "kind": "yoga",
+  "id": "sol-hilsen-a",
+  "navn": "Sol-hilsen A (1 runde ≈ 9 pust)",
+  "niva": null,
+  "varighetMin": null,
+  "beskrivelse": "fjell → armer opp → foroverbøy → halvveis løft → planke → chaturanga (kne nv 1) → oppovervendt hund/kobra → nedovervendt hund (5 pust) → gå/hopp frem → halvveis løft → foroverbøy → armer opp → fjell.",
+  "posisjoner": [
+   "fjellstilling",
+   "staende-foroverboy",
+   "halvveis-loft",
+   "planke-chaturanga",
+   "oppovervendt-hund",
+   "nedovervendt-hund",
+   "halvveis-loft",
+   "staende-foroverboy",
+   "fjellstilling"
+  ]
+ },
+ {
+  "kind": "yoga",
+  "id": "sol-hilsen-b",
+  "navn": "Sol-hilsen B",
+  "niva": null,
+  "varighetMin": null,
+  "beskrivelse": "som A + stol i start og kriger 1 begge sider fra hunden.",
+  "posisjoner": [
+   "fjellstilling",
+   "stol",
+   "staende-foroverboy",
+   "halvveis-loft",
+   "planke-chaturanga",
+   "oppovervendt-hund",
+   "nedovervendt-hund",
+   "kriger-1",
+   "nedovervendt-hund",
+   "halvveis-loft",
+   "staende-foroverboy",
+   "stol",
+   "fjellstilling"
+  ]
+ },
+ {
+  "kind": "yoga",
+  "id": "morgen-10-min",
+  "navn": "Morgen 10 min",
+  "niva": 1,
+  "varighetMin": 10,
+  "beskrivelse": "katt–ku ×8 → nedovervendt hund → lav utfall m/ rotasjon per side → verdenshilsen ×3/side → Sol A ×2 rolig.",
+  "posisjoner": [
+   "katt-ku",
+   "nedovervendt-hund",
+   "lav-utfall",
+   "verdenshilsen"
+  ]
+ },
+ {
+  "kind": "yoga",
+  "id": "kveld-10-min",
+  "navn": "Kveld 10 min",
+  "niva": 1,
+  "varighetMin": 10,
+  "beskrivelse": "barnets stilling → katt–ku → figur-4/nålens øye per side → knær til bryst → liggende twist per side → happy baby → savasana.",
+  "posisjoner": [
+   "barnets-stilling",
+   "katt-ku",
+   "liggende-twist",
+   "happy-baby",
+   "savasana"
+  ]
+ },
+ {
+  "kind": "yoga",
+  "id": "yin-hofter-25-min",
+  "navn": "Yin hofter 25 min",
+  "niva": null,
+  "varighetMin": 25,
+  "beskrivelse": "sommerfugl 3 → dragen 3/side → svanen 3/side → frosken 2 → liggende twist 2/side → savasana 3.",
+  "posisjoner": [
+   "sommerfugl-yin",
+   "dragen",
+   "svanen",
+   "frosken",
+   "liggende-twist-yin",
+   "savasana"
+  ]
+ },
+ {
+  "kind": "yoga",
+  "id": "yin-rygg-20-min",
+  "navn": "Yin rygg 20 min",
+  "niva": null,
+  "varighetMin": 20,
+  "beskrivelse": "caterpillar 4 → sfinx 3 → selen 2 → bananasana 2/side → liggende twist 2/side → savasana 3.",
+  "posisjoner": [
+   "caterpillar",
+   "sfinxen",
+   "selen",
+   "bananasana",
+   "liggende-twist-yin",
+   "savasana"
+  ]
+ },
+ {
+  "kind": "yoga",
+  "id": "staende-flow-blokk",
+  "navn": "Stående flow-blokk",
+  "niva": 2,
+  "varighetMin": null,
+  "beskrivelse": "kriger 2 → fredfull kriger → utvidet sidevinkel → triangel → halvmåne (valgfri) — holdes 3-5 pust hver, begge sider.",
+  "posisjoner": [
+   "kriger-2",
+   "fredfull-kriger",
+   "utvidet-sidevinkel",
+   "triangel",
+   "halvmane"
+  ]
+ },
+ {
+  "kind": "kb-complex",
+  "id": "enkel-flyt",
+  "navn": "Enkel flyt",
+  "niva": 2,
+  "sekvens": "dead clean → press → utfall bak",
+  "perSide": true
+ },
+ {
+  "kind": "kb-complex",
+  "id": "klassisk-complex",
+  "navn": "Klassisk complex",
+  "niva": 3,
+  "sekvens": "clean → front squat → press",
+  "perSide": true
+ },
+ {
+  "kind": "kb-complex",
+  "id": "swing-stigen",
+  "navn": "Swing-stigen",
+  "niva": 2,
+  "sekvens": "10-15-20 swings m/ 30 s pause",
+  "perSide": false
+ },
+ {
+  "kind": "kb-complex",
+  "id": "armor-building-lett",
+  "navn": "Armor building (lett)",
+  "niva": 4,
+  "sekvens": "2 clean → 1 press → 3 front squat (dobbel)",
+  "perSide": false
+ },
+ {
+  "kind": "kb-complex",
+  "id": "tgu-flyt",
+  "navn": "TGU-flyt",
+  "niva": 4,
+  "sekvens": "halv TGU → windmill → tilbake",
+  "perSide": true
+ }
+]

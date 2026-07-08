@@ -1,0 +1,15 @@
+{
+  "complexes": [
+    { "id": "enkel-flyt", "navn": "Enkel flyt", "niva": 2, "sekvens": "dead clean → press → utfall bak", "perSide": true },
+    { "id": "klassisk-complex", "navn": "Klassisk complex", "niva": 3, "sekvens": "clean → front squat → press", "perSide": true },
+    { "id": "swing-stigen", "navn": "Swing-stigen", "niva": 2, "sekvens": "10-15-20 swings m/ 30 s pause", "perSide": false },
+    { "id": "armor-building-lett", "navn": "Armor building (lett)", "niva": 4, "sekvens": "2 clean → 1 press → 3 front squat (dobbel)", "perSide": false },
+    { "id": "tgu-flyt", "navn": "TGU-flyt", "niva": 4, "sekvens": "halv TGU → windmill → tilbake", "perSide": true }
+  ],
+  "avvik": [
+    "Konvertert 5 rader fra §9.",
+    "§9 konvertert til egen complex-struktur (format C-sekvenser), ikke som exercises, per instruks.",
+    "perSide er en tolkning: kilden markerer ikke «u» eksplisitt i noen rad (kolonneoverskriften sier bare «per side der u»). Satt true der sekvensens ledd er unilaterale enkelt-KB-øvelser iht. §5/§2 (Enkel flyt: dead clean/press/utfall bak er reps u; Klassisk complex: clean/press er reps u; TGU-flyt: halv TGU/windmill er reps u). Satt false for Swing-stigen (swings tolket som tohånds, jf. kjedebasen) og Armor building (utføres med dobbel KB, jf. «(dobbel)» i sekvensen).",
+    "id-er slugget fra navn per spek: parenteser fjernet (armor-building-lett)."
+  ]
+}

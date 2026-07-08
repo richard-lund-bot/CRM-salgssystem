@@ -1,0 +1,128 @@
+{
+  "sequences": [
+    {
+      "id": "sol-hilsen-a",
+      "navn": "Sol-hilsen A (1 runde ≈ 9 pust)",
+      "niva": null,
+      "varighetMin": null,
+      "beskrivelse": "fjell → armer opp → foroverbøy → halvveis løft → planke → chaturanga (kne nv 1) → oppovervendt hund/kobra → nedovervendt hund (5 pust) → gå/hopp frem → halvveis løft → foroverbøy → armer opp → fjell.",
+      "posisjoner": [
+        "fjellstilling",
+        "staende-foroverboy",
+        "halvveis-loft",
+        "planke-chaturanga",
+        "oppovervendt-hund",
+        "nedovervendt-hund",
+        "halvveis-loft",
+        "staende-foroverboy",
+        "fjellstilling"
+      ]
+    },
+    {
+      "id": "sol-hilsen-b",
+      "navn": "Sol-hilsen B",
+      "niva": null,
+      "varighetMin": null,
+      "beskrivelse": "som A + stol i start og kriger 1 begge sider fra hunden.",
+      "posisjoner": [
+        "fjellstilling",
+        "stol",
+        "staende-foroverboy",
+        "halvveis-loft",
+        "planke-chaturanga",
+        "oppovervendt-hund",
+        "nedovervendt-hund",
+        "kriger-1",
+        "nedovervendt-hund",
+        "halvveis-loft",
+        "staende-foroverboy",
+        "stol",
+        "fjellstilling"
+      ]
+    },
+    {
+      "id": "morgen-10-min",
+      "navn": "Morgen 10 min",
+      "niva": 1,
+      "varighetMin": 10,
+      "beskrivelse": "katt–ku ×8 → nedovervendt hund → lav utfall m/ rotasjon per side → verdenshilsen ×3/side → Sol A ×2 rolig.",
+      "posisjoner": [
+        "katt-ku",
+        "nedovervendt-hund",
+        "lav-utfall",
+        "verdenshilsen"
+      ]
+    },
+    {
+      "id": "kveld-10-min",
+      "navn": "Kveld 10 min",
+      "niva": 1,
+      "varighetMin": 10,
+      "beskrivelse": "barnets stilling → katt–ku → figur-4/nålens øye per side → knær til bryst → liggende twist per side → happy baby → savasana.",
+      "posisjoner": [
+        "barnets-stilling",
+        "katt-ku",
+        "liggende-twist",
+        "happy-baby",
+        "savasana"
+      ]
+    },
+    {
+      "id": "yin-hofter-25-min",
+      "navn": "Yin hofter 25 min",
+      "niva": null,
+      "varighetMin": 25,
+      "beskrivelse": "sommerfugl 3 → dragen 3/side → svanen 3/side → frosken 2 → liggende twist 2/side → savasana 3.",
+      "posisjoner": [
+        "sommerfugl-yin",
+        "dragen",
+        "svanen",
+        "frosken",
+        "liggende-twist-yin",
+        "savasana"
+      ]
+    },
+    {
+      "id": "yin-rygg-20-min",
+      "navn": "Yin rygg 20 min",
+      "niva": null,
+      "varighetMin": 20,
+      "beskrivelse": "caterpillar 4 → sfinx 3 → selen 2 → bananasana 2/side → liggende twist 2/side → savasana 3.",
+      "posisjoner": [
+        "caterpillar",
+        "sfinxen",
+        "selen",
+        "bananasana",
+        "liggende-twist-yin",
+        "savasana"
+      ]
+    },
+    {
+      "id": "staende-flow-blokk",
+      "navn": "Stående flow-blokk",
+      "niva": 2,
+      "varighetMin": null,
+      "beskrivelse": "kriger 2 → fredfull kriger → utvidet sidevinkel → triangel → halvmåne (valgfri) — holdes 3-5 pust hver, begge sider.",
+      "posisjoner": [
+        "kriger-2",
+        "fredfull-kriger",
+        "utvidet-sidevinkel",
+        "triangel",
+        "halvmane"
+      ]
+    }
+  ],
+  "avvik": [
+    "Konvertert 7 sekvenser fra §11.",
+    "Sol-hilsen A/B: 'armer opp' og 'gå/hopp frem' er overganger uten egen §10-posisjon og er utelatt fra posisjoner-listen (beholdt i beskrivelse).",
+    "Sol-hilsen A: 'planke → chaturanga' er én §10-oppføring — begge trinn mappes til id 'planke-chaturanga'. '(kne nv 1)' er en variantangivelse, kun beholdt i beskrivelse.",
+    "Tolkning: 'oppovervendt hund/kobra' i Sol-hilsen A — 'oppovervendt-hund' valgt i posisjoner-listen; kobra er kildens alternativ (nv 1).",
+    "Tolkning: Sol-hilsen B er utledet som A + 'stol' etter fjell (start og retur) og 'kriger-1' fra nedovervendt hund; 'begge sider' er representert med retur til nedovervendt hund og kriger-1 listet én gang — kilden spesifiserer ikke eksakt vinyasa mellom sidene.",
+    "Morgen 10 min: 'verdenshilsen' refererer §14-øvelsen 'Verdenshilsen (world's greatest)' (id 'verdenshilsen', ligger utenfor yoga-pilates-filen); 'lav utfall m/ rotasjon' mappet til 'lav-utfall' (rotasjonen er ikke egen posisjon); 'Sol A ×2' er en sekvensreferanse (sol-hilsen-a) og er ikke ekspandert i posisjoner-listen.",
+    "Kveld 10 min: 'figur-4/nålens øye' og 'knær til bryst' har ingen §10-id (figur-4 finnes kun i §13 tøying) og er utelatt fra posisjoner-listen.",
+    "Yin-sekvensene refererer yin-id-ene fra yoga-pilates.json (sommerfugl-yin, dragen, svanen, frosken, caterpillar, sfinxen, selen, bananasana, liggende-twist-yin); 'savasana' refererer §10-posisjonen. Normalisering: 'sfinx' i kilden mappet til 'sfinxen'.",
+    "niva: kun 'Morgen 10 min' (nv 1), 'Kveld 10 min' (nv 1) og 'Stående flow-blokk' (nv 2) har nivå i kilden — '(nv X)' flyttet fra navn til niva-feltet; Sol-hilsen A/B og yin-sekvensene satt til null.",
+    "varighetMin hentet fra navnet der det finnes (10/10/25/20); Sol-hilsen A/B og Stående flow-blokk: null. '(1 runde ≈ 9 pust)' er ikke en varighet og er beholdt i navnet på Sol-hilsen A.",
+    "Tall i beskrivelsene (f.eks. 'sommerfugl 3', 'katt–ku ×8') er hold-tider/repetisjoner per posisjon og er kun beholdt i beskrivelse, ikke strukturert."
+  ]
+}

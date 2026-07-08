@@ -1,0 +1,235 @@
+/* Treningsapp v2 — mobil-først, mørkt tema. */
+:root {
+  --bg: #0f1216;
+  --bg-kort: #171c22;
+  --bg-kort-2: #1e252d;
+  --tekst: #e7edf3;
+  --dempet: #8b97a5;
+  --aksent: #2dd489;
+  --aksent-mork: #1f8f5d;
+  --kant: #263039;
+  --fare: #ff6b6b;
+  --radius: 14px;
+  --tabbar-h: 62px;
+  font-size: 16px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--tekst);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+body {
+  min-height: 100dvh;
+  padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+}
+
+.laster {
+  display: grid;
+  place-items: center;
+  min-height: 60dvh;
+  color: var(--dempet);
+}
+
+/* Topp */
+.topp {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: linear-gradient(var(--bg) 70%, transparent);
+  padding: calc(env(safe-area-inset-top) + 14px) 18px 10px;
+}
+.topp__tittel {
+  margin: 0;
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+}
+
+.innhold {
+  padding: 4px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Kort */
+.kort {
+  background: var(--bg-kort);
+  border: 1px solid var(--kant);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.kort h2 { margin: 0 0 12px; font-size: 1.05rem; }
+.kort--info { background: var(--bg-kort-2); }
+.kort p { margin: 0 0 8px; line-height: 1.5; }
+.dempet { color: var(--dempet); font-size: 0.9rem; }
+
+/* Statistikk */
+.statrad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.stat {
+  background: var(--bg-kort);
+  border: 1px solid var(--kant);
+  border-radius: var(--radius);
+  padding: 12px 6px;
+  text-align: center;
+}
+.stat__tall { font-size: 1.5rem; font-weight: 700; color: var(--aksent); }
+.stat__tekst { font-size: 0.7rem; color: var(--dempet); margin-top: 2px; }
+
+/* Modalitetsliste */
+.modliste { display: flex; flex-direction: column; }
+.modrad {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 4px;
+  border-top: 1px solid var(--kant);
+  color: var(--tekst);
+  text-decoration: none;
+}
+.modrad:first-child { border-top: none; }
+.modrad__tall {
+  background: var(--bg-kort-2);
+  color: var(--dempet);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.85rem;
+}
+
+/* Knapper */
+.knapprad { display: flex; gap: 10px; flex-wrap: wrap; }
+.knapp {
+  display: inline-block;
+  background: var(--aksent);
+  color: #06120c;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  flex: 1;
+  text-align: center;
+}
+.knapp--sekundaer {
+  background: transparent;
+  color: var(--tekst);
+  border: 1px solid var(--kant);
+}
+
+/* Søk + chips */
+.sok {
+  width: 100%;
+  background: var(--bg-kort);
+  border: 1px solid var(--kant);
+  border-radius: 12px;
+  color: var(--tekst);
+  padding: 12px 14px;
+  font-size: 1rem;
+}
+.sok::placeholder { color: var(--dempet); }
+.chiprad, .knapprad.chiprad {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.chiprad::-webkit-scrollbar { display: none; }
+.chip {
+  flex: 0 0 auto;
+  background: var(--bg-kort);
+  border: 1px solid var(--kant);
+  color: var(--dempet);
+  border-radius: 20px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.chip--aktiv {
+  background: var(--aksent);
+  color: #06120c;
+  border-color: var(--aksent);
+  font-weight: 600;
+}
+
+/* Øvelseliste */
+.ovelseliste { display: flex; flex-direction: column; gap: 10px; }
+.ovelse {
+  background: var(--bg-kort);
+  border: 1px solid var(--kant);
+  border-radius: var(--radius);
+  padding: 13px 14px;
+}
+.ovelse__topp {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.ovelse__navn { font-weight: 600; }
+.ovelse__meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.tag {
+  font-size: 0.72rem;
+  background: var(--bg-kort-2);
+  color: var(--dempet);
+  border-radius: 6px;
+  padding: 3px 8px;
+}
+.tag--mod { color: var(--aksent); }
+.tag--u { color: #ffd479; }
+.tag--impact { color: var(--fare); }
+.ovelse__utstyr { margin-top: 8px; font-size: 0.8rem; color: var(--dempet); }
+.ovelse__kjede { margin-top: 6px; font-size: 0.78rem; color: var(--aksent); }
+
+/* Nivåprikker */
+.niva { display: inline-flex; gap: 3px; flex: 0 0 auto; }
+.niva__p {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--kant);
+}
+.niva__p--på { background: var(--aksent); }
+
+/* Kjeder */
+.kjede { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+.kjede__ledd { display: flex; justify-content: space-between; gap: 10px; }
+.kjede__niva { color: var(--dempet); font-size: 0.82rem; flex: 0 0 auto; }
+
+/* Tab-bar */
+.tabbar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: rgba(20, 25, 31, 0.96);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--kant);
+  z-index: 10;
+}
+.tabbar__knapp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  text-decoration: none;
+  color: var(--dempet);
+  font-size: 0.68rem;
+}
+.tabbar__knapp--aktiv { color: var(--aksent); }
+.tabbar__ikon { font-size: 1.25rem; line-height: 1; }

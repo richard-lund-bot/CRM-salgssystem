@@ -1,0 +1,17 @@
+{
+  "exercises": [
+    { "id": "tgu-til-albue", "navn": "TGU til albue", "monster": "helkropp", "modaliteter": ["STY"], "niva": 2, "type": "reps", "unilateral": true, "impact": "lav", "kjede": "tgu", "kjedePos": 1, "varianter": [{ "utstyr": ["kb"] }], "tags": [] },
+    { "id": "tgu-til-hand", "navn": "TGU til hånd", "monster": "helkropp", "modaliteter": ["STY"], "niva": 3, "type": "reps", "unilateral": true, "impact": "lav", "kjede": "tgu", "kjedePos": 2, "varianter": [{ "utstyr": ["kb"] }], "tags": [] },
+    { "id": "halv-tgu", "navn": "Halv TGU", "monster": "helkropp", "modaliteter": ["STY"], "niva": 3, "type": "reps", "unilateral": true, "impact": "lav", "kjede": "tgu", "kjedePos": 3, "varianter": [{ "utstyr": ["kb"] }], "tags": [] },
+    { "id": "kb-sots-press", "navn": "KB sots press", "monster": "push-v", "modaliteter": ["STY"], "niva": 5, "type": "reps", "unilateral": true, "impact": "lav", "kjede": "kb-press", "kjedePos": 5, "varianter": [{ "utstyr": ["kb"] }], "tags": [], "notat": "press fra bunnen av knebøy" },
+    { "id": "windshield-wipers-i-heng", "navn": "Windshield wipers i heng", "monster": "core-heng", "modaliteter": ["CORE"], "niva": 5, "type": "reps", "unilateral": false, "impact": "lav", "kjede": "core-heng", "kjedePos": 6, "varianter": [{ "utstyr": ["ringer"] }, { "utstyr": ["pullup"] }], "tags": [] },
+    { "id": "vegg-hold-mage-inn", "navn": "Vegg-håndstående mage inn", "monster": "balanse", "modaliteter": ["SKILL"], "niva": 3, "type": "hold", "unilateral": false, "impact": "lav", "kjede": "handstaende", "kjedePos": 1, "varianter": [{ "utstyr": ["vegg"] }], "tags": ["handstaende"] },
+    { "id": "vegg-hold-rygg-inn", "navn": "Vegg-håndstående rygg inn", "monster": "balanse", "modaliteter": ["SKILL"], "niva": 3, "type": "hold", "unilateral": false, "impact": "lav", "kjede": "handstaende", "kjedePos": 2, "varianter": [{ "utstyr": ["vegg"] }], "tags": ["handstaende"] },
+    { "id": "toe-pulls", "navn": "Toe pulls", "monster": "balanse", "modaliteter": ["SKILL"], "niva": 4, "type": "reps", "unilateral": false, "impact": "lav", "kjede": "handstaende", "kjedePos": 3, "varianter": [{ "utstyr": ["vegg"] }], "tags": ["handstaende"] },
+    { "id": "fri-handstaende", "navn": "Fri håndstående", "monster": "balanse", "modaliteter": ["SKILL"], "niva": 5, "type": "hold", "unilateral": false, "impact": "lav", "kjede": "handstaende", "kjedePos": 4, "varianter": [{ "utstyr": ["kv"] }], "tags": ["handstaende", "maal-skill"] },
+    { "id": "bulgarsk-m-kb", "navn": "Bulgarsk splittknebøy m/ KB", "monster": "utfall", "modaliteter": ["STY"], "niva": 4, "type": "reps", "unilateral": true, "impact": "lav", "kjede": "utfall", "kjedePos": 6, "varianter": [{ "utstyr": ["kb"] }, { "utstyr": ["manualer"] }], "tags": [] }
+  ],
+  "avvik": [
+    "Opprettet 9 øvelser som kun finnes som kjedeledd/gateway-referanser i kilden, uten egne tabellrader: TGU til albue/til hånd/halv (tgu-kjeden, dekket av notat «deler = nv 2-3» på Turkish get-up), KB sots press (kb-press-kjedens ledd 5), Windshield wipers i heng (core-heng-kjedens ledd 6, dekket av notat «i heng = nv 5»), og hele HÅNDSTÅENDE-kjeden (vegg-hold mage inn / rygg inn / toe pulls / fri håndstående) som §1 og HS-porten-gatewayen refererer men ingen tabell inneholder."
+  ]
+}

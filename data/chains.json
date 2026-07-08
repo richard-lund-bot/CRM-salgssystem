@@ -1,0 +1,253 @@
+[
+  {
+    "id": "push-h",
+    "navn": "PUSH-H (horisontal press)",
+    "ledd": [
+      { "pos": 1, "ovelse": "vegg-pushup", "niva": 1 },
+      { "pos": 2, "ovelse": "skra-pushup-sofa-benk", "niva": 1 },
+      { "pos": 3, "ovelse": "kne-pushup", "niva": 1 },
+      { "pos": 4, "ovelse": "push-up", "niva": 2 },
+      { "pos": 5, "ovelse": "diamant-smal-push-up", "niva": 3 },
+      { "pos": 6, "ovelse": "dekline-push-up", "niva": 3 },
+      { "pos": 7, "ovelse": "ring-push-up", "niva": 3 },
+      { "pos": 8, "ovelse": "archer-push-up", "niva": 4 },
+      { "pos": 9, "ovelse": "pseudo-planche-push-up", "niva": 4 },
+      { "pos": 10, "ovelse": "ettarms-progresjon", "niva": 5 }
+    ]
+  },
+  {
+    "id": "push-v",
+    "navn": "PUSH-V (vertikal press / HSPU-linja)",
+    "ledd": [
+      { "pos": 1, "ovelse": "pike-push-up", "niva": 2 },
+      { "pos": 2, "ovelse": "hevet-pike-push-up", "niva": 3 },
+      { "pos": 3, "ovelse": "vegg-hspu-eksentrisk", "niva": 4 },
+      { "pos": 4, "ovelse": "vegg-hspu", "niva": 4 },
+      { "pos": 5, "ovelse": "fri-hspu", "niva": 5 }
+    ]
+  },
+  {
+    "id": "dips",
+    "navn": "DIPS",
+    "ledd": [
+      { "pos": 1, "ovelse": "stottehold-ringer", "niva": 2 },
+      { "pos": 2, "ovelse": "negativ-dips", "niva": 3 },
+      { "pos": 3, "ovelse": "dips", "niva": 3 },
+      { "pos": 4, "ovelse": "ring-dips", "niva": 4 },
+      { "pos": 5, "ovelse": "rto-ring-dips", "niva": 5 }
+    ]
+  },
+  {
+    "id": "pull-h",
+    "navn": "PULL-H (horisontal drag)",
+    "ledd": [
+      { "pos": 1, "ovelse": "ringrow-hoy-vinkel", "niva": 1 },
+      { "pos": 2, "ovelse": "ringrow", "niva": 2 },
+      { "pos": 3, "ovelse": "ringrow-fotter-hevet", "niva": 3 },
+      { "pos": 4, "ovelse": "archer-row", "niva": 4 },
+      { "pos": 5, "ovelse": "ettarms-row-progresjon", "niva": 5 }
+    ]
+  },
+  {
+    "id": "pull-v",
+    "navn": "PULL-V (vertikal drag / MU-linja)",
+    "ledd": [
+      { "pos": 1, "ovelse": "dead-hang", "niva": 1 },
+      { "pos": 2, "ovelse": "skulderdrag-i-heng", "niva": 1 },
+      { "pos": 3, "ovelse": "negativ-pull-up", "niva": 2 },
+      { "pos": 4, "ovelse": "pull-up", "niva": 3 },
+      { "pos": 5, "ovelse": "chest-to-bar", "niva": 4 },
+      { "pos": 6, "ovelse": "false-grip-heng", "niva": 4 },
+      { "pos": 7, "ovelse": "mu-transition-lave-ringer", "niva": 4 },
+      { "pos": 8, "ovelse": "muscle-up", "niva": 5 }
+    ]
+  },
+  {
+    "id": "kneboy",
+    "navn": "KNEBØY",
+    "ledd": [
+      { "pos": 1, "ovelse": "stol-kneboy", "niva": 1 },
+      { "pos": 2, "ovelse": "air-squat", "niva": 1 },
+      { "pos": 3, "ovelse": "goblet-squat", "niva": 2 },
+      { "pos": 4, "ovelse": "cossack-squat", "niva": 2 },
+      { "pos": 5, "ovelse": "box-pistol", "niva": 3 },
+      { "pos": 6, "ovelse": "assistert-pistol", "niva": 3 },
+      { "pos": 7, "ovelse": "pistol", "niva": 5 }
+    ]
+  },
+  {
+    "id": "skrimp",
+    "navn": "KNEBØY — sidegren (skrimp)",
+    "ledd": [
+      { "pos": 1, "ovelse": "skrimp-assistert", "niva": 3 },
+      { "pos": 2, "ovelse": "skrimp-squat", "niva": 4 }
+    ]
+  },
+  {
+    "id": "hengsel",
+    "navn": "HENGSEL",
+    "ledd": [
+      { "pos": 1, "ovelse": "glute-bridge", "niva": 1 },
+      { "pos": 2, "ovelse": "ettbens-glute-bridge", "niva": 2 },
+      { "pos": 3, "ovelse": "hip-thrust-sofa", "niva": 2 },
+      { "pos": 4, "ovelse": "ettbens-hip-thrust", "niva": 3 },
+      { "pos": 5, "ovelse": "kb-rdl", "niva": 2 },
+      { "pos": 6, "ovelse": "ettbens-kb-rdl", "niva": 3 },
+      { "pos": 7, "ovelse": "nordic-eksentrisk", "niva": 4 },
+      { "pos": 8, "ovelse": "nordic-curl", "niva": 5 }
+    ]
+  },
+  {
+    "id": "utfall",
+    "navn": "UTFALL",
+    "ledd": [
+      { "pos": 1, "ovelse": "statisk-utfall", "niva": 1 },
+      { "pos": 2, "ovelse": "utfall-bak", "niva": 2 },
+      { "pos": 3, "ovelse": "ga-utfall", "niva": 2 },
+      { "pos": 4, "ovelse": "bulgarsk-splittkneboy", "niva": 3 },
+      { "pos": 5, "ovelse": "split-jump-hopp-utfall", "niva": 3 },
+      { "pos": 6, "ovelse": "bulgarsk-m-kb", "niva": 4 }
+    ]
+  },
+  {
+    "id": "core-antiekst",
+    "navn": "CORE ANTI-EKSTENSJON",
+    "ledd": [
+      { "pos": 1, "ovelse": "planke", "niva": 1 },
+      { "pos": 2, "ovelse": "rkc-planke", "niva": 2 },
+      { "pos": 3, "ovelse": "planke-m-skulderklapp", "niva": 2 },
+      { "pos": 4, "ovelse": "body-saw", "niva": 3 },
+      { "pos": 5, "ovelse": "ring-rollout-knestaende", "niva": 3 },
+      { "pos": 6, "ovelse": "dragon-flag-tuck", "niva": 4 },
+      { "pos": 7, "ovelse": "dragon-flag-straddle", "niva": 4 },
+      { "pos": 8, "ovelse": "dragon-flag", "niva": 5 }
+    ]
+  },
+  {
+    "id": "hollow",
+    "navn": "HOLLOW-LINJA",
+    "ledd": [
+      { "pos": 1, "ovelse": "dead-bug", "niva": 1 },
+      { "pos": 2, "ovelse": "hollow-tuck", "niva": 2 },
+      { "pos": 3, "ovelse": "hollow-hold", "niva": 3 },
+      { "pos": 4, "ovelse": "hollow-rocks", "niva": 3 },
+      { "pos": 5, "ovelse": "v-ups", "niva": 3 }
+    ]
+  },
+  {
+    "id": "core-heng",
+    "navn": "CORE-HENG",
+    "ledd": [
+      { "pos": 1, "ovelse": "knee-raises-i-heng", "niva": 2 },
+      { "pos": 2, "ovelse": "leg-raises-i-heng", "niva": 3 },
+      { "pos": 3, "ovelse": "toes-to-bar", "niva": 4 },
+      { "pos": 4, "ovelse": "l-sit-tuck", "niva": 3 },
+      { "pos": 5, "ovelse": "l-sit", "niva": 4 },
+      { "pos": 6, "ovelse": "windshield-wipers-i-heng", "niva": 5 }
+    ]
+  },
+  {
+    "id": "handstaende",
+    "navn": "HÅNDSTÅENDE",
+    "ledd": [
+      { "pos": 1, "ovelse": "vegg-hold-mage-inn", "niva": 3 },
+      { "pos": 2, "ovelse": "vegg-hold-rygg-inn", "niva": 3 },
+      { "pos": 3, "ovelse": "toe-pulls", "niva": 4 },
+      { "pos": 4, "ovelse": "fri-handstaende", "niva": 5 }
+    ]
+  },
+  {
+    "id": "kb-press",
+    "navn": "KB-PRESS",
+    "ledd": [
+      { "pos": 1, "ovelse": "kb-floor-press", "niva": 2 },
+      { "pos": 2, "ovelse": "kb-strict-press", "niva": 3 },
+      { "pos": 3, "ovelse": "kb-push-press", "niva": 3 },
+      { "pos": 4, "ovelse": "kb-jerk", "niva": 4 },
+      { "pos": 5, "ovelse": "kb-sots-press", "niva": 5 }
+    ]
+  },
+  {
+    "id": "kb-swing",
+    "navn": "KB-SWING",
+    "ledd": [
+      { "pos": 1, "ovelse": "kb-swing-tohands", "niva": 2 },
+      { "pos": 2, "ovelse": "kb-swing-enhands", "niva": 3 },
+      { "pos": 3, "ovelse": "kb-swing-dobbel", "niva": 3 },
+      { "pos": 4, "ovelse": "kb-snatch", "niva": 4 }
+    ]
+  },
+  {
+    "id": "tgu",
+    "navn": "TGU (turkish get-up)",
+    "ledd": [
+      { "pos": 1, "ovelse": "tgu-til-albue", "niva": 2 },
+      { "pos": 2, "ovelse": "tgu-til-hand", "niva": 3 },
+      { "pos": 3, "ovelse": "halv-tgu", "niva": 3 },
+      { "pos": 4, "ovelse": "turkish-get-up", "niva": 4 }
+    ]
+  },
+  {
+    "id": "kneboy-stang",
+    "navn": "KNEBØY-STANG (gym)",
+    "ledd": [
+      { "pos": 1, "ovelse": "goblet-squat", "niva": 2 },
+      { "pos": 2, "ovelse": "box-squat", "niva": 2 },
+      { "pos": 3, "ovelse": "back-squat", "niva": 3 },
+      { "pos": 4, "ovelse": "pause-squat", "niva": 3 },
+      { "pos": 4, "ovelse": "front-squat-stang", "niva": 3 },
+      { "pos": 5, "ovelse": "overhead-squat", "niva": 5 }
+    ]
+  },
+  {
+    "id": "markloft",
+    "navn": "MARKLØFT (gym)",
+    "ledd": [
+      { "pos": 1, "ovelse": "kb-rdl", "niva": 2 },
+      { "pos": 2, "ovelse": "trap-bar-markloft", "niva": 2 },
+      { "pos": 3, "ovelse": "stang-rdl", "niva": 2 },
+      { "pos": 4, "ovelse": "markloft", "niva": 3 },
+      { "pos": 5, "ovelse": "sumo-markloft", "niva": 3 }
+    ]
+  },
+  {
+    "id": "benkpress",
+    "navn": "BENKPRESS (gym)",
+    "ledd": [
+      { "pos": 1, "ovelse": "push-up", "niva": 2 },
+      { "pos": 2, "ovelse": "db-benkpress", "niva": 2 },
+      { "pos": 3, "ovelse": "benkpress", "niva": 3 },
+      { "pos": 4, "ovelse": "smal-benkpress", "niva": 3 },
+      { "pos": 4, "ovelse": "skra-benkpress", "niva": 3 }
+    ]
+  },
+  {
+    "id": "press-stang",
+    "navn": "PRESS-STANG (gym)",
+    "ledd": [
+      { "pos": 1, "ovelse": "db-skulderpress-staende", "niva": 2 },
+      { "pos": 2, "ovelse": "militaerpress-ohp", "niva": 3 },
+      { "pos": 3, "ovelse": "push-press-stang", "niva": 3 },
+      { "pos": 4, "ovelse": "split-jerk", "niva": 4 }
+    ]
+  },
+  {
+    "id": "ol-loft",
+    "navn": "OL-LØFT (gym)",
+    "ledd": [
+      { "pos": 1, "ovelse": "kb-swing-tohands", "niva": 2 },
+      { "pos": 2, "ovelse": "kb-clean", "niva": 3 },
+      { "pos": 3, "ovelse": "power-clean", "niva": 4 },
+      { "pos": 4, "ovelse": "power-snatch", "niva": 5 }
+    ]
+  },
+  {
+    "id": "tau-linja",
+    "navn": "TAU-LINJA",
+    "ledd": [
+      { "pos": 1, "ovelse": "tau-drag-liggende-row", "niva": 2 },
+      { "pos": 2, "ovelse": "tauklatring-m-bein", "niva": 3 },
+      { "pos": 3, "ovelse": "tauklatring-uten-bein", "niva": 5 }
+    ]
+  }
+]

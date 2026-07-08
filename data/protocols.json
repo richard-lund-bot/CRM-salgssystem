@@ -1,0 +1,8 @@
+[
+  { "id": "box-breathing", "navn": "Box breathing 4-4-4-4", "bruk": "fokus, før økt/jobb", "type": "pust", "modaliteter": ["REST"], "takt": { "inn": 4, "holdInn": 4, "ut": 4, "holdUt": 4 }, "defaultMin": 5 },
+  { "id": "4-7-8", "navn": "4-7-8", "bruk": "nedregulering, kveld", "type": "pust", "modaliteter": ["REST"], "takt": { "inn": 4, "holdInn": 7, "ut": 8, "holdUt": 0 }, "defaultRunder": 6 },
+  { "id": "koherent-pust", "navn": "Koherent pust (5,5/min)", "bruk": "daglig ro, 5-10 min", "type": "pust", "modaliteter": ["REST"], "takt": { "inn": 5.5, "holdInn": 0, "ut": 5.5, "holdUt": 0 }, "defaultMin": 7 },
+  { "id": "fysiologisk-sukk", "navn": "Fysiologisk sukk", "bruk": "akutt stressdemping", "type": "pust", "modaliteter": ["REST"], "dose": "×5-10", "notat": "dobbel innpust gjennom nesen, lang utpust" },
+  { "id": "nesepust-gange", "navn": "Nesepust-gange", "bruk": "Z1-restitusjon", "type": "dist", "modaliteter": ["REST", "BASE"], "defaultMin": 20 },
+  { "id": "bodyscan", "navn": "Bodyscan", "bruk": "søvn/avspenning", "type": "tid", "modaliteter": ["REST"], "defaultMin": 7, "notat": "5-10 min" }
+]

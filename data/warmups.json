@@ -1,0 +1,24 @@
+{
+  "oppvarming": [
+    { "id": "oppv-jumping-jacks", "navn": "Jumping jacks / usynlig hoppetau", "dose": "60 s", "monstre": ["lokomotorisk"], "utstyr": ["kv"] },
+    { "id": "oppv-armsirkler", "navn": "Armsirkler", "dose": "×10 hver vei", "monstre": ["push-h", "push-v", "pull-h", "pull-v"], "utstyr": ["kv"] },
+    { "id": "oppv-hoftesirkler", "navn": "Hoftesirkler", "dose": "×10 hver vei", "monstre": ["kneboy", "hengsel", "utfall"], "utstyr": ["kv"] },
+    { "id": "oppv-katt-ku", "navn": "Katt–ku", "dose": "×8", "monstre": ["hengsel", "core-antiekst"], "utstyr": ["matte"] },
+    { "id": "oppv-verdenshilsen", "navn": "Verdenshilsen", "dose": "×3/side", "monstre": ["utfall", "hengsel", "helkropp"], "utstyr": ["kv"] },
+    { "id": "oppv-air-squats", "navn": "Rolige air squats", "dose": "×10", "monstre": ["kneboy"], "utstyr": ["kv"] },
+    { "id": "oppv-skulder-dislocates", "navn": "Skulder-dislocates", "dose": "×10", "monstre": ["push-v", "pull-v"], "utstyr": ["handkle", "band-lang"] },
+    { "id": "oppv-inchworm", "navn": "Inchworm", "dose": "×5", "monstre": ["push-h", "hengsel", "helkropp"], "utstyr": ["kv"] },
+    { "id": "oppv-leg-swings", "navn": "Leg swings", "dose": "×10/side", "monstre": ["utfall", "hengsel", "hopp"], "utstyr": ["vegg"] },
+    { "id": "oppv-cossack-rocks", "navn": "Cossack rocks", "dose": "×6/side", "monstre": ["kneboy", "utfall"], "utstyr": ["kv"] },
+    { "id": "oppv-glute-bridge", "navn": "Glute bridge", "dose": "×10", "monstre": ["hengsel"], "utstyr": ["matte"] },
+    { "id": "oppv-dead-bug", "navn": "Dead bug", "dose": "×10", "monstre": ["core-antiekst", "core-flex", "core-rot", "core-lat"], "utstyr": ["matte"] },
+    { "id": "oppv-kb-halo", "navn": "KB halo", "dose": "×5/vei", "monstre": ["push-v", "pull-v", "baering"], "utstyr": ["kb"] },
+    { "id": "oppv-scapula-push-ups", "navn": "Scapula push-ups", "dose": "×8", "monstre": ["push-h", "push-v"], "utstyr": ["kv"] },
+    { "id": "oppv-handleddsserie", "navn": "Håndleddsserie", "dose": "rocks + løft", "monstre": ["push-h", "push-v", "balanse"], "utstyr": ["kv"], "notat": "før push/HS" }
+  ],
+  "nedtrapping": [
+    { "id": "ned-nesepust-gange", "navn": "Nesepust-gange", "dose": "2 min", "utstyr": ["kv"] },
+    { "id": "ned-statiske-toy", "navn": "Statiske tøy for dagens hovedmønstre", "dose": "2-3 stk", "utstyr": ["matte"], "notat": "velges av generator etter øktens mønstre" },
+    { "id": "ned-4-7-8", "navn": "4-7-8-pust", "dose": "×4", "utstyr": ["kv"] }
+  ]
+}
