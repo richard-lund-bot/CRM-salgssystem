@@ -15,10 +15,10 @@ Bygget ved å gjenbruke repoet og Supabase-prosjektet fra en tidligere Ringelist
 | M1 | PWA-skjelett + datakonvertering (bibliotek → `data/*.json`) | ✅ |
 | M2 | Supabase-skjema for brukertilstand | ⏳ |
 | M3 | Onboarding + generator + kjøre-UI | ✅ |
-| M4 | Logging, nivåsystem, historikk | ⏳ |
+| M4 | Logging, nivåsystem (base + momentum/decay), gateways, historikk | ✅ |
 
-> M3 kjører helt på localStorage (offline-first). M2 (Supabase-sync av brukertilstand)
-> er ikke en blokker for M3 og tas senere sammen med M4/M5.
+> M3–M4 kjører helt på localStorage (offline-first). M2/M5 (Supabase-sync av
+> brukertilstand på tvers av enheter) er ikke en blokker og tas senere.
 
 ## Kjøre lokalt
 
@@ -41,7 +41,10 @@ js/
   store.js              brukertilstand i localStorage (Spor-mønster) + profiloppslag
   onboarding.js         5-skjerms onboarding (motivasjon, ankertest, ukemål, sted)
   generator.js          deterministisk øktgenerator (mal → filtrerte, seedede blokker)
-  kjor.js               generator-input, review (bytt/regenerer), kjøre-UI (timer/guide/pust)
+  kjor.js               generator-input, review, kjøre-UI, resultat-logging + XP-skjerm
+  niva.js               nivåmotor: XP, opprykk (XP+bevis), momentum/decay, streak, PR, gateway
+  niva-ui.js            Nivå-skjerm (base + momentum + decay) + gateway skill-tree/test
+  historikk.js          §13-visninger: heatmap, ukesvolum, donut, PR-tavle, balanse, øktlogg
   rng.js                seeded PRNG (mulberry32) + stokk/trekk — ingen Math.random()
   ui.js                 DOM-hjelpere
   config.js             Supabase-URL/nøkkel + app-versjon
@@ -62,6 +65,7 @@ scripts/
   merge-parts.mjs       bygger exercises.json + sequences.json fra parts/
   gen-icons.mjs         genererer PWA-ikoner
   smoke-generator.mjs   headless test: determinisme + dekning + ikke-tomme blokker
+  smoke-niva.mjs        headless test: XP, opprykk gated på bevis, momentum/decay/streak/PR/gateway
 docs/                   kildedokumenter + avvikslogg
 manifest.webmanifest    PWA-manifest
 sw.js                   service worker (offline-first)

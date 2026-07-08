@@ -5,7 +5,7 @@ export const SUPABASE_ANON_KEY =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJrdnBoZ2JmeWZ5bWlsendnbWdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwMTEyMDMsImV4cCI6MjA5ODU4NzIwM30.ufVPAqsCRgaPUn9nNDdyq4YCQ4bA7LwsaJ-TVxfLAE0';
 
 // App-versjon: bumpes for å tvinge ny service-worker-cache.
-export const APP_VERSION = 'm3-0.3.0';
+export const APP_VERSION = 'm4-0.4.0';
 
 // localStorage-nøkler
 export const LS = {

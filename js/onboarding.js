@@ -5,6 +5,7 @@
 import { el, tom, chip } from './ui.js';
 import { MODALITET_NAVN } from './library.js';
 import { lagreProfil, lagreSistLokasjon } from './store.js';
+import { nivaFraBase } from './niva.js';
 
 // --- Skjerm 1: motivasjon ---------------------------------------------------
 // Hvert valg gir modalitetsvekt + formatvekt + hvilket toppkort hjem viser.
@@ -47,10 +48,15 @@ const ANKER = [
   },
 ];
 
-// Bygger nivaer{} per modalitet fra ankersvarene.
+// Ankersvar (1–4) → modalitetsbase på §4c-skalaen (3/5/7 = ulåst øvelsesnivå
+// 3/4/5). Selvrapport låser opp t.o.m. øvelsesnivå 4 (base 6); nivå 5 krever
+// alltid gateway (base 7). Base er «uverifisert» til første bevis.
+const TIL_BASE = { 1: 1, 2: 3, 3: 5, 4: 6 };
+const tilBase = (score) => TIL_BASE[Math.max(1, Math.min(4, Math.round(score)))];
+
 function ankerTilNivaer(svar) {
   const g = (id) => svar[id] || 2;
-  const sty = Math.round((g('push') + g('pull') + g('bein')) / 3);
+  const sty = (g('push') + g('pull') + g('bein')) / 3;
   const kondis = g('kondis');
   const fleks = g('fleks');
   const kart = {
@@ -58,7 +64,7 @@ function ankerTilNivaer(svar) {
     CORE: g('core'),
     HIIT: kondis,
     BASE: kondis,
-    MET: Math.round((sty + kondis) / 2),
+    MET: (sty + kondis) / 2,
     STR: fleks,
     YOGA: Math.max(1, fleks),
     MOB: Math.max(2, fleks),
@@ -66,11 +72,12 @@ function ankerTilNivaer(svar) {
     PLYO: Math.max(1, Math.min(3, g('bein'))),
     SKILL: 1, // nivå 5-skills krever alltid gateway; start lavt
     REST: 1,
-    HYB: Math.round((sty + kondis) / 2),
+    HYB: (sty + kondis) / 2,
   };
   const nivaer = {};
-  for (const [m, base] of Object.entries(kart)) {
-    nivaer[m] = { base: Math.max(1, Math.min(4, base)), xp: 0, verifisert: false };
+  for (const [m, score] of Object.entries(kart)) {
+    const base = tilBase(score);
+    nivaer[m] = { base, xp: 0, bevisTeller: 0, hoyesteBevist: base, verifisert: false, sisteOkt: null };
   }
   return nivaer;
 }
@@ -256,7 +263,7 @@ export function kjorOnboarding(container, bib, ferdig) {
       .filter(([m]) => ['STY', 'HIIT', 'CORE', 'STR', 'YOGA'].includes(m))
       .map(([m, n]) => el('div', { class: 'nivkort' },
         el('span', { class: 'nivkort__navn' }, MODALITET_NAVN[m] || m),
-        el('span', { class: 'niva' }, ...[1, 2, 3, 4, 5].map((k) => el('i', { class: 'niva__p' + (k <= n.base ? ' niva__p--på' : '') }))),
+        el('span', { class: 'niva' }, ...[1, 2, 3, 4, 5].map((k) => el('i', { class: 'niva__p' + (k <= nivaFraBase(n.base) ? ' niva__p--på' : '') }))),
       ));
 
     ramme('Din startprofil', 'Alt kan justeres senere i innstillinger.',
@@ -299,7 +306,12 @@ export function kjorOnboarding(container, bib, ferdig) {
         varierer: [...state.varierer],
       }],
       aktivLokasjon: 'Hjemme',
-      innstillinger: { brukJern: true, nivaOverstyr: {} },
+      // Progresjonstilstand (M4) — fylles av registrerOkt/registrerGateway.
+      gatewaysPassert: [],
+      prs: {},
+      settOvelser: {},
+      globalXp: 0,
+      innstillinger: { brukJern: true, nivaOverstyr: {}, pauseTil: null },
     };
   }
 

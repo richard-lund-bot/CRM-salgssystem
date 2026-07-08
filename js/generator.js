@@ -3,21 +3,7 @@
 // filtrere øvelser (utstyr i lokasjonen ∩ nivå ulåst ∩ mønster/modalitet-krav ∩
 // impact-regel) og dele med seed (v1-dealeren, nå generalisert). Ingen Math.random().
 import { lagRng, stokk, rngInt } from './rng.js';
-import { nivaFor } from './store.js';
-
-// --- Nivå-opplåsing (taksonomi §4c) ---------------------------------------
-// Selvrapportert base i onboarding låser opp øvelsesnivåer direkte (t.o.m. 4).
-// Manuell overstyring i innstillinger kan heve taket; nivå 5 krever gateway (M4).
-export function ulastNiva(profil, modalitet) {
-  const overstyr = profil?.innstillinger?.nivaOverstyr?.[modalitet];
-  if (Number.isFinite(overstyr)) return Math.max(1, Math.min(5, overstyr));
-  return Math.max(1, Math.min(4, nivaFor(profil, modalitet)));
-}
-
-// Effektivt tak for én øvelse = høyeste ulåste nivå blant modalitetene den hører til.
-function ovelsestak(profil, e) {
-  return Math.max(2, ...e.modaliteter.map((m) => ulastNiva(profil, m)));
-}
+import { erUlast } from './niva.js';
 
 // --- Lokasjon → tilgjengelig utstyr ---------------------------------------
 export function tilgjengeligUtstyr(bib, profil, lokasjonNavn) {
@@ -78,8 +64,8 @@ function kandidater(bib, filter, ctx, slakk = 0) {
     const variant = velgVariant(e, ctx.utstyrSett);
     if (!variant) continue; // ingen dekket variant på stedet
     const nv = effektivNiva(e, variant);
-    // Myk: nivåtak (slakkes på nivå ≥ 2)
-    if (slakk < 2 && nv > ovelsestak(ctx.profil, e)) continue;
+    // Myk: nivåtak (base + gateway + overstyring, slakkes på nivå ≥ 2)
+    if (slakk < 2 && !erUlast(ctx.profil, e, nv, ctx.gateways, ctx.nå)) continue;
     // Myk: unngå høy impact ved lav intensitet (slakkes på nivå ≥ 1)
     if (slakk < 1 && ctx.intensitet <= 2 && e.impact === 'hoy') continue;
     ut.push({ ovelse: e, variant, niva: nv });
@@ -292,6 +278,8 @@ export function genererOkt(bib, profil, valg) {
 
   const ctx = {
     profil,
+    gateways: bib.gateways,
+    nå: valg.nå || Date.now(),
     formatMap: new Map(bib.formats.map((f) => [f.id, f])),
     utstyrSett: tilgjengeligUtstyr(bib, profil, lokasjonNavn),
     rng: lagRng(seed),
@@ -327,6 +315,8 @@ export function byttOvelse(bib, profil, okt, blokkIdx, ovelseIdx) {
   if (!blokk || blokk.kind !== 'ovelser') return okt;
   const ctx = {
     profil,
+    gateways: bib.gateways,
+    nå: Date.now(),
     formatMap: new Map(bib.formats.map((f) => [f.id, f])),
     utstyrSett: tilgjengeligUtstyr(bib, profil, okt.lokasjon),
     rng: lagRng(`${okt.seed}|bytt|${blokkIdx}|${ovelseIdx}|${blokk.ovelser[ovelseIdx]?.id}`),
@@ -361,6 +351,8 @@ export function regenererBlokk(bib, profil, okt, blokkIdx) {
   okt.blokker.forEach((b, i) => { if (i !== blokkIdx) for (const o of b.ovelser || []) brukteAndre.add(o.id); });
   const ctx = {
     profil,
+    gateways: bib.gateways,
+    nå: Date.now(),
     formatMap: new Map(bib.formats.map((f) => [f.id, f])),
     utstyrSett: tilgjengeligUtstyr(bib, profil, okt.lokasjon),
     rng: lagRng(`${okt.seed}|blokk|${blokkIdx}|${rngInt(lagRng(okt.seed + blokkIdx + (okt.blokker[blokkIdx].ovelser[0]?.id || '')), 1e6)}`),

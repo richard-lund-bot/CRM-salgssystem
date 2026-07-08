@@ -6,9 +6,10 @@ import { el, tom, chip } from './ui.js';
 import { MODALITET_NAVN, MONSTER_NAVN } from './library.js';
 import { genererOkt, byttOvelse, regenerer, regenererBlokk } from './generator.js';
 import {
-  hentProfil, lagreGenerert, leggTilLogg, nyligeOvelseIder,
+  hentProfil, lagreProfil, lagreGenerert, leggTilLogg, nyligeOvelseIder,
   hentSistLokasjon, lagreSistLokasjon,
 } from './store.js';
+import { registrerOkt, INTENSITET } from './niva.js';
 
 let _bib = null;
 let gjeldendeOkt = null;
@@ -223,28 +224,8 @@ export function visKjoreSkjerm(mount) {
     );
   }
 
-  function avslutt() {
-    stoppTimer();
-    lagreGenerert({ ...okt, kjort: new Date().toISOString() });
-    const ovelseIder = [...new Set(okt.blokker.flatMap((b) => (b.ovelser || []).map((o) => o.id)))].filter(Boolean);
-    // Minimal logg-oppføring — XP, nivåopprykk og PR-er kommer i M4.
-    leggTilLogg({
-      id: `logg-${Date.now()}`,
-      dato: new Date().toISOString(),
-      modalitet: okt.modalitet,
-      varighetMin: okt.varighetMin,
-      intensitet: okt.intensitet,
-      lokasjon: okt.lokasjon,
-      seed: okt.seed,
-      templateId: okt.templateId,
-      ovelseIder,
-      fullfort: true,
-    });
-    visFerdig(mount, okt);
-  }
-
   function neste() {
-    if (idx < okt.blokker.length - 1) { idx++; tegn(); } else avslutt();
+    if (idx < okt.blokker.length - 1) { idx++; tegn(); } else { stoppTimer(); visResultat(mount, okt); }
   }
   function forrige() { if (idx > 0) { idx--; tegn(); } }
 
@@ -482,26 +463,135 @@ function timerKnapper(plan, { onFase, onSek, onFerdig }) {
 }
 
 // ===========================================================================
-// Ferdig-skjerm
+// Resultat-logging (før ferdig-skjerm) — valgfrie tall for PR-sporing + RPE
 // ===========================================================================
-function visFerdig(mount, okt) {
-  const antallOv = new Set(okt.blokker.flatMap((b) => (b.ovelser || []).map((o) => o.id))).size;
+function visResultat(mount, okt) {
+  const bib = _bib;
+  // Loggbare øvelser = hoved-/finisher-øvelser med reps eller hold.
+  const loggbare = [];
+  const sett = new Set();
+  for (const b of okt.blokker) {
+    if (b.kind !== 'ovelser' || !['hoved', 'finisher'].includes(b.rolle)) continue;
+    for (const o of b.ovelser) {
+      if (sett.has(o.id) || !['reps', 'hold'].includes(o.type)) continue;
+      sett.add(o.id); loggbare.push(o);
+    }
+  }
+  const felt = {}; // id → { reps?, last?, holdSek? }
+  let intensitet = okt.intensitet;
+
+  function tallfelt(o, nokkel, plass, etikett) {
+    return el('label', { class: 'loggfelt' },
+      el('span', { class: 'loggfelt__etikett' }, etikett),
+      el('input', {
+        class: 'loggfelt__inn', type: 'number', inputmode: 'numeric', min: '0', placeholder: plass,
+        oninput: (ev) => {
+          const v = ev.target.value === '' ? undefined : Number(ev.target.value);
+          felt[o.id] = { ...(felt[o.id] || {}), [nokkel]: v };
+        },
+      }),
+    );
+  }
+
+  function rad(o) {
+    const felter = o.type === 'hold'
+      ? [tallfelt(o, 'holdSek', 'sek', 'Hold (s)')]
+      : [tallfelt(o, 'reps', 'reps', 'Reps'), tallfelt(o, 'last', 'kg', 'Kg')];
+    return el('div', { class: 'loggrad' },
+      el('span', { class: 'loggrad__navn' }, o.navn),
+      el('div', { class: 'loggrad__felter' }, ...felter),
+    );
+  }
+
+  function fullfor() {
+    const profil = hentProfil();
+    const resultater = loggbare
+      .map((o) => ({ id: o.id, ...(felt[o.id] || {}) }))
+      .filter((r) => Number.isFinite(r.reps) || Number.isFinite(r.last) || Number.isFinite(r.holdSek));
+    const oktLogget = { ...okt, intensitet };
+    const { profil: nyProfil, resultat } = registrerOkt(profil, oktLogget, bib, resultater, Date.now());
+    lagreProfil(nyProfil);
+    lagreGenerert({ ...okt, kjort: new Date().toISOString() });
+    const ovelseIder = [...new Set(okt.blokker.flatMap((b) => (b.ovelser || []).map((o) => o.id)))].filter(Boolean);
+    leggTilLogg({
+      id: `logg-${Date.now()}`,
+      dato: new Date().toISOString(),
+      modalitet: okt.modalitet,
+      varighetMin: okt.varighetMin,
+      intensitet,
+      lokasjon: okt.lokasjon,
+      seed: okt.seed,
+      templateId: okt.templateId,
+      ovelseIder,
+      resultater,
+      xp: resultat.xp,
+      fullfort: true,
+    });
+    visFerdig(mount, okt, resultat);
+  }
+
+  monter(mount,
+    el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, 'Økt fullført'),
+      el('p', { class: 'topp__under' }, 'Logg gjerne tall for PR-sporing — helt valgfritt.')),
+    el('main', { class: 'innhold' },
+      el('div', { class: 'kort' },
+        el('h2', {}, 'Hvor hardt kjentes det?'),
+        el('div', { class: 'chiprad' },
+          ...INTENSITETER.map(([navn, v]) => chip(navn, { aktiv: intensitet === v, onClick: () => { intensitet = v; oppdaterRpe(v); } })),
+        ),
+      ),
+      loggbare.length > 0 && el('div', { class: 'kort' },
+        el('h2', {}, 'Resultater'),
+        el('div', { class: 'loggliste' }, ...loggbare.map(rad)),
+      ),
+      el('div', { class: 'fast-bunn fast-bunn--kol' },
+        el('button', { class: 'knapp', type: 'button', onclick: fullfor }, 'Lagre & fullfør ✓'),
+      ),
+    ),
+  );
+
+  function oppdaterRpe(v) {
+    document.querySelectorAll('.topp ~ .innhold .chiprad .chip').forEach((c, i) => {
+      c.classList.toggle('chip--aktiv', INTENSITETER[i] && INTENSITETER[i][1] === v);
+    });
+  }
+}
+
+// ===========================================================================
+// Ferdig-skjerm — viser XP tjent, nivåopprykk, nye PR-er
+// ===========================================================================
+function visFerdig(mount, okt, resultat) {
+  const bib = _bib;
+  const navnFor = (id) => bib?.ovelseMap?.get(id)?.navn || id;
+  const r = resultat || { xp: 0, nyePrs: [], nivaOpp: [] };
+
+  const feiringer = [];
+  for (const n of r.nivaOpp || []) feiringer.push(el('div', { class: 'feiring feiring--niva' }, `⬆️ ${MODALITET_NAVN[n.modalitet] || n.modalitet} opp til nivå ${n.tilNiva}!`));
+  if (r.globalOpp) feiringer.push(el('div', { class: 'feiring' }, `🌟 Globalt nivå ${r.globalOpp}!`));
+  for (const pr of r.nyePrs || []) feiringer.push(el('div', { class: 'feiring feiring--pr' }, `🏆 Ny PR: ${navnFor(pr.id)}`));
+  if (r.comeback) feiringer.push(el('div', { class: 'feiring' }, '🔥 Comeback — dobbel XP!'));
+
   monter(mount,
     el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, 'Bra jobba! 🎉')),
     el('main', { class: 'innhold' },
+      el('div', { class: 'kort hero' },
+        el('p', { class: 'hero__eyebrow' }, 'XP tjent'),
+        el('div', { class: 'xp-stor' }, `+${r.xp}`),
+        r.bonusXp > 0 && el('p', { class: 'dempet' }, `Inkludert +${r.bonusXp} bonus`),
+      ),
+      feiringer.length > 0 && el('div', { class: 'kort' }, el('h2', {}, 'Nytt!'), ...feiringer),
       el('div', { class: 'kort kort--info' },
         el('p', {}, `Du fullførte «${okt.malNavn}».`),
         el('div', { class: 'statrad' },
           stat(okt.varighetMin, 'minutter'),
           stat(okt.blokker.length, 'blokker'),
-          stat(antallOv, 'øvelser'),
           stat(INTENSITETER.find(([, v]) => v === okt.intensitet)?.[0] || okt.intensitet, 'intensitet'),
+          stat((r.nyePrs || []).length, 'PR-er'),
         ),
-        el('p', { class: 'dempet' }, 'Logget lokalt. XP, nivåopprykk og historikk kommer i neste milepæl (M4).'),
       ),
       el('div', { class: 'knapprad' },
         el('button', { class: 'knapp', type: 'button', onclick: () => { location.hash = '#/hjem'; } }, 'Til hjem'),
-        el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: () => { location.hash = '#/ny'; } }, 'Ny økt'),
+        el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: () => { location.hash = '#/historikk'; } }, 'Se historikk'),
       ),
     ),
   );

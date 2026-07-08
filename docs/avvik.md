@@ -177,3 +177,28 @@ Alle normaliseringer, tolkninger og uklarheter fra konverteringen av `docs/treni
 - `formats.json` (37 formater fra §3), `templates.json` (23 øktmaler etter §9-anatomien + modalitet×format-matrisen), `gateways.json` (10 gateway-tester fra §17), `warmups.json` (§16), `protocols.json` (§15 pust), `equipment.json` (76 enheter fra utstyrsdok), `bundles.json` (10 bunker) er skrevet direkte fra kildedokumentene.
 - `gateways.json` inneholder 10 tester (§17 lister 10 rader inkl. kondisjonsverifisering); §18 oppsummerer «9».
 - `templates.json`: malene er representative eksempler bygget på §9-anatomien, ikke uttømmende fra kilden (kilden gir 6 eksempelmaler).
+
+## M3–M4 app-logikk (designvalg, ikke datakonvertering)
+
+Loggført her siden appen har egne tolkningsvalg der taksonomien er underspesifisert.
+
+**Nivåmodell (§4c vs §12a).** Kilden separerer «modalitetsnivå» (base, kan vokse)
+fra «øvelsesnivå» (1–5, egenskap på øvelsen) med opplåsingsterskler 3/5/7, men sier
+også at selvrapport «kan låse opp t.o.m. øvelsesnivå 4». Valgt modell: `base` er et
+heltall på 3/5/7-skalaen; `nivaFraBase` gir ulåst øvelsesnivå (base ≥3→3, ≥5→4, ≥7→5).
+Ankertesten (svar 1–4) mappes til base 1/3/5/6 — sterk selvrapport låser opp t.o.m.
+øvelsesnivå 4, mens nivå 5 alltid krever gateway (base 7). Dette forener §4c og §12a.
+
+**XP-kurve.** Opprykk-terskel = `round(100 × base^1,5)` (§12a), globalt nivå bruker
+samme kurve med konstant 250 (§12d). Comeback dobler XP (§12d); bonuser: PR +20, ny
+øvelse +10, gateway +50. Ukebonus «+10 % på ukemål» er *ikke* implementert ennå
+(krever ukesavregning) — notert som TODO.
+
+**Decay er avledet, ikke destruktiv.** Base lagres uendret; decay/comeback trekkes fra
+ved *lesetid* (`effektivBase`). Enhver økt nullstiller decay-klokka, og gulvet
+(høyeste beviste −2) sikrer at verifiserte nivåer aldri forsvinner («rusten», §12c).
+Pause-modus fryser klokka. Decay-tallene er startgjetningene fra §12c.
+
+**Logging.** Resultater (reps/kg/hold) er valgfrie og fanges på «Økt fullført»-skjermen;
+XP tildeles uansett fra tid × intensitet. Full per-sett-logging under kjøring er ikke
+bygget — én verdi per øvelse holder for PR-sporing i v1.
