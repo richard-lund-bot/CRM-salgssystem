@@ -10,6 +10,7 @@ import {
   hentSistLokasjon, lagreSistLokasjon,
 } from './store.js';
 import { registrerOkt, INTENSITET } from './niva.js';
+import { avatarBilde, erBildeAvatar, AVATAR_NAVN } from './belonninger.js';
 
 let _bib = null;
 let gjeldendeOkt = null;
@@ -565,8 +566,11 @@ function visFerdig(mount, okt, resultat) {
   const navnFor = (id) => bib?.ovelseMap?.get(id)?.navn || id;
   const r = resultat || { xp: 0, nyePrs: [], nivaOpp: [] };
 
-  const belIkon = (b) => (b.type === 'avatar' ? b.id : b.type === 'tema' ? '🎨' : b.type === 'tittel' ? '🏅' : b.type === 'ovelse' ? '🏋️' : '✨');
-  const belTekst = (b) => (b.type === 'avatar' ? `Ny avatar ${b.id}` : b.type === 'tema' ? `Nytt tema: ${b.navn}` : b.type === 'tittel' ? `Ny tittel: ${b.navn}` : b.type === 'ovelse' ? `Ny øvelse: ${b.navn}` : (b.navn || 'Belønning'));
+  const belIkon = (b) => (
+    b.type === 'avatar' && erBildeAvatar(b.id) ? el('img', { class: 'levelup__avatar', src: avatarBilde(b.id), alt: '' })
+      : b.type === 'avatar' ? b.id
+        : b.type === 'tema' ? '🎨' : b.type === 'tittel' ? '🏅' : b.type === 'ovelse' ? '🏋️' : '✨');
+  const belTekst = (b) => (b.type === 'avatar' ? `Ny avatar: ${AVATAR_NAVN[b.id] || b.id}` : b.type === 'tema' ? `Nytt tema: ${b.navn}` : b.type === 'tittel' ? `Ny tittel: ${b.navn}` : b.type === 'ovelse' ? `Ny øvelse: ${b.navn}` : (b.navn || 'Belønning'));
   const belonninger = r.belonninger || [];
 
   const feiringer = [];

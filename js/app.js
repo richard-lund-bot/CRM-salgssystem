@@ -16,7 +16,7 @@ import { settBib as settBibHist, visHistorikkSkjerm } from './historikk.js';
 import {
   effektivBase, raBase, nivaFraBase, momentum, streak, prsFraLogg, globaltNiva,
 } from './niva.js';
-import { nivaFraTotalXp, tittelFor } from './belonninger.js';
+import { nivaFraTotalXp, tittelFor, tierBadge, avatarBilde, erBildeAvatar, STANDARD_AVATAR } from './belonninger.js';
 import * as sync from './sync.js';
 
 const app = document.getElementById('app');
@@ -108,15 +108,19 @@ function velkommenKort() {
 // Profilstripe: avatar + tittel + belønningsnivå, lenker til Nivå.
 function profilstripe(profil) {
   const info = nivaFraTotalXp(profil.globalXp || 0);
-  const avatar = profil.innstillinger?.avatar || '💪';
+  const avatar = profil.innstillinger?.avatar || STANDARD_AVATAR;
+  const avatarInnhold = erBildeAvatar(avatar)
+    ? el('img', { class: 'profilstripe__avatarbilde', src: avatarBilde(avatar), alt: '', loading: 'lazy' })
+    : avatar;
   return el('a', { class: 'profilstripe', href: '#/niva' },
-    el('span', { class: 'profilstripe__avatar' }, avatar),
+    el('span', { class: 'profilstripe__avatar' }, avatarInnhold),
     el('div', { class: 'profilstripe__meta' },
       el('span', { class: 'profilstripe__navn' }, tittelFor(info.niva)),
       el('span', { class: 'profilstripe__niva' }, `Nivå ${info.niva}`),
     ),
     el('div', { class: 'profilstripe__bar' }, el('div', { class: 'xpbar' }, el('div', { class: 'xpbar__fyll', style: `width:${info.pct}%` }))),
-    el('span', { class: 'profilstripe__pil' }, '›'),
+    el('img', { class: 'profilstripe__crest', src: tierBadge(info.niva), alt: '', loading: 'lazy' }),
+    el('span', { class: 'profilstripe__pil' }, ikon('chevron')),
   );
 }
 

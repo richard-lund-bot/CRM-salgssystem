@@ -19,6 +19,7 @@ Bygget ved å gjenbruke repoet og Supabase-prosjektet fra en tidligere Ringelist
 | M5 | Skysync (magic link + last-write-wins per rad) | ✅ |
 | M6 | Belønningsnivå (uendelig), avatarer, temaer, level-up | ✅ |
 | M7 | Runna-inspirert redesign: lyst tema, SVG-ikoner, Higgsfield-app-ikon | ✅ |
+| M8 | Liquid-glass flytende bunnlinje + Higgsfield avatarer & tier-badges | ✅ |
 
 > Appen er offline-first: localStorage er alltid primærkilden, og alt fungerer
 > uten innlogging. Skysync er opt-in — logg inn med e-post i Innstillinger for å

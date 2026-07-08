@@ -80,7 +80,7 @@ html, body {
 
 body {
   min-height: 100dvh;
-  padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+  padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 34px);
 }
 
 .laster {
@@ -270,19 +270,24 @@ body {
 .kjede__ledd { display: flex; justify-content: space-between; gap: 10px; }
 .kjede__niva { color: var(--dempet); font-size: 0.82rem; flex: 0 0 auto; }
 
-/* Tab-bar */
+/* Tab-bar — flytende «liquid glass»-pille (App Store-stil) */
 .tabbar {
   position: fixed;
-  bottom: 0; left: 0; right: 0;
-  height: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
-  padding-bottom: env(safe-area-inset-bottom);
+  left: 14px; right: 14px;
+  bottom: calc(env(safe-area-inset-bottom) + 12px);
+  height: var(--tabbar-h);
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  background: color-mix(in srgb, var(--bg-kort) 85%, transparent);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-top: 1px solid var(--kant);
-  z-index: 10;
+  background: color-mix(in srgb, var(--bg-kort) 60%, transparent);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid color-mix(in srgb, var(--tekst) 9%, transparent);
+  border-radius: 32px;
+  box-shadow:
+    0 12px 34px rgba(16, 32, 43, 0.20),
+    0 2px 8px rgba(16, 32, 43, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  z-index: 20;
 }
 .tabbar__knapp {
   display: flex;
@@ -292,11 +297,19 @@ body {
   gap: 3px;
   text-decoration: none;
   color: var(--dempet);
-  font-size: 0.68rem;
+  font-size: 0.66rem;
+  font-weight: 600;
+  position: relative;
 }
 .tabbar__knapp--aktiv { color: var(--aksent); }
-.tabbar__ikon { font-size: 1.25rem; line-height: 1; display: grid; place-items: center; }
+.tabbar__ikon {
+  font-size: 1.25rem; line-height: 1; display: grid; place-items: center;
+  padding: 5px 14px; border-radius: 14px; transition: background 0.18s ease;
+}
 .tabbar__ikon .ikon { width: 25px; height: 25px; stroke-width: 2; }
+.tabbar__knapp--aktiv .tabbar__ikon {
+  background: color-mix(in srgb, var(--aksent) 16%, transparent);
+}
 .tabbar__knapp--aktiv .tabbar__ikon .ikon { stroke-width: 2.4; }
 .tabbar__knapp--synker .tabbar__ikon { animation: synkpuls 1s ease-in-out infinite; }
 @keyframes synkpuls { 50% { opacity: 0.4; } }
@@ -783,3 +796,30 @@ body {
   content: ''; position: absolute; left: 15%; right: 15%; bottom: -1px; height: 3px;
   background: var(--tekst); border-radius: 3px;
 }
+
+/* ==========================================================================
+   M8 — tier-crests (Higgsfield-badges) + finpuss
+   ========================================================================== */
+.nivahero__avatar { position: relative; overflow: visible; }
+.nivahero__crest {
+  position: absolute; right: -8px; bottom: -8px; width: 40px; height: 40px;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
+}
+.profilstripe__crest { width: 34px; height: 34px; flex: 0 0 auto; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)); }
+.gw__badge { width: 26px; height: 26px; flex: 0 0 auto; }
+
+/* Achievement/PR hexagon-badge (bruker crest-bildene) */
+.krestkort { display: flex; align-items: center; gap: 14px; }
+.krestkort__bilde { width: 72px; height: 72px; flex: 0 0 auto; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.2)); }
+.krestkort__navn { font-weight: 800; font-size: 1.15rem; letter-spacing: -0.01em; }
+.gw__navn { display: inline-flex; align-items: center; gap: 8px; }
+.profilstripe__pil .ikon { width: 20px; height: 20px; }
+
+/* Bilde-avatarer (Higgsfield) — sirkulær klipp, fyller beholderen */
+.nivahero__avatarbilde, .profilstripe__avatarbilde {
+  width: 100%; height: 100%; object-fit: cover; border-radius: 50%; transform: scale(1.08);
+}
+.avatarknapp__bilde { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; transform: scale(1.06); }
+.avatarknapp { padding: 4px; }
+.levelup__avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; vertical-align: middle; }
+.stige__avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }

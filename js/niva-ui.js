@@ -11,22 +11,37 @@ import {
 } from './niva.js';
 import {
   nivaFraTotalXp, belonningFor, nesteBelonning, lasteTemaer, lasteAvatarer,
-  tittelFor, TEMAER, AVATARER,
+  tittelFor, tierBadge, tierFor, TIER_NAVN, TEMAER, AVATARER,
+  avatarBilde, erBildeAvatar, AVATAR_NAVN, STANDARD_AVATAR,
 } from './belonninger.js';
+
+// Avatar som element: bilde for genererte avatarer, ellers emoji-tekst (gammel profil).
+function avatarEl(id, klasse) {
+  return erBildeAvatar(id)
+    ? el('img', { class: klasse, src: avatarBilde(id), alt: '', loading: 'lazy' })
+    : el('span', { class: klasse }, id || '💪');
+}
 
 let _bib = null;
 export function settBib(bib) { _bib = bib; }
 
-// Ikon per belønningstype (avatar viser selve emojien).
+// Ikon per belønningstype som STRENG (for hero-«Neste»-linja).
 function belIkon(b) {
-  return b.type === 'avatar' ? b.id
+  return b.type === 'avatar' ? '🧑'
     : b.type === 'tema' ? '🎨'
       : b.type === 'tittel' ? '🏅'
         : b.type === 'ovelse' ? '🏋️'
           : '✨';
 }
+// Ikon som ELEMENT (avatar-belønninger vises som bilde i stigen).
+function belIkonEl(b) {
+  if (b.type === 'avatar' && erBildeAvatar(b.id)) {
+    return el('img', { class: 'stige__avatar', src: avatarBilde(b.id), alt: '', loading: 'lazy' });
+  }
+  return belIkon(b);
+}
 function belTekst(b) {
-  return b.type === 'avatar' ? `Avatar ${b.id}`
+  return b.type === 'avatar' ? `Avatar: ${AVATAR_NAVN[b.id] || b.id}`
     : b.type === 'tema' ? `Tema: ${b.navn}`
       : b.type === 'tittel' ? `Tittel: ${b.navn}`
         : b.type === 'ovelse' ? `Ny øvelse: ${b.navn}`
@@ -76,14 +91,15 @@ export function visNivaSkjerm(mount) {
 
   // --- Belønningsnivå-hero (stort, hyppig, uten tak) ---
   function belonningsHero(p, info, st) {
-    const avatar = p.innstillinger?.avatar || '💪';
+    const avatar = p.innstillinger?.avatar || STANDARD_AVATAR;
     const neste = nesteBelonning(info.niva, _bib);
     return el('div', { class: 'kort hero nivahero' },
       el('div', { class: 'nivahero__topp' },
-        el('div', { class: 'nivahero__avatar' }, avatar),
+        el('div', { class: 'nivahero__avatar' }, avatarEl(avatar, 'nivahero__avatarbilde'),
+          el('img', { class: 'nivahero__crest', src: tierBadge(info.niva), alt: '', loading: 'lazy' })),
         el('div', { class: 'nivahero__meta' },
           el('div', { class: 'nivahero__niva' }, `Nivå ${info.niva}`),
-          el('div', { class: 'nivahero__tittel' }, tittelFor(info.niva)),
+          el('div', { class: 'nivahero__tittel' }, `${tittelFor(info.niva)} · ${TIER_NAVN[tierFor(info.niva)]}-tier`),
         ),
         el('div', { class: 'nivahero__streak' }, el('div', { class: 'glob__tall' }, String(st.uker)), el('div', { class: 'stat__tekst' }, 'uker 🔥')),
       ),
@@ -105,7 +121,7 @@ export function visNivaSkjerm(mount) {
       const ulast = n <= info.niva;
       rader.push(el('div', { class: 'stige__rad' + (ulast ? ' stige__rad--ulast' : '') + (n === info.niva ? ' stige__rad--na' : '') },
         el('span', { class: 'stige__niva' }, String(n)),
-        el('span', { class: 'stige__ikon' }, belIkon(b)),
+        el('span', { class: 'stige__ikon' }, belIkonEl(b)),
         el('span', { class: 'stige__tekst' }, belTekst(b)),
         el('span', { class: 'stige__status' }, ulast ? '✓' : '🔒'),
       ));
@@ -120,7 +136,7 @@ export function visNivaSkjerm(mount) {
   // --- Avatar-velger ---
   function avatarVelger(p, info) {
     const ulast = lasteAvatarer(info.niva, _bib);
-    const valgt = p.innstillinger?.avatar || '💪';
+    const valgt = p.innstillinger?.avatar || STANDARD_AVATAR;
     return el('div', { class: 'kort' },
       el('h2', {}, 'Avatar'),
       el('div', { class: 'avatargrid' },
@@ -129,9 +145,11 @@ export function visNivaSkjerm(mount) {
           const laasNiva = laastPaNiva(a, 'avatar');
           return el('button', {
             class: 'avatarknapp' + (valgt === a ? ' avatarknapp--valgt' : '') + (er ? '' : ' avatarknapp--laast'),
-            type: 'button', title: er ? a : `Låses opp på nivå ${laasNiva}`,
+            type: 'button', title: er ? (AVATAR_NAVN[a] || a) : `Låses opp på nivå ${laasNiva}`,
             onclick: er ? () => velg('avatar', a) : undefined,
-          }, er ? a : el('span', { class: 'avatarknapp__laas' }, laasNiva ? `${laasNiva}` : '🔒'));
+          }, er
+            ? el('img', { class: 'avatarknapp__bilde', src: avatarBilde(a), alt: AVATAR_NAVN[a] || a, loading: 'lazy' })
+            : el('span', { class: 'avatarknapp__laas' }, laasNiva ? `${laasNiva}` : '🔒'));
         }),
       ),
     );
@@ -231,7 +249,9 @@ export function visNivaSkjerm(mount) {
               onclick: () => visGatewayTest(g),
             },
               el('div', { class: 'gw__topp' },
-                el('span', { class: 'gw__navn' }, g.navn),
+                el('span', { class: 'gw__navn' },
+                  erPassert && !rusten && el('img', { class: 'gw__badge', src: 'icons/badges/gull.png', alt: '', loading: 'lazy' }),
+                  g.navn),
                 el('span', { class: 'gw__status' }, erPassert ? (rusten ? '🔒 rusten' : '✓ ulåst') : '🔓 test'),
               ),
               el('span', { class: 'gw__krav' }, kravTekst(g)),

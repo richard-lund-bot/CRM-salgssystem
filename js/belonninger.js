@@ -24,9 +24,13 @@ export function nivaFraTotalXp(totalXp) {
 }
 
 // --- Kataloger ------------------------------------------------------------
-// Avatarer (emoji — offline-vennlig). Første to er gratis fra start.
-export const AVATARER = ['💪', '🏃', '🔥', '⚡', '🤸', '🧘', '🦾', '🥷', '🏋️', '🐉', '🦅', '🦁', '🐺', '🧗', '🚀', '🏆', '👑', '🐐', '🦈', '🌟'];
-export const GRATIS_AVATARER = ['💪', '🏃'];
+// Avatarer (Higgsfield-genererte bilder). Første to er gratis fra start.
+export const AVATARER = ['bicep', 'loper', 'yoga', 'flamme', 'lyn', 'fjell', 'trofe', 'vekt', 'puls'];
+export const GRATIS_AVATARER = ['bicep', 'loper'];
+export const STANDARD_AVATAR = 'bicep';
+export function avatarBilde(id) { return `icons/avatars/${id}.png`; }
+/** Er dette en bilde-avatar (vs. gammel emoji fra en tidligere profil)? */
+export function erBildeAvatar(id) { return AVATARER.includes(id); }
 
 // Temaer (CSS-paletter, se app.css). «standard» er alltid åpen.
 export const TEMAER = [
@@ -54,36 +58,57 @@ export function tittelFor(niva) {
   return t;
 }
 
+// Tier-crest (Higgsfield-genererte hexagon-badges) etter nivåbånd — bronse→diamant.
+const TIER = [
+  [1, 'bronse'], [5, 'solv'], [10, 'gull'], [17, 'smaragd'], [24, 'safir'],
+  [34, 'rubin'], [47, 'ametyst'], [64, 'obsidian'], [85, 'diamant'],
+];
+export const TIER_NAVN = {
+  bronse: 'Bronse', solv: 'Sølv', gull: 'Gull', smaragd: 'Smaragd', safir: 'Safir',
+  rubin: 'Rubin', ametyst: 'Ametyst', obsidian: 'Obsidian', diamant: 'Diamant',
+};
+/** Filnavn (uten sti) for tier-crest på et gitt nivå. */
+export function tierFor(niva) {
+  let t = TIER[0][1];
+  for (const [n, navn] of TIER) if (niva >= n) t = navn; else break;
+  return t;
+}
+export function tierBadge(niva) { return `icons/badges/${tierFor(niva)}.png`; }
+
 // --- Belønningsstige ------------------------------------------------------
 // Kuraterte milepæler; øvrige nivåer fylles med «ny øvelse»-reveals.
 const KURATERT = {
   3: { type: 'tema', id: 'midnatt' },
   4: { type: 'tittel', id: 'Trent' },
-  5: { type: 'avatar', id: '🔥' },
+  5: { type: 'avatar', id: 'flamme' },
   6: { type: 'tema', id: 'glod' },
   8: { type: 'tittel', id: 'Sterk' },
-  9: { type: 'avatar', id: '⚡' },
+  9: { type: 'avatar', id: 'lyn' },
   10: { type: 'tema', id: 'oliven' },
   12: { type: 'tittel', id: 'Solid' },
-  13: { type: 'avatar', id: '🦾' },
+  13: { type: 'avatar', id: 'vekt' },
   15: { type: 'tema', id: 'nordlys' },
   17: { type: 'tittel', id: 'Erfaren' },
-  18: { type: 'avatar', id: '🥷' },
+  18: { type: 'avatar', id: 'yoga' },
   20: { type: 'tema', id: 'rodglod' },
   23: { type: 'tittel', id: 'Rå' },
-  25: { type: 'avatar', id: '🐉' },
+  25: { type: 'avatar', id: 'fjell' },
   30: { type: 'tema', id: 'papir' },
   31: { type: 'tittel', id: 'Veteran' },
-  35: { type: 'avatar', id: '🦅' },
+  35: { type: 'avatar', id: 'trofe' },
   40: { type: 'tema', id: 'mono' },
   41: { type: 'tittel', id: 'Elite' },
-  45: { type: 'avatar', id: '🏆' },
+  45: { type: 'avatar', id: 'puls' },
   50: { type: 'tema', id: 'gull' },
   55: { type: 'tittel', id: 'Mester' },
-  60: { type: 'avatar', id: '👑' },
   75: { type: 'tittel', id: 'Legende' },
-  90: { type: 'avatar', id: '🐐' },
   100: { type: 'tittel', id: 'Udødelig' },
+};
+
+// Lesbare navn på avatar-emblemene (for belønningsteksten).
+export const AVATAR_NAVN = {
+  bicep: 'Biceps', loper: 'Løper', yoga: 'Yoga', flamme: 'Flamme', lyn: 'Lyn',
+  fjell: 'Fjell', trofe: 'Trofé', vekt: 'Vektstang', puls: 'Puls',
 };
 
 // Deterministisk øvelsesrekkefølge for reveals — lette først, så tyngre.
@@ -108,7 +133,7 @@ export function belonningFor(niva, bib) {
   const k = KURATERT[niva];
   if (k) {
     if (k.type === 'tema') return { type: 'tema', id: k.id, navn: TEMAER.find((t) => t.id === k.id)?.navn || k.id, niva };
-    if (k.type === 'avatar') return { type: 'avatar', id: k.id, navn: `Avatar ${k.id}`, niva };
+    if (k.type === 'avatar') return { type: 'avatar', id: k.id, navn: AVATAR_NAVN[k.id] || k.id, niva };
     if (k.type === 'tittel') return { type: 'tittel', id: k.id, navn: k.id, niva };
   }
   // Øvelses-reveal

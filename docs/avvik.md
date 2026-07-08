@@ -266,3 +266,26 @@ bruker CSS-medaljer/hexagon-badges (`.medalje`, `.hexbadge`), i tråd med Runna-
 **Nye komponenter (CSS).** Liste-rader (ikon+label+chevron), All-Time-stat-rader,
 sirkulære medaljer, hexagon-badges, tier-/profil-header, gradient-fremhevet kort og
 segmentert kontroll — alle variabeldrevne så de følger valgt tema.
+
+## M8 liquid-glass bunnlinje + Higgsfield-badges/avatarer
+
+**Liquid glass.** Tab-baren er nå en flytende, avrundet «liquid glass»-pille (App
+Store-stil): løsrevet fra kanten med marginer, translucent bakgrunn
+(`color-mix` 60 %) + `backdrop-filter: blur(28px) saturate(180%)`, myk skygge og
+en indre lys-kant. Aktiv fane får en teal-tonet kapsel bak ikonet. Innhold
+scroller synlig bak baren.
+
+**Higgsfield-badges (tier-crests).** Ett 3×3-ark med 9 hexagon-medaljer
+(bronse→diamant) generert med Higgsfield, delt opp med Chromium-canvas til
+`icons/badges/*.png`. Vises som tier-crest på Nivå-heroen og profilstripa (mappet
+til nivåbånd i `tierFor`), og som medalje på beståtte gateways.
+
+**Higgsfield-avatarer.** Ett 3×3-ark med 9 sirkulære fitness-emblemer (biceps,
+løper, yoga, flamme, lyn, fjell, trofé, vektstang, puls) generert og delt opp til
+`icons/avatars/*.png`. Erstatter emoji-avatarene: `AVATARER` er nå bilde-IDer, to
+er gratis, resten låses opp via belønningsstigen. Gamle profiler med emoji-avatar
+faller tilbake til emoji-tekst (bakoverkompatibelt via `erBildeAvatar`).
+
+Alle genererte assets er committet som statiske PNG-er og precachet av
+service-workeren (offline). Higgsfield brukt via `generate_image` (nano_banana_pro),
+lastet ned og nedskalert lokalt — ingen runtime-avhengighet til tjenesten.
