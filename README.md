@@ -82,8 +82,27 @@ node scripts/validate.mjs      # sjekk referanser + tellinger (exit 0 = grønt)
 
 Supabase brukes kun til brukertilstand (`profiles`, `session_logs`, `generated_sessions`),
 med RLS owner-only og e-post magic link. Sync er **last-write-wins per rad** i v1: hver rad
-bærer et tidsstempel, og nyeste vinner ved konflikt. localStorage skrives først (appen
-blokkerer aldri på nett), og en synkkø tømmes mot Supabase når nett er tilgjengelig.
+bærer et tidsstempel (`oppdatert`, satt av databasetrigger), og nyeste vinner ved konflikt.
+localStorage skrives først (appen blokkerer aldri på nett), og en synkkø tømmes mot Supabase
+når nett er tilgjengelig.
+
+### Supabase-oppsett (M2)
+
+Skjemaet ligger i `supabase/migrations/`. Tabellene `profiles`, `session_logs` og
+`generated_sessions` har **RLS owner-only** (`auth.uid() = user_id`) med egne select/insert/
+update/delete-policies. Begge hjelpefunksjonene (`sett_oppdatert`, `handle_new_user`) er
+`SECURITY DEFINER` med `search_path = ''` pinnet — dette er bevisst for å passere
+Supabase-linteren «Function Search Path Mutable». En ny bruker får automatisk en tom
+profilrad via trigger på `auth.users`.
+
+**Auth-konfig i Supabase-dashbordet (må settes én gang):**
+- **Authentication → URL Configuration:** sett *Site URL* + legg Pages-URL-en i *Redirect URLs*
+  (magic link redirecter tilbake dit). Uten dette feiler innloggingen.
+- **Authentication → Providers → Email:** «Enable email provider» på, «Confirm email» på (magic link).
+- Security advisors flagger typisk kun *auth-nivå*-anbefalinger som ikke hører til skjemaet
+  (f.eks. MFA-alternativer). Passord-lekkasjevern er lite relevant her siden appen bruker
+  magic link (OTP), ikke passord. Kjør `get_advisors` (eller dashbordets Advisors-fane) og slå
+  på det som passer.
 
 ## Arkiv
 
