@@ -1,7 +1,7 @@
 // Historikk (LAG 4, taksonomi §13): visninger bygget rent fra loggen + profilen.
 // Ingen rammeverk — kalender-heatmap, ukesvolum, modalitetsfordeling (donut),
 // PR-tavle, push/pull-balanse og øktlogg med detalj. Alt regnes ut lokalt.
-import { el, tom } from './ui.js';
+import { el, tom, ikon } from './ui.js';
 import { MODALITET_NAVN, MONSTER_NAVN } from './library.js';
 import { hentLogg, hentProfil } from './store.js';
 import { prsFraLogg, streak, ukeNokkel, globaltNiva } from './niva.js';
@@ -43,10 +43,41 @@ export function visHistorikkSkjerm(mount) {
     oppsummering(logg, profil, st, nå),
     heatmapKort(logg, st, nå),
     ukesvolumKort(logg, nå),
+    alleTiderKort(logg, profil),
     fordelingKort(logg, profil),
     balanseKort(logg, nå),
     prKort(logg),
     loggKort(logg),
+  );
+}
+
+// --- All-Time Stats (Runna-stil rader) ------------------------------------
+function alleTiderKort(logg, profil) {
+  const totMin = logg.reduce((s, o) => s + (o.varighetMin || 0), 0);
+  const totXp = profil?.globalXp || logg.reduce((s, o) => s + (o.xp || 0), 0);
+  const lengste = logg.reduce((m, o) => Math.max(m, o.varighetMin || 0), 0);
+  const prAntall = Object.keys(prsFraLogg(logg)).length;
+  const gateways = (profil?.gatewaysPassert || []).length;
+  const timer = Math.floor(totMin / 60);
+  const rader = [
+    ['loper', 'Totalt økter', String(logg.length)],
+    ['stoppeklokke', 'Total tid', `${timer}t ${totMin % 60}m`],
+    ['lyn', 'Total XP', String(totXp)],
+    ['graf', 'Lengste økt', `${lengste} min`],
+    ['medalje', 'Personlige rekorder', String(prAntall)],
+    ['hexstjerne', 'Gateways bestått', String(gateways)],
+  ];
+  return el('div', { class: 'kort' },
+    el('h2', {}, 'Gjennom all tid'),
+    el('div', { class: 'statrader' },
+      ...rader.map(([ikonNavn, label, verdi]) => el('div', { class: 'statrad2' },
+        el('span', { class: 'statrad2__ikon' }, ikon(ikonNavn)),
+        el('div', { style: 'flex:1' },
+          el('div', { class: 'statrad2__label' }, label),
+          el('div', { class: 'statrad2__tall' }, verdi),
+        ),
+      )),
+    ),
   );
 }
 

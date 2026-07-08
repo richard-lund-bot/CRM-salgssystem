@@ -30,7 +30,8 @@ export const GRATIS_AVATARER = ['💪', '🏃'];
 
 // Temaer (CSS-paletter, se app.css). «standard» er alltid åpen.
 export const TEMAER = [
-  { id: 'standard', navn: 'Skog (standard)', prikk: '#2dd489' },
+  { id: 'standard', navn: 'Lys (standard)', prikk: '#10b497' },
+  { id: 'mork', navn: 'Mørk', prikk: '#2dd489' },
   { id: 'midnatt', navn: 'Midnatt', prikk: '#4aa3ff' },
   { id: 'glod', navn: 'Glød', prikk: '#ffb347' },
   { id: 'oliven', navn: 'Oliven', prikk: '#9bc34a' },
@@ -140,7 +141,7 @@ export function belonningsOvelser(niva, bib) {
 
 // Opplåste temaer/avatarer ved gitt nivå (gratis + belønnede).
 export function lasteTemaer(niva, bib) {
-  const sett = new Set(['standard']);
+  const sett = new Set(['standard', 'mork']); // lyst + mørkt er gratis
   for (const b of belonningerTil(niva, bib)) if (b.type === 'tema') sett.add(b.id);
   return sett;
 }

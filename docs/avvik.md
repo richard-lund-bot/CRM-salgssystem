@@ -247,3 +247,22 @@ generatorens tilgjengelige sett (i tillegg til kapasitets-/gateway-opplåste).
 **Kosmetikk offline-vennlig.** Avatarer = emoji (ingen bilde-generering). Temaer =
 CSS-variabelpaletter (9 stk, inkl. ett lyst) valgt via `data-tema` på <html>. Valgt
 avatar/tema lagres i `innstillinger` og synkes med profilen.
+
+## M7 Runna-inspirert redesign (designvalg)
+
+**Lyst standardtema.** Etter forbilde fra Runna er standardtemaet nå lyst (near-white
+bakgrunn, hvite kort med myke skygger, fete overskrifter, store tall, sorte pille-CTA-er
+via invertert `.knapp` = tekstfarge som bakgrunn). Det gamle mørke temaet er beholdt som
+et fritt valgbart tema («Mørk»), sammen med alle M6-temaene. Alt er variabeldrevet, så
+temabytte virker uendret.
+
+**Ikoner.** Higgsfield (`nano_banana_pro`) genererte app-ikonet (teal→grønn gradient,
+abstrakt stigende progresjons-/fjelltopp-merke), nedskalert til 192/512/maskable via
+Chromium-canvas og committet under `icons/`. Linjeikoner i UI (tab-bar, liste-rader,
+stat-rader, modaliteter) er håndlagde inline-SVG-er i `js/ui.js` (`ikon()`), temafarget
+via `currentColor` — crisp, offline, ingen ekstern avhengighet. Achievement-/PR-visninger
+bruker CSS-medaljer/hexagon-badges (`.medalje`, `.hexbadge`), i tråd med Runna-stilen.
+
+**Nye komponenter (CSS).** Liste-rader (ikon+label+chevron), All-Time-stat-rader,
+sirkulære medaljer, hexagon-badges, tier-/profil-header, gradient-fremhevet kort og
+segmentert kontroll — alle variabeldrevne så de følger valgt tema.

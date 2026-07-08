@@ -7,7 +7,7 @@ import { lastBibliotek, modalitetsoversikt, MODALITET_NAVN, MONSTER_NAVN } from 
 import {
   hentProfil, harProfil, lagreProfil, hentLogg, hentSistLokasjon, lagreSistLokasjon, nullstillAlt,
 } from './store.js';
-import { el, tom, chip } from './ui.js';
+import { el, tom, chip, ikon } from './ui.js';
 import { APP_VERSION } from './config.js';
 import { kjorOnboarding } from './onboarding.js';
 import { settBib as settBibKjor, visGeneratorSkjerm, visReviewSkjerm, visKjoreSkjerm } from './kjor.js';
@@ -247,20 +247,21 @@ function varighetNavn(k) {
 function visMeny() {
   skjerm('Meny',
     el('div', { class: 'kort' },
-      el('div', { class: 'menyliste' },
-        menyrad('📚', 'Bibliotek', '#/bibliotek'),
-        menyrad('🪜', 'Progresjonskjeder', '#/kjeder'),
-        menyrad('⚙️', 'Innstillinger', '#/innstillinger'),
-        menyrad('ℹ️', 'Om', '#/om'),
+      el('div', { class: 'liste' },
+        menyrad('bok', 'Bibliotek', '#/bibliotek'),
+        menyrad('graf', 'Progresjonskjeder', '#/kjeder'),
+        menyrad('gir', 'Innstillinger', '#/innstillinger'),
+        menyrad('person', 'Om', '#/om'),
       ),
     ),
   );
 }
 
-function menyrad(ikon, tekst, href) {
-  return el('a', { class: 'modrad', href },
-    el('span', { class: 'modrad__navn' }, `${ikon}  ${tekst}`),
-    el('span', { class: 'dempet' }, '›'),
+function menyrad(ikonNavn, tekst, href) {
+  return el('a', { class: 'listerad', href },
+    el('span', { class: 'listerad__ikon' }, ikon(ikonNavn)),
+    el('span', { class: 'listerad__navn' }, tekst),
+    el('span', { class: 'listerad__chevron' }, ikon('chevron')),
   );
 }
 
@@ -504,16 +505,16 @@ function visOm() {
 // --- Tab-bar ---
 function byggTabbar() {
   if (document.querySelector('.tabbar')) return;
-  const tab = (rute, ikon, tekst) => el('a', {
+  const tab = (rute, ikonNavn, tekst) => el('a', {
     class: 'tabbar__knapp', href: `#/${rute}`, 'data-rute': rute,
-  }, el('span', { class: 'tabbar__ikon' }, ikon), el('span', { class: 'tabbar__tekst' }, tekst));
+  }, el('span', { class: 'tabbar__ikon' }, ikon(ikonNavn)), el('span', { class: 'tabbar__tekst' }, tekst));
 
   document.body.append(el('nav', { class: 'tabbar' },
-    tab('hjem', '🏠', 'Hjem'),
-    tab('ny', '⚡', 'Trene'),
-    tab('niva', '📈', 'Nivå'),
-    tab('historikk', '📅', 'Historikk'),
-    tab('meny', '☰', 'Meny'),
+    tab('hjem', 'hjem', 'Hjem'),
+    tab('ny', 'lyn', 'Trene'),
+    tab('niva', 'graf', 'Nivå'),
+    tab('historikk', 'kalender', 'Historikk'),
+    tab('meny', 'meny', 'Meny'),
   ));
 }
 
@@ -573,9 +574,8 @@ async function start() {
 
 // Oppdaterer et lite synk-merke på Meny-fanen når status endrer seg.
 function oppdaterSyncMerke(status) {
-  const knapp = document.querySelector('.tabbar__knapp[data-rute="meny"] .tabbar__ikon');
-  if (!knapp) return;
-  knapp.textContent = status === 'synker' ? '🔄' : '☰';
+  const knapp = document.querySelector('.tabbar__knapp[data-rute="meny"]');
+  if (knapp) knapp.classList.toggle('tabbar__knapp--synker', status === 'synker');
   // Hvis brukeren står på en skjerm som viser synket data, tegn på nytt.
   if (status === 'synket') {
     const rute = (location.hash.replace('#/', '') || 'hjem').split('?')[0];

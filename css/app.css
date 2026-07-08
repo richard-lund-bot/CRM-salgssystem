@@ -1,17 +1,27 @@
-/* Treningsapp v2 — mobil-først, mørkt tema. */
+/* Treningsapp v2 — mobil-først. Lyst standardtema (Runna-inspirert). */
 :root {
-  --bg: #0f1216;
-  --bg-kort: #171c22;
-  --bg-kort-2: #1e252d;
-  --tekst: #e7edf3;
-  --dempet: #8b97a5;
-  --aksent: #2dd489;
-  --aksent-mork: #1f8f5d;
-  --kant: #263039;
-  --fare: #ff6b6b;
-  --radius: 14px;
-  --tabbar-h: 62px;
+  --bg: #eef1f5;
+  --bg-kort: #ffffff;
+  --bg-kort-2: #f3f5f8;
+  --tekst: #16202b;
+  --dempet: #6b7684;
+  --aksent: #10b497;
+  --aksent-mork: #0c8f78;
+  --aksent-svak: #e2f6f1;
+  --kant: #e4e8ee;
+  --fare: #ef4444;
+  --radius: 18px;
+  --skygge: 0 1px 2px rgba(16, 32, 43, 0.04), 0 8px 24px rgba(16, 32, 43, 0.05);
+  --tabbar-h: 64px;
   font-size: 16px;
+}
+
+/* Fritt mørkt tema (default var mørkt før M7 — beholdt som valg). */
+:root[data-tema="mork"] {
+  --bg: #0f1216; --bg-kort: #171c22; --bg-kort-2: #1e252d; --tekst: #e7edf3;
+  --dempet: #8b97a5; --aksent: #2dd489; --aksent-mork: #1f8f5d; --aksent-svak: #12271e;
+  --kant: #263039; --fare: #ff6b6b;
+  --skygge: none;
 }
 
 /* ==========================================================================
@@ -90,8 +100,9 @@ body {
 }
 .topp__tittel {
   margin: 0;
-  font-size: 1.6rem;
-  letter-spacing: -0.02em;
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
 }
 
 .innhold {
@@ -106,9 +117,10 @@ body {
   background: var(--bg-kort);
   border: 1px solid var(--kant);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 18px;
+  box-shadow: var(--skygge);
 }
-.kort h2 { margin: 0 0 12px; font-size: 1.05rem; }
+.kort h2 { margin: 0 0 12px; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.01em; }
 .kort--info { background: var(--bg-kort-2); }
 .kort p { margin: 0 0 8px; line-height: 1.5; }
 .dempet { color: var(--dempet); font-size: 0.9rem; }
@@ -152,23 +164,30 @@ body {
 /* Knapper */
 .knapprad { display: flex; gap: 10px; flex-wrap: wrap; }
 .knapp {
-  display: inline-block;
-  background: var(--aksent);
-  color: #06120c;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--tekst);
+  color: var(--bg-kort);
+  font-weight: 700;
+  font-size: 1rem;
   text-decoration: none;
-  padding: 12px 18px;
-  border-radius: 12px;
+  padding: 15px 22px;
+  border-radius: 999px;
   border: none;
   cursor: pointer;
   flex: 1;
   text-align: center;
+  transition: transform 0.08s ease, opacity 0.15s ease;
 }
+.knapp:active { transform: scale(0.98); }
 .knapp--sekundaer {
   background: transparent;
   color: var(--tekst);
-  border: 1px solid var(--kant);
+  border: 1.5px solid var(--kant);
 }
+.knapp--aksent { background: var(--aksent); color: #fff; }
 
 /* Søk + chips */
 .sok {
@@ -192,20 +211,21 @@ body {
 .chiprad::-webkit-scrollbar { display: none; }
 .chip {
   flex: 0 0 auto;
-  background: var(--bg-kort);
+  background: var(--bg-kort-2);
   border: 1px solid var(--kant);
   color: var(--dempet);
-  border-radius: 20px;
-  padding: 8px 14px;
+  border-radius: 999px;
+  padding: 9px 15px;
   font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
 }
 .chip--aktiv {
   background: var(--aksent);
-  color: #06120c;
+  color: #fff;
   border-color: var(--aksent);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* Øvelseliste */
@@ -257,9 +277,10 @@ body {
   height: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
   padding-bottom: env(safe-area-inset-bottom);
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  background: rgba(20, 25, 31, 0.96);
-  backdrop-filter: blur(12px);
+  grid-template-columns: repeat(5, 1fr);
+  background: color-mix(in srgb, var(--bg-kort) 85%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-top: 1px solid var(--kant);
   z-index: 10;
 }
@@ -274,7 +295,11 @@ body {
   font-size: 0.68rem;
 }
 .tabbar__knapp--aktiv { color: var(--aksent); }
-.tabbar__ikon { font-size: 1.25rem; line-height: 1; }
+.tabbar__ikon { font-size: 1.25rem; line-height: 1; display: grid; place-items: center; }
+.tabbar__ikon .ikon { width: 25px; height: 25px; stroke-width: 2; }
+.tabbar__knapp--aktiv .tabbar__ikon .ikon { stroke-width: 2.4; }
+.tabbar__knapp--synker .tabbar__ikon { animation: synkpuls 1s ease-in-out infinite; }
+@keyframes synkpuls { 50% { opacity: 0.4; } }
 
 /* ==========================================================================
    M3 — onboarding, generator, review, kjøring
@@ -513,11 +538,11 @@ body {
 .heat-wrap { overflow-x: auto; scrollbar-width: none; }
 .heat-wrap::-webkit-scrollbar { display: none; }
 .heat { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, 1fr); gap: 3px; min-width: 280px; }
-.heat__c { aspect-ratio: 1; border-radius: 3px; background: var(--bg-kort-2); }
-.heat__c--0 { background: #1c2530; }
-.heat__c--1 { background: #1f5b40; }
-.heat__c--2 { background: #23875a; }
-.heat__c--3 { background: #29b071; }
+.heat__c { aspect-ratio: 1; border-radius: 4px; background: var(--bg-kort-2); }
+.heat__c--0 { background: color-mix(in srgb, var(--dempet) 18%, transparent); }
+.heat__c--1 { background: color-mix(in srgb, var(--aksent) 30%, transparent); }
+.heat__c--2 { background: color-mix(in srgb, var(--aksent) 55%, transparent); }
+.heat__c--3 { background: color-mix(in srgb, var(--aksent) 78%, transparent); }
 .heat__c--4 { background: var(--aksent); }
 .heat__c--x { background: transparent; }
 
@@ -660,3 +685,101 @@ body {
 .levelup__niva, .levelup__bel { animation: pop 0.35s ease-out both; }
 .levelup__bel:nth-child(2) { animation-delay: 0.08s; }
 .levelup__bel:nth-child(3) { animation-delay: 0.16s; }
+
+/* ==========================================================================
+   M7 — Runna-inspirert designspråk (komponenter)
+   ========================================================================== */
+
+/* Ikoner (inline SVG via ui.js) */
+.ikon { width: 1.4em; height: 1.4em; display: inline-block; vertical-align: middle; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
+
+/* Liste-rader (Runna «MY STUFF» / Support-stil) */
+.liste { display: flex; flex-direction: column; }
+.listerad {
+  display: flex; align-items: center; gap: 14px; padding: 16px 4px;
+  border-top: 1px solid var(--kant); color: var(--tekst); text-decoration: none;
+  background: none; border-left: none; border-right: none; border-bottom: none;
+  width: 100%; cursor: pointer; font-size: 1.02rem; text-align: left;
+}
+.listerad:first-child { border-top: none; }
+.listerad__ikon { color: var(--aksent); display: grid; place-items: center; }
+.listerad__ikon .ikon { width: 24px; height: 24px; }
+.listerad__navn { flex: 1; font-weight: 500; }
+.listerad__hoyre { color: var(--dempet); font-size: 0.9rem; }
+.listerad__chevron { color: var(--dempet); }
+.listerad__chevron .ikon { width: 20px; height: 20px; }
+
+/* All-Time-stats-rader (ikon + UPPERCASE label + stort tall) */
+.statrader { display: flex; flex-direction: column; }
+.statrad2 { display: flex; align-items: center; gap: 16px; padding: 16px 2px; border-top: 1px solid var(--kant); }
+.statrad2:first-child { border-top: none; }
+.statrad2__ikon { color: var(--aksent); flex: 0 0 auto; }
+.statrad2__ikon .ikon { width: 30px; height: 30px; }
+.statrad2__label { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dempet); font-weight: 600; }
+.statrad2__tall { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
+
+/* Sirkulære achievement-medaljer (Runna Achievements) */
+.medaljegrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px 10px; }
+.medalje { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+.medalje__sirkel {
+  width: 66px; height: 66px; border-radius: 50%; display: grid; place-items: center;
+  color: #fff; box-shadow: inset 0 -3px 8px rgba(0,0,0,0.18), 0 4px 10px rgba(16,32,43,0.12);
+}
+.medalje__sirkel .ikon { width: 34px; height: 34px; stroke-width: 2.2; }
+.medalje__sirkel--laast { background: var(--bg-kort-2) !important; color: var(--dempet); box-shadow: none; border: 1px dashed var(--kant); }
+.medalje__navn { font-size: 0.82rem; font-weight: 600; line-height: 1.15; }
+.medalje__dato { font-size: 0.72rem; color: var(--dempet); }
+
+/* Hexagon-badges (Runna PR-badges / tier) */
+.hexbadge {
+  width: 78px; height: 86px; display: grid; place-items: center; color: #fff;
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  position: relative; text-align: center; flex: 0 0 auto;
+}
+.hexbadge__inner { display: flex; flex-direction: column; align-items: center; line-height: 1; }
+.hexbadge__stor { font-size: 1.15rem; font-weight: 800; }
+.hexbadge__liten { font-size: 0.7rem; opacity: 0.85; margin-top: 2px; }
+.hexrad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px 8px; justify-items: center; }
+.hexcelle { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; }
+.hexcelle__navn { font-weight: 700; font-size: 0.9rem; }
+.hexcelle__meta { font-size: 0.75rem; color: var(--dempet); }
+
+/* Profil-header (Runna profil-skjerm) */
+.profilhode { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px 0 4px; }
+.profilhode__avatar {
+  width: 96px; height: 96px; border-radius: 50%; background: var(--bg-kort);
+  display: grid; place-items: center; font-size: 3rem; position: relative;
+  box-shadow: var(--skygge); border: 1px solid var(--kant);
+}
+.profilhode__krone {
+  position: absolute; right: -2px; bottom: -2px; width: 34px; height: 34px; border-radius: 50%;
+  background: var(--aksent); color: #fff; display: grid; place-items: center; font-size: 0.9rem;
+  border: 3px solid var(--bg);
+}
+.profilhode__navn { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.02em; margin-top: 6px; }
+.profilhode__under { color: var(--dempet); font-size: 0.9rem; }
+
+/* Tier-kort (nivå-hero med hexagon-crest) */
+.tierkort { display: flex; align-items: center; gap: 16px; }
+.tierkort__crest { flex: 0 0 auto; }
+.tierkort__meta { flex: 1; }
+.tierkort__navn { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
+
+/* Fremhevet gradient-kort (Runna «Refer a friend») */
+.fremhev {
+  position: relative; border-radius: var(--radius); padding: 2px;
+  background: linear-gradient(120deg, #ffd479, #ff8f6b 40%, #b98cff);
+}
+.fremhev__inner { background: var(--bg-kort); border-radius: calc(var(--radius) - 2px); padding: 16px; display: flex; align-items: center; gap: 14px; }
+
+/* Segmentert kontroll (Workouts / Performance) */
+.segment { display: flex; border-bottom: 1px solid var(--kant); gap: 4px; }
+.segment__knapp {
+  flex: 1; background: none; border: none; padding: 12px 6px; cursor: pointer;
+  color: var(--dempet); font-weight: 700; font-size: 1.05rem; position: relative;
+}
+.segment__knapp--aktiv { color: var(--tekst); }
+.segment__knapp--aktiv::after {
+  content: ''; position: absolute; left: 15%; right: 15%; bottom: -1px; height: 3px;
+  background: var(--tekst); border-radius: 3px;
+}
