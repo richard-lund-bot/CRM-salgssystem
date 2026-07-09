@@ -164,13 +164,7 @@ body {
 }
 .topp__under { margin: 2px 0 0; color: var(--dempet); font-size: 0.875rem; }
 
-/* Mova-header på Min dag: wordmark + bjelle over tittel + dato */
-.mova-hode {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 4px 0 10px;
-}
+/* Wordmark («mova.») — brukes i hjembanneren */
 .wordmark {
   font-family: var(--font-display);
   font-weight: 600;
@@ -181,15 +175,6 @@ body {
   text-decoration: none;
 }
 .wordmark__prikk { color: var(--coral-500); }
-.mova-tittel {
-  margin: 0 0 2px;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 25px;
-  letter-spacing: -0.01em;
-  color: var(--tekst);
-}
-.mova-dato { font-size: 14px; color: var(--dempet); margin: 0 0 14px; }
 
 .innhold {
   padding: 6px 18px 24px;
@@ -346,63 +331,160 @@ body {
 }
 
 /* ==========================================================================
-   Min dag — Mova-mal: HeroCard, Planlagt i dag (SessionRow), oppmuntring
+   Min dag — Mova-dashbord: banner, ukeskalender, statkort, bevegelsesgrid,
+   anbefaling og streak (M12)
    ========================================================================== */
 
-/* HeroCard — illustrasjon øverst, teal bånd med hvit fremdriftsring */
-.herokort {
-  display: block;
-  width: 100%;
-  padding: 0;
-  text-align: left;
-  border: none;
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  background: var(--teal-600);
-  cursor: pointer;
+/* Banner — hvit flate som buer på yttersiden (nederst); resten er underlag */
+.hjembanner {
+  background: var(--bg-kort);
+  border-bottom: 1px solid var(--kant);
+  border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
   box-shadow: var(--shadow-sm);
-  text-decoration: none;
-  transition: box-shadow var(--dur-normal) var(--ease-standard);
+  padding: calc(env(safe-area-inset-top) + 10px) 12px 14px;
 }
-.herokort__bilde { display: block; width: 100%; height: 128px; object-fit: cover; }
-.herokort__band {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 12px 16px 14px;
-  background: linear-gradient(180deg, #2E9A91 0%, #12897D 100%);
-}
-.herokort__ringwrap { position: relative; width: 62px; height: 62px; flex: 0 0 auto; }
-.herokort__ringwrap svg { transform: rotate(-90deg); display: block; }
-.herokort__ringtall {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-}
-.herokort__verdi { font-family: var(--font-display); font-weight: 600; font-size: 19px; color: #fff; line-height: 1; }
-.herokort__enhet { font-size: 9.5px; color: rgba(255, 255, 255, 0.85); }
-.herokort__meta { flex: 1; min-width: 0; }
-.herokort__tittel { display: block; font-family: var(--font-display); font-weight: 600; font-size: 16.5px; color: #fff; }
-.herokort__under { display: block; font-size: 13px; color: rgba(255, 255, 255, 0.85); margin-top: 2px; }
-.herokort__pil { color: rgba(255, 255, 255, 0.9); flex: 0 0 auto; }
-.herokort__pil .ikon { width: 20px; height: 20px; }
+.hjembanner__rad { display: flex; align-items: center; gap: 2px; position: relative; min-height: 44px; padding: 0 4px; }
+.hjembanner__logo { position: absolute; left: 50%; transform: translateX(-50%); }
+.hjembanner__hoyre { margin-left: auto; }
+.ikonknapp--plain { background: transparent; color: var(--ink-800); width: 40px; height: 40px; }
+.ikonknapp--plain .ikon { width: 22px; height: 22px; }
 
-/* SessionRow — planlagt økt: illustrasjonsdisk, tittel + varighet, teal CTA */
-.oktrad { display: flex; align-items: center; gap: 14px; }
-.oktrad__disk {
-  display: flex; align-items: center; justify-content: center;
-  width: 52px; height: 52px; border-radius: 50%;
-  background: var(--aksent-svak);
-  flex: 0 0 auto; overflow: hidden;
-  color: var(--aksent);
+/* Ukeskalender: M T O T F L S faste, dagens dato markert, bla med pil/sveip */
+.hjemuke { display: flex; align-items: center; margin-top: 10px; }
+.hjemuke__pil {
+  background: none; border: none; color: var(--ink-300);
+  width: 22px; height: 44px; padding: 0; flex: 0 0 auto;
+  display: grid; place-items: center; cursor: pointer;
 }
-.oktrad__disk img { width: 100%; height: 100%; object-fit: cover; }
-.oktrad__disk .ikon { width: 24px; height: 24px; }
-.oktrad__meta { flex: 1; min-width: 0; }
-.oktrad__tittel { display: block; font-family: var(--font-display); font-weight: 600; font-size: 16px; color: var(--tekst); }
-.oktrad__varighet { display: block; font-size: 13px; color: var(--dempet); margin-top: 1px; }
-.oktrad .knapp--liten { box-shadow: var(--shadow-action); }
-.kort__hode { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-.kort__hode h2 { margin: 0; }
+.hjemuke__pil .ikon { width: 16px; height: 16px; }
+.hjemuke__dager { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); }
+.hjemuke__dag { display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; padding: 2px 0; }
+.hjemuke__navn { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; color: var(--dempet); }
+.hjemuke__tall {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--tekst);
+}
+.hjemuke__tall--idag { background: var(--navy-700); color: #fff; }
+.hjemuke__prikk { width: 4px; height: 4px; border-radius: 50%; background: transparent; }
+.hjemuke__prikk--aktiv { background: var(--aksent-lys); }
+
+/* Tre statkort: dagens minutter, aktive dager, nivå/XP */
+.statkort-rad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.statkort {
+  background: var(--bg-kort);
+  border: 1px solid var(--kant);
+  border-radius: var(--radius-lg);
+  padding: 12px 11px;
+  box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column; gap: 5px; min-width: 0;
+  text-decoration: none; color: var(--tekst);
+}
+.statkort__label { font-size: 10.5px; font-weight: 600; color: var(--tekst-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.statkort__midt { display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+.statkort__tall { font-family: var(--font-display); font-size: 24px; font-weight: 600; line-height: 1.1; }
+.statkort__tall--xp { font-size: 20px; }
+.statkort__ikon { color: var(--aksent-lys); display: inline-flex; }
+.statkort__ikon .ikon { width: 22px; height: 22px; }
+.statkort__sub { font-size: 10.5px; color: var(--dempet); }
+.statkort__bar { height: 6px; margin-top: 3px; }
+.statkort__prikker { display: flex; gap: 3px; margin-top: 5px; }
+.statkort__prikk { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-100); }
+.statkort__prikk--aktiv { background: var(--aksent-lys); }
+.stathex {
+  width: 26px; height: 30px; flex: 0 0 auto;
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  background: var(--aksent-lys); color: #fff;
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-weight: 600; font-size: 13px;
+}
+
+/* Seksjonshode («Velg bevegelse» + Vis alle) */
+.seksjonshode { display: flex; align-items: baseline; justify-content: space-between; margin: 2px 2px -4px; }
+.seksjonstittel { margin: 0; font-family: var(--font-display); font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
+.seksjonslenke {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--aksent); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 1px;
+}
+.seksjonslenke .ikon { width: 14px; height: 14px; }
+
+/* Bevegelsesgrid — fargede gradientfliser, 4 per rad */
+.movgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; }
+.movflis {
+  position: relative; aspect-ratio: 0.82;
+  border: none; border-radius: var(--radius-lg); overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; text-decoration: none; cursor: pointer; padding: 0;
+  box-shadow: var(--shadow-sm);
+}
+.movflis .ikon { width: 30px; height: 30px; margin-bottom: 16px; }
+.movflis__ikon { display: inline-flex; }
+.movflis__navn {
+  position: absolute; left: 9px; right: 6px; bottom: 7px; text-align: left;
+  font-family: var(--font-display); font-weight: 500; font-size: 12px; line-height: 1.15;
+}
+.movflis--lime { background: linear-gradient(150deg, #C9DB56, #86C15A); }
+.movflis--koral { background: linear-gradient(150deg, #FF8E70, #EF5A3E); }
+.movflis--teal { background: linear-gradient(150deg, #5FCEC6, #2BB3AB); }
+.movflis--blaa { background: linear-gradient(150deg, #5B82DE, #3757BE); }
+.movflis--lilla { background: linear-gradient(150deg, #B492F0, #8B5CF6); }
+.movflis--oransje { background: linear-gradient(150deg, #F5A65B, #E8842E); }
+.movflis--gul { background: linear-gradient(150deg, #F7C447, #EE9F2E); }
+.movflis--indigo { background: linear-gradient(150deg, #8B96F0, #5E68D8); }
+
+/* Dagens anbefaling — disk, tekst, stille pilleknapp */
+.anbefaling {
+  display: flex; align-items: center; gap: 13px;
+  background: var(--bg-kort); border: 1px solid var(--kant);
+  border-radius: var(--radius-xl); padding: 14px;
+  box-shadow: var(--shadow-sm);
+}
+.anbefaling__disk {
+  width: 52px; height: 52px; border-radius: 50%; overflow: hidden; flex: 0 0 auto;
+  background: var(--aksent-svak); color: var(--aksent);
+  display: flex; align-items: center; justify-content: center;
+}
+.anbefaling__disk img { width: 100%; height: 100%; object-fit: cover; }
+.anbefaling__disk .ikon { width: 24px; height: 24px; }
+.anbefaling__meta { flex: 1; min-width: 0; }
+.anbefaling__topp { display: block; font-size: 14px; color: var(--tekst); }
+.anbefaling__topp strong { font-family: var(--font-display); font-weight: 600; }
+.anbefaling__tekst { display: block; font-size: 12.5px; color: var(--tekst-2); margin-top: 3px; line-height: 1.4; }
+.anbefaling__knapp {
+  flex: 0 0 auto; white-space: nowrap; text-decoration: none;
+  border: 1.5px solid var(--aksent); color: var(--aksent);
+  font-family: var(--font-display); font-weight: 500; font-size: 13.5px;
+  border-radius: var(--radius-pill); padding: 9px 15px;
+}
+.anbefaling__knapp:active { background: var(--aksent-svak); }
+
+/* Streak-indikator — flamme + ukens dager med haker */
+.streakrad {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--bg-kort); border: 1px solid var(--kant);
+  border-radius: var(--radius-xl); padding: 13px 14px;
+  box-shadow: var(--shadow-sm);
+}
+.streakrad__disk {
+  width: 44px; height: 44px; border-radius: 50%; flex: 0 0 auto;
+  background: var(--coral-100); color: var(--coral-500);
+  display: flex; align-items: center; justify-content: center;
+}
+.streakrad__disk .ikon { width: 21px; height: 21px; }
+.streakrad__meta { flex: 1; min-width: 0; }
+.streakrad__tittel { display: block; font-family: var(--font-display); font-weight: 600; font-size: 15px; }
+.streakrad__tekst { display: block; font-size: 11.5px; color: var(--tekst-2); margin-top: 2px; }
+.streakuke { display: flex; gap: 4px; flex: 0 0 auto; }
+.streakuke__dag { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.streakuke__sirkel {
+  width: 17px; height: 17px; border-radius: 50%;
+  background: var(--ink-100); color: #fff;
+  display: grid; place-items: center;
+}
+.streakuke__sirkel--aktiv { background: var(--teal-500); }
+.streakuke__sirkel .ikon { width: 9px; height: 9px; stroke-width: 3.5; }
+.streakuke__navn { font-size: 8.5px; font-weight: 600; color: var(--dempet); }
 
 /* EncouragementBanner — lavmælt dult på fersken-flate. Aldri høylytt. */
 .oppmuntring {
@@ -867,26 +949,6 @@ body.fokusmodus { padding-bottom: 0; }
 .streakring__lbl { font-size: 0.6rem; color: var(--dempet); display: inline-flex; align-items: center; gap: 2px; }
 .streakring__lbl .ikon { width: 1em; height: 1em; color: var(--aksent); }
 
-.profilstripe {
-  display: flex; align-items: center; gap: 12px;
-  background: var(--bg-kort); border: 1px solid var(--kant); border-radius: var(--radius-lg);
-  padding: 12px 14px; text-decoration: none; color: var(--tekst);
-  box-shadow: var(--shadow-sm);
-}
-.profilstripe__avatar {
-  font-size: 1.8rem; width: 46px; height: 46px; flex: 0 0 auto;
-  display: grid; place-items: center; border-radius: 50%;
-  background: var(--aksent-svak); border: 2px solid var(--aksent-lys);
-}
-.profilstripe__avatarbilde { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; transform: scale(1.08); }
-.profilstripe__meta { flex: 0 0 auto; }
-.profilstripe__navn { font-weight: 600; display: block; font-size: 0.92rem; }
-.profilstripe__niva { font-size: 0.78rem; color: var(--aksent); font-weight: 600; }
-.profilstripe__bar { flex: 1; }
-.profilstripe__crest { width: 34px; height: 34px; flex: 0 0 auto; filter: drop-shadow(0 1px 2px rgba(17, 38, 77, 0.18)); }
-.profilstripe__pil { color: var(--dempet); font-size: 1.3rem; }
-.profilstripe__pil .ikon { width: 18px; height: 18px; }
-
 /* ==========================================================================
    Belønningsnivå, avatarer, temaer, level-up (M6)
    ========================================================================== */
@@ -1107,14 +1169,14 @@ body.fokusmodus { padding-bottom: 0; }
 
 /* Trykk-feedback — rolig nedskalering, aldri sprett */
 .listerad, .modrad, .gw, .temaknapp, .avatarknapp, .ob-kort, .okt__topp,
-.chip, .tabbar__knapp, .profilstripe, .knapp, .ikonknapp, .herokort, .oppmuntring,
-.kalmnd__dag, .plandag__rad--knapp, .ukestripe__dag, .modrad--knapp {
+.chip, .tabbar__knapp, .knapp, .ikonknapp, .movflis, .oppmuntring,
+.kalmnd__dag, .plandag__rad--knapp, .ukestripe__dag, .modrad--knapp, .hjemuke__dag {
   transition: transform var(--dur-fast) var(--ease-standard), opacity var(--dur-fast) ease, background-color 0.18s ease, border-color 0.18s ease;
 }
 .listerad:active, .modrad:active, .gw:active, .temaknapp:active,
 .avatarknapp:active, .ob-kort:active, .okt__topp:active, .chip:active,
-.profilstripe:active, .ikonknapp:active, .herokort:active, .oppmuntring:active,
-.kalmnd__dag:active, .plandag__rad--knapp:active, .ukestripe__dag:active, .modrad--knapp:active {
+.ikonknapp:active, .movflis:active, .oppmuntring:active,
+.kalmnd__dag:active, .plandag__rad--knapp:active, .ukestripe__dag:active, .modrad--knapp:active, .hjemuke__dag:active {
   transform: scale(0.97);
 }
 .tabbar__knapp:active .tabbar__ikon { transform: scale(0.9); }
@@ -1151,8 +1213,8 @@ body.fokusmodus { padding-bottom: 0; }
   .xpbar__fyll, .bar__fyll, .ringfremgang__fyll { transition-duration: 0.01ms; }
   .tabbar__knapp:active .tabbar__ikon, .listerad:active, .modrad:active, .gw:active,
   .temaknapp:active, .avatarknapp:active, .ob-kort:active, .okt__topp:active,
-  .chip:active, .profilstripe:active, .ikonknapp:active, .herokort:active, .oppmuntring:active,
-  .kalmnd__dag:active, .plandag__rad--knapp:active, .ukestripe__dag:active, .modrad--knapp:active { transform: none; }
+  .chip:active, .ikonknapp:active, .movflis:active, .oppmuntring:active,
+  .kalmnd__dag:active, .plandag__rad--knapp:active, .ukestripe__dag:active, .modrad--knapp:active, .hjemuke__dag:active { transform: none; }
 }
 
 /* ==========================================================================
@@ -1212,10 +1274,7 @@ body.fokusmodus { padding-bottom: 0; }
 .chiprad--scroll::-webkit-scrollbar { display: none; }
 
 /* --- Momentum: rytmeprikker (aldri en streak som «ryker») --- */
-.momkort { display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; }
-.momkort__meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .momdager { display: flex; gap: 8px; align-items: flex-end; }
-.momdager--kompakt { gap: 5px; flex: 0 0 auto; }
 .momdag { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
 .momdag__prikk {
   width: 12px; height: 12px; border-radius: 50%; display: block;
@@ -1231,7 +1290,6 @@ body.fokusmodus { padding-bottom: 0; }
 .figur--jubel { animation: figurJubel 0.9s ease-in-out infinite alternate; }
 @keyframes figurGaa { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 @keyframes figurJubel { 0% { transform: translateY(0); } 100% { transform: translateY(-4px); } }
-.profilstripe__figur { flex: 0 0 auto; display: inline-flex; width: 40px; }
 .ikon--liten { width: 14px; height: 14px; }
 
 /* --- Min reise --- */
@@ -1322,6 +1380,68 @@ body.fokusmodus { padding-bottom: 0; }
 @media (prefers-reduced-motion: reduce) {
   .figur--gaa, .figur--jubel { animation: none; }
 }
+
+/* ==========================================================================
+   Mosjonskalender (M12) — ukekort med dagsrader, «Legg til» og Nullstill;
+   endringer skrives først ved «Lagre» i toppen.
+   ========================================================================== */
+.kal-topp { display: flex; align-items: center; gap: 10px; }
+.kal-topp__tittel {
+  flex: 1; text-align: center; margin: 0;
+  font-family: var(--font-display); font-size: 18px; font-weight: 600;
+  letter-spacing: -0.01em; color: var(--tekst);
+}
+.kal-lagre {
+  background: none; border: none; cursor: pointer;
+  font-family: var(--font-display); font-size: 16px; font-weight: 600;
+  color: var(--dempet); padding: 8px 2px; flex: 0 0 auto;
+}
+.kal-lagre:disabled { cursor: default; }
+.kal-lagre--aktiv { color: var(--aksent); }
+
+.kaluke { padding: 0; overflow: hidden; }
+.kaluke__hode { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; }
+.kaluke__tittel { margin: 0; font-size: 17px; }
+.kaluke__reset {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--bg-kort); border: 1px solid var(--kant-sterk);
+  border-radius: var(--radius-md); padding: 6px 11px;
+  font-size: 12.5px; font-weight: 600; color: var(--tekst); cursor: pointer;
+}
+.kaluke__reset .ikon { width: 14px; height: 14px; }
+
+.kalrad { display: flex; gap: 12px; padding: 10px 16px; border-top: 1px solid var(--kant); align-items: flex-start; min-height: 58px; }
+.kalrad--fortid { opacity: 0.55; }
+.kalrad__dag { width: 36px; flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 3px; padding-top: 2px; }
+.kalrad__navn { font-size: 10px; font-weight: 700; letter-spacing: 0.05em; color: var(--dempet); }
+.kalrad__tall {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-weight: 600; font-size: 14.5px; color: var(--tekst);
+}
+.kalrad__tall--idag { background: var(--navy-700); color: #fff; }
+.kalrad__innhold { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; justify-content: center; padding-top: 4px; }
+
+.kal-leggtil {
+  display: inline-flex; align-items: center; gap: 7px; align-self: flex-start;
+  background: none; border: none; cursor: pointer;
+  color: var(--dempet); font-family: var(--font-body); font-size: 14px; font-weight: 500;
+  padding: 6px 0;
+}
+.kal-leggtil .ikon { width: 17px; height: 17px; }
+
+.kalplan {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: var(--teal-050); border: 1px solid var(--aksent-svak);
+  border-radius: var(--radius-md); padding: 8px 6px 8px 12px;
+}
+.kalplan__navn { font-weight: 600; font-size: 14px; display: block; }
+.kalplan__varighet { font-size: 12px; color: var(--dempet); }
+.kalplan__fjern { width: 30px; height: 30px; background: transparent; }
+.kalplan__fjern .ikon { width: 15px; height: 15px; }
+
+.kalform { display: flex; flex-direction: column; gap: 8px; padding: 2px 0 6px; }
+.kalform .knapp--liten { flex: 0 0 auto; }
 
 /* --- Splash (fersk åpning): brand-bilde som fader ut når appen er klar --- */
 .splash { transition: opacity 0.45s var(--ease-standard); }

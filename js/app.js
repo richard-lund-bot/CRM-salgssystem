@@ -16,10 +16,11 @@ import { settBib as settBibHist, visAktivitetSkjerm } from './historikk.js';
 import { settBib as settBibPlan, visPlanSkjerm } from './plan.js';
 import { settBib as settBibBeveg, visBevegSkjerm, visHurtigSkjerm, visLoggforSkjerm } from './beveg.js';
 import { settBib as settBibReise, visReiseSkjerm } from './reise.js';
-import { visTilpassSkjerm, tegnFigur, sikreFigur, standardFigur } from './figur.js';
-import { momentum, globaltNiva } from './niva.js';
-import { nivaFraTotalXp, tittelFor } from './belonninger.js';
-import { dagensGnist, bevegelsesMomentum, dagerMedAktivitet, MODALITET_TIL_BEVEGELSE } from './bevegelse.js';
+import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
+import { visTilpassSkjerm, standardFigur } from './figur.js';
+import { globaltNiva } from './niva.js';
+import { nivaFraTotalXp } from './belonninger.js';
+import { dagensGnist, dagerMedAktivitet, startHref, VARIGHET_MIN, MODALITET_TIL_BEVEGELSE } from './bevegelse.js';
 import { fyllInn } from './animasjon.js';
 import * as sync from './sync.js';
 
@@ -35,6 +36,7 @@ const ruter = {
   reise: () => visReiseSkjerm(app),
   tilpass: () => visTilpassSkjerm(app, bib),
   plan: () => visPlanSkjerm(app),
+  kalender: () => visKalenderSkjerm(app),
   ny: () => visGeneratorSkjerm(app, lesForhandsvalg()),
   review: () => visReviewSkjerm(app),
   kjor: () => visKjoreSkjerm(app),
@@ -50,7 +52,7 @@ const ruter = {
 };
 
 // Skjermene med egen tilbake-header er fokusmodus (skjuler tab-baren).
-const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'tilpass']);
+const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'tilpass', 'kalender']);
 
 function lesForhandsvalg() {
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
@@ -89,18 +91,25 @@ function skjerm(tittel, ...innhold) {
 }
 
 // ===========================================================================
-// Min dag — Mova-hjemskjerm (mal: templates/mova-min-dag/MovaMinDag.dc.html)
-// Wordmark + bjelle, «Min dag» + dato, HeroCard (dagens bevegelse),
-// «Planlagt i dag» med øktrad, oppmuntringsbanner. Momentum-tilbud og
-// profilstripe beholdes under — formulert som tilbud, aldri skam.
+// Min dag — Mova-dashbord: hvit banner med header + ukeskalender (buet
+// underkant — resten av siden ligger som underlag), tre statistikk-kort
+// (dagens minutter, ukas aktive dager, nivå/XP), bevegelsesgrid, dagens
+// anbefaling og streak-indikator.
 // ===========================================================================
 const DAG = 86400000;
+const UKEDAG_BOKSTAV = ['M', 'T', 'O', 'T', 'F', 'L', 'S'];
 
 function isoDato(d) {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, '0');
   const dg = String(d.getDate()).padStart(2, '0');
   return `${y}-${m}-${dg}`;
+}
+
+function mandagFor(d) {
+  const m = new Date(d);
+  m.setHours(0, 0, 0, 0);
+  return new Date(m.getTime() - ((m.getDay() + 6) % 7) * DAG);
 }
 
 // Dagsmål i minutter, avledet av foretrukket varighetsklasse.
@@ -111,13 +120,6 @@ function wordmark() {
     'mova', el('span', { class: 'wordmark__prikk' }, '.'));
 }
 
-function movaHode() {
-  return el('div', { class: 'mova-hode' },
-    wordmark(),
-    el('a', { class: 'ikonknapp', href: '#/innstillinger', 'aria-label': 'Innstillinger og varsler' }, ikon('bjelle')),
-  );
-}
-
 function visHjem() {
   const profil = hentProfil();
   if (!profil) {
@@ -126,143 +128,243 @@ function visHjem() {
   }
   const logg = hentLogg();
   const nå = Date.now();
-  const rådato = new Date().toLocaleDateString('no-NO', { weekday: 'long', day: 'numeric', month: 'long' });
-  const datoTekst = rådato.charAt(0).toUpperCase() + rådato.slice(1);
+  hjemUkeOffset = 0;
 
   tom(app);
   app.append(
+    hjemBanner(logg),
     el('main', { class: 'innhold' },
-      movaHode(),
-      el('div', {},
-        el('h1', { class: 'mova-tittel' }, 'Min dag'),
-        el('p', { class: 'mova-dato' }, datoTekst),
-      ),
-      heroKort(profil, logg),
-      gnistKort(profil, logg, nå),
-      planlagtKort(profil),
-      momentumKort(logg, nå),
-      momentumStrip(profil, nå),
-      figurstripe(profil),
+      statKortRad(profil, logg),
+      seksjonsHode(),
+      bevegelsesGrid(profil),
+      anbefalingKort(profil, logg, nå),
+      streakKort(logg),
     ),
   );
 }
 
-// Dagens gnist (spec §5.1): ett enkelt forslag som senker dørstokkmila.
-function gnistKort(profil, logg, nå) {
-  const g = dagensGnist(profil, logg, nå);
-  return el('div', { class: 'kort gnist' },
-    el('div', { class: 'gnist__meta' },
-      el('p', { class: 'gnist__eyebrow' }, 'Dagens gnist'),
-      el('h2', { class: 'gnist__tittel' }, g.tittel),
-      el('p', { class: 'gnist__under' }, `${g.undertekst} Det teller. · ≈ +${g.xp} XP`),
+// Banner: profil + bjelle til venstre, sentrert wordmark, kalender til høyre
+// — og ukeskalender under, med dagens dato markert. Ukene blas med pilene
+// eller sveip; en dag åpner mosjonskalenderen på den datoen.
+let hjemUkeOffset = 0;
+
+function hjemBanner(logg) {
+  const dager = el('div', { class: 'hjemuke__dager' });
+  const aktivSett = new Set(logg.map((o) => (o.dato || '').slice(0, 10)));
+
+  function tegnUke() {
+    tom(dager);
+    const idagIso = isoDato(new Date());
+    const man = mandagFor(new Date(Date.now() + hjemUkeOffset * 7 * DAG));
+    for (let i = 0; i < 7; i++) {
+      const dato = new Date(man.getTime() + i * DAG);
+      const iso = isoDato(dato);
+      const erIdag = iso === idagIso;
+      dager.append(el('a', { class: 'hjemuke__dag', href: `#/kalender?d=${iso}` },
+        el('span', { class: 'hjemuke__navn' }, UKEDAG_BOKSTAV[i]),
+        el('span', { class: 'hjemuke__tall' + (erIdag ? ' hjemuke__tall--idag' : '') }, String(dato.getDate())),
+        el('i', { class: 'hjemuke__prikk' + (aktivSett.has(iso) && !erIdag ? ' hjemuke__prikk--aktiv' : '') }),
+      ));
+    }
+  }
+
+  const uke = el('div', { class: 'hjemuke' },
+    el('button', { class: 'hjemuke__pil', type: 'button', 'aria-label': 'Forrige uke', onclick: () => { hjemUkeOffset--; tegnUke(); } }, ikon('tilbake')),
+    dager,
+    el('button', { class: 'hjemuke__pil', type: 'button', 'aria-label': 'Neste uke', onclick: () => { hjemUkeOffset++; tegnUke(); } }, ikon('chevron')),
+  );
+  let startX = null;
+  uke.addEventListener('touchstart', (ev) => { startX = ev.touches[0].clientX; }, { passive: true });
+  uke.addEventListener('touchend', (ev) => {
+    if (startX == null) return;
+    const dx = ev.changedTouches[0].clientX - startX;
+    startX = null;
+    if (Math.abs(dx) < 40) return;
+    hjemUkeOffset += dx < 0 ? 1 : -1;
+    tegnUke();
+  }, { passive: true });
+  tegnUke();
+
+  return el('div', { class: 'hjembanner' },
+    el('div', { class: 'hjembanner__rad' },
+      el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/reise', 'aria-label': 'Profil' }, ikon('person')),
+      el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/innstillinger', 'aria-label': 'Varsler og innstillinger' }, ikon('bjelle')),
+      el('span', { class: 'hjembanner__logo' }, wordmark()),
+      el('a', { class: 'ikonknapp ikonknapp--plain hjembanner__hoyre', href: '#/kalender', 'aria-label': 'Mosjonskalender' }, ikon('kalender')),
     ),
-    el('div', { class: 'gnist__knapper' },
-      el('a', { class: 'knapp', href: g.href }, 'Kjør i gang'),
-      el('a', { class: 'knapp knapp--stille', href: '#/beveg' }, 'Noe annet'),
-    ),
+    uke,
   );
 }
 
-// Momentum (spec §9): rytme, ikke streak. 7 dager + varm status.
-function momentumKort(logg, nå) {
-  const mom = bevegelsesMomentum(logg, nå);
-  const dager = dagerMedAktivitet(logg, nå, 7);
-  return el('a', { class: 'kort momkort', href: '#/reise' },
-    el('div', { class: 'momkort__meta' },
-      el('span', { class: 'oppmuntring__tittel' }, mom.tekst),
-      el('span', { class: 'oppmuntring__tekst' }, mom.undertekst),
-    ),
-    el('div', { class: 'momdager momdager--kompakt' },
-      ...dager.map((min) => el('i', { class: 'momdag__prikk' + (min > 0 ? ' momdag__prikk--aktiv' : '') })),
-    ),
-  );
-}
-
-// HeroCard — «Dagens bevegelse»: illustrasjon, hvit fremdriftsring (min/mål).
-function heroKort(profil, logg) {
+// Tre kort: dagens minutter mot dagsmålet, ukas aktive dager, nivå/XP.
+function statKortRad(profil, logg) {
   const idagIso = isoDato(new Date());
   const minutter = logg
     .filter((o) => (o.dato || '').slice(0, 10) === idagIso)
     .reduce((s, o) => s + (o.varighetMin || 0), 0);
   const maal = DAGSMAAL[profil.varighetsklasse] || 40;
-  const pct = Math.max(0, Math.min(1, maal ? minutter / maal : 0));
-  const storrelse = 62, strek = 5;
-  const r = (storrelse - strek) / 2;
-  const c = 2 * Math.PI * r;
+  const dager = dagerMedAktivitet(logg, Date.now(), 7);
+  const aktive = dager.filter((m) => m > 0).length;
+  const info = nivaFraTotalXp(profil.globalXp || 0);
 
-  const planer = planForDato(idagIso);
-  const href = planer.length
-    ? `#/ny?m=${planer[0].modalitet}&k=${planer[0].varighetsklasse}&p=${planer[0].id}`
-    : '#/beveg';
+  const minBar = el('div', { class: 'xpbar__fyll' });
+  fyllInn(minBar, 'width', `${Math.min(100, Math.round((minutter / maal) * 100))}%`);
+  const xpBar = el('div', { class: 'xpbar__fyll' });
+  fyllInn(xpBar, 'width', `${info.pct}%`);
 
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('width', storrelse);
-  svg.setAttribute('height', storrelse);
-  svg.setAttribute('viewBox', `0 0 ${storrelse} ${storrelse}`);
-  svg.innerHTML =
-    `<circle cx="${storrelse / 2}" cy="${storrelse / 2}" r="${r}" fill="none" stroke="rgba(255,255,255,0.28)" stroke-width="${strek}"/>`
-    + `<circle cx="${storrelse / 2}" cy="${storrelse / 2}" r="${r}" fill="none" stroke="#fff" stroke-width="${strek}" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c * (1 - pct)}"/>`;
-
-  const bilde = el('img', { class: 'herokort__bilde', src: 'icons/brand/hero-min-dag.png', alt: '', loading: 'lazy' });
-  bilde.addEventListener('error', () => bilde.remove());
-
-  return el('a', { class: 'herokort', href },
-    bilde,
-    el('span', { class: 'herokort__band' },
-      el('span', { class: 'herokort__ringwrap' },
-        svg,
-        el('span', { class: 'herokort__ringtall' },
-          el('span', { class: 'herokort__verdi' }, String(minutter)),
-          el('span', { class: 'herokort__enhet' }, 'min'),
-        ),
+  return el('div', { class: 'statkort-rad' },
+    el('div', { class: 'statkort' },
+      el('span', { class: 'statkort__label' }, 'Minutter i dag'),
+      el('div', { class: 'statkort__midt' },
+        el('span', { class: 'statkort__tall' }, String(minutter)),
+        el('span', { class: 'statkort__ikon' }, ikon('klokke')),
       ),
-      el('span', { class: 'herokort__meta' },
-        el('span', { class: 'herokort__tittel' }, 'Dagens bevegelse'),
-        el('span', { class: 'herokort__under' }, `Målet ditt: ${maal} min`),
+      el('span', { class: 'statkort__sub' }, `/${maal} min`),
+      el('div', { class: 'xpbar statkort__bar' }, minBar),
+    ),
+    el('div', { class: 'statkort' },
+      el('span', { class: 'statkort__label' }, 'Aktive dager'),
+      el('div', { class: 'statkort__midt' },
+        el('span', { class: 'statkort__tall' }, String(aktive)),
+        el('span', { class: 'statkort__ikon' }, ikon('kalender')),
       ),
-      el('span', { class: 'herokort__pil' }, ikon('chevron')),
+      el('span', { class: 'statkort__sub' }, '/7 dager'),
+      el('div', { class: 'statkort__prikker' },
+        ...dager.map((m) => el('i', { class: 'statkort__prikk' + (m > 0 ? ' statkort__prikk--aktiv' : '') })),
+      ),
+    ),
+    el('a', { class: 'statkort', href: '#/reise' },
+      el('span', { class: 'statkort__label' }, `Nivå ${info.niva}`),
+      el('div', { class: 'statkort__midt' },
+        el('span', { class: 'stathex' }, 'M'),
+        el('span', { class: 'statkort__tall statkort__tall--xp' }, String(info.igjen)),
+      ),
+      el('span', { class: 'statkort__sub' }, 'XP til neste nivå'),
+      el('div', { class: 'xpbar statkort__bar' }, xpBar),
     ),
   );
 }
 
-// «Planlagt i dag» — øktrader med Start-knapp, eller tilbud om å planlegge.
-function planlagtKort(profil) {
-  const idagIso = isoDato(new Date());
-  const planer = planForDato(idagIso);
+// «Velg bevegelse» — fargede fliser rett på underlaget. Starter med profilens
+// foretrukne varighet; «Vis alle» går til Beveg med hele flyten.
+const HJEM_FLISER = [
+  ['walk', 'Gåtur', 'loper', 'lime'],
+  ['run', 'Løp', 'lyn', 'koral'],
+  ['yoga', 'Yoga', 'yoga', 'teal'],
+  ['strength', 'Styrke', 'vekt', 'blaa'],
+  ['stretch', 'Tøying', 'blad', 'lilla'],
+  ['bike', 'Sykkel', 'sykkel', 'oransje'],
+  ['sport', 'Sport', 'ball', 'gul'],
+];
 
-  const hode = el('div', { class: 'kort__hode' },
-    el('h2', {}, 'Planlagt i dag'),
-    el('span', { class: 'badge' }, planer.length ? `${planer.length} økt${planer.length === 1 ? '' : 'er'}` : 'ingen økt'),
+function seksjonsHode() {
+  return el('div', { class: 'seksjonshode' },
+    el('h2', { class: 'seksjonstittel' }, 'Velg bevegelse'),
+    el('a', { class: 'seksjonslenke', href: '#/beveg' }, 'Vis alle', ikon('chevron')),
   );
+}
 
-  if (!planer.length) {
-    return el('div', { class: 'kort' },
-      hode,
-      el('p', { class: 'dempet' }, 'Ingen planlagt økt denne dagen — helt greit.'),
-      el('div', { class: 'knapprad' },
-        el('a', { class: 'knapp', href: '#/beveg' }, 'Velg bevegelse'),
-        el('a', { class: 'knapp knapp--sekundaer', href: '#/plan' }, 'Planlegg'),
-      ),
-    );
+function bevegelsesGrid(profil) {
+  const k = profil.varighetsklasse || 'standard';
+  const flis = (id, navn, ikonNavn, farge) => el('a', {
+    class: `movflis movflis--${farge}`,
+    href: startHref(id, { varighetsklasse: k, maalMin: VARIGHET_MIN[k] }),
+  },
+    el('span', { class: 'movflis__ikon' }, ikon(ikonNavn)),
+    el('span', { class: 'movflis__navn' }, navn),
+  );
+  const overrask = el('button', {
+    class: 'movflis movflis--indigo', type: 'button',
+    onclick: () => {
+      const kandidater = ['walk', 'run', 'bike', 'strength', 'bodyweight', 'yoga', 'stretch', 'hiit'];
+      const id = kandidater[Math.floor(Math.random() * kandidater.length)];
+      location.hash = startHref(id, { varighetsklasse: k, maalMin: VARIGHET_MIN[k] });
+    },
+  },
+    el('span', { class: 'movflis__ikon' }, ikon('terning')),
+    el('span', { class: 'movflis__navn' }, 'Overrask meg'),
+  );
+  return el('div', { class: 'movgrid' }, ...HJEM_FLISER.map((f) => flis(...f)), overrask);
+}
+
+// Dagens anbefaling: planlagt økt hvis den finnes, ellers Dagens gnist (§5.1).
+function anbefalingKort(profil, logg, nå) {
+  const planer = planForDato(isoDato(new Date()));
+  const bilde = el('img', { src: 'icons/brand/shoe-badge.png', alt: '', loading: 'lazy' });
+  const disk = el('span', { class: 'anbefaling__disk' }, bilde);
+  bilde.addEventListener('error', () => { bilde.remove(); disk.append(ikon('sko')); });
+
+  let tittel, tekst, href, knapp;
+  if (planer.length) {
+    const p = planer[0];
+    tittel = MODALITET_NAVN[p.modalitet] || p.modalitet;
+    tekst = `${varighetNavn(p.varighetsklasse)} · planlagt økt`;
+    href = `#/ny?m=${p.modalitet}&k=${p.varighetsklasse}&p=${p.id}`;
+    knapp = 'Åpne plan';
+  } else {
+    const g = dagensGnist(profil, logg, nå);
+    tittel = g.tittel;
+    tekst = `${g.undertekst} · ≈ +${g.xp} XP`;
+    href = g.href;
+    knapp = 'Kjør i gang';
   }
 
-  return el('div', { class: 'kort' },
-    hode,
-    el('div', { class: 'plandag__liste' }, ...planer.map((p) => oktRad(p))),
+  return el('div', { class: 'anbefaling' },
+    disk,
+    el('div', { class: 'anbefaling__meta' },
+      el('span', { class: 'anbefaling__topp' }, el('strong', {}, 'I dag'), ` · ${tittel}`),
+      el('span', { class: 'anbefaling__tekst' }, tekst),
+    ),
+    el('a', { class: 'anbefaling__knapp', href }, knapp),
   );
 }
 
-function oktRad(p) {
-  const bilde = el('img', { src: 'icons/brand/shoe-badge.png', alt: '', loading: 'lazy' });
-  const disk = el('span', { class: 'oktrad__disk' }, bilde);
-  bilde.addEventListener('error', () => { bilde.remove(); disk.append(ikon('sko')); });
-  return el('div', { class: 'oktrad' },
-    disk,
-    el('span', { class: 'oktrad__meta' },
-      el('span', { class: 'oktrad__tittel' }, MODALITET_NAVN[p.modalitet] || p.modalitet),
-      el('span', { class: 'oktrad__varighet' }, varighetNavn(p.varighetsklasse)),
+// Streak: sammenhengende dager med bevegelse. Dagens økt kan fortsatt komme,
+// så en aktiv gårsdag holder streaken i live til dagen er omme.
+function beregnStreak(logg) {
+  const aktivSett = new Set(logg.map((o) => (o.dato || '').slice(0, 10)));
+  const idag = new Date();
+  idag.setHours(0, 0, 0, 0);
+  let t = idag.getTime();
+  if (!aktivSett.has(isoDato(new Date(t)))) t -= DAG;
+  let streak = 0;
+  while (aktivSett.has(isoDato(new Date(t)))) { streak++; t -= DAG; }
+  return streak;
+}
+
+function streakKort(logg) {
+  const streak = beregnStreak(logg);
+  const aktivSett = new Set(logg.map((o) => (o.dato || '').slice(0, 10)));
+  const idag = new Date();
+  idag.setHours(0, 0, 0, 0);
+  const idagIso = isoDato(idag);
+  const man = mandagFor(idag);
+
+  const uke = [];
+  for (let i = 0; i < 7; i++) {
+    const iso = isoDato(new Date(man.getTime() + i * DAG));
+    const aktiv = aktivSett.has(iso);
+    uke.push(el('span', { class: 'streakuke__dag' },
+      el('span', { class: 'streakuke__sirkel' + (aktiv ? ' streakuke__sirkel--aktiv' : '') },
+        aktiv && ikon('sjekk')),
+      el('span', { class: 'streakuke__navn' }, UKEDAG_BOKSTAV[i]),
+    ));
+  }
+
+  const tittel = streak > 0
+    ? `${streak} ${streak === 1 ? 'dags' : 'dagers'} streak`
+    : 'Klar for en ny streak?';
+  const tekst = streak >= 3 ? 'Flott jobba! Hold trenden i gang.'
+    : streak > 0 ? 'God start — hold rytmen i morgen også.'
+      : 'Én liten bevegelse i dag starter en ny.';
+
+  return el('div', { class: 'streakrad' },
+    el('span', { class: 'streakrad__disk' }, ikon('flamme')),
+    el('div', { class: 'streakrad__meta' },
+      el('span', { class: 'streakrad__tittel' }, tittel),
+      el('span', { class: 'streakrad__tekst' }, tekst),
     ),
-    el('a', { class: 'knapp knapp--liten', href: `#/ny?m=${p.modalitet}&k=${p.varighetsklasse}&p=${p.id}` }, 'Start økten'),
+    el('div', { class: 'streakuke' }, ...uke),
   );
 }
 
@@ -271,45 +373,6 @@ function velkommenKort() {
     el('h2', {}, 'Velkommen'),
     el('p', {}, 'Små steg. Stor forskjell. La oss sette opp profilen din — under 2 minutter.'),
     el('button', { class: 'knapp', type: 'button', onclick: startOnboarding }, 'Kom i gang'),
-  );
-}
-
-// Figurstripe: figuren + varm tittel + belønningsnivå, lenker til Min reise.
-function figurstripe(profil) {
-  const info = nivaFraTotalXp(profil.globalXp || 0);
-  const figur = sikreFigur(profil);
-  const fyll = el('div', { class: 'xpbar__fyll' });
-  fyllInn(fyll, 'width', `${info.pct}%`);
-  return el('a', { class: 'profilstripe', href: '#/reise' },
-    el('span', { class: 'profilstripe__figur' }, tegnFigur(figur, { pose: 'idle', bredde: 40 })),
-    el('div', { class: 'profilstripe__meta' },
-      el('span', { class: 'profilstripe__navn' }, figur.tittel || tittelFor(info.niva)),
-      el('span', { class: 'profilstripe__niva' }, `Nivå ${info.niva}`),
-    ),
-    el('div', { class: 'profilstripe__bar' }, el('div', { class: 'xpbar' }, fyll)),
-    el('span', { class: 'profilstripe__pil' }, ikon('chevron')),
-  );
-}
-
-// Vennlig tilbud når en treningsform har hvilt en stund (aldri skam-språk).
-function momentumStrip(profil, nå) {
-  const trente = Object.keys(profil.nivaer || {}).filter((m) => profil.nivaer[m].sisteOkt);
-  const kjolige = trente
-    .map((m) => ({ m, mom: momentum(profil, m, nå) }))
-    .filter((x) => x.mom.tilstand === 'kjolig' || x.mom.tilstand === 'comeback');
-  if (!kjolige.length) return null;
-  const x = kjolige.sort((a, b) => b.mom.dagerSiden - a.mom.dagerSiden)[0];
-  const navn = MODALITET_NAVN[x.m] || x.m;
-  const tekst = x.mom.tilstand === 'comeback'
-    ? `${navn} har hvilt en stund. Velkommen tilbake når du er klar — dobbel XP venter.`
-    : `Har du lyst på 15 minutter ${navn.toLowerCase()}? Helt valgfritt.`;
-  return el('a', { class: 'oppmuntring oppmuntring--teal', href: `#/ny?m=${x.m}&k=kort` },
-    el('span', { class: 'oppmuntring__disk' }, ikon('flamme')),
-    el('span', { class: 'oppmuntring__meta' },
-      el('span', { class: 'oppmuntring__tittel' }, 'Et lite tilbud'),
-      el('span', { class: 'oppmuntring__tekst' }, tekst),
-    ),
-    el('span', { class: 'oppmuntring__chevron' }, ikon('chevron')),
   );
 }
 
@@ -674,6 +737,7 @@ async function start() {
   settBibPlan(bib);
   settBibBeveg(bib);
   settBibReise(bib);
+  settBibKal(bib);
   migrerProfil();
   bruksTema(hentProfil()?.innstillinger?.tema);
   window.addEventListener('hashchange', navger);
