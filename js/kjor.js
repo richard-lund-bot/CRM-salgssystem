@@ -166,7 +166,7 @@ export function visReviewSkjerm(mount) {
         ),
         ...okt.blokker.map((blk, bi) => blokkKort(blk, bi, () => tegn())),
         el('div', { class: 'fast-bunn' },
-          el('button', { class: 'knapp', type: 'button', onclick: () => { location.hash = '#/kjor'; } }, 'Start økt ▶'),
+          el('button', { class: 'knapp', type: 'button', onclick: () => { location.hash = '#/kjor'; } }, 'Start økt'),
         ),
       ),
     );
@@ -592,7 +592,7 @@ function visFerdig(mount, okt, resultat) {
   const xpTall = el('div', { class: 'xp-stor' }, '+0');
 
   monter(mount,
-    el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, 'Bra jobba! 🎉')),
+    el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, 'Bra jobba!')),
     el('main', { class: 'innhold' },
       // Belønningsnivå-opp: stor feiring med opplåste belønninger
       r.globalOpp && el('div', { class: 'kort hero levelup' },

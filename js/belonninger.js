@@ -32,18 +32,19 @@ export function avatarBilde(id) { return `icons/avatars/${id}.png`; }
 /** Er dette en bilde-avatar (vs. gammel emoji fra en tidligere profil)? */
 export function erBildeAvatar(id) { return AVATARER.includes(id); }
 
-// Temaer (CSS-paletter, se app.css). «standard» er alltid åpen.
+// Temaer (CSS-paletter, se app.css). Alle er Mova-avledet: lys base med ulik
+// aksentfarge — id-ene er uendret så opplåste temaer overlever redesignet.
 export const TEMAER = [
-  { id: 'standard', navn: 'Lys (standard)', prikk: '#10b497' },
-  { id: 'mork', navn: 'Mørk', prikk: '#2dd489' },
-  { id: 'midnatt', navn: 'Midnatt', prikk: '#4aa3ff' },
-  { id: 'glod', navn: 'Glød', prikk: '#ffb347' },
-  { id: 'oliven', navn: 'Oliven', prikk: '#9bc34a' },
-  { id: 'nordlys', navn: 'Nordlys', prikk: '#a06bff' },
-  { id: 'rodglod', navn: 'Rødglød', prikk: '#ff5d6c' },
-  { id: 'papir', navn: 'Papir (lyst)', prikk: '#1f8f5d' },
-  { id: 'mono', navn: 'Mono', prikk: '#cfd6dd' },
-  { id: 'gull', navn: 'Gull', prikk: '#e8c552' },
+  { id: 'standard', navn: 'Mova (standard)', prikk: '#008382' },
+  { id: 'mork', navn: 'Marine', prikk: '#11264D' },
+  { id: 'midnatt', navn: 'Midnatt', prikk: '#2E8FE0' },
+  { id: 'glod', navn: 'Glød', prikk: '#E8853D' },
+  { id: 'oliven', navn: 'Oliven', prikk: '#7E9C2E' },
+  { id: 'nordlys', navn: 'Nordlys', prikk: '#8B5CF6' },
+  { id: 'rodglod', navn: 'Rødglød', prikk: '#FF6F61' },
+  { id: 'papir', navn: 'Papir (varm)', prikk: '#E8E2D9' },
+  { id: 'mono', navn: 'Mono', prikk: '#3C4660' },
+  { id: 'gull', navn: 'Gull', prikk: '#B08D2A' },
 ];
 
 // Titler etter nivåtrinn (høyeste ≤ nivå gjelder).

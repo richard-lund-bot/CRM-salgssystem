@@ -6,7 +6,7 @@
 import { lastBibliotek, modalitetsoversikt, MODALITET_NAVN, MONSTER_NAVN } from './library.js';
 import {
   hentProfil, harProfil, lagreProfil, hentLogg, nullstillAlt,
-  hentPlan, planForDato,
+  planForDato,
 } from './store.js';
 import { el, tom, chip, ikon } from './ui.js';
 import { APP_VERSION } from './config.js';
@@ -15,9 +15,7 @@ import { settBib as settBibKjor, visGeneratorSkjerm, visReviewSkjerm, visKjoreSk
 import { settBib as settBibNiva, visNivaSkjerm } from './niva-ui.js';
 import { settBib as settBibHist, visAktivitetSkjerm } from './historikk.js';
 import { settBib as settBibPlan, visPlanSkjerm } from './plan.js';
-import {
-  effektivBase, raBase, nivaFraBase, momentum, streak, prsFraLogg, globaltNiva,
-} from './niva.js';
+import { momentum, streak, globaltNiva } from './niva.js';
 import { nivaFraTotalXp, tittelFor, tierBadge, avatarBilde, erBildeAvatar, STANDARD_AVATAR } from './belonninger.js';
 import { fyllInn } from './animasjon.js';
 import * as sync from './sync.js';
@@ -69,29 +67,6 @@ function oppdaterNav(rute) {
   document.querySelectorAll('.tabbar__knapp').forEach((b) => {
     b.classList.toggle('tabbar__knapp--aktiv', b.dataset.rute === tabRute);
   });
-  // Flytt markør-linsen: glir mot målet og strekker seg/krymper underveis
-  // (squash & stretch), og lander med en liten fjæring. Web Animations API
-  // animeres pålitelig i iOS Safari; slutt-posisjonen settes som direkte
-  // transform så tilstanden er riktig også uten animasjon.
-  const REKKE = ['hjem', 'plan', 'aktivitet', 'niva', 'meny'];
-  const idx = REKKE.indexOf(tabRute);
-  const ind = document.querySelector('.tabbar__indikator');
-  if (!ind || idx < 0) return;
-  const fra = 'idx' in ind.dataset ? Number(ind.dataset.idx) : idx;
-  ind.dataset.idx = idx;
-  ind.style.transform = `translateX(${idx * 100}%)`;
-  if (fra === idx || !ind.animate
-    || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const strekk = Math.min(1.5, 1 + Math.abs(idx - fra) * 0.12);
-  const klem = 1 - (strekk - 1) * 0.45;
-  const midt = (fra + idx) / 2;
-  ind.animate([
-    { transform: `translateX(${fra * 100}%) scale(1, 1)`,
-      easing: 'cubic-bezier(0.4, 0, 0.3, 1)' },
-    { transform: `translateX(${midt * 100}%) scale(${strekk}, ${klem})`,
-      easing: 'cubic-bezier(0.3, 0.6, 0.3, 1.35)', offset: 0.55 },
-    { transform: `translateX(${idx * 100}%) scale(1, 1)` },
-  ], { duration: 460 });
 }
 
 function skjerm(tittel, ...innhold) {
@@ -103,10 +78,12 @@ function skjerm(tittel, ...innhold) {
 }
 
 // ===========================================================================
-// Min dag (adaptiv hjem-skjerm)
+// Min dag — Mova-hjemskjerm (mal: templates/mova-min-dag/MovaMinDag.dc.html)
+// Wordmark + bjelle, «Min dag» + dato, HeroCard (dagens bevegelse),
+// «Planlagt i dag» med øktrad, oppmuntringsbanner. Momentum-tilbud og
+// profilstripe beholdes under — formulert som tilbud, aldri skam.
 // ===========================================================================
 const DAG = 86400000;
-const UKEDAG_KORT = ['man', 'tir', 'ons', 'tor', 'fre', 'lør', 'søn'];
 
 function isoDato(d) {
   const y = d.getFullYear();
@@ -115,88 +92,162 @@ function isoDato(d) {
   return `${y}-${m}-${dg}`;
 }
 
+// Dagsmål i minutter, avledet av foretrukket varighetsklasse.
+const DAGSMAAL = { mikro: 10, kort: 20, standard: 40, lang: 60 };
+
+function wordmark() {
+  return el('a', { class: 'wordmark', href: '#/hjem', 'aria-label': 'Mova' },
+    'mova', el('span', { class: 'wordmark__prikk' }, '.'));
+}
+
+function movaHode() {
+  return el('div', { class: 'mova-hode' },
+    wordmark(),
+    el('a', { class: 'ikonknapp', href: '#/innstillinger', 'aria-label': 'Innstillinger og varsler' }, ikon('bjelle')),
+  );
+}
+
 function visHjem() {
   const profil = hentProfil();
   if (!profil) {
-    skjerm('Treningsapp', velkommenKort());
+    skjerm('Mova', velkommenKort());
     return;
   }
   const logg = hentLogg();
   const nå = Date.now();
+  const rådato = new Date().toLocaleDateString('no-NO', { weekday: 'long', day: 'numeric', month: 'long' });
+  const datoTekst = rådato.charAt(0).toUpperCase() + rådato.slice(1);
 
-  skjerm('Min dag',
-    profilstripe(profil),
-    ukestripe(),
-    dagensOkt(profil),
-    toppkort(profil, logg, nå),
-    momentumStrip(profil, nå),
-    nivaSammendrag(profil, nå),
-    el('div', { class: 'kort' },
-      el('h2', {}, 'Snarveier'),
-      el('div', { class: 'knapprad' },
-        el('a', { class: 'knapp knapp--sekundaer', href: '#/plan' }, 'Plan'),
-        el('a', { class: 'knapp knapp--sekundaer', href: '#/aktivitet' }, 'Aktivitet'),
-        el('a', { class: 'knapp knapp--sekundaer', href: '#/niva' }, 'Nivå & gateways'),
+  tom(app);
+  app.append(
+    el('main', { class: 'innhold' },
+      movaHode(),
+      el('div', {},
+        el('h1', { class: 'mova-tittel' }, 'Min dag'),
+        el('p', { class: 'mova-dato' }, datoTekst),
       ),
+      heroKort(profil, logg),
+      planlagtKort(profil),
+      oppmuntringsBanner(profil, logg, nå),
+      momentumStrip(profil, nå),
+      profilstripe(profil),
     ),
   );
 }
 
-// Ukestripe (mandag–søndag denne uka) — dagens dato uthevet, prikk der det
-// finnes en planlagt økt. Trykk på en dag åpner Plan-modulen på den datoen.
-function ukestripe() {
-  const idag = new Date(); idag.setHours(0, 0, 0, 0);
-  const idagIso = isoDato(idag);
-  const mandag = new Date(idag.getTime() - ((idag.getDay() + 6) % 7) * DAG);
-  const planSett = new Set(hentPlan().filter((p) => p.status === 'planlagt').map((p) => p.dato));
+// HeroCard — «Dagens bevegelse»: illustrasjon, hvit fremdriftsring (min/mål).
+function heroKort(profil, logg) {
+  const idagIso = isoDato(new Date());
+  const minutter = logg
+    .filter((o) => (o.dato || '').slice(0, 10) === idagIso)
+    .reduce((s, o) => s + (o.varighetMin || 0), 0);
+  const maal = DAGSMAAL[profil.varighetsklasse] || 40;
+  const pct = Math.max(0, Math.min(1, maal ? minutter / maal : 0));
+  const storrelse = 62, strek = 5;
+  const r = (storrelse - strek) / 2;
+  const c = 2 * Math.PI * r;
 
-  const dager = [];
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(mandag.getTime() + i * DAG);
-    const iso = isoDato(d);
-    dager.push(el('a', {
-      class: 'ukestripe__dag' + (iso === idagIso ? ' ukestripe__dag--idag' : ''),
-      href: `#/plan?d=${iso}`,
-    },
-      el('span', { class: 'ukestripe__navn' }, UKEDAG_KORT[i]),
-      el('span', { class: 'ukestripe__tall' }, String(d.getDate())),
-      el('span', { class: 'ukestripe__prikk' + (planSett.has(iso) ? '' : ' ukestripe__prikk--usynlig') }),
-    ));
-  }
-  return el('div', { class: 'kort' }, el('div', { class: 'ukestripe' }, ...dager));
+  const planer = planForDato(idagIso);
+  const href = planer.length
+    ? `#/ny?m=${planer[0].modalitet}&k=${planer[0].varighetsklasse}&p=${planer[0].id}`
+    : `#/ny?m=${foreslaModalitet(profil)}`;
+
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', storrelse);
+  svg.setAttribute('height', storrelse);
+  svg.setAttribute('viewBox', `0 0 ${storrelse} ${storrelse}`);
+  svg.innerHTML =
+    `<circle cx="${storrelse / 2}" cy="${storrelse / 2}" r="${r}" fill="none" stroke="rgba(255,255,255,0.28)" stroke-width="${strek}"/>`
+    + `<circle cx="${storrelse / 2}" cy="${storrelse / 2}" r="${r}" fill="none" stroke="#fff" stroke-width="${strek}" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c * (1 - pct)}"/>`;
+
+  const bilde = el('img', { class: 'herokort__bilde', src: 'icons/brand/hero-min-dag.png', alt: '', loading: 'lazy' });
+  bilde.addEventListener('error', () => bilde.remove());
+
+  return el('a', { class: 'herokort', href },
+    bilde,
+    el('span', { class: 'herokort__band' },
+      el('span', { class: 'herokort__ringwrap' },
+        svg,
+        el('span', { class: 'herokort__ringtall' },
+          el('span', { class: 'herokort__verdi' }, String(minutter)),
+          el('span', { class: 'herokort__enhet' }, 'min'),
+        ),
+      ),
+      el('span', { class: 'herokort__meta' },
+        el('span', { class: 'herokort__tittel' }, 'Dagens bevegelse'),
+        el('span', { class: 'herokort__under' }, `Målet ditt: ${maal} min`),
+      ),
+      el('span', { class: 'herokort__pil' }, ikon('chevron')),
+    ),
+  );
 }
 
-// Dagens status: planlagt økt (hvis satt i Plan) eller forslag om spontanøkt.
-function dagensOkt(profil) {
+// «Planlagt i dag» — øktrader med Start-knapp, eller tilbud om å planlegge.
+function planlagtKort(profil) {
   const idagIso = isoDato(new Date());
   const planer = planForDato(idagIso);
 
-  if (planer.length) {
-    const p = planer[0];
-    return el('div', { class: 'kort hero dagskort' },
-      el('p', { class: 'hero__eyebrow' }, 'I dag'),
-      el('p', { class: 'dagskort__mod' }, `${MODALITET_NAVN[p.modalitet] || p.modalitet} · ${varighetNavn(p.varighetsklasse)}`),
+  const hode = el('div', { class: 'kort__hode' },
+    el('h2', {}, 'Planlagt i dag'),
+    el('span', { class: 'badge' }, planer.length ? `${planer.length} økt${planer.length === 1 ? '' : 'er'}` : 'ingen økt'),
+  );
+
+  if (!planer.length) {
+    const modalitet = foreslaModalitet(profil);
+    return el('div', { class: 'kort' },
+      hode,
+      el('p', { class: 'dempet' }, 'Ingen planlagt økt denne dagen.'),
       el('div', { class: 'knapprad' },
-        el('a', { class: 'knapp', href: `#/ny?m=${p.modalitet}&k=${p.varighetsklasse}&p=${p.id}` }, 'Start planlagt økt ▶'),
+        el('a', { class: 'knapp', href: `#/ny?m=${modalitet}` }, 'Start spontanøkt'),
+        el('a', { class: 'knapp knapp--sekundaer', href: '#/plan' }, 'Planlegg'),
       ),
     );
   }
 
-  const modalitet = foreslaModalitet(profil);
-  return el('div', { class: 'kort hero dagskort' },
-    el('p', { class: 'hero__eyebrow' }, 'I dag'),
-    el('p', { class: 'dagskort__mod' }, 'Ingen planlagt økt'),
-    el('div', { class: 'knapprad' },
-      el('a', { class: 'knapp', href: `#/ny?m=${modalitet}` }, 'Start spontanøkt ▶'),
-      el('a', { class: 'knapp knapp--sekundaer', href: '#/plan' }, 'Planlegg'),
+  return el('div', { class: 'kort' },
+    hode,
+    el('div', { class: 'plandag__liste' }, ...planer.map((p) => oktRad(p))),
+  );
+}
+
+function oktRad(p) {
+  const bilde = el('img', { src: 'icons/brand/shoe-badge.png', alt: '', loading: 'lazy' });
+  const disk = el('span', { class: 'oktrad__disk' }, bilde);
+  bilde.addEventListener('error', () => { bilde.remove(); disk.append(ikon('sko')); });
+  return el('div', { class: 'oktrad' },
+    disk,
+    el('span', { class: 'oktrad__meta' },
+      el('span', { class: 'oktrad__tittel' }, MODALITET_NAVN[p.modalitet] || p.modalitet),
+      el('span', { class: 'oktrad__varighet' }, varighetNavn(p.varighetsklasse)),
     ),
+    el('a', { class: 'knapp knapp--liten', href: `#/ny?m=${p.modalitet}&k=${p.varighetsklasse}&p=${p.id}` }, 'Start økten'),
+  );
+}
+
+// Oppmuntringsbanner — varm, lavmælt: fremgang, ikke perfeksjon.
+function oppmuntringsBanner(profil, logg, nå) {
+  const st = streak(logg, profil.ukemaal || 4, nå);
+  let tittel = 'Du er på vei!';
+  let tekst = 'Fortsett med det gode arbeidet.';
+  if (st.nadd) {
+    tittel = 'Målet er nådd denne uka!';
+    tekst = `${st.denneUken} av ${st.ukemaal} økter. Sterkt jobba.`;
+  } else if (st.denneUken > 0) {
+    tekst = `${st.denneUken} av ${st.ukemaal} økter denne uka. Hvert steg teller.`;
+  }
+  return el('div', { class: 'oppmuntring' },
+    el('span', { class: 'oppmuntring__meta' },
+      el('span', { class: 'oppmuntring__tittel' }, tittel),
+      el('span', { class: 'oppmuntring__tekst' }, tekst),
+    ),
+    el('span', { class: 'oppmuntring__disk' }, ikon('hjerte', 'ikon ikon--fylt')),
   );
 }
 
 function velkommenKort() {
   return el('div', { class: 'kort kort--info' },
-    el('h2', {}, 'Velkommen 👋'),
-    el('p', {}, 'La oss sette opp profilen din — under 2 minutter.'),
+    el('h2', {}, 'Velkommen'),
+    el('p', {}, 'Små steg. Stor forskjell. La oss sette opp profilen din — under 2 minutter.'),
     el('button', { class: 'knapp', type: 'button', onclick: startOnboarding }, 'Kom i gang'),
   );
 }
@@ -222,52 +273,6 @@ function profilstripe(profil) {
   );
 }
 
-// Toppkort styrt av motivasjon.toppkort (§16).
-function toppkort(profil, logg, nå) {
-  const kort = profil.motivasjon?.toppkort || 'streak';
-  const st = streak(logg, profil.ukemaal || 4, nå);
-  if (kort === 'pr') {
-    const pr = Object.values(prsFraLogg(logg)).sort((a, b) => Date.parse(b.dato) - Date.parse(a.dato))[0];
-    const tittel = pr ? `${bib.ovelseMap.get(pr.id)?.navn || pr.id} — ${prTekst(pr)}` : 'Logg tall for å bygge PR-tavla';
-    return heltKort('Siste PR', tittel, '#/aktivitet?f=prestasjoner', 'Se prestasjoner');
-  }
-  if (kort === 'skilltre') {
-    const antall = (profil.gatewaysPassert || []).length;
-    return heltKort('Skill tree', `${antall} gateway${antall === 1 ? '' : 's'} låst opp`, '#/niva', 'Åpne gateways');
-  }
-  if (kort === 'volum') {
-    const denne = logg.filter((o) => Date.parse(o.dato) > nå - 7 * 86400000).reduce((s, o) => s + (o.varighetMin || 0), 0);
-    return heltKort('Denne uka', `${denne} minutter trent`, '#/aktivitet', 'Se volum');
-  }
-  if (kort === 'kveld') {
-    return heltKort('Kveldsro', 'Rolig yoga eller pust før leggetid?', '#/ny?m=REST', 'Start kveldsøkt');
-  }
-  // streak (default) + overrask
-  return el('div', { class: 'kort hero streakkort' },
-    el('div', { class: 'streakring' }, el('span', { class: 'streakring__tall' }, String(st.uker)), el('span', { class: 'streakring__lbl' }, 'uker', ikon('flamme'))),
-    el('div', {},
-      el('p', { class: 'hero__eyebrow' }, 'Streak'),
-      el('p', {}, st.nadd ? `Målet er nådd denne uka (${st.denneUken}/${st.ukemaal}). Sterkt!` : `${st.denneUken} av ${st.ukemaal} økter denne uka.`),
-    ),
-  );
-}
-
-function heltKort(eyebrow, tittel, href, knappTekst) {
-  return el('div', { class: 'kort hero' },
-    el('p', { class: 'hero__eyebrow' }, eyebrow),
-    el('h2', { class: 'hero__tittel' }, tittel),
-    href && el('div', { class: 'knapprad' }, el('a', { class: 'knapp knapp--sekundaer', href }, knappTekst || 'Åpne')),
-  );
-}
-
-function prTekst(pr) {
-  const d = [];
-  if (Number.isFinite(pr.reps)) d.push(`${pr.reps} reps`);
-  if (Number.isFinite(pr.last)) d.push(`${pr.last} kg`);
-  if (Number.isFinite(pr.holdSek)) d.push(`${pr.holdSek} s`);
-  return d.join(' · ');
-}
-
 // Momentum-piler + kjølige tilbud (aldri skam-språk).
 function momentumStrip(profil, nå) {
   const trente = Object.keys(profil.nivaer || {}).filter((m) => profil.nivaer[m].sisteOkt);
@@ -280,29 +285,13 @@ function momentumStrip(profil, nå) {
   const tekst = x.mom.tilstand === 'comeback'
     ? `${navn} har hvilt ${x.mom.dagerSiden} dager. Velkommen tilbake — dobbel XP venter.`
     : `${navn} er litt kjølig (${x.mom.dagerSiden} d). 15 min vedlikehold?`;
-  return el('div', { class: 'kort kort--tilbud' },
-    el('p', {}, tekst),
-    el('div', { class: 'knapprad' },
-      el('a', { class: 'knapp knapp--sekundaer', href: `#/ny?m=${x.m}&k=kort` }, 'Kort økt'),
+  return el('a', { class: 'oppmuntring oppmuntring--teal', href: `#/ny?m=${x.m}&k=kort` },
+    el('span', { class: 'oppmuntring__disk' }, ikon('flamme')),
+    el('span', { class: 'oppmuntring__meta' },
+      el('span', { class: 'oppmuntring__tittel' }, 'Et lite tilbud'),
+      el('span', { class: 'oppmuntring__tekst' }, tekst),
     ),
-  );
-}
-
-function nivaSammendrag(profil, nå) {
-  const rekke = ['STY', 'HIIT', 'CORE', 'YOGA', 'STR'].filter((m) => profil.nivaer?.[m]);
-  return el('a', { class: 'kort kort--klikk', href: '#/niva' },
-    el('h2', {}, 'Nivå'),
-    el('div', { class: 'nivliste' },
-      ...rekke.map((m) => {
-        const eff = effektivBase(profil, m, nå);
-        const mom = momentum(profil, m, nå);
-        return el('div', { class: 'nivkort' },
-          el('span', { class: 'nivkort__navn' }, `${MODALITET_NAVN[m] || m} `, el('span', { class: 'mom mom--' + mom.tilstand }, mom.pil)),
-          el('span', { class: 'niva' }, ...[1, 2, 3, 4, 5].map((k) =>
-            el('i', { class: 'niva__p' + (k <= nivaFraBase(eff) ? ' niva__p--på' : '') }))),
-        );
-      }),
-    ),
+    el('span', { class: 'oppmuntring__chevron' }, ikon('chevron')),
   );
 }
 
@@ -330,10 +319,18 @@ function visMeny() {
     el('div', { class: 'kort' },
       el('div', { class: 'liste' },
         menyrad('bok', 'Bibliotek', '#/bibliotek'),
-        menyrad('graf', 'Progresjonskjeder', '#/kjeder'),
+        menyrad('trend', 'Progresjonskjeder', '#/kjeder'),
         menyrad('gir', 'Innstillinger', '#/innstillinger'),
-        menyrad('person', 'Om', '#/om'),
+        menyrad('info', 'Om Mova', '#/om'),
       ),
+    ),
+    el('a', { class: 'oppmuntring', href: '#/plan' },
+      el('span', { class: 'oppmuntring__disk' }, ikon('hjerte', 'ikon ikon--fylt')),
+      el('span', { class: 'oppmuntring__meta' },
+        el('span', { class: 'oppmuntring__tittel' }, 'Gjør bevegelse til en vane'),
+        el('span', { class: 'oppmuntring__tekst' }, 'Små steg hver dag gir varige resultater.'),
+      ),
+      el('span', { class: 'oppmuntring__chevron' }, ikon('chevron')),
     ),
   );
 }
@@ -416,7 +413,7 @@ function visInnstillinger() {
 
 // Sky-synk-kort: magic-link-innlogging + synkstatus.
 function skyKort() {
-  const kort = el('div', { class: 'kort' }, el('h2', {}, 'Skysync ☁️'));
+  const kort = el('div', { class: 'kort' }, el('h2', {}, 'Skysync'));
   if (sync.erInnlogget()) {
     const sist = sync.sistSynk();
     kort.append(
@@ -564,10 +561,10 @@ function visKjeder() {
 
 function visOm() {
   const profil = hentProfil();
-  skjerm('Om',
+  skjerm('Om Mova',
     el('div', { class: 'kort' },
-      el('h2', {}, 'Treningsapp v2'),
-      el('p', {}, 'Adaptiv treningsgenerator med XP, nivåer, belønninger, gateways og historikk. PWA i vanilla HTML/CSS/JS.'),
+      el('h2', {}, 'Mova — Move for Life.'),
+      el('p', {}, 'Små steg. Stor forskjell. Din vennlige følgesvenn for mer bevegelse i hverdagen — med økter, nivåer, belønninger og historikk. PWA i vanilla HTML/CSS/JS.'),
       el('p', { class: 'dempet' }, `Versjon ${APP_VERSION}`),
       el('p', { class: 'dempet' }, `${bib.exercises.length} øvelser · ${bib.chains.length} kjeder · ${bib.formats.length} formater · ${bib.templates.length} maler · ${bib.gateways.length} gateways · ${bib.sequences.length} sekvenser.`),
     ),
@@ -579,22 +576,14 @@ function visOm() {
   );
 }
 
-// --- Tab-bar ---
+// --- Tab-bar (Mova BottomNav: hvit flate, aktiv fane i aksentfargen) ---
 function byggTabbar() {
   if (document.querySelector('.tabbar')) return;
-  // Lysbryting (SVG-distorsjon i index.html) er kun pålitelig i Chromium.
-  if (window.chrome) document.documentElement.classList.add('har-distorsjon');
   const tab = (rute, ikonNavn, tekst) => el('a', {
     class: 'tabbar__knapp', href: `#/${rute}`, 'data-rute': rute,
   }, el('span', { class: 'tabbar__ikon' }, ikon(ikonNavn)), el('span', { class: 'tabbar__tekst' }, tekst));
 
   document.body.append(el('nav', { class: 'tabbar' },
-    // Liquid glass-lag (blur → tone → specular), innholdet ligger over.
-    el('span', { class: 'tabbar__glass', 'aria-hidden': 'true' },
-      el('span', { class: 'tabbar__glass-blur' }),
-      el('span', { class: 'tabbar__glass-tone' }),
-      el('span', { class: 'tabbar__glass-spek' })),
-    el('span', { class: 'tabbar__indikator' }, el('span', { class: 'tabbar__pille' })),
     tab('hjem', 'hjem', 'Min dag'),
     tab('plan', 'kalender', 'Plan'),
     tab('aktivitet', 'puls', 'Aktivitet'),

@@ -19,7 +19,7 @@ function svgEl(tag, attrs) {
 }
 
 // Palett for modalitetssegmenter (donut).
-const PALETT = ['#2dd489', '#4aa3ff', '#ffd479', '#ff8f6b', '#b98cff', '#5ad0c0', '#ff6b9d', '#9bd45a', '#8b97a5'];
+const PALETT = ['#0BA69F', '#4FA9F5', '#FF6F61', '#A9CE45', '#11264D', '#7ED0CB', '#FE9A82', '#E8853D', '#8A93A6'];
 
 // --- Aktivitet-skall: segmentert Historikk/Prestasjoner ---------------------
 export function visAktivitetSkjerm(mount) {

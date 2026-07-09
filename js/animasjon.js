@@ -60,7 +60,7 @@ export function lagKonfetti(antall = 22) {
   const wrap = document.createElement('div');
   wrap.className = 'konfetti';
   if (REDUSERT()) return wrap;
-  const farger = ['#2dd489', '#4aa3ff', '#ffb347', '#ff5d6c', '#a06bff', '#e8c552'];
+  const farger = ['#0BA69F', '#4FA9F5', '#FF6F61', '#C8E76B', '#8CCBFF', '#FE9A82'];
   for (let i = 0; i < antall; i++) {
     const brikke = document.createElement('span');
     brikke.className = 'konfetti__brikke';

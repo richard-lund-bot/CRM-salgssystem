@@ -1,13 +1,13 @@
 {
-  "name": "Treningsapp v2",
-  "short_name": "Trening",
-  "description": "Personlig treningsgenerator med nivåsystem, historikk og offline-first drift.",
+  "name": "Mova — Move for Life",
+  "short_name": "Mova",
+  "description": "Din vennlige følgesvenn for mer bevegelse i hverdagen — økter, nivåer, belønninger og historikk, offline-first.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#eef1f5",
-  "theme_color": "#eef1f5",
+  "background_color": "#F6F7F8",
+  "theme_color": "#F6F7F8",
   "lang": "no",
   "icons": [
     { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
