@@ -491,13 +491,17 @@ function seksjonsHode() {
 
 function bevegelsesGrid(profil) {
   const k = profil.varighetsklasse || 'standard';
+  // Flisinnhold: lite ikon øverst, navn nederst — og samme ikon stort og
+  // utvasket bak i hjørnet, delvis utenfor kanten.
+  const flisInnhold = (ikonNavn, navn) => [
+    el('span', { class: 'movflis__bak' }, ikon(ikonNavn)),
+    el('span', { class: 'movflis__ikon' }, ikon(ikonNavn)),
+    el('span', { class: 'movflis__navn' }, navn),
+  ];
   const flis = (id, navn, ikonNavn, farge) => el('a', {
     class: `movflis movflis--${farge}`,
     href: startHref(id, { varighetsklasse: k, maalMin: VARIGHET_MIN[k] }),
-  },
-    el('span', { class: 'movflis__ikon' }, ikon(ikonNavn)),
-    el('span', { class: 'movflis__navn' }, navn),
-  );
+  }, ...flisInnhold(ikonNavn, navn));
   const overrask = el('button', {
     class: 'movflis movflis--indigo', type: 'button',
     onclick: () => {
@@ -505,10 +509,7 @@ function bevegelsesGrid(profil) {
       const id = kandidater[Math.floor(Math.random() * kandidater.length)];
       location.hash = startHref(id, { varighetsklasse: k, maalMin: VARIGHET_MIN[k] });
     },
-  },
-    el('span', { class: 'movflis__ikon' }, ikon('terning')),
-    el('span', { class: 'movflis__navn' }, 'Overrask meg'),
-  );
+  }, ...flisInnhold('terning', 'Overrask meg'));
   return el('div', { class: 'movgrid' }, ...HJEM_FLISER.map((f) => flis(...f)), overrask);
 }
 

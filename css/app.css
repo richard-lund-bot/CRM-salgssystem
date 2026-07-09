@@ -551,28 +551,36 @@ body.hjem-laast .hjemhero { margin-top: 0; }
 .seksjonslenke .ikon { width: 14px; height: 14px; }
 
 /* Bevegelsesgrid — fargede gradientfliser, 4 per rad */
+/* Bevegelsesfliser: lite ikon oppe til venstre, navn nederst til venstre,
+   samme ikon stort og utvasket bak i hjørnet (blør ut av kanten), og
+   loddrett gradient — lysere øverst, dypere nederst. */
 .movgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; }
 .movflis {
   position: relative; aspect-ratio: 0.82;
   border: none; border-radius: var(--radius-lg); overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
+  display: block; text-align: left;
   color: #fff; text-decoration: none; cursor: pointer; padding: 0;
   box-shadow: var(--shadow-sm);
 }
-.movflis .ikon { width: 30px; height: 30px; margin-bottom: 16px; }
-.movflis__ikon { display: inline-flex; }
-.movflis__navn {
-  position: absolute; left: 9px; right: 6px; bottom: 7px; text-align: left;
-  font-family: var(--font-display); font-weight: 500; font-size: 12px; line-height: 1.15;
+.movflis__ikon { position: absolute; top: 9px; left: 9px; z-index: 1; display: inline-flex; }
+.movflis__ikon .ikon { width: 21px; height: 21px; stroke-width: 2.2; }
+.movflis__bak {
+  position: absolute; right: -14px; bottom: -12px; z-index: 0;
+  color: #fff; opacity: 0.28; display: inline-flex;
 }
-.movflis--lime { background: linear-gradient(150deg, #C9DB56, #86C15A); }
-.movflis--koral { background: linear-gradient(150deg, #FF8E70, #EF5A3E); }
-.movflis--teal { background: linear-gradient(150deg, #5FCEC6, #2BB3AB); }
-.movflis--blaa { background: linear-gradient(150deg, #5B82DE, #3757BE); }
-.movflis--lilla { background: linear-gradient(150deg, #B492F0, #8B5CF6); }
-.movflis--oransje { background: linear-gradient(150deg, #F5A65B, #E8842E); }
-.movflis--gul { background: linear-gradient(150deg, #F7C447, #EE9F2E); }
-.movflis--indigo { background: linear-gradient(150deg, #8B96F0, #5E68D8); }
+.movflis__bak .ikon { width: 62px; height: 62px; stroke-width: 1.5; }
+.movflis__navn {
+  position: absolute; left: 9px; right: 6px; bottom: 7px; z-index: 1;
+  font-family: var(--font-display); font-weight: 600; font-size: 12.5px; line-height: 1.15;
+}
+.movflis--lime { background: linear-gradient(180deg, #CFE063, #77B54A); }
+.movflis--koral { background: linear-gradient(180deg, #FF9A7B, #E8503F); }
+.movflis--teal { background: linear-gradient(180deg, #66D3CA, #1FA89F); }
+.movflis--blaa { background: linear-gradient(180deg, #6C8FE4, #2F4EB5); }
+.movflis--lilla { background: linear-gradient(180deg, #BC9BF4, #8250EE); }
+.movflis--oransje { background: linear-gradient(180deg, #F8B067, #E07A24); }
+.movflis--gul { background: linear-gradient(180deg, #F9CD55, #E99A26); }
+.movflis--indigo { background: linear-gradient(180deg, #97A1F3, #545ED4); }
 
 /* Dagens anbefaling — disk, tekst, stille pilleknapp */
 .anbefaling {
