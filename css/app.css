@@ -288,24 +288,32 @@ body {
   background: color-mix(in srgb, var(--bg-kort) 55%, transparent);
   backdrop-filter: blur(26px) saturate(200%);
   -webkit-backdrop-filter: blur(26px) saturate(200%);
-  border: 1px solid color-mix(in srgb, var(--tekst) 8%, transparent);
   border-radius: 30px;
+  /* Ingen ekte border (unngår 1px box-drift som gjør pillen ujevn på ytterfaner);
+     kanten tegnes som inset-skygge i stedet. overflow+isolation gjør at Safari
+     klipper glasset mot de avrundede hjørnene og komposerer det i eget lag. */
+  overflow: hidden;
+  isolation: isolate;
   box-shadow:
     0 10px 30px rgba(16, 32, 43, 0.18),
     0 2px 6px rgba(16, 32, 43, 0.10),
+    inset 0 0 0 1px color-mix(in srgb, var(--tekst) 8%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.45);
   z-index: 20;
 }
 
 /* Glidende markør — «liquid glass»-pille bak aktiv fane.
-   --i settes av oppdaterNav() til aktiv fane-indeks (0–4). */
+   Posisjonen settes direkte som transform av oppdaterNav() (translateX i steg
+   på 100% = én kolonne). Direkte transform animeres pålitelig i iOS Safari;
+   en var() i calc() gjorde det ikke. */
 .tabbar__indikator {
   position: absolute;
   top: 0; bottom: 0; left: 0;
-  width: calc(100% / 5);
+  width: 20%;
   display: flex;
-  transform: translateX(calc(var(--i, 0) * 100%));
-  transition: transform 0.45s cubic-bezier(0.34, 1.45, 0.5, 1);
+  transform: translateX(0);
+  transition: transform 0.42s cubic-bezier(0.34, 1.4, 0.5, 1);
+  will-change: transform;
   pointer-events: none;
   z-index: 0;
 }

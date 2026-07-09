@@ -69,11 +69,12 @@ function oppdaterNav(rute) {
   document.querySelectorAll('.tabbar__knapp').forEach((b) => {
     b.classList.toggle('tabbar__knapp--aktiv', b.dataset.rute === tabRute);
   });
-  // Flytt den glidende markør-pillen til aktiv fane.
+  // Flytt den glidende markør-pillen til aktiv fane (direkte transform —
+  // animeres pålitelig i iOS Safari).
   const REKKE = ['hjem', 'plan', 'aktivitet', 'niva', 'meny'];
   const idx = REKKE.indexOf(tabRute);
-  const bar = document.querySelector('.tabbar');
-  if (bar && idx >= 0) bar.style.setProperty('--i', idx);
+  const ind = document.querySelector('.tabbar__indikator');
+  if (ind && idx >= 0) ind.style.transform = `translateX(${idx * 100}%)`;
 }
 
 function skjerm(tittel, ...innhold) {
