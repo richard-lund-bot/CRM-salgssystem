@@ -1,0 +1,4 @@
+#!/bin/sh
+# Påminnelse: bump CACHE_VERSION når skallfiler endres.
+# Aktiveres via `npm run installer-hooks` (setter core.hooksPath = scripts/hooks).
+node scripts/sjekk-cache-versjon.mjs || exit 1
