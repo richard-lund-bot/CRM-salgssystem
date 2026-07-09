@@ -669,9 +669,32 @@ function oppdaterSyncMerke(status) {
   }
 }
 
+// Service worker med selvoppdatering. iOS-PWA-er sjekker ikke pålitelig etter
+// SW-oppdateringer selv, og en ny SW som tar over re-rendrer ikke siden som
+// alt vises — begge deler håndteres her, så brukere slipper dobbel-refresh.
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch((e) => console.warn('SW-registrering feilet', e));
+  window.addEventListener('load', async () => {
+    try {
+      // updateViaCache: 'none' — hent alltid fersk sw.js (omgå HTTP-cache).
+      const reg = await navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' });
+      reg.update(); // sjekk eksplisitt ved hver oppstart
+      // iOS-PWA-er gjenopptas oftere enn de relanseres — sjekk også når
+      // appen kommer tilbake i forgrunnen.
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') reg.update().catch(() => {});
+      });
+      // Når en ny SW tar over (skipWaiting/claim i sw.js), last siden på nytt
+      // én gang så ny CSS/JS faktisk vises. Ikke ved aller første install.
+      const haddeKontroller = !!navigator.serviceWorker.controller;
+      let lastet = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!haddeKontroller || lastet) return;
+        lastet = true;
+        location.reload();
+      });
+    } catch (e) {
+      console.warn('SW-registrering feilet', e);
+    }
   });
 }
 
