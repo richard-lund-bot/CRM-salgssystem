@@ -383,6 +383,92 @@ body {
 .hjemuke__prikk { width: 4px; height: 4px; border-radius: 50%; background: transparent; }
 .hjemuke__prikk--aktiv { background: var(--aksent-lys); }
 
+/* Velkomst-hero — dagsfasebilde som fader ut mot underlaget; hilsen, budskap
+   og statkortene ligger oppå. Bildet tuckes opp bak den buede banneren. */
+.hjemhero {
+  position: relative;
+  margin-top: calc(-1 * var(--radius-2xl));
+  padding: calc(var(--radius-2xl) + 24px) 18px 4px;
+  animation: fadeInn 0.5s var(--ease-out) both;
+}
+.hjemhero__bilde {
+  position: absolute; inset: 0; z-index: 0;
+  background-size: cover;
+  background-position: center 26%;
+  -webkit-mask-image: linear-gradient(to bottom, #000 52%, transparent 98%);
+  mask-image: linear-gradient(to bottom, #000 52%, transparent 98%);
+}
+.hjemhero__innhold { position: relative; z-index: 1; padding: 6px 2px 20px; }
+.hjemhero__hilsen { margin: 0 0 2px; font-size: 17px; font-weight: 500; color: var(--ink-700); }
+.hjemhero__navn {
+  margin: 0; font-family: var(--font-display); font-weight: 600;
+  font-size: 42px; line-height: 1.05; letter-spacing: -0.02em; color: var(--ink-900);
+}
+.hjemhero__navn--hilsen { font-size: 32px; }
+.hjemhero__melding { margin: 12px 0 0; font-size: 15.5px; line-height: 1.45; color: var(--ink-800); max-width: 30ch; }
+.hjemhero--natt .hjemhero__hilsen { color: rgba(255, 255, 255, 0.82); }
+.hjemhero--natt .hjemhero__navn,
+.hjemhero--natt .hjemhero__melding { color: #fff; text-shadow: 0 1px 12px rgba(17, 38, 77, 0.45); }
+
+/* Gnist-pille («noe gjort — mer?») */
+.hjemhero__pille {
+  display: inline-flex; align-items: center; gap: 7px; margin-top: 12px;
+  background: rgba(255, 255, 255, 0.6);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: var(--radius-pill);
+  padding: 10px 16px; font-size: 13.5px; font-weight: 600;
+  color: var(--aksent-mork); text-decoration: none;
+  box-shadow: var(--shadow-xs);
+}
+.hjemhero__pille .ikon--liten { color: var(--aksent); }
+
+/* Planlagt økt-boks (frostet glass) */
+.hjemhero__plan {
+  margin-top: 14px; max-width: 430px;
+  background: rgba(255, 255, 255, 0.62);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  backdrop-filter: blur(16px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  border-radius: var(--radius-xl);
+  padding: 14px;
+  box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column; gap: 12px;
+}
+.hjemhero__planrad { display: flex; align-items: center; gap: 12px; }
+.hjemhero__plandisk {
+  width: 42px; height: 42px; border-radius: 50%; flex: 0 0 auto;
+  background: rgba(255, 255, 255, 0.8); color: var(--aksent);
+  display: grid; place-items: center;
+}
+.hjemhero__plandisk .ikon { width: 20px; height: 20px; }
+.hjemhero__planeyebrow { display: block; font-size: 12.5px; font-weight: 600; color: var(--aksent); }
+.hjemhero__plantittel { display: block; margin-top: 1px; font-family: var(--font-display); font-weight: 600; font-size: 18px; color: var(--ink-900); }
+.hjemhero__planbunn { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.hjemhero__plantid { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-700); }
+.hjemhero__plantid .ikon--liten { color: var(--ink-600); }
+.hjemhero__knapp {
+  flex: 0 0 auto; white-space: nowrap; text-decoration: none;
+  border: 1.5px solid var(--aksent); color: var(--aksent);
+  background: rgba(255, 255, 255, 0.55);
+  font-family: var(--font-display); font-weight: 500; font-size: 13.5px;
+  border-radius: var(--radius-pill); padding: 8px 15px;
+}
+.hjemhero__knapp:active { background: var(--aksent-svak); }
+
+/* Statkortene i heroen: frostet hvit flate så bakgrunnen skinner gjennom */
+.hjemhero .statkort-rad { position: relative; z-index: 1; }
+.statkort-rad--glass .statkort {
+  background: rgba(255, 255, 255, 0.55);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  border-color: rgba(255, 255, 255, 0.65);
+  box-shadow: 0 8px 24px rgba(17, 38, 77, 0.1);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .statkort-rad--glass .statkort, .hjemhero__plan, .hjemhero__pille { background: rgba(255, 255, 255, 0.9); }
+}
+
 /* Tre statkort: dagens minutter, aktive dager, nivå/XP */
 .statkort-rad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .statkort {
@@ -1222,7 +1308,7 @@ body.fokusmodus { padding-bottom: 0; }
 /* Respekter redusert bevegelse */
 @media (prefers-reduced-motion: reduce) {
   .innhold > *, .heat__c, .levelup__niva, .levelup__bel, .guide__rad--puls,
-  .tabbar__knapp--aktiv .tabbar__ikon { animation: none !important; }
+  .tabbar__knapp--aktiv .tabbar__ikon, .hjemhero { animation: none !important; }
   .konfetti__brikke { display: none; }
   .xpbar__fyll, .bar__fyll, .ringfremgang__fyll, .hjemuke__spor--anim { transition-duration: 0.01ms; }
   .tabbar__knapp:active .tabbar__ikon, .listerad:active, .modrad:active, .gw:active,

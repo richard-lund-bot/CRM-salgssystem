@@ -130,15 +130,100 @@ function visHjem() {
   const nå = Date.now();
   hjemUkeOffset = 0;
 
+  const idagIso = isoDato(new Date(nå));
+  const planer = planForDato(idagIso);
+  const minutterIdag = logg
+    .filter((o) => (o.dato || '').slice(0, 10) === idagIso)
+    .reduce((s, o) => s + (o.varighetMin || 0), 0);
+
   tom(app);
   app.append(
     hjemBanner(logg),
+    heroVelkomst(profil, logg, nå),
     el('main', { class: 'innhold' },
-      statKortRad(profil, logg),
       seksjonsHode(),
       bevegelsesGrid(profil),
-      anbefalingKort(profil, logg, nå),
+      // Heroen har alt en CTA når noe er planlagt eller påbegynt — da
+      // trengs ikke anbefalingskortet i tillegg.
+      !planer.length && minutterIdag === 0 && anbefalingKort(profil, logg, nå),
       streakKort(logg),
+    ),
+  );
+}
+
+// ===========================================================================
+// Velkomst-hero: dagsfasebilde bak hilsen + budskap, med statkortene delvis
+// over bildet som fader ut mot underlaget. Tre budskap: planlagt økt (boks),
+// «noe gjort — mer?» (gnist-pille), eller et åpent spørsmål.
+// ===========================================================================
+function dagsfase(h) {
+  if (h >= 22 || h < 5) return 'natt';
+  if (h < 9) return 'morgen';
+  if (h < 12) return 'formiddag';
+  if (h < 17) return 'dag';
+  return 'kveld';
+}
+
+function hilsenTekst(h) {
+  if (h < 5 || h >= 23) return 'God natt';
+  if (h < 10) return 'God morgen';
+  if (h < 17) return 'God dag';
+  return 'God kveld';
+}
+
+function heroVelkomst(profil, logg, nå) {
+  const t = new Date(nå);
+  const fase = dagsfase(t.getHours());
+  const hilsen = hilsenTekst(t.getHours());
+  const navn = (profil.navn || '').trim();
+
+  const idagIso = isoDato(t);
+  const minutter = logg
+    .filter((o) => (o.dato || '').slice(0, 10) === idagIso)
+    .reduce((s, o) => s + (o.varighetMin || 0), 0);
+  const maal = DAGSMAAL[profil.varighetsklasse] || 40;
+  const planer = planForDato(idagIso);
+
+  let budskap;
+  if (planer.length) {
+    budskap = heroPlanBoks(planer[0]);
+  } else if (minutter >= maal) {
+    budskap = el('p', { class: 'hjemhero__melding' },
+      `${minutter} minutter i dag — dagsmålet er nådd. Alt videre er bonus.`);
+  } else if (minutter > 0) {
+    const g = dagensGnist(profil, logg, nå);
+    budskap = el('div', {},
+      el('p', { class: 'hjemhero__melding' }, `${minutter} minutter i boks. Vil du legge på litt til?`),
+      el('a', { class: 'hjemhero__pille', href: g.href }, ikon('lyn', 'ikon ikon--liten'), `${g.tittel} · ≈ +${g.xp} XP`),
+    );
+  } else {
+    budskap = el('p', { class: 'hjemhero__melding' }, 'Hvordan vil du bevege deg i dag?');
+  }
+
+  return el('section', { class: `hjemhero hjemhero--${fase}` },
+    el('div', { class: 'hjemhero__bilde', style: `background-image:url('icons/brand/hero-${fase}.webp')` }),
+    el('div', { class: 'hjemhero__innhold' },
+      navn
+        ? [el('p', { class: 'hjemhero__hilsen' }, `${hilsen},`), el('h1', { class: 'hjemhero__navn' }, navn)]
+        : el('h1', { class: 'hjemhero__navn hjemhero__navn--hilsen' }, hilsen),
+      budskap,
+    ),
+    statKortRad(profil, logg, true),
+  );
+}
+
+function heroPlanBoks(p) {
+  return el('div', { class: 'hjemhero__plan' },
+    el('div', { class: 'hjemhero__planrad' },
+      el('span', { class: 'hjemhero__plandisk' }, ikon('kalender')),
+      el('div', {},
+        el('span', { class: 'hjemhero__planeyebrow' }, 'Planlagt i dag'),
+        el('span', { class: 'hjemhero__plantittel' }, `${MODALITET_NAVN[p.modalitet] || p.modalitet} · ${varighetNavn(p.varighetsklasse)}`),
+      ),
+    ),
+    el('div', { class: 'hjemhero__planbunn' },
+      el('span', { class: 'hjemhero__plantid' }, ikon('klokke', 'ikon ikon--liten'), 'Start når det passer deg'),
+      el('a', { class: 'hjemhero__knapp', href: `#/ny?m=${p.modalitet}&k=${p.varighetsklasse}&p=${p.id}` }, 'Åpne plan'),
     ),
   );
 }
@@ -258,7 +343,8 @@ function hjemBanner(logg) {
 }
 
 // Tre kort: dagens minutter mot dagsmålet, ukas aktive dager, nivå/XP.
-function statKortRad(profil, logg) {
+// Med glass=true (i heroen) er kortene frostet hvite så bildet skinner gjennom.
+function statKortRad(profil, logg, glass = false) {
   const idagIso = isoDato(new Date());
   const minutter = logg
     .filter((o) => (o.dato || '').slice(0, 10) === idagIso)
@@ -273,7 +359,7 @@ function statKortRad(profil, logg) {
   const xpBar = el('div', { class: 'xpbar__fyll' });
   fyllInn(xpBar, 'width', `${info.pct}%`);
 
-  return el('div', { class: 'statkort-rad' },
+  return el('div', { class: 'statkort-rad' + (glass ? ' statkort-rad--glass' : '') },
     el('div', { class: 'statkort' },
       el('span', { class: 'statkort__label' }, 'Minutter i dag'),
       el('div', { class: 'statkort__midt' },
@@ -528,6 +614,12 @@ function visInnstillinger() {
     ),
     el('div', { class: 'kort' },
       el('h2', {}, 'Profil'),
+      el('input', {
+        class: 'sok', type: 'text', placeholder: 'Hva skal vi kalle deg?',
+        value: profil.navn || '', autocomplete: 'given-name', maxlength: '24',
+        onchange: (ev) => lagre((p) => { p.navn = ev.target.value.trim() || null; }),
+      }),
+      el('p', { class: 'dempet', style: 'margin-top:8px' }, 'Navnet brukes i hilsenen på Min dag.'),
       el('div', { class: 'knapprad' },
         el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: startOnboarding }, 'Ta profilen på nytt'),
       ),

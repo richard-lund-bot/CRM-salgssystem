@@ -133,6 +133,7 @@ function motivasjonTilVekter(valgt) {
 export function kjorOnboarding(container, bib, ferdig) {
   const state = {
     steg: 1,
+    navn: '',
     motivasjon: [], // rangert liste av id
     favoritter: [],
     anker: {},
@@ -309,7 +310,12 @@ export function kjorOnboarding(container, bib, ferdig) {
     ramme('Klar til å bevege deg', 'Alt kan justeres senere i innstillinger.',
       el('div', { class: 'kort' },
         el('h2', {}, 'Din profil'),
-        el('p', {}, `Bevegelser du liker: ${favNavn.join(', ')}`),
+        el('input', {
+          class: 'sok', type: 'text', placeholder: 'Hva skal vi kalle deg? (valgfritt)',
+          value: state.navn, autocomplete: 'given-name', maxlength: '24',
+          oninput: (ev) => { state.navn = ev.target.value; },
+        }),
+        el('p', { style: 'margin-top:10px' }, `Bevegelser du liker: ${favNavn.join(', ')}`),
         el('p', {}, `${state.ukemaal} dager i bevegelse/uke · ${state.varighetsklasse}-lengde`),
         el('p', { class: 'dempet' }, harAnker
           ? 'Startnivå kalibrert fra tallene dine.'
@@ -332,6 +338,7 @@ export function kjorOnboarding(container, bib, ferdig) {
     const harAnker = Object.keys(state.anker).length === ANKER.length;
     return {
       opprettet: new Date().toISOString(),
+      navn: state.navn.trim() || null,
       motivasjon: {
         valg: state.motivasjon.slice(),
         vekter,

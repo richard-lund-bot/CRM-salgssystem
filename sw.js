@@ -3,7 +3,7 @@
 //   - navigasjon/HTML: network-first med cache-fallback (fersk UI når nett finnes)
 //   - data/JS/CSS/ikoner: cache-first (raskt, fungerer offline)
 // Bump CACHE_VERSION for å rulle ut ny cache.
-const CACHE_VERSION = 'mova-m12-1.3.1';
+const CACHE_VERSION = 'mova-m12-1.4.0';
 const SKALL = [
   './',
   './index.html',
@@ -36,6 +36,11 @@ const SKALL = [
   './icons/icon-512.png',
   './icons/icon-maskable.png',
   './icons/brand/hero-min-dag.png',
+  './icons/brand/hero-morgen.webp',
+  './icons/brand/hero-formiddag.webp',
+  './icons/brand/hero-dag.webp',
+  './icons/brand/hero-kveld.webp',
+  './icons/brand/hero-natt.webp',
   './icons/brand/shoe-badge.png',
   './icons/brand/splash.webp',
   './data/exercises.json',
