@@ -144,46 +144,107 @@ function visHjem() {
 }
 
 // Banner: profil + bjelle til venstre, sentrert wordmark, kalender til høyre
-// — og ukeskalender under, med dagens dato markert. Ukene blas med pilene
-// eller sveip; en dag åpner mosjonskalenderen på den datoen.
+// — og ukeskalender under, med dagens dato markert. Banneren er sticky og
+// ligger foran alt annet; innholdet scroller under den buede underkanten.
+// Ukene ligger i et dra-bart spor (forrige · denne · neste): dra med fingeren
+// og uka følger med, slipp så glir den over til neste/forrige. Pilene gjør
+// det samme. En dag åpner mosjonskalenderen på den datoen.
 let hjemUkeOffset = 0;
 
 function hjemBanner(logg) {
-  const dager = el('div', { class: 'hjemuke__dager' });
   const aktivSett = new Set(logg.map((o) => (o.dato || '').slice(0, 10)));
 
-  function tegnUke() {
-    tom(dager);
+  function ukePanel(offset) {
+    const panel = el('div', { class: 'hjemuke__dager' });
     const idagIso = isoDato(new Date());
-    const man = mandagFor(new Date(Date.now() + hjemUkeOffset * 7 * DAG));
+    const man = mandagFor(new Date(Date.now() + offset * 7 * DAG));
     for (let i = 0; i < 7; i++) {
       const dato = new Date(man.getTime() + i * DAG);
       const iso = isoDato(dato);
       const erIdag = iso === idagIso;
-      dager.append(el('a', { class: 'hjemuke__dag', href: `#/kalender?d=${iso}` },
+      panel.append(el('a', { class: 'hjemuke__dag', href: `#/kalender?d=${iso}` },
         el('span', { class: 'hjemuke__navn' }, UKEDAG_BOKSTAV[i]),
         el('span', { class: 'hjemuke__tall' + (erIdag ? ' hjemuke__tall--idag' : '') }, String(dato.getDate())),
         el('i', { class: 'hjemuke__prikk' + (aktivSett.has(iso) && !erIdag ? ' hjemuke__prikk--aktiv' : '') }),
       ));
     }
+    return panel;
   }
 
-  const uke = el('div', { class: 'hjemuke' },
-    el('button', { class: 'hjemuke__pil', type: 'button', 'aria-label': 'Forrige uke', onclick: () => { hjemUkeOffset--; tegnUke(); } }, ikon('tilbake')),
-    dager,
-    el('button', { class: 'hjemuke__pil', type: 'button', 'aria-label': 'Neste uke', onclick: () => { hjemUkeOffset++; tegnUke(); } }, ikon('chevron')),
-  );
+  const spor = el('div', { class: 'hjemuke__spor' });
+  const vindu = el('div', { class: 'hjemuke__vindu' }, spor);
+
+  // Sporet er 300 % bredt med midtpanelet synlig; dra forskyver i px oppå
+  // grunnposisjonen, og en blaing glir ett helt panel før ukene bygges på nytt.
+  function settX(dxPx, anim) {
+    spor.classList.toggle('hjemuke__spor--anim', anim);
+    spor.style.transform = `translateX(calc(-33.3333% + ${dxPx}px))`;
+  }
+
+  function tegnUker() {
+    tom(spor);
+    spor.append(ukePanel(hjemUkeOffset - 1), ukePanel(hjemUkeOffset), ukePanel(hjemUkeOffset + 1));
+    settX(0, false);
+  }
+
+  let låst = false;
+  function bla(retning) {
+    if (låst) return;
+    låst = true;
+    settX(-retning * vindu.clientWidth, true);
+    setTimeout(() => { hjemUkeOffset += retning; tegnUker(); låst = false; }, 300);
+  }
+
+  // Dra med finger eller mus (pointer events; touch-action: pan-y i CSS lar
+  // vertikal scroll gå til nettleseren mens horisontale drag havner her).
   let startX = null;
-  uke.addEventListener('touchstart', (ev) => { startX = ev.touches[0].clientX; }, { passive: true });
-  uke.addEventListener('touchend', (ev) => {
+  let dratt = false;
+  spor.addEventListener('pointerdown', (ev) => {
+    if (låst || !ev.isPrimary) return;
+    startX = ev.clientX;
+    dratt = false;
+  });
+  spor.addEventListener('pointermove', (ev) => {
+    if (startX == null || låst) return;
+    const dx = ev.clientX - startX;
+    if (!dratt) {
+      if (Math.abs(dx) < 6) return;
+      // Først når draget faktisk starter fanges pekeren — ellers ville
+      // capture-retargeting spist vanlige tapp på dagene.
+      dratt = true;
+      spor.setPointerCapture(ev.pointerId);
+    }
+    settX(Math.max(-vindu.clientWidth, Math.min(vindu.clientWidth, dx)), false);
+  });
+  spor.addEventListener('pointerup', (ev) => {
     if (startX == null) return;
-    const dx = ev.changedTouches[0].clientX - startX;
+    const dx = ev.clientX - startX;
     startX = null;
-    if (Math.abs(dx) < 40) return;
-    hjemUkeOffset += dx < 0 ? 1 : -1;
-    tegnUke();
-  }, { passive: true });
-  tegnUke();
+    if (!dratt) return;
+    const terskel = Math.min(70, vindu.clientWidth / 4);
+    if (dx <= -terskel) bla(1);
+    else if (dx >= terskel) bla(-1);
+    else settX(0, true);
+  });
+  spor.addEventListener('pointercancel', () => {
+    if (startX == null) return;
+    startX = null;
+    if (dratt) settX(0, true);
+  });
+  // Et drag skal ikke samtidig utløse klikk på dagen under fingeren.
+  spor.addEventListener('click', (ev) => {
+    if (!dratt) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    dratt = false;
+  }, true);
+
+  const uke = el('div', { class: 'hjemuke' },
+    el('button', { class: 'hjemuke__pil', type: 'button', 'aria-label': 'Forrige uke', onclick: () => bla(-1) }, ikon('tilbake')),
+    vindu,
+    el('button', { class: 'hjemuke__pil', type: 'button', 'aria-label': 'Neste uke', onclick: () => bla(1) }, ikon('chevron')),
+  );
+  tegnUker();
 
   return el('div', { class: 'hjembanner' },
     el('div', { class: 'hjembanner__rad' },

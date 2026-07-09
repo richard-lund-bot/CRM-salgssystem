@@ -335,12 +335,16 @@ body {
    anbefaling og streak (M12)
    ========================================================================== */
 
-/* Banner — hvit flate som buer på yttersiden (nederst); resten er underlag */
+/* Banner — hvit flate som buer på yttersiden (nederst); resten er underlag.
+   Sticky og foran alt annet: innholdet scroller under den buede kanten. */
 .hjembanner {
+  position: sticky;
+  top: 0;
+  z-index: 30;
   background: var(--bg-kort);
   border-bottom: 1px solid var(--kant);
   border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
   padding: calc(env(safe-area-inset-top) + 10px) 12px 14px;
 }
 .hjembanner__rad { display: flex; align-items: center; gap: 2px; position: relative; min-height: 44px; padding: 0 4px; }
@@ -349,7 +353,8 @@ body {
 .ikonknapp--plain { background: transparent; color: var(--ink-800); width: 40px; height: 40px; }
 .ikonknapp--plain .ikon { width: 22px; height: 22px; }
 
-/* Ukeskalender: M T O T F L S faste, dagens dato markert, bla med pil/sveip */
+/* Ukeskalender: M T O T F L S faste, dagens dato markert. Ukene ligger i et
+   dra-bart spor (forrige · denne · neste) som følger fingeren og glir over. */
 .hjemuke { display: flex; align-items: center; margin-top: 10px; }
 .hjemuke__pil {
   background: none; border: none; color: var(--ink-300);
@@ -357,8 +362,17 @@ body {
   display: grid; place-items: center; cursor: pointer;
 }
 .hjemuke__pil .ikon { width: 16px; height: 16px; }
-.hjemuke__dager { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); }
-.hjemuke__dag { display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; padding: 2px 0; }
+.hjemuke__vindu { flex: 1; min-width: 0; overflow: hidden; touch-action: pan-y; }
+.hjemuke__spor {
+  display: flex;
+  width: 300%;
+  transform: translateX(-33.3333%);
+  user-select: none;
+  -webkit-user-select: none;
+}
+.hjemuke__spor--anim { transition: transform 280ms var(--ease-out); }
+.hjemuke__dager { width: calc(100% / 3); flex: 0 0 auto; display: grid; grid-template-columns: repeat(7, 1fr); }
+.hjemuke__dag { display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; padding: 2px 0; -webkit-user-drag: none; }
 .hjemuke__navn { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; color: var(--dempet); }
 .hjemuke__tall {
   width: 34px; height: 34px; border-radius: 50%;
@@ -1210,7 +1224,7 @@ body.fokusmodus { padding-bottom: 0; }
   .innhold > *, .heat__c, .levelup__niva, .levelup__bel, .guide__rad--puls,
   .tabbar__knapp--aktiv .tabbar__ikon { animation: none !important; }
   .konfetti__brikke { display: none; }
-  .xpbar__fyll, .bar__fyll, .ringfremgang__fyll { transition-duration: 0.01ms; }
+  .xpbar__fyll, .bar__fyll, .ringfremgang__fyll, .hjemuke__spor--anim { transition-duration: 0.01ms; }
   .tabbar__knapp:active .tabbar__ikon, .listerad:active, .modrad:active, .gw:active,
   .temaknapp:active, .avatarknapp:active, .ob-kort:active, .okt__topp:active,
   .chip:active, .ikonknapp:active, .movflis:active, .oppmuntring:active,
