@@ -433,12 +433,22 @@ body.hjem-laast .hjemhero { margin-top: 0; }
   animation: fadeInn 0.5s var(--ease-out) both;
 }
 .hjemhero__bilde {
-  position: absolute; inset: 0; z-index: 0;
+  /* Containeren har bildets ekte proporsjoner og starter bak headeren
+     (viewport-toppen): hele bildet vises uten beskjæring — himmelen ligger
+     bak banneren og rulles frem ved overskroll, og bunnen fader ut der
+     bildet faktisk slutter. */
+  position: absolute; left: 0; right: 0; z-index: 0;
+  top: calc(-1 * (env(safe-area-inset-top, 0px) + 155px));
+  aspect-ratio: 880 / 1564;
   background-size: cover;
-  background-position: center 26%;
-  -webkit-mask-image: linear-gradient(to bottom, #000 52%, transparent 98%);
-  mask-image: linear-gradient(to bottom, #000 52%, transparent 98%);
+  background-position: center top;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 200px), transparent calc(100% - 6px));
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 200px), transparent calc(100% - 6px));
 }
+/* Innholdet under heroen skal male over bildekanten som kan ble inn i det */
+body.hjem-laast .innhold { position: relative; z-index: 1; }
 .hjemhero__innhold { position: relative; z-index: 1; padding: 6px 2px 20px; }
 .hjemhero__hilsen { margin: 0 0 2px; font-size: 17px; font-weight: 500; color: var(--ink-700); }
 .hjemhero__navn {
@@ -540,12 +550,17 @@ body.hjem-laast .hjemhero { margin-top: 0; }
   font-family: var(--font-display); font-weight: 600; font-size: 13px;
 }
 
-/* Seksjonshode («Velg bevegelse» + Vis alle) */
+/* Seksjonshode («Velg bevegelse» + Vis alle) — ligger over bildets nedre,
+   mørkere del i alle dagsfaser: hvit tittel og lys grå lenke. */
 .seksjonshode { display: flex; align-items: baseline; justify-content: space-between; margin: 2px 2px -4px; }
-.seksjonstittel { margin: 0; font-family: var(--font-display); font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
+.seksjonstittel {
+  margin: 0; font-family: var(--font-display); font-size: 20px; font-weight: 600;
+  letter-spacing: -0.01em; color: #fff; text-shadow: 0 1px 10px rgba(17, 38, 77, 0.35);
+}
 .seksjonslenke {
   font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--aksent); text-decoration: none;
+  color: rgba(255, 255, 255, 0.78); text-decoration: none;
+  text-shadow: 0 1px 8px rgba(17, 38, 77, 0.3);
   display: inline-flex; align-items: center; gap: 1px;
 }
 .seksjonslenke .ikon { width: 14px; height: 14px; }

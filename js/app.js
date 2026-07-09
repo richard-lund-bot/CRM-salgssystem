@@ -144,7 +144,7 @@ function visHjem() {
   // viser grått gap — og et dra ned fra toppen gir oppdaterings-snurren.
   const fase = dagsfase(new Date(nå).getHours());
   const scroll = el('div', {
-    class: 'hjem-scroll',
+    class: `hjem-scroll hjem-scroll--${fase}`,
     style: `background:linear-gradient(to bottom, ${HIMMELFARGE[fase]} 0%, ${HIMMELFARGE[fase]} 30%, var(--bg) 70%)`,
   },
     heroVelkomst(profil, logg, nå),
