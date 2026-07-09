@@ -1322,3 +1322,8 @@ body.fokusmodus { padding-bottom: 0; }
 @media (prefers-reduced-motion: reduce) {
   .figur--gaa, .figur--jubel { animation: none; }
 }
+
+/* --- Splash (fersk åpning): brand-bilde som fader ut når appen er klar --- */
+.splash { transition: opacity 0.45s var(--ease-standard); }
+.splash--skjul { opacity: 0; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .splash { transition: none; } }

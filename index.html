@@ -14,6 +14,13 @@
   <title>Mova — Move for Life</title>
 </head>
 <body>
+  <!-- Splash: males umiddelbart ved fersk åpning (inline-stil så den vises
+       før CSS/JS er lastet); app.js fader den ut når appen er klar. -->
+  <div id="splash" class="splash" aria-hidden="true"
+    style="position:fixed;inset:0;z-index:999;background:linear-gradient(180deg,#FFF8F6,#E9F5F3);display:flex;align-items:center;justify-content:center">
+    <img class="splash__bilde" src="icons/brand/splash.webp" alt=""
+      style="width:100%;height:100%;object-fit:cover" />
+  </div>
   <div id="app">
     <div class="laster">Laster…</div>
   </div>

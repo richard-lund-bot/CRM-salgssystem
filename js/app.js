@@ -641,11 +641,26 @@ function startOnboarding() {
   });
 }
 
+// --- Splash (fersk åpning) ---
+// Vises av index.html før noe annet er lastet; fades ut når appen er klar,
+// men står minst ~700 ms så merket rekker å lande i stedet for å blinke.
+function skjulSplash() {
+  const splash = document.getElementById('splash');
+  if (!splash) return;
+  const vent = Math.max(0, 700 - performance.now());
+  setTimeout(() => {
+    splash.classList.add('splash--skjul');
+    splash.addEventListener('transitionend', () => splash.remove(), { once: true });
+    setTimeout(() => splash.remove(), 800); // fallback (reduced motion o.l.)
+  }, vent);
+}
+
 // --- Oppstart ---
 async function start() {
   try {
     bib = await lastBibliotek();
   } catch (e) {
+    skjulSplash();
     tom(app);
     app.append(el('div', { class: 'kort kort--info' },
       el('h2', {}, 'Kunne ikke laste biblioteket'),
@@ -676,10 +691,12 @@ async function start() {
 
   if (!harProfil()) {
     startOnboarding();
+    skjulSplash();
     return;
   }
   byggTabbar();
   navger();
+  skjulSplash();
 }
 
 // Oppdaterer et lite synk-merke på Meny-fanen når status endrer seg.
