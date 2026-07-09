@@ -67,6 +67,7 @@ function lesForhandsvalg() {
 function navger() {
   const rute = (location.hash.replace('#/', '') || 'hjem').split('?')[0];
   document.body.classList.toggle('fokusmodus', FOKUS.has(rute));
+  document.body.classList.remove('hjem-laast'); // settes på nytt av visHjem
   (ruter[rute] || visHjem)();
   oppdaterNav(rute);
 }
@@ -137,17 +138,22 @@ function visHjem() {
     .filter((o) => (o.dato || '').slice(0, 10) === idagIso)
     .reduce((s, o) => s + (o.varighetMin || 0), 0);
 
+  // Hjem låser body og scroller innholdet i egen beholder: banneren står
+  // helt i ro, og innholdet får naturlig overskroll-sprett (iOS).
+  document.body.classList.add('hjem-laast');
   tom(app);
   app.append(
     hjemBanner(logg),
-    heroVelkomst(profil, logg, nå),
-    el('main', { class: 'innhold' },
-      seksjonsHode(),
-      bevegelsesGrid(profil),
-      // Heroen har alt en CTA når noe er planlagt eller påbegynt — da
-      // trengs ikke anbefalingskortet i tillegg.
-      !planer.length && minutterIdag === 0 && anbefalingKort(profil, logg, nå),
-      streakKort(logg),
+    el('div', { class: 'hjem-scroll' },
+      heroVelkomst(profil, logg, nå),
+      el('main', { class: 'innhold' },
+        seksjonsHode(),
+        bevegelsesGrid(profil),
+        // Heroen har alt en CTA når noe er planlagt eller påbegynt — da
+        // trengs ikke anbefalingskortet i tillegg.
+        !planer.length && minutterIdag === 0 && anbefalingKort(profil, logg, nå),
+        streakKort(logg),
+      ),
     ),
   );
 }
