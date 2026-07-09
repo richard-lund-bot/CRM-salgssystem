@@ -12,7 +12,7 @@
   --fare: #ef4444;
   --radius: 18px;
   --skygge: 0 1px 2px rgba(16, 32, 43, 0.04), 0 8px 24px rgba(16, 32, 43, 0.05);
-  --tabbar-h: 64px;
+  --tabbar-h: 54px;
   font-size: 16px;
 }
 
@@ -80,7 +80,7 @@ html, body {
 
 body {
   min-height: 100dvh;
-  padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 34px);
+  padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 12px);
 }
 
 .laster {
@@ -275,23 +275,20 @@ body {
 .kjede__ledd { display: flex; justify-content: space-between; gap: 10px; }
 .kjede__niva { color: var(--dempet); font-size: 0.82rem; flex: 0 0 auto; }
 
-/* Tab-bar — flytende «liquid glass»-pille (App Store-stil) */
+/* Tab-bar — native iOS-stil (à la react-native-bottom-tabs / UITabBar):
+   full bredde, forankret til bunnkanten, translucent «chrome material»-blur
+   med en tynn hårlinje-separator på toppen. */
 .tabbar {
   position: fixed;
-  left: 14px; right: 14px;
-  bottom: calc(env(safe-area-inset-bottom) + 12px);
-  height: var(--tabbar-h);
+  left: 0; right: 0; bottom: 0;
+  height: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  background: color-mix(in srgb, var(--bg-kort) 60%, transparent);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
-  border: 1px solid color-mix(in srgb, var(--tekst) 9%, transparent);
-  border-radius: 32px;
-  box-shadow:
-    0 12px 34px rgba(16, 32, 43, 0.20),
-    0 2px 8px rgba(16, 32, 43, 0.10),
-    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  background: color-mix(in srgb, var(--bg-kort) 78%, transparent);
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  border-top: 0.5px solid color-mix(in srgb, var(--tekst) 14%, transparent);
   z-index: 20;
 }
 .tabbar__knapp {
@@ -302,17 +299,21 @@ body {
   gap: 3px;
   text-decoration: none;
   color: var(--dempet);
-  font-size: 0.66rem;
-  font-weight: 600;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
   position: relative;
+  -webkit-tap-highlight-color: transparent;
 }
 .tabbar__knapp--aktiv { color: var(--aksent); }
 .tabbar__ikon {
-  font-size: 1.25rem; line-height: 1; display: grid; place-items: center;
-  padding: 5px 14px; border-radius: 14px;
+  line-height: 1; display: grid; place-items: center;
 }
-.tabbar__ikon .ikon { width: 25px; height: 25px; stroke-width: 2; transition: stroke-width 0.18s ease; }
-.tabbar__knapp--aktiv .tabbar__ikon .ikon { stroke-width: 2.4; }
+.tabbar__ikon .ikon { width: 27px; height: 27px; stroke-width: 1.8; transition: stroke-width 0.18s ease; }
+.tabbar__knapp--aktiv .tabbar__ikon .ikon { stroke-width: 2.2; }
+/* Native «pop» når en fane velges */
+.tabbar__knapp--aktiv .tabbar__ikon { animation: tab-hopp 0.32s cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes tab-hopp { 0% { transform: scale(0.84); } 55% { transform: scale(1.08); } 100% { transform: scale(1); } }
 .tabbar__knapp--synker .tabbar__ikon { animation: synkpuls 1s ease-in-out infinite; }
 @keyframes synkpuls { 50% { opacity: 0.4; } }
 
@@ -977,7 +978,8 @@ body.fokusmodus { padding-bottom: 0; }
 /* Respekter brukerens redusert-bevegelse-innstilling: dropp inngang/konfetti,
    behold korte, umiddelbare overganger for status (fyll, trykk-feedback). */
 @media (prefers-reduced-motion: reduce) {
-  .innhold > *, .heat__c, .levelup__niva, .levelup__bel, .guide__rad--puls { animation: none !important; }
+  .innhold > *, .heat__c, .levelup__niva, .levelup__bel, .guide__rad--puls,
+  .tabbar__knapp--aktiv .tabbar__ikon { animation: none !important; }
   .konfetti__brikke { display: none; }
   .xpbar__fyll, .bar__fyll, .ringfremgang__fyll { transition-duration: 0.01ms; }
   .tabbar__knapp:active .tabbar__ikon, .listerad:active, .modrad:active, .gw:active,
