@@ -1,28 +1,32 @@
-// Onboarding (taksonomi §15): < 2 min, 5 skjermer. Bygger motivasjonsprofil
-// (vekter), basenivå per modalitet (ankertest — konkrete prestasjonsspørsmål,
-// aldri selvvurdering), ukemål + varighet, og første lokasjon fra en utstyrsbunke.
-// Skriver profilen til store og lar appen ta over. Kan tas på nytt fra innstillinger.
+// Onboarding (M11 — preferanse-først, jf. Mova-spec §19 pkt. 10): < 2 min,
+// 5 skjermer. Spør om motivasjon, hvilke bevegelser du liker, ukemål + tid og
+// hvor du er — aldri prestasjonskrav. Ankertesten (konkrete styrkespørsmål)
+// er VALGFRI og kan tas fra oppsummeringen eller senere under Progresjon;
+// uten den starter kapasitetsnivåene forsiktig og vokser med bevis.
 import { el, tom, chip, ikon } from './ui.js';
 import { MODALITET_NAVN } from './library.js';
 import { lagreProfil, lagreSistLokasjon } from './store.js';
 import { nivaFraBase } from './niva.js';
+import { BEVEGELSER } from './bevegelse.js';
+import { standardFigur } from './figur.js';
 
 // --- Skjerm 1: motivasjon ---------------------------------------------------
 // Hvert valg gir modalitetsvekt + formatvekt + hvilket toppkort hjem viser.
-// «ikon» er et navn fra js/ui.js sitt SVG-ikonsett (ikke emoji).
 const MOTIVASJON = [
   { id: 'stabil', navn: 'Stabil rutine', ikon: 'repeat', mod: { alle: 1 }, format: { mikro: 2, kort: 1 }, toppkort: 'streak' },
   { id: 'mestre', navn: 'Mestre nye øvelser', ikon: 'hexstjerne', mod: { SKILL: 3, STY: 2 }, format: { gtg: 2, emom: 1, styrkehold: 1 }, toppkort: 'skilltre' },
   { id: 'sterkere', navn: 'Bli sterkere', ikon: 'vekt', mod: { STY: 3 }, format: { 'straight-sets': 2, supersett: 2, complex: 1 }, toppkort: 'pr' },
   { id: 'kondis', navn: 'Bedre kondis', ikon: 'loper', mod: { HIIT: 2, BASE: 2 }, format: { intervall: 2, '4x4': 1 }, toppkort: 'volum' },
   { id: 'ro', navn: 'Ro / mindre stress', ikon: 'yoga', mod: { REST: 3, YOGA: 2, STR: 1 }, format: { yin: 2, 'hold-flyt': 1, koherent: 1 }, toppkort: 'kveld' },
-  { id: 'fysikk', navn: 'Fysikk / se resultater', ikon: 'trofe', mod: { STY: 3, HIIT: 2 }, format: { supersett: 2, 'myo-reps': 1, 'density-block': 1 }, toppkort: 'volum' },
+  { id: 'hverdag', navn: 'Mer bevegelse i hverdagen', ikon: 'hjerte', mod: { BASE: 2, MOB: 1, alle: 1 }, format: { mikro: 2 }, toppkort: 'volum' },
   { id: 'variasjon', navn: 'Variasjon / lek', ikon: 'terning', mod: { alle: 1 }, format: {}, toppkort: 'overrask' },
 ];
 
-// --- Skjerm 2: ankertest ----------------------------------------------------
-// Konkrete prestasjonsspørsmål → base (1-4). Selvrapport = uverifisert til bevis.
-const ANKER = [
+// --- Skjerm 2: bevegelser du liker (spec: «Movement you enjoy») -------------
+const FAVORITT_VALG = ['walk', 'strength', 'bodyweight', 'yoga', 'stretch', 'mobility', 'run', 'bike', 'hiit', 'sport'];
+
+// --- Valgfri kalibrering: ankertest (konkrete tall — aldri selvvurdering) ---
+export const ANKER = [
   {
     id: 'push', sp: 'Hvor mange push-ups klarer du på ett sett?',
     svar: [['0–4', 1], ['5–14', 2], ['15–24', 3], ['25+', 4]],
@@ -49,13 +53,12 @@ const ANKER = [
   },
 ];
 
-// Ankersvar (1–4) → modalitetsbase på §4c-skalaen (3/5/7 = ulåst øvelsesnivå
-// 3/4/5). Selvrapport låser opp t.o.m. øvelsesnivå 4 (base 6); nivå 5 krever
-// alltid gateway (base 7). Base er «uverifisert» til første bevis.
+// Ankersvar (1–4) → modalitetsbase på §4c-skalaen. Selvrapport låser opp
+// t.o.m. øvelsesnivå 4 (base 6); nivå 5 krever alltid gateway (base 7).
 const TIL_BASE = { 1: 1, 2: 3, 3: 5, 4: 6 };
 const tilBase = (score) => TIL_BASE[Math.max(1, Math.min(4, Math.round(score)))];
 
-function ankerTilNivaer(svar) {
+export function ankerTilNivaer(svar) {
   const g = (id) => svar[id] || 2;
   const sty = (g('push') + g('pull') + g('bein')) / 3;
   const kondis = g('kondis');
@@ -83,11 +86,21 @@ function ankerTilNivaer(svar) {
   return nivaer;
 }
 
+// Uten kalibrering: forsiktig start som vokser med bevis. Aldri et krav.
+export function forsiktigeNivaer() {
+  const nivaer = {};
+  for (const m of Object.keys(MODALITET_NAVN)) {
+    const base = (m === 'SKILL' || m === 'REST' || m === 'PLYO') ? 1 : 2;
+    nivaer[m] = { base, xp: 0, bevisTeller: 0, hoyesteBevist: base, verifisert: false, sisteOkt: null };
+  }
+  return nivaer;
+}
+
 // --- Skjerm 5: anbefalt ukemiks fra topp-motivasjon (taksonomi §8) ----------
 const UKEMIKS = {
-  sterkere: 'Styrke/skills', fysikk: 'Styrke/skills', mestre: 'Styrke/skills',
+  sterkere: 'Styrke/skills', mestre: 'Styrke/skills',
   kondis: 'Fettap + form', stabil: 'Allsidig helse', variasjon: 'Allsidig helse',
-  ro: 'Restitusjonsuke',
+  hverdag: 'Allsidig helse', ro: 'Restitusjonsuke',
 };
 
 function motivasjonTilVekter(valgt) {
@@ -121,7 +134,9 @@ export function kjorOnboarding(container, bib, ferdig) {
   const state = {
     steg: 1,
     motivasjon: [], // rangert liste av id
+    favoritter: [],
     anker: {},
+    visAnker: false,
     ukemaal: 4,
     varighetsklasse: 'standard',
     bundleId: 'hjemme-gym',
@@ -155,7 +170,7 @@ export function kjorOnboarding(container, bib, ferdig) {
     );
   }
 
-  // --- Skjerm 1 ---
+  // --- Skjerm 1: motivasjon ---
   function skjerm1() {
     ramme('Hva motiverer deg?', 'Velg inntil 3 — trykk i rekkefølge, viktigst først.',
       el('div', { class: 'ob-valg' },
@@ -181,30 +196,37 @@ export function kjorOnboarding(container, bib, ferdig) {
     );
   }
 
-  // --- Skjerm 2 ---
+  // --- Skjerm 2: bevegelser du liker ---
   function skjerm2() {
-    ramme('Ankertest', 'Konkrete tall — ikke selvvurdering. Setter startnivået ditt.',
-      el('div', { class: 'ob-anker' },
-        ...ANKER.map((q) => el('div', { class: 'ob-sp' },
-          el('p', { class: 'ob-sp__tekst' }, q.sp),
-          el('div', { class: 'chiprad' },
-            ...q.svar.map(([tekst, verdi]) => chip(tekst, {
-              aktiv: state.anker[q.id] === verdi,
-              onClick: () => { state.anker[q.id] = verdi; skjerm2(); },
-            })),
-          ),
-        )),
+    ramme('Hvordan liker du å bevege deg?', 'Bevegelse kan være hva som helst du liker. Velg inntil 4.',
+      el('div', { class: 'ob-valg' },
+        ...FAVORITT_VALG.map((id) => {
+          const b = BEVEGELSER[id];
+          const valgt = state.favoritter.includes(id);
+          return el('button', {
+            class: 'ob-kort' + (valgt ? ' ob-kort--valgt' : ''),
+            type: 'button',
+            onclick: () => {
+              if (valgt) state.favoritter = state.favoritter.filter((x) => x !== id);
+              else if (state.favoritter.length < 4) state.favoritter.push(id);
+              skjerm2();
+            },
+          },
+            el('span', { class: 'ob-kort__ikon' }, ikon(b.ikon)),
+            el('span', { class: 'ob-kort__navn' }, b.navn),
+          );
+        }),
       ),
-      bunn('Neste', Object.keys(state.anker).length === ANKER.length, () => { state.steg = 3; skjerm3(); }, () => { state.steg = 1; skjerm1(); }),
+      bunn('Neste', state.favoritter.length > 0, () => { state.steg = 3; skjerm3(); }, () => { state.steg = 1; skjerm1(); }),
     );
   }
 
-  // --- Skjerm 3 ---
+  // --- Skjerm 3: ukemål & tid ---
   function skjerm3() {
     const varigheter = [['Mikro', 'mikro', '5–10 min'], ['Kort', 'kort', '15–20 min'], ['Standard', 'standard', '30–40 min'], ['Lang', 'lang', '45–60 min']];
-    ramme('Ukemål & tid', 'Ukemålet definerer streaken din. Hviledager knekker den aldri.',
+    ramme('Ukemål & tid', 'Et vennlig mål for rytmen din. Livet går foran — ingenting «ryker».',
       el('div', { class: 'kort' },
-        el('h2', {}, 'Økter per uke'),
+        el('h2', {}, 'Dager i bevegelse per uke'),
         el('div', { class: 'chiprad' },
           ...[2, 3, 4, 5, 6].map((n) => chip(String(n), {
             aktiv: state.ukemaal === n, onClick: () => { state.ukemaal = n; skjerm3(); },
@@ -219,18 +241,19 @@ export function kjorOnboarding(container, bib, ferdig) {
             type: 'button', onclick: () => { state.varighetsklasse = id; skjerm3(); },
           }, el('span', { class: 'ob-varig__navn' }, navn), el('span', { class: 'dempet' }, und))),
         ),
+        el('p', { class: 'dempet' }, 'Mikro teller like fullt som lang. 7 minutter er 7 minutter.'),
       ),
       bunn('Neste', true, () => { state.steg = 4; skjerm4(); }, () => { state.steg = 2; skjerm2(); }),
     );
   }
 
-  // --- Skjerm 4 ---
+  // --- Skjerm 4: sted/utstyr ---
   function skjerm4() {
     const bunke = bib.bundles.find((b) => b.id === state.bundleId) || bib.bundles[0];
     if (!bib.bundles.some((b) => b.id === state.bundleId)) state.bundleId = bunke.id;
     const utstyrNavn = (id) => bib.utstyrMap.get(id)?.navn || id;
 
-    ramme('Hvor trener du mest?', 'Velg et utgangspunkt — du kan legge til flere steder senere.',
+    ramme('Hvor beveger du deg mest?', 'Velg et utgangspunkt — du kan legge til flere steder senere.',
       el('div', { class: 'chiprad' },
         ...bib.bundles.map((b) => chip(b.navn, {
           aktiv: state.bundleId === b.id,
@@ -257,27 +280,44 @@ export function kjorOnboarding(container, bib, ferdig) {
     );
   }
 
-  // --- Skjerm 5: oppsummering ---
+  // --- Skjerm 5: oppsummering + valgfri kalibrering ---
   function skjerm5() {
-    const profil = byggProfil();
-    const nivåkort = Object.entries(profil.nivaer)
-      .filter(([m]) => ['STY', 'HIIT', 'CORE', 'STR', 'YOGA'].includes(m))
-      .map(([m, n]) => el('div', { class: 'nivkort' },
-        el('span', { class: 'nivkort__navn' }, MODALITET_NAVN[m] || m),
-        el('span', { class: 'niva' }, ...[1, 2, 3, 4, 5].map((k) => el('i', { class: 'niva__p' + (k <= nivaFraBase(n.base) ? ' niva__p--på' : '') }))),
-      ));
+    const harAnker = Object.keys(state.anker).length === ANKER.length;
+    const favNavn = state.favoritter.map((id) => BEVEGELSER[id]?.navn).filter(Boolean);
 
-    ramme('Din startprofil', 'Alt kan justeres senere i innstillinger.',
+    const ankerBlokk = state.visAnker
+      ? el('div', { class: 'kort' },
+        el('h2', {}, 'Kalibrering (valgfritt)'),
+        el('p', { class: 'dempet' }, 'Konkrete tall setter startnivået for styrkeøvelser. Hopp over hvis du vil — nivået vokser uansett.'),
+        el('div', { class: 'ob-anker' },
+          ...ANKER.map((q) => el('div', { class: 'ob-sp' },
+            el('p', { class: 'ob-sp__tekst' }, q.sp),
+            el('div', { class: 'chiprad' },
+              ...q.svar.map(([tekst, verdi]) => chip(tekst, {
+                aktiv: state.anker[q.id] === verdi,
+                onClick: () => { state.anker[q.id] = verdi; skjerm5(); },
+              })),
+            ),
+          )),
+        ),
+      )
+      : el('button', {
+        class: 'knapp knapp--stille', type: 'button',
+        onclick: () => { state.visAnker = true; skjerm5(); },
+      }, 'Kalibrer startnivå (valgfritt)');
+
+    ramme('Klar til å bevege deg', 'Alt kan justeres senere i innstillinger.',
       el('div', { class: 'kort' },
-        el('h2', {}, 'Nivå per treningsform'),
-        el('div', { class: 'nivliste' }, ...nivåkort),
-        el('p', { class: 'dempet' }, 'Uverifisert til første loggede bevis eller bestått gateway.'),
+        el('h2', {}, 'Din profil'),
+        el('p', {}, `Bevegelser du liker: ${favNavn.join(', ')}`),
+        el('p', {}, `${state.ukemaal} dager i bevegelse/uke · ${state.varighetsklasse}-lengde`),
+        el('p', { class: 'dempet' }, harAnker
+          ? 'Startnivå kalibrert fra tallene dine.'
+          : 'Startnivået settes forsiktig og vokser med det du gjør.'),
       ),
-      el('div', { class: 'kort' },
-        el('h2', {}, 'Anbefalt uke'),
-        el('p', {}, `${profil.ukemiks} · ${profil.ukemaal} økter/uke · ${state.varighetsklasse}-lengde`),
-      ),
+      ankerBlokk,
       bunn('Fullfør', true, () => {
+        const profil = byggProfil();
         lagreProfil(profil);
         lagreSistLokasjon(profil.aktivLokasjon);
         ferdig(profil);
@@ -289,6 +329,7 @@ export function kjorOnboarding(container, bib, ferdig) {
     const { vekter, formatVekter } = motivasjonTilVekter(state.motivasjon);
     const bunke = bib.bundles.find((b) => b.id === state.bundleId) || bib.bundles[0];
     const topp = state.motivasjon[0];
+    const harAnker = Object.keys(state.anker).length === ANKER.length;
     return {
       opprettet: new Date().toISOString(),
       motivasjon: {
@@ -297,7 +338,10 @@ export function kjorOnboarding(container, bib, ferdig) {
         formatVekter,
         toppkort: MOTIVASJON.find((m) => m.id === topp)?.toppkort || 'streak',
       },
-      nivaer: ankerTilNivaer(state.anker),
+      bevegelsesFavoritter: state.favoritter.slice(),
+      bevegelsesTeller: {},
+      figur: standardFigur(),
+      nivaer: harAnker ? ankerTilNivaer(state.anker) : forsiktigeNivaer(),
       ukemaal: state.ukemaal,
       varighetsklasse: state.varighetsklasse,
       ukemiks: UKEMIKS[topp] || 'Allsidig helse',

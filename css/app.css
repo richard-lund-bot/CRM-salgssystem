@@ -1154,3 +1154,171 @@ body.fokusmodus { padding-bottom: 0; }
   .chip:active, .profilstripe:active, .ikonknapp:active, .herokort:active, .oppmuntring:active,
   .kalmnd__dag:active, .plandag__rad--knapp:active, .ukestripe__dag:active, .modrad--knapp:active { transform: none; }
 }
+
+/* ==========================================================================
+   M11 — Mova-systemet: Beveg, Dagens gnist, Momentum, Min reise, figur,
+   Tilpass, hurtigstart og fullført-skjermen. Bygger på Mova-tokens over.
+   ========================================================================== */
+
+/* --- Dagens gnist (korall = gnist/handling) --- */
+.gnist {
+  background: linear-gradient(135deg, var(--coral-100), #fff 70%);
+  border: 1px solid var(--coral-200);
+  display: flex; flex-direction: column; gap: 12px;
+}
+.gnist__eyebrow {
+  font-family: var(--font-display); font-size: 12px; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--coral-700); margin: 0 0 2px;
+}
+.gnist__tittel { font-family: var(--font-display); font-size: 20px; margin: 0; color: var(--tekst); }
+.gnist__under { margin: 4px 0 0; color: var(--tekst-2); font-size: 13.5px; }
+.gnist__knapper { display: flex; gap: 10px; align-items: center; }
+.gnist--liten {
+  flex-direction: row; align-items: center; justify-content: space-between;
+  gap: 10px; text-decoration: none;
+}
+.gnist--liten .gnist__tittel { font-size: 17px; }
+.gnist__pil { color: var(--coral-700); display: inline-flex; }
+
+.knapp--stille {
+  background: transparent; color: var(--aksent); box-shadow: none;
+  border: 1px solid var(--aksent-kant);
+}
+.knapp--stor { font-size: 17px; padding: 14px 26px; }
+
+/* --- Beveg: energi + bevegelsesgrid --- */
+.energirad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
+.energiknapp {
+  padding: 12px 8px; border-radius: var(--radius-md); border: 1px solid var(--kant);
+  background: var(--bg-kort-2); font-family: var(--font-display); font-size: 15px;
+  color: var(--tekst); cursor: pointer;
+}
+.energiknapp--valgt { background: var(--aksent); color: #fff; border-color: var(--aksent); box-shadow: var(--shadow-action); }
+
+.bevgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.bevflis {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 13px 6px 11px; border-radius: var(--radius-md); border: 1px solid var(--kant);
+  background: var(--bg-kort); text-decoration: none; color: var(--tekst);
+  font-size: 12.5px; cursor: pointer;
+}
+.bevflis__ikon { color: var(--aksent); display: inline-flex; }
+.bevflis__ikon .ikon { width: 22px; height: 22px; }
+.bevflis__navn { font-weight: 600; text-align: center; }
+.bevflis--valgt { background: var(--aksent-svak); border-color: var(--aksent-kant); }
+.bevflis--overrask { border-style: dashed; }
+.bevgrid--kompakt .bevflis { padding: 9px 4px 8px; font-size: 11.5px; }
+.chiprad--scroll { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+.chiprad--scroll::-webkit-scrollbar { display: none; }
+
+/* --- Momentum: rytmeprikker (aldri en streak som «ryker») --- */
+.momkort { display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; }
+.momkort__meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.momdager { display: flex; gap: 8px; align-items: flex-end; }
+.momdager--kompakt { gap: 5px; flex: 0 0 auto; }
+.momdag { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+.momdag__prikk {
+  width: 12px; height: 12px; border-radius: 50%; display: block;
+  background: var(--ink-100); border: 1px solid var(--kant-sterk);
+}
+.momdag__prikk--aktiv { background: var(--aksent-lys); border-color: var(--aksent); }
+.momdag__prikk--idag { box-shadow: 0 0 0 3px var(--aksent-svak); }
+.momdag__navn { font-size: 10.5px; color: var(--dempet); }
+
+/* --- Figuren --- */
+.figur { display: block; }
+.figur--gaa { animation: figurGaa 1.15s ease-in-out infinite; }
+.figur--jubel { animation: figurJubel 0.9s ease-in-out infinite alternate; }
+@keyframes figurGaa { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes figurJubel { 0% { transform: translateY(0); } 100% { transform: translateY(-4px); } }
+.profilstripe__figur { flex: 0 0 auto; display: inline-flex; width: 40px; }
+.ikon--liten { width: 14px; height: 14px; }
+
+/* --- Min reise --- */
+.reise-scene { padding: 0 0 14px; overflow: hidden; }
+.reise-scene__vindu { position: relative; height: 150px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; overflow: hidden; }
+.reise-scene__miljo { position: absolute; inset: 0; width: 100%; height: 100%; }
+.reise-scene__figur { position: absolute; left: 40%; bottom: 2px; transform: translateX(-50%); }
+.reise-scene__meta { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 16px 4px; }
+.reise-scene__tittel { font-family: var(--font-display); font-size: 18px; }
+.reise-scene__niva {
+  width: 44px; height: 44px; border-radius: 50%; background: var(--aksent);
+  color: #fff; display: grid; place-items: center; font-family: var(--font-display);
+  font-size: 18px; box-shadow: var(--shadow-action); flex: 0 0 auto;
+}
+.reise-scene .xpbar--stor { margin: 10px 16px 0; }
+.reise-scene__under { display: flex; justify-content: space-between; align-items: center; padding: 8px 16px 0; gap: 8px; }
+.reise-scene__neste { display: inline-flex; align-items: center; gap: 4px; text-align: right; }
+.reise-scene__neste .ikon { width: 15px; height: 15px; }
+
+/* Stien: milepæler med forbindelseslinje */
+.sti { display: flex; flex-direction: column; }
+.sti__steg { display: flex; gap: 12px; align-items: center; position: relative; padding: 7px 0; }
+.sti__steg::before {
+  content: ''; position: absolute; left: 19px; top: 0; bottom: 0; width: 2px;
+  background: var(--ink-100);
+}
+.sti__steg:first-child::before { top: 50%; }
+.sti__steg:last-child::before { bottom: 50%; }
+.sti__node {
+  width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--bg-kort-2); border: 2px solid var(--kant-sterk); color: var(--dempet);
+  font-family: var(--font-display); font-size: 14px; flex: 0 0 auto; position: relative; z-index: 1;
+  overflow: hidden;
+}
+.sti__steg--bak .sti__node { background: var(--aksent-svak); border-color: var(--aksent-kant); color: var(--aksent); }
+.sti__steg--her .sti__node { background: #fff; border-color: var(--aksent); box-shadow: 0 0 0 4px var(--aksent-svak); }
+.sti__steg--bak .sti__meta { opacity: 0.65; }
+.sti__meta { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.sti__niva { font-weight: 600; font-size: 13.5px; }
+.sti__steg--her .sti__niva { color: var(--aksent); font-family: var(--font-display); }
+.sti__bel { color: var(--tekst-2); font-size: 12.5px; display: inline-flex; align-items: center; gap: 4px; }
+
+.listerad--enkel { background: var(--bg-kort); border: 1px solid var(--kant); border-radius: var(--radius-md); margin-top: 4px; }
+.listerad--stille { pointer-events: none; }
+
+/* --- Tilpass figur --- */
+.tilpass-scene { padding: 0 0 12px; overflow: hidden; }
+.tilpass-scene__miljo { width: 100%; height: 130px; display: block; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+.tilpass-scene__figur { margin-top: -104px; display: flex; justify-content: center; position: relative; }
+.tilpass-scene__navn { text-align: center; margin-top: 8px; font-family: var(--font-display); color: var(--tekst-2); }
+.fargegrid { display: flex; gap: 12px; flex-wrap: wrap; }
+.fargevalg {
+  width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--kant-sterk); cursor: pointer;
+}
+.fargevalg--valgt { border-color: var(--aksent); box-shadow: 0 0 0 4px var(--aksent-svak); }
+.valgliste { display: flex; flex-direction: column; gap: 6px; }
+.valgrad {
+  display: flex; align-items: center; gap: 11px; padding: 10px 12px;
+  border-radius: var(--radius-md); border: 1px solid var(--kant); background: var(--bg-kort);
+  cursor: pointer; text-align: left; font-size: 14px; color: var(--tekst);
+}
+.valgrad--valgt { background: var(--aksent-svak); border-color: var(--aksent-kant); }
+.valgrad--laast { opacity: 0.6; cursor: default; }
+.valgrad__swatch { width: 26px; height: 26px; border-radius: 8px; flex: 0 0 auto; border: 1px solid rgba(17, 38, 77, 0.1); }
+.valgrad__swatch--ingen {
+  background: repeating-linear-gradient(45deg, var(--ink-100), var(--ink-100) 4px, #fff 4px, #fff 8px);
+}
+.valgrad__navn { flex: 1; font-weight: 600; min-width: 0; }
+.valgrad__status { display: inline-flex; align-items: center; gap: 6px; color: var(--aksent); }
+.valgrad__laas { font-size: 11.5px; color: var(--dempet); }
+
+/* --- Hurtigstart --- */
+.hurtig { gap: 14px; }
+.hurtig__ikon { color: var(--aksent); }
+.hurtig__ikon .ikon { width: 40px; height: 40px; }
+.hurtig__klokke {
+  font-family: var(--font-display); font-size: 64px; font-variant-numeric: tabular-nums;
+  color: var(--tekst);
+}
+.loggfelt__inn--stor { font-size: 22px; padding: 10px 14px; width: 120px; }
+
+/* --- Fullført: «Du beveget deg. Det teller.» --- */
+.ferdighero { text-align: center; position: relative; overflow: hidden; }
+.ferdighero__figur { display: flex; justify-content: center; margin-bottom: 4px; }
+.ferdighero__teller { font-family: var(--font-display); font-size: 24px; margin: 0 0 6px; color: var(--tekst); }
+.ferdighero__comeback { color: var(--coral-700); font-weight: 600; margin: 6px 0 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .figur--gaa, .figur--jubel { animation: none; }
+}

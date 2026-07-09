@@ -1,8 +1,11 @@
-# Treningsapp v2
+# mova — Move for Life.
 
-Personlig treningsapp: genererer økter fra et bibliotek på ~530 øvelser, holder styr på
-nivå per treningsform, og logger historikk. Vanilla HTML/CSS/JS, ingen byggesteg,
-installerbar som PWA. Norsk UI, mobil først.
+Bevegelsesapp der **all bevegelse teller**: en gåtur, en generert styrkeøkt, en
+fotballkamp eller hagearbeid gir XP, bygger Momentum og flytter figuren din videre
+på reisen. Øktgeneratoren (bibliotek på ~530 øvelser) er én av flere veier inn —
+ikke hele appen. Vanilla HTML/CSS/JS, ingen byggesteg, installerbar som PWA.
+Norsk UI, mobil først. Systemdefinisjon: Mova-spesifikasjonen (idé-dokumentet) —
+kjerneprinsipp: *senk dørstokkmila, aldri skam, delvis gjennomføring teller.*
 
 Bygget ved å gjenbruke repoet og Supabase-prosjektet fra en tidligere Ringeliste-CRM
 (arkivert i branchen `arkiv/crm` med full SQL-dump).
@@ -22,14 +25,26 @@ Bygget ved å gjenbruke repoet og Supabase-prosjektet fra en tidligere Ringelist
 | M8 | Liquid-glass flytende bunnlinje + Higgsfield avatarer & tier-badges | ✅ |
 | M9 | Finpuss: animasjonsverktøykasse (inngang, fyll, konfetti, ring), full emoji→SVG-ikon-opprydning, ekte transparens på avatar/badge-bilder | ✅ |
 | M9.1 | IA-omstrukturering: Min dag (ukestripe), Plan-modul (kalender + fyll-kalender), Aktivitet splittet i Historikk/Prestasjoner, ren tab-bar-markør | ✅ |
+| M10 | Mova-designsystem: tokens, Fredoka/Inter, Lucide-ikoner, rebrand | ✅ |
+| M11 | Mova-systemet: bevegelseslag (12 typer, alt teller), Dagens gnist, Beveg (energi-først), hurtigstart + manuell logg, Momentum (aldri streak), Min reise med figur/miljøer/sti, Tilpass figur, varme titler, spec-XP-formel, kapasitetssystem demotert til valgfri Progresjon | ✅ |
 
 > Appen er offline-first: localStorage er alltid primærkilden, og alt fungerer
 > uten innlogging. Skysync er opt-in — logg inn med e-post i Innstillinger for å
 > dele profil, logg og nivå mellom enheter.
 >
-> **To nivåsystemer:** *kapasitet* per modalitet (base — tregt, meningsfylt, krever
-> bevis) og *belønningsnivå* (hyppig, uten tak — gir en ny øvelse, avatar, tema
-> eller tittel hvert nivå). Se `js/belonninger.js`.
+> **Kjerneloopen (Mova-spec §2):** åpne appen → kjenn etter (energi) → velg eller
+> generer bevegelse → beveg deg → få XP → bygg Momentum → figuren går videre →
+> lås opp belønninger → kom tilbake i morgen.
+>
+> **Tre lag progresjon:** *belønningsnivå* (hyppig, uten tak — gir plagg, miljø,
+> tema, tittel eller øvelse hvert nivå, `js/belonninger.js`), *Momentum* (rytme
+> over rullerende 7 dager — aldri en streak som «ryker», `js/bevegelse.js`) og
+> *kapasitet* per treningsform (valgfritt, avansert — styrer bare generatorens
+> øvelsesnivåer, skjermen «Progresjon» under Meny, `js/niva.js`).
+>
+> **XP-formelen (spec §8):** `minutter × bevegelsesfaktor (0,8–1,4) ×
+> intensitetsfaktor (0,8–1,25)`, minst 5 XP — rolig bevegelse er aldri verdiløs.
+> Comeback etter pause gir dobbel XP og egen belønning.
 
 ## Kjøre lokalt
 
@@ -47,18 +62,22 @@ python3 -m http.server 8000
 index.html              app-skall
 css/app.css             stil (mørkt tema, mobil først)
 js/
-  app.js                inngang, ruter, skjermer, onboarding-gate, adaptiv hjem
+  app.js                inngang, ruter, tab-bar (Min dag/Beveg/Min reise/Aktivitet/Meny), Min dag m/ Dagens gnist
+  bevegelse.js          bevegelseslaget: 12 bevegelsestyper, spec-XP-formel, Momentum, Dagens gnist
+  beveg.js              Beveg-skjermen (energi-først), hurtigstart m/ timer, manuell logg, «Du beveget deg»-skjermen
+  reise.js              Min reise: miljøscene m/ gående figur, XP/nivå, Momentum-rytme, milepælssti
+  figur.js              figuren (lagdelt SVG, poser), miljøer, skjermen «Tilpass figur»
   library.js            laster + indekserer statiske data (offline-first)
   store.js              brukertilstand i localStorage (Spor-mønster) + profiloppslag
-  onboarding.js         5-skjerms onboarding (motivasjon, ankertest, ukemål, sted)
+  onboarding.js         5-skjerms onboarding, preferanse-først (motivasjon, favorittbevegelser, ukemål, sted; ankertest valgfri)
   generator.js          deterministisk øktgenerator (mal → filtrerte, seedede blokker)
-  kjor.js               generator-input, review, kjøre-UI, resultat-logging + XP-skjerm
-  niva.js               nivåmotor: XP, opprykk (XP+bevis), momentum/decay, streak, PR, gateway
-  niva-ui.js            Nivå-skjerm (base + momentum + decay) + gateway skill-tree/test
-  historikk.js          Aktivitet-skjerm: Historikk (heatmap/volum/donut/balanse/øktlogg) + Prestasjoner (PR-tavle/test deg selv)
+  kjor.js               generator-input, review, kjøre-UI, resultat-logging (delvis teller) + fullført-skjerm
+  niva.js               motor: XP (spec-formel), registrerBevegelse, kapasitetsopprykk (XP+bevis), decay, PR, gateway
+  niva-ui.js            Progresjon-skjerm (valgfri, avansert): kapasitet + gateways + kalibrering
+  historikk.js          Aktivitet-skjerm: Historikk (heatmap/volum/donut/balanse/logg) + Prestasjoner (PR-tavle/test deg selv)
   plan.js               Plan-modul: månedskalender, planlegg økt på dato, fyll-kalender-bulk, agenda
   sync.js               skysync: magic-link-auth + PostgREST + last-write-wins-fletting
-  belonninger.js        belønningsnivå (uendelig kurve) + stige: øvelser/avatarer/temaer/titler
+  belonninger.js        belønningsnivå (uendelig kurve) + stige: gjenstander/miljøer/temaer/varme titler/øvelser
   rng.js                seeded PRNG (mulberry32) + stokk/trekk — ingen Math.random()
   ui.js                 DOM-hjelpere + inline SVG-ikonsett
   animasjon.js          animasjonsverktøykasse: tallOpp, lagRing, lagKonfetti, fyllInn
@@ -80,9 +99,10 @@ scripts/
   merge-parts.mjs       bygger exercises.json + sequences.json fra parts/
   gen-icons.mjs         genererer PWA-ikoner
   smoke-generator.mjs   headless test: determinisme + dekning + ikke-tomme blokker
-  smoke-niva.mjs        headless test: XP, opprykk gated på bevis, momentum/decay/streak/PR/gateway
+  smoke-niva.mjs        headless test: XP, opprykk gated på bevis, momentum/decay/PR/gateway
+  smoke-bevegelse.mjs   headless test: XP-formelen, fri bevegelse, Momentum, Dagens gnist, opplåsinger
   smoke-sync.mjs        headless test: last-write-wins-fletting (profil + logg per id)
-  smoke-belonninger.mjs headless test: hyppig uendelig kurve + belønning hvert nivå
+  smoke-belonninger.mjs headless test: uendelig kurve, Mova-stigen, varme titler, gjenstandsopplåsing
 docs/                   kildedokumenter + avvikslogg
 manifest.webmanifest    PWA-manifest
 sw.js                   service worker (offline-first)

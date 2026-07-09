@@ -1,13 +1,14 @@
 {
-  "name": "treningsapp-v2",
-  "version": "0.3.0",
+  "name": "mova",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
-  "description": "Personlig treningsapp — genererer økter fra et bibliotek, PWA i vanilla HTML/CSS/JS.",
+  "description": "Mova — Move for Life. Bevegelsesapp der all bevegelse teller: gåturer, økter, sport og lek gir XP og flytter figuren din gjennom reisen. PWA i vanilla HTML/CSS/JS.",
   "scripts": {
     "merge": "node scripts/merge-parts.mjs",
     "validate": "node scripts/validate.mjs",
     "test:gen": "node scripts/smoke-generator.mjs",
+    "test:bevegelse": "node scripts/smoke-bevegelse.mjs",
     "sjekk-versjon": "node scripts/sjekk-cache-versjon.mjs",
     "installer-hooks": "node scripts/installer-hooks.mjs",
     "prepare": "node scripts/installer-hooks.mjs"

@@ -1,10 +1,13 @@
-// Headless test av belønningsmotoren (js/belonninger.js).
+// Headless test av belønningsmotoren (js/belonninger.js) — M11: Mova-stigen
+// med gjenstander (klær/tilbehør/miljøer), temaer, varme titler og
+// øvelses-reveals. Ingen tiers, ingen aggressive titler.
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import {
   nivaKostnad, nivaFraTotalXp, belonningFor, belonningerTil, belonningsOvelser,
-  lasteTemaer, lasteAvatarer, tittelFor, nesteBelonning,
+  lasteTemaer, tittelFor, nesteBelonning, GJENSTANDER, GJENSTAND_MAP,
+  erUlastGjenstand, ulasteGjenstander, nyeGjenstander, laasTekst,
 } from '../js/belonninger.js';
 
 const rot = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -29,16 +32,17 @@ let mangler = 0;
 for (let n = 2; n <= 120; n++) { const b = belonningFor(n, bib); if (!b || !b.type || b.type === 'start') mangler++; }
 sjekk(mangler === 0, `hver level 2–120 gir en belønning (mangler ${mangler})`);
 
-// Milepæler treffer riktig
-sjekk(belonningFor(3, bib).type === 'tema' && belonningFor(3, bib).id === 'midnatt', 'nivå 3 = tema Midnatt');
-sjekk(belonningFor(5, bib).type === 'avatar', 'nivå 5 = avatar');
+// Milepæler treffer riktig (Mova-stigen, jf. spec §10)
+sjekk(belonningFor(2, bib).type === 'gjenstand' && belonningFor(2, bib).id === 'sko-trail', 'nivå 2 = Trail-joggesko');
+sjekk(belonningFor(3, bib).type === 'gjenstand' && belonningFor(3, bib).id === 'jakke-skog', 'nivå 3 = Skogsjakke');
 sjekk(belonningFor(4, bib).type === 'tittel', 'nivå 4 = tittel');
+sjekk(belonningFor(5, bib).type === 'gjenstand' && belonningFor(5, bib).kategori === 'miljo', 'nivå 5 = miljø (Parken)');
 
-// Øvelses-reveals dominerer og er ekte øvelser
+// Øvelses-reveals fyller resten og er ekte øvelser
 const til50 = belonningerTil(50, bib);
 const ovelser = til50.filter((b) => b.type === 'ovelse');
 const ids = new Set(bib.exercises.map((e) => e.id));
-sjekk(ovelser.length > 20, `mange øvelses-reveals til nivå 50 (${ovelser.length})`);
+sjekk(ovelser.length > 15, `mange øvelses-reveals til nivå 50 (${ovelser.length})`);
 sjekk(ovelser.every((b) => ids.has(b.id)), 'alle øvelses-reveals er ekte øvelser');
 sjekk(belonningsOvelser(50, bib).size === new Set(ovelser.map((o) => o.id)).size, 'opplåsingssett matcher reveals');
 
@@ -46,12 +50,28 @@ sjekk(belonningsOvelser(50, bib).size === new Set(ovelser.map((o) => o.id)).size
 const førsteReveal = til50.find((b) => b.type === 'ovelse');
 sjekk(bib.exercises.find((e) => e.id === førsteReveal.id).niva <= 2, 'første øvelses-reveal er lavt nivå');
 
+// --- Gjenstander: opplåsing per nivå, mønster og comeback ---
+const pNy = { globalXp: 0, bevegelsesTeller: {} };
+sjekk(erUlastGjenstand(GJENSTAND_MAP.get('t-teal'), pNy), 'startplagg er alltid åpne');
+sjekk(!erUlastGjenstand(GJENSTAND_MAP.get('sko-trail'), pNy), 'nivågjenstand låst fra start');
+const pNiva10 = { globalXp: 3000, bevegelsesTeller: {} };
+sjekk(erUlastGjenstand(GJENSTAND_MAP.get('miljo-fjell'), pNiva10) === (nivaFraTotalXp(3000).niva >= 10), 'miljø følger nivå');
+const pTurgåer = { globalXp: 0, bevegelsesTeller: { walk: 5 } };
+sjekk(erUlastGjenstand(GJENSTAND_MAP.get('sokker-tur'), pTurgåer), '5 gåturer → Tursokker');
+sjekk(erUlastGjenstand(GJENSTAND_MAP.get('caps-comeback'), { harComeback: true }), 'comeback → caps');
+sjekk(nyeGjenstander(pNy, pTurgåer).some((g) => g.id === 'sokker-tur'), 'nyeGjenstander fanger diffen');
+sjekk(ulasteGjenstander(pNy).size >= 6, 'et helt startantrekk er gratis');
+sjekk(GJENSTANDER.every((g) => laasTekst(g.laas).length > 0), 'alle opplåsinger har lesbar tekst');
+
 // --- Kataloger ---
-sjekk(lasteTemaer(1, bib).has('standard') && !lasteTemaer(1, bib).has('midnatt'), 'nivå 1: bare standard-tema');
-sjekk(lasteTemaer(3, bib).has('midnatt'), 'nivå 3: Midnatt låst opp');
-sjekk(lasteAvatarer(1, bib).size === 2, 'nivå 1: 2 gratis avatarer');
-sjekk(lasteAvatarer(5, bib).size > 2, 'nivå 5: flere avatarer');
-sjekk(tittelFor(1) === 'Nybegynner' && tittelFor(9) === 'Sterk' && tittelFor(999) === 'Udødelig', 'titler etter nivåtrinn');
+sjekk(lasteTemaer(1, bib).has('standard') && !lasteTemaer(1, bib).has('nordlys'), 'nivå 1: bare gratis-temaer');
+sjekk(lasteTemaer(15, bib).has('nordlys'), 'nivå 15: Nordlys låst opp');
+// Varme titler — aldri aggressive (spec §10: unngå Beast/Elite/…)
+sjekk(tittelFor(1) === 'Nybegynner' && tittelFor(12) === 'Hverdagsmover' && tittelFor(999) === 'Move for Life', 'titler etter nivåtrinn');
+for (let n = 1; n <= 200; n++) {
+  const t = tittelFor(n);
+  if (/elite|beast|udødelig|destroyer|warrior/i.test(t)) { sjekk(false, `aggressiv tittel «${t}» på nivå ${n}`); break; }
+}
 sjekk(!!nesteBelonning(2, bib).type, 'neste belønning finnes');
 
 console.log(feil ? `\n${feil} FEIL` : '\n✓ Belønningsmotoren er grønn.');

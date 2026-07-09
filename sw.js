@@ -3,7 +3,7 @@
 //   - navigasjon/HTML: network-first med cache-fallback (fersk UI når nett finnes)
 //   - data/JS/CSS/ikoner: cache-first (raskt, fungerer offline)
 // Bump CACHE_VERSION for å rulle ut ny cache.
-const CACHE_VERSION = 'mova-m10-1.0.0';
+const CACHE_VERSION = 'mova-m11-1.0.0';
 const SKALL = [
   './',
   './index.html',
@@ -23,6 +23,10 @@ const SKALL = [
   './js/plan.js',
   './js/sync.js',
   './js/belonninger.js',
+  './js/bevegelse.js',
+  './js/beveg.js',
+  './js/reise.js',
+  './js/figur.js',
   './js/animasjon.js',
   './manifest.webmanifest',
   './fonts/fredoka-var.woff2',
@@ -32,24 +36,6 @@ const SKALL = [
   './icons/icon-maskable.png',
   './icons/brand/hero-min-dag.png',
   './icons/brand/shoe-badge.png',
-  './icons/badges/bronse.png',
-  './icons/badges/solv.png',
-  './icons/badges/gull.png',
-  './icons/badges/smaragd.png',
-  './icons/badges/safir.png',
-  './icons/badges/rubin.png',
-  './icons/badges/ametyst.png',
-  './icons/badges/obsidian.png',
-  './icons/badges/diamant.png',
-  './icons/avatars/bicep.png',
-  './icons/avatars/loper.png',
-  './icons/avatars/yoga.png',
-  './icons/avatars/flamme.png',
-  './icons/avatars/lyn.png',
-  './icons/avatars/fjell.png',
-  './icons/avatars/trofe.png',
-  './icons/avatars/vekt.png',
-  './icons/avatars/puls.png',
   './data/exercises.json',
   './data/chains.json',
   './data/formats.json',

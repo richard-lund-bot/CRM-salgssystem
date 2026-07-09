@@ -53,7 +53,8 @@ sjekk(p2.nivaer.STY.base === 3, `XP uten bevis rykker ikke opp (base ${p2.nivaer
 // --- comeback dobler XP ---
 let p3 = { nivaer: { STY: { base: 3, xp: 0, bevisTeller: 0, hoyesteBevist: 3, sisteOkt: '2026-01-01T10:00:00Z' } }, prs: {}, globalXp: 0, settOvelser: { 'sty-a': true, 'sty-b': true } };
 const rCb = registrerOkt(p3, okt('STY', 3, 40, 3), bib, [], Date.parse('2026-03-01T10:00:00Z')); // ~59 d senere
-sjekk(rCb.resultat.comeback && rCb.resultat.xp === 80, `comeback ×2: 40min×1.0×2 = ${rCb.resultat.xp}`);
+// Mova-formelen (§8): 40 min × 1,3 (styrke) × 1,0 (moderat) = 52, comeback ×2 = 104.
+sjekk(rCb.resultat.comeback && rCb.resultat.xp === 104, `comeback ×2: 40min×1.3×2 = ${rCb.resultat.xp}`);
 
 // --- PR-bonus ---
 let p4 = { nivaer: { STY: { base: 3, xp: 0, bevisTeller: 0, hoyesteBevist: 3 } }, prs: { 'sty-a': { id: 'sty-a', reps: 10 } }, globalXp: 0, settOvelser: { 'sty-a': true, 'sty-b': true } };

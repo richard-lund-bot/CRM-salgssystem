@@ -9,17 +9,19 @@
 // streak er *avledet* fra datoer/logg ved lesetid (rene funksjoner) — så en
 // ferie «fryser» ingenting permanent.
 
-import { nivaFraTotalXp, belonningFor } from './belonninger.js';
+import { nivaFraTotalXp, belonningFor, nyeGjenstander } from './belonninger.js';
+import { beregnXp, MODALITET_TIL_BEVEGELSE } from './bevegelse.js';
 
 const DAG = 86400000;
 
-// §4b — intensitet → XP-faktor
+// Intensitetsnavn (XP-faktorene bor i bevegelse.js — Mova-formelen §8:
+// smalt spenn 0,8–1,25 så rolig bevegelse aldri føles verdiløs).
 export const INTENSITET = {
-  1: { navn: 'Restitusjon', faktor: 0.5 },
-  2: { navn: 'Lett', faktor: 0.8 },
-  3: { navn: 'Moderat', faktor: 1.0 },
-  4: { navn: 'Hard', faktor: 1.4 },
-  5: { navn: 'Maks', faktor: 1.8 },
+  1: { navn: 'Rolig' },
+  2: { navn: 'Lett' },
+  3: { navn: 'Moderat' },
+  4: { navn: 'Hard' },
+  5: { navn: 'Maks' },
 };
 
 // §12c — decay per modalitetsgruppe (grace-dager, deretter −1 base per takt-dager)
@@ -227,14 +229,20 @@ export function registrerOkt(profil, okt, bib, resultater = [], nå = Date.now()
     }
   }
 
-  // XP (§12d): minutter × intensitetsfaktor × (comeback ? 2 : 1) + bonuser
-  const faktor = INTENSITET[okt.intensitet]?.faktor ?? 1;
-  const grunnXp = Math.round((okt.varighetMin || 0) * faktor * (comeback ? 2 : 1));
+  // XP (Mova §8): minutter × bevegelsesfaktor × intensitetsfaktor, minst 5.
+  // Comeback dobler (å komme tilbake belønnes) + bonuser for PR/nye øvelser.
+  const bevegelse = MODALITET_TIL_BEVEGELSE[mod] || 'custom';
+  const grunnXp = beregnXp(okt.varighetMin, bevegelse, okt.intensitet) * (comeback ? 2 : 1);
   const bonusXp = nyePrs.length * 20 + nyeØvelser * 10;
   const xp = grunnXp + bonusXp;
 
   niv.xp = (niv.xp || 0) + xp;
   p.globalXp += xp;
+
+  // Bevegelsesteller (for bevegelsesbelønninger, spec §14) + comeback-merke.
+  p.bevegelsesTeller = p.bevegelsesTeller || {};
+  p.bevegelsesTeller[bevegelse] = (p.bevegelsesTeller[bevegelse] || 0) + 1;
+  if (comeback) p.harComeback = true;
 
   // Bevis: talte økta på toppnivået som er ulåst nå?
   const topp = nivaFraBase(niv.base);
@@ -256,7 +264,7 @@ export function registrerOkt(profil, okt, bib, resultater = [], nå = Date.now()
 
   const globalFør = globaltNiva(profil.globalXp || 0);
   const globalEtter = globaltNiva(p.globalXp);
-  // Belønninger for hvert kryssede belønningsnivå (ny øvelse/avatar/tema/tittel).
+  // Belønninger for hvert kryssede belønningsnivå (plagg/miljø/tema/tittel/øvelse).
   const belonninger = [];
   for (let n = globalFør + 1; n <= globalEtter; n++) belonninger.push(belonningFor(n, bib));
 
@@ -268,9 +276,48 @@ export function registrerOkt(profil, okt, bib, resultater = [], nå = Date.now()
       nivaOpp,
       globalOpp: globalEtter > globalFør ? globalEtter : null,
       belonninger,
+      nyeGjenstander: nyeGjenstander(profil, p),
       tilNesteBase: terskel(niv.base),
       bevisTeller: niv.bevisTeller,
       xpIModalitet: niv.xp,
+    },
+  };
+}
+
+// --- Transaksjon: registrer fri/manuell bevegelse ---------------------------
+/**
+ * Ren funksjon for bevegelser utenfor generatoren (gåtur, sport, manuell
+ * logg, hurtigstart): tar profil + {bevegelse, varighetMin, intensitet,
+ * comeback} → { profil, resultat }. Alt teller (spec §5.1/§7) — XP, nivå,
+ * bevegelsestellere og belønninger, uten krav om øvelser eller bevis.
+ */
+export function registrerBevegelse(profil, { bevegelse, varighetMin, intensitet = 3, comeback = false }, bib, nå = Date.now()) {
+  const p = strukturertKopi(profil);
+  p.globalXp = p.globalXp || 0;
+  p.bevegelsesTeller = p.bevegelsesTeller || {};
+
+  const xp = beregnXp(varighetMin, bevegelse, intensitet) * (comeback ? 2 : 1);
+  p.globalXp += xp;
+  p.bevegelsesTeller[bevegelse] = (p.bevegelsesTeller[bevegelse] || 0) + 1;
+  if (comeback) p.harComeback = true;
+
+  // Frisk opp momentum for tilknyttet modalitet (en gåtur holder BASE varm).
+  const mod = Object.entries(MODALITET_TIL_BEVEGELSE).find(([, b]) => b === bevegelse)?.[0];
+  if (mod && p.nivaer?.[mod]) p.nivaer[mod].sisteOkt = new Date(nå).toISOString();
+
+  const globalFør = globaltNiva(profil.globalXp || 0);
+  const globalEtter = globaltNiva(p.globalXp);
+  const belonninger = [];
+  for (let n = globalFør + 1; n <= globalEtter; n++) belonninger.push(belonningFor(n, bib));
+
+  return {
+    profil: p,
+    resultat: {
+      xp, grunnXp: xp, bonusXp: 0, comeback,
+      nyePrs: [], nyeØvelser: 0, nivaOpp: [],
+      globalOpp: globalEtter > globalFør ? globalEtter : null,
+      belonninger,
+      nyeGjenstander: nyeGjenstander(profil, p),
     },
   };
 }

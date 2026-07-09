@@ -10,7 +10,8 @@ import {
   hentSistLokasjon, lagreSistLokasjon, settPlanStatus,
 } from './store.js';
 import { registrerOkt, INTENSITET } from './niva.js';
-import { avatarBilde, erBildeAvatar, AVATAR_NAVN, belonningIkonNavn } from './belonninger.js';
+import { belonningIkonNavn } from './belonninger.js';
+import { tegnFigur, sikreFigur } from './figur.js';
 import { tallOpp, lagKonfetti, lagRing } from './animasjon.js';
 
 let _bib = null;
@@ -88,7 +89,7 @@ export function visGeneratorSkjerm(mount, forhandsvalg = {}) {
       })),
     );
     monter(mount,
-      tilbakeTopp('Ny økt', 'Sett rammene — generatoren fyller resten.', () => { location.hash = '#/hjem'; }),
+      tilbakeTopp('Ny økt', 'Sett rammene — generatoren fyller resten.', () => { location.hash = '#/beveg'; }),
       el('main', { class: 'innhold' },
         el('div', { class: 'kort' },
           el('h2', {}, 'Treningsform'),
@@ -232,12 +233,31 @@ export function visKjoreSkjerm(mount) {
   }
   function forrige() { if (idx > 0) { idx--; tegn(); } }
 
+  // Avslutte tidlig? Delvis gjennomføring teller (spec §7) — tilby å logge
+  // blokkene som er gjort i stedet for å forkaste alt.
+  function avbryt() {
+    const gjortMin = okt.blokker.slice(0, idx).reduce((s, b) => s + (b.min || 0), 0);
+    if (gjortMin < 1) {
+      if (confirm('Avslutte økta? Du kan starte igjen når du vil.')) location.hash = '#/review';
+      return;
+    }
+    if (confirm(`Avslutte her? Du har beveget deg i ~${gjortMin} min — vil du telle det med?\n\nOK = logg det du rakk · Avbryt = fortsett økta`)) {
+      stoppTimer();
+      visResultat(mount, {
+        ...okt,
+        varighetMin: gjortMin,
+        blokker: okt.blokker.slice(0, idx),
+        delvis: true,
+      });
+    }
+  }
+
   function tegn() {
     stoppTimer();
     const blk = okt.blokker[idx];
     monter(mount,
       el('header', { class: 'topp topp--kjor' },
-        el('button', { class: 'topp__tilbake', type: 'button', onclick: () => { if (confirm('Avslutt økta uten å fullføre?')) location.hash = '#/review'; }, title: 'Avbryt' }, ikon('kryss')),
+        el('button', { class: 'topp__tilbake', type: 'button', onclick: avbryt, title: 'Avbryt' }, ikon('kryss')),
         el('div', {},
           el('h1', { class: 'topp__tittel' }, `${rolleNavn(blk.rolle)} · ${blk.formatNavn}`),
           el('p', { class: 'topp__under' }, `Blokk ${idx + 1} av ${okt.blokker.length}`),
@@ -536,14 +556,15 @@ function visResultat(mount, okt) {
       ovelseIder,
       resultater,
       xp: resultat.xp,
-      fullfort: true,
+      fullfort: !okt.delvis,
+      delvis: !!okt.delvis,
     });
-    if (okt.planId) settPlanStatus(okt.planId, 'gjort');
+    if (okt.planId && !okt.delvis) settPlanStatus(okt.planId, 'gjort');
     visFerdig(mount, okt, resultat);
   }
 
   monter(mount,
-    el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, 'Økt fullført'),
+    el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, okt.delvis ? 'Du beveget deg' : 'Økt fullført'),
       el('p', { class: 'topp__under' }, 'Logg gjerne tall for PR-sporing — helt valgfritt.')),
     el('main', { class: 'innhold' },
       el('div', { class: 'kort' },
@@ -570,51 +591,58 @@ function visResultat(mount, okt) {
 }
 
 // ===========================================================================
-// Ferdig-skjerm — viser XP tjent, nivåopprykk, nye PR-er
+// Ferdig-skjerm — «Du beveget deg. Det teller.» (spec §7/§15.5)
 // ===========================================================================
 function visFerdig(mount, okt, resultat) {
   const bib = _bib;
   const navnFor = (id) => bib?.ovelseMap?.get(id)?.navn || id;
   const r = resultat || { xp: 0, nyePrs: [], nivaOpp: [] };
+  const figur = sikreFigur(hentProfil());
 
-  const belIkon = (b) => (
-    b.type === 'avatar' && erBildeAvatar(b.id) ? el('img', { class: 'levelup__avatar', src: avatarBilde(b.id), alt: '' })
-      : b.type === 'avatar' ? ikon('person')
-        : ikon(belonningIkonNavn(b)));
-  const belTekst = (b) => (b.type === 'avatar' ? `Ny avatar: ${AVATAR_NAVN[b.id] || b.id}` : b.type === 'tema' ? `Nytt tema: ${b.navn}` : b.type === 'tittel' ? `Ny tittel: ${b.navn}` : b.type === 'ovelse' ? `Ny øvelse: ${b.navn}` : (b.navn || 'Belønning'));
+  const belTekst = (b) => (
+    b.type === 'gjenstand' ? `Nytt til figuren: ${b.navn}`
+      : b.type === 'tema' ? `Nytt tema: ${b.navn}`
+        : b.type === 'tittel' ? `Ny tittel: ${b.navn}`
+          : b.type === 'ovelse' ? `Ny øvelse: ${b.navn}`
+            : (b.navn || 'Belønning'));
   const belonninger = r.belonninger || [];
+  const stigeIder = new Set(belonninger.map((b) => b.id));
+  const ekstraGjenstander = (r.nyeGjenstander || []).filter((g) => !stigeIder.has(g.id));
 
   const feiringer = [];
   for (const n of r.nivaOpp || []) feiringer.push(el('div', { class: 'feiring feiring--niva' }, ikon('graf'), `${MODALITET_NAVN[n.modalitet] || n.modalitet} opp til nivå ${n.tilNiva}!`));
   for (const pr of r.nyePrs || []) feiringer.push(el('div', { class: 'feiring feiring--pr' }, ikon('trofe'), `Ny PR: ${navnFor(pr.id)}`));
-  if (r.comeback) feiringer.push(el('div', { class: 'feiring' }, ikon('flamme'), 'Comeback — dobbel XP!'));
+  for (const g of ekstraGjenstander) feiringer.push(el('div', { class: 'feiring' }, ikon(g.kategori === 'miljo' ? 'fjell' : 'stjerne'), `Låst opp: ${g.navn} — se «Tilpass figur»`));
+  if (r.comeback) feiringer.push(el('div', { class: 'feiring' }, ikon('flamme'), 'Velkommen tilbake — dobbel XP.'));
 
   const xpTall = el('div', { class: 'xp-stor' }, '+0');
 
   monter(mount,
-    el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, 'Bra jobba!')),
+    el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, 'Du beveget deg.')),
     el('main', { class: 'innhold' },
-      // Belønningsnivå-opp: stor feiring med opplåste belønninger
-      r.globalOpp && el('div', { class: 'kort hero levelup' },
+      el('div', { class: 'kort hero ferdighero' },
+        r.globalOpp && lagKonfetti(),
+        el('div', { class: 'ferdighero__figur' }, tegnFigur(figur, { pose: 'jubel', bredde: 92 })),
+        el('p', { class: 'ferdighero__teller' }, 'Det teller.'),
+        okt.delvis && el('p', { class: 'dempet' }, `Du beveget deg i ${okt.varighetMin} minutter. En mindre økt flytter deg også fremover.`),
+        xpTall,
+        r.bonusXp > 0 && el('p', { class: 'dempet' }, `Inkludert +${r.bonusXp} bonus`),
+      ),
+      // Belønningsnivå-opp: feiring med opplåste belønninger
+      r.globalOpp && el('div', { class: 'kort levelup' },
         el('div', { class: 'levelup__glans' }),
-        lagKonfetti(),
-        el('p', { class: 'hero__eyebrow' }, 'Level opp!'),
+        el('p', { class: 'hero__eyebrow' }, 'Nivå opp!'),
         el('div', { class: 'levelup__niva' }, `Nivå ${r.globalOpp}`),
         el('div', { class: 'levelup__belonninger' },
           ...belonninger.map((b) => el('div', { class: 'levelup__bel' },
-            el('span', { class: 'levelup__ikon' }, belIkon(b)),
+            el('span', { class: 'levelup__ikon' }, ikon(belonningIkonNavn(b))),
             el('span', {}, belTekst(b)),
           )),
         ),
       ),
-      el('div', { class: 'kort hero' },
-        el('p', { class: 'hero__eyebrow' }, 'XP tjent'),
-        xpTall,
-        r.bonusXp > 0 && el('p', { class: 'dempet' }, `Inkludert +${r.bonusXp} bonus`),
-      ),
       feiringer.length > 0 && el('div', { class: 'kort' }, el('h2', {}, 'Nytt!'), ...feiringer),
       el('div', { class: 'kort kort--info' },
-        el('p', {}, `Du fullførte «${okt.malNavn}».`),
+        el('p', {}, okt.delvis ? `Fra «${okt.malNavn}».` : `Du fullførte «${okt.malNavn}».`),
         el('div', { class: 'statrad' },
           stat(okt.varighetMin, 'minutter'),
           stat(okt.blokker.length, 'blokker'),
@@ -623,12 +651,12 @@ function visFerdig(mount, okt, resultat) {
         ),
       ),
       el('div', { class: 'knapprad' },
-        el('button', { class: 'knapp', type: 'button', onclick: () => { location.hash = '#/hjem'; } }, 'Til hjem'),
-        el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: () => { location.hash = '#/aktivitet'; } }, 'Se historikk'),
+        el('button', { class: 'knapp', type: 'button', onclick: () => { location.hash = '#/hjem'; } }, 'Til Min dag'),
+        el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: () => { location.hash = '#/reise'; } }, 'Se reisen din'),
       ),
     ),
   );
-  tallOpp(xpTall, r.xp, { format: (n) => `+${n}` });
+  tallOpp(xpTall, r.xp, { format: (n) => `+${n} XP` });
 }
 
 function stat(tall, tekst) {

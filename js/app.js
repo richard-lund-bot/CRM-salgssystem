@@ -1,9 +1,8 @@
-// App-inngang for Treningsapp v2.
-// M1: PWA-skjelett + bibliotek. M3: onboarding, generator, kjøre-UI.
-// M4: logging → XP → nivå (base + momentum/decay), gateways, historikk.
-// Hjem er adaptiv: toppkortet styres av motivasjonsprofilen, og momentum-piler
-// + kjølige varsler formuleres som tilbud, aldri skam.
-import { lastBibliotek, modalitetsoversikt, MODALITET_NAVN, MONSTER_NAVN } from './library.js';
+// App-inngang for Mova (M11 — omlagt til Mova-spesifikasjonen).
+// Navigasjon: Min dag · Beveg · Min reise · Aktivitet · Meny (spec §3).
+// Min dag åpner med Dagens gnist (ett lavterskel-forslag), figuren og
+// Momentum-rytmen — formulert som tilbud, aldri skam.
+import { lastBibliotek, MODALITET_NAVN, MONSTER_NAVN } from './library.js';
 import {
   hentProfil, harProfil, lagreProfil, hentLogg, nullstillAlt,
   planForDato,
@@ -12,11 +11,15 @@ import { el, tom, chip, ikon } from './ui.js';
 import { APP_VERSION } from './config.js';
 import { kjorOnboarding } from './onboarding.js';
 import { settBib as settBibKjor, visGeneratorSkjerm, visReviewSkjerm, visKjoreSkjerm } from './kjor.js';
-import { settBib as settBibNiva, visNivaSkjerm } from './niva-ui.js';
+import { settBib as settBibNiva, visProgresjonSkjerm } from './niva-ui.js';
 import { settBib as settBibHist, visAktivitetSkjerm } from './historikk.js';
 import { settBib as settBibPlan, visPlanSkjerm } from './plan.js';
-import { momentum, streak, globaltNiva } from './niva.js';
-import { nivaFraTotalXp, tittelFor, tierBadge, avatarBilde, erBildeAvatar, STANDARD_AVATAR } from './belonninger.js';
+import { settBib as settBibBeveg, visBevegSkjerm, visHurtigSkjerm, visLoggforSkjerm } from './beveg.js';
+import { settBib as settBibReise, visReiseSkjerm } from './reise.js';
+import { visTilpassSkjerm, tegnFigur, sikreFigur, standardFigur } from './figur.js';
+import { momentum, globaltNiva } from './niva.js';
+import { nivaFraTotalXp, tittelFor } from './belonninger.js';
+import { dagensGnist, bevegelsesMomentum, dagerMedAktivitet, MODALITET_TIL_BEVEGELSE } from './bevegelse.js';
 import { fyllInn } from './animasjon.js';
 import * as sync from './sync.js';
 
@@ -26,13 +29,19 @@ let bib = null;
 // --- Ruter (hash-basert) ---
 const ruter = {
   hjem: visHjem,
+  beveg: () => visBevegSkjerm(app),
+  hurtig: () => visHurtigSkjerm(app),
+  loggfor: () => visLoggforSkjerm(app),
+  reise: () => visReiseSkjerm(app),
+  tilpass: () => visTilpassSkjerm(app, bib),
   plan: () => visPlanSkjerm(app),
   ny: () => visGeneratorSkjerm(app, lesForhandsvalg()),
   review: () => visReviewSkjerm(app),
   kjor: () => visKjoreSkjerm(app),
   aktivitet: () => visAktivitetSkjerm(app),
   historikk: () => visAktivitetSkjerm(app), // gammel lenke — samme skjerm
-  niva: () => visNivaSkjerm(app),
+  progresjon: () => visProgresjonSkjerm(app),
+  niva: () => visProgresjonSkjerm(app), // gammel lenke — samme skjerm
   meny: visMeny,
   innstillinger: visInnstillinger,
   bibliotek: visBibliotek,
@@ -40,9 +49,8 @@ const ruter = {
   om: visOm,
 };
 
-// Kun selve kjøringen (review + aktiv timer/guide) er fokusmodus — «Ny økt»
-// beholder navigasjonen siden det bare er et oppsett-skjema.
-const FOKUS = new Set(['review', 'kjor']);
+// Skjermene med egen tilbake-header er fokusmodus (skjuler tab-baren).
+const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'tilpass']);
 
 function lesForhandsvalg() {
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
@@ -50,6 +58,7 @@ function lesForhandsvalg() {
   if (params.get('m')) v.modalitet = params.get('m');
   if (params.get('k')) v.varighetsklasse = params.get('k');
   if (params.get('p')) v.planId = params.get('p');
+  if (params.get('i')) v.intensitet = Number(params.get('i')) || undefined;
   return v;
 }
 
@@ -62,7 +71,9 @@ function navger() {
 
 function oppdaterNav(rute) {
   const tabRute = ({
-    innstillinger: 'meny', bibliotek: 'meny', kjeder: 'meny', om: 'meny', historikk: 'aktivitet',
+    innstillinger: 'meny', bibliotek: 'meny', kjeder: 'meny', om: 'meny',
+    plan: 'meny', progresjon: 'meny', niva: 'meny',
+    historikk: 'aktivitet', ny: 'beveg', tilpass: 'reise',
   })[rute] || rute;
   document.querySelectorAll('.tabbar__knapp').forEach((b) => {
     b.classList.toggle('tabbar__knapp--aktiv', b.dataset.rute === tabRute);
@@ -127,10 +138,42 @@ function visHjem() {
         el('p', { class: 'mova-dato' }, datoTekst),
       ),
       heroKort(profil, logg),
+      gnistKort(profil, logg, nå),
       planlagtKort(profil),
-      oppmuntringsBanner(profil, logg, nå),
+      momentumKort(logg, nå),
       momentumStrip(profil, nå),
-      profilstripe(profil),
+      figurstripe(profil),
+    ),
+  );
+}
+
+// Dagens gnist (spec §5.1): ett enkelt forslag som senker dørstokkmila.
+function gnistKort(profil, logg, nå) {
+  const g = dagensGnist(profil, logg, nå);
+  return el('div', { class: 'kort gnist' },
+    el('div', { class: 'gnist__meta' },
+      el('p', { class: 'gnist__eyebrow' }, 'Dagens gnist'),
+      el('h2', { class: 'gnist__tittel' }, g.tittel),
+      el('p', { class: 'gnist__under' }, `${g.undertekst} Det teller. · ≈ +${g.xp} XP`),
+    ),
+    el('div', { class: 'gnist__knapper' },
+      el('a', { class: 'knapp', href: g.href }, 'Kjør i gang'),
+      el('a', { class: 'knapp knapp--stille', href: '#/beveg' }, 'Noe annet'),
+    ),
+  );
+}
+
+// Momentum (spec §9): rytme, ikke streak. 7 dager + varm status.
+function momentumKort(logg, nå) {
+  const mom = bevegelsesMomentum(logg, nå);
+  const dager = dagerMedAktivitet(logg, nå, 7);
+  return el('a', { class: 'kort momkort', href: '#/reise' },
+    el('div', { class: 'momkort__meta' },
+      el('span', { class: 'oppmuntring__tittel' }, mom.tekst),
+      el('span', { class: 'oppmuntring__tekst' }, mom.undertekst),
+    ),
+    el('div', { class: 'momdager momdager--kompakt' },
+      ...dager.map((min) => el('i', { class: 'momdag__prikk' + (min > 0 ? ' momdag__prikk--aktiv' : '') })),
     ),
   );
 }
@@ -150,7 +193,7 @@ function heroKort(profil, logg) {
   const planer = planForDato(idagIso);
   const href = planer.length
     ? `#/ny?m=${planer[0].modalitet}&k=${planer[0].varighetsklasse}&p=${planer[0].id}`
-    : `#/ny?m=${foreslaModalitet(profil)}`;
+    : '#/beveg';
 
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('width', storrelse);
@@ -193,12 +236,11 @@ function planlagtKort(profil) {
   );
 
   if (!planer.length) {
-    const modalitet = foreslaModalitet(profil);
     return el('div', { class: 'kort' },
       hode,
-      el('p', { class: 'dempet' }, 'Ingen planlagt økt denne dagen.'),
+      el('p', { class: 'dempet' }, 'Ingen planlagt økt denne dagen — helt greit.'),
       el('div', { class: 'knapprad' },
-        el('a', { class: 'knapp', href: `#/ny?m=${modalitet}` }, 'Start spontanøkt'),
+        el('a', { class: 'knapp', href: '#/beveg' }, 'Velg bevegelse'),
         el('a', { class: 'knapp knapp--sekundaer', href: '#/plan' }, 'Planlegg'),
       ),
     );
@@ -224,26 +266,6 @@ function oktRad(p) {
   );
 }
 
-// Oppmuntringsbanner — varm, lavmælt: fremgang, ikke perfeksjon.
-function oppmuntringsBanner(profil, logg, nå) {
-  const st = streak(logg, profil.ukemaal || 4, nå);
-  let tittel = 'Du er på vei!';
-  let tekst = 'Fortsett med det gode arbeidet.';
-  if (st.nadd) {
-    tittel = 'Målet er nådd denne uka!';
-    tekst = `${st.denneUken} av ${st.ukemaal} økter. Sterkt jobba.`;
-  } else if (st.denneUken > 0) {
-    tekst = `${st.denneUken} av ${st.ukemaal} økter denne uka. Hvert steg teller.`;
-  }
-  return el('div', { class: 'oppmuntring' },
-    el('span', { class: 'oppmuntring__meta' },
-      el('span', { class: 'oppmuntring__tittel' }, tittel),
-      el('span', { class: 'oppmuntring__tekst' }, tekst),
-    ),
-    el('span', { class: 'oppmuntring__disk' }, ikon('hjerte', 'ikon ikon--fylt')),
-  );
-}
-
 function velkommenKort() {
   return el('div', { class: 'kort kort--info' },
     el('h2', {}, 'Velkommen'),
@@ -252,28 +274,24 @@ function velkommenKort() {
   );
 }
 
-// Profilstripe: avatar + tittel + belønningsnivå, lenker til Nivå.
-function profilstripe(profil) {
+// Figurstripe: figuren + varm tittel + belønningsnivå, lenker til Min reise.
+function figurstripe(profil) {
   const info = nivaFraTotalXp(profil.globalXp || 0);
-  const avatar = profil.innstillinger?.avatar || STANDARD_AVATAR;
-  const avatarInnhold = erBildeAvatar(avatar)
-    ? el('img', { class: 'profilstripe__avatarbilde', src: avatarBilde(avatar), alt: '', loading: 'lazy' })
-    : avatar;
+  const figur = sikreFigur(profil);
   const fyll = el('div', { class: 'xpbar__fyll' });
   fyllInn(fyll, 'width', `${info.pct}%`);
-  return el('a', { class: 'profilstripe', href: '#/niva' },
-    el('span', { class: 'profilstripe__avatar' }, avatarInnhold),
+  return el('a', { class: 'profilstripe', href: '#/reise' },
+    el('span', { class: 'profilstripe__figur' }, tegnFigur(figur, { pose: 'idle', bredde: 40 })),
     el('div', { class: 'profilstripe__meta' },
-      el('span', { class: 'profilstripe__navn' }, tittelFor(info.niva)),
+      el('span', { class: 'profilstripe__navn' }, figur.tittel || tittelFor(info.niva)),
       el('span', { class: 'profilstripe__niva' }, `Nivå ${info.niva}`),
     ),
     el('div', { class: 'profilstripe__bar' }, el('div', { class: 'xpbar' }, fyll)),
-    el('img', { class: 'profilstripe__crest', src: tierBadge(info.niva), alt: '', loading: 'lazy' }),
     el('span', { class: 'profilstripe__pil' }, ikon('chevron')),
   );
 }
 
-// Momentum-piler + kjølige tilbud (aldri skam-språk).
+// Vennlig tilbud når en treningsform har hvilt en stund (aldri skam-språk).
 function momentumStrip(profil, nå) {
   const trente = Object.keys(profil.nivaer || {}).filter((m) => profil.nivaer[m].sisteOkt);
   const kjolige = trente
@@ -283,8 +301,8 @@ function momentumStrip(profil, nå) {
   const x = kjolige.sort((a, b) => b.mom.dagerSiden - a.mom.dagerSiden)[0];
   const navn = MODALITET_NAVN[x.m] || x.m;
   const tekst = x.mom.tilstand === 'comeback'
-    ? `${navn} har hvilt ${x.mom.dagerSiden} dager. Velkommen tilbake — dobbel XP venter.`
-    : `${navn} er litt kjølig (${x.mom.dagerSiden} d). 15 min vedlikehold?`;
+    ? `${navn} har hvilt en stund. Velkommen tilbake når du er klar — dobbel XP venter.`
+    : `Har du lyst på 15 minutter ${navn.toLowerCase()}? Helt valgfritt.`;
   return el('a', { class: 'oppmuntring oppmuntring--teal', href: `#/ny?m=${x.m}&k=kort` },
     el('span', { class: 'oppmuntring__disk' }, ikon('flamme')),
     el('span', { class: 'oppmuntring__meta' },
@@ -293,18 +311,6 @@ function momentumStrip(profil, nå) {
     ),
     el('span', { class: 'oppmuntring__chevron' }, ikon('chevron')),
   );
-}
-
-function foreslaModalitet(profil) {
-  const medMal = new Set(bib.templates.map((t) => t.modalitet));
-  const vekter = profil.motivasjon?.vekter || {};
-  let best = 'STY';
-  let bestV = -Infinity;
-  for (const m of medMal) {
-    const v = vekter[m] || 0;
-    if (v > bestV) { bestV = v; best = m; }
-  }
-  return best;
 }
 
 function varighetNavn(k) {
@@ -318,6 +324,8 @@ function visMeny() {
   skjerm('Meny',
     el('div', { class: 'kort' },
       el('div', { class: 'liste' },
+        menyrad('kalender', 'Plan', '#/plan'),
+        menyrad('graf', 'Progresjon (avansert)', '#/progresjon'),
         menyrad('bok', 'Bibliotek', '#/bibliotek'),
         menyrad('trend', 'Progresjonskjeder', '#/kjeder'),
         menyrad('gir', 'Innstillinger', '#/innstillinger'),
@@ -564,7 +572,7 @@ function visOm() {
   skjerm('Om Mova',
     el('div', { class: 'kort' },
       el('h2', {}, 'Mova — Move for Life.'),
-      el('p', {}, 'Små steg. Stor forskjell. Din vennlige følgesvenn for mer bevegelse i hverdagen — med økter, nivåer, belønninger og historikk. PWA i vanilla HTML/CSS/JS.'),
+      el('p', {}, 'Bevegelse kan være hva som helst du liker — en tur, en økt, en fotballkamp. Alt teller, alt gir XP, og figuren din går videre på reisen sin. PWA i vanilla HTML/CSS/JS.'),
       el('p', { class: 'dempet' }, `Versjon ${APP_VERSION}`),
       el('p', { class: 'dempet' }, `${bib.exercises.length} øvelser · ${bib.chains.length} kjeder · ${bib.formats.length} formater · ${bib.templates.length} maler · ${bib.gateways.length} gateways · ${bib.sequences.length} sekvenser.`),
     ),
@@ -585,9 +593,9 @@ function byggTabbar() {
 
   document.body.append(el('nav', { class: 'tabbar' },
     tab('hjem', 'hjem', 'Min dag'),
-    tab('plan', 'kalender', 'Plan'),
+    tab('beveg', 'loper', 'Beveg'),
+    tab('reise', 'kompass', 'Min reise'),
     tab('aktivitet', 'puls', 'Aktivitet'),
-    tab('niva', 'graf', 'Nivå'),
     tab('meny', 'meny', 'Meny'),
   ));
 }
@@ -596,6 +604,30 @@ function byggTabbar() {
 export function bruksTema(id) {
   if (id && id !== 'standard') document.documentElement.dataset.tema = id;
   else delete document.documentElement.dataset.tema;
+}
+
+// Engangsmigrering til M11: eldre profiler får figur, bevegelsestellere
+// (bakoverregnet fra loggen) og favoritter utledet fra motivasjonsvektene.
+function migrerProfil() {
+  const profil = hentProfil();
+  if (!profil || (profil.figur && profil.bevegelsesTeller)) return;
+  const p = { ...profil };
+  if (!p.figur) p.figur = standardFigur();
+  if (!p.bevegelsesTeller) {
+    const teller = {};
+    for (const o of hentLogg()) {
+      const b = o.bevegelse || MODALITET_TIL_BEVEGELSE[o.modalitet] || 'custom';
+      teller[b] = (teller[b] || 0) + 1;
+    }
+    p.bevegelsesTeller = teller;
+  }
+  if (!p.bevegelsesFavoritter) {
+    const vekter = p.motivasjon?.vekter || {};
+    const rangert = Object.entries(vekter).sort((a, b) => b[1] - a[1]).slice(0, 3)
+      .map(([m]) => MODALITET_TIL_BEVEGELSE[m]).filter(Boolean);
+    p.bevegelsesFavoritter = [...new Set(['walk', ...rangert])].slice(0, 4);
+  }
+  lagreProfil(p);
 }
 
 // --- Onboarding ---
@@ -625,6 +657,9 @@ async function start() {
   settBibNiva(bib);
   settBibHist(bib);
   settBibPlan(bib);
+  settBibBeveg(bib);
+  settBibReise(bib);
+  migrerProfil();
   bruksTema(hentProfil()?.innstillinger?.tema);
   window.addEventListener('hashchange', navger);
 
@@ -654,7 +689,7 @@ function oppdaterSyncMerke(status) {
   // Hvis brukeren står på en skjerm som viser synket data, tegn på nytt.
   if (status === 'synket') {
     const rute = (location.hash.replace('#/', '') || 'hjem').split('?')[0];
-    if (['hjem', 'historikk', 'aktivitet', 'niva', 'innstillinger'].includes(rute)) navger();
+    if (['hjem', 'historikk', 'aktivitet', 'niva', 'progresjon', 'reise', 'innstillinger'].includes(rute)) navger();
   }
 }
 

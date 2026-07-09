@@ -1,10 +1,11 @@
 // Aktivitet (LAG 4, taksonomi §13): to underfaner — Historikk (kalender-
 // heatmap, ukesvolum, modalitetsfordeling, push/pull-balanse, øktlogg) og
 // Prestasjoner (PR-tavle + «test deg selv»). Alt regnes ut lokalt.
-import { el, tom, ikon, chip } from './ui.js';
-import { MODALITET_NAVN, MONSTER_NAVN } from './library.js';
+import { el, tom, ikon } from './ui.js';
+import { MODALITET_NAVN } from './library.js';
 import { hentLogg, hentProfil, lagreProfil, leggTilLogg } from './store.js';
-import { prsFraLogg, streak, ukeNokkel, globaltNiva, registrerOkt } from './niva.js';
+import { prsFraLogg, ukeNokkel, globaltNiva, registrerOkt } from './niva.js';
+import { BEVEGELSE_NAVN, aktivitetNavn, loggBevegelse, dagerMedAktivitet } from './bevegelse.js';
 import { fyllInn } from './animasjon.js';
 
 let _bib = null;
@@ -54,18 +55,17 @@ function historikkInnhold(main) {
 
   if (!logg.length) {
     main.append(el('div', { class: 'kort kort--info' },
-      el('h2', {}, 'Ingen økter ennå'),
-      el('p', { class: 'dempet' }, 'Fullfør din første økt, så dukker heatmap, volum, PR-er og fordeling opp her.'),
-      el('a', { class: 'knapp', href: '#/ny' }, 'Start en økt'),
+      el('h2', {}, 'Ingen bevegelser ennå'),
+      el('p', { class: 'dempet' }, 'Alt teller — en tur, en økt, en fotballkamp. Når du har beveget deg, dukker historikken opp her.'),
+      el('a', { class: 'knapp', href: '#/beveg' }, 'Kom i gang'),
     ));
     return;
   }
 
-  const st = streak(logg, profil?.ukemaal || 4, nå);
   main.append(
     ...[
-      oppsummering(logg, profil, st, nå),
-      heatmapKort(logg, st, nå),
+      oppsummering(logg, profil, nå),
+      heatmapKort(logg, profil, nå),
       ukesvolumKort(logg, nå),
       alleTiderKort(logg, profil),
       fordelingKort(logg, profil),
@@ -84,10 +84,10 @@ function alleTiderKort(logg, profil) {
   const gateways = (profil?.gatewaysPassert || []).length;
   const timer = Math.floor(totMin / 60);
   const rader = [
-    ['loper', 'Totalt økter', String(logg.length)],
-    ['stoppeklokke', 'Total tid', `${timer}t ${totMin % 60}m`],
+    ['loper', 'Bevegelser totalt', String(logg.length)],
+    ['stoppeklokke', 'Tid i bevegelse', `${timer}t ${totMin % 60}m`],
     ['lyn', 'Total XP', String(totXp)],
-    ['graf', 'Lengste økt', `${lengste} min`],
+    ['graf', 'Lengste bevegelse', `${lengste} min`],
     ['medalje', 'Personlige rekorder', String(prAntall)],
     ['hexstjerne', 'Gateways bestått', String(gateways)],
   ];
@@ -106,19 +106,20 @@ function alleTiderKort(logg, profil) {
 }
 
 // --- Oppsummering ---------------------------------------------------------
-function oppsummering(logg, profil, st, nå) {
+function oppsummering(logg, profil, nå) {
   const totMin = logg.reduce((s, o) => s + (o.varighetMin || 0), 0);
   const totXp = profil?.globalXp || logg.reduce((s, o) => s + (o.xp || 0), 0);
+  const aktive7 = dagerMedAktivitet(logg, nå, 7).filter((m) => m > 0).length;
   return el('div', { class: 'statrad' },
-    stat(logg.length, 'økter'),
-    stat(Math.round(totMin / 60) + 't', 'trent'),
+    stat(logg.length, 'bevegelser'),
+    stat(Math.round(totMin / 60) + 't', 'i bevegelse'),
     stat(globaltNiva(totXp), 'nivå'),
-    stat(st.uker, 'streak', ikon('flamme')),
+    stat(`${aktive7}/7`, 'dager sist uke'),
   );
 }
 
 // --- Kalender-heatmap -----------------------------------------------------
-function heatmapKort(logg, st, nå) {
+function heatmapKort(logg, profil, nå) {
   const uker = 13;
   const dager = uker * 7;
   const perDag = {};
@@ -147,10 +148,12 @@ function heatmapKort(logg, st, nå) {
       }));
     }
   }
+  const denneUken = dagerMedAktivitet(logg, nå, 7).filter((m) => m > 0).length;
+  const maal = profil?.ukemaal || 4;
   return el('div', { class: 'kort' },
     el('h2', {}, 'Aktivitet'),
     el('div', { class: 'heat-wrap' }, rutenett),
-    el('p', { class: 'dempet' }, `Streak: ${st.uker} uker på ${st.ukemaal}/uke · ${st.denneUken} denne uka`),
+    el('p', { class: 'dempet' }, `${denneUken} av ${maal} dager i bevegelse den siste uka. Hvert steg teller.`),
   );
 }
 
@@ -182,10 +185,10 @@ function ukesvolumKort(logg, nå) {
   );
 }
 
-// --- Modalitetsfordeling (donut) ------------------------------------------
+// --- Bevegelsesfordeling (donut) ------------------------------------------
 function fordelingKort(logg, profil) {
   const teller = {};
-  for (const o of logg) teller[o.modalitet] = (teller[o.modalitet] || 0) + 1;
+  for (const o of logg) { const b = loggBevegelse(o); teller[b] = (teller[b] || 0) + 1; }
   const par = Object.entries(teller).sort((a, b) => b[1] - a[1]);
   const total = par.reduce((s, [, n]) => s + n, 0) || 1;
 
@@ -206,19 +209,18 @@ function fordelingKort(logg, profil) {
   svg.append(svgEl('text', { x: 70, y: 66, 'text-anchor': 'middle', fill: 'var(--tekst)', 'font-size': 20, 'font-weight': 700 }));
   svg.lastChild.textContent = String(total);
   svg.append(svgEl('text', { x: 70, y: 84, 'text-anchor': 'middle', fill: 'var(--dempet)', 'font-size': 9 }));
-  svg.lastChild.textContent = 'økter';
+  svg.lastChild.textContent = 'bevegelser';
 
   const forklaring = el('div', { class: 'donut-liste' },
     ...par.map(([m, n], i) => el('div', { class: 'donut-rad' },
       el('span', { class: 'donut-prikk', style: `background:${PALETT[i % PALETT.length]}` }),
-      el('span', { class: 'donut-navn' }, MODALITET_NAVN[m] || m),
+      el('span', { class: 'donut-navn' }, BEVEGELSE_NAVN[m] || m),
       el('span', { class: 'dempet' }, `${Math.round((n / total) * 100)}%`),
     )),
   );
   return el('div', { class: 'kort' },
     el('h2', {}, 'Fordeling'),
     el('div', { class: 'donut-wrap' }, svg, forklaring),
-    profil?.ukemiks && el('p', { class: 'dempet' }, `Mål: ${profil.ukemiks}`),
   );
 }
 
@@ -398,7 +400,7 @@ function lagreTest(e, felt, melding, tegnAktivitet) {
 function loggKort(logg) {
   const sortert = logg.slice().sort((a, b) => Date.parse(b.dato) - Date.parse(a.dato));
   return el('div', { class: 'kort' },
-    el('h2', {}, 'Økter'),
+    el('h2', {}, 'Bevegelser'),
     el('div', { class: 'okter' },
       ...sortert.slice(0, 40).map((o) => oktRad(o)),
     ),
@@ -411,14 +413,16 @@ function oktRad(o) {
   const rad = el('div', { class: 'okt' },
     el('button', { class: 'okt__topp', type: 'button', onclick: () => { detalj.hidden = !detalj.hidden; } },
       el('span', { class: 'okt__dato' }, dato),
-      el('span', { class: 'okt__mod' }, MODALITET_NAVN[o.modalitet] || o.modalitet),
+      el('span', { class: 'okt__mod' }, aktivitetNavn(o, MODALITET_NAVN) + (o.delvis ? ' · delvis' : '')),
       el('span', { class: 'okt__meta' }, `${o.varighetMin} min · +${o.xp || 0} XP`),
     ),
     detalj,
   );
   const navn = (o.ovelseIder || []).map(ovelseNavn);
   detalj.append(
-    navn.length ? el('p', { class: 'dempet' }, navn.join(', ')) : el('p', { class: 'dempet' }, 'Ingen øvelsesdetaljer.'),
+    navn.length ? el('p', { class: 'dempet' }, navn.join(', '))
+      : el('p', { class: 'dempet' }, o.kilde === 'manuell' ? 'Logget manuelt — det teller.'
+        : o.kilde === 'hurtig' ? 'Hurtigstart med timer.' : 'Ingen øvelsesdetaljer.'),
     (o.resultater || []).length ? el('p', { class: 'okt__pr' }, 'Logget: ' + o.resultater.map((r) => `${ovelseNavn(r.id)} ${prVerdi(r)}`).join(' · ')) : null,
   );
   return rad;
