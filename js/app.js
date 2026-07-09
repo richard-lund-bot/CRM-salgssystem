@@ -69,6 +69,11 @@ function oppdaterNav(rute) {
   document.querySelectorAll('.tabbar__knapp').forEach((b) => {
     b.classList.toggle('tabbar__knapp--aktiv', b.dataset.rute === tabRute);
   });
+  // Flytt den glidende markør-pillen til aktiv fane.
+  const REKKE = ['hjem', 'plan', 'aktivitet', 'niva', 'meny'];
+  const idx = REKKE.indexOf(tabRute);
+  const bar = document.querySelector('.tabbar');
+  if (bar && idx >= 0) bar.style.setProperty('--i', idx);
 }
 
 function skjerm(tittel, ...innhold) {
@@ -564,6 +569,7 @@ function byggTabbar() {
   }, el('span', { class: 'tabbar__ikon' }, ikon(ikonNavn)), el('span', { class: 'tabbar__tekst' }, tekst));
 
   document.body.append(el('nav', { class: 'tabbar' },
+    el('span', { class: 'tabbar__indikator' }, el('span', { class: 'tabbar__pille' })),
     tab('hjem', 'hjem', 'Min dag'),
     tab('plan', 'kalender', 'Plan'),
     tab('aktivitet', 'puls', 'Aktivitet'),
