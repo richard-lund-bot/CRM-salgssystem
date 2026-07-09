@@ -3,7 +3,7 @@
 //   - navigasjon/HTML: network-first med cache-fallback (fersk UI når nett finnes)
 //   - data/JS/CSS/ikoner: cache-first (raskt, fungerer offline)
 // Bump CACHE_VERSION for å rulle ut ny cache.
-const CACHE_VERSION = 'mova-m12-1.4.2';
+const CACHE_VERSION = 'mova-m12-1.4.3';
 const SKALL = [
   './',
   './index.html',
@@ -56,8 +56,13 @@ const SKALL = [
 ];
 
 self.addEventListener('install', (e) => {
+  // cache: 'no-cache' revaliderer mot serveren (ETag) i stedet for å ta
+  // filene fra HTTP-cachen — GitHub Pages cacher i 10 min, og uten dette
+  // kan en ny cache-versjon fylles med gamle filer rett etter en deploy.
   e.waitUntil(
-    caches.open(CACHE_VERSION).then((c) => c.addAll(SKALL)).then(() => self.skipWaiting()),
+    caches.open(CACHE_VERSION)
+      .then((c) => c.addAll(SKALL.map((u) => new Request(u, { cache: 'no-cache' }))))
+      .then(() => self.skipWaiting()),
   );
 });
 
