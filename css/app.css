@@ -353,15 +353,20 @@ body {
 .ikonknapp--plain { background: transparent; color: var(--ink-800); width: 40px; height: 40px; }
 .ikonknapp--plain .ikon { width: 22px; height: 22px; }
 
-/* Overskroll på innholdet: hjem låser body og scroller alt under banneren i
-   en egen beholder med naturlig sprett (iOS rubber-band). Banneren står i ro,
-   og innholdet tuckes fortsatt opp bak den buede underkanten. */
+/* Overskroll på innholdet: hjem låser body, banneren ligger fast (fixed)
+   og scrollflaten fyller hele skjermen bak den. Innholdet starter dermed på
+   ekte viewport-topp — bakgrunnsbildet ligger bak banneren uten negative
+   posisjoner (iOS maler ikke innhold over scroll-origo), og ved overskroll
+   glir bildet frem fra bak headeren. */
 body.hjem-laast { height: 100dvh; overflow: hidden; padding-bottom: 0; }
-body.hjem-laast #app { height: 100%; display: flex; flex-direction: column; }
-body.hjem-laast .hjembanner { flex: 0 0 auto; margin-bottom: calc(-1 * var(--radius-2xl)); }
-body.hjem-laast .hjemhero { margin-top: 0; }
+body.hjem-laast #app { height: 100%; }
+body.hjem-laast .hjembanner { position: fixed; top: 0; left: 0; right: 0; }
+body.hjem-laast .hjemhero {
+  margin-top: 0;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 178px);
+}
 .hjem-scroll {
-  flex: 1;
+  height: 100%;
   min-height: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -433,12 +438,11 @@ body.hjem-laast .hjemhero { margin-top: 0; }
   animation: fadeInn 0.5s var(--ease-out) both;
 }
 .hjemhero__bilde {
-  /* Containeren har bildets ekte proporsjoner og starter bak headeren
-     (viewport-toppen): hele bildet vises uten beskjæring — himmelen ligger
-     bak banneren og rulles frem ved overskroll, og bunnen fader ut der
-     bildet faktisk slutter. */
-  position: absolute; left: 0; right: 0; z-index: 0;
-  top: calc(-1 * (env(safe-area-inset-top, 0px) + 155px));
+  /* Containeren har bildets ekte proporsjoner og starter på heroens topp —
+     som i låst modus er selve viewport-toppen, bak den faste banneren. Hele
+     bildet vises uten beskjæring: himmelen ligger bak headeren og glir frem
+     ved overskroll, og bunnen fader ut der bildet faktisk slutter. */
+  position: absolute; left: 0; right: 0; top: 0; z-index: 0;
   aspect-ratio: 880 / 1564;
   background-size: cover;
   background-position: center top;
