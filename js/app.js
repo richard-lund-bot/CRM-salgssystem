@@ -139,23 +139,86 @@ function visHjem() {
     .reduce((s, o) => s + (o.varighetMin || 0), 0);
 
   // Hjem låser body og scroller innholdet i egen beholder: banneren står
-  // helt i ro, og innholdet får naturlig overskroll-sprett (iOS).
-  document.body.classList.add('hjem-laast');
-  tom(app);
-  app.append(
-    hjemBanner(logg),
-    el('div', { class: 'hjem-scroll' },
-      heroVelkomst(profil, logg, nå),
-      el('main', { class: 'innhold' },
-        seksjonsHode(),
-        bevegelsesGrid(profil),
-        // Heroen har alt en CTA når noe er planlagt eller påbegynt — da
-        // trengs ikke anbefalingskortet i tillegg.
-        !planer.length && minutterIdag === 0 && anbefalingKort(profil, logg, nå),
-        streakKort(logg),
-      ),
+  // helt i ro, og innholdet får naturlig overskroll-sprett (iOS). Selve
+  // scrollflaten får himmelfargen til dagsfasen øverst, så overskroll aldri
+  // viser grått gap — og et dra ned fra toppen gir oppdaterings-snurren.
+  const fase = dagsfase(new Date(nå).getHours());
+  const scroll = el('div', {
+    class: 'hjem-scroll',
+    style: `background:linear-gradient(to bottom, ${HIMMELFARGE[fase]} 0%, ${HIMMELFARGE[fase]} 30%, var(--bg) 70%)`,
+  },
+    heroVelkomst(profil, logg, nå),
+    el('main', { class: 'innhold' },
+      seksjonsHode(),
+      bevegelsesGrid(profil),
+      // Heroen har alt en CTA når noe er planlagt eller påbegynt — da
+      // trengs ikke anbefalingskortet i tillegg.
+      !planer.length && minutterIdag === 0 && anbefalingKort(profil, logg, nå),
+      streakKort(logg),
     ),
   );
+
+  document.body.classList.add('hjem-laast');
+  tom(app);
+  app.append(hjemBanner(logg), scroll, lagPullOppdatering(scroll));
+}
+
+// Pull-to-refresh: dra ned fra toppen og en gjennomsiktig snurre-sirkel
+// glir ut fra bak banneren. Slipp forbi terskelen → den spinner mens vi
+// sjekker etter ny app-versjon, synker skydata og tegner skjermen på nytt.
+function lagPullOppdatering(scroll) {
+  const spinn = el('div', { class: 'pullspinn', 'aria-hidden': 'true' },
+    el('i', { class: 'pullspinn__ring' }));
+  let startY = null;
+  let dratt = 0;
+  let opptatt = false;
+
+  const bannerBunn = () => {
+    const banner = document.querySelector('.hjembanner');
+    return banner ? banner.getBoundingClientRect().bottom : 90;
+  };
+
+  scroll.addEventListener('touchstart', (ev) => {
+    if (opptatt || scroll.scrollTop > 0) { startY = null; return; }
+    startY = ev.touches[0].clientY;
+    dratt = 0;
+  }, { passive: true });
+
+  scroll.addEventListener('touchmove', (ev) => {
+    if (startY == null || opptatt) return;
+    const dy = ev.touches[0].clientY - startY;
+    if (dy <= 0 || scroll.scrollTop > 0) { dratt = 0; spinn.style.opacity = '0'; return; }
+    dratt = dy;
+    spinn.style.opacity = String(Math.min(1, dy / 70));
+    spinn.style.top = `${bannerBunn() - 46 + Math.min(1, dy / 130) * 72}px`;
+    spinn.style.setProperty('--vri', `${Math.round(dy * 1.6)}deg`);
+  }, { passive: true });
+
+  const slipp = () => {
+    if (startY == null || opptatt) return;
+    startY = null;
+    if (dratt >= 110) {
+      opptatt = true;
+      spinn.classList.add('pullspinn--aktiv');
+      spinn.style.top = `${bannerBunn() + 16}px`;
+      oppdaterHjem();
+    } else {
+      spinn.style.opacity = '0';
+    }
+  };
+  scroll.addEventListener('touchend', slipp, { passive: true });
+  scroll.addEventListener('touchcancel', slipp, { passive: true });
+  return spinn;
+}
+
+// Oppdatering fra pull-to-refresh: sjekk service worker (ny versjon tas i
+// bruk automatisk), synk skydata om innlogget, og tegn hjem på nytt.
+async function oppdaterHjem() {
+  const start = Date.now();
+  try { (await navigator.serviceWorker?.getRegistration())?.update(); } catch { /* uten nett: ignorer */ }
+  try { if (sync.erInnlogget()) await sync.synk(); } catch { /* uten nett: ignorer */ }
+  // La snurren leve lenge nok til å oppfattes, selv når alt går kjapt.
+  setTimeout(navger, Math.max(0, 700 - (Date.now() - start)));
 }
 
 // ===========================================================================
@@ -170,6 +233,13 @@ function dagsfase(h) {
   if (h < 17) return 'dag';
   return 'kveld';
 }
+
+// Snittfargen øverst i hvert fasebilde — brukes som scrollflatens topp så
+// overskroll fortsetter i samme himmel i stedet for å vise grått gap.
+const HIMMELFARGE = {
+  morgen: '#c0dbd0', formiddag: '#9fd0e2', dag: '#b2d5e1',
+  kveld: '#c3d0cb', natt: '#1c3c64',
+};
 
 function hilsenTekst(h) {
   if (h < 5 || h >= 23) return 'God natt';

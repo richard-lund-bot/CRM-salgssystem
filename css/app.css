@@ -369,6 +369,36 @@ body.hjem-laast .hjemhero { margin-top: 0; }
   padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 16px);
 }
 
+/* Pull-to-refresh: gjennomsiktig snurre-sirkel som glir ut fra bak banneren
+   når man drar ned fra toppen; spinner mens hjem oppdateres. */
+.pullspinn {
+  position: fixed;
+  left: 50%;
+  top: 90px;
+  width: 34px; height: 34px;
+  margin-left: -17px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.65);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
+  display: grid; place-items: center;
+  z-index: 25; /* under banneren (30) — glir ut derfra */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.pullspinn__ring {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 2.5px solid var(--aksent-svak);
+  border-top-color: var(--aksent);
+  transform: rotate(var(--vri, 0deg));
+}
+.pullspinn--aktiv { opacity: 1 !important; transition: opacity 0.2s ease, top 0.25s var(--ease-out); }
+.pullspinn--aktiv .pullspinn__ring { animation: pullspinn-rot 0.8s linear infinite; }
+@keyframes pullspinn-rot { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
 /* Ukeskalender: Man–Søn står stille øverst; datotallene under ligger i et
    dra-bart spor (forrige · denne · neste) som følger fingeren og glir over. */
 .hjemuke { margin-top: 10px; padding: 0 4px; }
