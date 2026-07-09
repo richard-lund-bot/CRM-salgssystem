@@ -98,6 +98,7 @@ function skjerm(tittel, ...innhold) {
 // ===========================================================================
 const DAG = 86400000;
 const UKEDAG_BOKSTAV = ['M', 'T', 'O', 'T', 'F', 'L', 'S'];
+const UKEDAG_NAVN = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
 
 function isoDato(d) {
   const y = d.getFullYear();
@@ -239,6 +240,7 @@ let hjemUkeOffset = 0;
 function hjemBanner(logg) {
   const aktivSett = new Set(logg.map((o) => (o.dato || '').slice(0, 10)));
 
+  // Ukedagsnavnene står stille — bare datotallene ligger i det dra-bare sporet.
   function ukePanel(offset) {
     const panel = el('div', { class: 'hjemuke__dager' });
     const idagIso = isoDato(new Date());
@@ -248,7 +250,6 @@ function hjemBanner(logg) {
       const iso = isoDato(dato);
       const erIdag = iso === idagIso;
       panel.append(el('a', { class: 'hjemuke__dag', href: `#/kalender?d=${iso}` },
-        el('span', { class: 'hjemuke__navn' }, UKEDAG_BOKSTAV[i]),
         el('span', { class: 'hjemuke__tall' + (erIdag ? ' hjemuke__tall--idag' : '') }, String(dato.getDate())),
         el('i', { class: 'hjemuke__prikk' + (aktivSett.has(iso) && !erIdag ? ' hjemuke__prikk--aktiv' : '') }),
       ));
@@ -325,9 +326,10 @@ function hjemBanner(logg) {
   }, true);
 
   const uke = el('div', { class: 'hjemuke' },
-    el('button', { class: 'hjemuke__pil', type: 'button', 'aria-label': 'Forrige uke', onclick: () => bla(-1) }, ikon('tilbake')),
+    el('div', { class: 'hjemuke__navner' },
+      ...UKEDAG_NAVN.map((n) => el('span', { class: 'hjemuke__navn' }, n)),
+    ),
     vindu,
-    el('button', { class: 'hjemuke__pil', type: 'button', 'aria-label': 'Neste uke', onclick: () => bla(1) }, ikon('chevron')),
   );
   tegnUker();
 

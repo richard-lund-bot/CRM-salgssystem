@@ -353,16 +353,11 @@ body {
 .ikonknapp--plain { background: transparent; color: var(--ink-800); width: 40px; height: 40px; }
 .ikonknapp--plain .ikon { width: 22px; height: 22px; }
 
-/* Ukeskalender: M T O T F L S faste, dagens dato markert. Ukene ligger i et
+/* Ukeskalender: Man–Søn står stille øverst; datotallene under ligger i et
    dra-bart spor (forrige · denne · neste) som følger fingeren og glir over. */
-.hjemuke { display: flex; align-items: center; margin-top: 10px; }
-.hjemuke__pil {
-  background: none; border: none; color: var(--ink-300);
-  width: 22px; height: 44px; padding: 0; flex: 0 0 auto;
-  display: grid; place-items: center; cursor: pointer;
-}
-.hjemuke__pil .ikon { width: 16px; height: 16px; }
-.hjemuke__vindu { flex: 1; min-width: 0; overflow: hidden; touch-action: pan-y; }
+.hjemuke { margin-top: 10px; padding: 0 4px; }
+.hjemuke__navner { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 7px; }
+.hjemuke__vindu { min-width: 0; overflow: hidden; touch-action: pan-y; }
 .hjemuke__spor {
   display: flex;
   width: 300%;
@@ -372,8 +367,8 @@ body {
 }
 .hjemuke__spor--anim { transition: transform 280ms var(--ease-out); }
 .hjemuke__dager { width: calc(100% / 3); flex: 0 0 auto; display: grid; grid-template-columns: repeat(7, 1fr); }
-.hjemuke__dag { display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; padding: 2px 0; -webkit-user-drag: none; }
-.hjemuke__navn { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; color: var(--dempet); }
+.hjemuke__dag { display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; padding: 2px 0; -webkit-user-drag: none; }
+.hjemuke__navn { font-size: 11.5px; font-weight: 600; letter-spacing: 0.03em; color: var(--dempet); text-align: center; }
 .hjemuke__tall {
   width: 34px; height: 34px; border-radius: 50%;
   display: grid; place-items: center;
