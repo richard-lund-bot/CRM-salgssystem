@@ -69,12 +69,29 @@ function oppdaterNav(rute) {
   document.querySelectorAll('.tabbar__knapp').forEach((b) => {
     b.classList.toggle('tabbar__knapp--aktiv', b.dataset.rute === tabRute);
   });
-  // Flytt den glidende markør-pillen til aktiv fane (direkte transform —
-  // animeres pålitelig i iOS Safari).
+  // Flytt markør-linsen: glir mot målet og strekker seg/krymper underveis
+  // (squash & stretch), og lander med en liten fjæring. Web Animations API
+  // animeres pålitelig i iOS Safari; slutt-posisjonen settes som direkte
+  // transform så tilstanden er riktig også uten animasjon.
   const REKKE = ['hjem', 'plan', 'aktivitet', 'niva', 'meny'];
   const idx = REKKE.indexOf(tabRute);
   const ind = document.querySelector('.tabbar__indikator');
-  if (ind && idx >= 0) ind.style.transform = `translateX(${idx * 100}%)`;
+  if (!ind || idx < 0) return;
+  const fra = 'idx' in ind.dataset ? Number(ind.dataset.idx) : idx;
+  ind.dataset.idx = idx;
+  ind.style.transform = `translateX(${idx * 100}%)`;
+  if (fra === idx || !ind.animate
+    || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const strekk = Math.min(1.5, 1 + Math.abs(idx - fra) * 0.12);
+  const klem = 1 - (strekk - 1) * 0.45;
+  const midt = (fra + idx) / 2;
+  ind.animate([
+    { transform: `translateX(${fra * 100}%) scale(1, 1)`,
+      easing: 'cubic-bezier(0.4, 0, 0.3, 1)' },
+    { transform: `translateX(${midt * 100}%) scale(${strekk}, ${klem})`,
+      easing: 'cubic-bezier(0.3, 0.6, 0.3, 1.35)', offset: 0.55 },
+    { transform: `translateX(${idx * 100}%) scale(1, 1)` },
+  ], { duration: 460 });
 }
 
 function skjerm(tittel, ...innhold) {
@@ -565,11 +582,18 @@ function visOm() {
 // --- Tab-bar ---
 function byggTabbar() {
   if (document.querySelector('.tabbar')) return;
+  // Lysbryting (SVG-distorsjon i index.html) er kun pålitelig i Chromium.
+  if (window.chrome) document.documentElement.classList.add('har-distorsjon');
   const tab = (rute, ikonNavn, tekst) => el('a', {
     class: 'tabbar__knapp', href: `#/${rute}`, 'data-rute': rute,
   }, el('span', { class: 'tabbar__ikon' }, ikon(ikonNavn)), el('span', { class: 'tabbar__tekst' }, tekst));
 
   document.body.append(el('nav', { class: 'tabbar' },
+    // Liquid glass-lag (blur → tone → specular), innholdet ligger over.
+    el('span', { class: 'tabbar__glass', 'aria-hidden': 'true' },
+      el('span', { class: 'tabbar__glass-blur' }),
+      el('span', { class: 'tabbar__glass-tone' }),
+      el('span', { class: 'tabbar__glass-spek' })),
     el('span', { class: 'tabbar__indikator' }, el('span', { class: 'tabbar__pille' })),
     tab('hjem', 'hjem', 'Min dag'),
     tab('plan', 'kalender', 'Plan'),

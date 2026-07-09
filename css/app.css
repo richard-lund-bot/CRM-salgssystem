@@ -13,6 +13,11 @@
   --radius: 18px;
   --skygge: 0 1px 2px rgba(16, 32, 43, 0.04), 0 8px 24px rgba(16, 32, 43, 0.05);
   --tabbar-h: 58px;
+  /* Liquid glass (snipzy-oppskrift): tone-lag + specular lysrefleks + hårlinje.
+     Alle glassflater bygges av disse, så temaene styrer glasset. */
+  --glass-tone: color-mix(in srgb, var(--bg-kort) 62%, transparent);
+  --glass-kant: color-mix(in srgb, var(--tekst) 8%, transparent);
+  --glass-spekular: rgba(255, 255, 255, 0.75);
   font-size: 16px;
 }
 
@@ -60,6 +65,10 @@
   --bg: #14110a; --bg-kort: #1f1a10; --bg-kort-2: #2a2316; --tekst: #f6efdd;
   --dempet: #b7a678; --aksent: #e8c552; --aksent-mork: #b8952f; --kant: #38301d;
 }
+/* Glass i mørke temaer: svakere lysrefleks, lysere hårlinje */
+:root[data-tema] { --glass-spekular: rgba(255, 255, 255, 0.16); }
+:root[data-tema="papir"] { --glass-spekular: rgba(255, 255, 255, 0.75); }
+
 /* Lyst tema trenger mørk knappetekst-kontrast justert */
 :root[data-tema="papir"] .knapp { color: #f4f2ec; }
 :root[data-tema="papir"] .chip--aktiv, :root[data-tema="papir"] .ob-tggl--på { color: #f4f2ec; }
@@ -83,6 +92,23 @@ body {
   padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 30px);
 }
 
+/* Ambient bakgrunn — myke fargefelt i temaets aksent bak alt innhold, slik at
+   glassflatene har farger å plukke opp når innholdet scroller (liquid glass). */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(42% 34% at 14% 6%, color-mix(in srgb, var(--aksent) 20%, transparent), transparent 72%),
+    radial-gradient(36% 30% at 86% 16%, color-mix(in srgb, var(--aksent-mork) 14%, transparent), transparent 72%),
+    radial-gradient(46% 38% at 50% 100%, color-mix(in srgb, var(--aksent) 12%, transparent), transparent 74%);
+}
+
+/* SVG-filterdefinisjoner (index.html) skal ikke ta plass i layout */
+.skjult-filter { position: absolute; width: 0; height: 0; }
+
 .laster {
   display: grid;
   place-items: center;
@@ -95,7 +121,10 @@ body {
   position: sticky;
   top: 0;
   z-index: 5;
-  background: linear-gradient(var(--bg) 70%, transparent);
+  background: color-mix(in srgb, var(--bg) 55%, transparent);
+  backdrop-filter: blur(16px) saturate(170%);
+  -webkit-backdrop-filter: blur(16px) saturate(170%);
+  border-bottom: 1px solid color-mix(in srgb, var(--tekst) 6%, transparent);
   padding: calc(env(safe-area-inset-top) + 14px) 18px 10px;
 }
 .topp__tittel {
@@ -114,14 +143,19 @@ body {
 
 /* Kort */
 .kort {
-  background: var(--bg-kort);
-  border: 1px solid var(--kant);
+  background: var(--glass-tone);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border: none;
   border-radius: var(--radius);
   padding: 18px;
-  box-shadow: var(--skygge);
+  box-shadow:
+    var(--skygge),
+    inset 1px 1px 1px var(--glass-spekular),
+    inset 0 0 0 1px var(--glass-kant);
 }
 .kort h2 { margin: 0 0 12px; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.01em; }
-.kort--info { background: var(--bg-kort-2); }
+.kort--info { background: color-mix(in srgb, var(--bg-kort-2) 72%, transparent); }
 .kort p { margin: 0 0 8px; line-height: 1.5; }
 .dempet { color: var(--dempet); font-size: 0.9rem; }
 .dempet--ikon { display: flex; align-items: center; gap: 5px; }
@@ -188,17 +222,26 @@ body {
 }
 .knapp:active { transform: scale(0.98); }
 .knapp--sekundaer {
-  background: transparent;
+  background: color-mix(in srgb, var(--bg-kort) 42%, transparent);
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
   color: var(--tekst);
-  border: 1.5px solid var(--kant);
+  box-shadow:
+    inset 1px 1px 1px var(--glass-spekular),
+    inset 0 0 0 1px var(--glass-kant);
 }
 .knapp--aksent { background: var(--aksent); color: #fff; }
 
 /* Søk + chips */
 .sok {
   width: 100%;
-  background: var(--bg-kort);
-  border: 1px solid var(--kant);
+  background: color-mix(in srgb, var(--bg-kort) 55%, transparent);
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  border: none;
+  box-shadow:
+    inset 1px 1px 1px var(--glass-spekular),
+    inset 0 0 0 1px var(--glass-kant);
   border-radius: 12px;
   color: var(--tekst);
   padding: 12px 14px;
@@ -216,20 +259,27 @@ body {
 .chiprad::-webkit-scrollbar { display: none; }
 .chip {
   flex: 0 0 auto;
-  background: var(--bg-kort-2);
-  border: 1px solid var(--kant);
+  background: color-mix(in srgb, var(--bg-kort) 52%, transparent);
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  border: none;
+  box-shadow:
+    inset 1px 1px 1px var(--glass-spekular),
+    inset 0 0 0 1px var(--glass-kant);
   color: var(--dempet);
   border-radius: 999px;
-  padding: 9px 15px;
+  padding: 10px 16px;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
 }
 .chip--aktiv {
-  background: var(--aksent);
+  background: color-mix(in srgb, var(--aksent) 84%, transparent);
   color: #fff;
-  border-color: var(--aksent);
+  box-shadow:
+    inset 1px 1px 1px rgba(255, 255, 255, 0.5),
+    inset 0 0 0 1px color-mix(in srgb, var(--aksent) 60%, transparent);
   font-weight: 700;
 }
 
@@ -285,45 +335,61 @@ body {
   height: var(--tabbar-h);
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  background: color-mix(in srgb, var(--bg-kort) 55%, transparent);
-  backdrop-filter: blur(26px) saturate(200%);
-  -webkit-backdrop-filter: blur(26px) saturate(200%);
   border-radius: 30px;
-  /* Ingen ekte border (unngår 1px box-drift som gjør pillen ujevn på ytterfaner);
-     kanten tegnes som inset-skygge i stedet. overflow+isolation gjør at Safari
-     klipper glasset mot de avrundede hjørnene og komposerer det i eget lag. */
+  /* overflow+isolation: Safari klipper glasset mot de avrundede hjørnene og
+     komposerer i eget lag. Kant/highlight tegnes i spekular-laget (unngår
+     1px border-drift som gjorde pillen ujevn på ytterfaner). */
   overflow: hidden;
   isolation: isolate;
   box-shadow:
     0 10px 30px rgba(16, 32, 43, 0.18),
-    0 2px 6px rgba(16, 32, 43, 0.10),
-    inset 0 0 0 1px color-mix(in srgb, var(--tekst) 8%, transparent),
-    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    0 2px 6px rgba(16, 32, 43, 0.10);
   z-index: 20;
 }
 
-/* Glidende markør — «liquid glass»-pille bak aktiv fane.
-   Posisjonen settes direkte som transform av oppdaterNav() (translateX i steg
-   på 100% = én kolonne). Direkte transform animeres pålitelig i iOS Safari;
-   en var() i calc() gjorde det ikke. */
+/* Glasslagene (snipzy-oppskriften): blur → tone → specular, innhold øverst. */
+.tabbar__glass { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.tabbar__glass > span { position: absolute; inset: 0; }
+.tabbar__glass-blur {
+  backdrop-filter: blur(9px) saturate(180%);
+  -webkit-backdrop-filter: blur(9px) saturate(180%);
+}
+/* Lysbryting (SVG-distorsjon, jf. index.html) — kun der den er pålitelig */
+.har-distorsjon .tabbar__glass-blur { filter: url(#glass-distortion) brightness(1.06); }
+.tabbar__glass-tone { background: color-mix(in srgb, var(--bg-kort) 50%, transparent); }
+.tabbar__glass-spek {
+  box-shadow:
+    inset 1px 1px 1px var(--glass-spekular),
+    inset 0 0 0 1px var(--glass-kant);
+  border-radius: 30px;
+}
+
+/* Glidende markør — glass-«linse» bak aktiv fane. Posisjonen settes som
+   direkte transform av oppdaterNav(); glidningen med strekk/krymping
+   (squash & stretch) animeres med Web Animations API — pålitelig i iOS
+   Safari, i motsetning til transition på var()-basert calc(). */
 .tabbar__indikator {
   position: absolute;
   top: 0; bottom: 0; left: 0;
   width: 20%;
   display: flex;
   transform: translateX(0);
-  transition: transform 0.42s cubic-bezier(0.34, 1.4, 0.5, 1);
   will-change: transform;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
 }
 .tabbar__pille {
   flex: 1;
   margin: 8px 10px;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--aksent) 15%, transparent);
-  border: 1px solid color-mix(in srgb, var(--aksent) 28%, transparent);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 45%, transparent);
+  background: color-mix(in srgb, var(--aksent) 16%, transparent);
+  /* Linse: pillen er selv glass — lysner/metter innholdet den glir over */
+  backdrop-filter: blur(2px) saturate(170%) brightness(1.12);
+  -webkit-backdrop-filter: blur(2px) saturate(170%) brightness(1.12);
+  box-shadow:
+    inset 1px 1px 1px var(--glass-spekular),
+    inset 0 0 0 1px color-mix(in srgb, var(--aksent) 30%, transparent),
+    0 2px 8px color-mix(in srgb, var(--aksent) 18%, transparent);
 }
 
 .tabbar__knapp {
@@ -338,7 +404,7 @@ body {
   font-weight: 600;
   letter-spacing: 0.01em;
   position: relative;
-  z-index: 1;
+  z-index: 2;
   -webkit-tap-highlight-color: transparent;
 }
 .tabbar__knapp--aktiv { color: var(--aksent); }
@@ -364,8 +430,13 @@ body.fokusmodus { padding-bottom: 0; }
 /* Topp med tilbake-knapp */
 .topp--kjor { display: flex; align-items: flex-start; gap: 10px; }
 .topp__tilbake {
-  background: var(--bg-kort);
-  border: 1px solid var(--kant);
+  background: color-mix(in srgb, var(--bg-kort) 55%, transparent);
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  border: none;
+  box-shadow:
+    inset 1px 1px 1px var(--glass-spekular),
+    inset 0 0 0 1px var(--glass-kant);
   color: var(--tekst);
   width: 38px; height: 38px;
   border-radius: 10px;
@@ -379,8 +450,13 @@ body.fokusmodus { padding-bottom: 0; }
 /* Knapp-tilstander */
 .knapp--av, .knapp:disabled { opacity: 0.4; pointer-events: none; }
 .ikonknapp {
-  background: var(--bg-kort-2);
-  border: 1px solid var(--kant);
+  background: color-mix(in srgb, var(--bg-kort) 52%, transparent);
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  border: none;
+  box-shadow:
+    inset 1px 1px 1px var(--glass-spekular),
+    inset 0 0 0 1px var(--glass-kant);
   color: var(--tekst);
   width: 34px; height: 34px;
   border-radius: 9px;
@@ -1016,7 +1092,6 @@ body.fokusmodus { padding-bottom: 0; }
 @media (prefers-reduced-motion: reduce) {
   .innhold > *, .heat__c, .levelup__niva, .levelup__bel, .guide__rad--puls,
   .tabbar__knapp--aktiv .tabbar__ikon { animation: none !important; }
-  .tabbar__indikator { transition: none; }
   .konfetti__brikke { display: none; }
   .xpbar__fyll, .bar__fyll, .ringfremgang__fyll { transition-duration: 0.01ms; }
   .tabbar__knapp:active .tabbar__ikon, .listerad:active, .modrad:active, .gw:active,
@@ -1025,3 +1100,23 @@ body.fokusmodus { padding-bottom: 0; }
   .kalmnd__dag:active, .plandag__rad--knapp:active, .ukestripe__dag:active, .modrad--knapp:active { transform: none; }
 }
 .stige__avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
+
+/* Tilgjengelighet: ved «reduser gjennomsiktighet» slås glasset av og flatene
+   blir tette igjen (samme oppførsel som iOS' Reduce Transparency). */
+@media (prefers-reduced-transparency: reduce) {
+  body::before { display: none; }
+  .kort, .chip, .sok, .ikonknapp, .topp__tilbake, .knapp--sekundaer {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--bg-kort);
+  }
+  .chip--aktiv { background: var(--aksent); }
+  .topp {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--bg);
+  }
+  .tabbar__glass-blur { backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .tabbar__glass-tone { background: var(--bg-kort); }
+  .tabbar__pille { backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
