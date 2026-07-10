@@ -156,13 +156,24 @@ function visHurtigFullfor(mount, bevegelse, minutter) {
 export function visLoggforSkjerm(mount) {
   stoppTimer();
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
+
+  // ?d=YYYY-MM-DD (fra ukeskalenderen i biblioteket): logg en glemt økt på
+  // en tidligere dato — datoen blir et eget valg under «Når?».
+  const idagIso = (() => {
+    const d = new Date();
+    const p = (n) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+  })();
+  const dParam = params.get('d');
+  const forDato = /^\d{4}-\d{2}-\d{2}$/.test(dParam || '') && dParam < idagIso ? dParam : null;
+
   const state = {
     bevegelse: BEVEGELSER[params.get('b')] ? params.get('b') : 'walk',
     sport: null,
     tittel: '',
     minutter: 30,
     intensitet: 3,
-    naar: 'idag',
+    naar: forDato ? 'dato' : 'idag',
   };
 
   function tegn() {
@@ -215,6 +226,8 @@ export function visLoggforSkjerm(mount) {
         el('div', { class: 'kort' },
           el('h2', {}, 'Når?'),
           el('div', { class: 'chiprad' },
+            forDato && chip(new Date(`${forDato}T12:00:00`).toLocaleDateString('nb-NO', { weekday: 'short', day: 'numeric', month: 'short' }),
+              { aktiv: state.naar === 'dato', onClick: () => { state.naar = 'dato'; tegn(); } }),
             chip('I dag', { aktiv: state.naar === 'idag', onClick: () => { state.naar = 'idag'; tegn(); } }),
             chip('I går', { aktiv: state.naar === 'igar', onClick: () => { state.naar = 'igar'; tegn(); } }),
           ),
@@ -225,7 +238,7 @@ export function visLoggforSkjerm(mount) {
           el('button', {
             class: 'knapp', type: 'button',
             onclick: () => {
-              const dato = new Date();
+              const dato = state.naar === 'dato' ? new Date(`${forDato}T12:00:00`) : new Date();
               if (state.naar === 'igar') dato.setDate(dato.getDate() - 1);
               dato.setHours(12, 0, 0, 0);
               const tittel = state.bevegelse === 'sport' ? (state.sport || 'Sport')

@@ -1617,7 +1617,9 @@ body.fokusmodus { padding-bottom: 0; }
    Øktbiblioteket (M13) — hero med fadet bakgrunnsbilde, horisontalt
    skrollbare bolker per ferdighetsnivå, og kort i hjemflis-stilen.
    ========================================================================== */
-.bib { position: relative; }
+/* Det hvite Min dag-banneret ligger sticky over; innholdet tuckes opp bak
+   den buede underkanten, og bakgrunnsbildet fader ut mot underlaget. */
+.bib { position: relative; margin-top: calc(-1 * var(--radius-2xl)); }
 .bib__bilde {
   position: absolute; left: 0; right: 0; top: 0; z-index: 0;
   height: 330px;
@@ -1628,24 +1630,8 @@ body.fokusmodus { padding-bottom: 0; }
   -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent 98%);
   mask-image: linear-gradient(to bottom, #000 40%, transparent 98%);
 }
-.bibtopp {
-  position: relative; z-index: 1;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: calc(env(safe-area-inset-top) + 12px) 14px 0;
-}
-.bibtopp__plass { width: 42px; height: 42px; }
-.bibtopp__knapp {
-  width: 42px; height: 42px; border: none; border-radius: 50%;
-  background: rgba(255, 255, 255, 0.82);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  box-shadow: var(--shadow-sm);
-  color: var(--ink-800); cursor: pointer;
-  display: grid; place-items: center;
-}
-.bibtopp__knapp .ikon { width: 20px; height: 20px; }
-.bibtopp__knapp--aktiv { color: var(--aksent); }
-.bibhero { position: relative; z-index: 1; padding: 34px 18px 20px; }
+.ikonknapp--aktiv { color: var(--aksent); }
+.bibhero { position: relative; z-index: 1; padding: calc(var(--radius-2xl) + 26px) 18px 20px; }
 .bibhero__tittel {
   margin: 0; font-family: var(--font-display); font-weight: 600;
   font-size: 30px; letter-spacing: -0.01em; color: var(--ink-900);

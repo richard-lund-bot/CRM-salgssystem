@@ -90,12 +90,21 @@ export function tilfeldigOkt() {
 }
 
 // ===========================================================================
-// Biblioteket: #/okter?kat=styrke (fra hjem-flisene, med tilbakeknapp) og
-// #/beveg (Beveg-fanen, med tab-bar). Horisontalt skrollbare bolker per
-// ferdighetsnivå, kort i hjemflis-stilen, og en filterknapp (type + nivå).
-// #/okter?start=<id>&p=<planId> starter en økt direkte.
+// Biblioteket: #/okter?kat=styrke (fra hjem-flisene) og #/beveg (Beveg-
+// fanen) — samme skjerm, med det hvite Min dag-banneret øverst (profil,
+// bjelle, logo, filterknapp) og ukeskalender der dagene har bibliotekets
+// aksjoner: bakover = logg en glemt økt, i dag = start en økt (skroll til
+// bolkene), fremover = planlegg. Horisontalt skrollbare bolker per
+// ferdighetsnivå, kort i hjemflis-stilen, filterpanelet skjult til
+// filterknappen åpner det. #/okter?start=<id>&p=<planId> starter direkte.
 // ===========================================================================
-export function visOkterSkjerm(mount, { tab = false } = {}) {
+function isoIdag() {
+  const d = new Date();
+  const p = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+}
+
+export function visOkterSkjerm(mount, { lagBanner = null } = {}) {
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
 
   const startId = params.get('start');
@@ -104,7 +113,7 @@ export function visOkterSkjerm(mount, { tab = false } = {}) {
   const state = {
     kat: KATEGORI_NAVN[params.get('kat')] ? params.get('kat') : null, // null = alle typer
     skill: null,       // null = alle nivåer
-    filterApen: false,
+    filterApen: false, // panelet er skjult til filterknappen åpner det
   };
 
   function utstyrTekst(o) {
@@ -180,40 +189,46 @@ export function visOkterSkjerm(mount, { tab = false } = {}) {
     );
   }
 
+  // Ukeskalenderens dager: bakover → logg en glemt økt på den datoen,
+  // fremover → planlegg i kalenderen, i dag → start en økt (skroll til bolkene).
+  function dagAksjon(iso) {
+    const idag = isoIdag();
+    if (iso < idag) location.hash = `#/loggfor?d=${iso}`;
+    else if (iso > idag) location.hash = `#/kalender?d=${iso}`;
+    else document.querySelector('.bibbolk')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  const filterKnapp = el('button', {
+    class: 'ikonknapp ikonknapp--plain', type: 'button', 'aria-label': 'Filter',
+    onclick: () => { state.filterApen = !state.filterApen; tegn(); },
+  }, ikon('filter'));
+
+  const rot = el('div', { class: 'bib' });
+  tom(mount);
+  if (lagBanner) mount.append(lagBanner(filterKnapp, dagAksjon));
+  mount.append(rot);
+
   function tegn() {
     const bevegelse = KATEGORI_TIL_BEVEGELSE[state.kat];
     const kanHurtig = !state.kat || BEVEGELSER[bevegelse]?.slag === 'fri';
-    const filtrert = state.kat || state.skill;
     const nivaer = state.skill ? [state.skill] : SKILL_REKKE;
+    filterKnapp.classList.toggle('ikonknapp--aktiv', state.filterApen || !!(state.kat || state.skill));
 
-    tom(mount);
-    mount.append(
-      el('div', { class: 'bib' },
-        el('div', { class: 'bib__bilde', style: "background-image:url('icons/brand/hero-dag.webp')" }),
-        el('header', { class: 'bibtopp' },
-          tab
-            ? el('span', { class: 'bibtopp__plass' })
-            : el('button', { class: 'bibtopp__knapp', type: 'button', title: 'Tilbake', onclick: () => { location.hash = '#/hjem'; } }, ikon('tilbake')),
-          el('a', { class: 'wordmark', href: '#/hjem', 'aria-label': 'Mova' }, 'mova', el('span', { class: 'wordmark__prikk' }, '.')),
-          el('button', {
-            class: 'bibtopp__knapp' + (state.filterApen || filtrert ? ' bibtopp__knapp--aktiv' : ''),
-            type: 'button', title: 'Filter',
-            onclick: () => { state.filterApen = !state.filterApen; tegn(); },
-          }, ikon('filter')),
-        ),
-        el('div', { class: 'bibhero' },
-          el('h1', { class: 'bibhero__tittel' }, KATEGORI_TITTEL[state.kat] || 'Øktbiblioteket'),
-          el('p', { class: 'bibhero__under' }, 'Velg en økt som passer dagen din.'),
-        ),
-        el('main', { class: 'innhold bib__innhold' },
-          state.filterApen && filterPanel(),
-          ...nivaer.map((s, i) => bolk(s, i)),
-          el('div', { class: 'kort' },
-            el('div', { class: 'liste' },
-              kanHurtig && lenkerad('stoppeklokke', 'Fri økt med timer', `#/hurtig${bevegelse ? `?b=${bevegelse}` : ''}`),
-              lenkerad('penn', 'Logg noe du alt har gjort', '#/loggfor'),
-              lenkerad('kalender', 'Planlagte økter', '#/kalender'),
-            ),
+    tom(rot);
+    rot.append(
+      el('div', { class: 'bib__bilde', style: "background-image:url('icons/brand/hero-dag.webp')" }),
+      el('div', { class: 'bibhero' },
+        el('h1', { class: 'bibhero__tittel' }, KATEGORI_TITTEL[state.kat] || 'Øktbiblioteket'),
+        el('p', { class: 'bibhero__under' }, 'Velg en økt som passer dagen din.'),
+      ),
+      el('main', { class: 'innhold bib__innhold' },
+        state.filterApen && filterPanel(),
+        ...nivaer.map((s, i) => bolk(s, i)),
+        el('div', { class: 'kort' },
+          el('div', { class: 'liste' },
+            kanHurtig && lenkerad('stoppeklokke', 'Fri økt med timer', `#/hurtig${bevegelse ? `?b=${bevegelse}` : ''}`),
+            lenkerad('penn', 'Logg noe du alt har gjort', '#/loggfor'),
+            lenkerad('kalender', 'Planlagte økter', '#/kalender'),
           ),
         ),
       ),

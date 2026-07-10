@@ -29,12 +29,12 @@ let bib = null;
 // --- Ruter (hash-basert) ---
 const ruter = {
   hjem: visHjem,
-  beveg: () => visOkterSkjerm(app, { tab: true }), // Beveg-fanen er øktbiblioteket
+  beveg: () => visOkterSkjerm(app, { lagBanner: bibliotekBanner }), // Beveg-fanen er øktbiblioteket
   hurtig: () => visHurtigSkjerm(app),
   loggfor: () => visLoggforSkjerm(app),
   reise: () => visReiseSkjerm(app),
   tilpass: () => visTilpassSkjerm(app, bib),
-  okter: () => visOkterSkjerm(app),
+  okter: () => visOkterSkjerm(app, { lagBanner: bibliotekBanner }),
   ny: omdirigerGammelNyLenke, // gammel generator-lenke → øktbiblioteket
   plan: () => visKalenderSkjerm(app), // gammel lenke — kalenderen er planen
   kalender: () => visKalenderSkjerm(app),
@@ -49,7 +49,14 @@ const ruter = {
 };
 
 // Skjermene med egen tilbake-header er fokusmodus (skjuler tab-baren).
-const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'tilpass', 'kalender', 'okter']);
+const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'tilpass', 'kalender']);
+
+// Banneret til biblioteket: hvitt som på Min dag, men med filterknapp til
+// høyre — og dagene i ukeskalenderen får bibliotekets aksjoner.
+function bibliotekBanner(hoyre, dagAksjon) {
+  hjemUkeOffset = 0;
+  return hjemBanner(hentLogg(), { hoyre, dagAksjon });
+}
 
 // Gamle #/ny?m=STY-lenker (og bokmerker) sendes til riktig bibliotekkategori.
 function omdirigerGammelNyLenke() {
@@ -70,7 +77,7 @@ function oppdaterNav(rute) {
   const tabRute = ({
     innstillinger: 'meny', bibliotek: 'meny', kjeder: 'meny', om: 'meny',
     plan: 'meny', progresjon: 'meny', niva: 'meny',
-    historikk: 'aktivitet', ny: 'beveg', tilpass: 'reise',
+    historikk: 'aktivitet', ny: 'beveg', okter: 'beveg', tilpass: 'reise',
   })[rute] || rute;
   document.querySelectorAll('.tabbar__knapp').forEach((b) => {
     b.classList.toggle('tabbar__knapp--aktiv', b.dataset.rute === tabRute);
@@ -324,10 +331,12 @@ function heroPlanBoks(p) {
 // ligger foran alt annet; innholdet scroller under den buede underkanten.
 // Ukene ligger i et dra-bart spor (forrige · denne · neste): dra med fingeren
 // og uka følger med, slipp så glir den over til neste/forrige. Pilene gjør
-// det samme. En dag åpner mosjonskalenderen på den datoen.
+// det samme. En dag åpner mosjonskalenderen på den datoen — med mindre
+// skjermen sender inn sin egen dag-aksjon (biblioteket: logg/start/planlegg).
+// `hoyre` bytter ut kalenderknappen til høyre (biblioteket: filter).
 let hjemUkeOffset = 0;
 
-function hjemBanner(logg) {
+function hjemBanner(logg, { hoyre = null, dagAksjon = null } = {}) {
   const aktivSett = new Set(logg.map((o) => (o.dato || '').slice(0, 10)));
 
   // Ukedagsnavnene står stille — bare datotallene ligger i det dra-bare sporet.
@@ -339,10 +348,12 @@ function hjemBanner(logg) {
       const dato = new Date(man.getTime() + i * DAG);
       const iso = isoDato(dato);
       const erIdag = iso === idagIso;
-      panel.append(el('a', { class: 'hjemuke__dag', href: `#/kalender?d=${iso}` },
+      const lenke = el('a', { class: 'hjemuke__dag', href: `#/kalender?d=${iso}` },
         el('span', { class: 'hjemuke__tall' + (erIdag ? ' hjemuke__tall--idag' : '') }, String(dato.getDate())),
         el('i', { class: 'hjemuke__prikk' + (aktivSett.has(iso) && !erIdag ? ' hjemuke__prikk--aktiv' : '') }),
-      ));
+      );
+      if (dagAksjon) lenke.addEventListener('click', (ev) => { ev.preventDefault(); dagAksjon(iso, erIdag); });
+      panel.append(lenke);
     }
     return panel;
   }
@@ -423,12 +434,13 @@ function hjemBanner(logg) {
   );
   tegnUker();
 
+  if (hoyre) hoyre.classList.add('hjembanner__hoyre');
   return el('div', { class: 'hjembanner' },
     el('div', { class: 'hjembanner__rad' },
       el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/reise', 'aria-label': 'Profil' }, ikon('person')),
       el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/innstillinger', 'aria-label': 'Varsler og innstillinger' }, ikon('bjelle')),
       el('span', { class: 'hjembanner__logo' }, wordmark()),
-      el('a', { class: 'ikonknapp ikonknapp--plain hjembanner__hoyre', href: '#/kalender', 'aria-label': 'Mosjonskalender' }, ikon('kalender')),
+      hoyre || el('a', { class: 'ikonknapp ikonknapp--plain hjembanner__hoyre', href: '#/kalender', 'aria-label': 'Mosjonskalender' }, ikon('kalender')),
     ),
     uke,
   );
