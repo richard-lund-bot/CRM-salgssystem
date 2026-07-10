@@ -1,14 +1,14 @@
-// Beveg (M11 — spec §5): bevegelsesnavet. Flyten er energi-først:
-// «Hvordan har du det i dag?» → tid → bevegelsestype. Strukturerte typer
-// sendes til generatoren, gå/løp/sykle får hurtigstart med timer, og sport/
-// annet logges manuelt. Alt gir XP og flytter reisen (§5.12: aldri skam,
-// delvis gjennomføring teller, manuelle logger teller).
+// Beveg (M11 — spec §5): fri bevegelse og manuell logging. Beveg-fanen selv
+// er øktbiblioteket (bibliotek-okter.js); her bor hurtigstart med timer
+// (gå/løp/sykle), manuell logg og fullført-skjermen. Alt gir XP og flytter
+// reisen (§5.12: aldri skam, delvis gjennomføring teller, manuelle logger
+// teller).
 import { el, tom, chip, ikon } from './ui.js';
 import { hentProfil, lagreProfil, hentLogg, leggTilLogg } from './store.js';
 import { registrerBevegelse } from './niva.js';
 import {
-  BEVEGELSER, BEVEGELSE_NAVN, ENERGI, SPORTER, VARIGHET_MIN,
-  beregnXp, startHref, erComeback, bevegelsesMomentum,
+  BEVEGELSER, BEVEGELSE_NAVN, SPORTER,
+  beregnXp, erComeback, bevegelsesMomentum,
 } from './bevegelse.js';
 import { belonningIkonNavn } from './belonninger.js';
 import { tegnFigur, sikreFigur } from './figur.js';
@@ -17,16 +17,10 @@ import { tallOpp, lagKonfetti } from './animasjon.js';
 let _bib = null;
 export function settBib(bib) { _bib = bib; }
 
-// Valgt energi/tid huskes mens appen er åpen (lav terskel — ett svar holder).
-let valgtEnergi = null;
-let valgtK = null;
-
 let aktivTimer = null;
 function stoppTimer() {
   if (aktivTimer) { clearInterval(aktivTimer); aktivTimer = null; }
 }
-
-const KLASSER = [['Mikro', 'mikro', '5–10 min'], ['Kort', 'kort', '15–20 min'], ['Standard', 'standard', '30–40 min'], ['Lang', 'lang', '45–60 min']];
 
 // --- Registrering: én vei inn for all fri/manuell bevegelse ----------------
 export function registrerOgLogg({ bevegelse, varighetMin, intensitet = 3, tittel = null, kilde = 'manuell', dato = null, ekstra = {} }) {
@@ -49,151 +43,6 @@ export function registrerOgLogg({ bevegelse, varighetMin, intensitet = 3, tittel
     ...ekstra,
   });
   return resultat;
-}
-
-// ===========================================================================
-// Beveg-skjermen
-// ===========================================================================
-export function visBevegSkjerm(mount) {
-  stoppTimer();
-  const profil = hentProfil();
-  if (!profil) { location.hash = '#/hjem'; return; }
-  if (!valgtK) valgtK = profil.varighetsklasse || 'standard';
-
-  function tegn() {
-    tom(mount);
-    const energi = ENERGI.find((e) => e.id === valgtEnergi) || null;
-    mount.append(
-      el('header', { class: 'topp' },
-        el('h1', { class: 'topp__tittel' }, 'Beveg'),
-        el('p', { class: 'topp__under' }, 'Hvordan vil du bevege deg i dag?'),
-      ),
-      el('main', { class: 'innhold' },
-        el('div', { class: 'kort' },
-          el('h2', {}, 'Hvordan har du det i dag?'),
-          el('div', { class: 'energirad' },
-            ...ENERGI.map((e) => el('button', {
-              class: 'energiknapp' + (valgtEnergi === e.id ? ' energiknapp--valgt' : ''),
-              type: 'button',
-              onclick: () => { valgtEnergi = valgtEnergi === e.id ? null : e.id; tegn(); },
-            }, e.navn)),
-          ),
-          energi && el('p', { class: 'dempet' }, energi.tekst),
-        ),
-        el('div', { class: 'kort' },
-          el('h2', {}, 'Hvor mye tid har du?'),
-          el('div', { class: 'chiprad' },
-            ...KLASSER.map(([navn, id, und]) => chip(`${navn} · ${und}`, {
-              aktiv: valgtK === id, onClick: () => { valgtK = id; tegn(); },
-            })),
-          ),
-        ),
-        energi && forslagKort(energi),
-        el('div', { class: 'kort' },
-          el('h2', {}, 'Velg bevegelse'),
-          el('div', { class: 'bevgrid' },
-            ...Object.entries(BEVEGELSER).map(([id, b]) => bevegelseFlis(id, b)),
-            overraskFlis(),
-          ),
-        ),
-        el('div', { class: 'kort' },
-          el('div', { class: 'liste' },
-            lenkerad('bok', 'Øktbiblioteket', '#/okter'),
-            lenkerad('penn', 'Logg noe du alt har gjort', '#/loggfor'),
-            lenkerad('kalender', 'Planlagte økter', '#/kalender'),
-          ),
-        ),
-      ),
-    );
-  }
-
-  function bevegelseFlis(id, b) {
-    const href = startHref(id, {
-      varighetsklasse: valgtK,
-      intensitet: ENERGI.find((e) => e.id === valgtEnergi)?.intensitet,
-      maalMin: VARIGHET_MIN[valgtK],
-    });
-    return el('a', { class: 'bevflis', href },
-      el('span', { class: 'bevflis__ikon' }, ikon(b.ikon)),
-      el('span', { class: 'bevflis__navn' }, b.navn),
-    );
-  }
-
-  function overraskFlis() {
-    return el('button', {
-      class: 'bevflis bevflis--overrask', type: 'button',
-      onclick: () => {
-        const kandidater = kandidaterForEnergi(valgtEnergi);
-        const id = kandidater[Math.floor(Math.random() * kandidater.length)];
-        location.hash = startHref(id, {
-          varighetsklasse: valgtK,
-          intensitet: ENERGI.find((e) => e.id === valgtEnergi)?.intensitet,
-          maalMin: VARIGHET_MIN[valgtK],
-        });
-      },
-    },
-      el('span', { class: 'bevflis__ikon' }, ikon('terning')),
-      el('span', { class: 'bevflis__navn' }, 'Overrask meg'),
-    );
-  }
-
-  // Ett vennlig forslag som matcher energien (§5.3: energi først).
-  function forslagKort(energi) {
-    const f = forslagForEnergi(energi.id, profil);
-    if (!f) return null;
-    return el('a', { class: 'kort gnist gnist--liten', href: f.href },
-      el('div', { class: 'gnist__meta' },
-        el('p', { class: 'gnist__eyebrow' }, 'Forslag til deg'),
-        el('h2', { class: 'gnist__tittel' }, f.tittel),
-        el('p', { class: 'gnist__under' }, `${f.undertekst} · ≈ +${f.xp} XP`),
-      ),
-      el('span', { class: 'gnist__pil' }, ikon('chevron')),
-    );
-  }
-
-  tegn();
-}
-
-// Forslag per energinivå — lav energi får alltid noe snilt (§5.3).
-function forslagForEnergi(energiId, profil) {
-  const dagIdx = new Date().getDate();
-  const velg = (liste) => liste[dagIdx % liste.length];
-  const lav = [
-    { bevegelse: 'walk', tittel: '10 minutter frisk luft', undertekst: 'Rolig tempo. Ingen press', minutter: 10, intensitet: 2 },
-    { bevegelse: 'stretch', tittel: '8 minutter tøying', undertekst: 'Mykt og rolig', minutter: 8, intensitet: 1, varighetsklasse: 'mikro' },
-    { bevegelse: 'recovery', tittel: 'Rolig restitusjon', undertekst: 'Pust og land', minutter: 12, intensitet: 1, varighetsklasse: 'mikro' },
-    { bevegelse: 'yoga', tittel: 'Rolig yogaflyt', undertekst: 'Pust og bevegelse', minutter: 15, intensitet: 2, varighetsklasse: 'kort' },
-  ];
-  const normal = [
-    { bevegelse: 'walk', tittel: '20 minutter gåtur', undertekst: 'Ut døra — det holder', minutter: 20, intensitet: 2 },
-    { bevegelse: 'strength', tittel: 'Styrkeøkt som passer dagen', undertekst: 'Generatoren setter opp', minutter: 25, intensitet: 3, varighetsklasse: 'kort' },
-    { bevegelse: 'yoga', tittel: 'Yogaflyt', undertekst: 'Mykt, men våkent', minutter: 20, intensitet: 2, varighetsklasse: 'kort' },
-  ];
-  const klar = [
-    { bevegelse: 'strength', tittel: 'Skikkelig styrkeøkt', undertekst: 'Du har overskudd — bruk det', minutter: 35, intensitet: 4, varighetsklasse: 'standard' },
-    { bevegelse: 'run', tittel: 'Løpetur', undertekst: 'Sett farten selv', minutter: 25, intensitet: 4 },
-    { bevegelse: 'hiit', tittel: 'Kort intervalløkt', undertekst: 'Effektivt og ferdig', minutter: 18, intensitet: 4, varighetsklasse: 'kort' },
-  ];
-  const f = velg(energiId === 'lav' ? lav : energiId === 'klar' ? klar : normal);
-  return {
-    ...f,
-    xp: beregnXp(f.minutter, f.bevegelse, f.intensitet),
-    href: startHref(f.bevegelse, { varighetsklasse: f.varighetsklasse, intensitet: f.intensitet, maalMin: f.minutter }),
-  };
-}
-
-function kandidaterForEnergi(energiId) {
-  if (energiId === 'lav') return ['walk', 'stretch', 'recovery', 'yoga', 'mobility'];
-  if (energiId === 'klar') return ['strength', 'run', 'hiit', 'bike', 'bodyweight'];
-  return ['walk', 'strength', 'yoga', 'bike', 'bodyweight', 'stretch'];
-}
-
-function lenkerad(ikonNavn, tekst, href) {
-  return el('a', { class: 'listerad', href },
-    el('span', { class: 'listerad__ikon' }, ikon(ikonNavn)),
-    el('span', { class: 'listerad__navn' }, tekst),
-    el('span', { class: 'listerad__chevron' }, ikon('chevron')),
-  );
 }
 
 // ===========================================================================

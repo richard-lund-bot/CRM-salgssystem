@@ -12,7 +12,7 @@ import { APP_VERSION } from './config.js';
 import { kjorOnboarding } from './onboarding.js';
 import { visReviewSkjerm, visKjoreSkjerm } from './kjor.js';
 import { settBib as settBibHist, visAktivitetSkjerm } from './historikk.js';
-import { settBib as settBibBeveg, visBevegSkjerm, visHurtigSkjerm, visLoggforSkjerm } from './beveg.js';
+import { settBib as settBibBeveg, visHurtigSkjerm, visLoggforSkjerm } from './beveg.js';
 import { settBib as settBibReise, visReiseSkjerm } from './reise.js';
 import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
 import { visTilpassSkjerm, standardFigur } from './figur.js';
@@ -29,7 +29,7 @@ let bib = null;
 // --- Ruter (hash-basert) ---
 const ruter = {
   hjem: visHjem,
-  beveg: () => visBevegSkjerm(app),
+  beveg: () => visOkterSkjerm(app, { tab: true }), // Beveg-fanen er øktbiblioteket
   hurtig: () => visHurtigSkjerm(app),
   loggfor: () => visLoggforSkjerm(app),
   reise: () => visReiseSkjerm(app),

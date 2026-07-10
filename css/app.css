@@ -1416,15 +1416,7 @@ body.fokusmodus { padding-bottom: 0; }
 }
 .knapp--stor { font-size: 17px; padding: 14px 26px; }
 
-/* --- Beveg: energi + bevegelsesgrid --- */
-.energirad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
-.energiknapp {
-  padding: 12px 8px; border-radius: var(--radius-md); border: 1px solid var(--kant);
-  background: var(--bg-kort-2); font-family: var(--font-display); font-size: 15px;
-  color: var(--tekst); cursor: pointer;
-}
-.energiknapp--valgt { background: var(--aksent); color: #fff; border-color: var(--aksent); box-shadow: var(--shadow-action); }
-
+/* --- Bevegelsesgrid (manuell logg) --- */
 .bevgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .bevflis {
   display: flex; flex-direction: column; align-items: center; gap: 6px;
@@ -1622,16 +1614,117 @@ body.fokusmodus { padding-bottom: 0; }
 .kalform__okttid { color: var(--dempet); font-size: 12px; flex: 0 0 auto; }
 
 /* ==========================================================================
-   Øktbiblioteket (M13) — øktkort i velgeren
+   Øktbiblioteket (M13) — hero med fadet bakgrunnsbilde, horisontalt
+   skrollbare bolker per ferdighetsnivå, og kort i hjemflis-stilen.
    ========================================================================== */
-.oktkort { display: block; width: 100%; text-align: left; cursor: pointer; font: inherit; }
-.oktkort:active { background: var(--bg-kort-2); }
-.oktkort__topp { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
-.oktkort__navn { font-family: var(--font-display); font-weight: 600; font-size: 16.5px; color: var(--tekst); }
-.oktkort__tid { color: var(--aksent); font-weight: 600; font-size: 13px; flex: 0 0 auto; }
-.oktkort__beskr { margin: 6px 0 10px; font-size: 13px; color: var(--tekst-2); line-height: 1.45; }
-.oktkort__meta { display: flex; flex-wrap: wrap; gap: 6px; }
-.oktkort__kilde { margin: 10px 0 0; font-size: 11.5px; color: var(--dempet); }
+.bib { position: relative; }
+.bib__bilde {
+  position: absolute; left: 0; right: 0; top: 0; z-index: 0;
+  height: 330px;
+  background-size: cover;
+  background-position: center 32%;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent 98%);
+  mask-image: linear-gradient(to bottom, #000 40%, transparent 98%);
+}
+.bibtopp {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: calc(env(safe-area-inset-top) + 12px) 14px 0;
+}
+.bibtopp__plass { width: 42px; height: 42px; }
+.bibtopp__knapp {
+  width: 42px; height: 42px; border: none; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.82);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
+  color: var(--ink-800); cursor: pointer;
+  display: grid; place-items: center;
+}
+.bibtopp__knapp .ikon { width: 20px; height: 20px; }
+.bibtopp__knapp--aktiv { color: var(--aksent); }
+.bibhero { position: relative; z-index: 1; padding: 34px 18px 20px; }
+.bibhero__tittel {
+  margin: 0; font-family: var(--font-display); font-weight: 600;
+  font-size: 30px; letter-spacing: -0.01em; color: var(--ink-900);
+}
+.bibhero__under { margin: 4px 0 0; font-size: 15px; color: var(--ink-700); }
+.bib__innhold { position: relative; z-index: 1; }
+
+.bibbolk { margin-bottom: 4px; }
+.bibbolk__tittel {
+  margin: 0 0 10px; font-family: var(--font-display); font-weight: 600;
+  font-size: 19px; letter-spacing: -0.01em; color: var(--tekst);
+}
+/* Raden blør ut til skjermkanten (motvekt til .innhold-paddingen). */
+.bibbolk__rad {
+  display: flex; gap: 11px;
+  margin: 0 -18px; padding: 2px 18px 14px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+.bibbolk__rad::-webkit-scrollbar { display: none; }
+
+.bibkort {
+  position: relative; flex: 0 0 196px;
+  display: flex; flex-direction: column; align-items: stretch; text-align: left;
+  border: none; border-radius: var(--radius-xl); overflow: hidden;
+  padding: 14px 13px 13px;
+  color: #fff; cursor: pointer; font: inherit;
+  box-shadow: var(--shadow-sm);
+  scroll-snap-align: start;
+}
+.bibkort__bak {
+  position: absolute; right: -20px; top: 54px; z-index: 0;
+  color: #fff; opacity: 0.16; display: inline-flex; pointer-events: none;
+}
+.bibkort__bak .ikon { width: 120px; height: 120px; stroke-width: 1.3; }
+.bibkort > :not(.bibkort__bak) { position: relative; z-index: 1; }
+.bibkort__ikon { display: inline-flex; margin-bottom: 10px; }
+.bibkort__ikon .ikon { width: 26px; height: 26px; stroke-width: 2; }
+.bibkort__navn {
+  font-family: var(--font-display); font-weight: 600; font-size: 16.5px;
+  line-height: 1.2; letter-spacing: -0.01em;
+}
+.bibkort__beskr {
+  margin-top: 4px; font-size: 12px; line-height: 1.4; color: rgba(255, 255, 255, 0.88);
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.bibkort__kilde {
+  margin-top: 8px; font-size: 10.5px; line-height: 1.35; color: rgba(255, 255, 255, 0.72);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.bibkort__meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; padding-top: 10px; }
+.bibkort__tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: rgba(255, 255, 255, 0.22); border-radius: var(--radius-pill);
+  padding: 3px 8px; font-size: 10.5px; font-weight: 600;
+}
+.bibkort__tag .ikon { width: 11px; height: 11px; }
+.bibkort__nivaer {
+  display: flex; gap: 4px; margin-top: 8px;
+  background: rgba(255, 255, 255, 0.16); border-radius: var(--radius-pill); padding: 3px;
+}
+.bibkort__pille {
+  flex: 1; text-align: center; border-radius: var(--radius-pill);
+  padding: 4px 0; font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.8);
+}
+.bibkort__pille--aktiv { background: #fff; color: var(--ink-800); }
+.bibkort__start {
+  margin-top: 9px; text-align: center;
+  background: #fff; color: var(--ink-900);
+  border-radius: var(--radius-pill); padding: 9px 0;
+  font-weight: 700; font-size: 13.5px;
+}
+.bibkort:active .bibkort__start { background: rgba(255, 255, 255, 0.85); }
+
+.bibfilter h2 { margin-bottom: 8px; }
+.bibfilter h2 + .chiprad { margin-bottom: 14px; }
+.bibfilter h2:last-of-type + .chiprad { margin-bottom: 0; }
 
 /* --- Splash (fersk åpning): brand-bilde som fader ut når appen er klar --- */
 .splash { transition: opacity 0.45s var(--ease-standard); }

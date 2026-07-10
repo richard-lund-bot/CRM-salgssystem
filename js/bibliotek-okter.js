@@ -42,9 +42,20 @@ export const MODALITET_TIL_KATEGORI = {
   CORE: 'kroppsvekt', REST: 'restitusjon', HYB: 'styrke',
 };
 
-const SKILL_NAVN = { lav: 'Enkel', medium: 'Middels', hoy: 'Avansert' };
-const INTENSITET_NAVN = { lett: 'Rolig', intens: 'Intens' };
+const SKILL_NAVN = { lav: 'Nybegynner', medium: 'Viderekommen', hoy: 'Erfaren' };
 const SKILL_REKKE = ['lav', 'medium', 'hoy'];
+
+// Sidetittel per kategori («Styrkebibliotek»-stilen fra skissen).
+const KATEGORI_TITTEL = {
+  gatur: 'Gåturbibliotek', lop: 'Løpebibliotek', yoga: 'Yogabibliotek',
+  styrke: 'Styrkebibliotek', toying: 'Tøyebibliotek', sykkel: 'Sykkelbibliotek',
+  kroppsvekt: 'Kroppsvektbibliotek', mobilitet: 'Mobilitetsbibliotek',
+  hiit: 'HIIT-bibliotek', restitusjon: 'Restitusjonsbibliotek',
+};
+
+// Kortene sykler gjennom flis-paletten fra hjemskjermen så radene blir
+// fargerike (som i skissen) — deterministisk, så en rad ser lik ut hver gang.
+const PALETT = ['lime', 'teal', 'gul', 'koral', 'blaa', 'lilla', 'oransje', 'indigo'];
 
 /** Konverterer en bibliotekøkt til formatet øktspilleren (kjor.js) bruker. */
 export function tilSpillerOkt(o, planId = null) {
@@ -79,87 +90,133 @@ export function tilfeldigOkt() {
 }
 
 // ===========================================================================
-// Velgeren: #/okter?kat=styrke — kategorichips, skill/intensitet-filter,
-// øktkort. #/okter?start=<id>&p=<planId> starter en økt direkte.
+// Biblioteket: #/okter?kat=styrke (fra hjem-flisene, med tilbakeknapp) og
+// #/beveg (Beveg-fanen, med tab-bar). Horisontalt skrollbare bolker per
+// ferdighetsnivå, kort i hjemflis-stilen, og en filterknapp (type + nivå).
+// #/okter?start=<id>&p=<planId> starter en økt direkte.
 // ===========================================================================
-export function visOkterSkjerm(mount) {
+export function visOkterSkjerm(mount, { tab = false } = {}) {
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
 
   const startId = params.get('start');
   if (startId) { startOkt(startId, params.get('p')); return; }
 
   const state = {
-    kat: KATEGORI_NAVN[params.get('kat')] ? params.get('kat') : 'gatur',
-    skill: null,      // null = vis alle
-    intensitet: null,
+    kat: KATEGORI_NAVN[params.get('kat')] ? params.get('kat') : null, // null = alle typer
+    skill: null,       // null = alle nivåer
+    filterApen: false,
   };
 
-  function tegn() {
-    const okter = hentOkter()
-      .filter((o) => o.kategori === state.kat)
-      .filter((o) => !state.skill || o.skill === state.skill)
-      .filter((o) => !state.intensitet || o.intensitet === state.intensitet)
-      .sort((a, b) => SKILL_REKKE.indexOf(a.skill) - SKILL_REKKE.indexOf(b.skill)
-        || (a.intensitet === 'lett' ? 0 : 1) - (b.intensitet === 'lett' ? 0 : 1));
+  function utstyrTekst(o) {
+    const u = o.utstyr || [];
+    if (!u.length) return 'Uten utstyr';
+    const første = u[0].replaceAll('-', ' ');
+    const tekst = første.charAt(0).toUpperCase() + første.slice(1);
+    return u.length > 1 ? `${tekst} +${u.length - 1}` : tekst;
+  }
 
-    const bevegelse = KATEGORI_TIL_BEVEGELSE[state.kat];
-    const kanHurtig = BEVEGELSER[bevegelse]?.slag === 'fri';
-
-    tom(mount);
-    mount.append(
-      el('header', { class: 'topp topp--kjor' },
-        el('button', { class: 'topp__tilbake', type: 'button', onclick: () => { location.hash = '#/hjem'; }, title: 'Tilbake' }, '‹'),
-        el('div', {},
-          el('h1', { class: 'topp__tittel' }, 'Velg økt'),
-          el('p', { class: 'topp__under' }, 'Ferdige økter med dokumentert opphav.'),
-        ),
+  function bibKort(o, farge) {
+    const ikonNavn = KATEGORIER.find((k) => k.id === o.kategori)?.ikon || 'stjerne';
+    return el('button', {
+      class: `bibkort movflis--${farge}`, type: 'button',
+      onclick: () => { settØkt(tilSpillerOkt(o)); location.hash = '#/review'; },
+    },
+      el('span', { class: 'bibkort__bak' }, ikon(ikonNavn)),
+      el('span', { class: 'bibkort__ikon' }, ikon(ikonNavn)),
+      el('span', { class: 'bibkort__navn' }, o.navn),
+      el('span', { class: 'bibkort__beskr' }, o.beskrivelse),
+      o.kilde?.navn && el('span', { class: 'bibkort__kilde' }, `Basert på ${o.kilde.navn}`),
+      el('span', { class: 'bibkort__meta' },
+        el('span', { class: 'bibkort__tag' }, ikon('klokke'), `${o.varighetMin} min`),
+        el('span', { class: 'bibkort__tag' }, utstyrTekst(o)),
       ),
-      el('main', { class: 'innhold' },
-        el('div', { class: 'chiprad' },
-          ...KATEGORIER.map((k) => chip(k.navn, {
-            aktiv: state.kat === k.id,
-            onClick: () => { state.kat = k.id; state.skill = null; state.intensitet = null; tegn(); },
-          })),
-        ),
-        el('div', { class: 'chiprad' },
-          chip('Alle nivåer', { aktiv: !state.skill, onClick: () => { state.skill = null; tegn(); } }),
-          ...SKILL_REKKE.map((s) => chip(SKILL_NAVN[s], {
-            aktiv: state.skill === s, onClick: () => { state.skill = state.skill === s ? null : s; tegn(); },
-          })),
-          chip('Rolig', { aktiv: state.intensitet === 'lett', onClick: () => { state.intensitet = state.intensitet === 'lett' ? null : 'lett'; tegn(); } }),
-          chip('Intens', { aktiv: state.intensitet === 'intens', onClick: () => { state.intensitet = state.intensitet === 'intens' ? null : 'intens'; tegn(); } }),
-        ),
-        ...okter.map((o) => oktKort(o)),
-        kanHurtig && el('a', { class: 'listerad listerad--enkel', href: `#/hurtig?b=${bevegelse}` },
-          el('span', { class: 'listerad__ikon' }, ikon('stoppeklokke')),
-          el('span', { class: 'listerad__navn' }, 'Fri økt med timer'),
-          el('span', { class: 'listerad__chevron' }, ikon('chevron')),
-        ),
-        el('a', { class: 'listerad listerad--enkel', href: '#/loggfor' },
-          el('span', { class: 'listerad__ikon' }, ikon('penn')),
-          el('span', { class: 'listerad__navn' }, 'Logg noe du alt har gjort'),
-          el('span', { class: 'listerad__chevron' }, ikon('chevron')),
-        ),
+      el('span', { class: 'bibkort__nivaer' },
+        el('span', { class: 'bibkort__pille' + (o.intensitet === 'lett' ? ' bibkort__pille--aktiv' : '') }, 'Rolig'),
+        el('span', { class: 'bibkort__pille' + (o.intensitet === 'intens' ? ' bibkort__pille--aktiv' : '') }, 'Intens'),
+      ),
+      el('span', { class: 'bibkort__start' }, 'Start'),
+    );
+  }
+
+  function bolk(skill, radIdx) {
+    const okter = hentOkter()
+      .filter((o) => o.skill === skill)
+      .filter((o) => !state.kat || o.kategori === state.kat)
+      .sort((a, b) => KATEGORIER.findIndex((k) => k.id === a.kategori) - KATEGORIER.findIndex((k) => k.id === b.kategori)
+        || (a.intensitet === 'lett' ? 0 : 1) - (b.intensitet === 'lett' ? 0 : 1));
+    if (!okter.length) return null;
+    return el('section', { class: 'bibbolk' },
+      el('h2', { class: 'bibbolk__tittel' }, SKILL_NAVN[skill]),
+      el('div', { class: 'bibbolk__rad' },
+        ...okter.map((o, i) => bibKort(o, PALETT[(radIdx * 3 + i) % PALETT.length])),
       ),
     );
   }
 
-  function oktKort(o) {
-    return el('button', {
-      class: 'kort oktkort', type: 'button',
-      onclick: () => { settØkt(tilSpillerOkt(o)); location.hash = '#/review'; },
-    },
-      el('div', { class: 'oktkort__topp' },
-        el('span', { class: 'oktkort__navn' }, o.navn),
-        el('span', { class: 'oktkort__tid' }, `${o.varighetMin} min`),
+  function filterPanel() {
+    return el('div', { class: 'kort bibfilter' },
+      el('h2', {}, 'Type bevegelse'),
+      el('div', { class: 'chiprad' },
+        chip('Alle', { aktiv: !state.kat, onClick: () => { state.kat = null; tegn(); } }),
+        ...KATEGORIER.map((k) => chip(k.navn, {
+          aktiv: state.kat === k.id, onClick: () => { state.kat = k.id; tegn(); },
+        })),
       ),
-      el('p', { class: 'oktkort__beskr' }, o.beskrivelse),
-      el('div', { class: 'oktkort__meta' },
-        el('span', { class: 'tag tag--mod' }, SKILL_NAVN[o.skill]),
-        el('span', { class: 'tag' + (o.intensitet === 'intens' ? ' tag--impact' : '') }, INTENSITET_NAVN[o.intensitet]),
-        ...(o.utstyr || []).map((u) => el('span', { class: 'tag' }, u)),
+      el('h2', {}, 'Ferdighetsnivå'),
+      el('div', { class: 'chiprad' },
+        chip('Alle', { aktiv: !state.skill, onClick: () => { state.skill = null; tegn(); } }),
+        ...SKILL_REKKE.map((s) => chip(SKILL_NAVN[s], {
+          aktiv: state.skill === s, onClick: () => { state.skill = state.skill === s ? null : s; tegn(); },
+        })),
       ),
-      o.kilde?.navn && el('p', { class: 'oktkort__kilde' }, `Basert på: ${o.kilde.navn}`),
+    );
+  }
+
+  function lenkerad(ikonNavn, tekst, href) {
+    return el('a', { class: 'listerad', href },
+      el('span', { class: 'listerad__ikon' }, ikon(ikonNavn)),
+      el('span', { class: 'listerad__navn' }, tekst),
+      el('span', { class: 'listerad__chevron' }, ikon('chevron')),
+    );
+  }
+
+  function tegn() {
+    const bevegelse = KATEGORI_TIL_BEVEGELSE[state.kat];
+    const kanHurtig = !state.kat || BEVEGELSER[bevegelse]?.slag === 'fri';
+    const filtrert = state.kat || state.skill;
+    const nivaer = state.skill ? [state.skill] : SKILL_REKKE;
+
+    tom(mount);
+    mount.append(
+      el('div', { class: 'bib' },
+        el('div', { class: 'bib__bilde', style: "background-image:url('icons/brand/hero-dag.webp')" }),
+        el('header', { class: 'bibtopp' },
+          tab
+            ? el('span', { class: 'bibtopp__plass' })
+            : el('button', { class: 'bibtopp__knapp', type: 'button', title: 'Tilbake', onclick: () => { location.hash = '#/hjem'; } }, ikon('tilbake')),
+          el('a', { class: 'wordmark', href: '#/hjem', 'aria-label': 'Mova' }, 'mova', el('span', { class: 'wordmark__prikk' }, '.')),
+          el('button', {
+            class: 'bibtopp__knapp' + (state.filterApen || filtrert ? ' bibtopp__knapp--aktiv' : ''),
+            type: 'button', title: 'Filter',
+            onclick: () => { state.filterApen = !state.filterApen; tegn(); },
+          }, ikon('filter')),
+        ),
+        el('div', { class: 'bibhero' },
+          el('h1', { class: 'bibhero__tittel' }, KATEGORI_TITTEL[state.kat] || 'Øktbiblioteket'),
+          el('p', { class: 'bibhero__under' }, 'Velg en økt som passer dagen din.'),
+        ),
+        el('main', { class: 'innhold bib__innhold' },
+          state.filterApen && filterPanel(),
+          ...nivaer.map((s, i) => bolk(s, i)),
+          el('div', { class: 'kort' },
+            el('div', { class: 'liste' },
+              kanHurtig && lenkerad('stoppeklokke', 'Fri økt med timer', `#/hurtig${bevegelse ? `?b=${bevegelse}` : ''}`),
+              lenkerad('penn', 'Logg noe du alt har gjort', '#/loggfor'),
+              lenkerad('kalender', 'Planlagte økter', '#/kalender'),
+            ),
+          ),
+        ),
+      ),
     );
   }
 

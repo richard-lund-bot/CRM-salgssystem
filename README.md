@@ -1,8 +1,8 @@
 # mova — Move for Life.
 
-Bevegelsesapp der **all bevegelse teller**: en gåtur, en generert styrkeøkt, en
+Bevegelsesapp der **all bevegelse teller**: en gåtur, en kuratert styrkeøkt, en
 fotballkamp eller hagearbeid gir XP, bygger Momentum og flytter figuren din videre
-på reisen. Øktgeneratoren (bibliotek på ~530 øvelser) er én av flere veier inn —
+på reisen. Øktbiblioteket (60 true-and-tested økter) er én av flere veier inn —
 ikke hele appen. Vanilla HTML/CSS/JS, ingen byggesteg, installerbar som PWA.
 Norsk UI, mobil først. Systemdefinisjon: Mova-spesifikasjonen (idé-dokumentet) —
 kjerneprinsipp: *senk dørstokkmila, aldri skam, delvis gjennomføring teller.*
@@ -64,13 +64,13 @@ css/app.css             stil (mørkt tema, mobil først)
 js/
   app.js                inngang, ruter, tab-bar (Min dag/Beveg/Min reise/Aktivitet/Meny), Min dag m/ Dagens gnist
   bevegelse.js          bevegelseslaget: 12 bevegelsestyper, spec-XP-formel, Momentum, Dagens gnist
-  beveg.js              Beveg-skjermen (energi-først), hurtigstart m/ timer, manuell logg, «Du beveget deg»-skjermen
+  beveg.js              hurtigstart m/ timer, manuell logg, «Du beveget deg»-skjermen (Beveg-fanen er øktbiblioteket)
   reise.js              Min reise: miljøscene m/ gående figur, XP/nivå, Momentum-rytme, milepælssti
   figur.js              figuren (lagdelt SVG, poser), miljøer, skjermen «Tilpass figur»
   library.js            laster + indekserer statiske data (offline-first)
   store.js              brukertilstand i localStorage (Spor-mønster) + profiloppslag
   onboarding.js         4-skjerms onboarding, preferanse-først (motivasjon, favorittbevegelser, ukemål, navn)
-  bibliotek-okter.js    øktbiblioteket: 60 kuraterte true-and-tested økter (velger + start)
+  bibliotek-okter.js    øktbiblioteket: 60 kuraterte true-and-tested økter (bolker per nivå, filter, start)
   kjor.js               øktspilleren: review + kjøre-UI (guide/sekvens/pust/fasetimer), delvis teller
   niva.js               motor: XP (spec-formel), registrerBevegelse, globalt nivå
   historikk.js          Aktivitet-skjerm: Historikk (heatmap/volum/donut/balanse/logg) + Prestasjoner
