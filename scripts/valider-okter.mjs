@@ -35,9 +35,10 @@ const OVELSER_FORMATER = {
   yin: ['tidMin'],
 };
 // Guidede kategorier skal ha minst én ovelser/sekvens-blokk; timer-kategorier
-// minst én kondisjon/pust-blokk.
+// minst én kondisjon/pust-blokk. Restitusjon er blandet (pusteprotokoller,
+// fasesekvenser OG restorative stillinger) og unntas fra timer-kravet.
 const GUIDEDE = new Set(['styrke', 'kroppsvekt', 'yoga', 'toying', 'mobilitet']);
-const TIMERE = new Set(['gatur', 'lop', 'sykkel', 'hiit', 'restitusjon']);
+const TIMERE = new Set(['gatur', 'lop', 'sykkel', 'hiit']);
 
 let okter, exercises, sequences;
 try {

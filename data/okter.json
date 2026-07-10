@@ -1,0 +1,5102 @@
+[
+  {
+    "id": "gatur-lav-lett",
+    "kategori": "gatur",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Helsedirektoratets halvtime",
+    "beskrivelse": "Den klassiske halvtimen med moderat gange som helsemyndighetene anbefaler. Ingen krav, ingen teknikk — bare kom deg ut døra og gå i et tempo som kjennes godt.",
+    "varighetMin": 35,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Nasjonale faglige råd om fysisk aktivitet (Helsedirektoratet, 2022 / WHO 2020)",
+      "type": "retningslinje",
+      "ref": "https://www.helsedirektoratet.no/faglige-rad/fysisk-aktivitet-i-forebygging-og-behandling/voksne-og-eldre/voksne-rad-anbefaling-fysisk-aktivitet-150-300-minutter-per-uke + https://www.who.int/news-room/fact-sheets/detail/physical-activity",
+      "notat": "Ukesanbefalingen (150 min moderat aktivitet) operasjonalisert som én daglig 30-min moderat økt; eksplisitt oppvarmings- og nedtrappingsfase lagt til for timerformatet."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig gange — ledige skuldre",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · veldig lett"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Jevn moderat gange",
+        "min": 25,
+        "parametre": {
+          "tidMin": 25,
+          "sone": "Z1–Z2 · RPE 3–4 · du kan prate hele veien"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig gange — senk tempoet gradvis",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · veldig lett"
+        }
+      }
+    ]
+  },
+  {
+    "id": "gatur-lav-intens",
+    "kategori": "gatur",
+    "skill": "lav",
+    "intensitet": "intens",
+    "navn": "12-3-30 motbakke",
+    "beskrivelse": "Den virale motbakke-halvtimen i norsk utendørsversjon. Bakken gjør jobben for deg — hold ett bestemt tempo oppover og kjenn at pulsen og pusten svarer.",
+    "varighetMin": 30,
+    "utstyr": [],
+    "kilde": {
+      "navn": "12-3-30 (Lauren Giraldo, 2019)",
+      "type": "program",
+      "ref": "https://www.goodmorningamerica.com/gma/story/tiktok-famous-12-30-treadmill-workout-82600185 + https://www.today.com/health/diet-fitness/12-3-30-workout-rcna155871",
+      "notat": "Oversatt fra tredemølle (12 % stigning / 3 mph) til utendørs jevn motbakke; arbeidsfasen kortet fra 30 til 20 min og rammet inn med oppvarming/nedtrapping. Bakken styrer intensiteten — ingen pacing-ferdighet kreves."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig gange på flat mark",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · lett og ledig"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Jevn motbakke i bestemt, uendret tempo",
+        "min": 20,
+        "parametre": {
+          "tidMin": 20,
+          "sone": "Z3–Z4 · RPE 7–8 · tydelig andpusten, korte setninger"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig gange på flat mark — få pusten ned",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · veldig lett"
+        }
+      }
+    ]
+  },
+  {
+    "id": "gatur-medium-lett",
+    "kategori": "gatur",
+    "skill": "medium",
+    "intensitet": "lett",
+    "navn": "Snakketest-turen",
+    "beskrivelse": "En rask tur der pusten er kompasset ditt. Finn tempoet der du fortsatt kan prate i hele setninger — der ligger den gode, lette sonen som bygger utholdenhet uten å slite deg ut.",
+    "varighetMin": 40,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Talk Test (Foster/Persinger, University of Wisconsin–La Crosse, ~2004)",
+      "type": "protokoll",
+      "ref": "https://www.acefitness.org/certifiednewsarticle/888/ace-sponsored-research-validating-the-talk-test-as-a-measure-of-exercise-intensity/ + https://e-jer.org/upload/jer-19-3-163.pdf",
+      "notat": "Talk-testen er en intensitetsmetode, ikke en ferdig økt; her strukturert som 3×8 min soneholding med 2 min pusterom — intervallene gir naturlige sjekkpunkter for å kalibrere snakketempoet."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig gange — så lett at du kan synge",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · veldig lett"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "3×8 min i snakketempo",
+        "min": 30,
+        "parametre": {
+          "runder": 3,
+          "faser": [
+            {
+              "navn": "Rask gange i snakketempo — hele setninger, men ikke sang",
+              "sek": 480,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig gange — helt ledig pust",
+              "sek": 120,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig gange",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · veldig lett"
+        }
+      }
+    ]
+  },
+  {
+    "id": "gatur-medium-intens",
+    "kategori": "gatur",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "Japansk intervallgange (IWT)",
+    "beskrivelse": "Den japanske intervallmetoden som ga eldre mosjonister sterkere bein og lavere blodtrykk enn vanlig gange. Tre minutter på, tre minutter av — enkelt, tøft og godt dokumentert.",
+    "varighetMin": 40,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Interval Walking Training (Nose/Masuki, Shinshu University; Nemoto m.fl., Mayo Clinic Proceedings 2007)",
+      "type": "protokoll",
+      "ref": "https://www.mayoclinicproceedings.org/article/S0025-6196(11)61303-7/abstract + https://www.mayoclinicproceedings.org/article/S0025-6196(19)30473-2/pdf",
+      "notat": "Kjerneprotokollen (5×3/3) er uendret fra studien; 5 min oppvarming og nedtrapping lagt til (studien angir kun intervalldelen). 70 %/40 % av VO2peak oversatt til RPE/sone-følelse siden appen ikke måler VO2."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig gange",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · veldig lett"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "5×3 min rask / 3 min rolig",
+        "min": 30,
+        "parametre": {
+          "runder": 5,
+          "faser": [
+            {
+              "navn": "Rask gange — RPE 7, tydelig andpusten, lange steg og aktive armer",
+              "sek": 180,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig gange — hent deg helt inn",
+              "sek": 180,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig gange",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · veldig lett"
+        }
+      }
+    ]
+  },
+  {
+    "id": "gatur-hoy-lett",
+    "kategori": "gatur",
+    "skill": "hoy",
+    "intensitet": "lett",
+    "navn": "Stavgang teknikkøkt (INWA)",
+    "beskrivelse": "Lær den finske stavgangteknikken steg for steg i rolig tempo. Når stavene sitter, aktiverer du hele overkroppen — uten at pulsen trenger å ta av.",
+    "varighetMin": 35,
+    "utstyr": [
+      "staver"
+    ],
+    "kilde": {
+      "navn": "INWA 10 Step Method (International Nordic Walking Federation, Finland 2000)",
+      "type": "program",
+      "ref": "https://www.inwa-nordicwalking.com/nordicwalking + https://britishnordicwalking.org.uk/pages/the-inwa-10-step-method",
+      "notat": "INWAs 10-stegs pensum (normalt instruktørledet over flere økter) komprimert til de tre første grunnstegene (holdning, drag, plant) i én selvgått timerøkt; de dynamiske stegene utelatt for å holde intensiteten lett. Skill er høy pga. teknikk-koordinasjon, ikke kondisjon."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Gange med hengende staver — la dem dra etter deg, finn naturlig diagonal armsving",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · veldig lett"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Teknikk: plant staven skrått bakover når hånden passerer hoften, åpne hånden bak",
+        "min": 10,
+        "parametre": {
+          "tidMin": 10,
+          "sone": "Z1–Z2 · fullt snakketempo"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Flytende stavgang — aktivt fraspark gjennom staven, roter overkroppen",
+        "min": 15,
+        "parametre": {
+          "tidMin": 15,
+          "sone": "Z2 · RPE 3–4 · snakketempo"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig gange — løs opp skuldre og nakke",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · veldig lett"
+        }
+      }
+    ]
+  },
+  {
+    "id": "gatur-hoy-intens",
+    "kategori": "gatur",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "Ruck-intervaller",
+    "beskrivelse": "Militærinspirert marsj med vekt på ryggen. Sekken gjør vanlig gange til styrke- og kondisjonstrening i ett — start med rundt 10 % av kroppsvekten og kjenn at hele kroppen jobber.",
+    "varighetMin": 34,
+    "utstyr": [
+      "sekk-med-vekt"
+    ],
+    "kilde": {
+      "navn": "Ruck march (US Army-standard; GORUCK, Jason McCarthy 2008)",
+      "type": "tradisjon",
+      "ref": "https://www.goruck.com/blogs/news-stories/ruck-march-standards + https://health.clevelandclinic.org/what-is-rucking",
+      "notat": "Militær kontinuerlig langmarsj (2–3 t) kortet til 4×4 min tempointervaller med pauser for timerformat og sivil målgruppe; last redusert fra militære ~16 kg til ~10 % av kroppsvekt (GORUCK/Cleveland Clinic-anbefaling for nybegynnere)."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig gange med sekk — kjenn at den sitter høyt og stramt",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1–Z2 · lett"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "4×4 min hurtig marsj / 2 min rolig",
+        "min": 24,
+        "parametre": {
+          "runder": 4,
+          "faser": [
+            {
+              "navn": "Hurtig marsjgange med sekk — press tempoet, korte raske steg i motbakke",
+              "sek": 240,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig gange — rull skuldrene, senk pulsen",
+              "sek": 120,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig gange — gjerne siste del uten sekk",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · veldig lett"
+        }
+      }
+    ]
+  },
+  {
+    "id": "lop-lav-lett",
+    "kategori": "lop",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Løp/gå-start (Couch to 5K)",
+    "beskrivelse": "Den klassiske starten på løpeeventyret: du jogger bare når pipetonen sier fra, og går resten. Millioner har begynt akkurat her — alt du trenger er å følge timeren.",
+    "varighetMin": 30,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Couch to 5K, uke 1 (Josh Clark, 1996; NHS Better Health)",
+      "type": "program",
+      "ref": "https://www.nhs.uk/better-health/get-active/get-running-with-couch-to-5k/couch-to-5k-running-plan/ + https://c25k.com/c25k_plan/",
+      "notat": "Uke 1-økten brukt uendret (5 min gange, 8×[60 s jogg + 90 s gange], 5 min gange — identisk hos NHS og c25k.com). Fase-tekstene er omskrevet til norsk; ingen proprietær coaching-tekst gjenbrukt."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rask gange",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Rask gange · varm opp beina"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "8× jogg/gå",
+        "min": 20,
+        "parametre": {
+          "runder": 8,
+          "faser": [
+            {
+              "navn": "Lett jogg — RPE 3–4",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig gange",
+              "sek": 90,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig gange",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Rolig gange · pust ned"
+        }
+      }
+    ]
+  },
+  {
+    "id": "lop-lav-intens",
+    "kategori": "lop",
+    "skill": "lav",
+    "intensitet": "intens",
+    "navn": "10-20-30 (København-intervaller)",
+    "beskrivelse": "Dansk forskerfavoritt: 30 rolig, 20 litt fortere, 10 alt du har — om og om igjen. Ingen klokkemattematikk, bare følg pipet og gi jernet i ti sekunder om gangen.",
+    "varighetMin": 29,
+    "utstyr": [],
+    "kilde": {
+      "navn": "10-20-30-konseptet (Gunnarsson & Bangsbo, Københavns Universitet, 2012)",
+      "type": "protokoll",
+      "ref": "https://journals.physiology.org/doi/full/10.1152/japplphysiol.00334.2012 + https://onlinelibrary.wiley.com/doi/10.1002/ejsc.12163",
+      "notat": "Studien brukte 3–4 blokker à 5 min; 3 valgt for ~30 min totalt. De tre seriene og 2-min-pausene ligger som faser i én hovedblokk for sømløs avspilling. Lav skill: pipetonen styrer alt, spurten er «alt ut» uten soneholding. RPE topper på 9."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig jogg",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1–Z2 · snakketempo"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "3× 5-min serie 10-20-30",
+        "min": 19,
+        "parametre": {
+          "runder": 3,
+          "faser": [
+            {
+              "navn": "Rolig jogg",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Moderat løp",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Maks spurt — alt du har!",
+              "sek": 10,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig jogg",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Moderat løp",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Maks spurt — alt du har!",
+              "sek": 10,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig jogg",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Moderat løp",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Maks spurt — alt du har!",
+              "sek": 10,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig jogg",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Moderat løp",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Maks spurt — alt du har!",
+              "sek": 10,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig jogg",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Moderat løp",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Maks spurt — alt du har!",
+              "sek": 10,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Pause: rolig jogg mellom seriene",
+              "sek": 120,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig jogg",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · helt rolig"
+        }
+      }
+    ]
+  },
+  {
+    "id": "lop-medium-lett",
+    "kategori": "lop",
+    "skill": "medium",
+    "intensitet": "lett",
+    "navn": "Rolig sone 2-løp (snakketempo)",
+    "beskrivelse": "Grunnmuren i all utholdenhetstrening: et jevnt, behagelig løp der du hele tiden kan prate. Føles «for lett» — og det er nettopp poenget. Slik bygger proffene motoren sin.",
+    "varighetMin": 30,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Lavintensiv sone 1–2-trening (Seiler & Tønnessen, 2009; talk test: Foster & Porcari)",
+      "type": "retningslinje",
+      "ref": "https://sportsci.org/2009/ss.htm + https://www.acefitness.org/certifiednewsarticle/888/ace-sponsored-research-validating-the-talk-test-as-a-measure-of-exercise-intensity/",
+      "notat": "Kontinuerlig økt rammet inn som tre timerfaser (opptrapping/hoveddel/nedtrapping). Medium skill: krever å holde én sone på følelse med snakketesten som verktøy, men ingen intervallpacing. RPE 3–4."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Lett jogg, gradvis opp",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 → Z2 · trapp rolig opp"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Jevnt sone 2-løp",
+        "min": 20,
+        "parametre": {
+          "tidMin": 20,
+          "sone": "Z1–Z2 · hele setninger skal gå"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Svært rolig jogg eller gange",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · pust ned"
+        }
+      }
+    ]
+  },
+  {
+    "id": "lop-medium-intens",
+    "kategori": "lop",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "Mona-fartlek",
+    "beskrivelse": "Verdens mest kjente fartlek: dragene blir kortere og kvassere mens pausene krymper i takt. Moneghetti løp den hver uke i hele karrieren — 20 minutter som gir alt.",
+    "varighetMin": 30,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Mona-fartlek (Chris Wardlaw for Steve Moneghetti, 1983; fartlek-arv fra Gösta Holmér)",
+      "type": "protokoll",
+      "ref": "https://www.mindovermatterendurance.com/coaches-classroom/2024/12/11/the-mona-fartlek-interval-set-for-performance-improvement + https://www.runbkrun.com/2016/09/27/mona-fartlek-one-of-my-favourite-sessions-for-some-serious-pain-box-time/",
+      "notat": "Original 20-min-struktur beholdt eksakt; 5 min oppvarming lagt til, og rolig nedjogging bakt inn som siste fase i 15/15-blokken for å holde økten spillbar i fem blokker. «Hardt» og «flyt» styres på følelse uten eksakte fartskrav. RPE 7–9."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig jogg",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1–Z2 · snakketempo"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "2× 90/90",
+        "min": 6,
+        "parametre": {
+          "runder": 2,
+          "faser": [
+            {
+              "navn": "Hardt drag — ikke snakketempo",
+              "sek": 90,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Flytjogg",
+              "sek": 90,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "4× 60/60",
+        "min": 8,
+        "parametre": {
+          "runder": 4,
+          "faser": [
+            {
+              "navn": "Hardt drag — ikke snakketempo",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Flytjogg",
+              "sek": 60,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "4× 30/30",
+        "min": 4,
+        "parametre": {
+          "runder": 4,
+          "faser": [
+            {
+              "navn": "Hardt drag — kvast tempo",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Flytjogg",
+              "sek": 30,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "4× 15/15 + rolig nedjogging",
+        "min": 7,
+        "parametre": {
+          "runder": 1,
+          "faser": [
+            {
+              "navn": "Nesten maks!",
+              "sek": 15,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Flytjogg",
+              "sek": 15,
+              "type": "hvile"
+            },
+            {
+              "navn": "Nesten maks!",
+              "sek": 15,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Flytjogg",
+              "sek": 15,
+              "type": "hvile"
+            },
+            {
+              "navn": "Nesten maks!",
+              "sek": 15,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Flytjogg",
+              "sek": 15,
+              "type": "hvile"
+            },
+            {
+              "navn": "Nesten maks!",
+              "sek": 15,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Flytjogg",
+              "sek": 15,
+              "type": "hvile"
+            },
+            {
+              "navn": "Rolig nedjogging — pust ned",
+              "sek": 300,
+              "type": "arbeid"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "lop-hoy-lett",
+    "kategori": "lop",
+    "skill": "hoy",
+    "intensitet": "lett",
+    "navn": "MAF lavpuls-løp (Maffetone 180)",
+    "beskrivelse": "Kunsten å løpe sakte nok: du holder pulsen under et strengt tak og lar aerob motor gjøre jobben. Regn ut 180 minus alderen din før start — og gå heller enn å bryte taket.",
+    "varighetMin": 35,
+    "utstyr": [],
+    "kilde": {
+      "navn": "MAF-metoden / 180-formelen (Dr. Phil Maffetone, 1980-tallet)",
+      "type": "program",
+      "ref": "https://philmaffetone.com/180-formula/ + https://marathonhandbook.com/maf-method-maffetone-method/",
+      "notat": "Maffetones anbefalte 12–15 min opptrapping komprimert til 10 min for app-format. Høy skill tross lett intensitet: krever pulsmåler og aktiv tilbakeholdenhet for å holde pulsen under taket (180 − alder), særlig i motbakker. RPE 2–4."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Gange → jogg, gradvis opp",
+        "min": 10,
+        "parametre": {
+          "tidMin": 10,
+          "sone": "Fra gange til jogg · opp mot MAF-puls"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Jevnt løp under MAF-puls",
+        "min": 20,
+        "parametre": {
+          "tidMin": 20,
+          "sone": "På/like under 180 − alder · aldri over, gå om nødvendig"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig nedjogging",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · helt rolig"
+        }
+      }
+    ]
+  },
+  {
+    "id": "lop-hoy-intens",
+    "kategori": "lop",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "Norsk 4×4",
+    "beskrivelse": "Norges mest dokumenterte økt: fire ganger fire minutter der du puster tungt, men holder jevnt tempo hele veien. NTNU-forskning viser at få økter løfter kondisen raskere.",
+    "varighetMin": 40,
+    "utstyr": [],
+    "kilde": {
+      "navn": "4×4-intervaller (Helgerud, Hoff m.fl., CERG/NTNU, 2007)",
+      "type": "protokoll",
+      "ref": "https://pubmed.ncbi.nlm.nih.gov/17414804/ + https://www.ntnu.edu/cerg/advice",
+      "notat": "CERGs offisielle oppsett (10 min oppvarming, 4×4 min på 85–95 % av makspuls, 3 min aktive pauser, 5 min ned) brukt uendret. Høy skill: krever jevn pacing gjennom hele 4-minuttersdraget — ikke start for hardt. RPE 8."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig jogg, gradvis opp",
+        "min": 10,
+        "parametre": {
+          "tidMin": 10,
+          "sone": "Opp mot 60–70 % av makspuls"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "4×4 intervaller",
+        "min": 25,
+        "parametre": {
+          "runder": 4,
+          "faser": [
+            {
+              "navn": "Hardt og jevnt — 85–95 % av makspuls",
+              "sek": 240,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Aktiv pause: rolig jogg",
+              "sek": 180,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig nedjogging",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · helt rolig"
+        }
+      }
+    ]
+  },
+  {
+    "id": "yoga-lav-lett",
+    "kategori": "yoga",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Stol-yoga – mykt og mobilt",
+    "beskrivelse": "Rolig stol-yoga som mykner nakke, rygg og hofter uten å måtte ned på gulvet. Perfekt pause i hverdagen – alt gjøres i ditt tempo, sittende trygt på stolen.",
+    "varighetMin": 20,
+    "utstyr": [
+      "stol"
+    ],
+    "kilde": {
+      "navn": "Sit 'N' Fit Chair Yoga (Kristine Lee / Park et al., 2017)",
+      "type": "protokoll",
+      "ref": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5357158/ + https://yogauonline.com/yoga-and-healthy-aging/yoga-for-arthritis/a-chair-yoga-sequence-for-arthritis-increase-mobility-and-decrease-pain/",
+      "notat": "45 min-formatet fra RCT-studien er kortet til 20 min med samme øvelsesutvalg og rekkefølge. Stopp ved smerte; hopp over twist ved vond rygg. Mer utfordring: hold hver stilling 2–3 pust lenger, eller reis deg mellom rundene."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Sittende oppmykning",
+        "formatKlasse": "reps",
+        "min": 5,
+        "ovelser": [
+          {
+            "navn": "Sittende fjellstilling",
+            "dose": "10 rolige pust"
+          },
+          {
+            "navn": "Nakkebevegelser side til side",
+            "dose": "×5 + hold 3 pust per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Skulderruller",
+            "dose": "×5 hver vei"
+          },
+          {
+            "navn": "Sittende katt–ku",
+            "dose": "×5"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Rygg og sider",
+        "formatKlasse": "reps",
+        "min": 5,
+        "ovelser": [
+          {
+            "navn": "Sittende sidebøy",
+            "dose": "5 pust per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Sittende twist",
+            "dose": "5 pust per side",
+            "unilateral": true
+          }
+        ]
+      },
+      {
+        "kind": "sekvens",
+        "rolle": "hoved",
+        "formatNavn": "Stol-solhilsen",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Stol-solhilsen",
+            "beskrivelse": "Rolige runder i pustetempo, sittende på stolen.",
+            "posisjoner": [
+              "Sittende fjellstilling",
+              "Armer opp",
+              "Foroverbøy over lårene",
+              "Halvveis løft",
+              "Armer opp",
+              "Sittende fjellstilling"
+            ]
+          }
+        ],
+        "parametre": {
+          "runder": 3
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Hofter og ankler",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Kneløft",
+            "dose": "×5 per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Ankelsirkler",
+            "dose": "×5 hver vei"
+          },
+          {
+            "navn": "Figur-4 (ankel over kne)",
+            "dose": "5 pust per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Sittende foroverbøy",
+            "dose": "5 pust"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig avslutning",
+        "formatKlasse": "hold",
+        "min": 2,
+        "ovelser": [
+          {
+            "navn": "Rolige pust med lukkede øyne",
+            "dose": "10 pust"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "yoga-lav-intens",
+    "kategori": "yoga",
+    "skill": "lav",
+    "intensitet": "intens",
+    "navn": "Halv solhilsen-runder",
+    "beskrivelse": "Enkel flyt i friskt pustetempo – bare stående bevegelser du lærer på ett minutt. Får pulsen opp, varmer rygg og bakside, og bygger rytmen mellom pust og bevegelse.",
+    "varighetMin": 20,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Ardha Surya Namaskar – halv solhilsen (vinyasa-/Ashtanga-tradisjonen, Krishnamacharya-linjen)",
+      "type": "tradisjon",
+      "ref": "https://www.tummee.com/yoga-poses/ardha-surya-namaskar-a + https://www.mariepageyoga.com/half-sun-salutation/",
+      "notat": "Kun stående del av solhilsenen – uten planke/chaturanga/hund. Bøy knærne i foroverbøy; hendene på leggene i halvveis løft. Lettere: færre runder og roligere tempo. Tyngre: 6 blokker eller legg til hælhev i fjellstilling."
+    },
+    "blokker": [
+      {
+        "kind": "sekvens",
+        "rolle": "oppvarming",
+        "formatNavn": "Halv solhilsen – rolig",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Halv solhilsen – rolig",
+            "beskrivelse": "Helt rolige runder, 3–4 pust per stilling.",
+            "posisjoner": [
+              "Fjellstilling",
+              "Armer opp",
+              "Stående foroverbøy",
+              "Halvveis løft",
+              "Foroverbøy",
+              "Armer opp med strak rygg",
+              "Fjellstilling"
+            ]
+          }
+        ],
+        "parametre": {
+          "runder": 2
+        }
+      },
+      {
+        "kind": "sekvens",
+        "rolle": "hoved",
+        "formatNavn": "Halv solhilsen i pustetempo",
+        "min": 12,
+        "ovelser": [
+          {
+            "navn": "Halv solhilsen",
+            "beskrivelse": "Én bevegelse per pust. 4 blokker à 5 runder – 30–45 sek pause i fjellstilling mellom blokkene.",
+            "posisjoner": [
+              "Fjellstilling",
+              "Armer opp (inn)",
+              "Stående foroverbøy (ut)",
+              "Halvveis løft (inn)",
+              "Foroverbøy (ut)",
+              "Armer opp med strak rygg (inn)",
+              "Fjellstilling (ut)"
+            ]
+          }
+        ],
+        "parametre": {
+          "runder": 20
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig avslutning",
+        "formatKlasse": "hold",
+        "min": 5,
+        "ovelser": [
+          {
+            "navn": "Stående sidebøy",
+            "dose": "3 pust per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Rolig foroverbøy",
+            "dose": "5 pust"
+          },
+          {
+            "navn": "Savasana eller sittende ro",
+            "dose": "2 min"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "yoga-medium-lett",
+    "kategori": "yoga",
+    "skill": "medium",
+    "intensitet": "lett",
+    "navn": "Yin yoga – hofter",
+    "beskrivelse": "Dype, rolige hold som slipper spenninger i hofter og lysker. Du synker gradvis inn i hver stilling – pusten gjør jobben, ikke musklene. Nydelig etter løping eller lange dager.",
+    "varighetMin": 25,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Yin yoga – hofteserie (Paul Grilley / Sarah Powers, videreført av Bernie Clark)",
+      "type": "tradisjon",
+      "ref": "https://yinyoga.com/yinsights/three-beginning-flows/ + https://paulgrilley.com/assets/documents/the-five-yin-archetypes.pdf",
+      "notat": "Grunn-yin med 2–3 min hold og 30–60 sek hvile på rygg mellom stillingene. Pute under kne/hofte i svanen; dragen med hendene på klosser. Aldri skarp smerte – finn 60–70 % av maks og bli der. Kortere hold (90 sek) for nybegynnere."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Yin-hold – hofteåpnere (hvil 30–60 s mellom)",
+        "formatKlasse": "hold",
+        "min": 18,
+        "ovelser": [
+          {
+            "navn": "Sommerfugl",
+            "dose": "3 min"
+          },
+          {
+            "navn": "Dragen (lav utfall-yin)",
+            "dose": "3 min per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Svanen (sovende due)",
+            "dose": "3 min per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Frosken",
+            "dose": "2 min"
+          }
+        ],
+        "format": "yin",
+        "parametre": {
+          "tidMin": 18
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Twist og hvile",
+        "formatKlasse": "hold",
+        "min": 7,
+        "ovelser": [
+          {
+            "navn": "Liggende twist",
+            "dose": "2 min per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Savasana",
+            "dose": "3 min"
+          }
+        ],
+        "format": "yin",
+        "parametre": {
+          "tidMin": 7
+        }
+      }
+    ]
+  },
+  {
+    "id": "yoga-medium-intens",
+    "kategori": "yoga",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "Solhilsen A + stående flyt",
+    "beskrivelse": "Klassisk vinyasa: fem solhilsener som bygger varme, så sterke kriger-stillinger som holder den. Flytende tempo, jevn pust – du kjenner både styrke og ro etterpå.",
+    "varighetMin": 27,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Surya Namaskara A + stående sekvens (K. Pattabhi Jois, Ashtanga-tradisjonen)",
+      "type": "tradisjon",
+      "ref": "https://www.ashtangayoga.info/ashtanga-yoga/surya-namaskara-a-sun-salutation/ + https://practicingashtanga.com/surya-namaskara-a/",
+      "notat": "Tradisjonelle 5 runder Sol A pluss standard stående blokk (kriger 2/triangel-familien, 5 pust per stilling). Chaturanga på knær og kobra i stedet for opp-hund ved behov; kortere steg i kriger-stillingene. Tyngre: 6–8 runder Sol A."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Oppvarming",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Katt–ku",
+            "dose": "×8"
+          },
+          {
+            "navn": "Nedovervendt hund",
+            "dose": "5 pust"
+          }
+        ]
+      },
+      {
+        "kind": "sekvens",
+        "rolle": "hoved",
+        "formatNavn": "Solhilsen A",
+        "min": 10,
+        "ovelser": [
+          {
+            "navn": "Solhilsen A",
+            "beskrivelse": "Én bevegelse per pust, rolig flyt.",
+            "posisjoner": [
+              "Fjellstilling",
+              "Armer opp",
+              "Foroverbøy",
+              "Halvveis løft",
+              "Planke",
+              "Chaturanga (kne ok)",
+              "Oppovervendt hund",
+              "Nedovervendt hund (5 pust)",
+              "Gå/hopp frem",
+              "Halvveis løft",
+              "Foroverbøy",
+              "Armer opp",
+              "Fjellstilling"
+            ]
+          }
+        ],
+        "parametre": {
+          "runder": 5
+        }
+      },
+      {
+        "kind": "sekvens",
+        "rolle": "hoved",
+        "formatNavn": "Stående blokk",
+        "min": 8,
+        "ovelser": [
+          {
+            "navn": "Stående kriger-flyt",
+            "beskrivelse": "To runder per side – bytt side hver runde. 5 pust per stilling (3 i fredfull kriger).",
+            "posisjoner": [
+              "Kriger 2 (5 pust)",
+              "Fredfull kriger (3 pust)",
+              "Utvidet sidevinkel (5 pust)",
+              "Triangel (5 pust)"
+            ]
+          }
+        ],
+        "parametre": {
+          "runder": 4
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Nedtrapping",
+        "formatKlasse": "hold",
+        "min": 5,
+        "ovelser": [
+          {
+            "navn": "Stående foroverbøy",
+            "dose": "5 pust"
+          },
+          {
+            "navn": "Liggende twist",
+            "dose": "3 pust per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Savasana",
+            "dose": "2 min"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "yoga-hoy-lett",
+    "kategori": "yoga",
+    "skill": "hoy",
+    "intensitet": "lett",
+    "navn": "Yin dyp med props – rygg og forside",
+    "beskrivelse": "Dyp yin for erfarne: lange hold i sadelen, selen og sneglen med god støtte. Ryggsøylen bøyes begge veier, nervesystemet roer seg – en stille, kraftfull praksis.",
+    "varighetMin": 30,
+    "utstyr": [
+      "matte",
+      "pute",
+      "teppe"
+    ],
+    "kilde": {
+      "navn": "Avansert yin med props – sfinx/sel/sadel-serie (Grilley/Powers-tradisjonen, dok. Bernie Clark)",
+      "type": "tradisjon",
+      "ref": "https://yinyoga.com/using-props-in-yin-yoga/ + https://yogainternational.com/article/view/yin-yoga-with-props/",
+      "notat": "Sadelen krever friske knær – halv sadel eller sfinx som erstatning. Sneglen aldri ved nakkeproblemer (bytt til liggende knær-til-bryst). Mer pute/teppe = mildere; mindre = dypere. 30–60 sek stille hvile mellom stillingene."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Yin – foroverbøy og forside (hvil 30–60 s mellom)",
+        "formatKlasse": "hold",
+        "min": 11,
+        "ovelser": [
+          {
+            "navn": "Caterpillar (sittende foroverbøy-yin)",
+            "dose": "4 min"
+          },
+          {
+            "navn": "Sadelen med pute langs ryggen",
+            "dose": "4 min"
+          },
+          {
+            "navn": "Barnets stilling",
+            "dose": "1 min"
+          }
+        ],
+        "format": "yin",
+        "parametre": {
+          "tidMin": 11
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Yin – ryggbøy og snegl",
+        "formatKlasse": "hold",
+        "min": 11,
+        "ovelser": [
+          {
+            "navn": "Sfinxen",
+            "dose": "3 min"
+          },
+          {
+            "navn": "Selen",
+            "dose": "2 min"
+          },
+          {
+            "navn": "Sneglen med brettet teppe under skuldrene",
+            "dose": "3 min"
+          },
+          {
+            "navn": "Barnets stilling",
+            "dose": "1 min"
+          }
+        ],
+        "format": "yin",
+        "parametre": {
+          "tidMin": 11
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Twist og savasana",
+        "formatKlasse": "hold",
+        "min": 8,
+        "ovelser": [
+          {
+            "navn": "Liggende twist",
+            "dose": "2 min per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Savasana",
+            "dose": "5 min"
+          }
+        ],
+        "format": "yin",
+        "parametre": {
+          "tidMin": 8
+        }
+      }
+    ]
+  },
+  {
+    "id": "yoga-hoy-intens",
+    "kategori": "yoga",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "Solhilsen B med kriger-overganger",
+    "beskrivelse": "Kraftfull Ashtanga-inspirert økt: fem runder Solhilsen B med kriger-overganger, så lange hold og kråke-forberedelse. Jevn, dyp pust gjennom alt – styrke møter flyt.",
+    "varighetMin": 30,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Surya Namaskara B – 17 vinyasas (K. Pattabhi Jois, Ashtanga-tradisjonen)",
+      "type": "tradisjon",
+      "ref": "https://www.ashtangayoga.info/ashtanga-yoga/surya-namaskara-b-sun-salutation-b/ + https://practicingashtanga.com/surya-namaskara-b/",
+      "notat": "Full tradisjonell B med chaturanga-overgang mellom kriger-sidene. Chaturanga på knær og kobra ved behov; 3 runder B i stedet for 5. Dropp kråke-prep ved håndledds-plager (hold planke 5 pust i stedet). Tyngre: full kråke og 5 pust i hver ned-hund."
+    },
+    "blokker": [
+      {
+        "kind": "sekvens",
+        "rolle": "oppvarming",
+        "formatNavn": "Solhilsen A – rolig",
+        "min": 5,
+        "ovelser": [
+          {
+            "navn": "Solhilsen A",
+            "beskrivelse": "Rolige runder for å bygge varme.",
+            "posisjoner": [
+              "Fjellstilling",
+              "Armer opp",
+              "Foroverbøy",
+              "Halvveis løft",
+              "Planke",
+              "Chaturanga (kne ok)",
+              "Oppovervendt hund",
+              "Nedovervendt hund (5 pust)",
+              "Foroverbøy",
+              "Armer opp",
+              "Fjellstilling"
+            ]
+          }
+        ],
+        "parametre": {
+          "runder": 3
+        }
+      },
+      {
+        "kind": "sekvens",
+        "rolle": "hoved",
+        "formatNavn": "Solhilsen B",
+        "min": 11,
+        "ovelser": [
+          {
+            "navn": "Solhilsen B",
+            "beskrivelse": "Én bevegelse per pust – kriger 1 med chaturanga-overgang per side.",
+            "posisjoner": [
+              "Fjellstilling",
+              "Stol",
+              "Foroverbøy",
+              "Halvveis løft",
+              "Chaturanga (kne ok)",
+              "Oppovervendt hund",
+              "Nedovervendt hund",
+              "Kriger 1 høyre",
+              "Chaturanga",
+              "Oppovervendt hund",
+              "Nedovervendt hund",
+              "Kriger 1 venstre",
+              "Chaturanga",
+              "Oppovervendt hund",
+              "Nedovervendt hund (5 pust)",
+              "Gå/hopp frem",
+              "Halvveis løft",
+              "Foroverbøy",
+              "Stol",
+              "Fjellstilling"
+            ]
+          }
+        ],
+        "parametre": {
+          "runder": 5
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Holdblokk",
+        "formatKlasse": "hold",
+        "min": 8,
+        "ovelser": [
+          {
+            "navn": "Stol (utkatasana)",
+            "dose": "8 pust"
+          },
+          {
+            "navn": "Kriger 1",
+            "dose": "5 pust per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Sideplanke",
+            "dose": "5 pust per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Kråke-forberedelse (knær mot overarmer, vekt frem)",
+            "dose": "3×5 s"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Nedtrapping",
+        "formatKlasse": "hold",
+        "min": 6,
+        "ovelser": [
+          {
+            "navn": "Barnets stilling",
+            "dose": "5 pust"
+          },
+          {
+            "navn": "Liggende twist",
+            "dose": "3 pust per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Savasana",
+            "dose": "3 min"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "styrke-lav-lett",
+    "kategori": "styrke",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Goblet-grunnøkta",
+    "beskrivelse": "En trygg og enkel helkroppsøkt bygget rundt goblet-knebøyen. Du lærer de fire grunnmønstrene med lette vekter og god margin – perfekt start på styrketrening hjemme.",
+    "varighetMin": 25,
+    "utstyr": [
+      "manualer",
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Goblet-grunnprogram (Dan John, 2011)",
+      "type": "program",
+      "ref": "https://www.t-nation.com/training/goblet-squats-101/ + https://physicalculturestudy.com/2018/06/15/the-history-of-the-goblet-squat/",
+      "notat": "Dan Johns mal er et prinsipp (knebøy/press/trekk/bæring), ikke et fast program; doser satt konservativt (RIR 4–5) for lett-intensitet. Bæring kan byttes til stående hold ved liten plass. Manual kan byttes til kettlebell."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Generell oppvarming",
+        "formatKlasse": "reps",
+        "min": 5,
+        "ovelser": [
+          {
+            "navn": "Gange/marsj på stedet",
+            "dose": "2 min"
+          },
+          {
+            "navn": "Katt–ku",
+            "dose": "×8"
+          },
+          {
+            "navn": "Hofterotasjoner",
+            "dose": "×10"
+          },
+          {
+            "navn": "Dype knebøy uten vekt",
+            "dose": "2×5"
+          },
+          {
+            "navn": "Armsvinger",
+            "dose": "×10"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Sett × reps · RIR ≥ 4, teknikkfokus",
+        "formatKlasse": "reps",
+        "min": 17,
+        "ovelser": [
+          {
+            "navn": "Goblet-knebøy",
+            "dose": "3×8, pause 90 s"
+          },
+          {
+            "navn": "Enarms manualroing",
+            "dose": "3×10 per side, pause 60 s",
+            "unilateral": true
+          },
+          {
+            "navn": "Gulvpress med manualer",
+            "dose": "3×10, pause 60 s"
+          },
+          {
+            "navn": "Gårdsbæring med manualer",
+            "dose": "3×30 s, pause 60 s"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig tøying",
+        "formatKlasse": "hold",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Hoftebøyertøyning",
+            "dose": "30 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Brysttøyning i dørkarm",
+            "dose": "30 s"
+          },
+          {
+            "navn": "Rolig pust liggende",
+            "dose": "1 min"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "styrke-lav-intens",
+    "kategori": "styrke",
+    "skill": "lav",
+    "intensitet": "intens",
+    "navn": "DeLorme 3×10",
+    "beskrivelse": "Klassikeren som startet alt: tre stigende sett der bare det siste er tungt. Du varmer opp i selve øvelsen og gir alt på slutten – enkelt, brutalt effektivt og lett å styre.",
+    "varighetMin": 30,
+    "utstyr": [
+      "manualer",
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Progressive Resistance Exercise (DeLorme & Watkins, 1948)",
+      "type": "protokoll",
+      "ref": "https://pubmed.ncbi.nlm.nih.gov/22592167/ + https://www.physio-pedia.com/The_DeLorme_and_Oxford_Strength_Training_Principles",
+      "notat": "Originalens siste sett er til 10RM (RIR 0); her stoppes det på RIR 1–2 for trygghet alene hjemme. 50/75/100 %-rampen er bevart. Originalen var apparat-/rehab-basert; overført til enkle manualøvelser."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Generell oppvarming",
+        "formatKlasse": "reps",
+        "min": 5,
+        "ovelser": [
+          {
+            "navn": "Lett kondis (trappegang/hopp uten tau)",
+            "dose": "3 min"
+          },
+          {
+            "navn": "Knebøy uten vekt",
+            "dose": "×10"
+          },
+          {
+            "navn": "Utfall bakover",
+            "dose": "×8"
+          },
+          {
+            "navn": "Skulderrotasjoner med lett manual",
+            "dose": "×10"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "DeLorme-rampe · siste sett tungt, stopp på RIR 1–2",
+        "formatKlasse": "reps",
+        "min": 22,
+        "ovelser": [
+          {
+            "navn": "Goblet-knebøy",
+            "dose": "3×10 (50/75/100 % av 10RM), pause 120 s"
+          },
+          {
+            "navn": "Gulvpress med manualer",
+            "dose": "3×10 (50/75/100 % av 10RM), pause 120 s"
+          },
+          {
+            "navn": "Enarms manualroing",
+            "dose": "3×10 per side (50/75/100 % av 10RM), pause 90 s",
+            "unilateral": true
+          },
+          {
+            "navn": "Bicepscurl med manualer",
+            "dose": "3×10 (50/75/100 % av 10RM), pause 60 s"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig tøying",
+        "formatKlasse": "hold",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Lårtøyning",
+            "dose": "30 s"
+          },
+          {
+            "navn": "Brysttøyning",
+            "dose": "30 s"
+          },
+          {
+            "navn": "Underarmstøyning",
+            "dose": "30 s"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "styrke-medium-lett",
+    "kategori": "styrke",
+    "skill": "medium",
+    "intensitet": "lett",
+    "navn": "ACSM helkropp – teknikk og hengsel",
+    "beskrivelse": "Rolig helkroppsøkt etter ACSMs oppskrift, med hoftehengsel og press i fokus. Lette vekter, god tid og full kontroll – du bygger teknikken som senere lar deg løfte tungt.",
+    "varighetMin": 30,
+    "utstyr": [
+      "manualer",
+      "matte"
+    ],
+    "kilde": {
+      "navn": "ACSM Position Stand: Progression Models in Resistance Training (ACSM, 2009/2026)",
+      "type": "retningslinje",
+      "ref": "https://tourniquets.org/wp-content/uploads/PDFs/ACSM-Progression-models-in-resistance-training-for-healthy-adults-2009.pdf + https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "notat": "ACSM angir 8–12 reps til viljestyrt utmattelse; lett-varianten bruker samme øvelsesutvalg og repspenn, men bevisst RIR 4–5 (novise-/teknikkdosering iht. posisjonsdokumentet)."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Generell oppvarming",
+        "formatKlasse": "reps",
+        "min": 5,
+        "ovelser": [
+          {
+            "navn": "Rolig kondis",
+            "dose": "3 min"
+          },
+          {
+            "navn": "Hoftehengsler uten vekt (hendene glir langs lårene)",
+            "dose": "×10"
+          },
+          {
+            "navn": "Katt–ku",
+            "dose": "×8"
+          },
+          {
+            "navn": "Skulderpress uten vekt",
+            "dose": "×10"
+          },
+          {
+            "navn": "Knebøy uten vekt",
+            "dose": "×5"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Sett × reps · RIR 4–5, full pause og hengselfokus",
+        "formatKlasse": "reps",
+        "min": 21,
+        "ovelser": [
+          {
+            "navn": "Rumensk markløft med manualer",
+            "dose": "2×10"
+          },
+          {
+            "navn": "Stående skulderpress med manualer",
+            "dose": "2×10"
+          },
+          {
+            "navn": "Goblet-knebøy",
+            "dose": "2×10"
+          },
+          {
+            "navn": "Stående foroverbøyd manualroing",
+            "dose": "2×10"
+          },
+          {
+            "navn": "Utfall bakover med manualer",
+            "dose": "2×8 per side",
+            "unilateral": true
+          }
+        ],
+        "format": "straight-sets",
+        "parametre": {
+          "sett": 2,
+          "reps": 10,
+          "pauseSek": 90
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig tøying",
+        "formatKlasse": "hold",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Hamstringtøyning",
+            "dose": "45 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "90/90-hoftetøyning",
+            "dose": "45 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Skulderrulling",
+            "dose": "×10"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "styrke-medium-intens",
+    "kategori": "styrke",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "ACSM helkropp – tung",
+    "beskrivelse": "ACSM-oppskriften slik den er ment: tunge sett på 8 reps nær utmattelse med skikkelige pauser. Fire store øvelser, hele kroppen – kort, tungt og målbart.",
+    "varighetMin": 35,
+    "utstyr": [
+      "manualer",
+      "matte"
+    ],
+    "kilde": {
+      "navn": "ACSM Position Stand: Progression Models in Resistance Training (ACSM, 2009/2026)",
+      "type": "retningslinje",
+      "ref": "https://tourniquets.org/wp-content/uploads/PDFs/ACSM-Progression-models-in-resistance-training-for-healthy-adults-2009.pdf + https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823/",
+      "notat": "«Volitional fatigue» i retningslinjene er oversatt til RIR 1–3 for trygg soloøkt; pausene følger ACSMs 2–3 min-anbefaling for flerledsøvelser, nedjustert mot 2 min for å holde varigheten. Benk valgfri – gulvpress fungerer."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Oppvarming + tilvenningssett",
+        "formatKlasse": "reps",
+        "min": 6,
+        "ovelser": [
+          {
+            "navn": "Rolig kondis",
+            "dose": "3 min"
+          },
+          {
+            "navn": "Hoftehengsler uten vekt",
+            "dose": "×10"
+          },
+          {
+            "navn": "Katt–ku",
+            "dose": "×8"
+          },
+          {
+            "navn": "Lett tilvenningssett: rumensk markløft",
+            "dose": "1×10 lett"
+          },
+          {
+            "navn": "Lett tilvenningssett: manualbenkpress",
+            "dose": "1×10 lett"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Sett × reps · RIR 1–3 (RPE 7–9)",
+        "formatKlasse": "reps",
+        "min": 26,
+        "ovelser": [
+          {
+            "navn": "Rumensk markløft med manualer",
+            "dose": "3×8, pause 120 s"
+          },
+          {
+            "navn": "Manualbenkpress (benk eller gulv)",
+            "dose": "3×8, pause 120 s"
+          },
+          {
+            "navn": "Utfall med manualer",
+            "dose": "3×8 per side, pause 120 s",
+            "unilateral": true
+          },
+          {
+            "navn": "Stående foroverbøyd manualroing",
+            "dose": "3×10, pause 90 s"
+          }
+        ],
+        "format": "straight-sets",
+        "parametre": {
+          "sett": 3,
+          "reps": 8,
+          "pauseSek": 120
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig tøying og pust",
+        "formatKlasse": "hold",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Hamstringtøyning",
+            "dose": "40 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Brysttøyning",
+            "dose": "40 s"
+          },
+          {
+            "navn": "Rolig pust",
+            "dose": "1 min"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "styrke-hoy-lett",
+    "kategori": "styrke",
+    "skill": "hoy",
+    "intensitet": "lett",
+    "navn": "Sving & oppreisning",
+    "beskrivelse": "Pavels berømte oppskrift i sin enkleste form: kraftfulle svinger og rolige oppreisninger, aldri til utmattelse. To øvelser som bygger hele kroppen – og du går uthvilt derfra.",
+    "varighetMin": 30,
+    "utstyr": [
+      "kettlebell",
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Kettlebell Simple & Sinister-struktur (Pavel Tsatsouline/StrongFirst, 2013/2019)",
+      "type": "program",
+      "ref": "https://www.strongfirst.com/simply-sinister/ + https://journals.lww.com/nsca-jscr/fulltext/2012/08000/kettlebell_swing_training_improves_maximal_and.28.aspx",
+      "notat": "Kun generisk svinger+oppreisning-struktur; bokens vektprogresjon og teststandarder er utelatt som proprietære. Pavel foreskriver trening langt fra utmattelse (snakketesten skal bestås) – derfor lett-økt tross høyt teknikkrav."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "S&S-inspirert oppvarming",
+        "formatKlasse": "reps",
+        "min": 6,
+        "ovelser": [
+          {
+            "navn": "Kettlebell-halo",
+            "dose": "2×5 per retning"
+          },
+          {
+            "navn": "«Prying» goblet-knebøy",
+            "dose": "2×5"
+          },
+          {
+            "navn": "Hoftebro",
+            "dose": "2×5"
+          },
+          {
+            "navn": "Hoftehengsler uten vekt",
+            "dose": "×5"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Lett klokke · RIR ≥ 4, snakketesten skal bestås",
+        "formatKlasse": "reps",
+        "min": 20,
+        "ovelser": [
+          {
+            "navn": "Ettarms kettlebellsving (bytt arm hvert sett)",
+            "dose": "10×10, nytt sett hvert 90–120 s",
+            "unilateral": true
+          },
+          {
+            "navn": "Tyrkisk oppreisning, rolig tempo",
+            "dose": "5×1 per side, pause 60–90 s",
+            "unilateral": true
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig tøying",
+        "formatKlasse": "hold",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "90/90-hoftetøyning",
+            "dose": "45 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "QL-/sidestrekk",
+            "dose": "30 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Hamstringtøyning",
+            "dose": "30 s"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "styrke-hoy-intens",
+    "kategori": "styrke",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "5×5 klassisk med stang",
+    "beskrivelse": "Den klassiske 5×5-økta slik Reg Park skrev den i 1960: tre store stangløft, fem tunge femmere med lange pauser. Tidløs styrkebygging – tung, enkel og ærlig.",
+    "varighetMin": 40,
+    "utstyr": [
+      "stang",
+      "benk",
+      "matte"
+    ],
+    "kilde": {
+      "navn": "5×5 (Reg Park, 1960)",
+      "type": "program",
+      "ref": "https://www.t-nation.com/training/reg-parks-5x5-program/ + https://stronglifts.com/stronglifts-5x5/history/",
+      "notat": "Generisk 5×5-struktur kreditert Park (ikke StrongLifts' proprietære progresjon). Park frarådet trening til failure – arbeidssett på RIR 1–3. Markløft redusert til 3×5 for å holde økta ≤ 40 min."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Generell oppvarming",
+        "formatKlasse": "reps",
+        "min": 6,
+        "ovelser": [
+          {
+            "navn": "Rolig kondis",
+            "dose": "3 min"
+          },
+          {
+            "navn": "Hoftehengsler uten vekt",
+            "dose": "×10"
+          },
+          {
+            "navn": "Dype knebøy uten vekt",
+            "dose": "×8"
+          },
+          {
+            "navn": "Skulderrotasjoner med tom stang",
+            "dose": "×10"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "5×5 · sett 1–2 stigende (60/80 %), arbeidssett RIR 1–3",
+        "formatKlasse": "reps",
+        "min": 31,
+        "ovelser": [
+          {
+            "navn": "Knebøy med stang",
+            "dose": "5×5 (2 stigende + 3 arbeidssett), pause 180 s"
+          },
+          {
+            "navn": "Benkpress med stang",
+            "dose": "5×5 (2 stigende + 3 arbeidssett), pause 180 s"
+          },
+          {
+            "navn": "Markløft med stang",
+            "dose": "3×5 (1 oppvarming + 2 arbeidssett), pause 180 s"
+          }
+        ],
+        "format": "straight-sets",
+        "parametre": {
+          "sett": 5,
+          "reps": 5,
+          "pauseSek": 180
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig tøying",
+        "formatKlasse": "hold",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Hoftebøyertøyning",
+            "dose": "45 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Hamstringtøyning",
+            "dose": "45 s per side",
+            "unilateral": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "toying-lav-lett",
+    "kategori": "toying",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Rolig helkroppstøying",
+    "beskrivelse": "En rolig runde gjennom hele kroppen med milde, statiske hold. Perfekt etter trening eller en lang dag – pust rolig og la spenningen slippe litt for litt.",
+    "varighetMin": 15,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Statisk tøying etter trening (NHS-tradisjon/Bob Anderson, ACSM-dosering)",
+      "type": "retningslinje",
+      "ref": "https://www.nhs.uk/live-well/exercise/how-to-stretch-after-exercising/ + https://www.unm.edu/~lkravitz/Article%20folder/ACSMGuidelinesUNM.pdf",
+      "notat": "NHS-økta dosert etter ACSM: statiske hold 30 s, 1–2 reps per muskelgruppe. Mild spenning, aldri smerte."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Underkropp — statiske hold 30 s",
+        "formatKlasse": "hold",
+        "min": 9,
+        "ovelser": [
+          {
+            "navn": "Legg mot vegg",
+            "dose": "2×30 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Hamstring stående (hæl frem, len hoften bak)",
+            "dose": "2×30 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Sittende fremoverbøy",
+            "dose": "2×30 s"
+          },
+          {
+            "navn": "Lyske sittende (såler sammen, lett press)",
+            "dose": "2×30 s"
+          }
+        ],
+        "format": "statisk-toy",
+        "parametre": {
+          "tidMin": 9
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Overkropp og nakke — statiske hold 30 s",
+        "formatKlasse": "hold",
+        "min": 6,
+        "ovelser": [
+          {
+            "navn": "Bryst i døråpning",
+            "dose": "2×30 s"
+          },
+          {
+            "navn": "Skulder kryssdrag",
+            "dose": "1×30 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Nakke sidebøy",
+            "dose": "1×30 s per side",
+            "unilateral": true
+          }
+        ],
+        "format": "statisk-toy",
+        "parametre": {
+          "tidMin": 6
+        }
+      }
+    ]
+  },
+  {
+    "id": "toying-lav-intens",
+    "kategori": "toying",
+    "skill": "lav",
+    "intensitet": "intens",
+    "navn": "Yin-basis: lange hold",
+    "beskrivelse": "Enkle stillinger holdt lenge – her handler det om å synke inn og bli værende. Rolig pust, tyngdekraften gjør jobben. Dypt og krevende, men aldri forsert.",
+    "varighetMin": 20,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Yin yoga grunnserie (Paul Grilley/Bernie Clark)",
+      "type": "tradisjon",
+      "ref": "https://yinyoga.com/yinsights/three-beginning-flows/ + https://www.yogajournal.com/lifestyle/balance/yin-yoga-with-paul-grilley/",
+      "notat": "Nybegynnerposisjoner fra Clarks begynnerflyter, hold kortet til 2–3 min. Gå ut av posisjonen ved nummenhet eller skarp smerte."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Yin-hold 2–3 min — passiv, rund rygg ok",
+        "formatKlasse": "hold",
+        "min": 16,
+        "ovelser": [
+          {
+            "navn": "Sommerfuglen (såler sammen, rund rygg frem)",
+            "dose": "1×3 min"
+          },
+          {
+            "navn": "Larven (sittende fremoverbøy, avslappet rygg)",
+            "dose": "1×3 min"
+          },
+          {
+            "navn": "Sfinksen (mageliggende på underarmer)",
+            "dose": "1×2 min"
+          },
+          {
+            "navn": "Liggende vridning",
+            "dose": "1×2 min per side",
+            "unilateral": true
+          }
+        ],
+        "format": "yin",
+        "parametre": {
+          "tidMin": 16
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Utgang — beina opp langs vegg",
+        "formatKlasse": "hold",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Beina opp langs vegg",
+            "dose": "1×3 min"
+          }
+        ],
+        "format": "yin",
+        "parametre": {
+          "tidMin": 4
+        }
+      }
+    ]
+  },
+  {
+    "id": "toying-medium-lett",
+    "kategori": "toying",
+    "skill": "medium",
+    "intensitet": "lett",
+    "navn": "Hofte- og brystryggåpner",
+    "beskrivelse": "Mild, systematisk åpning av hofter og brystrygg – områdene som stivner mest av stillesitting. Litt oppsett per posisjon, men rolig og god belastning.",
+    "varighetMin": 20,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Moderne mobilitetstøying, ACSM-dosert (90/90 fra Functional Range-miljøet)",
+      "type": "retningslinje",
+      "ref": "https://health.clevelandclinic.org/90-90-stretch + https://www.unm.edu/~lkravitz/Article%20folder/ACSMGuidelinesUNM.pdf",
+      "notat": "90/90 og duebein dosert etter ACSM: statisk 30–45 s, 2 reps. Quadstrekk med balanse plassert her (medium-skill)."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Hofter — statiske hold 30–45 s",
+        "formatKlasse": "hold",
+        "min": 13,
+        "ovelser": [
+          {
+            "navn": "90/90-hoftestrekk (len over fremre legg)",
+            "dose": "2×30 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Duebein på gulv",
+            "dose": "2×45 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Figur-4 liggende",
+            "dose": "2×30 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Knestående hoftebøyerstrekk",
+            "dose": "2×30 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Quadriceps stående m/ balanse",
+            "dose": "2×30 s per side",
+            "unilateral": true
+          }
+        ],
+        "format": "statisk-toy",
+        "parametre": {
+          "tidMin": 13
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Brystrygg og avslutning",
+        "formatKlasse": "hold",
+        "min": 6,
+        "ovelser": [
+          {
+            "navn": "Åpen bok (thorakal rotasjon, hold ytterstilling)",
+            "dose": "2×30 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Barnets stilling m/ sidebøy",
+            "dose": "1×30 s per side",
+            "unilateral": true
+          }
+        ],
+        "format": "statisk-toy",
+        "parametre": {
+          "tidMin": 6
+        }
+      }
+    ]
+  },
+  {
+    "id": "toying-medium-intens",
+    "kategori": "toying",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "Yin side- og skulderserie",
+    "beskrivelse": "En stille yin-reise for kroppens sidelinjer, skuldre og bryst med lange, passive hold. Synk inn, pust rolig og la tyngdekraften åpne områdene som sjelden får tid.",
+    "varighetMin": 25,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Yin yoga side-/skulderposisjoner (Paul Grilley/Bernie Clark)",
+      "type": "tradisjon",
+      "ref": "https://yinyoga.com/yinsights/asanas/ + https://www.yogajournal.com/lifestyle/balance/yin-yoga-with-paul-grilley/",
+      "notat": "Godkjent synteseendring: økta er vinklet om fra Grilleys klassiske hofteserie til en side-/skulder-/brystserie (bananasana, smeltende hjerte, sidefold, twisted roots — alle dokumenterte yin-posisjoner hos yinyoga.com/Clark) for å unngå duplikat mot yoga-kategoriens yin-hofteøkt. Holdetider 2–3 min beholdt."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Yin-hold 2–3 min — finn kanten, bli værende",
+        "formatKlasse": "hold",
+        "min": 18,
+        "ovelser": [
+          {
+            "navn": "Smeltende hjerte (anahatasana, knestående, brystet mot gulvet)",
+            "dose": "1×3 min"
+          },
+          {
+            "navn": "Bananasana (liggende banan, sidelinjestrekk)",
+            "dose": "1×2 min per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Sidefold over bredt bein (sidebøy over strakt bein)",
+            "dose": "1×2 min per side",
+            "unilateral": true
+          }
+        ],
+        "format": "yin",
+        "parametre": {
+          "tidMin": 18
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Utgang — twisted roots",
+        "formatKlasse": "hold",
+        "min": 7,
+        "ovelser": [
+          {
+            "navn": "Twisted roots (liggende vridning m/ bøyde, flettede knær)",
+            "dose": "1×3 min per side",
+            "unilateral": true
+          }
+        ],
+        "format": "yin",
+        "parametre": {
+          "tidMin": 7
+        }
+      }
+    ]
+  },
+  {
+    "id": "toying-hoy-lett",
+    "kategori": "toying",
+    "skill": "hoy",
+    "intensitet": "lett",
+    "navn": "Aktiv isolert tøying (AIS)",
+    "beskrivelse": "Presis teknikk, mild følelse: du løfter benet aktivt og gir bare et lite drag på slutten. Korte 2-sekunders hold lurer strekkerefleksen – smart tøying for kroppsnerder.",
+    "varighetMin": 18,
+    "utstyr": [
+      "matte",
+      "strikk"
+    ],
+    "kilde": {
+      "navn": "Active Isolated Stretching (Aaron Mattes, 1970-tallet)",
+      "type": "protokoll",
+      "ref": "https://www.stretchingusa.com/product/aaron-mattes-active-isolated-stretching/ + https://abbottcenter.com/active-isolated-stretching/",
+      "notat": "Mattes' metode formatert som reps: aktiver antagonisten, assister lett med strikken siste cm, hold bare 2 s, 10 reps. Håndkle kan erstatte strikk."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "AIS underkropp — løft aktivt, lett drahjelp, hold 2 s",
+        "formatKlasse": "reps",
+        "min": 13,
+        "ovelser": [
+          {
+            "navn": "Hamstring liggende m/ strikk",
+            "dose": "10×2 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Legg m/ strikk (fleksjon mot deg)",
+            "dose": "10×2 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Adduktor liggende m/ strikk (benet ut til siden)",
+            "dose": "10×2 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Hoftebøyer sideliggende (hæl mot sete, aktiv hofteekstensjon)",
+            "dose": "10×2 s per side",
+            "unilateral": true
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "AIS bryst — armen aktivt ut og ned, hold 2 s",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Brystsving liggende (armen aktivt ut/ned)",
+            "dose": "10×2 s per side",
+            "unilateral": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "toying-hoy-intens",
+    "kategori": "toying",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "PNF kontraher–slapp av mot splitt",
+    "beskrivelse": "Den tyngste økta i kategorien: ekte muskelkontraksjoner mot strekken åpner nytt bevegelsesutslag, før du tester dybden i splittprogresjonen. Varm opp først!",
+    "varighetMin": 28,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "PNF hold-relax (Kabat & Knott, 1940–50-tallet)",
+      "type": "protokoll",
+      "ref": "https://www.healthline.com/health/fitness-exercise/pnf-stretching + https://www.physio-pedia.com/Stretching",
+      "notat": "Selvadministrert hold-relax: isometrisk kontraksjon 6 s (ca. 50 % kraft), slipp 3 s, dypere statisk strekk 30 s. Splittfinish (GMB-tradisjon) foldet inn. Pust jevnt – ikke hold pusten under kontraksjonene."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "PNF-syklus: strekk 10 s → press mot 6 s (50 %) → slipp 3 s → dypere strekk 30 s",
+        "formatKlasse": "hold",
+        "min": 20,
+        "ovelser": [
+          {
+            "navn": "Hamstring liggende (hender bak lår, press hælen ned)",
+            "dose": "3×(6 s press + 30 s strekk) per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Hoftebøyer i dyp utfall (press bakre kne mot gulvet)",
+            "dose": "3×(6 s press + 30 s strekk) per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Adduktor sittende v/ vegg (press knærne mot hendene)",
+            "dose": "3×(6 s press + 30 s strekk)"
+          },
+          {
+            "navn": "Legg mot vegg (press tåballen mot veggen)",
+            "dose": "2×(6 s press + 30 s strekk) per side",
+            "unilateral": true
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Splittfinish — så dypt det er kontrollert",
+        "formatKlasse": "hold",
+        "min": 7,
+        "ovelser": [
+          {
+            "navn": "Halv splitt (hamstring-fold i utfall)",
+            "dose": "1×45 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Splittprogresjon m/ støtte",
+            "dose": "1×30 s per side",
+            "unilateral": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sykkel-lav-lett",
+    "kategori": "sykkel",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Seiler rolig sone 2-tur",
+    "beskrivelse": "Den rolige grunnturen som norsk forskning bygger på. Hold snakketempo hele veien — kjennes det for lett, gjør du det riktig. Dette er timene som bygger motoren.",
+    "varighetMin": 30,
+    "utstyr": [
+      "sykkel"
+    ],
+    "kilde": {
+      "navn": "Polarisert 80/20-trening (Stephen Seiler, Universitetet i Agder; Seiler & Kjerland 2006)",
+      "type": "protokoll",
+      "ref": "https://pubmed.ncbi.nlm.nih.gov/16430681/ + https://roadmancycling.com/blog/stephen-seiler-80-20-polarised-training-cyclists",
+      "notat": "Originalstudien fulgte langrennsløpere; Seiler har selv generalisert modellen til sykkel. Enklere: kort Z2-blokken til 15 min. Tøffere: forleng Z2 til 35 min — aldri hardere, bare lenger."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig tråkk",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · helt rolig, fri kadens"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Jevn sone 2",
+        "min": 22,
+        "parametre": {
+          "tidMin": 22,
+          "sone": "Z2 · snakketempo, kadens 85–95"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Nedtrapping",
+        "min": 3,
+        "parametre": {
+          "tidMin": 3,
+          "sone": "Z1 · lett gir"
+        }
+      }
+    ]
+  },
+  {
+    "id": "sykkel-lav-intens",
+    "kategori": "sykkel",
+    "skill": "lav",
+    "intensitet": "intens",
+    "navn": "Tabata på sykkel (8×20/10)",
+    "beskrivelse": "Selve original-Tabataen — født på sykkel i 1996. Fire minutter som føles som en evighet, men du trenger bare å følge pipet og gi alt. Kort, brutal og ferdig.",
+    "varighetMin": 20,
+    "utstyr": [
+      "sykkel"
+    ],
+    "kilde": {
+      "navn": "Tabata-protokollen (Izumi Tabata et al., 1996)",
+      "type": "protokoll",
+      "ref": "https://deliberateperformance.ca/wp-content/uploads/2011/01/effects-of-moderate-intensity-endurance-and-high-intensity-intermittent-training-on-anaerobic-capacity-and-e280a2vo2max.pdf + https://link.springer.com/article/10.1007/s12576-019-00676-7",
+      "notat": "Original 8×20/10 på sykkelergometer beholdt; oppvarming/nedspinning etter lab-praksis fra 1996-studien. Nybegynner: 6 runder og veldig hardt i stedet for all-out. Erfaren: to sett med 5 min rolig mellom."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Gradvis oppvarming",
+        "min": 10,
+        "parametre": {
+          "tidMin": 10,
+          "sone": "Z1→Z2 · gradvis, fri kadens"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Tabata 8×20/10",
+        "min": 4,
+        "parametre": {
+          "runder": 8,
+          "faser": [
+            {
+              "navn": "Alt du har — høy kadens 100+",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Soft-pedal, helt rolig",
+              "sek": 10,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Nedspinning",
+        "min": 6,
+        "parametre": {
+          "tidMin": 6,
+          "sone": "Z1 · veldig lett gir"
+        }
+      }
+    ]
+  },
+  {
+    "id": "sykkel-medium-lett",
+    "kategori": "sykkel",
+    "skill": "medium",
+    "intensitet": "lett",
+    "navn": "Coggan sone 2-blokker (3×8)",
+    "beskrivelse": "Rolig, men med disiplin: tre jevne blokker der jobben er å holde sonen stabil på følelsen — verken snike den opp i bakker eller slippe den ned. Grunnmuren i all wattbasert trening.",
+    "varighetMin": 40,
+    "utstyr": [
+      "sykkel"
+    ],
+    "kilde": {
+      "navn": "Level 2 Endurance, 7-sonesystemet (Andrew Coggan & Hunter Allen, Training and Racing with a Power Meter)",
+      "type": "program",
+      "ref": "https://www.trainingpeaks.com/blog/power-training-levels/ + https://roadmancycling.com/blog/ftp-training-zones-cycling-complete-guide",
+      "notat": "L2 (56–75 % FTP) styrt på følelse/RPE i stedet for wattmåler. Enklere: 3×6 min i nedre Z2. Tøffere: 3×10 min i øvre Z2 (73–75 % FTP) — fortsatt snakketempo."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig tråkk",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · helt rolig"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "3×8 min sone 2",
+        "min": 28,
+        "parametre": {
+          "runder": 3,
+          "faser": [
+            {
+              "navn": "Jevn Z2 — hold sonen stabil, kadens 85–95",
+              "sek": 480,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig tråkk Z1",
+              "sek": 120,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Nedtrapping",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · lett gir"
+        }
+      }
+    ]
+  },
+  {
+    "id": "sykkel-medium-intens",
+    "kategori": "sykkel",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "Norsk 4×4",
+    "beskrivelse": "Norges mest kjente intervalløkt, rett fra NTNU-forskningen. Fire jevne, tunge drag der kunsten er å disponere: like sterk på fjerde drag som på første.",
+    "varighetMin": 39,
+    "utstyr": [
+      "sykkel"
+    ],
+    "kilde": {
+      "navn": "4×4-intervaller (Jan Helgerud & Jan Hoff, NTNU; Helgerud et al. 2007)",
+      "type": "protokoll",
+      "ref": "https://pubmed.ncbi.nlm.nih.gov/17414804/ + https://norwegianscitechnews.com/2024/05/4x4-interval-training-popular-and-controversial/",
+      "notat": "2007-studien var løpsbasert; 4×4 er anbefalt på sykkel av NTNU-miljøet selv og pulsstyringen er identisk. Enklere: 3×4 min ved 85–90 % makspuls. Tøffere: 93–95 % av makspuls og aktive pauser i Z2."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Gradvis oppvarming",
+        "min": 10,
+        "parametre": {
+          "tidMin": 10,
+          "sone": "Z1→Z2 · siste minutt opp mot Z3"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "4×4 intervaller",
+        "min": 25,
+        "parametre": {
+          "runder": 4,
+          "faser": [
+            {
+              "navn": "Hardt drag @ 90–95 % makspuls — jevn belastning",
+              "sek": 240,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Aktiv pause — lett tråkk Z1–Z2",
+              "sek": 180,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Nedspinning",
+        "min": 4,
+        "parametre": {
+          "tidMin": 4,
+          "sone": "Z1 · lett gir"
+        }
+      }
+    ]
+  },
+  {
+    "id": "sykkel-hoy-lett",
+    "kategori": "sykkel",
+    "skill": "hoy",
+    "intensitet": "lett",
+    "navn": "Kadens-driller med spin-ups",
+    "beskrivelse": "Lav belastning, høy presisjon: her trener du beina til å snurre raskt og stille. Målet er silkemykt tråkk på 110+ — overkroppen skal være helt rolig.",
+    "varighetMin": 27,
+    "utstyr": [
+      "sykkel"
+    ],
+    "kilde": {
+      "navn": "Kadens-driller / spin-ups (bane- og landeveistradisjon; CTS/Carmichael, TrainingPeaks)",
+      "type": "tradisjon",
+      "ref": "https://www.trainingpeaks.com/blog/3-high-cadence-cycling-workouts-base-training/ + https://trainright.com/science-of-cycling-cadence-training/",
+      "notat": "Stopp spin-up-økningen om du hopper i setet. Enklere: 4 spin-ups og tak på 105 rpm. Tøffere: 8 spin-ups, eller ettbeinstråkk 2×(1 min per bein) på rulle."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig tråkk",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · @ 90 rpm"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "6× spin-ups",
+        "min": 12,
+        "parametre": {
+          "runder": 6,
+          "faser": [
+            {
+              "navn": "Spin-up: øk fra 90 til 110–120+ rpm i lett gir",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig @ 85–90 rpm",
+              "sek": 90,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Høykadens-blokk",
+        "min": 6,
+        "parametre": {
+          "runder": 3,
+          "faser": [
+            {
+              "navn": "Jevnt @ 105–110 rpm, Z2",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig @ 85 rpm",
+              "sek": 60,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Nedspinning",
+        "min": 4,
+        "parametre": {
+          "tidMin": 4,
+          "sone": "Z1 · fri kadens"
+        }
+      }
+    ]
+  },
+  {
+    "id": "sykkel-hoy-intens",
+    "kategori": "sykkel",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "Rønnestad 30/15",
+    "beskrivelse": "Den norske intervallfavoritten fra Lillehammer: 30 sekunder på, 15 av — presisjonen ligger i å treffe samme watt i drag etter drag. Tøff, smart og veldig effektiv.",
+    "varighetMin": 38,
+    "utstyr": [
+      "sykkel"
+    ],
+    "kilde": {
+      "navn": "30/15-protokollen (Bent Rønnestad, Høgskolen i Innlandet; Rønnestad et al. 2020)",
+      "type": "protokoll",
+      "ref": "https://onlinelibrary.wiley.com/doi/10.1111/sms.13627 + https://www.trainingpeaks.com/blog/ronnestad-30-15-intervals/",
+      "notat": "Redusert fra 3×13 til 2×13 drag for å holde 38 min. Enklere: 2×10 drag og RPE 8. Original/tøffere: full studieprotokoll 3×13 (ca. 50 min) for erfarne."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Gradvis oppvarming",
+        "min": 10,
+        "parametre": {
+          "tidMin": 10,
+          "sone": "Z1→Z2 · avslutt med 3×(30 s Z4 / 30 s rolig)"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Serie 1: 13×30/15",
+        "min": 10,
+        "parametre": {
+          "runder": 13,
+          "faser": [
+            {
+              "navn": "Hardt @ ~110–120 % FTP, kadens 95–105",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Soft-pedal @ ~50 % av dragwatten",
+              "sek": 15,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Seriepause",
+        "min": 3,
+        "parametre": {
+          "tidMin": 3,
+          "sone": "Z1 · rolig tråkk"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Serie 2: 13×30/15",
+        "min": 10,
+        "parametre": {
+          "runder": 13,
+          "faser": [
+            {
+              "navn": "Hardt @ ~110–120 % FTP, kadens 95–105",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Soft-pedal @ ~50 % av dragwatten",
+              "sek": 15,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Nedspinning",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · lett gir"
+        }
+      }
+    ]
+  },
+  {
+    "id": "kroppsvekt-lav-lett",
+    "kategori": "kroppsvekt",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Rolig styrke for nybegynnere",
+    "beskrivelse": "En trygg og rolig start på styrketrening, rett fra britiske helsemyndigheter. Du bruker bare kroppen og en stol – perfekt for å bygge vanen og kjenne at kroppen blir sterkere.",
+    "varighetMin": 20,
+    "utstyr": [
+      "stol"
+    ],
+    "kilde": {
+      "navn": "Strength exercises (NHS/HSE, offentlig retningslinje)",
+      "type": "retningslinje",
+      "ref": "https://www.nhs.uk/live-well/exercise/strength-exercises/ + https://www2.hse.ie/living-well/exercise/exercise-at-home/strength-exercises/",
+      "notat": "NHS' øvelsesutvalg satt sammen til én guidet økt med oppvarming og nedtrapping; rolig tempo, RIR ≥ 4 og 60 s pause mellom sett. Lettere: sitt-til-stå med håndstøtte og halve reps. Tyngre: knebøy uten stolstøtte, 10 reps per sett."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Kom i gang",
+        "formatKlasse": "reps",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Marsj på stedet",
+            "dose": "120 s"
+          },
+          {
+            "navn": "Skulderrull",
+            "dose": "×10"
+          },
+          {
+            "navn": "Armsirkler",
+            "dose": "×10 hver vei"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Sett × reps · rolig tempo, RIR ≥ 4, 60 s pause",
+        "formatKlasse": "reps",
+        "min": 14,
+        "ovelser": [
+          {
+            "navn": "Armhevinger mot vegg",
+            "dose": "3×8"
+          },
+          {
+            "navn": "Sitt-til-stå fra stol (3 s ned)",
+            "dose": "3×6"
+          },
+          {
+            "navn": "Knebøy med stolstøtte",
+            "dose": "2×8"
+          },
+          {
+            "navn": "Tåhev",
+            "dose": "2×10"
+          },
+          {
+            "navn": "Marsj på stedet, rolig",
+            "dose": "2×60 s"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig avslutning",
+        "formatKlasse": "hold",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Rolig gange",
+            "dose": "60 s"
+          },
+          {
+            "navn": "Leggtøy",
+            "dose": "2×20 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Brysttøy med armer bak",
+            "dose": "2×20 s"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "kroppsvekt-lav-intens",
+    "kategori": "kroppsvekt",
+    "skill": "lav",
+    "intensitet": "intens",
+    "navn": "5BX Kondiskvarteret",
+    "beskrivelse": "Det legendariske 11-minuttersprogrammet fra det kanadiske flyvåpenet. Enkle øvelser, høyt tempo – du jakter dine egne tall og kjenner pulsen stige fra første minutt.",
+    "varighetMin": 17,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "5BX Plan, Chart 1 (Dr. Bill Orban / Royal Canadian Air Force, 1961)",
+      "type": "program",
+      "ref": "https://en.wikipedia.org/wiki/Royal_Canadian_Air_Force_Exercise_Plans + https://www.artofmanliness.com/health-fitness/5bx-the-cold-war-military-workout-for-getting-fit-in-11-minutes-a-day/",
+      "notat": "Originalen er et daglig 11-min program; her rammet inn med oppvarming og nedtrapping. Gå videre til neste nivå når repsmålene nås uten å bli helt utkjørt. Lettere: rask marsj i stedet for løp, armhevinger mot vegg. Tyngre: sikt mot øvre repsmål eller rykk opp et chart-nivå."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Kom i gang",
+        "formatKlasse": "reps",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Lett jogg på stedet",
+            "dose": "120 s"
+          },
+          {
+            "navn": "Armsirkler",
+            "dose": "×10"
+          },
+          {
+            "navn": "Hoftesirkler",
+            "dose": "×10"
+          }
+        ]
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "5BX Chart 1 · maks kontrollerte reps, RPE 7–8",
+        "min": 11,
+        "parametre": {
+          "runder": 1,
+          "faser": [
+            {
+              "navn": "Stående tåberøring (mål 12–20)",
+              "sek": 120,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Situps med bøyde knær (mål 10–18)",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Ryggløft på magen (mål 8–16)",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Armhevinger, evt. på kne (mål 6–12)",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Løp på stedet, ~200–400 steg + 10 hoppende utfall hvert 75. steg",
+              "sek": 360,
+              "type": "arbeid"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig avslutning",
+        "formatKlasse": "hold",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Rolig gange",
+            "dose": "60 s"
+          },
+          {
+            "navn": "Lårtøy",
+            "dose": "20 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Leggtøy",
+            "dose": "20 s per side",
+            "unilateral": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "kroppsvekt-medium-lett",
+    "kategori": "kroppsvekt",
+    "skill": "medium",
+    "intensitet": "lett",
+    "navn": "Hundre armhevinger – teknikkøkt",
+    "beskrivelse": "Bygg deg mot hundre armhevinger med den klassiske 5-settsstrukturen – uten å kjøre deg tom. Rolig tempo og perfekt teknikk gjør at du kommer sterkere tilbake neste økt.",
+    "varighetMin": 20,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Hundred Pushups (Steve Speirs, 2009) + Grease the Groove (Pavel Tsatsouline)",
+      "type": "program",
+      "ref": "https://hundredpushups.com/ + https://www.artofmanliness.com/health-fitness/fitness/get-stronger-by-greasing-the-groove/",
+      "notat": "Speirs' siste «max reps»-sett er byttet til stopp ved RIR ≥ 4 (GTG-prinsipp). Utfall/planke er et tillegg for en helhetlig økt, ikke del av originalen. Klarte du 11–20 på starttest: bruk 10-10-8-6-7. Lettere: alle sett på kne eller mot benk. Tyngre: neste kolonne/uke – behold RIR ≥ 4."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Kom i gang",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Marsj eller lett jogg",
+            "dose": "60 s"
+          },
+          {
+            "navn": "Armsirkler",
+            "dose": "×10 hver vei"
+          },
+          {
+            "navn": "Scapula-armhevinger",
+            "dose": "×8"
+          },
+          {
+            "navn": "Rolige armhevinger på kne",
+            "dose": "×5"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Armhevingsblokk · 60–90 s pause, RIR ≥ 4",
+        "formatKlasse": "reps",
+        "min": 9,
+        "ovelser": [
+          {
+            "navn": "Armhevinger, sett 1–5 (starttest 6–10)",
+            "dose": "6-6-4-4-5"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Rolig teknikkblokk · 60 s pause",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Utfall (3 s ned)",
+            "dose": "2×6 per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Planke",
+            "dose": "2×20–30 s"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig avslutning",
+        "formatKlasse": "hold",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Brysttøy på gulv",
+            "dose": "2×20 s"
+          },
+          {
+            "navn": "Barnestilling",
+            "dose": "30 s"
+          },
+          {
+            "navn": "Rolig pust",
+            "dose": "60 s"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "kroppsvekt-medium-intens",
+    "kategori": "kroppsvekt",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "7-minutteren ×2 (HICT)",
+    "beskrivelse": "Den forskningsbaserte 7-minutteren – her i to runder for full effekt. Tolv øvelser i høy fart med minimal pause gir kondis og styrke i samme økt. Kort, tøff og utrolig tilfredsstillende.",
+    "varighetMin": 25,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "High-Intensity Circuit Training Using Body Weight (Klika & Jordan, ACSM, 2013)",
+      "type": "protokoll",
+      "ref": "https://journals.lww.com/acsm-healthfitness/fulltext/2013/05000/high_intensity_circuit_training_using_body_weight_.5.aspx + https://www.amssm.org/coachs-corner:-the-7minute-workout-va-29.html",
+      "notat": "For å slippe stol: step-ups → knebøyhopp, dips → smale triceps-armhevinger (veggsitt beholdt). Doblet til 2 runder for å treffe 15–30 min. RPE 7–9. Lettere: én runde, bytt hopp til raske steg. Tyngre: tre runder eller 40 s arbeid / 10 s pause."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Kom i gang",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Marsj på stedet",
+            "dose": "30 s"
+          },
+          {
+            "navn": "Lett jogg på stedet",
+            "dose": "60 s"
+          },
+          {
+            "navn": "Rolige knebøy",
+            "dose": "×10"
+          },
+          {
+            "navn": "Armsirkler",
+            "dose": "×10"
+          },
+          {
+            "navn": "Rolige jumping jacks",
+            "dose": "×20"
+          },
+          {
+            "navn": "Utfall",
+            "dose": "×5 per side",
+            "unilateral": true
+          }
+        ]
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "2 runder · 30 s arbeid / 10 s pause · RPE 7–9",
+        "min": 18,
+        "parametre": {
+          "runder": 2,
+          "faser": [
+            {
+              "navn": "Jumping jacks",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Pause",
+              "sek": 10,
+              "type": "hvile"
+            },
+            {
+              "navn": "Veggsitt",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Pause",
+              "sek": 10,
+              "type": "hvile"
+            },
+            {
+              "navn": "Armhevinger",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Pause",
+              "sek": 10,
+              "type": "hvile"
+            },
+            {
+              "navn": "Magekrøll",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Pause",
+              "sek": 10,
+              "type": "hvile"
+            },
+            {
+              "navn": "Knebøyhopp",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Pause",
+              "sek": 10,
+              "type": "hvile"
+            },
+            {
+              "navn": "Knebøy",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Pause",
+              "sek": 10,
+              "type": "hvile"
+            },
+            {
+              "navn": "Smale triceps-armhevinger",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Pause",
+              "sek": 10,
+              "type": "hvile"
+            },
+            {
+              "navn": "Planke",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Pause",
+              "sek": 10,
+              "type": "hvile"
+            },
+            {
+              "navn": "Høye kneløft",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Pause",
+              "sek": 10,
+              "type": "hvile"
+            },
+            {
+              "navn": "Vekslende utfall",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Pause",
+              "sek": 10,
+              "type": "hvile"
+            },
+            {
+              "navn": "Armheving med rotasjon",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Pause",
+              "sek": 10,
+              "type": "hvile"
+            },
+            {
+              "navn": "Sideplanke (bytt side halvveis)",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Pause mellom rundene",
+              "sek": 120,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig avslutning",
+        "formatKlasse": "hold",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Rolig gange",
+            "dose": "60 s"
+          },
+          {
+            "navn": "Tøy framside lår",
+            "dose": "20–30 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Brysttøy",
+            "dose": "20–30 s"
+          },
+          {
+            "navn": "Hoftetøy",
+            "dose": "20–30 s per side",
+            "unilateral": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "kroppsvekt-hoy-lett",
+    "kategori": "kroppsvekt",
+    "skill": "hoy",
+    "intensitet": "lett",
+    "navn": "Hollow body & håndståendeforberedelse",
+    "beskrivelse": "Turnernes hemmelighet: en stram, hul kroppslinje. Rolige holdetider og veggdriller bygger kontrollen som en dag blir til håndstående – kvalitet foran alt.",
+    "varighetMin": 25,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Hollow body-progresjon og veggdriller (turntradisjonen; GMB/Nerd Fitness)",
+      "type": "tradisjon",
+      "ref": "https://gmb.io/hollow-body/ + https://www.nerdfitness.com/blog/a-beginners-guide-to-handstands/",
+      "notat": "Felleseie fra turntradisjonen satt sammen til én teknikkøkt (RIR ≥ 4, 60–90 s pause). Hold korsryggen presset i gulvet i hollow. Lettere: bøyde knær i hollow, dropp oppsparkene. Tyngre: strake ben og armer over hodet, veggholdetider opp mot 45 s."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Håndledd og skuldre",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Håndleddssirkler og -vipp",
+            "dose": "120 s"
+          },
+          {
+            "navn": "Katt–kamel",
+            "dose": "×8"
+          },
+          {
+            "navn": "Skulderåpner mot vegg",
+            "dose": "60 s"
+          },
+          {
+            "navn": "Scapula-armhevinger",
+            "dose": "2×8"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Holdetider · teknikkfokus, RIR ≥ 4, 60–90 s pause",
+        "formatKlasse": "hold",
+        "min": 10,
+        "ovelser": [
+          {
+            "navn": "Hollow hold (start med bøyde knær, strekk gradvis)",
+            "dose": "4×15–20 s"
+          },
+          {
+            "navn": "Vegg-planke / halv veggklatring, magen mot veggen",
+            "dose": "3×15–30 s"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Kontrollarbeid · rolig tempo",
+        "formatKlasse": "reps",
+        "min": 7,
+        "ovelser": [
+          {
+            "navn": "Rolige hollow rocks",
+            "dose": "2×8"
+          },
+          {
+            "navn": "Skulderklapp i planke",
+            "dose": "2×6 per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Valgfritt: rolige oppspark mot vegg, strake armer",
+            "dose": "×3–5"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig avslutning",
+        "formatKlasse": "hold",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Håndleddstøy",
+            "dose": "60 s"
+          },
+          {
+            "navn": "Barnestilling",
+            "dose": "60 s"
+          },
+          {
+            "navn": "Kobra",
+            "dose": "30 s"
+          },
+          {
+            "navn": "Rolig pust",
+            "dose": "60 s"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "kroppsvekt-hoy-intens",
+    "kategori": "kroppsvekt",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "Gymnastisk EMOM 16",
+    "beskrivelse": "Klokka styrer, du leverer: fire tøffe minutter på repeat med turnstyrke og burpees. Jo raskere du jobber med god form, jo mer pause tjener du. En skikkelig test for viderekomne.",
+    "varighetMin": 25,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "EMOM-format (CrossFit-tradisjonen) + gymnastic strength-progresjoner",
+      "type": "tradisjon",
+      "ref": "https://www.crossfit.com/essentials/burpees-and-workouts + https://www.trainheroic.com/blog/how-to-get-your-first-pistol-squat/",
+      "notat": "Syntese av CrossFit-EMOM (inkl. burpee-EMOM) og etablerte turnprogresjoner. Skaler reps så du alltid har ≥15 s pause i hvert minutt (RPE 7–9). Lettere: EMOM 12, knestående pike-armhevinger, pistol til høy boks. Tyngre: EMOM 20, negative håndstående-armhevinger, frie pistolknebøy."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Kom i gang",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Jogg på stedet",
+            "dose": "60 s"
+          },
+          {
+            "navn": "Knebøy",
+            "dose": "×10"
+          },
+          {
+            "navn": "Armhevinger",
+            "dose": "×8"
+          },
+          {
+            "navn": "Hollow hold",
+            "dose": "20 s"
+          },
+          {
+            "navn": "Utfall",
+            "dose": "×5 per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Håndleddssirkler",
+            "dose": "30 s"
+          }
+        ]
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "EMOM 16 · start hvert minutt, resten er pause",
+        "min": 16,
+        "parametre": {
+          "runder": 4,
+          "faser": [
+            {
+              "navn": "Min 1: 6–10 pike-armhevinger",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Min 2: 4–6 pistolknebøy per bein (bokspistol ok)",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Min 3: 12–16 hollow rocks",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Min 4: 8–12 burpees",
+              "sek": 60,
+              "type": "arbeid"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig avslutning",
+        "formatKlasse": "hold",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Rolig gange",
+            "dose": "60 s"
+          },
+          {
+            "navn": "Håndleddstøy",
+            "dose": "60 s"
+          },
+          {
+            "navn": "Due / hoftetøy",
+            "dose": "30 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Skuldertøy",
+            "dose": "30 s per side",
+            "unilateral": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mobilitet-lav-lett",
+    "kategori": "mobilitet",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Original Strength-resets",
+    "beskrivelse": "Myke bevegelser kroppen din har kunnet siden du var baby. Pust, nikk, rull og vugg deg våken — perfekt som skånsom start på dagen.",
+    "varighetMin": 12,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Original Strength Pressing Reset (Tim Anderson & Geoff Neupert, 2013)",
+      "type": "program",
+      "ref": "https://originalstrength.net/blog/2021/01/11/do-this-to-be-the-best-you/ + https://www.builtlean.com/mobility-child-tim-anderson/",
+      "notat": "Utvalg av kjerneresetene i kort morgenformat. Rulling kan gjøres med lett beinhjelp; vugging med bredere knær ved trange hofter; hodenikk med mindre utslag ved svimmelhet."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Pust deg til stede",
+        "formatKlasse": "reps",
+        "min": 2,
+        "ovelser": [
+          {
+            "navn": "Magepust liggende på rygg",
+            "dose": "×10 rolige pust"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Resets — nikk, rull og vugg",
+        "formatKlasse": "reps",
+        "min": 8,
+        "ovelser": [
+          {
+            "navn": "Hodenikk på alle fire, opp/ned",
+            "dose": "×10"
+          },
+          {
+            "navn": "Hodenikk-rotasjoner side til side",
+            "dose": "×8"
+          },
+          {
+            "navn": "Rulling rygg til mage ledet av arm",
+            "dose": "4 per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Vugging på alle fire, hælene mot setet",
+            "dose": "2×15"
+          },
+          {
+            "navn": "Kryssmarsj stående, hånd mot motsatt kne",
+            "dose": "×20"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig krabbeposisjon",
+        "formatKlasse": "hold",
+        "min": 2,
+        "ovelser": [
+          {
+            "navn": "Krabbeposisjon-hold med hodet oppe",
+            "dose": "2×20 s"
+          }
+        ],
+        "format": "styrkehold",
+        "parametre": {
+          "sett": 2,
+          "tidSek": 20
+        }
+      }
+    ]
+  },
+  {
+    "id": "mobilitet-lav-intens",
+    "kategori": "mobilitet",
+    "skill": "lav",
+    "intensitet": "intens",
+    "navn": "McGill Big 3",
+    "beskrivelse": "Tre klassiske øvelser som bygger en sterk, stabil rygg. Hold hver posisjon med rolig kraft og jevn pust — ryggen din takker deg i morgen.",
+    "varighetMin": 15,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "McGill Big 3 (Dr. Stuart McGill, University of Waterloo)",
+      "type": "protokoll",
+      "ref": "https://squatuniversity.com/2018/06/21/the-mcgill-big-3-for-core-stability/ + https://www.backfitpro.com/mastering-the-mcgill-big-three-progressions-variations-and-common-pitfalls/",
+      "notat": "Katt-ku lagt først som McGill selv anbefaler. Sideplanke fra knær er standard start; curl-up uten løft (bare spenn) ved akutt rygg; kortere hold (8 s) for nybegynnere."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Katt-ku som forberedelse",
+        "formatKlasse": "reps",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Katt-ku (McGills cat-camel)",
+            "dose": "×6 rolige reps"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Big 3 — pyramidehold, kort pause mellom",
+        "formatKlasse": "hold",
+        "min": 10,
+        "ovelser": [
+          {
+            "navn": "Modifisert curl-up, hender under korsryggen",
+            "dose": "5-3-1 reps à 10 s"
+          },
+          {
+            "navn": "Sideplanke fra knær eller føtter",
+            "dose": "4-3-1 per side à 10 s",
+            "unilateral": true
+          },
+          {
+            "navn": "Fuglehund — tegn en firkant med hånden hjem",
+            "dose": "5-3-1 per side à 10 s",
+            "unilateral": true
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig avslutning",
+        "formatKlasse": "reps",
+        "min": 2,
+        "ovelser": [
+          {
+            "navn": "Katt-ku, myk og langsom",
+            "dose": "×4"
+          },
+          {
+            "navn": "Magepust liggende på rygg",
+            "dose": "×6 rolige pust"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mobilitet-medium-lett",
+    "kategori": "mobilitet",
+    "skill": "medium",
+    "intensitet": "lett",
+    "navn": "Verdens beste tøyning",
+    "beskrivelse": "En rolig runde gjennom verdens beste tøyning — hofter, brystrygg og bakside i én flytende bevegelse. Perfekt før trening eller som pause i hverdagen.",
+    "varighetMin": 12,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "World's Greatest Stretch / Movement Prep (popularisert av Mark Verstegen, Core Performance, 2004)",
+      "type": "protokoll",
+      "ref": "https://www.mensjournal.com/fitness/how-do-worlds-greatest-stretch + https://www.roypumphrey.com/worlds-greatest-stretch/",
+      "notat": "Movement Prep-utvalg i rolig tempo. Bakre kne i gulvet gjør utfallet lettere; hopp over rotasjonen ved skuldersmerte; hendene på en kloss/bok i stedet for gulvet."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Myk oppstart",
+        "formatKlasse": "reps",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Hoftesirkler stående",
+            "dose": "5 per retning per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Katt-ku",
+            "dose": "×6 rolige reps"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Verdens beste tøyning — flyt",
+        "formatKlasse": "reps",
+        "min": 7,
+        "ovelser": [
+          {
+            "navn": "Verdens beste tøyning: utfall, albue mot gulv, rotasjon, hofta bak",
+            "dose": "4 langsomme reps per side",
+            "unilateral": true
+          },
+          {
+            "navn": "90/90-vipp side til side med hendene bak",
+            "dose": "×6 rolige overganger"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Dyp knebøy med rolige vektskift",
+        "formatKlasse": "hold",
+        "min": 2,
+        "ovelser": [
+          {
+            "navn": "Dyp knebøy-hold med rolige vektskift",
+            "dose": "2×30 s"
+          }
+        ],
+        "format": "styrkehold",
+        "parametre": {
+          "sett": 2,
+          "tidSek": 30
+        }
+      }
+    ]
+  },
+  {
+    "id": "mobilitet-medium-intens",
+    "kategori": "mobilitet",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "90/90 hofteverksted",
+    "beskrivelse": "Jobb hoftene gjennom inn- og utadrotasjon med skikkelig innsats i ytterstilling. Løftene er tunge for musklene rundt hofta — det er meningen!",
+    "varighetMin": 18,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "90/90 med end-range lift-offs (fysioterapitradisjon, systematisert i Functional Range Conditioning, Dr. Andreo Spina)",
+      "type": "protokoll",
+      "ref": "https://library.theprehabguys.com/vimeo-video/90-90-hip-lift-off/ + https://www.rehabhero.ca/exercise/9090-hip-switch",
+      "notat": "Bruk hendene bak deg som støtte i overgangene; kortere hold (3 s) og én runde ved kneirritasjon; pute under setet om hofta er trang."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "90/90-overganger",
+        "formatKlasse": "reps",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "90/90-switches uten hender",
+            "dose": "×10 kontrollerte reps"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Lift-offs og aktivt press — 2 runder",
+        "formatKlasse": "hold",
+        "min": 12,
+        "ovelser": [
+          {
+            "navn": "Fremoverlening over fremre legg med lang rygg",
+            "dose": "5×5 s aktivt press per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Lift-off innadrotasjon: bakre fot løftes, kneet i bakken",
+            "dose": "5×5 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Lift-off utadrotasjon: fremre legg løftes fra gulvet",
+            "dose": "4×5 s per side",
+            "unilateral": true
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Pigeon push-up — 2 runder",
+        "formatKlasse": "reps",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Pigeon push-up: press opp fra fremre legg",
+            "dose": "2×6 per side",
+            "unilateral": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mobilitet-hoy-lett",
+    "kategori": "mobilitet",
+    "skill": "hoy",
+    "intensitet": "lett",
+    "navn": "Daglige ledd-CARs",
+    "beskrivelse": "Rolig runde der hvert ledd får sin daglige rotasjon — sakte, presist og med lav spenning. Smør leddene dine som en morgenkaffe for kroppen.",
+    "varighetMin": 15,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Controlled Articular Rotations, CARs (Functional Range Conditioning, Dr. Andreo Spina)",
+      "type": "protokoll",
+      "ref": "https://www.acefitness.org/continuing-education/certified/october-2024/8725/controlled-articular-rotations-shifting-mobility-into-high-gear/ + https://www.movewithpurpose.com/controlled-articular-rotations-guide",
+      "notat": "Lav spenning (~30 %), resten av kroppen stille. Mindre sirkler ved klikking/klemfornemmelse; skulder-CARs på alle fire gir mer stabilitet; hofte-CARs med hånd på vegg for balanse."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Nakke først — sakte og presist",
+        "formatKlasse": "reps",
+        "min": 2,
+        "ovelser": [
+          {
+            "navn": "Nakke-CARs",
+            "dose": "3 langsomme sirkler per retning"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Morgenrunden — ledd for ledd",
+        "formatKlasse": "reps",
+        "min": 13,
+        "ovelser": [
+          {
+            "navn": "Skulder-CARs stående eller på alle fire",
+            "dose": "3 per retning per arm",
+            "unilateral": true
+          },
+          {
+            "navn": "Albue- og håndledds-CARs",
+            "dose": "3 per retning"
+          },
+          {
+            "navn": "Ryggrads-CARs / segmentert katt-ku",
+            "dose": "×4 langsomme bølger"
+          },
+          {
+            "navn": "Hofte-CARs stående med støtte",
+            "dose": "3 per retning per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Kne- og ankel-CARs",
+            "dose": "3 per retning per side",
+            "unilateral": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mobilitet-hoy-intens",
+    "kategori": "mobilitet",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "Endrange-kontroll",
+    "beskrivelse": "Full kontroll i ytterstillingene: skuldre, hofter og ankler jobber med muskelkraft gjennom store bevegelsesbaner. Krevende — og utrolig godt etterpå.",
+    "varighetMin": 22,
+    "utstyr": [
+      "matte",
+      "strikk"
+    ],
+    "kilde": {
+      "navn": "Endrange-kontrolldriller (gymnastikk- og styrketradisjon; hip airplane popularisert av Dr. Stuart McGill)",
+      "type": "tradisjon",
+      "ref": "https://squatuniversity.com/2018/05/06/the-hip-airplane/ + https://barbend.com/cossack-squat/",
+      "notat": "Sammensatt flyt av etablerte driller. Bredere grep eller løsere strikk gjør dislokater lettere; cossack med hælen løftet eller hold i dørkarm; hip airplane med full veggstøtte først."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Skulderdislokater — bredt grep, strake armer",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Skulderdislokater med strikk",
+            "dose": "2×10 langsomme reps"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Dyp knebøy og cossack",
+        "formatKlasse": "reps",
+        "min": 9,
+        "ovelser": [
+          {
+            "navn": "Dyp knebøy-hold med rotasjonsrekk mot taket",
+            "dose": "6 per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Cossack squat, sakte tempo, full dybde etter evne",
+            "dose": "3×6 per side",
+            "unilateral": true
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Hofterotasjon og overganger",
+        "formatKlasse": "reps",
+        "min": 8,
+        "ovelser": [
+          {
+            "navn": "Hip airplane fra ettbeinsstående: rotér hofta inn og ut",
+            "dose": "2×5 rotasjoner per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Knestående til stående overgang uten hender",
+            "dose": "5 per side",
+            "unilateral": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hiit-lav-lett",
+    "kategori": "hiit",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Japansk intervallmarsj",
+    "beskrivelse": "Japans mest studerte intervallform, flyttet inn i stua. Tre rolige runder med raskere og roligere marsj – enkel klokke, snill mot leddene, og du kjenner varmen komme helt uten hopp.",
+    "varighetMin": 24,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Interval Walking Training (Nose & Masuki, Shinshu University, 1999; Nemoto et al. 2007)",
+      "type": "protokoll",
+      "ref": "https://www.mayoclinicproceedings.org/article/S0025-6196(11)61303-7/abstract + https://theconversation.com/japanese-walking-the-benefits-of-this-fitness-trend-257302",
+      "notat": "Original: 5 runder rask/rolig gange ute (~70 % VO2max i rask fase). Her: marsj på stedet, 3 runder og toppfart dempet til Z2–Z3; 3/3-klokken er beholdt eksakt."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig marsj + armsirkler",
+        "min": 3,
+        "parametre": {
+          "tidMin": 3,
+          "sone": "Z1 · rolig marsj på stedet"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "3×3 intervallmarsj",
+        "min": 18,
+        "parametre": {
+          "runder": 3,
+          "faser": [
+            {
+              "navn": "Arbeid: rask marsj med aktive armer + lette kneløft (RPE 4–5)",
+              "sek": 180,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile: rolig marsj (RPE 2–3)",
+              "sek": 180,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig marsj + stående tøyninger",
+        "min": 3,
+        "parametre": {
+          "tidMin": 3,
+          "sone": "Z1 · pulsen ned"
+        }
+      }
+    ]
+  },
+  {
+    "id": "hiit-lav-intens",
+    "kategori": "hiit",
+    "skill": "lav",
+    "intensitet": "intens",
+    "navn": "Ettminutts-økta (Gibala)",
+    "beskrivelse": "Forskerne bak «ettminutts-økta» viste at korte, tøffe minutter gir stor effekt. Åtte hardkjør på ett minutt hver – enkle øvelser, ærlig innsats, og god pause mellom hver runde.",
+    "varighetMin": 23,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Gibala «practical model» (Little et al., McMaster University, 2010)",
+      "type": "protokoll",
+      "ref": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2849965/ + https://www.physoc.org/magazine-articles/hit-to-get-fit-metabolic-adaptations-to-low-volume-high-intensity-interval-training/",
+      "notat": "Original: 8–12 × 60 s / 75 s på ergometersykkel; her 8 runder med enkle kroppsvektøvelser på stedet. 60/75-klokken er beholdt eksakt; 8 runder valgt for å treffe 20–25 min."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig marsj, gradvis høyere tempo",
+        "min": 3,
+        "parametre": {
+          "tidMin": 3,
+          "sone": "Z1–Z2 · bygg gradvis"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "8 × 60 s arbeid / 75 s pause",
+        "min": 18,
+        "parametre": {
+          "runder": 1,
+          "faser": [
+            {
+              "navn": "Arbeid: høye kneløft (RPE 7–8)",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile: rolig marsj",
+              "sek": 75,
+              "type": "hvile"
+            },
+            {
+              "navn": "Arbeid: raske knebøy (RPE 7–8)",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile: rolig marsj",
+              "sek": 75,
+              "type": "hvile"
+            },
+            {
+              "navn": "Arbeid: jumping jacks (RPE 7–8)",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile: rolig marsj",
+              "sek": 75,
+              "type": "hvile"
+            },
+            {
+              "navn": "Arbeid: rask marsj med armpress (RPE 7–8)",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile: rolig marsj",
+              "sek": 75,
+              "type": "hvile"
+            },
+            {
+              "navn": "Arbeid: høye kneløft (RPE 7–8)",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile: rolig marsj",
+              "sek": 75,
+              "type": "hvile"
+            },
+            {
+              "navn": "Arbeid: raske knebøy (RPE 7–8)",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile: rolig marsj",
+              "sek": 75,
+              "type": "hvile"
+            },
+            {
+              "navn": "Arbeid: jumping jacks (RPE 7–8)",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile: rolig marsj",
+              "sek": 75,
+              "type": "hvile"
+            },
+            {
+              "navn": "Arbeid: valgfri favorittøvelse (RPE 7–8)",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile: rolig marsj",
+              "sek": 75,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig marsj + pust",
+        "min": 2,
+        "parametre": {
+          "tidMin": 2,
+          "sone": "Z1 · rolig pust"
+        }
+      }
+    ]
+  },
+  {
+    "id": "hiit-medium-lett",
+    "kategori": "hiit",
+    "skill": "medium",
+    "intensitet": "lett",
+    "navn": "Leeds-sirkelen – rolig",
+    "beskrivelse": "Sirkeltreningens mor fra Leeds i 1953 – i søndagsutgave. Åtte stasjoner, halvminutt på og halvminutt av, hele kroppen i sving uten at pulsen tar helt av. Perfekt hverdagsøkt.",
+    "varighetMin": 22,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Sirkeltrening (Morgan & Adamson, University of Leeds, 1953)",
+      "type": "tradisjon",
+      "ref": "https://en.wikipedia.org/wiki/Circuit_training + https://www.health.harvard.edu/exercise-and-fitness/hiit-workouts-for-older-adults-a-guide-to-safe-and-effective-high-intensity-interval-training",
+      "notat": "Originalen er hard stasjonstrening; her dempet til RPE 4–5 etter dokumentert lavterskel-HIIT-praksis (Harvard Health). 30/30-klokke, 8 stasjoner, 2 runder med 60 s seriepause."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Marsj + rolige knebøy",
+        "min": 3,
+        "parametre": {
+          "tidMin": 3,
+          "sone": "Z1–Z2 · lett og ledig"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "2 runder × 8 stasjoner (30 s på / 30 s av)",
+        "min": 17,
+        "parametre": {
+          "runder": 2,
+          "faser": [
+            {
+              "navn": "Arbeid: knebøy i rolig tempo",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile: rolig marsj",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Arbeid: push-ups mot vegg",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile: rolig marsj",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Arbeid: step-touch med armløft",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile: rolig marsj",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Arbeid: utfall bakover",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile: rolig marsj",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Arbeid: stående roing med skulderklem",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile: rolig marsj",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Arbeid: seteløft (bro)",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile: rolig marsj",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Arbeid: tåhev",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile: rolig marsj",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Arbeid: rolig marsj med diagonale armstrekk",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile: rolig marsj",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Seriepause: rolig marsj",
+              "sek": 60,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig marsj + tøyning",
+        "min": 2,
+        "parametre": {
+          "tidMin": 2,
+          "sone": "Z1 · rolig ned"
+        }
+      }
+    ]
+  },
+  {
+    "id": "hiit-medium-intens",
+    "kategori": "hiit",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "Dobbel Tabata",
+    "beskrivelse": "Den originale 20/10-protokollen fra 1996 – fire minutter som føles som førti. To blokker, fire kjente øvelser og verdens mest berømte intervallklokke. Kort, brutal og herlig ferdig.",
+    "varighetMin": 17,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Tabata-protokollen (Izumi Tabata, National Institute of Fitness and Sports, 1996)",
+      "type": "protokoll",
+      "ref": "https://pubmed.ncbi.nlm.nih.gov/8897392/ + https://link.springer.com/article/10.1007/s12576-019-00676-7",
+      "notat": "Original: 7–8 × 20/10 på ergometersykkel ved 170 % VO2max – umulig med kroppsvekt; intensitet angis derfor som RPE 8–9 (etablert helkroppspraksis, jf. Tabata 2019-review). 20/10-klokken beholdt eksakt, to blokker."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Marsj → kneløft → rolige knebøy → lette hopp",
+        "min": 4,
+        "parametre": {
+          "tidMin": 4,
+          "sone": "Z1–Z3 · bygg gradvis opp"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Tabata 1: 8 × 20 s / 10 s (RPE 8–9)",
+        "min": 4,
+        "parametre": {
+          "runder": 4,
+          "faser": [
+            {
+              "navn": "Arbeid: mountain climbers",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Pause",
+              "sek": 10,
+              "type": "hvile"
+            },
+            {
+              "navn": "Arbeid: jumping jacks",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Pause",
+              "sek": 10,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Seriepause: rolig marsj",
+        "min": 1,
+        "parametre": {
+          "tidMin": 1,
+          "sone": "Z1 · hent deg inn"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Tabata 2: 8 × 20 s / 10 s (RPE 8–9)",
+        "min": 4,
+        "parametre": {
+          "runder": 4,
+          "faser": [
+            {
+              "navn": "Arbeid: burpees uten hopp",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Pause",
+              "sek": 10,
+              "type": "hvile"
+            },
+            {
+              "navn": "Arbeid: høye kneløft i maks tempo",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Pause",
+              "sek": 10,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig marsj + tøyning",
+        "min": 3,
+        "parametre": {
+          "tidMin": 3,
+          "sone": "Z1 · pulsen helt ned"
+        }
+      }
+    ]
+  },
+  {
+    "id": "hiit-hoy-lett",
+    "kategori": "hiit",
+    "skill": "hoy",
+    "intensitet": "lett",
+    "navn": "30-20-10 i tre gir – lett",
+    "beskrivelse": "Københavner-protokollen i mykt gir: tretti rolige, tjue friskere og ti kvikke sekunder – om og om igjen. Kunsten er å treffe hvert gir presist, ikke å ta i hardt. Deilig rytmisk!",
+    "varighetMin": 25,
+    "utstyr": [],
+    "kilde": {
+      "navn": "10-20-30-protokollen (Gunnarsson & Bangsbo, Københavns Universitet, 2012)",
+      "type": "protokoll",
+      "ref": "https://journals.physiology.org/doi/full/10.1152/japplphysiol.00334.2012 + https://onlinelibrary.wiley.com/doi/10.1002/ejsc.12163",
+      "notat": "Original: løping med sprint i 10-sekundersgiret; her marsj/kneløft på stedet med dempet toppgir (RPE 5, intervall-lett). Tempovekslingen 30-20-10 og 5-minuttersblokkene med 2 min pause er beholdt eksakt."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig marsj + dynamiske armdrag",
+        "min": 3,
+        "parametre": {
+          "tidMin": 3,
+          "sone": "Z1–Z2 · myk start"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "30-20-10 blokk 1 (5 sykluser) + blokkpause",
+        "min": 7,
+        "parametre": {
+          "runder": 1,
+          "faser": [
+            {
+              "navn": "Gir 1: rolig marsj (RPE 3)",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Gir 2: rask marsj med armer (RPE 4)",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gir 3: lette kneløft, friskt tempo (RPE 5)",
+              "sek": 10,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gir 1: rolig marsj (RPE 3)",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Gir 2: rask marsj med armer (RPE 4)",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gir 3: lette kneløft, friskt tempo (RPE 5)",
+              "sek": 10,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gir 1: rolig marsj (RPE 3)",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Gir 2: rask marsj med armer (RPE 4)",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gir 3: lette kneløft, friskt tempo (RPE 5)",
+              "sek": 10,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gir 1: rolig marsj (RPE 3)",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Gir 2: rask marsj med armer (RPE 4)",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gir 3: lette kneløft, friskt tempo (RPE 5)",
+              "sek": 10,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gir 1: rolig marsj (RPE 3)",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Gir 2: rask marsj med armer (RPE 4)",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gir 3: lette kneløft, friskt tempo (RPE 5)",
+              "sek": 10,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Blokkpause: rolig marsj",
+              "sek": 120,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "30-20-10 blokk 2 (5 sykluser) + blokkpause",
+        "min": 7,
+        "parametre": {
+          "runder": 1,
+          "faser": [
+            {
+              "navn": "Gir 1: rolig marsj (RPE 3)",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Gir 2: rask marsj med armer (RPE 4)",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gir 3: lette kneløft, friskt tempo (RPE 5)",
+              "sek": 10,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gir 1: rolig marsj (RPE 3)",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Gir 2: rask marsj med armer (RPE 4)",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gir 3: lette kneløft, friskt tempo (RPE 5)",
+              "sek": 10,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gir 1: rolig marsj (RPE 3)",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Gir 2: rask marsj med armer (RPE 4)",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gir 3: lette kneløft, friskt tempo (RPE 5)",
+              "sek": 10,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gir 1: rolig marsj (RPE 3)",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Gir 2: rask marsj med armer (RPE 4)",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gir 3: lette kneløft, friskt tempo (RPE 5)",
+              "sek": 10,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gir 1: rolig marsj (RPE 3)",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Gir 2: rask marsj med armer (RPE 4)",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gir 3: lette kneløft, friskt tempo (RPE 5)",
+              "sek": 10,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Blokkpause: rolig marsj",
+              "sek": 120,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "30-20-10 blokk 3 (5 sykluser)",
+        "min": 5,
+        "parametre": {
+          "runder": 5,
+          "faser": [
+            {
+              "navn": "Gir 1: rolig marsj (RPE 3)",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Gir 2: rask marsj med armer (RPE 4)",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gir 3: lette kneløft, friskt tempo (RPE 5)",
+              "sek": 10,
+              "type": "arbeid"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig marsj + tøyning",
+        "min": 3,
+        "parametre": {
+          "tidMin": 3,
+          "sone": "Z1 · rolig ned"
+        }
+      }
+    ]
+  },
+  {
+    "id": "hiit-hoy-intens",
+    "kategori": "hiit",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "EMOM-kvarteret",
+    "beskrivelse": "Klokka er sjefen: nytt oppdrag hvert minutt, og pausen er det du klarer å tjene. Fire eksplosive øvelser i seksten minutter – jo jevnere du disponerer, jo bedre går det. En skikkelig godbit!",
+    "varighetMin": 23,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "EMOM – Every Minute On the Minute (vektløftertradisjon, systematisert i CrossFit)",
+      "type": "tradisjon",
+      "ref": "https://barbend.com/what-is-emom-training/ + https://www.smartwod.app/post/crossfit-knowledge-what-is-an-emom",
+      "notat": "Ikke én enkeltstudie – etablert treningsformat. Reps er valgt så du tjener minst 15 s pause per minutt (mål RPE 7–9); skaler ned til 6/10/24/8 hvis pausen forsvinner."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Marsj → kneløft → knebøy → 2–3 rolige burpees",
+        "min": 4,
+        "parametre": {
+          "tidMin": 4,
+          "sone": "Z1–Z3 · bygg gradvis opp"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "EMOM 16 min: ferdig = resten av minuttet pause",
+        "min": 16,
+        "parametre": {
+          "runder": 4,
+          "faser": [
+            {
+              "navn": "Minutt 1: 8 burpees – resten av minuttet pause",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Minutt 2: 12 knebøyhopp – resten av minuttet pause",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Minutt 3: 30 mountain climbers totalt – resten pause",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Minutt 4: 10 utfallshopp (vekslende ben) – resten pause",
+              "sek": 60,
+              "type": "arbeid"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig marsj + tøyning",
+        "min": 3,
+        "parametre": {
+          "tidMin": 3,
+          "sone": "Z1 · pulsen helt ned"
+        }
+      }
+    ]
+  },
+  {
+    "id": "restitusjon-lav-lett",
+    "kategori": "restitusjon",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Syklisk sukk",
+    "beskrivelse": "Kroppens egen ro-knapp: to innpust gjennom nesen og ett langt sukk ut. Fem minutter er alt som skal til for å senke skuldrene etter en lang dag — ingen telling, bare pust.",
+    "varighetMin": 8,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Syklisk sukk / cyclic sighing (Balban m.fl., Stanford — Huberman & Spiegel, 2023)",
+      "type": "protokoll",
+      "ref": "https://pubmed.ncbi.nlm.nih.gov/36630953/ + https://www.cell.com/cell-reports-medicine/fulltext/S2666-3791(22)00474-8",
+      "notat": "Originalen er telle-fri; takten 3-0-6-0 er veiledende (dobbel innpust ≈ rolig innpust + kort topp-innpust). 3 min etterhvile lagt til Balbans 5-min-protokoll. Ingen pusteholder; stopp ved svimmelhet. Enklere: 3 min sukk + 2 min hvile. Dypere: forleng utpusten, eller morgen og kveld."
+    },
+    "blokker": [
+      {
+        "kind": "pust",
+        "rolle": "hoved",
+        "formatNavn": "Syklisk sukk — dobbel innpust (to inn gjennom nesen), langt sukk ut",
+        "min": 5,
+        "ovelser": [
+          {
+            "navn": "Syklisk sukk"
+          }
+        ],
+        "parametre": {
+          "tidMin": 5,
+          "takt": {
+            "inn": 3,
+            "holdInn": 0,
+            "ut": 6,
+            "holdUt": 0
+          }
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Etterhvile — naturlig pust",
+        "min": 3,
+        "parametre": {
+          "tidMin": 3,
+          "sone": "Helt naturlig pust · kjenn roen i kroppen"
+        }
+      }
+    ]
+  },
+  {
+    "id": "restitusjon-lav-intens",
+    "kategori": "restitusjon",
+    "skill": "lav",
+    "intensitet": "intens",
+    "navn": "Beina opp veggen",
+    "beskrivelse": "En rolig serie der veggen og gulvet gjør jobben. Beina opp, pusten ned — kroppen tømmer tunge bein og nervesystemet får beskjed om at faren er over. Forsiktig ved høyt blodtrykk.",
+    "varighetMin": 25,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Viparita Karani / restorativ yoga (Iyengar-tradisjonen; Judith Hanson Lasater)",
+      "type": "tradisjon",
+      "ref": "https://health.clevelandclinic.org/benefits-of-legs-up-the-wall + https://www.yogajournal.com/poses/legs-up-the-wall-pose-2/",
+      "notat": "Holdetider satt for 25 min total; rolig nesepust hele veien. Kom langsomt ut ved svimmelhet; unngå inversjonen ved ukontrollert høyt blodtrykk eller glaukom. Enklere: 5 min per stilling, knær lett bøyd. Dypere: 15 min beina opp veggen med pute under korsryggen, opp mot 35 min."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatKlasse": "hold",
+        "formatNavn": "Restitutive stillinger — lange, stille hold",
+        "min": 19,
+        "ovelser": [
+          {
+            "navn": "Viparita Karani — beina opp veggen, setet inntil vegg",
+            "dose": "10 min"
+          },
+          {
+            "navn": "Supta Baddha Konasana — fotsålene samlet, knær ut til siden",
+            "dose": "5 min"
+          },
+          {
+            "navn": "Barnets stilling — pannen mot matten, armene langs siden",
+            "dose": "4 min"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatKlasse": "hold",
+        "formatNavn": "Savasana og rolig overgang ut",
+        "min": 6,
+        "ovelser": [
+          {
+            "navn": "Savasana — flatt på ryggen, la kroppen bli tung",
+            "dose": "5 min"
+          },
+          {
+            "navn": "Rull til siden, sitt opp langsomt",
+            "dose": "1 min"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "restitusjon-medium-lett",
+    "kategori": "restitusjon",
+    "skill": "medium",
+    "intensitet": "lett",
+    "navn": "Boks-pust 4-4-4-4",
+    "beskrivelse": "Firkanten som roer hodet: fire sekunder inn, hold, ut, hold. Samme verktøy som eliteoperatører bruker for å finne ro — en perfekt pause midt i dagen.",
+    "varighetMin": 10,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Boks-pust / box breathing (Mark Divine, US Navy SEALs / SEALFIT)",
+      "type": "protokoll",
+      "ref": "https://time.com/4316151/breathing-technique-navy-seal-calm-focused/ + https://pubmed.ncbi.nlm.nih.gov/36630953/",
+      "notat": "10 min sammenhengende (ca. 37 runder), all pust gjennom nesen; tøm lungene helt først. Milde pusteholder — aldri i vann eller bak rattet; blir du svimmel, slipp holdene og pust normalt. Enklere: 3-3-3-3-takt eller 5 min. Dypere: 5-5-5-5 når 4-takten kjennes uanstrengt."
+    },
+    "blokker": [
+      {
+        "kind": "pust",
+        "rolle": "hoved",
+        "formatNavn": "Boks-pust 4-4-4-4 — milde pusteholder, aldri i vann",
+        "min": 10,
+        "ovelser": [
+          {
+            "navn": "Boks-pust 4-4-4-4"
+          }
+        ],
+        "parametre": {
+          "tidMin": 10,
+          "takt": {
+            "inn": 4,
+            "holdInn": 4,
+            "ut": 4,
+            "holdUt": 4
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "restitusjon-medium-intens",
+    "kategori": "restitusjon",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "Kroppsskann",
+    "beskrivelse": "En stille reise gjennom kroppen fra tær til hode. Du trenger ikke prestere noe — bare legge merke til det som er der, og la spenningene slippe taket underveis.",
+    "varighetMin": 25,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Kroppsskann / body scan, MBSR (Jon Kabat-Zinn, UMass Medical School, 1979)",
+      "type": "program",
+      "ref": "https://palousemindfulness.com/docs/bodyscan.pdf + https://ggia.berkeley.edu/practice/body_scan_meditation",
+      "notat": "Generisk fasestruktur, ikke ordrett skript; kortet fra klassisk 30–45 min til 25 min. Vandrer tankene: registrer det vennlig og vend tilbake. Naturlig pust hele veien. Enklere: 15 min med større kroppssoner. Dypere: full 40-min MBSR-lengde, tå for tå."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Kroppsskann — liggende, tær til hode",
+        "min": 25,
+        "parametre": {
+          "runder": 1,
+          "faser": [
+            {
+              "navn": "Landing — kontaktpunkter mot underlaget, pust i magen",
+              "sek": 180,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Venstre ben — tær, fot, ankel, legg, kne, lår",
+              "sek": 240,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Høyre ben — tær, fot, ankel, legg, kne, lår",
+              "sek": 240,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Bekken, mage og korsrygg",
+              "sek": 180,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Bryst, øvre rygg og skuldre",
+              "sek": 180,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Armer og hender — begge sider",
+              "sek": 180,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Nakke, ansikt og hode",
+              "sek": 180,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hele kroppen som helhet — rolig avslutning",
+              "sek": 120,
+              "type": "arbeid"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "restitusjon-hoy-lett",
+    "kategori": "restitusjon",
+    "skill": "hoy",
+    "intensitet": "lett",
+    "navn": "Koherent pust 5,5/min",
+    "beskrivelse": "Pust i kroppens egen resonans — fem og et halvt åndedrag i minuttet. Jevnt som en bølge, inn og ut, til hjerte og pust svinger i takt og roen brer seg.",
+    "varighetMin": 12,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Koherent pust / coherent breathing (Brown & Gerbarg; resonansfrekvens Lehrer/Gevirtz)",
+      "type": "protokoll",
+      "ref": "https://www.sciencefocus.com/the-human-body/small-changes-way-you-breathe-transform-health + https://pubmed.ncbi.nlm.nih.gov/28890890/",
+      "notat": "12 min ved 5,5 pust/min (ca. 66 pust); myk nesepust uten anstrengelse, la innpust gli sømløst over i utpust. Ingen pusteholder — trygg for de fleste. Enklere: 6/min (5 s inn / 5 s ut) eller 8 min. Dypere: forleng mot 20 min."
+    },
+    "blokker": [
+      {
+        "kind": "pust",
+        "rolle": "hoved",
+        "formatNavn": "Koherent pust — jevn, sømløs rytme uten pauser",
+        "min": 12,
+        "ovelser": [
+          {
+            "navn": "Koherent pust 5,5/min"
+          }
+        ],
+        "parametre": {
+          "tidMin": 12,
+          "takt": {
+            "inn": 5.5,
+            "holdInn": 0,
+            "ut": 5.5,
+            "holdUt": 0
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "restitusjon-hoy-intens",
+    "kategori": "restitusjon",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "Dyp hvile — yoga nidra",
+    "beskrivelse": "En halvtime i grenselandet mellom våken og søvn. Oppmerksomheten ledes systematisk gjennom kroppen mens nervesystemet lader opp — dyp hvile uten å sove.",
+    "varighetMin": 30,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Yoga nidra / NSDR (Swami Satyananda Saraswati, Bihar School of Yoga; Huberman)",
+      "type": "tradisjon",
+      "ref": "https://en.wikipedia.org/wiki/Yoga_nidra + https://nsdr.co/post/yoga-nidra-what-it-is-how-it-works-and-the-science",
+      "notat": "Generisk Satyananda-fasestruktur — ingen gjengivelse av beskyttede skript. Krevende for oppmerksomheten, ikke kroppen; greit å sovne, men målet er våken dyp hvile. Enklere: 20 min uten motsetnings-fasen. Dypere: 40–45 min med to runder kroppsrotasjon og lengre stillhet."
+    },
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Yoga nidra — liggende i savasana",
+        "min": 30,
+        "parametre": {
+          "runder": 1,
+          "faser": [
+            {
+              "navn": "Innstilling — la kroppen bli tung, lange utpust",
+              "sek": 180,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Intensjon — kort, positiv setning (sankalpa)",
+              "sek": 120,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rotasjon av oppmerksomheten — raskt og systematisk gjennom kroppen",
+              "sek": 720,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Pustebevissthet — tell utpust baklengs fra 27",
+              "sek": 360,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Motsetninger — tyngde/letthet, varme/kjølighet",
+              "sek": 180,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Stille hvile — bare væren, ingen oppgave",
+              "sek": 120,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Retur — gjenta intensjonen, små bevegelser, sitt opp",
+              "sek": 120,
+              "type": "arbeid"
+            }
+          ]
+        }
+      }
+    ]
+  }
+]
