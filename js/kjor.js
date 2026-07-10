@@ -55,7 +55,10 @@ function tilbakeTopp(tittel, undertekst, påTilbake) {
 }
 
 // ===========================================================================
-// 1) Review — oversikt over valgt bibliotekøkt før start
+// 1) Review — oversikt over valgt bibliotekøkt før start. Blokkene rendres
+// strukturert (Runna-stil): seksjon per blokk med ikon, rolle, tittel og
+// gjentakelses-merke — og under: én rad per steg med farget stolpe (arbeid),
+// grå stolpe (pause/hvile) og tid/dose. Ingen løpende pil-tekster.
 // ===========================================================================
 export function visReviewSkjerm(mount) {
   if (!gjeldendeOkt) { location.hash = '#/okter'; return; }
@@ -66,43 +69,113 @@ export function visReviewSkjerm(mount) {
       () => { location.hash = okt.kategori ? `#/okter?kat=${okt.kategori}` : '#/okter'; }),
     el('main', { class: 'innhold' },
       okt.beskrivelse && el('p', { class: 'dempet' }, okt.beskrivelse),
-      ...okt.blokker.map((blk) => blokkKort(blk)),
+      ...okt.blokker.map((blk) => blokkSeksjon(blk)),
       okt.kilde?.navn && el('p', { class: 'dempet' }, `Basert på: ${okt.kilde.navn}`),
       el('div', { class: 'fast-bunn' },
         el('button', { class: 'knapp', type: 'button', onclick: () => { location.hash = '#/kjor'; } }, 'Start økt'),
       ),
     ),
   );
+}
 
-  function blokkKort(blk) {
-    return el('div', { class: 'kort blokk' },
-      el('div', { class: 'blokk__topp' },
-        el('div', {},
-          el('span', { class: 'blokk__rolle blokk__rolle--' + blk.rolle }, rolleNavn(blk.rolle)),
-          el('span', { class: 'blokk__format' }, blk.formatNavn),
-        ),
-        el('div', { class: 'blokk__hoyre' },
-          el('span', { class: 'dempet' }, `~${blk.min} min`),
-        ),
-      ),
-      !!paramTekst(blk) && el('p', { class: 'blokk__param' }, paramTekst(blk)),
-      el('div', { class: 'blokk__ovelser' },
-        ...((blk.ovelser || []).length
-          ? blk.ovelser.map((o) => ovelseRad(o))
-          : [el('p', { class: 'dempet' }, kondisjonTekst(blk))]),
-      ),
-    );
+// --- Strukturert blokkvisning (deles av review) -----------------------------
+const ROLLE_IKON = { oppvarming: 'chevronsopp', nedtrapping: 'chevronsned' };
+const KIND_IKON = { kondisjon: 'loper', ovelser: 'vekt', sekvens: 'yoga', pust: 'hjerte' };
+
+function tidTekst(sek) {
+  return sek >= 60 && sek % 60 === 0 ? `${sek / 60} min` : `${sek} s`;
+}
+
+function stegRad({ navn, sub = null, tid = null, type = 'arbeid' }) {
+  return el('div', { class: 'rsteg rsteg--' + type },
+    el('i', { class: 'rsteg__bar' }),
+    el('div', { class: 'rsteg__tekst' },
+      el('span', { class: 'rsteg__navn' }, navn),
+      sub && el('span', { class: 'rsteg__sub' }, sub),
+    ),
+    tid && el('span', { class: 'rsteg__tid' }, tid),
+  );
+}
+
+function faseSteg(f) {
+  return stegRad({ navn: f.navn, tid: tidTekst(f.sek), type: f.type === 'hvile' ? 'hvile' : 'arbeid' });
+}
+
+// Finner den korteste enheten som gjentas fra starten av en faseliste, slik
+// at «30s → 20s → 10s ×3 + seriepause» vises som mønsteret én gang med et
+// «Gjenta 3 ganger»-merke — ikke alle fasene utskrevet.
+function grupperFaser(faser) {
+  const lik = (a, b) => a && b && a.navn === b.navn && a.sek === b.sek && a.type === b.type;
+  for (let k = 1; k <= Math.floor(faser.length / 2); k++) {
+    let reps = 1;
+    while ((reps + 1) * k <= faser.length
+      && faser.slice(reps * k, (reps + 1) * k).every((f, j) => lik(f, faser[j]))) reps++;
+    if (reps >= 2) return { enhet: faser.slice(0, k), reps, rest: faser.slice(reps * k) };
+  }
+  return null;
+}
+
+function blokkSeksjon(blk) {
+  const p = blk.parametre || {};
+  const rader = [];
+  let merke = null;   // gjentakelses-pille ved tittelen
+  let detalj = null;  // liten parameterlinje under hodet
+
+  if (blk.kind === 'kondisjon' && Array.isArray(p.faser) && p.faser.length) {
+    if ((p.runder || 1) > 1) merke = `Gjentas ${p.runder} ganger`;
+    const g = grupperFaser(p.faser);
+    if (g) {
+      if (g.reps > 1) rader.push(el('span', { class: 'rgruppe' }, `Gjenta ${g.reps} ganger`));
+      g.enhet.forEach((f) => rader.push(faseSteg(f)));
+      g.rest.forEach((f) => rader.push(faseSteg(f)));
+    } else {
+      p.faser.forEach((f) => rader.push(faseSteg(f)));
+    }
+  } else if (blk.kind === 'kondisjon') {
+    const rolig = blk.rolle === 'oppvarming' || blk.rolle === 'nedtrapping';
+    rader.push(stegRad({
+      navn: p.sone || blk.formatNavn, tid: `${p.tidMin || blk.min} min`,
+      type: rolig ? 'jevn' : 'arbeid',
+    }));
+  } else if (blk.kind === 'sekvens') {
+    const seq = blk.ovelser?.[0];
+    if ((p.runder || 1) > 1) merke = `${p.runder} runder`;
+    const posisjoner = seq?.posisjoner?.length ? seq.posisjoner : (seq ? [seq.navn] : []);
+    posisjoner.forEach((pos) => rader.push(stegRad({ navn: navnTilLesbar(pos), type: 'flyt' })));
+  } else if (blk.kind === 'pust') {
+    const t = p.takt || {};
+    merke = `~${p.tidMin || blk.min} min`;
+    if (t.inn) rader.push(stegRad({ navn: 'Pust inn', tid: `${t.inn} s`, type: 'arbeid' }));
+    if (t.holdInn) rader.push(stegRad({ navn: 'Hold', tid: `${t.holdInn} s`, type: 'hold' }));
+    if (t.ut) rader.push(stegRad({ navn: 'Pust ut', tid: `${t.ut} s`, type: 'hvile' }));
+    if (t.holdUt) rader.push(stegRad({ navn: 'Hold', tid: `${t.holdUt} s`, type: 'hold' }));
+  } else { // ovelser: én rad per øvelse med dosen som undertekst
+    detalj = paramTekst(blk) || null;
+    if (p.sett) merke = `${p.sett} sett`;
+    else if (p.runder) merke = `${p.runder} runder`;
+    (blk.ovelser || []).forEach((o) => rader.push(stegRad({
+      navn: o.navn,
+      sub: [o.dose, o.unilateral && !/per side/i.test(o.dose || '') && 'per side']
+        .filter(Boolean).join(' · ') || null,
+      type: blk.formatKlasse === 'hold' ? 'hold' : 'arbeid',
+    })));
   }
 
-  function ovelseRad(o) {
-    return el('div', { class: 'orad' },
-      el('div', { class: 'orad__hoved' },
-        el('span', { class: 'orad__navn' }, o.navn),
-        o.dose && el('span', { class: 'orad__dose' }, o.dose),
-        o.unilateral && el('div', { class: 'orad__tags' }, el('span', { class: 'tag tag--u' }, 'per side')),
+  return el('div', { class: 'kort rblokk' },
+    el('div', { class: 'rblokk__hode' },
+      el('span', { class: 'rblokk__ikon' }, ikon(ROLLE_IKON[blk.rolle] || KIND_IKON[blk.kind] || 'lyn')),
+      el('div', { class: 'rblokk__titler' },
+        el('span', { class: 'rblokk__rolle' }, rolleNavn(blk.rolle)),
+        el('span', { class: 'rblokk__tittel' },
+          blk.formatNavn,
+          merke && el('span', { class: 'rmerke' }, merke),
+        ),
       ),
-    );
-  }
+      el('span', { class: 'rblokk__tid' }, `~${blk.min} min`),
+    ),
+    detalj && el('p', { class: 'rblokk__detalj' }, detalj),
+    el('div', { class: 'rblokk__steg' }, ...rader),
+  );
 }
 
 // ===========================================================================
