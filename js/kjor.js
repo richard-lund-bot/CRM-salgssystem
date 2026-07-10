@@ -11,7 +11,6 @@ import { lagRing } from './animasjon.js';
 let gjeldendeOkt = null;
 let aktivInterval = null;
 
-export function hentØkt() { return gjeldendeOkt; }
 export function settØkt(o) { gjeldendeOkt = o; }
 
 function stoppTimer() {
@@ -470,15 +469,16 @@ function timerKnapper(plan, { onFase, onSek, onFerdig }) {
 // feires med samme varme ferdigskjerm som all annen bevegelse.
 // ===========================================================================
 function fullfor(mount, okt, delvis) {
+  // Planen hukes av først, så «Som planlagt»-merket kan feires på ferdigskjermen.
+  if (okt.planId && !delvis) settPlanStatus(okt.planId, 'gjort');
   const resultat = registrerOgLogg({
     bevegelse: okt.bevegelse || 'custom',
     varighetMin: okt.varighetMin,
     intensitet: okt.intensitet || 3,
     tittel: okt.navn,
     kilde: 'bibliotek',
-    ekstra: { oktId: okt.bibliotekId, delvis: !!delvis },
+    ekstra: { oktId: okt.bibliotekId, planId: okt.planId || undefined, delvis: !!delvis },
   });
-  if (okt.planId && !delvis) settPlanStatus(okt.planId, 'gjort');
   gjeldendeOkt = null;
   visBevegelseFerdig(mount, resultat, {
     bevegelse: okt.bevegelse, varighetMin: okt.varighetMin, tittel: okt.navn, delvis,

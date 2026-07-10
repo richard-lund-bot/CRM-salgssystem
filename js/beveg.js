@@ -1,8 +1,8 @@
 // Beveg (M11 — spec §5): fri bevegelse og manuell logging. Beveg-fanen selv
 // er øktbiblioteket (bibliotek-okter.js); her bor hurtigstart med timer
-// (gå/løp/sykle), manuell logg og fullført-skjermen. Alt gir XP og flytter
-// reisen (§5.12: aldri skam, delvis gjennomføring teller, manuelle logger
-// teller).
+// (gå/løp/sykle), manuell logg og fullført-skjermen. Alt gir XP, flytter
+// nivået og kan låse opp merker (§5.12: aldri skam, delvis gjennomføring
+// teller, manuelle logger teller).
 import { el, tom, chip, ikon } from './ui.js';
 import { hentProfil, lagreProfil, hentLogg, leggTilLogg } from './store.js';
 import { registrerBevegelse } from './niva.js';
@@ -10,12 +10,8 @@ import {
   BEVEGELSER, BEVEGELSE_NAVN, SPORTER,
   beregnXp, erComeback, bevegelsesMomentum,
 } from './bevegelse.js';
-import { belonningIkonNavn } from './belonninger.js';
-import { tegnFigur, sikreFigur } from './figur.js';
+import { merkerNå, nyeMerker } from './merker.js';
 import { tallOpp, lagKonfetti } from './animasjon.js';
-
-let _bib = null;
-export function settBib(bib) { _bib = bib; }
 
 let aktivTimer = null;
 function stoppTimer() {
@@ -28,7 +24,8 @@ export function registrerOgLogg({ bevegelse, varighetMin, intensitet = 3, tittel
   const logg = hentLogg();
   const nå = Date.now();
   const comeback = erComeback(logg, nå);
-  const { profil: ny, resultat } = registrerBevegelse(profil, { bevegelse, varighetMin, intensitet, comeback }, _bib, nå);
+  const merkerFør = merkerNå();
+  const { profil: ny, resultat } = registrerBevegelse(profil, { bevegelse, varighetMin, intensitet, comeback }, nå);
   lagreProfil(ny);
   leggTilLogg({
     id: `bev-${nå}`,
@@ -42,6 +39,7 @@ export function registrerOgLogg({ bevegelse, varighetMin, intensitet = 3, tittel
     fullfort: true,
     ...ekstra,
   });
+  resultat.nyeMerker = nyeMerker(merkerFør, merkerNå());
   return resultat;
 }
 
@@ -260,32 +258,22 @@ export function visLoggforSkjerm(mount) {
 
 // ===========================================================================
 // Fullført-skjerm — «Du beveget deg. Det teller.» (spec §7/§15.5)
+// Feirer XP, nivåopprykk og nye merker — varm og rolig, aldri høylytt.
 // ===========================================================================
 export function visBevegelseFerdig(mount, resultat, { bevegelse, varighetMin, tittel = null, delvis = false } = {}) {
-  const profil = hentProfil();
-  const figur = sikreFigur(profil);
   const logg = hentLogg();
   const mom = bevegelsesMomentum(logg);
   const xpTall = el('div', { class: 'xp-stor' }, '+0');
-
-  // Nye gjenstander som ikke allerede feires i nivåstigen (dedupe på id).
-  const stigeIder = new Set((resultat.belonninger || []).map((b) => b.id));
-  const ekstraGjenstander = (resultat.nyeGjenstander || []).filter((g) => !stigeIder.has(g.id));
-
-  const belTekst = (b) => (
-    b.type === 'gjenstand' ? `Nytt til figuren: ${b.navn}`
-      : b.type === 'tema' ? `Nytt tema: ${b.navn}`
-        : b.type === 'tittel' ? `Ny tittel: ${b.navn}`
-          : b.type === 'ovelse' ? `Ny øvelse: ${b.navn}`
-            : (b.navn || 'Belønning'));
+  const nye = resultat.nyeMerker || [];
+  const feires = resultat.globalOpp || nye.length > 0;
 
   tom(mount);
   mount.append(
     el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, 'Du beveget deg.')),
     el('main', { class: 'innhold' },
       el('div', { class: 'kort hero ferdighero' },
-        resultat.globalOpp && lagKonfetti(),
-        el('div', { class: 'ferdighero__figur' }, tegnFigur(figur, { pose: 'jubel', bredde: 92 })),
+        feires && lagKonfetti(),
+        el('span', { class: 'ferdighero__disk movflis--teal' }, ikon('sjekk')),
         el('p', { class: 'ferdighero__teller' }, 'Det teller.'),
         delvis && el('p', { class: 'dempet' }, 'En mindre bevegelse flytter deg også fremover.'),
         el('p', { class: 'hero__eyebrow' }, `${tittel || BEVEGELSE_NAVN[bevegelse] || 'Bevegelse'} · ${varighetMin} min`),
@@ -296,19 +284,19 @@ export function visBevegelseFerdig(mount, resultat, { bevegelse, varighetMin, ti
         el('div', { class: 'levelup__glans' }),
         el('p', { class: 'hero__eyebrow' }, 'Nivå opp!'),
         el('div', { class: 'levelup__niva' }, `Nivå ${resultat.globalOpp}`),
-        el('div', { class: 'levelup__belonninger' },
-          ...(resultat.belonninger || []).map((b) => el('div', { class: 'levelup__bel' },
-            el('span', { class: 'levelup__ikon' }, ikon(belonningIkonNavn(b))),
-            el('span', {}, belTekst(b)),
+        el('p', { class: 'dempet' }, 'Nivået ditt bor på profilikonet — feiringen bor i merkene.'),
+      ),
+      nye.length > 0 && el('div', { class: 'kort' },
+        el('h2', {}, nye.length === 1 ? 'Nytt merke!' : 'Nye merker!'),
+        el('div', { class: 'nymerker' },
+          ...nye.map((m) => el('div', { class: 'nymerke' },
+            el('span', { class: `nymerke__sirkel movflis--${m.farge}` }, ikon(m.ikon)),
+            el('span', { class: 'nymerke__meta' },
+              el('span', { class: 'nymerke__navn' }, m.navn),
+              el('span', { class: 'nymerke__tekst' }, m.tekst),
+            ),
           )),
         ),
-      ),
-      ekstraGjenstander.length > 0 && el('div', { class: 'kort' },
-        el('h2', {}, 'Låst opp!'),
-        ...ekstraGjenstander.map((g) => el('div', { class: 'feiring' },
-          ikon(g.kategori === 'miljo' ? 'fjell' : 'stjerne'),
-          `${g.navn} — se «Tilpass figur»`,
-        )),
       ),
       el('div', { class: 'kort kort--info' },
         el('p', { class: 'oppmuntring__tittel' }, mom.tekst),
@@ -316,7 +304,7 @@ export function visBevegelseFerdig(mount, resultat, { bevegelse, varighetMin, ti
       ),
       el('div', { class: 'knapprad' },
         el('button', { class: 'knapp', type: 'button', onclick: () => { location.hash = '#/hjem'; } }, 'Til Min dag'),
-        el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: () => { location.hash = '#/reise'; } }, 'Se reisen din'),
+        el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: () => { location.hash = '#/merker'; } }, 'Se merkene'),
       ),
     ),
   );

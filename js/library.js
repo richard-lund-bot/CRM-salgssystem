@@ -35,13 +35,6 @@ export async function lastBibliotek() {
   return _cache;
 }
 
-/** Liste over alle modaliteter som faktisk finnes i biblioteket, med antall. */
-export function modalitetsoversikt(bib) {
-  const teller = {};
-  for (const e of bib.exercises) for (const m of e.modaliteter) teller[m] = (teller[m] || 0) + 1;
-  return teller;
-}
-
 export const MODALITET_NAVN = {
   STY: 'Styrke', HIIT: 'HIIT', BASE: 'Base', MET: 'Metcon', SKILL: 'Ferdighet',
   PLYO: 'Plyo', YOGA: 'Yoga', PIL: 'Pilates', STR: 'Tøying', MOB: 'Mobilitet',

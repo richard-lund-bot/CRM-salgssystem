@@ -14,9 +14,6 @@ import { erComeback, MODALITET_TIL_BEVEGELSE, KATEGORI_TIL_BEVEGELSE } from './b
 import { oktMedId } from './bibliotek-okter.js';
 import { erInnlogget, gyldigToken } from './sync.js';
 
-let _bib = null;
-export function settBib(bib) { _bib = bib; }
-
 const FUNKSJON = `${SUPABASE_URL}/functions/v1/strava`;
 
 // Lokal kalenderdag for et ISO-tidspunkt (radens dato er ekte UTC).
@@ -67,7 +64,7 @@ export function krediterNye() {
         varighetMin: o.varighetMin || 1,
         intensitet: o.intensitet || 3,
         comeback,
-      }, _bib, tid);
+      }, tid);
       profil = ny;
       o.xp = resultat.xp;
       o.oppdatert = new Date().toISOString();

@@ -1,17 +1,9 @@
-// Headless røyktest av bevegelseslaget (M11) — ingen nettleser.
+// Headless røyktest av bevegelseslaget (M15) — ingen nettleser.
 // Sjekker: XP-formelen fra spesifikasjonen (min. 5 XP, smalt intensitetsspenn),
-// registrering av fri bevegelse (teller, comeback, belønninger), Momentum-
-// tilstander, Dagens gnist-determinisme og gjenstandsopplåsing.
-import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+// registrering av fri bevegelse (XP, nivå, comeback), Momentum-tilstander,
+// Dagens gnist-determinisme og nivåkurven.
 import { beregnXp, bevegelsesMomentum, dagensGnist, dagerMedAktivitet, MODALITET_TIL_BEVEGELSE, BEVEGELSER } from '../js/bevegelse.js';
-import { registrerBevegelse, registrerOkt } from '../js/niva.js';
-import { nivaFraTotalXp, ulasteGjenstander, nyeGjenstander, belonningFor, tittelFor, GJENSTANDER } from '../js/belonninger.js';
-
-const rot = join(dirname(fileURLToPath(import.meta.url)), '..');
-const les = (n) => JSON.parse(readFileSync(join(rot, 'data', `${n}.json`), 'utf8'));
-const bib = { exercises: les('exercises') };
+import { registrerBevegelse, nivaFraTotalXp, globaltNiva, nivaKostnad } from '../js/niva.js';
 
 let feil = 0;
 const sjekk = (ok, melding) => { if (!ok) { console.error('✗', melding); feil++; } };
@@ -29,31 +21,23 @@ for (const b of Object.keys(BEVEGELSER)) sjekk(beregnXp(10, b, 3) >= 5, `XP for 
 for (const [m, b] of Object.entries(MODALITET_TIL_BEVEGELSE)) sjekk(BEVEGELSER[b], `mapping ${m} → ${b}`);
 
 // --- Registrering av fri bevegelse ---
-const profil0 = { globalXp: 0, bevegelsesTeller: {}, nivaer: {} };
-let p = profil0;
-let sisteResultat = null;
+let p = { globalXp: 0 };
 for (let i = 0; i < 5; i++) {
-  const r = registrerBevegelse(p, { bevegelse: 'walk', varighetMin: 20, intensitet: 2 }, bib);
-  p = r.profil; sisteResultat = r.resultat;
+  const r = registrerBevegelse(p, { bevegelse: 'walk', varighetMin: 20, intensitet: 2 });
+  p = r.profil;
 }
-sjekk(p.bevegelsesTeller.walk === 5, 'bevegelsesteller telles opp');
 sjekk(p.globalXp === 5 * beregnXp(20, 'walk', 2), 'XP akkumuleres');
-sjekk(ulasteGjenstander(p).has('sokker-tur'), '5 gåturer låser opp Tursokker');
-sjekk((sisteResultat.nyeGjenstander || []).some((g) => g.id === 'sokker-tur'), 'opplåsing rapporteres i resultatet');
+sjekk(globaltNiva(p.globalXp) === nivaFraTotalXp(p.globalXp).niva, 'globaltNiva er snarvei for kurven');
 
-// Comeback: dobbel XP + comeback-gjenstand
-const rc = registrerBevegelse(p, { bevegelse: 'walk', varighetMin: 10, intensitet: 2, comeback: true }, bib);
+// Nivåopprykk rapporteres i resultatet
+const nesten = { globalXp: nivaKostnad(1) - 1 };
+const ro = registrerBevegelse(nesten, { bevegelse: 'walk', varighetMin: 10, intensitet: 3 });
+sjekk(ro.resultat.globalOpp === 2, 'nivåopprykk rapporteres (globalOpp)');
+
+// Comeback: dobbel XP + comeback-flagget
+const rc = registrerBevegelse(p, { bevegelse: 'walk', varighetMin: 10, intensitet: 2, comeback: true });
 sjekk(rc.resultat.xp === 2 * beregnXp(10, 'walk', 2), 'comeback gir dobbel XP');
 sjekk(rc.profil.harComeback === true, 'comeback-merket settes');
-sjekk(ulasteGjenstander(rc.profil).has('caps-comeback'), 'comeback låser opp caps');
-
-// --- Generatorøkter bruker samme formel og teller bevegelser ---
-const profilOkt = { globalXp: 0, nivaer: { STY: { base: 3, xp: 0, bevisTeller: 0, hoyesteBevist: 3 } } };
-const okt = { modalitet: 'STY', varighetMin: 30, intensitet: 3, blokker: [{ kind: 'ovelser', rolle: 'hoved', ovelser: [{ id: 'push-up', niva: 2 }] }] };
-const ro = registrerOkt(profilOkt, okt, bib, []);
-sjekk(ro.resultat.grunnXp === beregnXp(30, 'strength', 3), 'økt-XP følger spesifikasjonsformelen');
-sjekk(ro.resultat.xp === ro.resultat.grunnXp + 10, 'ny øvelse gir +10 bonus oppå');
-sjekk(ro.profil.bevegelsesTeller.strength === 1, 'økter teller som bevegelse');
 
 // --- Momentum: aldri straff, alltid en varm tilstand ---
 const nå = Date.now();
@@ -75,19 +59,11 @@ sjekk(g1.tittel === g2.tittel, 'gnisten er stabil gjennom dagen');
 sjekk(g1.href && g1.xp >= 5, 'gnisten har lenke og XP-estimat');
 sjekk(dagensGnist(profilFav, loggPause, nå).bevegelse === 'walk', 'comeback-gnist er en snill tur');
 
-// --- Belønningsstigen: varme titler, ingen aggressive ---
-const alleTitler = [];
-for (let n = 1; n <= 120; n++) alleTitler.push(tittelFor(n));
-sjekk(!alleTitler.some((t) => /elite|beast|udødelig|rå|legende|mester/i.test(t)), 'ingen aggressive titler');
-for (let n = 2; n <= 60; n++) {
-  const b = belonningFor(n, bib);
-  sjekk(b && b.type && (b.navn || b.type === 'start'), `belønning på nivå ${n}`);
-}
+// --- Nivåkurven: rask start, ingen tak ---
 sjekk(nivaFraTotalXp(0).niva === 1, 'nivå 1 fra 0 XP');
 sjekk(nivaFraTotalXp(200).niva >= 2, 'tidlige nivåer kommer raskt');
-
-// Kuraterte gjenstander i stigen finnes i katalogen
-for (const g of GJENSTANDER) sjekk(g.id && g.kategori && g.laas, `gjenstand ${g.id} komplett`);
+sjekk(nivaFraTotalXp(100000).niva > 30, 'kurven fortsetter uten tak');
+sjekk(nivaFraTotalXp(150).igjen + nivaFraTotalXp(150).inne === nivaFraTotalXp(150).tilNeste, 'inne + igjen = tilNeste');
 
 if (feil) { console.error(`\n${feil} feil.`); process.exit(1); }
-console.log('✓ Alt grønt — bevegelseslag, XP, momentum, gnist og belønninger.');
+console.log('✓ Alt grønt — bevegelseslag, XP, momentum, gnist og nivåkurve.');

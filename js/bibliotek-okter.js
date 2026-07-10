@@ -5,6 +5,7 @@
 import { el, tom, chip, ikon } from './ui.js';
 import { settØkt } from './kjor.js';
 import { BEVEGELSER, KATEGORI_TIL_BEVEGELSE } from './bevegelse.js';
+import { lagBanner } from './banner.js';
 
 let _okter = null;
 
@@ -104,7 +105,7 @@ function isoIdag() {
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 }
 
-export function visOkterSkjerm(mount, { lagBanner = null } = {}) {
+export function visOkterSkjerm(mount) {
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
 
   const startId = params.get('start');
@@ -205,8 +206,7 @@ export function visOkterSkjerm(mount, { lagBanner = null } = {}) {
 
   const rot = el('div', { class: 'bib' });
   tom(mount);
-  if (lagBanner) mount.append(lagBanner(filterKnapp, dagAksjon));
-  mount.append(rot);
+  mount.append(lagBanner({ hoyre: filterKnapp, dagAksjon }), rot);
 
   function tegn() {
     const bevegelse = KATEGORI_TIL_BEVEGELSE[state.kat];

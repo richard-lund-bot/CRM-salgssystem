@@ -1,74 +1,31 @@
 // Onboarding (M13 — preferanse-først): < 2 min, 4 skjermer. Spør om
 // motivasjon, hvilke bevegelser du liker, ukemål + tid og navn — aldri
 // prestasjonskrav eller kalibrering. Øktbiblioteket har egne skillnivåer,
-// så startnivåer trengs ikke lenger.
+// så startnivåer trengs ikke.
 import { el, tom, chip, ikon } from './ui.js';
-import { MODALITET_NAVN } from './library.js';
 import { lagreProfil } from './store.js';
 import { BEVEGELSER } from './bevegelse.js';
-import { standardFigur } from './figur.js';
 
 // --- Skjerm 1: motivasjon ---------------------------------------------------
-// Hvert valg gir modalitetsvekt + formatvekt + hvilket toppkort hjem viser.
 const MOTIVASJON = [
-  { id: 'stabil', navn: 'Stabil rutine', ikon: 'repeat', mod: { alle: 1 }, format: { mikro: 2, kort: 1 }, toppkort: 'streak' },
-  { id: 'mestre', navn: 'Mestre nye øvelser', ikon: 'hexstjerne', mod: { SKILL: 3, STY: 2 }, format: { gtg: 2, emom: 1, styrkehold: 1 }, toppkort: 'skilltre' },
-  { id: 'sterkere', navn: 'Bli sterkere', ikon: 'vekt', mod: { STY: 3 }, format: { 'straight-sets': 2, supersett: 2, complex: 1 }, toppkort: 'pr' },
-  { id: 'kondis', navn: 'Bedre kondis', ikon: 'loper', mod: { HIIT: 2, BASE: 2 }, format: { intervall: 2, '4x4': 1 }, toppkort: 'volum' },
-  { id: 'ro', navn: 'Ro / mindre stress', ikon: 'yoga', mod: { REST: 3, YOGA: 2, STR: 1 }, format: { yin: 2, 'hold-flyt': 1, koherent: 1 }, toppkort: 'kveld' },
-  { id: 'hverdag', navn: 'Mer bevegelse i hverdagen', ikon: 'hjerte', mod: { BASE: 2, MOB: 1, alle: 1 }, format: { mikro: 2 }, toppkort: 'volum' },
-  { id: 'variasjon', navn: 'Variasjon / lek', ikon: 'terning', mod: { alle: 1 }, format: {}, toppkort: 'overrask' },
+  { id: 'stabil', navn: 'Stabil rutine', ikon: 'repeat' },
+  { id: 'mestre', navn: 'Mestre nye øvelser', ikon: 'hexstjerne' },
+  { id: 'sterkere', navn: 'Bli sterkere', ikon: 'vekt' },
+  { id: 'kondis', navn: 'Bedre kondis', ikon: 'loper' },
+  { id: 'ro', navn: 'Ro / mindre stress', ikon: 'yoga' },
+  { id: 'hverdag', navn: 'Mer bevegelse i hverdagen', ikon: 'hjerte' },
+  { id: 'variasjon', navn: 'Variasjon / lek', ikon: 'terning' },
 ];
 
 // --- Skjerm 2: bevegelser du liker (spec: «Movement you enjoy») -------------
 const FAVORITT_VALG = ['walk', 'strength', 'bodyweight', 'yoga', 'stretch', 'mobility', 'run', 'bike', 'hiit', 'sport'];
 
-// Forsiktige standardnivåer — beholdes som inert profildata så eldre
-// kodeveier (historikk/PR) fortsatt har det de forventer.
-export function forsiktigeNivaer() {
-  const nivaer = {};
-  for (const m of Object.keys(MODALITET_NAVN)) {
-    const base = (m === 'SKILL' || m === 'REST' || m === 'PLYO') ? 1 : 2;
-    nivaer[m] = { base, xp: 0, bevisTeller: 0, hoyesteBevist: base, verifisert: false, sisteOkt: null };
-  }
-  return nivaer;
-}
-
-// --- Anbefalt ukemiks fra topp-motivasjon (taksonomi §8) --------------------
-const UKEMIKS = {
-  sterkere: 'Styrke/skills', mestre: 'Styrke/skills',
-  kondis: 'Fettap + form', stabil: 'Allsidig helse', variasjon: 'Allsidig helse',
-  hverdag: 'Allsidig helse', ro: 'Restitusjonsuke',
-};
-
-function motivasjonTilVekter(valgt) {
-  // valgt = liste av motivasjon-id-er i rangert rekkefølge (#1 viktigst) → vekt 3/2/1.
-  const vekter = {};
-  const formatVekter = {};
-  const rangvekt = [3, 2, 1];
-  valgt.forEach((id, i) => {
-    const m = MOTIVASJON.find((x) => x.id === id);
-    if (!m) return;
-    const rv = rangvekt[i] || 1;
-    for (const [mod, v] of Object.entries(m.mod)) {
-      if (mod === 'alle') {
-        for (const k of Object.keys(MODALITET_NAVN)) vekter[k] = (vekter[k] || 0) + v * rv;
-      } else {
-        vekter[mod] = (vekter[mod] || 0) + v * rv;
-      }
-    }
-    for (const [fmt, v] of Object.entries(m.format)) formatVekter[fmt] = (formatVekter[fmt] || 0) + v * rv;
-  });
-  return { vekter, formatVekter };
-}
-
 // ---------------------------------------------------------------------------
 /**
  * Kjører onboarding inn i et container-element.
- * @param bib biblioteket (for bunkeliste)
  * @param ferdig callback(profil) når brukeren fullfører
  */
-export function kjorOnboarding(container, bib, ferdig) {
+export function kjorOnboarding(container, ferdig) {
   const state = {
     steg: 1,
     navn: '',
@@ -207,29 +164,15 @@ export function kjorOnboarding(container, bib, ferdig) {
   }
 
   function byggProfil() {
-    const { vekter, formatVekter } = motivasjonTilVekter(state.motivasjon);
-    const topp = state.motivasjon[0];
     return {
       opprettet: new Date().toISOString(),
       navn: state.navn.trim() || null,
-      motivasjon: {
-        valg: state.motivasjon.slice(),
-        vekter,
-        formatVekter,
-        toppkort: MOTIVASJON.find((m) => m.id === topp)?.toppkort || 'streak',
-      },
+      motivasjon: { valg: state.motivasjon.slice() },
       bevegelsesFavoritter: state.favoritter.slice(),
-      bevegelsesTeller: {},
-      figur: standardFigur(),
-      nivaer: forsiktigeNivaer(),
       ukemaal: state.ukemaal,
       varighetsklasse: state.varighetsklasse,
-      ukemiks: UKEMIKS[topp] || 'Allsidig helse',
-      gatewaysPassert: [],
-      prs: {},
-      settOvelser: {},
       globalXp: 0,
-      innstillinger: { brukJern: true, nivaOverstyr: {}, pauseTil: null },
+      innstillinger: {},
     };
   }
 

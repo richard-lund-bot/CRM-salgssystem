@@ -64,15 +64,6 @@ export function beregnXp(minutter, bevegelse, intensitet = 3) {
   return Math.max(5, Math.round((minutter || 0) * bf * inf));
 }
 
-// --- Energinivå (§5.3): flyten starter med hvordan du har det --------------
-export const ENERGI = [
-  { id: 'lav', navn: 'Lav', tekst: 'Helt greit. En liten bevegelse teller også.', intensitet: 2 },
-  { id: 'normal', navn: 'Normal', tekst: 'Fint. La oss finne noe som passer dagen din.', intensitet: 3 },
-  { id: 'klar', navn: 'Klar', tekst: 'Supert. Vil du ta i litt i dag?', intensitet: 4 },
-];
-
-export const VARIGHET_MIN = { mikro: 8, kort: 18, standard: 35, lang: 50 };
-
 // --- Aktivitet per dag (grunnlag for Momentum og rytme-prikker) ------------
 const DAG = 86400000;
 
@@ -194,7 +185,7 @@ function varighetsklasseFor(minutter) {
 }
 
 /** Startlenke for en bevegelse (øktbibliotek, hurtigstart eller manuell logg). */
-export function startHref(bevegelse, { maalMin } = {}) {
+function startHref(bevegelse, { maalMin } = {}) {
   const b = BEVEGELSER[bevegelse];
   if (!b) return '#/beveg';
   if (b.slag === 'generator') {

@@ -3,9 +3,11 @@
 // Prestasjoner (PR-tavle + «test deg selv»). Alt regnes ut lokalt.
 import { el, tom, ikon } from './ui.js';
 import { MODALITET_NAVN } from './library.js';
-import { hentLogg, hentProfil, lagreProfil, leggTilLogg } from './store.js';
-import { prsFraLogg, ukeNokkel, globaltNiva, registrerOkt } from './niva.js';
-import { BEVEGELSE_NAVN, aktivitetNavn, loggBevegelse, dagerMedAktivitet } from './bevegelse.js';
+import { hentLogg, hentProfil } from './store.js';
+import { prsFraLogg, ukeNokkel, globaltNiva } from './niva.js';
+import { BEVEGELSE_NAVN, aktivitetNavn, loggBevegelse, dagerMedAktivitet, MODALITET_TIL_BEVEGELSE } from './bevegelse.js';
+import { registrerOgLogg } from './beveg.js';
+import { lagBanner, sideHero } from './banner.js';
 import { fyllInn } from './animasjon.js';
 
 let _bib = null;
@@ -22,7 +24,7 @@ function svgEl(tag, attrs) {
 // Palett for modalitetssegmenter (donut).
 const PALETT = ['#0BA69F', '#4FA9F5', '#FF6F61', '#A9CE45', '#11264D', '#7ED0CB', '#FE9A82', '#E8853D', '#8A93A6'];
 
-// --- Aktivitet-skall: segmentert Historikk/Prestasjoner ---------------------
+// --- Aktivitet-skall: banner + sidetittel + segmentert innhold ---------------
 export function visAktivitetSkjerm(mount) {
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
   let fane = params.get('f') === 'prestasjoner' ? 'prestasjoner' : 'historikk';
@@ -31,10 +33,13 @@ export function visAktivitetSkjerm(mount) {
 
   function tegn() {
     tom(mount);
-    const main = el('main', { class: 'innhold' });
+    const main = el('main', { class: 'innhold side__innhold' });
     mount.append(
-      el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, 'Aktivitet')),
-      main,
+      lagBanner(),
+      el('div', { class: 'side' },
+        sideHero('Aktivitet', 'Alt du har beveget deg — samlet og talt.'),
+        main,
+      ),
     );
     main.append(
       el('div', { class: 'segment' },
@@ -81,7 +86,6 @@ function alleTiderKort(logg, profil) {
   const totXp = profil?.globalXp || logg.reduce((s, o) => s + (o.xp || 0), 0);
   const lengste = logg.reduce((m, o) => Math.max(m, o.varighetMin || 0), 0);
   const prAntall = Object.keys(prsFraLogg(logg)).length;
-  const gateways = (profil?.gatewaysPassert || []).length;
   const timer = Math.floor(totMin / 60);
   const rader = [
     ['loper', 'Bevegelser totalt', String(logg.length)],
@@ -89,7 +93,6 @@ function alleTiderKort(logg, profil) {
     ['lyn', 'Total XP', String(totXp)],
     ['graf', 'Lengste bevegelse', `${lengste} min`],
     ['medalje', 'Personlige rekorder', String(prAntall)],
-    ['hexstjerne', 'Gateways bestått', String(gateways)],
   ];
   return el('div', { class: 'kort' },
     el('h2', {}, 'Gjennom all tid'),
@@ -372,26 +375,13 @@ function lagreTest(e, felt, melding, tegnAktivitet) {
     melding.className = 'varsel';
     return;
   }
-  const testOkt = {
-    modalitet: e.modaliteter?.[0] || 'STY',
+  registrerOgLogg({
+    bevegelse: MODALITET_TIL_BEVEGELSE[e.modaliteter?.[0]] || 'strength',
     varighetMin: 5,
     intensitet: 3,
-    blokker: [{ kind: 'ovelser', rolle: 'hoved', ovelser: [{ id: e.id }] }],
-  };
-  const { profil: nyProfil, resultat: xpResultat } = registrerOkt(hentProfil(), testOkt, _bib, [resultat], Date.now());
-  lagreProfil(nyProfil);
-  leggTilLogg({
-    id: `test-${Date.now()}`,
-    dato: new Date().toISOString(),
-    modalitet: testOkt.modalitet,
-    varighetMin: testOkt.varighetMin,
-    intensitet: testOkt.intensitet,
-    lokasjon: 'Test',
-    ovelseIder: [e.id],
-    resultater: [resultat],
-    xp: xpResultat.xp,
-    fullfort: true,
-    test: true,
+    tittel: `Test · ${e.navn}`,
+    kilde: 'test',
+    ekstra: { ovelseIder: [e.id], resultater: [resultat], test: true },
   });
   tegnAktivitet();
 }

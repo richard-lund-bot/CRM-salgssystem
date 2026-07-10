@@ -49,7 +49,7 @@ idag.setHours(10, 0, 0, 0);
 const idagIso = idag.toISOString();
 const dag = `${idag.getFullYear()}-${String(idag.getMonth() + 1).padStart(2, '0')}-${String(idag.getDate()).padStart(2, '0')}`;
 
-lagreProfil({ navn: 'Test', globalXp: 100, bevegelsesTeller: {}, nivaer: {} });
+lagreProfil({ navn: 'Test', globalXp: 100 });
 leggTilPlan({ dato: dag, modalitet: 'BASE' }); // gammel plan: BASE → walk
 
 const gaatur = {
@@ -73,7 +73,6 @@ sjekk('kreditering: én ny rad kreditert', antall === 1);
 sjekk(`kreditering: rad fikk xp ${ventetXp}`, rad?.xp === ventetXp);
 sjekk('kreditering: globalXp økte tilsvarende', profil.globalXp === 100 + ventetXp);
 sjekk('kreditering: hovedboka husker raden', (profil.stravaKreditert || []).includes('strava-777'));
-sjekk('kreditering: teller bevegelsen', profil.bevegelsesTeller.walk === 1);
 
 // === 3) Plan-avhuking ========================================================
 sjekk('plan: BASE-plan samme dag huket av', hentPlan()[0]?.status === 'gjort');

@@ -1,7 +1,8 @@
-// App-inngang for Mova (M11 — omlagt til Mova-spesifikasjonen).
-// Navigasjon: Min dag · Beveg · Min reise · Aktivitet · Meny (spec §3).
-// Min dag åpner med Dagens gnist (ett lavterskel-forslag), figuren og
-// Momentum-rytmen — formulert som tilbud, aldri skam.
+// App-inngang for Mova (M15 — merker i stedet for reisen).
+// Navigasjon: Min dag · Beveg · Merker · Aktivitet · Meny.
+// Min dag åpner med hilsen, dagens statkort og bevegelsesgrid — formulert
+// som tilbud, aldri skam. Nivået bor som en liten boble på profilikonet;
+// feiringen bor i merkene (js/merker.js).
 import { lastBibliotek, MODALITET_NAVN, MONSTER_NAVN } from './library.js';
 import {
   hentProfil, harProfil, lagreProfil, hentLogg, nullstillAlt,
@@ -12,17 +13,16 @@ import { APP_VERSION } from './config.js';
 import { kjorOnboarding } from './onboarding.js';
 import { visReviewSkjerm, visKjoreSkjerm } from './kjor.js';
 import { settBib as settBibHist, visAktivitetSkjerm } from './historikk.js';
-import { settBib as settBibBeveg, visHurtigSkjerm, visLoggforSkjerm } from './beveg.js';
-import { settBib as settBibReise, visReiseSkjerm } from './reise.js';
+import { visHurtigSkjerm, visLoggforSkjerm } from './beveg.js';
+import { visMerkerSkjerm } from './merker.js';
 import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
-import { visTilpassSkjerm, standardFigur } from './figur.js';
-import { globaltNiva } from './niva.js';
-import { nivaFraTotalXp } from './belonninger.js';
-import { dagensGnist, dagerMedAktivitet, startHref, okterHref, MODALITET_TIL_BEVEGELSE } from './bevegelse.js';
+import { lagBanner, sideHero } from './banner.js';
+import { nivaFraTotalXp } from './niva.js';
+import { dagensGnist, dagerMedAktivitet, okterHref } from './bevegelse.js';
 import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN } from './bibliotek-okter.js';
 import { fyllInn } from './animasjon.js';
 import * as sync from './sync.js';
-import { settBib as settBibStrava, krediterNye, stravaKort } from './strava.js';
+import { krediterNye, stravaKort } from './strava.js';
 
 const app = document.getElementById('app');
 let bib = null;
@@ -30,12 +30,13 @@ let bib = null;
 // --- Ruter (hash-basert) ---
 const ruter = {
   hjem: visHjem,
-  beveg: () => visOkterSkjerm(app, { lagBanner: bibliotekBanner }), // Beveg-fanen er øktbiblioteket
+  beveg: () => visOkterSkjerm(app), // Beveg-fanen er øktbiblioteket
   hurtig: () => visHurtigSkjerm(app),
   loggfor: () => visLoggforSkjerm(app),
-  reise: () => visReiseSkjerm(app),
-  tilpass: () => visTilpassSkjerm(app, bib),
-  okter: () => visOkterSkjerm(app, { lagBanner: bibliotekBanner }),
+  merker: () => visMerkerSkjerm(app),
+  reise: () => { location.hash = '#/merker'; },   // gammel lenke — reisen ble merker
+  tilpass: () => { location.hash = '#/merker'; }, // gammel lenke — figuren er pensjonert
+  okter: () => visOkterSkjerm(app),
   ny: omdirigerGammelNyLenke, // gammel generator-lenke → øktbiblioteket
   plan: () => visKalenderSkjerm(app), // gammel lenke — kalenderen er planen
   kalender: () => visKalenderSkjerm(app),
@@ -50,14 +51,7 @@ const ruter = {
 };
 
 // Skjermene med egen tilbake-header er fokusmodus (skjuler tab-baren).
-const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'tilpass', 'kalender']);
-
-// Banneret til biblioteket: hvitt som på Min dag, men med filterknapp til
-// høyre — og dagene i ukeskalenderen får bibliotekets aksjoner.
-function bibliotekBanner(hoyre, dagAksjon) {
-  hjemUkeOffset = 0;
-  return hjemBanner(hentLogg(), { hoyre, dagAksjon });
-}
+const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender']);
 
 // Gamle #/ny?m=STY-lenker (og bokmerker) sendes til riktig bibliotekkategori.
 function omdirigerGammelNyLenke() {
@@ -76,9 +70,9 @@ function navger() {
 
 function oppdaterNav(rute) {
   const tabRute = ({
-    innstillinger: 'meny', bibliotek: 'meny', kjeder: 'meny', om: 'meny',
-    plan: 'meny', progresjon: 'meny', niva: 'meny',
-    historikk: 'aktivitet', ny: 'beveg', okter: 'beveg', tilpass: 'reise',
+    innstillinger: 'meny', bibliotek: 'meny', om: 'meny', plan: 'meny',
+    historikk: 'aktivitet', ny: 'beveg', okter: 'beveg',
+    reise: 'merker', tilpass: 'merker',
   })[rute] || rute;
   document.querySelectorAll('.tabbar__knapp').forEach((b) => {
     b.classList.toggle('tabbar__knapp--aktiv', b.dataset.rute === tabRute);
@@ -93,6 +87,19 @@ function skjerm(tittel, ...innhold) {
   );
 }
 
+// Fane-skall: hvitt banner + stor sidetittel — samme førsteinntrykk som
+// Min dag og biblioteket på alle hovedfanene.
+function fane(tittel, under, ...innhold) {
+  tom(app);
+  app.append(
+    lagBanner(),
+    el('div', { class: 'side' },
+      sideHero(tittel, under),
+      el('main', { class: 'innhold side__innhold' }, ...innhold),
+    ),
+  );
+}
+
 // ===========================================================================
 // Min dag — Mova-dashbord: hvit banner med header + ukeskalender (buet
 // underkant — resten av siden ligger som underlag), tre statistikk-kort
@@ -101,7 +108,6 @@ function skjerm(tittel, ...innhold) {
 // ===========================================================================
 const DAG = 86400000;
 const UKEDAG_BOKSTAV = ['M', 'T', 'O', 'T', 'F', 'L', 'S'];
-const UKEDAG_NAVN = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
 
 function isoDato(d) {
   const y = d.getFullYear();
@@ -119,11 +125,6 @@ function mandagFor(d) {
 // Dagsmål i minutter, avledet av foretrukket varighetsklasse.
 const DAGSMAAL = { mikro: 10, kort: 20, standard: 40, lang: 60 };
 
-function wordmark() {
-  return el('a', { class: 'wordmark', href: '#/hjem', 'aria-label': 'Mova' },
-    'mova', el('span', { class: 'wordmark__prikk' }, '.'));
-}
-
 function visHjem() {
   const profil = hentProfil();
   if (!profil) {
@@ -132,7 +133,6 @@ function visHjem() {
   }
   const logg = hentLogg();
   const nå = Date.now();
-  hjemUkeOffset = 0;
 
   const idagIso = isoDato(new Date(nå));
   const planer = planForDato(idagIso);
@@ -162,7 +162,7 @@ function visHjem() {
 
   document.body.classList.add('hjem-laast');
   tom(app);
-  app.append(hjemBanner(logg), scroll, lagPullOppdatering(scroll));
+  app.append(lagBanner(), scroll, lagPullOppdatering(scroll));
 }
 
 // Pull-to-refresh: dra ned fra toppen og en gjennomsiktig snurre-sirkel
@@ -327,126 +327,6 @@ function heroPlanBoks(p) {
   );
 }
 
-// Banner: profil + bjelle til venstre, sentrert wordmark, kalender til høyre
-// — og ukeskalender under, med dagens dato markert. Banneren er sticky og
-// ligger foran alt annet; innholdet scroller under den buede underkanten.
-// Ukene ligger i et dra-bart spor (forrige · denne · neste): dra med fingeren
-// og uka følger med, slipp så glir den over til neste/forrige. Pilene gjør
-// det samme. En dag åpner mosjonskalenderen på den datoen — med mindre
-// skjermen sender inn sin egen dag-aksjon (biblioteket: logg/start/planlegg).
-// `hoyre` bytter ut kalenderknappen til høyre (biblioteket: filter).
-let hjemUkeOffset = 0;
-
-function hjemBanner(logg, { hoyre = null, dagAksjon = null } = {}) {
-  const aktivSett = new Set(logg.map((o) => (o.dato || '').slice(0, 10)));
-
-  // Ukedagsnavnene står stille — bare datotallene ligger i det dra-bare sporet.
-  function ukePanel(offset) {
-    const panel = el('div', { class: 'hjemuke__dager' });
-    const idagIso = isoDato(new Date());
-    const man = mandagFor(new Date(Date.now() + offset * 7 * DAG));
-    for (let i = 0; i < 7; i++) {
-      const dato = new Date(man.getTime() + i * DAG);
-      const iso = isoDato(dato);
-      const erIdag = iso === idagIso;
-      const lenke = el('a', { class: 'hjemuke__dag', href: `#/kalender?d=${iso}` },
-        el('span', { class: 'hjemuke__tall' + (erIdag ? ' hjemuke__tall--idag' : '') }, String(dato.getDate())),
-        el('i', { class: 'hjemuke__prikk' + (aktivSett.has(iso) && !erIdag ? ' hjemuke__prikk--aktiv' : '') }),
-      );
-      if (dagAksjon) lenke.addEventListener('click', (ev) => { ev.preventDefault(); dagAksjon(iso, erIdag); });
-      panel.append(lenke);
-    }
-    return panel;
-  }
-
-  const spor = el('div', { class: 'hjemuke__spor' });
-  const vindu = el('div', { class: 'hjemuke__vindu' }, spor);
-
-  // Sporet er 300 % bredt med midtpanelet synlig; dra forskyver i px oppå
-  // grunnposisjonen, og en blaing glir ett helt panel før ukene bygges på nytt.
-  function settX(dxPx, anim) {
-    spor.classList.toggle('hjemuke__spor--anim', anim);
-    spor.style.transform = `translateX(calc(-33.3333% + ${dxPx}px))`;
-  }
-
-  function tegnUker() {
-    tom(spor);
-    spor.append(ukePanel(hjemUkeOffset - 1), ukePanel(hjemUkeOffset), ukePanel(hjemUkeOffset + 1));
-    settX(0, false);
-  }
-
-  let låst = false;
-  function bla(retning) {
-    if (låst) return;
-    låst = true;
-    settX(-retning * vindu.clientWidth, true);
-    setTimeout(() => { hjemUkeOffset += retning; tegnUker(); låst = false; }, 300);
-  }
-
-  // Dra med finger eller mus (pointer events; touch-action: pan-y i CSS lar
-  // vertikal scroll gå til nettleseren mens horisontale drag havner her).
-  let startX = null;
-  let dratt = false;
-  spor.addEventListener('pointerdown', (ev) => {
-    if (låst || !ev.isPrimary) return;
-    startX = ev.clientX;
-    dratt = false;
-  });
-  spor.addEventListener('pointermove', (ev) => {
-    if (startX == null || låst) return;
-    const dx = ev.clientX - startX;
-    if (!dratt) {
-      if (Math.abs(dx) < 6) return;
-      // Først når draget faktisk starter fanges pekeren — ellers ville
-      // capture-retargeting spist vanlige tapp på dagene.
-      dratt = true;
-      spor.setPointerCapture(ev.pointerId);
-    }
-    settX(Math.max(-vindu.clientWidth, Math.min(vindu.clientWidth, dx)), false);
-  });
-  spor.addEventListener('pointerup', (ev) => {
-    if (startX == null) return;
-    const dx = ev.clientX - startX;
-    startX = null;
-    if (!dratt) return;
-    const terskel = Math.min(70, vindu.clientWidth / 4);
-    if (dx <= -terskel) bla(1);
-    else if (dx >= terskel) bla(-1);
-    else settX(0, true);
-  });
-  spor.addEventListener('pointercancel', () => {
-    if (startX == null) return;
-    startX = null;
-    if (dratt) settX(0, true);
-  });
-  // Et drag skal ikke samtidig utløse klikk på dagen under fingeren.
-  spor.addEventListener('click', (ev) => {
-    if (!dratt) return;
-    ev.preventDefault();
-    ev.stopPropagation();
-    dratt = false;
-  }, true);
-
-  const uke = el('div', { class: 'hjemuke' },
-    el('div', { class: 'hjemuke__navner' },
-      ...UKEDAG_NAVN.map((n) => el('span', { class: 'hjemuke__navn' }, n)),
-    ),
-    vindu,
-  );
-  tegnUker();
-
-  if (hoyre) hoyre.classList.add('hjembanner__hoyre');
-  return el('div', { class: 'hjembanner' },
-    el('div', { class: 'hjembanner__rad' },
-      el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/reise', 'aria-label': 'Profil' }, ikon('person')),
-      el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/innstillinger', 'aria-label': 'Varsler og innstillinger' }, ikon('bjelle')),
-      el('span', { class: 'hjembanner__logo' }, wordmark()),
-      hoyre || el('a', { class: 'ikonknapp ikonknapp--plain hjembanner__hoyre', href: '#/kalender', 'aria-label': 'Mosjonskalender' }, ikon('kalender')),
-    ),
-    uke,
-  );
-}
-
 // Tre kort: dagens minutter mot dagsmålet, ukas aktive dager, nivå/XP.
 // Med glass=true (i heroen) er kortene frostet hvite så bildet skinner gjennom.
 function statKortRad(profil, logg, glass = false) {
@@ -485,7 +365,7 @@ function statKortRad(profil, logg, glass = false) {
         ...dager.map((m) => el('i', { class: 'statkort__prikk' + (m > 0 ? ' statkort__prikk--aktiv' : '') })),
       ),
     ),
-    el('a', { class: 'statkort', href: '#/reise' },
+    el('a', { class: 'statkort', href: '#/merker' },
       el('span', { class: 'statkort__label' }, `Nivå ${info.niva}`),
       el('div', { class: 'statkort__midt' },
         el('span', { class: 'stathex' }, 'M'),
@@ -590,7 +470,6 @@ function streakKort(logg) {
   const aktivSett = new Set(logg.map((o) => (o.dato || '').slice(0, 10)));
   const idag = new Date();
   idag.setHours(0, 0, 0, 0);
-  const idagIso = isoDato(idag);
   const man = mandagFor(idag);
 
   const uke = [];
@@ -611,7 +490,7 @@ function streakKort(logg) {
     : streak > 0 ? 'God start — hold rytmen i morgen også.'
       : 'Én liten bevegelse i dag starter en ny.';
 
-  return el('div', { class: 'streakrad' },
+  return el('a', { class: 'streakrad', href: '#/merker' },
     el('span', { class: 'streakrad__disk' }, ikon('flamme')),
     el('div', { class: 'streakrad__meta' },
       el('span', { class: 'streakrad__tittel' }, tittel),
@@ -637,17 +516,18 @@ function varighetNavn(k) {
 // Meny + innstillinger
 // ===========================================================================
 function visMeny() {
-  skjerm('Meny',
+  fane('Meny', 'Alt det andre — samlet på ett sted.',
     el('div', { class: 'kort' },
       el('div', { class: 'liste' },
         menyrad('kalender', 'Mosjonskalender', '#/kalender'),
         menyrad('bok', 'Øktbiblioteket', '#/okter'),
+        menyrad('medalje', 'Merker', '#/merker'),
         menyrad('sok', 'Øvelsesoppslag', '#/bibliotek'),
         menyrad('gir', 'Innstillinger', '#/innstillinger'),
         menyrad('info', 'Om Mova', '#/om'),
       ),
     ),
-    el('a', { class: 'oppmuntring', href: '#/plan' },
+    el('a', { class: 'oppmuntring', href: '#/kalender' },
       el('span', { class: 'oppmuntring__disk' }, ikon('hjerte', 'ikon ikon--fylt')),
       el('span', { class: 'oppmuntring__meta' },
         el('span', { class: 'oppmuntring__tittel' }, 'Gjør bevegelse til en vane'),
@@ -666,6 +546,20 @@ function menyrad(ikonNavn, tekst, href) {
   );
 }
 
+// --- Temaer (CSS-paletter, se app.css) — alle fritt tilgjengelige -----------
+const TEMAER = [
+  { id: 'standard', navn: 'Mova (standard)', prikk: '#008382' },
+  { id: 'mork', navn: 'Marine', prikk: '#11264D' },
+  { id: 'midnatt', navn: 'Midnatt', prikk: '#2E8FE0' },
+  { id: 'glod', navn: 'Glød', prikk: '#E8853D' },
+  { id: 'oliven', navn: 'Oliven', prikk: '#7E9C2E' },
+  { id: 'nordlys', navn: 'Nordlys', prikk: '#8B5CF6' },
+  { id: 'rodglod', navn: 'Rødglød', prikk: '#FF6F61' },
+  { id: 'papir', navn: 'Papir (varm)', prikk: '#E8E2D9' },
+  { id: 'mono', navn: 'Mono', prikk: '#3C4660' },
+  { id: 'gull', navn: 'Gull', prikk: '#B08D2A' },
+];
+
 function visInnstillinger() {
   const profil = hentProfil();
   if (!profil) { location.hash = '#/hjem'; return; }
@@ -677,6 +571,8 @@ function visInnstillinger() {
     visInnstillinger();
   }
 
+  const valgtTema = profil.innstillinger?.tema || 'standard';
+
   skjerm('Innstillinger',
     skyKort(),
     stravaKort(visInnstillinger),
@@ -686,6 +582,24 @@ function visInnstillinger() {
         ...[2, 3, 4, 5, 6].map((n) => chip(String(n), {
           aktiv: profil.ukemaal === n, onClick: () => lagre((p) => { p.ukemaal = n; }),
         })),
+      ),
+    ),
+    el('div', { class: 'kort' },
+      el('h2', {}, 'Tema'),
+      el('div', { class: 'temaliste' },
+        ...TEMAER.map((t) => el('button', {
+          class: 'temaknapp' + (valgtTema === t.id ? ' temaknapp--valgt' : ''),
+          type: 'button',
+          onclick: () => lagre((p) => {
+            p.innstillinger = p.innstillinger || {};
+            p.innstillinger.tema = t.id;
+            bruksTema(t.id);
+          }),
+        },
+          el('span', { class: 'temaknapp__prikk', style: `background:${t.prikk}` }),
+          el('span', { class: 'temaknapp__navn' }, t.navn),
+          el('span', { class: 'temaknapp__status' }, valgtTema === t.id ? ikon('sjekk') : null),
+        )),
       ),
     ),
     el('div', { class: 'kort' },
@@ -824,14 +738,14 @@ function visOm() {
   skjerm('Om Mova',
     el('div', { class: 'kort' },
       el('h2', {}, 'Mova — Move for Life.'),
-      el('p', {}, 'Bevegelse kan være hva som helst du liker — en tur, en økt, en fotballkamp. Alt teller, alt gir XP, og figuren din går videre på reisen sin. PWA i vanilla HTML/CSS/JS.'),
+      el('p', {}, 'Bevegelse kan være hva som helst du liker — en tur, en økt, en fotballkamp. Alt teller, alt gir XP, og merkene samler det du får til. PWA i vanilla HTML/CSS/JS.'),
       el('p', { class: 'dempet' }, `Versjon ${APP_VERSION}`),
       el('p', { class: 'dempet' }, `${hentOkter().length} økter i biblioteket · ${bib.exercises.length} øvelser i oppslaget.`),
     ),
     profil && el('div', { class: 'kort' },
       el('h2', {}, 'Profil'),
       el('p', { class: 'dempet' }, `Motivasjon: ${(profil.motivasjon?.valg || []).join(', ') || '–'}`),
-      el('p', { class: 'dempet' }, `Ukemål ${profil.ukemaal} · ${profil.ukemiks} · globalt nivå ${globaltNiva(profil.globalXp || 0)}`),
+      el('p', { class: 'dempet' }, `Ukemål ${profil.ukemaal} · nivå ${nivaFraTotalXp(profil.globalXp || 0).niva}`),
     ),
   );
 }
@@ -846,7 +760,7 @@ function byggTabbar() {
   document.body.append(el('nav', { class: 'tabbar' },
     tab('hjem', 'hjem', 'Min dag'),
     tab('beveg', 'loper', 'Beveg'),
-    tab('reise', 'kompass', 'Min reise'),
+    tab('merker', 'medalje', 'Merker'),
     tab('aktivitet', 'puls', 'Aktivitet'),
     tab('meny', 'meny', 'Meny'),
   ));
@@ -858,34 +772,10 @@ export function bruksTema(id) {
   else delete document.documentElement.dataset.tema;
 }
 
-// Engangsmigrering til M11: eldre profiler får figur, bevegelsestellere
-// (bakoverregnet fra loggen) og favoritter utledet fra motivasjonsvektene.
-function migrerProfil() {
-  const profil = hentProfil();
-  if (!profil || (profil.figur && profil.bevegelsesTeller)) return;
-  const p = { ...profil };
-  if (!p.figur) p.figur = standardFigur();
-  if (!p.bevegelsesTeller) {
-    const teller = {};
-    for (const o of hentLogg()) {
-      const b = o.bevegelse || MODALITET_TIL_BEVEGELSE[o.modalitet] || 'custom';
-      teller[b] = (teller[b] || 0) + 1;
-    }
-    p.bevegelsesTeller = teller;
-  }
-  if (!p.bevegelsesFavoritter) {
-    const vekter = p.motivasjon?.vekter || {};
-    const rangert = Object.entries(vekter).sort((a, b) => b[1] - a[1]).slice(0, 3)
-      .map(([m]) => MODALITET_TIL_BEVEGELSE[m]).filter(Boolean);
-    p.bevegelsesFavoritter = [...new Set(['walk', ...rangert])].slice(0, 4);
-  }
-  lagreProfil(p);
-}
-
 // --- Onboarding ---
 function startOnboarding() {
   document.body.classList.add('fokusmodus');
-  kjorOnboarding(app, bib, () => {
+  kjorOnboarding(app, () => {
     document.body.classList.remove('fokusmodus');
     byggTabbar();
     location.hash = '#/hjem';
@@ -921,12 +811,11 @@ async function start() {
     return;
   }
   settBibHist(bib);
-  settBibBeveg(bib);
-  settBibReise(bib);
   settBibKal(bib);
-  settBibStrava(bib);
-  migrerProfil();
   bruksTema(hentProfil()?.innstillinger?.tema);
+  // Fanebytte starter alltid på toppen av siden (programmatiske redraws,
+  // f.eks. etter synk, beholder scrollposisjonen).
+  window.addEventListener('hashchange', () => window.scrollTo(0, 0));
   window.addEventListener('hashchange', navger);
 
   // Skysync: fang ev. magic-link-retur, og på en ny enhet som nettopp logget
@@ -959,7 +848,7 @@ function oppdaterSyncMerke(status) {
   // Hvis brukeren står på en skjerm som viser synket data, tegn på nytt.
   if (status === 'synket') {
     const rute = (location.hash.replace('#/', '') || 'hjem').split('?')[0];
-    if (['hjem', 'historikk', 'aktivitet', 'niva', 'progresjon', 'reise', 'innstillinger'].includes(rute)) navger();
+    if (['hjem', 'historikk', 'aktivitet', 'merker', 'innstillinger'].includes(rute)) navger();
   }
 }
 

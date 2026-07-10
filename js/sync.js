@@ -1,13 +1,13 @@
-// Skysync (M2/M5) — Spor-mønsteret. Brukertilstand (profil, logg, genererte
-// økter) synkes til Supabase når du er innlogget og på nett. localStorage er
-// alltid primærkilden — appen blokkerer aldri på nett. Konfliktløsing er
+// Skysync (M2/M5) — Spor-mønsteret. Brukertilstand (profil + logg) synkes til
+// Supabase når du er innlogget og på nett. localStorage er alltid
+// primærkilden — appen blokkerer aldri på nett. Konfliktløsing er
 // last-write-wins per rad via `oppdatert`-stempelet: vi henter fjernrader,
 // fletter (nyeste vinner) inn i localStorage, og skyver den flettede tilstanden
 // opp igjen. Ingen SDK — direkte REST mot GoTrue + PostgREST holder appen
 // avhengighetsfri og offline-first.
 import { SUPABASE_URL, SUPABASE_ANON_KEY, LS } from './config.js';
 import {
-  hentProfil, settProfilRå, hentLogg, settLoggRå, hentGenererte, settGenererteRå,
+  hentProfil, settProfilRå, hentLogg, settLoggRå,
   settEndringslytter,
 } from './store.js';
 
@@ -109,7 +109,7 @@ export function flettProfil(lokal, fjernRad) {
     : { ...fjernRad.data, oppdatert: fjernRad.oppdatert };
 }
 
-/** Logg/genererte flettes per id: union, nyeste `oppdatert` ved konflikt. */
+/** Loggen flettes per id: union, nyeste `oppdatert` ved konflikt. */
 export function flettPerId(lokalArr, fjernRader, sorterEtter = 'dato') {
   const kart = new Map();
   for (const o of lokalArr || []) if (o?.id) kart.set(o.id, o);
@@ -124,15 +124,13 @@ export function flettPerId(lokalArr, fjernRader, sorterEtter = 'dato') {
 
 // --- Pull + push ----------------------------------------------------------
 async function pull() {
-  const [profilRader, loggRader, genRader] = await Promise.all([
+  const [profilRader, loggRader] = await Promise.all([
     rest('profiles?select=data,oppdatert&limit=1'),
     rest('session_logs?select=data,oppdatert&order=oppdatert.desc'),
-    rest('generated_sessions?select=data,oppdatert&order=oppdatert.desc&limit=50'),
   ]);
   const flettetProfil = flettProfil(hentProfil(), profilRader?.[0]);
   if (flettetProfil) settProfilRå(flettetProfil);
   settLoggRå(flettPerId(hentLogg(), loggRader, 'dato'));
-  settGenererteRå(flettPerId(hentGenererte(), genRader, 'kjort').slice(0, 50));
 }
 
 async function push() {
@@ -152,16 +150,6 @@ async function push() {
       body: logg.map((o) => ({
         id: o.id, user_id: uid, dato: (o.dato || '').slice(0, 10), modalitet: o.modalitet,
         data: o, oppdatert: o.oppdatert || o.dato || new Date().toISOString(),
-      })),
-    });
-  }
-  const gen = hentGenererte();
-  if (gen.length) {
-    await rest('generated_sessions?on_conflict=id', {
-      method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
-      body: gen.map((o) => ({
-        id: o.id, user_id: uid, seed: o.seed || o.id,
-        data: o, oppdatert: o.oppdatert || o.kjort || new Date().toISOString(),
       })),
     });
   }
