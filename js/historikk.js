@@ -422,7 +422,11 @@ function oktRad(o) {
   detalj.append(
     navn.length ? el('p', { class: 'dempet' }, navn.join(', '))
       : el('p', { class: 'dempet' }, o.kilde === 'manuell' ? 'Logget manuelt — det teller.'
-        : o.kilde === 'hurtig' ? 'Hurtigstart med timer.' : 'Ingen øvelsesdetaljer.'),
+        : o.kilde === 'hurtig' ? 'Hurtigstart med timer.'
+          : o.kilde === 'strava' ? ['Importert fra Strava (Garmin).',
+            o.distanseM ? ` ${(o.distanseM / 1000).toFixed(1)} km.` : '',
+            o.snittPuls ? ` Snittpuls ${o.snittPuls}.` : ''].join('')
+            : 'Ingen øvelsesdetaljer.'),
     (o.resultater || []).length ? el('p', { class: 'okt__pr' }, 'Logget: ' + o.resultater.map((r) => `${ovelseNavn(r.id)} ${prVerdi(r)}`).join(' · ')) : null,
   );
   return rad;

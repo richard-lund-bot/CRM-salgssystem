@@ -22,6 +22,7 @@ import { dagensGnist, dagerMedAktivitet, startHref, okterHref, MODALITET_TIL_BEV
 import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN } from './bibliotek-okter.js';
 import { fyllInn } from './animasjon.js';
 import * as sync from './sync.js';
+import { settBib as settBibStrava, krediterNye, stravaKort } from './strava.js';
 
 const app = document.getElementById('app');
 let bib = null;
@@ -678,6 +679,7 @@ function visInnstillinger() {
 
   skjerm('Innstillinger',
     skyKort(),
+    stravaKort(visInnstillinger),
     el('div', { class: 'kort' },
       el('h2', {}, 'Ukemål'),
       el('div', { class: 'chiprad' },
@@ -922,12 +924,15 @@ async function start() {
   settBibBeveg(bib);
   settBibReise(bib);
   settBibKal(bib);
+  settBibStrava(bib);
   migrerProfil();
   bruksTema(hentProfil()?.innstillinger?.tema);
   window.addEventListener('hashchange', navger);
 
   // Skysync: fang ev. magic-link-retur, og på en ny enhet som nettopp logget
   // inn — hent ned profilen før vi avgjør om onboarding skal kjøre.
+  // Strava-krediteringen kjører mellom pull og push i hver synk-runde.
+  sync.settEtterPull(krediterNye);
   try {
     const { innlogget } = await sync.init();
     if (innlogget && !harProfil()) await sync.synk();

@@ -8,6 +8,7 @@
     "merge": "node scripts/merge-parts.mjs",
     "validate": "node scripts/validate.mjs",
     "test:bevegelse": "node scripts/smoke-bevegelse.mjs",
+    "test:strava": "node scripts/smoke-strava.mjs",
     "sjekk-versjon": "node scripts/sjekk-cache-versjon.mjs",
     "installer-hooks": "node scripts/installer-hooks.mjs",
     "prepare": "node scripts/installer-hooks.mjs"

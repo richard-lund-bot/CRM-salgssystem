@@ -76,6 +76,7 @@ js/
   historikk.js          Aktivitet-skjerm: Historikk (heatmap/volum/donut/balanse/logg) + Prestasjoner
   kalender.js           Mosjonskalender: ukeliste, planlegg bibliotekøkter på dato
   sync.js               skysync: magic-link-auth + PostgREST + last-write-wins-fletting
+  strava.js             Strava-broen: krediterer importerte Garmin-økter (XP på enheten) + innstillingskort
   belonninger.js        belønningsnivå (uendelig kurve) + stige: gjenstander/miljøer/temaer/varme titler/øvelser
   rng.js                seeded PRNG (mulberry32) + stokk/trekk — ingen Math.random()
   ui.js                 DOM-hjelpere + inline SVG-ikonsett
@@ -96,7 +97,12 @@ scripts/
   smoke-bevegelse.mjs   headless test: XP-formelen, fri bevegelse, Momentum, Dagens gnist, opplåsinger
   smoke-sync.mjs        headless test: last-write-wins-fletting (profil + logg per id)
   smoke-belonninger.mjs headless test: uendelig kurve, Mova-stigen, varme titler, gjenstandsopplåsing
-docs/                   kildedokumenter + avvikslogg
+  smoke-strava.mjs      headless test: Strava-broen (mapping, kreditering, dedupe, sletting, plan)
+  strava-abonner.mjs    engangs: opprett/list/slett Stravas webhook-abonnement
+supabase/
+  functions/strava/     Edge Function: Strava OAuth + webhook → session_logs (se docs/strava-integrasjon.md)
+  migrations/           SQL: strava_koblinger + strava_config
+docs/                   kildedokumenter + avvikslogg + strava-integrasjon.md
 manifest.webmanifest    PWA-manifest
 sw.js                   service worker (offline-first)
 ```

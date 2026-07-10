@@ -65,8 +65,9 @@ async function hentBruker(token) {
   return res.ok ? res.json() : null;
 }
 
-/** Gyldig access-token, med automatisk refresh når det nærmer seg utløp. */
-async function gyldigToken() {
+/** Gyldig access-token, med automatisk refresh når det nærmer seg utløp.
+ *  Eksportert for moduler som kaller egne endepunkter (Strava-broen). */
+export async function gyldigToken() {
   const s = hentSesjon();
   if (!s) return null;
   if (s.utløp && s.utløp > Date.now() + 60000) return s.access_token;
@@ -167,6 +168,11 @@ async function push() {
 }
 
 // --- Orkestrering ---------------------------------------------------------
+// Krok som kjøres mellom pull og push: Strava-broen krediterer XP for
+// ferske fjernrader her, så oppdatert profil og rader pushes i samme runde.
+let etterPull = null;
+export function settEtterPull(fn) { etterPull = fn; }
+
 let synkerNå = false;
 /** Full synk: hent fjern → flett inn → skyv opp. Trygg å kalle ofte. */
 export async function synk() {
@@ -175,6 +181,7 @@ export async function synk() {
   meldStatus('synker');
   try {
     await pull();
+    if (etterPull) { try { etterPull(); } catch (e) { console.warn('etterPull feilet', e); } }
     await push();
     localStorage.setItem(LS.sistSynk, new Date().toISOString());
     meldStatus('synket');
