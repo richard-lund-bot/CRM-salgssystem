@@ -29,12 +29,23 @@ export const BEVEGELSE_NAVN = Object.fromEntries(
   Object.entries(BEVEGELSER).map(([id, b]) => [id, b.navn]),
 );
 
-// Generator-modalitet → bevegelsestype (for XP og tellere på genererte økter).
+// Generator-modalitet → bevegelsestype (for XP og tellere på gamle loggførte økter).
 export const MODALITET_TIL_BEVEGELSE = {
   STY: 'strength', HIIT: 'hiit', BASE: 'walk', MET: 'hiit', SKILL: 'bodyweight',
   PLYO: 'hiit', YOGA: 'yoga', PIL: 'yoga', STR: 'stretch', MOB: 'mobility',
   CORE: 'bodyweight', REST: 'recovery', HYB: 'strength',
 };
+
+// Bevegelsestype ↔ øktbibliotek-kategori (M13). Sport/annet har ingen
+// bibliotekkategori — de logges manuelt.
+export const BEVEGELSE_TIL_KATEGORI = {
+  walk: 'gatur', run: 'lop', bike: 'sykkel', strength: 'styrke',
+  bodyweight: 'kroppsvekt', yoga: 'yoga', stretch: 'toying',
+  mobility: 'mobilitet', hiit: 'hiit', recovery: 'restitusjon',
+};
+export const KATEGORI_TIL_BEVEGELSE = Object.fromEntries(
+  Object.entries(BEVEGELSE_TIL_KATEGORI).map(([b, k]) => [k, b]),
+);
 
 // Sporter for manuell logging — bare navn, ingen øvelsesdetaljer (§5.11).
 export const SPORTER = [
@@ -182,20 +193,24 @@ function varighetsklasseFor(minutter) {
   return 'lang';
 }
 
-/** Startlenke for en bevegelse (hurtigstart, generator eller manuell logg). */
-export function startHref(bevegelse, { varighetsklasse, intensitet, maalMin } = {}) {
+/** Startlenke for en bevegelse (øktbibliotek, hurtigstart eller manuell logg). */
+export function startHref(bevegelse, { maalMin } = {}) {
   const b = BEVEGELSER[bevegelse];
   if (!b) return '#/beveg';
   if (b.slag === 'generator') {
-    const k = varighetsklasse ? `&k=${varighetsklasse}` : '';
-    const i = intensitet ? `&i=${intensitet}` : '';
-    return `#/ny?m=${b.modalitet}${k}${i}`;
+    return `#/okter?kat=${BEVEGELSE_TIL_KATEGORI[bevegelse] || 'styrke'}`;
   }
   if (b.slag === 'fri') {
     const m = maalMin ? `&maal=${maalMin}` : '';
     return `#/hurtig?b=${bevegelse}${m}`;
   }
   return `#/loggfor?b=${bevegelse}`;
+}
+
+/** Lenke til øktbibliotekets kategoriside for en bevegelse (fliser o.l.). */
+export function okterHref(bevegelse) {
+  const kat = BEVEGELSE_TIL_KATEGORI[bevegelse];
+  return kat ? `#/okter?kat=${kat}` : `#/loggfor?b=${bevegelse}`;
 }
 
 /**

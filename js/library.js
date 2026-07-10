@@ -1,12 +1,10 @@
-// Biblioteklaget: laster statiske JSON-data (øvelser, kjeder, formater, maler,
-// utstyr, bunker, gateways, sekvenser, oppvarming, protokoller).
+// Biblioteklaget: laster statiske JSON-data (øvelsesoppslaget + utstyrsnavn).
+// Generator-datafilene (templates/formats/warmups/gateways/chains/bundles)
+// lastes ikke lenger — øktene kommer fra øktbiblioteket (bibliotek-okter.js).
 // Dataene er statiske i repoet og caches av service-workeren, så dette
 // fungerer offline etter første last. Ingen brukertilstand her.
 
-const FILER = [
-  'exercises', 'chains', 'formats', 'templates', 'equipment',
-  'bundles', 'gateways', 'sequences', 'warmups', 'protocols',
-];
+const FILER = ['exercises', 'equipment'];
 
 let _cache = null;
 
@@ -16,7 +14,7 @@ async function hentJson(navn) {
   return res.json();
 }
 
-/** Laster hele biblioteket én gang og bygger oppslagsindekser. */
+/** Laster biblioteket én gang og bygger oppslagsindekser. */
 export async function lastBibliotek() {
   if (_cache) return _cache;
   const deler = await Promise.all(FILER.map(hentJson));
@@ -24,25 +22,15 @@ export async function lastBibliotek() {
 
   const ovelseMap = new Map(data.exercises.map((e) => [e.id, e]));
   const utstyrMap = new Map(data.equipment.map((e) => [e.id, e]));
-  const bunkeMap = new Map(data.bundles.map((b) => [b.id, b]));
-  const kjedeMap = new Map(data.chains.map((c) => [c.id, c]));
 
   _cache = {
     ...data,
     ovelseMap,
     utstyrMap,
-    bunkeMap,
-    kjedeMap,
     /** Alle øvelser i en modalitet. */
     ovelserForModalitet: (m) => data.exercises.filter((e) => e.modaliteter.includes(m)),
     /** Slår opp en øvelse. */
     ovelse: (id) => ovelseMap.get(id),
-    /** Løser en bunke (+ varierer) til et sett utstyrs-IDer. */
-    losBunke: (bunkeId, inkluderVarierer = false) => {
-      const b = bunkeMap.get(bunkeId);
-      if (!b) return new Set();
-      return new Set(inkluderVarierer ? [...b.inkluderer, ...(b.varierer || [])] : b.inkluderer);
-    },
   };
   return _cache;
 }

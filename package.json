@@ -7,7 +7,6 @@
   "scripts": {
     "merge": "node scripts/merge-parts.mjs",
     "validate": "node scripts/validate.mjs",
-    "test:gen": "node scripts/smoke-generator.mjs",
     "test:bevegelse": "node scripts/smoke-bevegelse.mjs",
     "sjekk-versjon": "node scripts/sjekk-cache-versjon.mjs",
     "installer-hooks": "node scripts/installer-hooks.mjs",

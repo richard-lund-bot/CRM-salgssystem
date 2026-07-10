@@ -3,24 +3,22 @@
 //   - navigasjon/HTML: network-first med cache-fallback (fersk UI når nett finnes)
 //   - data/JS/CSS/ikoner: cache-first (raskt, fungerer offline)
 // Bump CACHE_VERSION for å rulle ut ny cache.
-const CACHE_VERSION = 'mova-m12-1.5.3';
+const CACHE_VERSION = 'mova-m13-2.0.0';
 const SKALL = [
   './',
   './index.html',
   './css/app.css',
   './js/app.js',
   './js/library.js',
+  './js/bibliotek-okter.js',
   './js/store.js',
   './js/ui.js',
   './js/config.js',
   './js/rng.js',
-  './js/generator.js',
   './js/onboarding.js',
   './js/kjor.js',
   './js/niva.js',
-  './js/niva-ui.js',
   './js/historikk.js',
-  './js/plan.js',
   './js/kalender.js',
   './js/sync.js',
   './js/belonninger.js',
@@ -43,16 +41,9 @@ const SKALL = [
   './icons/brand/hero-natt.webp',
   './icons/brand/shoe-badge.png',
   './icons/brand/splash.webp',
+  './data/okter.json',
   './data/exercises.json',
-  './data/chains.json',
-  './data/formats.json',
-  './data/templates.json',
   './data/equipment.json',
-  './data/bundles.json',
-  './data/gateways.json',
-  './data/sequences.json',
-  './data/warmups.json',
-  './data/protocols.json',
 ];
 
 self.addEventListener('install', (e) => {

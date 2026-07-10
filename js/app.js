@@ -10,17 +10,16 @@ import {
 import { el, tom, chip, ikon } from './ui.js';
 import { APP_VERSION } from './config.js';
 import { kjorOnboarding } from './onboarding.js';
-import { settBib as settBibKjor, visGeneratorSkjerm, visReviewSkjerm, visKjoreSkjerm } from './kjor.js';
-import { settBib as settBibNiva, visProgresjonSkjerm } from './niva-ui.js';
+import { visReviewSkjerm, visKjoreSkjerm } from './kjor.js';
 import { settBib as settBibHist, visAktivitetSkjerm } from './historikk.js';
-import { settBib as settBibPlan, visPlanSkjerm } from './plan.js';
 import { settBib as settBibBeveg, visBevegSkjerm, visHurtigSkjerm, visLoggforSkjerm } from './beveg.js';
 import { settBib as settBibReise, visReiseSkjerm } from './reise.js';
 import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
 import { visTilpassSkjerm, standardFigur } from './figur.js';
 import { globaltNiva } from './niva.js';
 import { nivaFraTotalXp } from './belonninger.js';
-import { dagensGnist, dagerMedAktivitet, startHref, VARIGHET_MIN, MODALITET_TIL_BEVEGELSE } from './bevegelse.js';
+import { dagensGnist, dagerMedAktivitet, startHref, okterHref, MODALITET_TIL_BEVEGELSE } from './bevegelse.js';
+import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN } from './bibliotek-okter.js';
 import { fyllInn } from './animasjon.js';
 import * as sync from './sync.js';
 
@@ -35,33 +34,28 @@ const ruter = {
   loggfor: () => visLoggforSkjerm(app),
   reise: () => visReiseSkjerm(app),
   tilpass: () => visTilpassSkjerm(app, bib),
-  plan: () => visPlanSkjerm(app),
+  okter: () => visOkterSkjerm(app),
+  ny: omdirigerGammelNyLenke, // gammel generator-lenke → øktbiblioteket
+  plan: () => visKalenderSkjerm(app), // gammel lenke — kalenderen er planen
   kalender: () => visKalenderSkjerm(app),
-  ny: () => visGeneratorSkjerm(app, lesForhandsvalg()),
   review: () => visReviewSkjerm(app),
   kjor: () => visKjoreSkjerm(app),
   aktivitet: () => visAktivitetSkjerm(app),
   historikk: () => visAktivitetSkjerm(app), // gammel lenke — samme skjerm
-  progresjon: () => visProgresjonSkjerm(app),
-  niva: () => visProgresjonSkjerm(app), // gammel lenke — samme skjerm
   meny: visMeny,
   innstillinger: visInnstillinger,
   bibliotek: visBibliotek,
-  kjeder: visKjeder,
   om: visOm,
 };
 
 // Skjermene med egen tilbake-header er fokusmodus (skjuler tab-baren).
-const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'tilpass', 'kalender']);
+const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'tilpass', 'kalender', 'okter']);
 
-function lesForhandsvalg() {
+// Gamle #/ny?m=STY-lenker (og bokmerker) sendes til riktig bibliotekkategori.
+function omdirigerGammelNyLenke() {
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
-  const v = {};
-  if (params.get('m')) v.modalitet = params.get('m');
-  if (params.get('k')) v.varighetsklasse = params.get('k');
-  if (params.get('p')) v.planId = params.get('p');
-  if (params.get('i')) v.intensitet = Number(params.get('i')) || undefined;
-  return v;
+  const kat = MODALITET_TIL_KATEGORI[params.get('m')] || 'styrke';
+  location.hash = `#/okter?kat=${kat}`;
 }
 
 function navger() {
@@ -150,7 +144,7 @@ function visHjem() {
     heroVelkomst(profil, logg, nå),
     el('main', { class: 'innhold' },
       seksjonsHode(),
-      bevegelsesGrid(profil),
+      bevegelsesGrid(),
       // Heroen har alt en CTA når noe er planlagt eller påbegynt — da
       // trengs ikke anbefalingskortet i tillegg.
       !planer.length && minutterIdag === 0 && anbefalingKort(profil, logg, nå),
@@ -289,18 +283,38 @@ function heroVelkomst(profil, logg, nå) {
   );
 }
 
+// Viser en planlagt økt: nye planer peker på en bibliotekøkt (oktId), gamle
+// bærer modalitet — begge får tittel, varighet og en startlenke.
+function planVisning(p) {
+  const okt = p.oktId ? oktMedId(p.oktId) : null;
+  if (okt) {
+    return {
+      tittel: `${okt.navn} · ${okt.varighetMin} min`,
+      kortTittel: okt.navn,
+      href: `#/okter?start=${okt.id}&p=${p.id}`,
+    };
+  }
+  const kat = MODALITET_TIL_KATEGORI[p.modalitet];
+  return {
+    tittel: `${MODALITET_NAVN[p.modalitet] || KATEGORI_NAVN[kat] || 'Økt'} · ${varighetNavn(p.varighetsklasse)}`,
+    kortTittel: MODALITET_NAVN[p.modalitet] || 'Økt',
+    href: kat ? `#/okter?kat=${kat}` : '#/okter',
+  };
+}
+
 function heroPlanBoks(p) {
+  const vis = planVisning(p);
   return el('div', { class: 'hjemhero__plan' },
     el('div', { class: 'hjemhero__planrad' },
       el('span', { class: 'hjemhero__plandisk' }, ikon('kalender')),
       el('div', {},
         el('span', { class: 'hjemhero__planeyebrow' }, 'Planlagt i dag'),
-        el('span', { class: 'hjemhero__plantittel' }, `${MODALITET_NAVN[p.modalitet] || p.modalitet} · ${varighetNavn(p.varighetsklasse)}`),
+        el('span', { class: 'hjemhero__plantittel' }, vis.tittel),
       ),
     ),
     el('div', { class: 'hjemhero__planbunn' },
       el('span', { class: 'hjemhero__plantid' }, ikon('klokke', 'ikon ikon--liten'), 'Start når det passer deg'),
-      el('a', { class: 'hjemhero__knapp', href: `#/ny?m=${p.modalitet}&k=${p.varighetsklasse}&p=${p.id}` }, 'Åpne plan'),
+      el('a', { class: 'hjemhero__knapp', href: vis.href }, 'Åpne plan'),
     ),
   );
 }
@@ -489,8 +503,7 @@ function seksjonsHode() {
   );
 }
 
-function bevegelsesGrid(profil) {
-  const k = profil.varighetsklasse || 'standard';
+function bevegelsesGrid() {
   // Flisinnhold: lite ikon øverst, navn nederst — og samme ikon stort og
   // utvasket bak i hjørnet, delvis utenfor kanten.
   const flisInnhold = (ikonNavn, navn) => [
@@ -498,16 +511,16 @@ function bevegelsesGrid(profil) {
     el('span', { class: 'movflis__ikon' }, ikon(ikonNavn)),
     el('span', { class: 'movflis__navn' }, navn),
   ];
+  // Flisene åpner øktbibliotekets kategoriside (sport logges manuelt).
   const flis = (id, navn, ikonNavn, farge) => el('a', {
     class: `movflis movflis--${farge}`,
-    href: startHref(id, { varighetsklasse: k, maalMin: VARIGHET_MIN[k] }),
+    href: okterHref(id),
   }, ...flisInnhold(ikonNavn, navn));
   const overrask = el('button', {
     class: 'movflis movflis--indigo', type: 'button',
     onclick: () => {
-      const kandidater = ['walk', 'run', 'bike', 'strength', 'bodyweight', 'yoga', 'stretch', 'hiit'];
-      const id = kandidater[Math.floor(Math.random() * kandidater.length)];
-      location.hash = startHref(id, { varighetsklasse: k, maalMin: VARIGHET_MIN[k] });
+      const o = tilfeldigOkt();
+      if (o) location.hash = `#/okter?start=${o.id}`;
     },
   }, ...flisInnhold('terning', 'Overrask meg'));
   return el('div', { class: 'movgrid' }, ...HJEM_FLISER.map((f) => flis(...f)), overrask);
@@ -523,9 +536,10 @@ function anbefalingKort(profil, logg, nå) {
   let tittel, tekst, href, knapp;
   if (planer.length) {
     const p = planer[0];
-    tittel = MODALITET_NAVN[p.modalitet] || p.modalitet;
-    tekst = `${varighetNavn(p.varighetsklasse)} · planlagt økt`;
-    href = `#/ny?m=${p.modalitet}&k=${p.varighetsklasse}&p=${p.id}`;
+    const vis = planVisning(p);
+    tittel = vis.kortTittel;
+    tekst = 'Planlagt økt i dag';
+    href = vis.href;
     knapp = 'Åpne plan';
   } else {
     const g = dagensGnist(profil, logg, nå);
@@ -613,10 +627,9 @@ function visMeny() {
   skjerm('Meny',
     el('div', { class: 'kort' },
       el('div', { class: 'liste' },
-        menyrad('kalender', 'Plan', '#/plan'),
-        menyrad('graf', 'Progresjon (avansert)', '#/progresjon'),
-        menyrad('bok', 'Bibliotek', '#/bibliotek'),
-        menyrad('trend', 'Progresjonskjeder', '#/kjeder'),
+        menyrad('kalender', 'Mosjonskalender', '#/kalender'),
+        menyrad('bok', 'Øktbiblioteket', '#/okter'),
+        menyrad('sok', 'Øvelsesoppslag', '#/bibliotek'),
         menyrad('gir', 'Innstillinger', '#/innstillinger'),
         menyrad('info', 'Om Mova', '#/om'),
       ),
@@ -643,8 +656,6 @@ function menyrad(ikonNavn, tekst, href) {
 function visInnstillinger() {
   const profil = hentProfil();
   if (!profil) { location.hash = '#/hjem'; return; }
-  const nå = Date.now();
-  const pauseAktiv = profil.innstillinger?.pauseTil && Date.parse(profil.innstillinger.pauseTil) > nå;
 
   function lagre(muter) {
     const p = hentProfil();
@@ -664,34 +675,6 @@ function visInnstillinger() {
       ),
     ),
     el('div', { class: 'kort' },
-      el('h2', {}, 'Pause-modus'),
-      el('p', { class: 'dempet' }, pauseAktiv ? `Aktiv til ${new Date(Date.parse(profil.innstillinger.pauseTil)).toLocaleDateString('no-NO')} — decay er frosset.` : 'Frys nedlevling ved ferie eller sykdom (30 dager).'),
-      el('button', {
-        class: 'knapp knapp--sekundaer', type: 'button',
-        onclick: () => lagre((p) => {
-          p.innstillinger = p.innstillinger || {};
-          p.innstillinger.pauseTil = pauseAktiv ? null : new Date(nå + 30 * 86400000).toISOString();
-        }),
-      }, pauseAktiv ? 'Avslutt pause' : 'Start pause (30 d)'),
-    ),
-    el('div', { class: 'kort' },
-      el('h2', {}, 'Manuell nivåoverstyring'),
-      el('p', { class: 'dempet' }, 'Lås opp øvelsesnivåer manuelt. «Auto» følger base + gateways.'),
-      el('div', { class: 'overstyr' },
-        ...['STY', 'CORE', 'SKILL', 'YOGA', 'HIIT'].map((m) => overstyrRad(m, profil, lagre)),
-      ),
-    ),
-    el('div', { class: 'kort' },
-      el('h2', {}, 'Bruk jern'),
-      el('label', { class: 'bryter' },
-        el('span', {}, 'Foretrekk vekt-varianter når tilgjengelig'),
-        el('input', {
-          type: 'checkbox', checked: profil.innstillinger?.brukJern !== false,
-          onchange: (ev) => lagre((p) => { p.innstillinger = p.innstillinger || {}; p.innstillinger.brukJern = ev.target.checked; }),
-        }),
-      ),
-    ),
-    el('div', { class: 'kort' },
       el('h2', {}, 'Profil'),
       el('input', {
         class: 'sok', type: 'text', placeholder: 'Hva skal vi kalle deg?',
@@ -702,7 +685,7 @@ function visInnstillinger() {
       el('div', { class: 'knapprad' },
         el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: startOnboarding }, 'Ta profilen på nytt'),
       ),
-      el('p', { class: 'dempet' }, 'Nullstiller vekter og startnivå — rører aldri logg/XP.'),
+      el('p', { class: 'dempet' }, 'Setter opp preferansene på nytt — rører aldri logg/XP.'),
     ),
     el('div', { class: 'kort' },
       el('h2', {}, 'Faresone'),
@@ -753,29 +736,8 @@ function skyKort() {
   return kort;
 }
 
-function overstyrRad(m, profil, lagre) {
-  const gjeldende = profil.innstillinger?.nivaOverstyr?.[m];
-  const auto = !Number.isFinite(gjeldende);
-  const vis = auto ? '—' : String(gjeldende);
-  const sett = (v) => lagre((p) => {
-    p.innstillinger = p.innstillinger || {};
-    p.innstillinger.nivaOverstyr = p.innstillinger.nivaOverstyr || {};
-    if (v == null) delete p.innstillinger.nivaOverstyr[m];
-    else p.innstillinger.nivaOverstyr[m] = v;
-  });
-  return el('div', { class: 'overstyr__rad' },
-    el('span', { class: 'overstyr__navn' }, MODALITET_NAVN[m] || m),
-    el('div', { class: 'overstyr__knapper' },
-      el('button', { class: 'ikonknapp', type: 'button', onclick: () => sett(auto ? 1 : Math.max(1, gjeldende - 1)) }, '−'),
-      el('span', { class: 'overstyr__verdi' + (auto ? ' dempet' : '') }, auto ? 'auto' : `nv ${vis}`),
-      el('button', { class: 'ikonknapp', type: 'button', onclick: () => sett(auto ? 3 : Math.min(5, gjeldende + 1)) }, '+'),
-      !auto && el('button', { class: 'ikonknapp', type: 'button', title: 'Auto', onclick: () => sett(null) }, '↺'),
-    ),
-  );
-}
-
 // ===========================================================================
-// Bibliotek / kjeder / om (fra M1/M3)
+// Øvelsesoppslag / om (fra M1/M3)
 // ===========================================================================
 function visBibliotek() {
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
@@ -840,25 +802,6 @@ function ovelseKort(e) {
       e.impact === 'hoy' && el('span', { class: 'tag tag--impact' }, 'høy impact'),
     ),
     utstyr && el('div', { class: 'ovelse__utstyr' }, utstyr),
-    e.kjede && el('div', { class: 'ovelse__kjede' }, `${bib.kjedeMap.get(e.kjede)?.navn || e.kjede} · steg ${e.kjedePos}`),
-  );
-}
-
-function visKjeder() {
-  skjerm('Progresjonskjeder',
-    el('p', { class: 'dempet' }, `${bib.chains.length} kjeder — ryggraden i nivåsystemet.`),
-    ...bib.chains.map((c) => el('div', { class: 'kort' },
-      el('h2', {}, c.navn),
-      el('ol', { class: 'kjede' },
-        ...c.ledd.map((l) => {
-          const o = bib.ovelse(l.ovelse);
-          return el('li', { class: 'kjede__ledd' },
-            el('span', { class: 'kjede__navn' }, o ? o.navn : l.ovelse),
-            el('span', { class: 'kjede__niva' }, `nv ${l.niva}`),
-          );
-        }),
-      ),
-    )),
   );
 }
 
@@ -869,7 +812,7 @@ function visOm() {
       el('h2', {}, 'Mova — Move for Life.'),
       el('p', {}, 'Bevegelse kan være hva som helst du liker — en tur, en økt, en fotballkamp. Alt teller, alt gir XP, og figuren din går videre på reisen sin. PWA i vanilla HTML/CSS/JS.'),
       el('p', { class: 'dempet' }, `Versjon ${APP_VERSION}`),
-      el('p', { class: 'dempet' }, `${bib.exercises.length} øvelser · ${bib.chains.length} kjeder · ${bib.formats.length} formater · ${bib.templates.length} maler · ${bib.gateways.length} gateways · ${bib.sequences.length} sekvenser.`),
+      el('p', { class: 'dempet' }, `${hentOkter().length} økter i biblioteket · ${bib.exercises.length} øvelser i oppslaget.`),
     ),
     profil && el('div', { class: 'kort' },
       el('h2', {}, 'Profil'),
@@ -953,7 +896,7 @@ function skjulSplash() {
 // --- Oppstart ---
 async function start() {
   try {
-    bib = await lastBibliotek();
+    [bib] = await Promise.all([lastBibliotek(), lastOkter()]);
   } catch (e) {
     skjulSplash();
     tom(app);
@@ -963,10 +906,7 @@ async function start() {
     ));
     return;
   }
-  settBibKjor(bib);
-  settBibNiva(bib);
   settBibHist(bib);
-  settBibPlan(bib);
   settBibBeveg(bib);
   settBibReise(bib);
   settBibKal(bib);

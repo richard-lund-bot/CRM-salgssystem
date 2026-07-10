@@ -29,7 +29,7 @@ function stoppTimer() {
 const KLASSER = [['Mikro', 'mikro', '5–10 min'], ['Kort', 'kort', '15–20 min'], ['Standard', 'standard', '30–40 min'], ['Lang', 'lang', '45–60 min']];
 
 // --- Registrering: én vei inn for all fri/manuell bevegelse ----------------
-export function registrerOgLogg({ bevegelse, varighetMin, intensitet = 3, tittel = null, kilde = 'manuell', dato = null }) {
+export function registrerOgLogg({ bevegelse, varighetMin, intensitet = 3, tittel = null, kilde = 'manuell', dato = null, ekstra = {} }) {
   const profil = hentProfil();
   const logg = hentLogg();
   const nå = Date.now();
@@ -46,6 +46,7 @@ export function registrerOgLogg({ bevegelse, varighetMin, intensitet = 3, tittel
     xp: resultat.xp,
     kilde,
     fullfort: true,
+    ...ekstra,
   });
   return resultat;
 }
@@ -97,9 +98,9 @@ export function visBevegSkjerm(mount) {
         ),
         el('div', { class: 'kort' },
           el('div', { class: 'liste' },
+            lenkerad('bok', 'Øktbiblioteket', '#/okter'),
             lenkerad('penn', 'Logg noe du alt har gjort', '#/loggfor'),
-            lenkerad('kalender', 'Planlagte økter', '#/plan'),
-            lenkerad('gir', 'Full øktgenerator', '#/ny'),
+            lenkerad('kalender', 'Planlagte økter', '#/kalender'),
           ),
         ),
       ),

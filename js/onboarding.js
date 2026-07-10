@@ -1,12 +1,10 @@
-// Onboarding (M11 — preferanse-først, jf. Mova-spec §19 pkt. 10): < 2 min,
-// 5 skjermer. Spør om motivasjon, hvilke bevegelser du liker, ukemål + tid og
-// hvor du er — aldri prestasjonskrav. Ankertesten (konkrete styrkespørsmål)
-// er VALGFRI og kan tas fra oppsummeringen eller senere under Progresjon;
-// uten den starter kapasitetsnivåene forsiktig og vokser med bevis.
+// Onboarding (M13 — preferanse-først): < 2 min, 4 skjermer. Spør om
+// motivasjon, hvilke bevegelser du liker, ukemål + tid og navn — aldri
+// prestasjonskrav eller kalibrering. Øktbiblioteket har egne skillnivåer,
+// så startnivåer trengs ikke lenger.
 import { el, tom, chip, ikon } from './ui.js';
 import { MODALITET_NAVN } from './library.js';
-import { lagreProfil, lagreSistLokasjon } from './store.js';
-import { nivaFraBase } from './niva.js';
+import { lagreProfil } from './store.js';
 import { BEVEGELSER } from './bevegelse.js';
 import { standardFigur } from './figur.js';
 
@@ -25,68 +23,8 @@ const MOTIVASJON = [
 // --- Skjerm 2: bevegelser du liker (spec: «Movement you enjoy») -------------
 const FAVORITT_VALG = ['walk', 'strength', 'bodyweight', 'yoga', 'stretch', 'mobility', 'run', 'bike', 'hiit', 'sport'];
 
-// --- Valgfri kalibrering: ankertest (konkrete tall — aldri selvvurdering) ---
-export const ANKER = [
-  {
-    id: 'push', sp: 'Hvor mange push-ups klarer du på ett sett?',
-    svar: [['0–4', 1], ['5–14', 2], ['15–24', 3], ['25+', 4]],
-  },
-  {
-    id: 'pull', sp: 'Pull-ups / hang?',
-    svar: [['Henger < 20 s', 1], ['Ringrows går fint', 2], ['1–7 pull-ups', 3], ['8+ pull-ups', 4]],
-  },
-  {
-    id: 'bein', sp: 'Dyp knebøy med hælene i gulvet?',
-    svar: [['Nei', 1], ['Ja, dyp knebøy', 2], ['+ bulgarsk 10/side', 3], ['+ box pistol', 4]],
-  },
-  {
-    id: 'core', sp: 'Kjerne?',
-    svar: [['Planke < 30 s', 1], ['Planke 60 s', 2], ['Hollow hold 20 s', 3], ['Beinløft i heng', 4]],
-  },
-  {
-    id: 'kondis', sp: 'Kondisjon?',
-    svar: [['Går tur', 1], ['Jogger litt', 2], ['20 min rolig løp uten stopp', 3], ['4×4-intervaller er kjent', 4]],
-  },
-  {
-    id: 'fleks', sp: 'Bevegelighet?',
-    svar: [['Langt fra tærne', 1], ['Fingre i gulvet, strake bein', 2], ['+ litt yogaerfaring', 3], ['Erfaren / mobil', 4]],
-  },
-];
-
-// Ankersvar (1–4) → modalitetsbase på §4c-skalaen. Selvrapport låser opp
-// t.o.m. øvelsesnivå 4 (base 6); nivå 5 krever alltid gateway (base 7).
-const TIL_BASE = { 1: 1, 2: 3, 3: 5, 4: 6 };
-const tilBase = (score) => TIL_BASE[Math.max(1, Math.min(4, Math.round(score)))];
-
-export function ankerTilNivaer(svar) {
-  const g = (id) => svar[id] || 2;
-  const sty = (g('push') + g('pull') + g('bein')) / 3;
-  const kondis = g('kondis');
-  const fleks = g('fleks');
-  const kart = {
-    STY: sty,
-    CORE: g('core'),
-    HIIT: kondis,
-    BASE: kondis,
-    MET: (sty + kondis) / 2,
-    STR: fleks,
-    YOGA: Math.max(1, fleks),
-    MOB: Math.max(2, fleks),
-    PIL: 2,
-    PLYO: Math.max(1, Math.min(3, g('bein'))),
-    SKILL: 1, // nivå 5-skills krever alltid gateway; start lavt
-    REST: 1,
-    HYB: (sty + kondis) / 2,
-  };
-  const nivaer = {};
-  for (const [m, score] of Object.entries(kart)) {
-    const base = tilBase(score);
-    nivaer[m] = { base, xp: 0, bevisTeller: 0, hoyesteBevist: base, verifisert: false, sisteOkt: null };
-  }
-  return nivaer;
-}
-
-// Uten kalibrering: forsiktig start som vokser med bevis. Aldri et krav.
+// Forsiktige standardnivåer — beholdes som inert profildata så eldre
+// kodeveier (historikk/PR) fortsatt har det de forventer.
 export function forsiktigeNivaer() {
   const nivaer = {};
   for (const m of Object.keys(MODALITET_NAVN)) {
@@ -96,7 +34,7 @@ export function forsiktigeNivaer() {
   return nivaer;
 }
 
-// --- Skjerm 5: anbefalt ukemiks fra topp-motivasjon (taksonomi §8) ----------
+// --- Anbefalt ukemiks fra topp-motivasjon (taksonomi §8) --------------------
 const UKEMIKS = {
   sterkere: 'Styrke/skills', mestre: 'Styrke/skills',
   kondis: 'Fettap + form', stabil: 'Allsidig helse', variasjon: 'Allsidig helse',
@@ -136,18 +74,14 @@ export function kjorOnboarding(container, bib, ferdig) {
     navn: '',
     motivasjon: [], // rangert liste av id
     favoritter: [],
-    anker: {},
-    visAnker: false,
     ukemaal: 4,
     varighetsklasse: 'standard',
-    bundleId: 'hjemme-gym',
-    varierer: new Set(),
   };
 
   function ramme(tittel, undertekst, ...innhold) {
     tom(container);
     const prikker = el('div', { class: 'ob-prikker' },
-      ...[1, 2, 3, 4, 5].map((n) => el('i', { class: 'ob-prikk' + (n <= state.steg ? ' ob-prikk--på' : '') })),
+      ...[1, 2, 3, 4].map((n) => el('i', { class: 'ob-prikk' + (n <= state.steg ? ' ob-prikk--på' : '') })),
     );
     container.append(el('div', { class: 'ob' },
       el('header', { class: 'ob__topp' },
@@ -248,64 +182,9 @@ export function kjorOnboarding(container, bib, ferdig) {
     );
   }
 
-  // --- Skjerm 4: sted/utstyr ---
+  // --- Skjerm 4: oppsummering + navn ---
   function skjerm4() {
-    const bunke = bib.bundles.find((b) => b.id === state.bundleId) || bib.bundles[0];
-    if (!bib.bundles.some((b) => b.id === state.bundleId)) state.bundleId = bunke.id;
-    const utstyrNavn = (id) => bib.utstyrMap.get(id)?.navn || id;
-
-    ramme('Hvor beveger du deg mest?', 'Velg et utgangspunkt — du kan legge til flere steder senere.',
-      el('div', { class: 'chiprad' },
-        ...bib.bundles.map((b) => chip(b.navn, {
-          aktiv: state.bundleId === b.id,
-          onClick: () => { state.bundleId = b.id; state.varierer = new Set(); skjerm4(); },
-        })),
-      ),
-      el('div', { class: 'kort' },
-        el('h2', {}, 'Fast utstyr her'),
-        el('p', { class: 'dempet' }, bunke.inkluderer.map(utstyrNavn).join(' · ')),
-      ),
-      (bunke.varierer || []).length > 0 && el('div', { class: 'kort' },
-        el('h2', {}, 'Har stedet også dette?'),
-        el('div', { class: 'ob-varier' },
-          ...bunke.varierer.map((id) => {
-            const på = state.varierer.has(id);
-            return el('button', {
-              class: 'ob-tggl' + (på ? ' ob-tggl--på' : ''), type: 'button',
-              onclick: () => { på ? state.varierer.delete(id) : state.varierer.add(id); skjerm4(); },
-            }, (på ? '✓ ' : '+ ') + utstyrNavn(id));
-          }),
-        ),
-      ),
-      bunn('Neste', true, () => { state.steg = 5; skjerm5(); }, () => { state.steg = 3; skjerm3(); }),
-    );
-  }
-
-  // --- Skjerm 5: oppsummering + valgfri kalibrering ---
-  function skjerm5() {
-    const harAnker = Object.keys(state.anker).length === ANKER.length;
     const favNavn = state.favoritter.map((id) => BEVEGELSER[id]?.navn).filter(Boolean);
-
-    const ankerBlokk = state.visAnker
-      ? el('div', { class: 'kort' },
-        el('h2', {}, 'Kalibrering (valgfritt)'),
-        el('p', { class: 'dempet' }, 'Konkrete tall setter startnivået for styrkeøvelser. Hopp over hvis du vil — nivået vokser uansett.'),
-        el('div', { class: 'ob-anker' },
-          ...ANKER.map((q) => el('div', { class: 'ob-sp' },
-            el('p', { class: 'ob-sp__tekst' }, q.sp),
-            el('div', { class: 'chiprad' },
-              ...q.svar.map(([tekst, verdi]) => chip(tekst, {
-                aktiv: state.anker[q.id] === verdi,
-                onClick: () => { state.anker[q.id] = verdi; skjerm5(); },
-              })),
-            ),
-          )),
-        ),
-      )
-      : el('button', {
-        class: 'knapp knapp--stille', type: 'button',
-        onclick: () => { state.visAnker = true; skjerm5(); },
-      }, 'Kalibrer startnivå (valgfritt)');
 
     ramme('Klar til å bevege deg', 'Alt kan justeres senere i innstillinger.',
       el('div', { class: 'kort' },
@@ -317,25 +196,19 @@ export function kjorOnboarding(container, bib, ferdig) {
         }),
         el('p', { style: 'margin-top:10px' }, `Bevegelser du liker: ${favNavn.join(', ')}`),
         el('p', {}, `${state.ukemaal} dager i bevegelse/uke · ${state.varighetsklasse}-lengde`),
-        el('p', { class: 'dempet' }, harAnker
-          ? 'Startnivå kalibrert fra tallene dine.'
-          : 'Startnivået settes forsiktig og vokser med det du gjør.'),
+        el('p', { class: 'dempet' }, 'Øktbiblioteket har ferdige økter på alle nivåer — velg det som passer dagen.'),
       ),
-      ankerBlokk,
       bunn('Fullfør', true, () => {
         const profil = byggProfil();
         lagreProfil(profil);
-        lagreSistLokasjon(profil.aktivLokasjon);
         ferdig(profil);
-      }, () => { state.steg = 4; skjerm4(); }),
+      }, () => { state.steg = 3; skjerm3(); }),
     );
   }
 
   function byggProfil() {
     const { vekter, formatVekter } = motivasjonTilVekter(state.motivasjon);
-    const bunke = bib.bundles.find((b) => b.id === state.bundleId) || bib.bundles[0];
     const topp = state.motivasjon[0];
-    const harAnker = Object.keys(state.anker).length === ANKER.length;
     return {
       opprettet: new Date().toISOString(),
       navn: state.navn.trim() || null,
@@ -348,17 +221,10 @@ export function kjorOnboarding(container, bib, ferdig) {
       bevegelsesFavoritter: state.favoritter.slice(),
       bevegelsesTeller: {},
       figur: standardFigur(),
-      nivaer: harAnker ? ankerTilNivaer(state.anker) : forsiktigeNivaer(),
+      nivaer: forsiktigeNivaer(),
       ukemaal: state.ukemaal,
       varighetsklasse: state.varighetsklasse,
       ukemiks: UKEMIKS[topp] || 'Allsidig helse',
-      lokasjoner: [{
-        navn: 'Hjemme',
-        bundleId: bunke.id,
-        varierer: [...state.varierer],
-      }],
-      aktivLokasjon: 'Hjemme',
-      // Progresjonstilstand (M4) — fylles av registrerOkt/registrerGateway.
       gatewaysPassert: [],
       prs: {},
       settOvelser: {},

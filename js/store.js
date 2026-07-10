@@ -90,11 +90,13 @@ export function hentPlan() {
 
 export function settPlanRå(liste) { skriv(LS.plan, liste); }
 
-/** Legger til en planlagt økt og returnerer den nye oppføringen. */
-export function leggTilPlan({ dato, modalitet, varighetsklasse, lokasjon }) {
+/** Legger til en planlagt økt og returnerer den nye oppføringen.
+ *  Nye planer peker på en bibliotekøkt (oktId); eldre bærer modalitet. */
+export function leggTilPlan({ dato, oktId, modalitet, varighetsklasse, lokasjon }) {
   const liste = hentPlan();
   const ny = {
-    id: nyPlanId(), dato, modalitet, varighetsklasse: varighetsklasse || 'standard',
+    id: nyPlanId(), dato, oktId: oktId || null, modalitet: modalitet || null,
+    varighetsklasse: varighetsklasse || null,
     lokasjon: lokasjon || null, status: 'planlagt', opprettet: nåISO(),
   };
   liste.push(ny);

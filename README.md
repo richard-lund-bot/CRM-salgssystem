@@ -69,13 +69,12 @@ js/
   figur.js              figuren (lagdelt SVG, poser), miljøer, skjermen «Tilpass figur»
   library.js            laster + indekserer statiske data (offline-first)
   store.js              brukertilstand i localStorage (Spor-mønster) + profiloppslag
-  onboarding.js         5-skjerms onboarding, preferanse-først (motivasjon, favorittbevegelser, ukemål, sted; ankertest valgfri)
-  generator.js          deterministisk øktgenerator (mal → filtrerte, seedede blokker)
-  kjor.js               generator-input, review, kjøre-UI, resultat-logging (delvis teller) + fullført-skjerm
-  niva.js               motor: XP (spec-formel), registrerBevegelse, kapasitetsopprykk (XP+bevis), decay, PR, gateway
-  niva-ui.js            Progresjon-skjerm (valgfri, avansert): kapasitet + gateways + kalibrering
-  historikk.js          Aktivitet-skjerm: Historikk (heatmap/volum/donut/balanse/logg) + Prestasjoner (PR-tavle/test deg selv)
-  plan.js               Plan-modul: månedskalender, planlegg økt på dato, fyll-kalender-bulk, agenda
+  onboarding.js         4-skjerms onboarding, preferanse-først (motivasjon, favorittbevegelser, ukemål, navn)
+  bibliotek-okter.js    øktbiblioteket: 60 kuraterte true-and-tested økter (velger + start)
+  kjor.js               øktspilleren: review + kjøre-UI (guide/sekvens/pust/fasetimer), delvis teller
+  niva.js               motor: XP (spec-formel), registrerBevegelse, globalt nivå
+  historikk.js          Aktivitet-skjerm: Historikk (heatmap/volum/donut/balanse/logg) + Prestasjoner
+  kalender.js           Mosjonskalender: ukeliste, planlegg bibliotekøkter på dato
   sync.js               skysync: magic-link-auth + PostgREST + last-write-wins-fletting
   belonninger.js        belønningsnivå (uendelig kurve) + stige: gjenstander/miljøer/temaer/varme titler/øvelser
   rng.js                seeded PRNG (mulberry32) + stokk/trekk — ingen Math.random()
@@ -83,22 +82,16 @@ js/
   animasjon.js          animasjonsverktøykasse: tallOpp, lagRing, lagKonfetti, fyllInn
   config.js             Supabase-URL/nøkkel + app-versjon
 data/
-  exercises.json        ~530 øvelser (mønster, modalitet, nivå, type, kjede, varianter …)
-  chains.json           22 progresjonskjeder
-  formats.json          tids-/settformater
-  templates.json        øktmaler (blokk-anatomi)
-  equipment.json        76 utstyrsenheter
-  bundles.json          10 utstyrsbunker (steder)
-  gateways.json         gateway-tester (opplåsing)
-  sequences.json        yoga-sekvenser + KB-complexer
-  warmups.json          oppvarming/nedtrapping
-  protocols.json        pust/restitusjon
+  okter.json            øktbiblioteket: 60 kuraterte økter (10 kategorier × 3 skillnivåer × 2 intensiteter)
+  exercises.json        ~530 øvelser (øvelsesoppslaget)
+  equipment.json        utstyrsnavn (for oppslaget)
+  (øvrige datafiler fra generator-æraen ligger igjen som inert arkiv)
   parts/                mellomsteg fra konverteringen (sporbarhet)
 scripts/
   validate.mjs          validerer data/ (referanser + tellinger) — kjør til grønt
+  valider-okter.mjs     validerer øktbiblioteket (celler, skjema, kilder) — kjør til grønt
   merge-parts.mjs       bygger exercises.json + sequences.json fra parts/
   gen-icons.mjs         genererer PWA-ikoner
-  smoke-generator.mjs   headless test: determinisme + dekning + ikke-tomme blokker
   smoke-niva.mjs        headless test: XP, opprykk gated på bevis, momentum/decay/PR/gateway
   smoke-bevegelse.mjs   headless test: XP-formelen, fri bevegelse, Momentum, Dagens gnist, opplåsinger
   smoke-sync.mjs        headless test: last-write-wins-fletting (profil + logg per id)

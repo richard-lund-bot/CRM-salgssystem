@@ -1,24 +1,16 @@
-// Generator-input → review → kjøring (taksonomi §11 steg 1–6). Holder «gjeldende
-// økt» i minne mellom skjermene, lar deg bytte øvelser og regenerere før du låser,
-// og kjører økta blokk for blokk: klokke-/hold-/pust-/distanseblokker får en timer
-// (v1-arven, generalisert), reps/flyt får en guide-modus med neste/forrige.
-import { el, tom, chip, ikon } from './ui.js';
-import { MODALITET_NAVN, MONSTER_NAVN } from './library.js';
-import { genererOkt, byttOvelse, regenerer, regenererBlokk } from './generator.js';
-import {
-  hentProfil, lagreProfil, lagreGenerert, leggTilLogg, nyligeOvelseIder,
-  hentSistLokasjon, lagreSistLokasjon, settPlanStatus,
-} from './store.js';
-import { registrerOkt, INTENSITET } from './niva.js';
-import { belonningIkonNavn } from './belonninger.js';
-import { tegnFigur, sikreFigur } from './figur.js';
-import { tallOpp, lagKonfetti, lagRing } from './animasjon.js';
+// Øktspilleren (M13): review → kjøring av bibliotekøkter. Holder «gjeldende
+// økt» i minne mellom skjermene og kjører økta blokk for blokk: kondisjon-/
+// hold-/pust-blokker får en timer, reps/flyt får en guide-modus. Fullføring
+// registreres som bevegelse (XP via registrerBevegelse) — samme varme
+// ferdigskjerm som all annen bevegelse.
+import { el, tom, ikon } from './ui.js';
+import { settPlanStatus } from './store.js';
+import { registrerOgLogg, visBevegelseFerdig } from './beveg.js';
+import { lagRing } from './animasjon.js';
 
-let _bib = null;
 let gjeldendeOkt = null;
 let aktivInterval = null;
 
-export function settBib(bib) { _bib = bib; }
 export function hentØkt() { return gjeldendeOkt; }
 export function settØkt(o) { gjeldendeOkt = o; }
 
@@ -63,118 +55,26 @@ function tilbakeTopp(tittel, undertekst, påTilbake) {
 }
 
 // ===========================================================================
-// 1) Generator-input
-// ===========================================================================
-export const KLASSER = [['Mikro', 'mikro'], ['Kort', 'kort'], ['Standard', 'standard'], ['Lang', 'lang']];
-const INTENSITETER = [['Rolig', 1], ['Lett', 2], ['Moderat', 3], ['Hard', 4], ['Maks', 5]];
-
-export function visGeneratorSkjerm(mount, forhandsvalg = {}) {
-  const bib = _bib;
-  const profil = hentProfil();
-  const modaliteter = [...new Set(bib.templates.map((t) => t.modalitet))];
-  const foreslatt = foreslaModalitet(bib, profil);
-
-  const state = {
-    modalitet: forhandsvalg.modalitet || foreslatt,
-    varighetsklasse: forhandsvalg.varighetsklasse || profil?.varighetsklasse || 'standard',
-    intensitet: forhandsvalg.intensitet || standardIntensitet(profil),
-    lokasjon: forhandsvalg.lokasjon || hentSistLokasjon() || profil?.aktivLokasjon || 'Hjemme',
-  };
-  const lokasjoner = (profil?.lokasjoner || []).map((l) => l.navn);
-
-  function tegn() {
-    const modChips = el('div', { class: 'chiprad' },
-      ...modaliteter.map((m) => chip(MODALITET_NAVN[m] || m, {
-        aktiv: state.modalitet === m, onClick: () => { state.modalitet = m; tegn(); },
-      })),
-    );
-    monter(mount,
-      tilbakeTopp('Ny økt', 'Sett rammene — generatoren fyller resten.', () => { location.hash = '#/beveg'; }),
-      el('main', { class: 'innhold' },
-        el('div', { class: 'kort' },
-          el('h2', {}, 'Treningsform'),
-          foreslatt === state.modalitet && el('p', { class: 'dempet dempet--ikon' }, ikon('stjerne'), 'Foreslått ut fra profilen din'),
-          modChips,
-        ),
-        el('div', { class: 'kort' },
-          el('h2', {}, 'Lengde'),
-          el('div', { class: 'chiprad' },
-            ...KLASSER.map(([navn, id]) => chip(navn, { aktiv: state.varighetsklasse === id, onClick: () => { state.varighetsklasse = id; tegn(); } })),
-          ),
-        ),
-        el('div', { class: 'kort' },
-          el('h2', {}, 'Intensitet'),
-          el('div', { class: 'chiprad' },
-            ...INTENSITETER.map(([navn, v]) => chip(navn, { aktiv: state.intensitet === v, onClick: () => { state.intensitet = v; tegn(); } })),
-          ),
-        ),
-        lokasjoner.length > 1 && el('div', { class: 'kort' },
-          el('h2', {}, 'Sted'),
-          el('div', { class: 'chiprad' },
-            ...lokasjoner.map((navn) => chip(navn, { aktiv: state.lokasjon === navn, onClick: () => { state.lokasjon = navn; lagreSistLokasjon(navn); tegn(); } })),
-          ),
-        ),
-        el('div', { class: 'fast-bunn' },
-          el('button', { class: 'knapp', type: 'button', onclick: () => {
-            gjeldendeOkt = genererOkt(bib, profil, {
-              ...state,
-              nyligeIder: [...nyligeOvelseIder(3)],
-              stempel: new Date().toISOString().slice(0, 10),
-            });
-            if (forhandsvalg.planId) gjeldendeOkt.planId = forhandsvalg.planId;
-            location.hash = '#/review';
-          } }, 'Generer økt'),
-        ),
-      ),
-    );
-  }
-  tegn();
-}
-
-// Foreslått modalitet = argmax(motivasjonsvekt) blant modaliteter med mal.
-function foreslaModalitet(bib, profil) {
-  const medMal = new Set(bib.templates.map((t) => t.modalitet));
-  const vekter = profil?.motivasjon?.vekter || {};
-  let best = 'STY';
-  let bestV = -Infinity;
-  for (const m of medMal) {
-    const v = vekter[m] || 0;
-    if (v > bestV) { bestV = v; best = m; }
-  }
-  return best;
-}
-
-function standardIntensitet(profil) {
-  const k = profil?.nivaer?.HIIT?.base || 2;
-  return k >= 3 ? 3 : 2;
-}
-
-// ===========================================================================
-// 2) Review
+// 1) Review — oversikt over valgt bibliotekøkt før start
 // ===========================================================================
 export function visReviewSkjerm(mount) {
-  const bib = _bib;
-  const profil = hentProfil();
-  if (!gjeldendeOkt) { location.hash = '#/ny'; return; }
+  if (!gjeldendeOkt) { location.hash = '#/okter'; return; }
+  const okt = gjeldendeOkt;
 
-  function tegn() {
-    const okt = gjeldendeOkt;
-    monter(mount,
-      tilbakeTopp(okt.malNavn, `${okt.varighetMin} min · ${MODALITET_NAVN[okt.modalitet] || okt.modalitet} · ${okt.lokasjon}`, () => { location.hash = '#/ny'; }),
-      el('main', { class: 'innhold' },
-        el('div', { class: 'knapprad' },
-          el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: () => { gjeldendeOkt = regenerer(bib, profil, okt); tegn(); } }, ikon('repeat'), 'Regenerer alt'),
-        ),
-        ...okt.blokker.map((blk, bi) => blokkKort(blk, bi, () => tegn())),
-        el('div', { class: 'fast-bunn' },
-          el('button', { class: 'knapp', type: 'button', onclick: () => { location.hash = '#/kjor'; } }, 'Start økt'),
-        ),
+  monter(mount,
+    tilbakeTopp(okt.navn, `${okt.varighetMin} min${okt.utstyr?.length ? ' · ' + okt.utstyr.join(', ') : ''}`,
+      () => { location.hash = okt.kategori ? `#/okter?kat=${okt.kategori}` : '#/okter'; }),
+    el('main', { class: 'innhold' },
+      okt.beskrivelse && el('p', { class: 'dempet' }, okt.beskrivelse),
+      ...okt.blokker.map((blk) => blokkKort(blk)),
+      okt.kilde?.navn && el('p', { class: 'dempet' }, `Basert på: ${okt.kilde.navn}`),
+      el('div', { class: 'fast-bunn' },
+        el('button', { class: 'knapp', type: 'button', onclick: () => { location.hash = '#/kjor'; } }, 'Start økt'),
       ),
-    );
-  }
+    ),
+  );
 
-  function blokkKort(blk, bi, oppdater) {
-    const kanRegen = blk.kind === 'ovelser';
+  function blokkKort(blk) {
     return el('div', { class: 'kort blokk' },
       el('div', { class: 'blokk__topp' },
         el('div', {},
@@ -183,42 +83,33 @@ export function visReviewSkjerm(mount) {
         ),
         el('div', { class: 'blokk__hoyre' },
           el('span', { class: 'dempet' }, `~${blk.min} min`),
-          kanRegen && el('button', { class: 'ikonknapp', type: 'button', title: 'Regenerer blokk', onclick: () => { gjeldendeOkt = regenererBlokk(bib, profil, gjeldendeOkt, bi); oppdater(); } }, ikon('repeat')),
         ),
       ),
       !!paramTekst(blk) && el('p', { class: 'blokk__param' }, paramTekst(blk)),
       el('div', { class: 'blokk__ovelser' },
-        ...(blk.ovelser.length ? blk.ovelser.map((o, oi) => ovelseRad(blk, o, bi, oi, oppdater)) : [el('p', { class: 'dempet' }, kondisjonTekst(blk))]),
+        ...((blk.ovelser || []).length
+          ? blk.ovelser.map((o) => ovelseRad(o))
+          : [el('p', { class: 'dempet' }, kondisjonTekst(blk))]),
       ),
     );
   }
 
-  function ovelseRad(blk, o, bi, oi, oppdater) {
-    const kanBytte = blk.kind === 'ovelser';
+  function ovelseRad(o) {
     return el('div', { class: 'orad' },
       el('div', { class: 'orad__hoved' },
         el('span', { class: 'orad__navn' }, o.navn),
         o.dose && el('span', { class: 'orad__dose' }, o.dose),
-        el('div', { class: 'orad__tags' },
-          Number.isFinite(o.niva) && el('span', { class: 'niva' }, ...[1, 2, 3, 4, 5].map((n) => el('i', { class: 'niva__p' + (n <= o.niva ? ' niva__p--på' : '') }))),
-          o.unilateral && el('span', { class: 'tag tag--u' }, 'per side'),
-          o.impact === 'hoy' && el('span', { class: 'tag tag--impact' }, 'høy impact'),
-          o.abBreak && el('span', { class: 'tag' }, 'ab-break'),
-        ),
+        o.unilateral && el('div', { class: 'orad__tags' }, el('span', { class: 'tag tag--u' }, 'per side')),
       ),
-      kanBytte && el('button', { class: 'ikonknapp', type: 'button', title: 'Bytt øvelse', onclick: () => { gjeldendeOkt = byttOvelse(bib, profil, gjeldendeOkt, bi, oi); oppdater(); } }, ikon('bytt')),
     );
   }
-
-  tegn();
 }
 
 // ===========================================================================
-// 3) Kjøring
+// 2) Kjøring
 // ===========================================================================
 export function visKjoreSkjerm(mount) {
-  const bib = _bib;
-  if (!gjeldendeOkt) { location.hash = '#/ny'; return; }
+  if (!gjeldendeOkt) { location.hash = '#/okter'; return; }
   const okt = gjeldendeOkt;
   let idx = 0;
 
@@ -229,7 +120,7 @@ export function visKjoreSkjerm(mount) {
   }
 
   function neste() {
-    if (idx < okt.blokker.length - 1) { idx++; tegn(); } else { stoppTimer(); visResultat(mount, okt); }
+    if (idx < okt.blokker.length - 1) { idx++; tegn(); } else { stoppTimer(); fullfor(mount, okt, false); }
   }
   function forrige() { if (idx > 0) { idx--; tegn(); } }
 
@@ -243,12 +134,7 @@ export function visKjoreSkjerm(mount) {
     }
     if (confirm(`Avslutte her? Du har beveget deg i ~${gjortMin} min — vil du telle det med?\n\nOK = logg det du rakk · Avbryt = fortsett økta`)) {
       stoppTimer();
-      visResultat(mount, {
-        ...okt,
-        varighetMin: gjortMin,
-        blokker: okt.blokker.slice(0, idx),
-        delvis: true,
-      });
+      fullfor(mount, { ...okt, varighetMin: gjortMin }, true);
     }
   }
 
@@ -406,8 +292,21 @@ function fasePlan(blk) {
   const fmt = blk.format;
   const faser = [];
 
+  // Generisk intervallform fra øktbiblioteket: {runder, faser:[{navn,sek,type}]}.
+  // Ekspanderer runder × faser og dropper siste hvilefase.
+  if (Array.isArray(p.faser) && p.faser.length) {
+    const runder = p.runder || 1;
+    for (let r = 0; r < runder; r++) {
+      for (const f of p.faser) {
+        faser.push({ navn: f.navn, sek: f.sek, type: f.type === 'hvile' ? 'hvile' : 'arbeid' });
+      }
+    }
+    while (faser.length > 1 && faser[faser.length - 1].type === 'hvile') faser.pop();
+    return faser;
+  }
+
   if (blk.kind === 'kondisjon' || fmt === 'tid-i-sone' || fmt === 'distanse') {
-    faser.push({ navn: `${p.sone || 'Z2'} · rolig`, sek: (p.tidMin || blk.min) * 60, type: 'arbeid' });
+    faser.push({ navn: p.sone ? `${p.sone}` : blk.formatNavn, sek: (p.tidMin || blk.min) * 60, type: 'arbeid' });
     return faser;
   }
   if (fmt === '4x4') {
@@ -494,176 +393,23 @@ function timerKnapper(plan, { onFase, onSek, onFerdig }) {
 }
 
 // ===========================================================================
-// Resultat-logging (før ferdig-skjerm) — valgfrie tall for PR-sporing + RPE
+// Fullføring — registreres som bevegelse (XP via registrerBevegelse) og
+// feires med samme varme ferdigskjerm som all annen bevegelse.
 // ===========================================================================
-function visResultat(mount, okt) {
-  const bib = _bib;
-  // Loggbare øvelser = hoved-/finisher-øvelser med reps eller hold.
-  const loggbare = [];
-  const sett = new Set();
-  for (const b of okt.blokker) {
-    if (b.kind !== 'ovelser' || !['hoved', 'finisher'].includes(b.rolle)) continue;
-    for (const o of b.ovelser) {
-      if (sett.has(o.id) || !['reps', 'hold'].includes(o.type)) continue;
-      sett.add(o.id); loggbare.push(o);
-    }
-  }
-  const felt = {}; // id → { reps?, last?, holdSek? }
-  let intensitet = okt.intensitet;
-
-  function tallfelt(o, nokkel, plass, etikett) {
-    return el('label', { class: 'loggfelt' },
-      el('span', { class: 'loggfelt__etikett' }, etikett),
-      el('input', {
-        class: 'loggfelt__inn', type: 'number', inputmode: 'numeric', min: '0', placeholder: plass,
-        oninput: (ev) => {
-          const v = ev.target.value === '' ? undefined : Number(ev.target.value);
-          felt[o.id] = { ...(felt[o.id] || {}), [nokkel]: v };
-        },
-      }),
-    );
-  }
-
-  function rad(o) {
-    const felter = o.type === 'hold'
-      ? [tallfelt(o, 'holdSek', 'sek', 'Hold (s)')]
-      : [tallfelt(o, 'reps', 'reps', 'Reps'), tallfelt(o, 'last', 'kg', 'Kg')];
-    return el('div', { class: 'loggrad' },
-      el('span', { class: 'loggrad__navn' }, o.navn),
-      el('div', { class: 'loggrad__felter' }, ...felter),
-    );
-  }
-
-  function fullfor() {
-    const profil = hentProfil();
-    const resultater = loggbare
-      .map((o) => ({ id: o.id, ...(felt[o.id] || {}) }))
-      .filter((r) => Number.isFinite(r.reps) || Number.isFinite(r.last) || Number.isFinite(r.holdSek));
-    const oktLogget = { ...okt, intensitet };
-    const { profil: nyProfil, resultat } = registrerOkt(profil, oktLogget, bib, resultater, Date.now());
-    lagreProfil(nyProfil);
-    lagreGenerert({ ...okt, kjort: new Date().toISOString() });
-    const ovelseIder = [...new Set(okt.blokker.flatMap((b) => (b.ovelser || []).map((o) => o.id)))].filter(Boolean);
-    leggTilLogg({
-      id: `logg-${Date.now()}`,
-      dato: new Date().toISOString(),
-      modalitet: okt.modalitet,
-      varighetMin: okt.varighetMin,
-      intensitet,
-      lokasjon: okt.lokasjon,
-      seed: okt.seed,
-      templateId: okt.templateId,
-      ovelseIder,
-      resultater,
-      xp: resultat.xp,
-      fullfort: !okt.delvis,
-      delvis: !!okt.delvis,
-    });
-    if (okt.planId && !okt.delvis) settPlanStatus(okt.planId, 'gjort');
-    visFerdig(mount, okt, resultat);
-  }
-
-  monter(mount,
-    el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, okt.delvis ? 'Du beveget deg' : 'Økt fullført'),
-      el('p', { class: 'topp__under' }, 'Logg gjerne tall for PR-sporing — helt valgfritt.')),
-    el('main', { class: 'innhold' },
-      el('div', { class: 'kort' },
-        el('h2', {}, 'Hvor hardt kjentes det?'),
-        el('div', { class: 'chiprad' },
-          ...INTENSITETER.map(([navn, v]) => chip(navn, { aktiv: intensitet === v, onClick: () => { intensitet = v; oppdaterRpe(v); } })),
-        ),
-      ),
-      loggbare.length > 0 && el('div', { class: 'kort' },
-        el('h2', {}, 'Resultater'),
-        el('div', { class: 'loggliste' }, ...loggbare.map(rad)),
-      ),
-      el('div', { class: 'fast-bunn fast-bunn--kol' },
-        el('button', { class: 'knapp', type: 'button', onclick: fullfor }, 'Lagre & fullfør ✓'),
-      ),
-    ),
-  );
-
-  function oppdaterRpe(v) {
-    document.querySelectorAll('.topp ~ .innhold .chiprad .chip').forEach((c, i) => {
-      c.classList.toggle('chip--aktiv', INTENSITETER[i] && INTENSITETER[i][1] === v);
-    });
-  }
-}
-
-// ===========================================================================
-// Ferdig-skjerm — «Du beveget deg. Det teller.» (spec §7/§15.5)
-// ===========================================================================
-function visFerdig(mount, okt, resultat) {
-  const bib = _bib;
-  const navnFor = (id) => bib?.ovelseMap?.get(id)?.navn || id;
-  const r = resultat || { xp: 0, nyePrs: [], nivaOpp: [] };
-  const figur = sikreFigur(hentProfil());
-
-  const belTekst = (b) => (
-    b.type === 'gjenstand' ? `Nytt til figuren: ${b.navn}`
-      : b.type === 'tema' ? `Nytt tema: ${b.navn}`
-        : b.type === 'tittel' ? `Ny tittel: ${b.navn}`
-          : b.type === 'ovelse' ? `Ny øvelse: ${b.navn}`
-            : (b.navn || 'Belønning'));
-  const belonninger = r.belonninger || [];
-  const stigeIder = new Set(belonninger.map((b) => b.id));
-  const ekstraGjenstander = (r.nyeGjenstander || []).filter((g) => !stigeIder.has(g.id));
-
-  const feiringer = [];
-  for (const n of r.nivaOpp || []) feiringer.push(el('div', { class: 'feiring feiring--niva' }, ikon('graf'), `${MODALITET_NAVN[n.modalitet] || n.modalitet} opp til nivå ${n.tilNiva}!`));
-  for (const pr of r.nyePrs || []) feiringer.push(el('div', { class: 'feiring feiring--pr' }, ikon('trofe'), `Ny PR: ${navnFor(pr.id)}`));
-  for (const g of ekstraGjenstander) feiringer.push(el('div', { class: 'feiring' }, ikon(g.kategori === 'miljo' ? 'fjell' : 'stjerne'), `Låst opp: ${g.navn} — se «Tilpass figur»`));
-  if (r.comeback) feiringer.push(el('div', { class: 'feiring' }, ikon('flamme'), 'Velkommen tilbake — dobbel XP.'));
-
-  const xpTall = el('div', { class: 'xp-stor' }, '+0');
-
-  monter(mount,
-    el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, 'Du beveget deg.')),
-    el('main', { class: 'innhold' },
-      el('div', { class: 'kort hero ferdighero' },
-        r.globalOpp && lagKonfetti(),
-        el('div', { class: 'ferdighero__figur' }, tegnFigur(figur, { pose: 'jubel', bredde: 92 })),
-        el('p', { class: 'ferdighero__teller' }, 'Det teller.'),
-        okt.delvis && el('p', { class: 'dempet' }, `Du beveget deg i ${okt.varighetMin} minutter. En mindre økt flytter deg også fremover.`),
-        xpTall,
-        r.bonusXp > 0 && el('p', { class: 'dempet' }, `Inkludert +${r.bonusXp} bonus`),
-      ),
-      // Belønningsnivå-opp: feiring med opplåste belønninger
-      r.globalOpp && el('div', { class: 'kort levelup' },
-        el('div', { class: 'levelup__glans' }),
-        el('p', { class: 'hero__eyebrow' }, 'Nivå opp!'),
-        el('div', { class: 'levelup__niva' }, `Nivå ${r.globalOpp}`),
-        el('div', { class: 'levelup__belonninger' },
-          ...belonninger.map((b) => el('div', { class: 'levelup__bel' },
-            el('span', { class: 'levelup__ikon' }, ikon(belonningIkonNavn(b))),
-            el('span', {}, belTekst(b)),
-          )),
-        ),
-      ),
-      feiringer.length > 0 && el('div', { class: 'kort' }, el('h2', {}, 'Nytt!'), ...feiringer),
-      el('div', { class: 'kort kort--info' },
-        el('p', {}, okt.delvis ? `Fra «${okt.malNavn}».` : `Du fullførte «${okt.malNavn}».`),
-        el('div', { class: 'statrad' },
-          stat(okt.varighetMin, 'minutter'),
-          stat(okt.blokker.length, 'blokker'),
-          stat(INTENSITETER.find(([, v]) => v === okt.intensitet)?.[0] || okt.intensitet, 'intensitet'),
-          stat((r.nyePrs || []).length, 'PR-er'),
-        ),
-      ),
-      el('div', { class: 'knapprad' },
-        el('button', { class: 'knapp', type: 'button', onclick: () => { location.hash = '#/hjem'; } }, 'Til Min dag'),
-        el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: () => { location.hash = '#/reise'; } }, 'Se reisen din'),
-      ),
-    ),
-  );
-  tallOpp(xpTall, r.xp, { format: (n) => `+${n} XP` });
-}
-
-function stat(tall, tekst) {
-  return el('div', { class: 'stat' },
-    el('div', { class: 'stat__tall' }, String(tall)),
-    el('div', { class: 'stat__tekst' }, tekst),
-  );
+function fullfor(mount, okt, delvis) {
+  const resultat = registrerOgLogg({
+    bevegelse: okt.bevegelse || 'custom',
+    varighetMin: okt.varighetMin,
+    intensitet: okt.intensitet || 3,
+    tittel: okt.navn,
+    kilde: 'bibliotek',
+    ekstra: { oktId: okt.bibliotekId, delvis: !!delvis },
+  });
+  if (okt.planId && !delvis) settPlanStatus(okt.planId, 'gjort');
+  gjeldendeOkt = null;
+  visBevegelseFerdig(mount, resultat, {
+    bevegelse: okt.bevegelse, varighetMin: okt.varighetMin, tittel: okt.navn, delvis,
+  });
 }
 
 // ===========================================================================
@@ -685,42 +431,21 @@ function formatTid(sek) {
 
 function kondisjonTekst(blk) {
   const p = blk.parametre || {};
-  if (blk.format === '4x4') return `4×4: 4 min hardt (Z4) / 3 min rolig (Z2) × ${p.runder || 4}`;
-  if (blk.format === 'distanse') return `${p.distanseKm || 5} km i eget tempo`;
-  return `${p.sone || 'Z2'} i ${p.tidMin || blk.min} min — rolig, snakketempo`;
+  if (Array.isArray(p.faser) && p.faser.length) {
+    const tid = (sek) => (sek >= 60 && sek % 60 === 0 ? `${sek / 60} min` : `${sek} s`);
+    const deler = p.faser.map((f) => `${f.navn} ${tid(f.sek)}`).join(' → ');
+    return (p.runder || 1) > 1 ? `${p.runder} × [${deler}]` : deler;
+  }
+  return `${p.sone ? p.sone + ' · ' : ''}${p.tidMin || blk.min} min`;
 }
 
 function paramTekst(blk) {
-  // Pool-blokker (oppvarming/nedtrapping) har ingen genererte parametre —
-  // øvelsenes egen dose (×8, 2 min osv.) er nok, ingen ekstra linje å vise.
-  if (blk.kind === 'oppvarming') return '';
   const p = blk.parametre || {};
   switch (blk.format) {
     case 'straight-sets': return `${p.sett} sett × ${p.reps} reps · pause ${p.pauseSek}s`;
-    case 'supersett': return `${p.sett} runder × ${p.reps} reps per øvelse · pause ${p.pauseSek}s`;
-    case 'tri-set': return `${p.runder} runder · ${p.arbeidSek}s arbeid / ${p.pauseSek}s pause`;
-    case 'giant-set': return `${p.runder} runder gjennom alle`;
-    case 'pyramide': return `Reps: ${(p.repsstige || []).join('–')}`;
-    case 'emom': return `EMOM ${p.minutter} min · ${p.reps} reps hvert minutt`;
-    case 'e2mom': return `Annethvert minutt i ${p.minutter} min · ${p.reps} reps`;
-    case 'amrap': return `AMRAP ${p.tidMin} min — maks runder`;
-    case 'for-time': return `For time · cap ${p.capMin} min`;
-    case 'density-block': return `Density ${p.tidMin} min — maks kvalitetsreps`;
-    case 'gtg': return `Spredt utover · ${p.reps} submaks-reps per sett`;
-    case 'intervall': return `${p.arbeidSek}/${p.hvileSek} × ${p.runder} runder`;
-    case 'tabata': return `Tabata 20/10 × ${p.runder}`;
-    case 'sirkel': return `${p.stasjoner} stasjoner × ${p.runder} runder`;
-    case 'rounds-for-quality': return `${p.runder} runder, rolig kvalitet`;
     case 'styrkehold': return `${p.sett} × ${p.tidSek}s hold`;
-    case 'yin': return `${p.posisjoner || blk.ovelser.length} posisjoner · ~${p.tidMin} min hver`;
-    case 'statisk-toy': return `${p.sett} × ${p.tidSek || 40}s per område`;
-    case 'sekvens-x-n': return `${p.runder} runder av sekvensen`;
-    case 'hold-flyt': return `${p.pust || 5} pust per posisjon`;
-    case 'box-breathing': return `Box 4-4-4-4 · ${p.tidMin} min`;
-    case '4-7-8': return `4-7-8 · pusteguide`;
-    case 'koherent': return `Koherent 5,5/min · ${p.tidMin} min`;
-    case 'tid-i-sone': return `${p.sone || 'Z2'} i ${p.tidMin} min`;
-    case '4x4': return `4×4 intervaller`;
-    default: return blk.formatNavn;
+    case 'yin': return `Lange, rolige hold · ~${p.tidMin} min totalt`;
+    case 'statisk-toy': return `Statiske hold · ~${p.tidMin} min totalt`;
+    default: return '';
   }
 }

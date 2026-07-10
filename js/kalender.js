@@ -5,8 +5,8 @@
 // øktinnholdet genereres først når økta startes.
 import { el, tom, chip, ikon } from './ui.js';
 import { MODALITET_NAVN } from './library.js';
-import { KLASSER } from './kjor.js';
 import { hentProfil, hentPlan, leggTilPlan, fjernPlan } from './store.js';
+import { hentOkter, oktMedId, KATEGORIER, KATEGORI_NAVN } from './bibliotek-okter.js';
 
 let _bib = null;
 export function settBib(bib) { _bib = bib; }
@@ -30,7 +30,6 @@ function varighetNavn(k) {
 export function visKalenderSkjerm(mount) {
   const profil = hentProfil();
   if (!profil) { location.hash = '#/hjem'; return; }
-  const modaliteter = [...new Set(_bib.templates.map((t) => t.modalitet))];
 
   const idag = new Date();
   idag.setHours(0, 0, 0, 0);
@@ -40,10 +39,10 @@ export function visKalenderSkjerm(mount) {
 
   // Utkast — endringer samles her og skrives først ved «Lagre».
   const slettede = new Set(); // id-er på eksisterende planer som skal fjernes
-  const nye = [];             // nye planer { tempId, dato, modalitet, varighetsklasse }
+  const nye = [];             // nye planer { tempId, dato, oktId }
   let tempTeller = 0;
   let apenDato = null;        // dag med åpent legg-til-skjema
-  const skjema = { modalitet: modaliteter[0], varighetsklasse: profil.varighetsklasse || 'standard' };
+  const skjema = { kat: 'styrke' };
 
   const endret = () => slettede.size > 0 || nye.length > 0;
 
@@ -72,7 +71,7 @@ export function visKalenderSkjerm(mount) {
 
   function lagre() {
     for (const id of slettede) fjernPlan(id);
-    for (const n of nye) leggTilPlan({ dato: n.dato, modalitet: n.modalitet, varighetsklasse: n.varighetsklasse });
+    for (const n of nye) leggTilPlan({ dato: n.dato, oktId: n.oktId });
     location.hash = '#/hjem';
   }
 
@@ -90,27 +89,29 @@ export function visKalenderSkjerm(mount) {
       : `${man.getDate()}. ${m1} – ${slutt.getDate()}. ${m2}`;
   }
 
+  // Velg en bibliotekøkt: kategorichips + de 6 øktene i kategorien.
   function leggTilSkjema(iso) {
+    const okter = hentOkter().filter((o) => o.kategori === skjema.kat);
     return el('div', { class: 'kalform' },
       el('div', { class: 'chiprad' },
-        ...modaliteter.map((m) => chip(MODALITET_NAVN[m] || m, {
-          aktiv: skjema.modalitet === m, onClick: () => { skjema.modalitet = m; tegn(); },
+        ...KATEGORIER.map((k) => chip(k.navn, {
+          aktiv: skjema.kat === k.id, onClick: () => { skjema.kat = k.id; tegn(); },
         })),
       ),
-      el('div', { class: 'chiprad' },
-        ...KLASSER.map(([navn, id]) => chip(navn, {
-          aktiv: skjema.varighetsklasse === id, onClick: () => { skjema.varighetsklasse = id; tegn(); },
-        })),
-      ),
-      el('div', { class: 'knapprad' },
-        el('button', {
-          class: 'knapp knapp--liten', type: 'button',
+      el('div', { class: 'kalform__okter' },
+        ...okter.map((o) => el('button', {
+          class: 'kalform__okt', type: 'button',
           onclick: () => {
-            nye.push({ tempId: `ny-${++tempTeller}`, dato: iso, modalitet: skjema.modalitet, varighetsklasse: skjema.varighetsklasse });
+            nye.push({ tempId: `ny-${++tempTeller}`, dato: iso, oktId: o.id });
             apenDato = null;
             tegn();
           },
-        }, 'Legg til økt'),
+        },
+          el('span', { class: 'kalform__oktnavn' }, o.navn),
+          el('span', { class: 'kalform__okttid' }, `${o.varighetMin} min`),
+        )),
+      ),
+      el('div', { class: 'knapprad' },
         el('button', { class: 'knapp knapp--sekundaer knapp--liten', type: 'button', onclick: () => { apenDato = null; tegn(); } }, 'Avbryt'),
       ),
     );
@@ -123,13 +124,19 @@ export function visKalenderSkjerm(mount) {
     const planer = planerFor(iso);
 
     const innhold = el('div', { class: 'kalrad__innhold' },
-      ...planer.map((p) => el('div', { class: 'kalplan' },
-        el('span', { class: 'kalplan__meta' },
-          el('span', { class: 'kalplan__navn' }, MODALITET_NAVN[p.modalitet] || p.modalitet),
-          el('span', { class: 'kalplan__varighet' }, varighetNavn(p.varighetsklasse)),
-        ),
-        el('button', { class: 'ikonknapp kalplan__fjern', type: 'button', 'aria-label': 'Fjern økt', onclick: () => fjern(p) }, ikon('kryss')),
-      )),
+      ...planer.map((p) => {
+        const okt = p.oktId ? oktMedId(p.oktId) : null;
+        const navn = okt ? okt.navn
+          : (MODALITET_NAVN[p.modalitet] || KATEGORI_NAVN[p.kategori] || 'Økt');
+        const under = okt ? `${okt.varighetMin} min · ${KATEGORI_NAVN[okt.kategori]}` : varighetNavn(p.varighetsklasse);
+        return el('div', { class: 'kalplan' },
+          el('span', { class: 'kalplan__meta' },
+            el('span', { class: 'kalplan__navn' }, navn),
+            el('span', { class: 'kalplan__varighet' }, under),
+          ),
+          el('button', { class: 'ikonknapp kalplan__fjern', type: 'button', 'aria-label': 'Fjern økt', onclick: () => fjern(p) }, ikon('kryss')),
+        );
+      }),
     );
     if (!erFortid) {
       innhold.append(apenDato === iso ? leggTilSkjema(iso) : el('button', {
