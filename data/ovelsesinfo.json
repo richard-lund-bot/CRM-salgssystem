@@ -305,7 +305,8 @@
    "Baklår",
    "Sete",
    "Korsrygg"
-  ]
+  ],
+  "bilde": "hoftehengsel"
  },
  {
   "navn": "Knebøy",
@@ -475,7 +476,8 @@
    "Innside lår",
    "Sete",
    "Hofter"
-  ]
+  ],
+  "bilde": "cossack"
  },
  {
   "navn": "Utfall",
@@ -598,7 +600,8 @@
   ],
   "utstyr": [
    "Vektstang"
-  ]
+  ],
+  "bilde": "markloft-stang"
  },
  {
   "navn": "Hoftebro",
@@ -638,7 +641,8 @@
    "Triceps",
    "Skuldre",
    "Kjerne"
-  ]
+  ],
+  "bilde": "armhevinger"
  },
  {
   "navn": "Rolige armhevinger på kne",
@@ -701,7 +705,8 @@
   "utstyr": [
    "Manualer",
    "Benk"
-  ]
+  ],
+  "bilde": "manualbenkpress"
  },
  {
   "navn": "Benkpress med stang",
@@ -723,7 +728,8 @@
   "utstyr": [
    "Vektstang",
    "Benk"
-  ]
+  ],
+  "bilde": "benkpress-stang"
  },
  {
   "navn": "Stående skulderpress med manualer",
@@ -743,7 +749,8 @@
   ],
   "utstyr": [
    "Manualer"
-  ]
+  ],
+  "bilde": "skulderpress"
  },
  {
   "navn": "Skulderpress uten vekt",
@@ -776,7 +783,8 @@
   "utstyr": [
    "Manual",
    "Benk"
-  ]
+  ],
+  "bilde": "manualroing"
  },
  {
   "navn": "Stående foroverbøyd manualroing",
@@ -860,7 +868,8 @@
   ],
   "utstyr": [
    "Kettlebell"
-  ]
+  ],
+  "bilde": "kettlebellsving"
  },
  {
   "navn": "Tyrkisk oppreisning",
@@ -884,7 +893,8 @@
   ],
   "utstyr": [
    "Kettlebell"
-  ]
+  ],
+  "bilde": "tyrkisk-oppreisning"
  },
  {
   "navn": "Gårdsbæring med manualer",
@@ -904,7 +914,8 @@
   ],
   "utstyr": [
    "Manualer"
-  ]
+  ],
+  "bilde": "gaardsbaering"
  },
  {
   "navn": "Planke",
@@ -920,7 +931,8 @@
   "muskler": [
    "Kjerne",
    "Skuldre"
-  ]
+  ],
+  "bilde": "planke"
  },
  {
   "navn": "Sideplanke",
@@ -940,7 +952,8 @@
    "Sidekjerne",
    "Skuldre",
    "Hofter"
-  ]
+  ],
+  "bilde": "sideplanke"
  },
  {
   "navn": "Modifisert curl-up",
@@ -958,7 +971,8 @@
   ],
   "muskler": [
    "Kjerne"
-  ]
+  ],
+  "bilde": "curl-up"
  },
  {
   "navn": "Fuglehund",
@@ -978,7 +992,8 @@
    "Kjerne",
    "Korsrygg",
    "Sete"
-  ]
+  ],
+  "bilde": "fuglehund"
  },
  {
   "navn": "Hollow hold",
@@ -996,7 +1011,8 @@
   ],
   "muskler": [
    "Kjerne"
-  ]
+  ],
+  "bilde": "hollow-hold"
  },
  {
   "navn": "Rolige hollow rocks",
@@ -1463,7 +1479,8 @@
   "muskler": [
    "Rygg",
    "Bryst"
-  ]
+  ],
+  "bilde": "kobra"
  },
  {
   "navn": "Oppovervendt hund",
@@ -1501,7 +1518,8 @@
    "Baklår",
    "Legger",
    "Rygg"
-  ]
+  ],
+  "bilde": "nedovervendt-hund"
  },
  {
   "navn": "Stol (utkatasana)",
@@ -1536,7 +1554,8 @@
    "Lår",
    "Hofter",
    "Skuldre"
-  ]
+  ],
+  "bilde": "kriger-1"
  },
  {
   "navn": "Kriger 2",
@@ -1550,7 +1569,8 @@
    "Lår",
    "Hofter",
    "Skuldre"
-  ]
+  ],
+  "bilde": "kriger-2"
  },
  {
   "navn": "Fredfull kriger",
@@ -1693,7 +1713,8 @@
   "muskler": [
    "Rygg",
    "Hofter"
-  ]
+  ],
+  "bilde": "barnets-stilling"
  },
  {
   "navn": "Barnets stilling med sidebøy",
@@ -1766,7 +1787,8 @@
    "Hofter",
    "Innside lår",
    "Rygg"
-  ]
+  ],
+  "bilde": "sommerfuglen"
  },
  {
   "navn": "Larven",
@@ -1860,7 +1882,8 @@
   "muskler": [
    "Sete",
    "Hofter"
-  ]
+  ],
+  "bilde": "svanen"
  },
  {
   "navn": "Frosken",
@@ -1972,7 +1995,8 @@
    "Rygg",
    "Bryst",
    "Hofter"
-  ]
+  ],
+  "bilde": "liggende-vridning"
  },
  {
   "navn": "Twisted roots",
@@ -2410,7 +2434,8 @@
    "Hofter",
    "Rygg",
    "Bryst"
-  ]
+  ],
+  "bilde": "verdens-beste"
  },
  {
   "navn": "Figur-4",
@@ -2446,7 +2471,8 @@
   "muskler": [
    "Sete",
    "Hofter"
-  ]
+  ],
+  "bilde": "90-90"
  },
  {
   "navn": "90/90-switches",
