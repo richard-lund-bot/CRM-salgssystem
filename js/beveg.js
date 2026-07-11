@@ -23,9 +23,11 @@ function stoppTimer() {
   if (aktivTimer) { clearInterval(aktivTimer); aktivTimer = null; }
   vedSynlig = null;
 }
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible') vedSynlig?.();
-});
+if (typeof document !== 'undefined') {
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') vedSynlig?.();
+  });
+}
 
 // --- Pågående hurtigstart: lagres så turen overlever lukket app ------------
 const AKTIV_MAKS_ALDER = 12 * 3600000; // eldre økter regnes som forlatt

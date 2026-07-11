@@ -26,9 +26,11 @@ function stoppTimer() {
 
 // Når appen våkner fra bakgrunnen: oppdater timervisningen umiddelbart —
 // veggklokke-regningen har alt flyttet fasene dit de skal være.
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible') vedSynlig?.();
-});
+if (typeof document !== 'undefined') {
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') vedSynlig?.();
+  });
+}
 
 // Kort pling ved fasebytte — hjelper når mobilen ligger på gulvet.
 function pling(frekv = 880, lengde = 0.12) {

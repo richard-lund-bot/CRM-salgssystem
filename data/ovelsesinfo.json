@@ -20,7 +20,8 @@
    "Hofter",
    "Lår",
    "Puls"
-  ]
+  ],
+  "bilde": "marsj-paa-stedet"
  },
  {
   "navn": "Lett jogg på stedet",
@@ -40,7 +41,8 @@
    "Legger",
    "Lår",
    "Puls"
-  ]
+  ],
+  "bilde": "lett-jogg-paa-stedet"
  },
  {
   "navn": "Rolig gange",
@@ -56,7 +58,8 @@
   ],
   "muskler": [
    "Puls"
-  ]
+  ],
+  "bilde": "rolig-gange"
  },
  {
   "navn": "Lett kondis",
@@ -70,7 +73,8 @@
   ],
   "muskler": [
    "Puls"
-  ]
+  ],
+  "bilde": "lett-kondis"
  },
  {
   "navn": "Rolige jumping jacks",
@@ -87,7 +91,8 @@
    "Puls",
    "Skuldre",
    "Legger"
-  ]
+  ],
+  "bilde": "jumping-jacks"
  },
  {
   "navn": "Armsirkler",
@@ -105,7 +110,8 @@
   ],
   "muskler": [
    "Skuldre"
-  ]
+  ],
+  "bilde": "armsirkler"
  },
  {
   "navn": "Skulderruller",
@@ -122,7 +128,8 @@
   "muskler": [
    "Skuldre",
    "Nakke"
-  ]
+  ],
+  "bilde": "skulderruller"
  },
  {
   "navn": "Hofterotasjoner",
@@ -139,7 +146,8 @@
   "muskler": [
    "Hofter",
    "Korsrygg"
-  ]
+  ],
+  "bilde": "hofterotasjoner"
  },
  {
   "navn": "Ankelsirkler",
@@ -151,7 +159,8 @@
   ],
   "muskler": [
    "Ankler"
-  ]
+  ],
+  "bilde": "ankelsirkler"
  },
  {
   "navn": "Håndleddssirkler",
@@ -168,7 +177,8 @@
   "muskler": [
    "Håndledd",
    "Underarmer"
-  ]
+  ],
+  "bilde": "haandleddssirkler"
  },
  {
   "navn": "Nakkebevegelser side til side",
@@ -183,7 +193,8 @@
   ],
   "muskler": [
    "Nakke"
-  ]
+  ],
+  "bilde": "nakke-side-til-side"
  },
  {
   "navn": "Skulderrotasjoner med lett manual",
@@ -202,7 +213,8 @@
   ],
   "utstyr": [
    "Manual"
-  ]
+  ],
+  "bilde": "skulderrotasjon-manual"
  },
  {
   "navn": "Skulderrotasjoner med tom stang",
@@ -218,7 +230,8 @@
   ],
   "utstyr": [
    "Vektstang"
-  ]
+  ],
+  "bilde": "skulderrotasjon-stang"
  },
  {
   "navn": "Skulderdislokater med strikk",
@@ -237,7 +250,8 @@
   ],
   "utstyr": [
    "Strikk"
-  ]
+  ],
+  "bilde": "skulderdislokater-strikk"
  },
  {
   "navn": "Scapula-armhevinger",
@@ -253,7 +267,8 @@
   "muskler": [
    "Skulderblad",
    "Serratus"
-  ]
+  ],
+  "bilde": "scapula-armhevinger"
  },
  {
   "navn": "Skulderklapp i planke",
@@ -269,7 +284,8 @@
   "muskler": [
    "Kjerne",
    "Skuldre"
-  ]
+  ],
+  "bilde": "skulderklapp-planke"
  },
  {
   "navn": "Kryssmarsj stående",
@@ -285,7 +301,8 @@
   "muskler": [
    "Kjerne",
    "Hofter"
-  ]
+  ],
+  "bilde": "kryssmarsj"
  },
  {
   "navn": "Hoftehengsler uten vekt",
@@ -349,7 +366,8 @@
   ],
   "utstyr": [
    "Stol"
-  ]
+  ],
+  "bilde": "kneboy-stol"
  },
  {
   "navn": "Sitt-til-stå fra stol",
@@ -371,7 +389,8 @@
   ],
   "utstyr": [
    "Stol"
-  ]
+  ],
+  "bilde": "sitt-til-staa"
  },
  {
   "navn": "Goblet-knebøy",
@@ -414,7 +433,8 @@
   "utstyr": [
    "Kettlebell",
    "Manual"
-  ]
+  ],
+  "bilde": "prying-goblet-kneboy"
  },
  {
   "navn": "Knebøy med stang",
@@ -459,7 +479,8 @@
    "Hofter",
    "Ankler",
    "Lår"
-  ]
+  ],
+  "bilde": "dyp-kneboy-hold"
  },
  {
   "navn": "Cossack squat",
@@ -516,7 +537,8 @@
    "Lår",
    "Sete",
    "Balanse"
-  ]
+  ],
+  "bilde": "utfall-bakover"
  },
  {
   "navn": "Utfall med manualer",
@@ -536,7 +558,8 @@
   ],
   "utstyr": [
    "Manualer"
-  ]
+  ],
+  "bilde": "utfall-manualer"
  },
  {
   "navn": "Utfall bakover med manualer",
@@ -553,7 +576,8 @@
   ],
   "utstyr": [
    "Manualer"
-  ]
+  ],
+  "bilde": "utfall-bakover-manualer"
  },
  {
   "navn": "Rumensk markløft med manualer",
@@ -659,7 +683,8 @@
    "Bryst",
    "Triceps",
    "Skuldre"
-  ]
+  ],
+  "bilde": "armhevinger-kne"
  },
  {
   "navn": "Armhevinger mot vegg",
@@ -679,7 +704,8 @@
   ],
   "utstyr": [
    "Vegg"
-  ]
+  ],
+  "bilde": "armhevinger-vegg"
  },
  {
   "navn": "Manualbenkpress",
@@ -762,7 +788,8 @@
   ],
   "muskler": [
    "Skuldre"
-  ]
+  ],
+  "bilde": "skulderpress-uten-vekt"
  },
  {
   "navn": "Enarms manualroing",
@@ -804,7 +831,8 @@
   ],
   "utstyr": [
    "Manualer"
-  ]
+  ],
+  "bilde": "foroverboyd-roing"
  },
  {
   "navn": "Bicepscurl med manualer",
@@ -823,7 +851,8 @@
   ],
   "utstyr": [
    "Manualer"
-  ]
+  ],
+  "bilde": "bicepscurl"
  },
  {
   "navn": "Kettlebell-halo",
@@ -843,7 +872,8 @@
   ],
   "utstyr": [
    "Kettlebell"
-  ]
+  ],
+  "bilde": "kettlebell-halo"
  },
  {
   "navn": "Ettarms kettlebellsving",
@@ -1024,7 +1054,8 @@
   ],
   "muskler": [
    "Kjerne"
-  ]
+  ],
+  "bilde": "hollow-rocks"
  },
  {
   "navn": "Krabbeposisjon-hold",
@@ -1041,7 +1072,8 @@
    "Kjerne",
    "Lår",
    "Skuldre"
-  ]
+  ],
+  "bilde": "krabbeposisjon"
  },
  {
   "navn": "Tåhev",
@@ -1057,7 +1089,8 @@
   "muskler": [
    "Legger",
    "Ankler"
-  ]
+  ],
+  "bilde": "taahev"
  },
  {
   "navn": "Vegg-planke",
@@ -1079,7 +1112,8 @@
   ],
   "utstyr": [
    "Vegg"
-  ]
+  ],
+  "bilde": "vegg-planke"
  },
  {
   "navn": "Oppspark mot vegg",
@@ -1102,7 +1136,8 @@
   ],
   "utstyr": [
    "Vegg"
-  ]
+  ],
+  "bilde": "oppspark-vegg"
  },
  {
   "navn": "Kråke-forberedelse",
@@ -1122,7 +1157,8 @@
    "Håndledd",
    "Kjerne",
    "Balanse"
-  ]
+  ],
+  "bilde": "kraake-forberedelse"
  },
  {
   "navn": "Hip airplane",
@@ -1142,7 +1178,8 @@
    "Sete",
    "Hofter",
    "Balanse"
-  ]
+  ],
+  "bilde": "hip-airplane"
  },
  {
   "navn": "Knestående til stående uten hender",
@@ -1159,7 +1196,8 @@
    "Lår",
    "Sete",
    "Balanse"
-  ]
+  ],
+  "bilde": "knestaaende-til-staaende"
  },
  {
   "navn": "Nakke-CARs",
@@ -1174,7 +1212,8 @@
   ],
   "muskler": [
    "Nakke"
-  ]
+  ],
+  "bilde": "nakke-cars"
  },
  {
   "navn": "Skulder-CARs",
@@ -1192,7 +1231,8 @@
   ],
   "muskler": [
    "Skuldre"
-  ]
+  ],
+  "bilde": "skulder-cars"
  },
  {
   "navn": "Albue- og håndledds-CARs",
@@ -1205,7 +1245,8 @@
   "muskler": [
    "Albuer",
    "Håndledd"
-  ]
+  ],
+  "bilde": "albue-haandledd-cars"
  },
  {
   "navn": "Ryggrads-CARs",
@@ -1224,7 +1265,8 @@
   "muskler": [
    "Rygg",
    "Kjerne"
-  ]
+  ],
+  "bilde": "ryggrad-cars"
  },
  {
   "navn": "Hofte-CARs",
@@ -1242,7 +1284,8 @@
   ],
   "muskler": [
    "Hofter"
-  ]
+  ],
+  "bilde": "hofte-cars"
  },
  {
   "navn": "Kne- og ankel-CARs",
@@ -1255,7 +1298,8 @@
   "muskler": [
    "Knær",
    "Ankler"
-  ]
+  ],
+  "bilde": "kne-ankel-cars"
  },
  {
   "navn": "Hodenikk på alle fire",
@@ -1270,7 +1314,8 @@
   ],
   "muskler": [
    "Nakke"
-  ]
+  ],
+  "bilde": "hodenikk"
  },
  {
   "navn": "Hodenikk-rotasjoner",
@@ -1285,7 +1330,8 @@
   ],
   "muskler": [
    "Nakke"
-  ]
+  ],
+  "bilde": "hodenikk-rotasjoner"
  },
  {
   "navn": "Rulling rygg til mage",
@@ -1304,7 +1350,8 @@
   "muskler": [
    "Kjerne",
    "Koordinasjon"
-  ]
+  ],
+  "bilde": "rulling-rygg-mage"
  },
  {
   "navn": "Vugging på alle fire",
@@ -1321,7 +1368,8 @@
    "Hofter",
    "Knær",
    "Rygg"
-  ]
+  ],
+  "bilde": "vugging"
  },
  {
   "navn": "Gå-hopp frem",
@@ -1341,7 +1389,8 @@
    "Lår",
    "Legger",
    "Balanse"
-  ]
+  ],
+  "bilde": "gaa-hopp-frem"
  },
  {
   "navn": "Fjellstilling",
@@ -1356,7 +1405,8 @@
   ],
   "muskler": [
    "Holdning"
-  ]
+  ],
+  "bilde": "fjellstilling"
  },
  {
   "navn": "Sittende fjellstilling",
@@ -1371,7 +1421,8 @@
   ],
   "utstyr": [
    "Stol"
-  ]
+  ],
+  "bilde": "sittende-fjellstilling"
  },
  {
   "navn": "Armer opp",
@@ -1389,7 +1440,8 @@
   "muskler": [
    "Skuldre",
    "Sidekropp"
-  ]
+  ],
+  "bilde": "armer-opp"
  },
  {
   "navn": "Stående foroverbøy",
@@ -1411,7 +1463,8 @@
   "muskler": [
    "Baklår",
    "Rygg"
-  ]
+  ],
+  "bilde": "staaende-foroverboy"
  },
  {
   "navn": "Foroverbøy over lårene",
@@ -1427,7 +1480,8 @@
   ],
   "utstyr": [
    "Stol"
-  ]
+  ],
+  "bilde": "foroverboy-laar"
  },
  {
   "navn": "Halvveis løft",
@@ -1443,7 +1497,8 @@
   "muskler": [
    "Rygg",
    "Baklår"
-  ]
+  ],
+  "bilde": "halvveis-loft"
  },
  {
   "navn": "Chaturanga",
@@ -1463,7 +1518,8 @@
    "Bryst",
    "Triceps",
    "Kjerne"
-  ]
+  ],
+  "bilde": "chaturanga"
  },
  {
   "navn": "Kobra",
@@ -1497,7 +1553,8 @@
    "Rygg",
    "Bryst",
    "Håndledd"
-  ]
+  ],
+  "bilde": "oppovervendt-hund"
  },
  {
   "navn": "Nedovervendt hund",
@@ -1536,7 +1593,8 @@
    "Lår",
    "Sete",
    "Kjerne"
-  ]
+  ],
+  "bilde": "stol-utkatasana"
  },
  {
   "navn": "Kriger 1",
@@ -1583,7 +1641,8 @@
   "muskler": [
    "Sidekropp",
    "Hofter"
-  ]
+  ],
+  "bilde": "fredfull-kriger"
  },
  {
   "navn": "Triangel",
@@ -1600,7 +1659,8 @@
    "Baklår",
    "Sidekropp",
    "Hofter"
-  ]
+  ],
+  "bilde": "triangel"
  },
  {
   "navn": "Utvidet sidevinkel",
@@ -1614,7 +1674,8 @@
    "Sidekropp",
    "Lår",
    "Hofter"
-  ]
+  ],
+  "bilde": "utvidet-sidevinkel"
  },
  {
   "navn": "Stående sidebøy",
@@ -1626,7 +1687,8 @@
   ],
   "muskler": [
    "Sidekropp"
-  ]
+  ],
+  "bilde": "staaende-sideboy"
  },
  {
   "navn": "Sittende sidebøy",
@@ -1638,7 +1700,8 @@
   ],
   "muskler": [
    "Sidekropp"
-  ]
+  ],
+  "bilde": "sittende-sideboy"
  },
  {
   "navn": "Sittende twist",
@@ -1654,7 +1717,8 @@
   "muskler": [
    "Rygg",
    "Kjerne"
-  ]
+  ],
+  "bilde": "sittende-twist"
  },
  {
   "navn": "Sittende katt–ku",
@@ -1670,7 +1734,8 @@
   ],
   "utstyr": [
    "Stol"
-  ]
+  ],
+  "bilde": "sittende-katt-ku"
  },
  {
   "navn": "Katt–ku",
@@ -1693,7 +1758,8 @@
    "Rygg",
    "Nakke",
    "Kjerne"
-  ]
+  ],
+  "bilde": "katt-ku"
  },
  {
   "navn": "Barnets stilling",
@@ -1730,7 +1796,8 @@
   "muskler": [
    "Sidekropp",
    "Rygg"
-  ]
+  ],
+  "bilde": "barnets-stilling-sideboy"
  },
  {
   "navn": "Savasana",
@@ -1749,7 +1816,8 @@
   ],
   "muskler": [
    "Hvile"
-  ]
+  ],
+  "bilde": "savasana"
  },
  {
   "navn": "Rull til siden og sitt opp",
@@ -1764,7 +1832,8 @@
   ],
   "muskler": [
    "Hvile"
-  ]
+  ],
+  "bilde": "rull-til-siden"
  },
  {
   "navn": "Sommerfuglen",
@@ -1808,7 +1877,8 @@
   "muskler": [
    "Baklår",
    "Rygg"
-  ]
+  ],
+  "bilde": "larven"
  },
  {
   "navn": "Sfinksen",
@@ -1825,7 +1895,8 @@
   "muskler": [
    "Rygg",
    "Bryst"
-  ]
+  ],
+  "bilde": "sfinksen"
  },
  {
   "navn": "Selen",
@@ -1841,7 +1912,8 @@
   "muskler": [
    "Rygg",
    "Bryst"
-  ]
+  ],
+  "bilde": "selen"
  },
  {
   "navn": "Dragen",
@@ -1861,7 +1933,8 @@
    "Hoftebøyere",
    "Hofter",
    "Lyske"
-  ]
+  ],
+  "bilde": "dragen"
  },
  {
   "navn": "Svanen",
@@ -1899,7 +1972,8 @@
   "muskler": [
    "Innside lår",
    "Hofter"
-  ]
+  ],
+  "bilde": "frosken"
  },
  {
   "navn": "Sadelen",
@@ -1921,7 +1995,8 @@
   ],
   "utstyr": [
    "Pute"
-  ]
+  ],
+  "bilde": "sadelen"
  },
  {
   "navn": "Sneglen",
@@ -1943,7 +2018,8 @@
   ],
   "utstyr": [
    "Teppe"
-  ]
+  ],
+  "bilde": "sneglen"
  },
  {
   "navn": "Bananasana",
@@ -1958,7 +2034,8 @@
   ],
   "muskler": [
    "Sidekropp"
-  ]
+  ],
+  "bilde": "bananasana"
  },
  {
   "navn": "Smeltende hjerte",
@@ -1975,7 +2052,8 @@
    "Bryst",
    "Skuldre",
    "Rygg"
-  ]
+  ],
+  "bilde": "smeltende-hjerte"
  },
  {
   "navn": "Liggende vridning",
@@ -2012,7 +2090,8 @@
   "muskler": [
    "Rygg",
    "Hofter"
-  ]
+  ],
+  "bilde": "twisted-roots"
  },
  {
   "navn": "Sidefold over bredt bein",
@@ -2028,7 +2107,8 @@
   "muskler": [
    "Sidekropp",
    "Innside lår"
-  ]
+  ],
+  "bilde": "sidefold-bredt-bein"
  },
  {
   "navn": "Beina opp langs vegg",
@@ -2048,7 +2128,8 @@
   ],
   "utstyr": [
    "Vegg"
-  ]
+  ],
+  "bilde": "beina-opp-vegg"
  },
  {
   "navn": "Supta Baddha Konasana",
@@ -2065,7 +2146,8 @@
   "muskler": [
    "Hofter",
    "Hvile"
-  ]
+  ],
+  "bilde": "supta-baddha-konasana"
  },
  {
   "navn": "Hamstringtøyning",
@@ -2084,7 +2166,8 @@
   ],
   "muskler": [
    "Baklår"
-  ]
+  ],
+  "bilde": "hamstringtoyning"
  },
  {
   "navn": "Hamstring liggende med strikk",
@@ -2102,7 +2185,8 @@
   ],
   "utstyr": [
    "Strikk"
-  ]
+  ],
+  "bilde": "hamstring-liggende-strikk"
  },
  {
   "navn": "Hamstring stående",
@@ -2117,7 +2201,8 @@
   ],
   "muskler": [
    "Baklår"
-  ]
+  ],
+  "bilde": "hamstring-staaende"
  },
  {
   "navn": "Halv splitt",
@@ -2133,7 +2218,8 @@
   "muskler": [
    "Baklår",
    "Legger"
-  ]
+  ],
+  "bilde": "halv-splitt"
  },
  {
   "navn": "Splittprogresjon med støtte",
@@ -2156,7 +2242,8 @@
   "utstyr": [
    "Puter",
    "Klosser"
-  ]
+  ],
+  "bilde": "splittprogresjon"
  },
  {
   "navn": "Hoftebøyertøyning",
@@ -2177,7 +2264,8 @@
   "muskler": [
    "Hoftebøyere",
    "Framside lår"
-  ]
+  ],
+  "bilde": "hofteboyertoyning"
  },
  {
   "navn": "Hoftebøyer sideliggende",
@@ -2193,7 +2281,8 @@
   "muskler": [
    "Hoftebøyere",
    "Framside lår"
-  ]
+  ],
+  "bilde": "hofteboyer-sideliggende"
  },
  {
   "navn": "Lårtøyning",
@@ -2212,7 +2301,8 @@
   "muskler": [
    "Framside lår",
    "Hoftebøyere"
-  ]
+  ],
+  "bilde": "laartoyning"
  },
  {
   "navn": "Leggtøy",
@@ -2232,7 +2322,8 @@
   ],
   "utstyr": [
    "Vegg"
-  ]
+  ],
+  "bilde": "leggtoy"
  },
  {
   "navn": "Legg med strikk",
@@ -2251,7 +2342,8 @@
   ],
   "utstyr": [
    "Strikk"
-  ]
+  ],
+  "bilde": "legg-strikk"
  },
  {
   "navn": "Adduktor liggende med strikk",
@@ -2270,7 +2362,8 @@
   ],
   "utstyr": [
    "Strikk"
-  ]
+  ],
+  "bilde": "adduktor-liggende-strikk"
  },
  {
   "navn": "Adduktor sittende ved vegg",
@@ -2289,7 +2382,8 @@
   ],
   "utstyr": [
    "Vegg"
-  ]
+  ],
+  "bilde": "adduktor-sittende-vegg"
  },
  {
   "navn": "Brysttøyning",
@@ -2309,7 +2403,8 @@
   "muskler": [
    "Bryst",
    "Skuldre"
-  ]
+  ],
+  "bilde": "brysttoyning"
  },
  {
   "navn": "Brystsving liggende",
@@ -2325,7 +2420,8 @@
   "muskler": [
    "Bryst",
    "Rygg"
-  ]
+  ],
+  "bilde": "brystsving-liggende"
  },
  {
   "navn": "Åpen bok",
@@ -2341,7 +2437,8 @@
   "muskler": [
    "Bryst",
    "Rygg"
-  ]
+  ],
+  "bilde": "aapen-bok"
  },
  {
   "navn": "Skulder kryssdrag",
@@ -2356,7 +2453,8 @@
   ],
   "muskler": [
    "Skuldre"
-  ]
+  ],
+  "bilde": "skulder-kryssdrag"
  },
  {
   "navn": "Skulderåpner mot vegg",
@@ -2372,7 +2470,8 @@
   ],
   "utstyr": [
    "Vegg"
-  ]
+  ],
+  "bilde": "skulderaapner-vegg"
  },
  {
   "navn": "Nakke sidebøy",
@@ -2384,7 +2483,8 @@
   ],
   "muskler": [
    "Nakke"
-  ]
+  ],
+  "bilde": "nakke-sideboy"
  },
  {
   "navn": "Underarmstøyning",
@@ -2397,7 +2497,8 @@
   "muskler": [
    "Underarmer",
    "Håndledd"
-  ]
+  ],
+  "bilde": "underarmstoyning"
  },
  {
   "navn": "QL-/sidestrekk",
@@ -2414,7 +2515,8 @@
   "muskler": [
    "Korsrygg",
    "Sidekropp"
-  ]
+  ],
+  "bilde": "ql-sidestrekk"
  },
  {
   "navn": "Verdens beste tøyning",
@@ -2453,7 +2555,8 @@
   "muskler": [
    "Sete",
    "Hofter"
-  ]
+  ],
+  "bilde": "figur-4"
  },
  {
   "navn": "90/90-hoftetøyning",
@@ -2488,7 +2591,8 @@
   ],
   "muskler": [
    "Hofter"
-  ]
+  ],
+  "bilde": "90-90-switches"
  },
  {
   "navn": "Lift-off innadrotasjon",
@@ -2506,7 +2610,8 @@
   ],
   "muskler": [
    "Hofter"
-  ]
+  ],
+  "bilde": "lift-off-innad"
  },
  {
   "navn": "Lift-off utadrotasjon",
@@ -2522,7 +2627,8 @@
   "muskler": [
    "Hofter",
    "Sete"
-  ]
+  ],
+  "bilde": "lift-off-utad"
  },
  {
   "navn": "Pigeon push-up",
@@ -2538,7 +2644,8 @@
   "muskler": [
    "Sete",
    "Hofter"
-  ]
+  ],
+  "bilde": "pigeon-push-up"
  },
  {
   "navn": "Rolig pust",
@@ -2555,7 +2662,8 @@
   "muskler": [
    "Ro",
    "Pust"
-  ]
+  ],
+  "bilde": "rolig-pust"
  },
  {
   "navn": "Magepust liggende",
@@ -2571,7 +2679,8 @@
   "muskler": [
    "Pust",
    "Ro"
-  ]
+  ],
+  "bilde": "magepust"
  },
  {
   "navn": "Boks-pust",
@@ -2590,7 +2699,8 @@
   "muskler": [
    "Pust",
    "Ro"
-  ]
+  ],
+  "bilde": "boks-pust"
  },
  {
   "navn": "Koherent pust",
@@ -2607,7 +2717,8 @@
   "muskler": [
    "Pust",
    "Ro"
-  ]
+  ],
+  "bilde": "koherent-pust"
  },
  {
   "navn": "Syklisk sukk",
@@ -2620,6 +2731,7 @@
   "muskler": [
    "Pust",
    "Ro"
-  ]
+  ],
+  "bilde": "syklisk-sukk"
  }
 ]

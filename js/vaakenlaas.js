@@ -19,6 +19,10 @@ export function slippVaaken() {
 
 // Låsen slippes av systemet når appen legges i bakgrunnen — ta den tilbake
 // når skjermen er synlig igjen, så lenge en økt fortsatt ønsker den.
-document.addEventListener('visibilitychange', () => {
-  if (ønsket && document.visibilityState === 'visible') holdVaaken();
-});
+// Guard mot manglende DOM (f.eks. Node under testkjøring) — modulen skal
+// kunne importeres trygt uansett miljø.
+if (typeof document !== 'undefined') {
+  document.addEventListener('visibilitychange', () => {
+    if (ønsket && document.visibilityState === 'visible') holdVaaken();
+  });
+}
