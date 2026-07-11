@@ -13,7 +13,8 @@ import { APP_VERSION } from './config.js';
 import { kjorOnboarding } from './onboarding.js';
 import { visReviewSkjerm, visKjoreSkjerm } from './kjor.js';
 import { settBib as settBibHist, visAktivitetSkjerm } from './historikk.js';
-import { visHurtigSkjerm, visLoggforSkjerm } from './beveg.js';
+import { visHurtigSkjerm, visLoggforSkjerm, aktivHurtig } from './beveg.js';
+import { slippVaaken } from './vaakenlaas.js';
 import { visMerkerSkjerm } from './merker.js';
 import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
 import { lagFaneside, fanesideMedTittel, settNavger, dagsfase } from './banner.js';
@@ -64,6 +65,7 @@ function navger() {
   const rute = (location.hash.replace('#/', '') || 'hjem').split('?')[0];
   document.body.classList.toggle('fokusmodus', FOKUS.has(rute));
   document.body.classList.remove('fane-laast'); // settes på nytt av fanesidene
+  if (rute !== 'kjor' && rute !== 'hurtig') slippVaaken(); // timer-skjermene eier låsen
   (ruter[rute] || visHjem)();
   oppdaterNav(rute);
 }
@@ -748,6 +750,9 @@ async function start() {
     return;
   }
   byggTabbar();
+  // En pågående hurtigstart-tur (skjermen slukket / appen ble lukket)
+  // gjenopptas rett i timeren — tida har uansett telt videre.
+  if (aktivHurtig() && !location.hash.startsWith('#/hurtig')) location.hash = '#/hurtig';
   navger();
   skjulSplash();
 }

@@ -2,8 +2,11 @@
 // er øktbiblioteket (bibliotek-okter.js); her bor hurtigstart med timer
 // (gå/løp/sykle), manuell logg og fullført-skjermen. Alt gir XP, flytter
 // nivået og kan låse opp merker (§5.12: aldri skam, delvis gjennomføring
-// teller, manuelle logger teller).
+// teller, manuelle logger teller). Hurtigstart-timeren regner med
+// veggklokke-tid og lagres i localStorage — turen teller videre med
+// skjermen av, og gjenopptas selv om appen startes på nytt.
 import { el, tom, chip, ikon } from './ui.js';
+import { LS } from './config.js';
 import { hentProfil, lagreProfil, hentLogg, leggTilLogg } from './store.js';
 import { registrerBevegelse } from './niva.js';
 import {
@@ -12,10 +15,37 @@ import {
 } from './bevegelse.js';
 import { merkerNå, nyeMerker } from './merker.js';
 import { tallOpp, lagKonfetti } from './animasjon.js';
+import { holdVaaken, slippVaaken } from './vaakenlaas.js';
 
 let aktivTimer = null;
+let vedSynlig = null; // oppdaterer klokka umiddelbart når appen våkner
 function stoppTimer() {
   if (aktivTimer) { clearInterval(aktivTimer); aktivTimer = null; }
+  vedSynlig = null;
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') vedSynlig?.();
+});
+
+// --- Pågående hurtigstart: lagres så turen overlever lukket app ------------
+const AKTIV_MAKS_ALDER = 12 * 3600000; // eldre økter regnes som forlatt
+
+/** Pågående hurtigstart-økt, eller null. Brukes også av app.js ved oppstart. */
+export function aktivHurtig() {
+  try {
+    const a = JSON.parse(localStorage.getItem(LS.aktivOkt) || 'null');
+    if (!a || !BEVEGELSER[a.bevegelse]) return null;
+    const sist = a.kjorer ? a.startTs : a.oppdatert;
+    if (!sist || Date.now() - sist > AKTIV_MAKS_ALDER) { localStorage.removeItem(LS.aktivOkt); return null; }
+    return a;
+  } catch { return null; }
+}
+
+function lagreAktiv(a) {
+  try {
+    if (a) localStorage.setItem(LS.aktivOkt, JSON.stringify({ ...a, oppdatert: Date.now() }));
+    else localStorage.removeItem(LS.aktivOkt);
+  } catch { /* full lagring — timeren går fint videre i minnet */ }
 }
 
 // --- Registrering: én vei inn for all fri/manuell bevegelse ----------------
@@ -44,46 +74,84 @@ export function registrerOgLogg({ bevegelse, varighetMin, intensitet = 3, tittel
 }
 
 // ===========================================================================
-// Hurtigstart — timer for gåtur/løp/sykkel/fri bevegelse (§5.1 pkt. 4)
+// Hurtigstart — timer for gåtur/løp/sykkel/fri bevegelse (§5.1 pkt. 4).
+// Tida regnes fra veggklokka (starttidspunkt + akkumulert), så turen teller
+// videre med skjermen av — og en pågående økt gjenopptas fra localStorage.
 // ===========================================================================
 export function visHurtigSkjerm(mount) {
   stoppTimer();
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
-  const bevegelse = BEVEGELSER[params.get('b')] ? params.get('b') : 'walk';
-  const maal = Number(params.get('maal')) || null;
+
+  // Gjenoppta en pågående økt hvis den finnes — ellers start ferskt fra URL-en.
+  const aktiv = aktivHurtig();
+  const bevegelse = aktiv?.bevegelse || (BEVEGELSER[params.get('b')] ? params.get('b') : 'walk');
+  const maal = aktiv?.maal ?? (Number(params.get('maal')) || null);
   const navn = BEVEGELSE_NAVN[bevegelse];
 
-  let sekunder = 0;
-  let kjorer = false;
+  // Tilstand: akkumMs = tid samlet før siste start, startTs = når den ble
+  // startet sist (null når pauset). Sekunder = akkumMs + (nå − startTs).
+  let akkumMs = aktiv?.akkumMs || 0;
+  let startTs = aktiv?.kjorer ? aktiv.startTs : null;
+
+  const kjorer = () => startTs != null;
+  const sekunder = () => Math.floor((akkumMs + (kjorer() ? Date.now() - startTs : 0)) / 1000);
 
   const klokke = el('div', { class: 'hurtig__klokke' }, '00:00');
-  const startKnapp = el('button', { class: 'knapp knapp--stor', type: 'button' }, 'Start');
+  const startKnapp = el('button', { class: 'knapp knapp--stor', type: 'button' }, kjorer() ? 'Pause' : (akkumMs ? 'Fortsett' : 'Start'));
   const ferdigKnapp = el('button', { class: 'knapp knapp--sekundaer', type: 'button' }, 'Ferdig');
 
   function visTid() {
-    const m = Math.floor(sekunder / 60);
-    const s = sekunder % 60;
-    klokke.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    const s = sekunder();
+    klokke.textContent = `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+  }
+
+  function lagre() {
+    lagreAktiv(akkumMs || kjorer() ? { bevegelse, maal, akkumMs, startTs, kjorer: kjorer() } : null);
+  }
+
+  function startTicking() {
+    stoppTimer();
+    aktivTimer = setInterval(visTid, 500);
+    vedSynlig = visTid;
+    holdVaaken();
   }
 
   startKnapp.addEventListener('click', () => {
-    if (kjorer) {
-      stoppTimer(); kjorer = false; startKnapp.textContent = 'Fortsett';
-    } else {
-      kjorer = true; startKnapp.textContent = 'Pause';
+    if (kjorer()) { // pause
+      akkumMs += Date.now() - startTs;
+      startTs = null;
       stoppTimer();
-      aktivTimer = setInterval(() => { sekunder++; visTid(); }, 1000);
+      slippVaaken();
+      startKnapp.textContent = 'Fortsett';
+    } else {
+      startTs = Date.now();
+      startKnapp.textContent = 'Pause';
+      startTicking();
     }
+    lagre();
+    visTid();
   });
   ferdigKnapp.addEventListener('click', () => {
+    const s = sekunder();
     stoppTimer();
-    visHurtigFullfor(mount, bevegelse, Math.max(1, Math.round(sekunder / 60)));
+    slippVaaken();
+    lagreAktiv(null);
+    visHurtigFullfor(mount, bevegelse, Math.max(1, Math.round(s / 60)));
   });
 
   tom(mount);
   mount.append(
     el('header', { class: 'topp topp--kjor' },
-      el('button', { class: 'topp__tilbake', type: 'button', onclick: () => { stoppTimer(); location.hash = '#/beveg'; }, title: 'Tilbake' }, '‹'),
+      el('button', {
+        class: 'topp__tilbake', type: 'button', title: 'Tilbake',
+        onclick: () => {
+          if (sekunder() > 0 && !confirm('Avslutte uten å lagre? Tida forkastes.')) return;
+          stoppTimer();
+          slippVaaken();
+          lagreAktiv(null);
+          location.hash = '#/beveg';
+        },
+      }, '‹'),
       el('div', {},
         el('h1', { class: 'topp__tittel' }, navn),
         el('p', { class: 'topp__under' }, maal ? `Mål: ${maal} min — men alt teller.` : 'I ditt tempo. Alt teller.'),
@@ -95,11 +163,13 @@ export function visHurtigSkjerm(mount) {
         klokke,
         maal && el('p', { class: 'dempet' }, `Du kan snu når du vil. ${maal} min er målet, ikke kravet.`),
         el('div', { class: 'flate__knapper' }, startKnapp, ferdigKnapp),
+        el('p', { class: 'dempet' }, 'Tida teller videre selv om skjermen slukker.'),
         el('p', { class: 'dempet flate__hint' }, 'Gjorde du det uten timer? ',
           el('a', { href: `#/loggfor?b=${bevegelse}` }, 'Logg manuelt')),
       ),
     ),
   );
+  if (kjorer()) startTicking();
   visTid();
 }
 

@@ -1,21 +1,33 @@
 // Øktspilleren (M13): review → kjøring av bibliotekøkter. Holder «gjeldende
 // økt» i minne mellom skjermene og kjører økta blokk for blokk: kondisjon-/
-// hold-/pust-blokker får en timer, reps/flyt får en guide-modus. Fullføring
-// registreres som bevegelse (XP via registrerBevegelse) — samme varme
-// ferdigskjerm som all annen bevegelse.
+// hold-/pust-blokker får en timer, reps/flyt får en guide-modus. Timerne
+// regner med veggklokke-tid (ikke tellende intervaller), så fasene løper
+// riktig videre selv om skjermen låses eller appen legges i bakgrunnen —
+// og våkenlåsen holder skjermen på mens økta kjører. Fullføring registreres
+// som bevegelse (XP via registrerBevegelse) — samme varme ferdigskjerm som
+// all annen bevegelse.
 import { el, tom, ikon } from './ui.js';
 import { settPlanStatus } from './store.js';
 import { registrerOgLogg, visBevegelseFerdig } from './beveg.js';
 import { lagRing } from './animasjon.js';
+import { holdVaaken, slippVaaken } from './vaakenlaas.js';
 
 let gjeldendeOkt = null;
 let aktivInterval = null;
+let vedSynlig = null; // kalles når appen kommer i forgrunnen igjen
 
 export function settØkt(o) { gjeldendeOkt = o; }
 
 function stoppTimer() {
   if (aktivInterval) { clearInterval(aktivInterval); aktivInterval = null; }
+  vedSynlig = null;
 }
+
+// Når appen våkner fra bakgrunnen: oppdater timervisningen umiddelbart —
+// veggklokke-regningen har alt flyttet fasene dit de skal være.
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') vedSynlig?.();
+});
 
 // Kort pling ved fasebytte — hjelper når mobilen ligger på gulvet.
 function pling(frekv = 880, lengde = 0.12) {
@@ -212,6 +224,7 @@ export function visKjoreSkjerm(mount) {
 
   function tegn() {
     stoppTimer();
+    holdVaaken(); // skjermen holdes på gjennom hele økta
     const blk = okt.blokker[idx];
     monter(mount,
       el('header', { class: 'topp topp--kjor' },
@@ -420,43 +433,72 @@ function fasePlan(blk) {
   return faser;
 }
 
-// Timer-motoren: spiller en fase-plan med pause/hopp. Deler aktivInterval.
+// Timer-motoren: spiller en fase-plan med pause/hopp. Regner med veggklokke-
+// tid (`slutt`-tidsstempel i stedet for å telle intervaller), så minutter i
+// bakgrunnen flytter fasene riktig videre — flere faser kan passere mens
+// skjermen er av, og appen lander på riktig fase når den våkner.
 function timerKnapper(plan, { onFase, onSek, onFerdig }) {
   let i = 0;
-  let igjen = plan[0]?.sek || 0;
+  let igjen = (plan[0]?.sek || 0) * 1000; // gjenstående ms (når pauset)
+  let slutt = null;                       // ts når fasen er ferdig (når kjørende)
   let kjorer = false;
+  let startet = false;
 
   const startKnapp = el('button', { class: 'knapp', type: 'button' }, 'Start');
   const hoppKnapp = el('button', { class: 'knapp knapp--sekundaer', type: 'button' }, 'Hopp over');
 
-  function visFase() { onFase(plan[i], i); igjen = plan[i].sek; onSek(igjen); }
+  function ferdig() {
+    stoppTimer();
+    kjorer = false;
+    startKnapp.textContent = 'Ferdig';
+    startKnapp.disabled = true;
+    onFerdig();
+  }
 
-  function tikk() {
-    igjen -= 1;
-    if (igjen <= 0) {
+  // Tegner gjeldende tilstand — og ruller gjennom faser som er passert i
+  // bakgrunnen. Bare fasen vi lander på annonseres (én pling, ikke ti).
+  function vis() {
+    if (!kjorer) { onSek(Math.max(0, Math.round(igjen / 1000))); return; }
+    const nå = Date.now();
+    let byttet = false;
+    while (slutt - nå <= 0) {
       i += 1;
-      if (i >= plan.length) { stoppTimer(); kjorer = false; startKnapp.textContent = 'Ferdig'; startKnapp.disabled = true; onFerdig(); return; }
-      visFase();
-    } else {
-      onSek(igjen);
+      if (i >= plan.length) { ferdig(); return; }
+      slutt += plan[i].sek * 1000;
+      byttet = true;
     }
+    if (byttet) onFase(plan[i], i);
+    onSek(Math.max(0, Math.round((slutt - nå) / 1000)));
   }
 
   function start() {
     if (kjorer) { // pause
-      stoppTimer(); kjorer = false; startKnapp.textContent = 'Fortsett';
-    } else {
-      kjorer = true; startKnapp.textContent = 'Pause';
-      if (i === 0 && igjen === plan[0]?.sek) visFase();
+      igjen = Math.max(0, slutt - Date.now());
       stoppTimer();
-      aktivInterval = setInterval(tikk, 1000);
+      kjorer = false;
+      startKnapp.textContent = 'Fortsett';
+    } else {
+      kjorer = true;
+      startKnapp.textContent = 'Pause';
+      if (!startet) { startet = true; onFase(plan[i], i); }
+      slutt = Date.now() + igjen;
+      stoppTimer();
+      aktivInterval = setInterval(vis, 500);
+      vedSynlig = vis;
+      vis();
     }
   }
+
   function hopp() {
+    const varIgang = kjorer;
     stoppTimer(); kjorer = false;
     i += 1;
-    if (i >= plan.length) { startKnapp.textContent = 'Ferdig'; startKnapp.disabled = true; onFerdig(); return; }
-    visFase(); startKnapp.textContent = 'Fortsett';
+    if (i >= plan.length) { ferdig(); return; }
+    startet = true;
+    igjen = plan[i].sek * 1000;
+    onFase(plan[i], i);
+    onSek(plan[i].sek);
+    startKnapp.textContent = varIgang ? 'Fortsett' : startKnapp.textContent;
   }
 
   startKnapp.addEventListener('click', start);
@@ -469,6 +511,7 @@ function timerKnapper(plan, { onFase, onSek, onFerdig }) {
 // feires med samme varme ferdigskjerm som all annen bevegelse.
 // ===========================================================================
 function fullfor(mount, okt, delvis) {
+  slippVaaken();
   // Planen hukes av først, så «Som planlagt»-merket kan feires på ferdigskjermen.
   if (okt.planId && !delvis) settPlanStatus(okt.planId, 'gjort');
   const resultat = registrerOgLogg({
