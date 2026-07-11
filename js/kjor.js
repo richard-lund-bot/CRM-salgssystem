@@ -547,6 +547,17 @@ export function visKjoreSkjerm(mount) {
   tikk();
 }
 
+// Leser holdetid ut av en dosetekst: «3 min» → 180, «45 s» → 45. Faller
+// tilbake til `fallback` når dosen ikke har en tid.
+function doseTilSek(dose, fallback) {
+  const s = String(dose || '');
+  const min = s.match(/(\d+)\s*min/i);
+  if (min) return parseInt(min[1], 10) * 60;
+  const sek = s.match(/(\d+)\s*s\b/i);
+  if (sek) return parseInt(sek[1], 10);
+  return fallback;
+}
+
 // Bygger fase-planen (label + sekunder) for en timer-blokk.
 function fasePlan(blk) {
   const p = blk.parametre || {};
@@ -590,10 +601,20 @@ function fasePlan(blk) {
   if (blk.formatKlasse === 'hold') {
     const sett = p.sett || p.posisjoner || Math.max(1, ov.length) || 3;
     if (fmt === 'yin' || (ov.length && !p.tidSek)) {
-      // Én posisjon per øvelse.
-      const perSek = (p.tidMin || 3) * 60;
-      ov.forEach((o, i) => faser.push({ navn: o.navn, sek: perSek, type: 'hold' }));
-      if (!ov.length) faser.push({ navn: blk.formatNavn, sek: perSek, type: 'hold' });
+      // Én posisjon per øvelse — holdetida hentes fra øvelsens egen dose
+      // («3 min», «2 min»), ikke fra blokkens totaltid (p.tidMin). «per side»
+      // blir to hold (venstre/høyre) med samme tid.
+      const fallback = Math.round(((p.tidMin || 3) * 60) / Math.max(1, ov.length || 1));
+      ov.forEach((o) => {
+        const sek = doseTilSek(o.dose, fallback);
+        if (o.unilateral || /per side/i.test(o.dose || '')) {
+          faser.push({ navn: `${o.navn} · venstre`, sek, type: 'hold' });
+          faser.push({ navn: `${o.navn} · høyre`, sek, type: 'hold' });
+        } else {
+          faser.push({ navn: o.navn, sek, type: 'hold' });
+        }
+      });
+      if (!ov.length) faser.push({ navn: blk.formatNavn, sek: (p.tidMin || 3) * 60, type: 'hold' });
       return faser;
     }
     const antall = ov.length || 1;
