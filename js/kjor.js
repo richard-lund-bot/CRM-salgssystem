@@ -277,8 +277,9 @@ function lagSteg(blk) {
   }
   const erHoved = blk.rolle === 'hoved';
   const blkPause = p.pauseSek;
+  const ovelser = blk.ovelser || [];
   const steg = [];
-  for (const o of (blk.ovelser || [])) {
+  ovelser.forEach((o, ovIdx) => {
     const d = parseDose(o.dose);
     const perSide = o.unilateral || d.perSide;
     const sett = d.sett || p.sett || 0;
@@ -291,13 +292,15 @@ function lagSteg(blk) {
           : { navn: o.navn, ovNavn: o.navn, type: 'sett', settNr: s, settAv: sett, reps, perSide, sek: null });
         if (s < sett) steg.push({ navn: 'Pause', type: 'hvile', sek: pause });
       }
+      // Pause etter siste sett òg — før neste øvelse (ikke etter den siste).
+      if (ovIdx < ovelser.length - 1) steg.push({ navn: 'Pause', type: 'hvile', sek: pause });
     } else if (d.timeSek) {
       steg.push({ navn: o.navn, dose: o.dose, sek: d.timeSek, type: 'arbeid' });
     } else {
       const sub = [o.dose, perSide && !/per side/i.test(o.dose || '') && 'per side'].filter(Boolean).join(' · ') || null;
       steg.push({ navn: o.navn, dose: sub, sek: null, type: 'reps' });
     }
-  }
+  });
   return steg;
 }
 
