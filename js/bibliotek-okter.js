@@ -6,6 +6,14 @@ import { el, tom, chip, ikon } from './ui.js';
 import { settØkt } from './kjor.js';
 import { BEVEGELSER, KATEGORI_TIL_BEVEGELSE } from './bevegelse.js';
 import { lagFaneside } from './banner.js';
+import { lagArtikkelStripe } from './laer.js';
+
+// Kategori → artikkel-tag, så biblioteket kan vise relaterte læringsartikler.
+const KAT_ARTIKKELTAG = {
+  yoga: 'Yoga', styrke: 'Styrke', kroppsvekt: 'Styrke',
+  lop: 'Kondisjon', sykkel: 'Kondisjon', gatur: 'Kondisjon', hiit: 'Kondisjon',
+  mobilitet: 'Mobilitet', toying: 'Mobilitet', restitusjon: 'Restitusjon',
+};
 
 let _okter = null;
 
@@ -234,6 +242,8 @@ export function visOkterSkjerm(mount) {
             lenkerad('kalender', 'Planlagte økter', '#/kalender'),
           ),
         ),
+        state.kat && KAT_ARTIKKELTAG[state.kat]
+          && lagArtikkelStripe(KAT_ARTIKKELTAG[state.kat], `Les mer om ${KATEGORI_NAVN[state.kat].toLowerCase()}`),
       ),
     );
   }

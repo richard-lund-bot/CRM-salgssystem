@@ -325,6 +325,22 @@ export function visMerkerSkjerm(mount) {
     );
   }
 
-  fanesideMedTittel(mount, { tittel: 'Merker', under: 'Alt du får til, samles her. I ditt tempo.' })
-    .append(hero, ...MERKE_KATEGORIER.map(bolk));
+  const lenke = (ikonNavn, tekst, href) => el('a', { class: 'listerad', href },
+    el('span', { class: 'listerad__ikon' }, ikon(ikonNavn)),
+    el('span', { class: 'listerad__navn' }, tekst),
+    el('span', { class: 'listerad__chevron' }, ikon('chevron')),
+  );
+  const menyKort = el('div', { class: 'kort' },
+    el('div', { class: 'liste' },
+      lenke('kalender', 'Mosjonskalender', '#/kalender'),
+      lenke('bok', 'Øktbiblioteket', '#/okter'),
+      lenke('vekt', 'Styrke & fremgang', '#/styrke'),
+      lenke('sok', 'Øvelsesoppslag', '#/bibliotek'),
+      lenke('gir', 'Innstillinger', '#/innstillinger'),
+      lenke('info', 'Om Mova', '#/om'),
+    ),
+  );
+
+  fanesideMedTittel(mount, { tittel: 'Profil', under: 'Nivået ditt, merkene dine — og alt det andre.' })
+    .append(hero, menyKort, ...MERKE_KATEGORIER.map(bolk));
 }

@@ -1,0 +1,144 @@
+[
+ {
+  "id": "vane",
+  "tittel": "Slik bygger du en treningsvane som varer",
+  "undertittel": "Små, tydelige steg slår motivasjon hver gang.",
+  "tags": ["Vane", "Kom i gang"],
+  "bilde": "vane",
+  "dato": "2026-07-11",
+  "lesetid": 4,
+  "avsnitt": [
+   { "p": "Motivasjon kommer og går. Det som bærer deg gjennom en travel uke er ikke viljestyrke, men en vane som er så liten at du nesten ikke kan si nei." },
+   { "h": "Gjør inngangen latterlig lav" },
+   { "p": "Bestem deg for én bevegelse du kan gjøre på under to minutter — ti knebøy, en runde katt–ku, en rask tur rundt kvartalet. Målet er ikke økta, men å møte opp. Når du først er i gang, blir det ofte mer." },
+   { "h": "Fest vanen til noe du alt gjør" },
+   { "p": "«Etter morgenkaffen ruller jeg ut matta.» Å koble den nye vanen til et fast holdepunkt gjør at du slipper å bestemme deg på nytt hver dag." },
+   { "h": "Feir at du dukket opp" },
+   { "p": "Hver gjennomførte økt — også den korte — teller. I Mova ser du streaken og merkene vokse, og nettopp den følelsen av framgang er det som gjør at du kommer tilbake i morgen." }
+  ]
+ },
+ {
+  "id": "progressiv-overbelastning",
+  "tittel": "Progressiv overbelastning: nøkkelen til styrke",
+  "undertittel": "Kroppen tilpasser seg det du ber den om — litt mer, litt oftere.",
+  "tags": ["Styrke", "Fremgang"],
+  "bilde": "progressiv",
+  "dato": "2026-07-08",
+  "lesetid": 5,
+  "avsnitt": [
+   { "p": "Styrke bygges når du gradvis gir musklene litt mer enn de er vant til. Prinsippet heter progressiv overbelastning, og det er selve motoren i all styrketrening." },
+   { "h": "Fire måter å øke på" },
+   { "p": "Du trenger ikke alltid mer vekt. Du kan gjøre flere reps, flere sett, roligere tempo eller kortere pauser. Alle fire gjør økta hardere og gir kroppen en grunn til å bli sterkere." },
+   { "h": "Små hopp holder lengst" },
+   { "p": "Klarte du alle repsene med god margin sist? Legg på 2,5 kg. Var det tungt? Gjenta samme vekt til teknikken sitter. Mova foreslår neste vekt automatisk ut fra hvordan forrige økt gikk — bruk det som et utgangspunkt, ikke en fasit." },
+   { "h": "Teknikk før tall" },
+   { "p": "En ekstra kilo er aldri verdt en dårlig rygg. Øk først når bevegelsen er ren og kontrollert gjennom hele settet." }
+  ]
+ },
+ {
+  "id": "restitusjon",
+  "tittel": "Hvorfor hvile er der fremgangen skjer",
+  "undertittel": "Du blir ikke sterk av å trene — du blir sterk av å hente deg inn.",
+  "tags": ["Restitusjon", "Helse"],
+  "bilde": "restitusjon",
+  "dato": "2026-07-04",
+  "lesetid": 4,
+  "avsnitt": [
+   { "p": "Under økta bryter du faktisk kroppen litt ned. Selve oppbyggingen — den som gjør deg sterkere og raskere — skjer i timene og dagene etterpå, mens du hviler." },
+   { "h": "Lytt til de tydelige signalene" },
+   { "p": "Vedvarende sår muskulatur, dårlig søvn, irritabilitet og stagnasjon er kroppens måte å be om en roligere dag på. Å ta den er ikke latskap — det er en del av planen." },
+   { "h": "Aktiv hvile teller også" },
+   { "p": "En rolig gåtur, lett yoga eller mobilitet holder blodet i sirkulasjon og løsner stive ledd uten å tære på deg. På Mova teller alt dette som bevegelse." },
+   { "p": "Regelen er enkel: tren hardt nok til å utfordre deg, hvil godt nok til å bli bedre av det." }
+  ]
+ },
+ {
+  "id": "yin-yoga",
+  "tittel": "Yin yoga: kunsten å slippe taket",
+  "undertittel": "Lange, rolige hold som åpner kroppen og roer hodet.",
+  "tags": ["Yoga", "Ro"],
+  "bilde": "yin",
+  "dato": "2026-06-30",
+  "lesetid": 5,
+  "avsnitt": [
+   { "p": "Der dynamisk yoga jobber med musklene, jobber yin med bindevevet — leddbånd, fascie og ledd. Du holder posisjonene lenge, gjerne tre til fem minutter, og lar tyngdekraften gjøre jobben." },
+   { "h": "Pusten gjør arbeidet" },
+   { "p": "I stedet for å presse, senker du deg inn i stillingen og puster rolig. For hver utpust slipper du litt mer. Det er en øvelse i tålmodighet like mye som i bevegelighet." },
+   { "h": "Bra etter harde dager" },
+   { "p": "Yin passer perfekt som motvekt til løping og styrke, eller på en kveld da kroppen og hodet trenger å lande. Du reiser deg mykere enn du la deg ned." },
+   { "h": "Ubehag, ikke smerte" },
+   { "p": "Kjenn etter en mild strekk, aldri en skarp smerte. Trekk litt ut hvis det svir, og gi kroppen tid — bevegeligheten kommer med jevnlig øving." }
+  ]
+ },
+ {
+  "id": "pulssoner",
+  "tittel": "Pulssoner: tren smartere, ikke bare hardere",
+  "undertittel": "De fleste trener for hardt på de rolige dagene og for mykt på de harde.",
+  "tags": ["Kondisjon", "Puls"],
+  "bilde": "puls",
+  "dato": "2026-06-25",
+  "lesetid": 5,
+  "avsnitt": [
+   { "p": "God kondisjon bygges på et fundament av rolig trening, toppet med litt hardt arbeid. Trikset er å vite når du gjør hva." },
+   { "h": "Sone 2 — den rolige gullgruva" },
+   { "p": "Det meste av kondisjonstreningen bør skje i sone 2: et tempo der du fortsatt kan holde en samtale gående. Det føles nesten for lett, men det er her utholdenheten bygges." },
+   { "h": "Intervaller — den harde krydderen" },
+   { "p": "En til to ganger i uka kan du legge inn intervaller i sone 4: korte, harde drag med pauser mellom. Det løfter makskapasiteten. Mer er sjelden bedre." },
+   { "h": "Snakketesten" },
+   { "p": "Uten pulsklokke kan du bruke pusten som guide: kan du snakke i hele setninger, er du rolig nok. Får du bare fram enkeltord, jobber du hardt." }
+  ]
+ },
+ {
+  "id": "protein",
+  "tittel": "Protein: hvor mye trenger du egentlig?",
+  "undertittel": "Nok, jevnt fordelt — og mindre komplisert enn du tror.",
+  "tags": ["Kosthold", "Styrke"],
+  "bilde": "protein",
+  "dato": "2026-06-20",
+  "lesetid": 4,
+  "avsnitt": [
+   { "p": "Protein er byggesteinene kroppen bruker til å reparere og bygge muskler etter trening. Får du for lite, går du glipp av mye av jobben du la ned i økta." },
+   { "h": "Et enkelt utgangspunkt" },
+   { "p": "For de som trener regelmessig er 1,6–2 gram protein per kilo kroppsvekt et godt mål. Veier du 70 kg, snakker vi om rundt 110–140 gram i løpet av dagen." },
+   { "h": "Fordel utover dagen" },
+   { "p": "Kroppen tar best vare på proteinet når du sprer det over flere måltider, gjerne 20–40 gram om gangen, i stedet for alt på middagen." },
+   { "h": "Vanlig mat holder langt" },
+   { "p": "Egg, kylling, fisk, meieri, bønner og linser gjør jobben. Tilskudd kan være praktisk, men er ikke nødvendig hvis maten er variert." }
+  ]
+ },
+ {
+  "id": "sovn",
+  "tittel": "Søvn og trening — den undervurderte duoen",
+  "undertittel": "Ingen kosttilskudd slår en god natts søvn.",
+  "tags": ["Søvn", "Helse"],
+  "bilde": "sovn",
+  "dato": "2026-06-14",
+  "lesetid": 4,
+  "avsnitt": [
+   { "p": "Søvn er den kraftigste — og billigste — restitusjonen du har. Det er om natta kroppen skiller ut hormonene som reparerer muskler og fester det du har lært." },
+   { "h": "Sikt mot sju til ni timer" },
+   { "p": "For lite søvn gir svakere økter, tregere framgang og større skaderisiko. Én dårlig natt er ufarlig; uke etter uke setter det spor." },
+   { "h": "Kveldsrutinen former natta" },
+   { "p": "Demp lyset, legg vekk skjermen en stund før leggetid, og hold soverommet kjølig og mørkt. En rolig pusteøvelse eller litt yin kan senke skuldrene før du sovner." },
+   { "p": "Trener du på kvelden? Prøv å avslutte den harde delen et par timer før du legger deg, så pulsen får roet seg." }
+  ]
+ },
+ {
+  "id": "mobilitet",
+  "tittel": "Mobilitet vs. tøying — hva er forskjellen?",
+  "undertittel": "Å være myk er ikke det samme som å ha kontroll.",
+  "tags": ["Mobilitet", "Bevegelighet"],
+  "bilde": "mobilitet",
+  "dato": "2026-06-08",
+  "lesetid": 4,
+  "avsnitt": [
+   { "p": "Tøying handler om hvor langt et ledd kan bevege seg. Mobilitet handler om hvor langt du kan bevege det med styrke og kontroll. Du trenger begge — men mobilitet gir mest igjen for hverdagen og treningen." },
+   { "h": "Aktivt slår passivt" },
+   { "p": "I stedet for å henge passivt i en tøyning, jobber mobilitetsøvelser leddet gjennom hele banen med muskelkraft: hofterotasjoner, CARs og kontrollerte utfall. Da blir bevegeligheten din å bruke, ikke bare å vise fram." },
+   { "h": "Litt, ofte" },
+   { "p": "Fem til ti minutter mobilitet på oppvarmingen, eller som egen liten økt et par ganger i uka, holder ledd og muskler smidige — og gjør de tunge løftene tryggere." },
+   { "h": "Bruk det du åpner" },
+   { "p": "Har du nettopp åpnet hoftene, gjør noen knebøy rett etterpå. Bevegelighet du bruker, blir bevegelighet du beholder." }
+  ]
+ }
+]

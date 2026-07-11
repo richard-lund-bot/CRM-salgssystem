@@ -17,6 +17,7 @@ import { visHurtigSkjerm, visLoggforSkjerm, aktivHurtig } from './beveg.js';
 import { slippVaaken } from './vaakenlaas.js';
 import { lastOvelsesinfo, settBib as settBibOvelse, visOvelseSkjerm, ovelseInfo } from './ovelse.js';
 import { alleØvelser, tonnasje, muskelVolum, lagLinjegraf } from './styrke.js';
+import { lastArtikler, visLaerSkjerm, visArtikkelSkjerm } from './laer.js';
 import { visMerkerSkjerm } from './merker.js';
 import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
 import { lagFaneside, fanesideMedTittel, settNavger, dagsfase } from './banner.js';
@@ -47,16 +48,18 @@ const ruter = {
   kjor: () => visKjoreSkjerm(app),
   aktivitet: () => visAktivitetSkjerm(app),
   historikk: () => visAktivitetSkjerm(app), // gammel lenke — samme skjerm
-  meny: visMeny,
+  meny: () => { location.hash = '#/merker'; }, // Meny bor nå på Profil-fanen
   innstillinger: visInnstillinger,
   bibliotek: visBibliotek,
   ovelse: () => visOvelseSkjerm(app),
   styrke: visStyrke,
+  laer: () => visLaerSkjerm(app),
+  artikkel: () => visArtikkelSkjerm(app),
   om: visOm,
 };
 
 // Skjermene med egen tilbake-header er fokusmodus (skjuler tab-baren).
-const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse']);
+const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel']);
 
 // Gamle #/ny?m=STY-lenker (og bokmerker) sendes til riktig bibliotekkategori.
 function omdirigerGammelNyLenke() {
@@ -76,9 +79,11 @@ function navger() {
 
 function oppdaterNav(rute) {
   const tabRute = ({
-    innstillinger: 'meny', bibliotek: 'meny', om: 'meny', plan: 'meny', styrke: 'meny',
+    // Meny er nå en del av Profil-fanen — alle «meny-sidene» lyser opp Profil.
+    meny: 'merker', innstillinger: 'merker', bibliotek: 'merker', om: 'merker',
+    plan: 'merker', styrke: 'merker', kalender: 'merker', reise: 'merker', tilpass: 'merker',
     historikk: 'aktivitet', ny: 'beveg', okter: 'beveg',
-    reise: 'merker', tilpass: 'merker',
+    artikkel: 'laer',
   })[rute] || rute;
   document.querySelectorAll('.tabbar__knapp').forEach((b) => {
     b.classList.toggle('tabbar__knapp--aktiv', b.dataset.rute === tabRute);
@@ -429,33 +434,6 @@ function varighetNavn(k) {
 }
 
 // ===========================================================================
-// Meny + innstillinger
-// ===========================================================================
-function visMeny() {
-  fane('Meny', 'Alt det andre — samlet på ett sted.',
-    el('div', { class: 'kort' },
-      el('div', { class: 'liste' },
-        menyrad('kalender', 'Mosjonskalender', '#/kalender'),
-        menyrad('bok', 'Øktbiblioteket', '#/okter'),
-        menyrad('vekt', 'Styrke & fremgang', '#/styrke'),
-        menyrad('medalje', 'Merker', '#/merker'),
-        menyrad('sok', 'Øvelsesoppslag', '#/bibliotek'),
-        menyrad('gir', 'Innstillinger', '#/innstillinger'),
-        menyrad('info', 'Om Mova', '#/om'),
-      ),
-    ),
-    el('a', { class: 'oppmuntring', href: '#/kalender' },
-      el('span', { class: 'oppmuntring__disk' }, ikon('hjerte', 'ikon ikon--fylt')),
-      el('span', { class: 'oppmuntring__meta' },
-        el('span', { class: 'oppmuntring__tittel' }, 'Gjør bevegelse til en vane'),
-        el('span', { class: 'oppmuntring__tekst' }, 'Små steg hver dag gir varige resultater.'),
-      ),
-      el('span', { class: 'oppmuntring__chevron' }, ikon('chevron')),
-    ),
-  );
-}
-
-// ===========================================================================
 // Styrke & fremgang — oversikt på tvers av alle løft (M17)
 // ===========================================================================
 function visStyrke() {
@@ -496,14 +474,6 @@ function visStyrke() {
         el('span', { class: 'muskelrad__kg' }, `${m.kg.toLocaleString('nb-NO')} kg`),
       )),
     ),
-  );
-}
-
-function menyrad(ikonNavn, tekst, href) {
-  return el('a', { class: 'listerad', href },
-    el('span', { class: 'listerad__ikon' }, ikon(ikonNavn)),
-    el('span', { class: 'listerad__navn' }, tekst),
-    el('span', { class: 'listerad__chevron' }, ikon('chevron')),
   );
 }
 
@@ -712,19 +682,20 @@ function visOm() {
   );
 }
 
-// --- Tab-bar (Mova BottomNav: hvit flate, aktiv fane i aksentfargen) ---
+// --- Tab-bar (Mova BottomNav: hvit flate, aktiv fane i aksentfargen).
+// Profil står i midten, litt større enn de andre. ---
 function byggTabbar() {
   if (document.querySelector('.tabbar')) return;
-  const tab = (rute, ikonNavn, tekst) => el('a', {
-    class: 'tabbar__knapp', href: `#/${rute}`, 'data-rute': rute,
+  const tab = (rute, ikonNavn, tekst, ekstra = '') => el('a', {
+    class: 'tabbar__knapp' + ekstra, href: `#/${rute}`, 'data-rute': rute,
   }, el('span', { class: 'tabbar__ikon' }, ikon(ikonNavn)), el('span', { class: 'tabbar__tekst' }, tekst));
 
   document.body.append(el('nav', { class: 'tabbar' },
-    tab('hjem', 'hjem', 'Min dag'),
-    tab('beveg', 'loper', 'Beveg'),
-    tab('merker', 'medalje', 'Merker'),
+    tab('hjem', 'hjem', 'I dag'),
+    tab('beveg', 'loper', 'Trening'),
+    tab('merker', 'person', 'Profil', ' tabbar__knapp--stor'),
     tab('aktivitet', 'puls', 'Aktivitet'),
-    tab('meny', 'meny', 'Meny'),
+    tab('laer', 'bok', 'Lær'),
   ));
 }
 
@@ -762,7 +733,7 @@ function skjulSplash() {
 // --- Oppstart ---
 async function start() {
   try {
-    [bib] = await Promise.all([lastBibliotek(), lastOkter(), lastOvelsesinfo()]);
+    [bib] = await Promise.all([lastBibliotek(), lastOkter(), lastOvelsesinfo(), lastArtikler()]);
   } catch (e) {
     skjulSplash();
     tom(app);
