@@ -332,8 +332,6 @@ export function visMerkerSkjerm(mount) {
   );
   const menyKort = el('div', { class: 'kort' },
     el('div', { class: 'liste' },
-      lenke('kalender', 'Mosjonskalender', '#/kalender'),
-      lenke('bok', 'Øktbiblioteket', '#/okter'),
       lenke('vekt', 'Styrke & fremgang', '#/styrke'),
       lenke('sok', 'Øvelsesoppslag', '#/bibliotek'),
       lenke('gir', 'Innstillinger', '#/innstillinger'),
