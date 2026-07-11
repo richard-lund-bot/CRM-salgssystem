@@ -92,12 +92,12 @@ export function tilfeldigOkt() {
 
 // ===========================================================================
 // Biblioteket: #/okter?kat=styrke (fra hjem-flisene) og #/beveg (Beveg-
-// fanen) — samme skjerm, med det hvite Min dag-banneret øverst (profil,
-// bjelle, logo, filterknapp) og ukeskalender der dagene har bibliotekets
-// aksjoner: bakover = logg en glemt økt, i dag = start en økt (skroll til
-// bolkene), fremover = planlegg. Horisontalt skrollbare bolker per
-// ferdighetsnivå, kort i hjemflis-stilen, filterpanelet skjult til
-// filterknappen åpner det. #/okter?start=<id>&p=<planId> starter direkte.
+// fanen) — samme skjerm, med faneside-skallet øverst (banner m/ kalender-
+// knapp, dagsfasebilde, pull-to-refresh) og ukeskalender der dagene har
+// bibliotekets aksjoner: bakover = logg en glemt økt, i dag = start en økt
+// (skroll til bolkene), fremover = planlegg. Frostet filterknapp på linje
+// med sidetittelen; horisontalt skrollbare bolker per ferdighetsnivå, kort
+// i hjemflis-stilen. #/okter?start=<id>&p=<planId> starter direkte.
 // ===========================================================================
 function isoIdag() {
   const d = new Date();
@@ -199,13 +199,15 @@ export function visOkterSkjerm(mount) {
     else document.querySelector('.bibbolk')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  // Frostet, rund filterknapp — ligger på linje med sidetittelen, ikke i
+  // banneret, så banneret beholder kalenderknappen som på de andre fanene.
   const filterKnapp = el('button', {
-    class: 'ikonknapp ikonknapp--plain', type: 'button', 'aria-label': 'Filter',
+    class: 'ikonknapp ikonknapp--frostet', type: 'button', 'aria-label': 'Filter',
     onclick: () => { state.filterApen = !state.filterApen; tegn(); },
   }, ikon('filter'));
 
   const rot = el('div', { class: 'bib' });
-  lagFaneside(mount, { hoyre: filterKnapp, dagAksjon }).append(rot);
+  lagFaneside(mount, { dagAksjon }).append(rot);
 
   function tegn() {
     const bevegelse = KATEGORI_TIL_BEVEGELSE[state.kat];
@@ -216,8 +218,11 @@ export function visOkterSkjerm(mount) {
     tom(rot);
     rot.append(
       el('div', { class: 'bibhero' },
-        el('h1', { class: 'bibhero__tittel' }, KATEGORI_TITTEL[state.kat] || 'Øktbiblioteket'),
-        el('p', { class: 'bibhero__under' }, 'Velg en økt som passer dagen din.'),
+        el('div', { class: 'bibhero__titler' },
+          el('h1', { class: 'bibhero__tittel' }, KATEGORI_TITTEL[state.kat] || 'Øktbiblioteket'),
+          el('p', { class: 'bibhero__under' }, 'Velg en økt som passer dagen din.'),
+        ),
+        filterKnapp,
       ),
       el('main', { class: 'innhold bib__innhold' },
         state.filterApen && filterPanel(),
