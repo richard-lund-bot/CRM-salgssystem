@@ -81,39 +81,28 @@ export function infoKnapp(navn, { dose = null, somSide = false } = {}) {
   }, ikon('info'));
 }
 
+/** Bilde-slug for et øvelsesnavn (til miniatyrer under kjøring), eller null. */
+export function ovelseBilde(navn) {
+  return ovelseInfo(navn)?.bilde || null;
+}
+
 // --- Delt innholdsrenderer ---------------------------------------------------
+// Rekkefølge for skanning: bilde → dose → hurtige merker (muskler/utstyr) →
+// kort intro → «Slik gjør du» → tips. Merkene ligger høyt så du ser hva
+// øvelsen trener med ett blikk.
 function ovelseInnhold(navn, dose) {
   const info = ovelseInfo(navn);
   const bibE = bibOppslag(info?.navn || navn);
   const deler = [];
 
   if (info?.bilde) {
-    deler.push(el('div', { class: 'ovelsebilde' },
+    deler.push(el('figure', { class: 'ovelsebilde' },
       el('img', { src: `bilder/ovelser/${info.bilde}.webp`, alt: `Illustrasjon: ${info.navn}`, loading: 'lazy' }),
     ));
   }
 
   if (dose) {
     deler.push(el('p', { class: 'ovelsedose' }, ikon('repeat', 'ikon ikon--liten'), ` I denne økta: ${dose}`));
-  }
-
-  if (info) {
-    deler.push(el('p', { class: 'ovelsekort' }, info.kort));
-    if (info.steg?.length) {
-      deler.push(el('div', { class: 'kort' },
-        el('h2', {}, 'Slik gjør du'),
-        el('ol', { class: 'stegliste' }, ...info.steg.map((s) => el('li', {}, s))),
-      ));
-    }
-    if (info.tips?.length) {
-      deler.push(el('div', { class: 'kort' },
-        el('h2', {}, 'Tips'),
-        ...info.tips.map((t) => el('p', { class: 'ovelsetips' }, ikon('lyn', 'ikon ikon--liten'), ` ${t}`)),
-      ));
-    }
-  } else {
-    deler.push(el('p', { class: 'ovelsekort' },
-      'Ingen detaljert beskrivelse ennå — gjør øvelsen rolig og kontrollert, i ditt tempo.'));
   }
 
   const muskler = info?.muskler || [];
@@ -125,6 +114,25 @@ function ovelseInnhold(navn, dose) {
     ...utstyr.filter((u) => u && u !== 'ingen').slice(0, 4).map((u) => el('span', { class: 'tag' }, u)),
   ];
   if (tagger.length) deler.push(el('div', { class: 'ovelse__meta' }, ...tagger));
+
+  if (info) {
+    deler.push(el('p', { class: 'ovelsekort' }, info.kort));
+    if (info.steg?.length) {
+      deler.push(el('div', { class: 'kort' },
+        el('h2', { class: 'ovelse__h' }, 'Slik gjør du'),
+        el('ol', { class: 'stegliste' }, ...info.steg.map((s) => el('li', {}, s))),
+      ));
+    }
+    if (info.tips?.length) {
+      deler.push(el('div', { class: 'kort kort--tips' },
+        el('h2', { class: 'ovelse__h' }, 'Tips'),
+        ...info.tips.map((t) => el('p', { class: 'ovelsetips' }, ikon('lyn', 'ikon ikon--liten'), ` ${t}`)),
+      ));
+    }
+  } else {
+    deler.push(el('p', { class: 'ovelsekort' },
+      'Ingen detaljert beskrivelse ennå — gjør øvelsen rolig og kontrollert, i ditt tempo.'));
+  }
 
   return deler;
 }
@@ -142,10 +150,10 @@ export function visOvelseSkjerm(mount) {
       el('button', { class: 'topp__tilbake', type: 'button', title: 'Tilbake', onclick: () => history.back() }, '‹'),
       el('div', {},
         el('h1', { class: 'topp__tittel' }, info?.navn || navn || 'Øvelse'),
-        el('p', { class: 'topp__under' }, 'Øvelse'),
+        el('p', { class: 'topp__under' }, info?.muskler?.length ? info.muskler.join(' · ') : 'Øvelse'),
       ),
     ),
-    el('main', { class: 'innhold' }, ...ovelseInnhold(navn, dose)),
+    el('main', { class: 'innhold innhold--ovelse' }, ...ovelseInnhold(navn, dose)),
   );
 }
 

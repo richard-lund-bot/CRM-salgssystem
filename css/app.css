@@ -920,8 +920,54 @@ body.fokusmodus { padding-bottom: 0; }
 .flate__stor--hold { color: var(--varm-600); }
 .flate__stor--hvile { color: var(--dempet); }
 .flate__beskr { color: var(--tekst-2); font-size: 0.9rem; line-height: 1.5; max-width: 34ch; }
-.flate__neste { color: var(--dempet); font-size: 0.9rem; margin: 0; }
 .flate__hint { max-width: 32ch; margin: 6px auto 0; }
+
+/* «Neste»-kort under timeren — miniatyr + navn av kommende fase, med
+   nedtelling de siste 5 sekundene før bytte. */
+.oppnest {
+  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+  background: var(--bg-kort); border: 1px solid var(--kant); border-radius: var(--radius-lg);
+  padding: 9px 12px; box-shadow: var(--shadow-xs);
+  transition: border-color var(--dur-normal) var(--ease-standard),
+    box-shadow var(--dur-normal) var(--ease-standard), transform var(--dur-normal) var(--ease-spring);
+}
+.oppnest--tom { opacity: 0.7; }
+.oppnest__bilde {
+  width: 46px; height: 46px; flex: 0 0 auto; border-radius: var(--radius-sm);
+  overflow: hidden; background: var(--aksent-svak); display: grid; place-items: center;
+}
+.oppnest__bilde img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.oppnest__bilde .ikon { width: 22px; height: 22px; color: var(--aksent); }
+.oppnest__tekst { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.oppnest__merke {
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--dempet);
+}
+.oppnest__navn {
+  font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--tekst);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.oppnest__nedtell {
+  display: none; flex: 0 0 auto; width: 42px; height: 42px; border-radius: 50%;
+  background: var(--aksent); color: #fff;
+  font-family: var(--font-display); font-weight: 600; font-size: 20px;
+  place-items: center; font-variant-numeric: tabular-nums;
+}
+.oppnest--teller {
+  border-color: var(--aksent-kant); box-shadow: var(--shadow-md); transform: translateY(-1px);
+}
+.oppnest--teller .oppnest__merke { color: var(--aksent); }
+.oppnest--teller .oppnest__nedtell { display: grid; }
+.oppnest__nedtell--pop { animation: nedtell-pop var(--dur-normal) var(--ease-spring); }
+@keyframes nedtell-pop { from { transform: scale(0.6); } to { transform: scale(1); } }
+
+/* Klokka slår an de siste sekundene, i takt med nedtellingen. */
+.kjor-klokke--teller { color: var(--aksent); animation: klokke-tikk 1s var(--ease-standard) infinite; }
+@keyframes klokke-tikk { 0%, 100% { transform: scale(1); } 12% { transform: scale(1.06); } }
+@media (prefers-reduced-motion: reduce) {
+  .kjor-klokke--teller { animation: none; }
+  .oppnest__nedtell--pop { animation: none; }
+}
 .flate__knapper { display: flex; gap: 10px; width: 100%; margin-top: 6px; }
 .flate__knapper .knapp { flex: 1; }
 
@@ -1487,11 +1533,21 @@ body.fokusmodus { padding-bottom: 0; }
 .flate__tittelrad { display: flex; align-items: center; justify-content: center; gap: 8px; }
 
 /* Øvelsessiden */
+.innhold--ovelse { display: flex; flex-direction: column; gap: 14px; }
 .ovelsebilde {
-  border-radius: var(--radius-xl); overflow: hidden;
-  border: 1px solid var(--kant); box-shadow: var(--shadow-sm); background: #fff;
+  margin: 0; border-radius: var(--radius-xl); overflow: hidden;
+  border: 1px solid var(--kant); box-shadow: var(--shadow-md);
+  background: linear-gradient(160deg, var(--aksent-svak), var(--bg-kort) 70%);
 }
 .ovelsebilde img { width: 100%; display: block; aspect-ratio: 4 / 3; object-fit: cover; }
+.ovelse__h {
+  display: flex; align-items: center; gap: 8px;
+}
+.ovelse__h::before {
+  content: ''; width: 4px; height: 15px; border-radius: var(--radius-pill);
+  background: var(--aksent); flex: 0 0 auto;
+}
+.kort--tips { background: var(--varm-100); border-color: #F6E2CE; }
 .ovelsedose {
   margin: 0; display: flex; align-items: center; gap: 7px;
   background: var(--aksent-svak); color: var(--aksent-mork);

@@ -11,7 +11,7 @@ import { settPlanStatus } from './store.js';
 import { registrerOgLogg, visBevegelseFerdig } from './beveg.js';
 import { lagRing } from './animasjon.js';
 import { holdVaaken, slippVaaken } from './vaakenlaas.js';
-import { infoKnapp } from './ovelse.js';
+import { infoKnapp, ovelseInfo } from './ovelse.js';
 
 let gjeldendeOkt = null;
 let aktivInterval = null;
@@ -353,6 +353,50 @@ function pustFlate(blk) {
   return wrap;
 }
 
+// --- «Neste»-kort: miniatyr + navn av kommende fase, med nedtelling ---------
+// Viser hva som kommer etter denne fasen, og de siste 5 sekundene teller den
+// ned så øvelsesbyttet aldri kommer overraskende.
+function lagOppNest() {
+  const bilde = el('div', { class: 'oppnest__bilde' });
+  const merke = el('span', { class: 'oppnest__merke' }, 'Neste');
+  const navnEl = el('span', { class: 'oppnest__navn' }, '');
+  const nedtell = el('span', { class: 'oppnest__nedtell', 'aria-hidden': 'true' }, '');
+  const rot = el('div', { class: 'oppnest' },
+    bilde,
+    el('span', { class: 'oppnest__tekst' }, merke, navnEl),
+    nedtell,
+  );
+
+  function sett(fase) {
+    rot.classList.remove('oppnest--teller');
+    tom(bilde);
+    if (!fase) {
+      rot.classList.add('oppnest--tom');
+      merke.textContent = 'Snart ferdig';
+      navnEl.textContent = 'Siste fase';
+      bilde.append(ikon('sjekk'));
+      return;
+    }
+    rot.classList.remove('oppnest--tom');
+    const hvile = fase.type === 'hvile';
+    merke.textContent = hvile ? 'Straks' : 'Neste';
+    navnEl.textContent = fase.navn;
+    const slug = hvile ? null : ovelseInfo(fase.navn)?.bilde;
+    if (slug) bilde.append(el('img', { src: `bilder/ovelser/${slug}.webp`, alt: '', loading: 'lazy' }));
+    else bilde.append(ikon(hvile ? 'klokke' : 'vekt'));
+  }
+
+  function tell(sek) {
+    if (sek == null) { rot.classList.remove('oppnest--teller'); nedtell.textContent = ''; return; }
+    nedtell.textContent = String(sek);
+    rot.classList.add('oppnest--teller');
+    nedtell.classList.remove('oppnest__nedtell--pop'); void nedtell.offsetWidth;
+    nedtell.classList.add('oppnest__nedtell--pop');
+  }
+
+  return { el: rot, sett, tell };
+}
+
 // --- Kjøreflate: timer (intervall / hold / distanse) -----------------------
 function timerFlate(blk) {
   const plan = fasePlan(blk);
@@ -363,11 +407,15 @@ function timerFlate(blk) {
   const klokkeWrap = el('div', { class: 'kjor-klokke-wrap' }, ringSvg, klokke);
   const paramT = paramTekst(blk);
   const status = el('p', { class: 'dempet' }, plan.length > 1 ? `${plan.length} faser` : paramT);
-  const neste = el('p', { class: 'flate__neste' }, '');
+  const oppnest = lagOppNest();
   const infoWrap = el('span', { class: 'flate__info' });
   if (paramT) wrap.append(el('p', { class: 'flate__param' }, paramT));
-  wrap.append(el('div', { class: 'flate__tittelrad' }, fasenavn, infoWrap), klokkeWrap, neste, status);
+  wrap.append(el('div', { class: 'flate__tittelrad' }, fasenavn, infoWrap), klokkeWrap, oppnest.el, status);
+  oppnest.sett(plan[1] || null); // vis hva som venter allerede før start
+
   let totalSek = plan[0]?.sek || 1;
+  let naaI = 0;          // gjeldende faseindeks (for «neste»-oppslag)
+  let sisteTikk = null;  // sist annonserte nedtellingssekund (mot dobbelt-pling)
   wrap.append(timerKnapper(plan, {
     onFase: (f, i) => {
       fasenavn.textContent = f.navn;
@@ -375,14 +423,36 @@ function timerFlate(blk) {
       tom(infoWrap);
       const k = infoKnapp(f.navn);
       if (k) infoWrap.append(k);
-      const n = plan[i + 1];
-      neste.textContent = n ? `Neste: ${n.navn}` : 'Siste fase';
+      naaI = i;
+      sisteTikk = null;
+      oppnest.sett(plan[i + 1] || null);
       totalSek = f.sek || 1;
       ringSett(1);
       pling(f.type === 'arbeid' || f.type === 'hold' ? 880 : 520, 0.1);
     },
-    onSek: (s) => { klokke.textContent = formatTid(s); ringSett(s / totalSek); },
-    onFerdig: () => { fasenavn.textContent = 'Blokk ferdig ✓'; fasenavn.className = 'flate__stor'; klokke.textContent = '00:00'; neste.textContent = ''; ringSett(0); pling(990, 0.2); },
+    onSek: (s) => {
+      klokke.textContent = formatTid(s);
+      ringSett(s / totalSek);
+      // Siste 5 sek før et fasebytte: tell ned på «neste»-kortet + mykt tikk.
+      const harNeste = !!plan[naaI + 1];
+      const teller = harNeste && s >= 1 && s <= 5;
+      klokke.classList.toggle('kjor-klokke--teller', teller);
+      if (teller) {
+        oppnest.tell(s);
+        if (s !== sisteTikk) { sisteTikk = s; pling(700, 0.05); }
+      } else {
+        oppnest.tell(null);
+      }
+    },
+    onFerdig: () => {
+      fasenavn.textContent = 'Blokk ferdig ✓';
+      fasenavn.className = 'flate__stor';
+      klokke.textContent = '00:00';
+      klokke.classList.remove('kjor-klokke--teller');
+      oppnest.sett(null);
+      ringSett(0);
+      pling(990, 0.2);
+    },
   }));
   return wrap;
 }
