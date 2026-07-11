@@ -3,7 +3,7 @@
 //   - navigasjon/HTML: network-first med cache-fallback (fersk UI når nett finnes)
 //   - data/JS/CSS/ikoner: cache-first (raskt, fungerer offline)
 // Bump CACHE_VERSION for å rulle ut ny cache.
-const CACHE_VERSION = 'mova-m16-2.8.0';
+const CACHE_VERSION = 'mova-m16-2.9.0';
 const SKALL = [
   './',
   './index.html',
@@ -27,6 +27,7 @@ const SKALL = [
   './js/merker.js',
   './js/vaakenlaas.js',
   './js/ovelse.js',
+  './js/styrke.js',
   './js/animasjon.js',
   './manifest.webmanifest',
   './fonts/fredoka-var.woff2',

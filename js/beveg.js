@@ -332,12 +332,14 @@ export function visLoggforSkjerm(mount) {
 // Fullført-skjerm — «Du beveget deg. Det teller.» (spec §7/§15.5)
 // Feirer XP, nivåopprykk og nye merker — varm og rolig, aldri høylytt.
 // ===========================================================================
-export function visBevegelseFerdig(mount, resultat, { bevegelse, varighetMin, tittel = null, delvis = false } = {}) {
+export function visBevegelseFerdig(mount, resultat, { bevegelse, varighetMin, tittel = null, delvis = false, styrke = null } = {}) {
   const logg = hentLogg();
   const mom = bevegelsesMomentum(logg);
   const xpTall = el('div', { class: 'xp-stor' }, '+0');
   const nye = resultat.nyeMerker || [];
-  const feires = resultat.globalOpp || nye.length > 0;
+  const løft = styrke && styrke.volum > 0 ? styrke : null;
+  const feires = resultat.globalOpp || nye.length > 0 || !!løft;
+  const volumTall = løft && el('div', { class: 'loft__tall' }, '0 kg');
 
   tom(mount);
   mount.append(
@@ -351,6 +353,15 @@ export function visBevegelseFerdig(mount, resultat, { bevegelse, varighetMin, ti
         el('p', { class: 'hero__eyebrow' }, `${tittel || BEVEGELSE_NAVN[bevegelse] || 'Bevegelse'} · ${varighetMin} min`),
         xpTall,
         resultat.comeback && el('p', { class: 'ferdighero__comeback' }, 'Velkommen tilbake — dobbel XP.'),
+      ),
+      løft && el('div', { class: 'kort loft' },
+        el('p', { class: 'hero__eyebrow' }, 'Løftet i dag'),
+        volumTall,
+        el('p', { class: 'loft__under' }, `${løft.settAntall} sett · ${løft.ovelseAntall} ${løft.ovelseAntall === 1 ? 'øvelse' : 'øvelser'} · godt jobba 💪`),
+        løft.prs.length > 0 && el('div', { class: 'loft__prs' },
+          ...løft.prs.slice(0, 4).map((p) => el('span', { class: 'loft__pr' },
+            ikon('trofe', 'ikon ikon--liten'), ` Ny rekord: ${p.navn} (~${p.e1rm} kg)`)),
+        ),
       ),
       resultat.globalOpp && el('div', { class: 'kort levelup' },
         el('div', { class: 'levelup__glans' }),
@@ -381,4 +392,5 @@ export function visBevegelseFerdig(mount, resultat, { bevegelse, varighetMin, ti
     ),
   );
   tallOpp(xpTall, resultat.xp, { format: (n) => `+${n} XP` });
+  if (volumTall) tallOpp(volumTall, løft.volum, { ms: 1100, format: (n) => `${n.toLocaleString('nb-NO')} kg` });
 }

@@ -7,6 +7,7 @@
 // (overlegg) under kjøring så timer og økt-tilstand aldri forstyrres.
 import { el, tom, ikon } from './ui.js';
 import { MONSTER_NAVN } from './library.js';
+import { harStyrkedata, ovelseØkter, prognose, anbefaling, lagLinjegraf } from './styrke.js';
 
 let _info = null;     // rå liste fra data/ovelsesinfo.json
 let _oppslag = null;  // normalisert navn/alias → oppføring
@@ -134,7 +135,41 @@ function ovelseInnhold(navn, dose) {
       'Ingen detaljert beskrivelse ennå — gjør øvelsen rolig og kontrollert, i ditt tempo.'));
   }
 
+  const histNavn = info?.navn || navn;
+  if (harStyrkedata(histNavn)) deler.push(styrkehistorikk(histNavn));
+
   return deler;
+}
+
+// Styrkehistorikk: e1RM-graf, nøkkeltall, prognose, anbefaling og siste økter.
+function styrkehistorikk(navn) {
+  const okter = ovelseØkter(navn);
+  const siste = okter[okter.length - 1];
+  const pg = prognose(navn);
+  const anbef = anbefaling(navn, {});
+  const stat = (v, l) => el('div', { class: 'histstat' },
+    el('span', { class: 'histstat__verdi' }, v), el('span', { class: 'histstat__merk' }, l));
+  const kort = el('div', { class: 'kort kort--hist' },
+    el('h2', { class: 'ovelse__h' }, 'Din historikk'),
+    el('div', { class: 'histgraf' }, lagLinjegraf(okter.map((o) => o.e1rm))),
+    el('p', { class: 'histgraf__merk' }, 'Estimert 1RM over tid'),
+    el('div', { class: 'histstatrad' },
+      stat(`${Math.round(siste.e1rm)} kg`, 'est. 1RM'),
+      stat(`${Math.max(...okter.map((o) => o.toppVekt))} kg`, 'tyngste'),
+      stat(String(okter.length), okter.length === 1 ? 'økt' : 'økter'),
+    ),
+  );
+  if (pg) kort.append(el('p', { class: 'histprognose' }, ikon('graf', 'ikon ikon--liten'),
+    ` ${pg.perUke >= 0 ? 'På vei mot' : 'Trend'} ~${pg.om4Uker} kg est. 1RM om 4 uker (${pg.perUke >= 0 ? '+' : ''}${pg.perUke} kg/uke).`));
+  if (anbef.vekt) kort.append(el('p', { class: 'histanbef' }, ikon('lyn', 'ikon ikon--liten'),
+    ` Neste gang: prøv ${anbef.vekt} kg. ${anbef.tekst}`));
+  kort.append(el('div', { class: 'histliste' },
+    ...okter.slice(-5).reverse().map((o) => el('div', { class: 'histrad' },
+      el('span', { class: 'histrad__dato' }, o.dato),
+      el('span', { class: 'histrad__sett' }, `${o.toppVekt} kg · ${o.sett.length} sett`),
+      el('span', { class: 'histrad__vol' }, `${o.volum.toLocaleString('nb-NO')} kg`),
+    ))));
+  return kort;
 }
 
 // --- Dedikert side: #/ovelse?n=<navn>&d=<dose> --------------------------------

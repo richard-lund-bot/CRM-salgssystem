@@ -14,6 +14,7 @@ import { registrerOgLogg, visBevegelseFerdig } from './beveg.js';
 import { lagRing } from './animasjon.js';
 import { holdVaaken, slippVaaken } from './vaakenlaas.js';
 import { infoKnapp, ovelseInfo, ovelseBilde, visOvelseArk } from './ovelse.js';
+import { anbefaling, sisteSett, oppsummerOkt, loggførStyrkeokt } from './styrke.js';
 
 let gjeldendeOkt = null;
 let aktivInterval = null;
@@ -238,19 +239,6 @@ function parseDose(dose) {
   return r;
 }
 
-// «Vekt forrige gang»-hint: enkel lokal logg per øvelsesnavn (ikke synk).
-const LS_VEKT = 'trening.styrkevekt';
-function lesVekt() {
-  try { return JSON.parse(localStorage.getItem(LS_VEKT) || '{}') || {}; } catch { return {}; }
-}
-function skrivVekt(navn, vekt, reps) {
-  try {
-    const m = lesVekt();
-    m[navn] = { vekt, reps, dato: new Date().toISOString().slice(0, 10) };
-    localStorage.setItem(LS_VEKT, JSON.stringify(m));
-  } catch { /* lagring valgfri */ }
-}
-
 // Flater en blokk ut til en stegliste. Hovedblokkene (styrke) bygges opp som
 // sett: hvert reps-sett er selvstyrt (skriv vekt + reps), med en pausetimer
 // mellom settene. Andre reps-steg (oppvarming/nedtrapping) er enten en
@@ -332,8 +320,7 @@ export function visKjoreSkjerm(mount) {
   let stegSlutt = null;   // ts når tidsstyrt steg er ferdig (kjørende)
   let stegIgjenMs = 0;    // gjenstår (pauset / utimet)
   let sisteTikk = null;
-  const sistVekt = lesVekt();
-  const arbeidsVekt = { ...sistVekt }; // oppdateres i økta, mater inputfeltene
+  const arbeidsVekt = {}; // vekt brukt i denne økta per øvelse (mater feltene)
   const settLogg = [];
 
   const sesjonMs = () => sesjonAkkumMs + (sesjonStart ? Date.now() - sesjonStart : 0);
@@ -464,11 +451,15 @@ export function visKjoreSkjerm(mount) {
       naRingTall.textContent = String(g.settNr);
       naRingSett(g.settNr / g.settAv);
       naDose.textContent = `Sett ${g.settNr} av ${g.settAv} · mål ${g.reps} reps${g.perSide ? ' · per side' : ''}`;
-      const sist = arbeidsVekt[g.ovNavn];
-      vektInn.value = sist && Number.isFinite(sist.vekt) ? String(sist.vekt) : '';
+      const inn = arbeidsVekt[g.ovNavn];                       // satt tidligere i økta
+      const anbef = anbefaling(g.ovNavn, { reps: g.reps, sett: g.settAv });
+      const forrige = sisteSett(g.ovNavn);                     // topp-sett fra historikk
+      const forhaand = inn?.vekt ?? anbef.vekt ?? forrige?.vekt ?? null;
+      vektInn.value = Number.isFinite(forhaand) ? String(forhaand) : '';
       repsInn.value = g.reps ? String(g.reps) : '';
-      vektHint.textContent = sist && Number.isFinite(sist.vekt)
-        ? `sist: ${sist.vekt} kg${sist.reps ? ` × ${sist.reps}` : ''}` : 'ny øvelse';
+      vektHint.textContent = forrige
+        ? `sist ${forrige.vekt} kg × ${forrige.reps}${anbef.vekt ? ` · anbefalt ${anbef.vekt}` : ''}`
+        : (anbef.vekt ? `anbefalt ${anbef.vekt} kg` : 'ny øvelse — velg en trygg vekt');
     } else {
       naRingEnhet.textContent = 'sek';
       naDose.textContent = (g && g.type === 'hold' && g.settAv)
@@ -582,8 +573,8 @@ export function visKjoreSkjerm(mount) {
       const reps = parseInt(repsInn.value, 10);
       const v = Number.isFinite(vekt) ? vekt : null;
       const r = Number.isFinite(reps) ? reps : (g.reps || null);
-      settLogg.push({ ovNavn: g.ovNavn, settNr: g.settNr, vekt: v, reps: r });
-      if (v != null) { arbeidsVekt[g.ovNavn] = { vekt: v, reps: r }; skrivVekt(g.ovNavn, v, r); }
+      settLogg.push({ ovNavn: g.ovNavn, settNr: g.settNr, vekt: v, reps: r, perSide: !!g.perSide });
+      if (v != null) arbeidsVekt[g.ovNavn] = { vekt: v, reps: r };
     }
     if (!spiller) settSpill(true);
     if (!bytt()) return;
@@ -613,14 +604,14 @@ export function visKjoreSkjerm(mount) {
     tikk();
   }
 
-  function avsluttNaturlig() { stoppTimer(); fullfor(mount, okt, false); }
+  function avsluttNaturlig() { stoppTimer(); fullfor(mount, okt, false, settLogg); }
 
   function ferdigTrykk() {
-    if (bIdx >= okt.blokker.length - 1) { stoppTimer(); fullfor(mount, okt, false); return; }
+    if (bIdx >= okt.blokker.length - 1) { stoppTimer(); fullfor(mount, okt, false, settLogg); return; }
     const min = Math.max(1, gjortMin());
     if (confirm(`Avslutte økta nå? Vi teller ~${min} min du har gjort.`)) {
       stoppTimer();
-      fullfor(mount, { ...okt, varighetMin: min }, true);
+      fullfor(mount, { ...okt, varighetMin: min }, true, settLogg);
     }
   }
 
@@ -726,21 +717,25 @@ function fasePlan(blk) {
 // Fullføring — registreres som bevegelse (XP via registrerBevegelse) og
 // feires med samme varme ferdigskjerm som all annen bevegelse.
 // ===========================================================================
-function fullfor(mount, okt, delvis) {
+function fullfor(mount, okt, delvis, settLogg = []) {
   slippVaaken();
   // Planen hukes av først, så «Som planlagt»-merket kan feires på ferdigskjermen.
   if (okt.planId && !delvis) settPlanStatus(okt.planId, 'gjort');
+  // Styrke: oppsummer (volum + PR) MOT eksisterende logg, så lagre økta.
+  const styrke = settLogg.length ? oppsummerOkt(settLogg) : null;
+  if (styrke?.harData) loggførStyrkeokt(okt.navn, settLogg);
   const resultat = registrerOgLogg({
     bevegelse: okt.bevegelse || 'custom',
     varighetMin: okt.varighetMin,
     intensitet: okt.intensitet || 3,
     tittel: okt.navn,
     kilde: 'bibliotek',
-    ekstra: { oktId: okt.bibliotekId, planId: okt.planId || undefined, delvis: !!delvis },
+    ekstra: { oktId: okt.bibliotekId, planId: okt.planId || undefined, delvis: !!delvis, volumKg: styrke?.volum || undefined },
   });
   gjeldendeOkt = null;
   visBevegelseFerdig(mount, resultat, {
     bevegelse: okt.bevegelse, varighetMin: okt.varighetMin, tittel: okt.navn, delvis,
+    styrke: styrke?.harData ? styrke : null,
   });
 }
 
