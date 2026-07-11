@@ -25,6 +25,7 @@ import { nivaFraTotalXp } from './niva.js';
 import { dagensGnist, dagerMedAktivitet, okterHref } from './bevegelse.js';
 import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN } from './bibliotek-okter.js';
 import { fyllInn } from './animasjon.js';
+import { regionScores, anbefalingFraRegioner, lagKroppskart } from './kroppskart.js';
 import * as sync from './sync.js';
 import { krediterNye, stravaKort } from './strava.js';
 
@@ -152,11 +153,34 @@ function visHjem() {
     el('main', { class: 'innhold' },
       seksjonsHode(),
       bevegelsesGrid(),
+      restitusjonsKort(logg),
       // Heroen har alt en CTA når noe er planlagt eller påbegynt — da
       // trengs ikke anbefalingskortet i tillegg.
       !planer.length && minutterIdag === 0 && anbefalingKort(profil, logg, nå),
       streakKort(logg),
     ),
+  );
+}
+
+// Restitusjons-kroppskart (M17): tint fra grønn (frisk) til rød (nylig trent)
+// per kroppsregion, pluss en kroppskart-drevet «hva bør du trene nå»-anbefaling
+// med dyplenke til en passende øktkategori. Drives av hele loggen, så det vises
+// alltid — i motsetning til gnist-forslaget over.
+function restitusjonsKort(logg) {
+  const scores = regionScores(logg);
+  const kart = lagKroppskart();
+  requestAnimationFrame(() => kart.sett(scores));
+  const anbef = anbefalingFraRegioner(scores);
+  return el('section', { class: 'kort restitusjonskort' },
+    el('h2', { class: 'restitusjonskort__tittel' }, 'Restitusjon'),
+    kart.svg,
+    el('div', { class: 'kroppskart-forklaring' },
+      el('span', {}, 'Frisk'),
+      el('span', { class: 'kroppskart-forklaring__skala' }),
+      el('span', {}, 'Nylig trent'),
+    ),
+    el('a', { class: 'restitusjonskort__anbefaling', href: `#/okter?kat=${anbef.kat}` },
+      ikon('lyn', 'ikon ikon--liten'), el('span', {}, anbef.tekst)),
   );
 }
 

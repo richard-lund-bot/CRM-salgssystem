@@ -5,10 +5,11 @@
 // merkene er feiringen — streaks, prøv noe nytt, milepæler og mye rart.
 import { el, tom, ikon } from './ui.js';
 import { hentProfil, hentLogg, hentPlan } from './store.js';
-import { nivaFraTotalXp, nivaKostnad, ukeNokkel, prsFraLogg } from './niva.js';
-import { loggBevegelse } from './bevegelse.js';
+import { nivaFraTotalXp, nivaKostnad, ukeNokkel, prsFraLogg, nivaPerType } from './niva.js';
+import { loggBevegelse, NIVATYPE_NAVN } from './bevegelse.js';
+import { oktMedId } from './bibliotek-okter.js';
 import { fanesideMedTittel } from './banner.js';
-import { fyllInn } from './animasjon.js';
+import { fyllInn, lagRing } from './animasjon.js';
 
 const DAG = 86400000;
 
@@ -325,6 +326,27 @@ export function visMerkerSkjerm(mount) {
     );
   }
 
+  // Nivå per treningstype (M17): tre små ringer under det globale nivået.
+  // Per-økt `typer`-override brukes når øktbiblioteket er lastet; ellers arves
+  // typen fra bevegelsen på loggraden.
+  const nt = nivaPerType(hentLogg(), (o) => (o.oktId ? oktMedId(o.oktId)?.typer : null));
+  const typeRing = (id, farge) => {
+    const ni = nt[id];
+    const ring = lagRing(52);
+    requestAnimationFrame(() => ring.sett(ni.pct / 100));
+    return el('div', { class: `typeniva typeniva--${farge}` },
+      el('div', { class: 'typeniva__ring' }, ring.svg,
+        el('span', { class: 'typeniva__niva' }, String(ni.niva))),
+      el('span', { class: 'typeniva__navn' }, NIVATYPE_NAVN[id]),
+      el('span', { class: 'typeniva__sub' }, `${ni.igjen} XP igjen`),
+    );
+  };
+  const typerad = el('div', { class: 'kort typenivarad' },
+    typeRing('kondisjon', 'koral'),
+    typeRing('styrke', 'blaa'),
+    typeRing('mobilitet', 'teal'),
+  );
+
   const lenke = (ikonNavn, tekst, href) => el('a', { class: 'listerad', href },
     el('span', { class: 'listerad__ikon' }, ikon(ikonNavn)),
     el('span', { class: 'listerad__navn' }, tekst),
@@ -340,5 +362,5 @@ export function visMerkerSkjerm(mount) {
   );
 
   fanesideMedTittel(mount, { tittel: 'Profil', under: 'Nivået ditt, merkene dine — og alt det andre.' })
-    .append(hero, menyKort, ...MERKE_KATEGORIER.map(bolk));
+    .append(hero, typerad, menyKort, ...MERKE_KATEGORIER.map(bolk));
 }

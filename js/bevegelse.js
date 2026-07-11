@@ -47,6 +47,27 @@ export const KATEGORI_TIL_BEVEGELSE = Object.fromEntries(
   Object.entries(BEVEGELSE_TIL_KATEGORI).map(([b, k]) => [k, b]),
 );
 
+// --- Nivåtyper (M17): Kondisjon / Styrke / Mobilitet -----------------------
+// Én økt kan telle mot FLERE typer (HIIT = kondisjon+styrke, yoga =
+// styrke+mobilitet). Dette er standard «hovedvariant» per bevegelse; en
+// bibliotekøkt kan overstyre med sitt eget `typer`-felt (se data/okter.json).
+export const NIVATYPE_NAVN = { kondisjon: 'Kondisjon', styrke: 'Styrke', mobilitet: 'Mobilitet' };
+
+export const BEVEGELSE_TIL_NIVATYPER = {
+  walk: ['kondisjon'], run: ['kondisjon'], bike: ['kondisjon'],
+  hiit: ['kondisjon', 'styrke'],
+  strength: ['styrke'], bodyweight: ['styrke'],
+  yoga: ['styrke', 'mobilitet'], stretch: ['mobilitet'],
+  mobility: ['mobilitet'], recovery: ['mobilitet'],
+  sport: [], custom: [], // tvetydige — avgjøres av sekundærsignal i typerForLogg
+};
+
+export const KATEGORI_TIL_NIVATYPER = {
+  gatur: ['kondisjon'], lop: ['kondisjon'], sykkel: ['kondisjon'], hiit: ['kondisjon', 'styrke'],
+  styrke: ['styrke'], kroppsvekt: ['styrke'],
+  yoga: ['styrke', 'mobilitet'], toying: ['mobilitet'], mobilitet: ['mobilitet'], restitusjon: ['mobilitet'],
+};
+
 // Sporter for manuell logging — bare navn, ingen øvelsesdetaljer (§5.11).
 export const SPORTER = [
   'Fotball', 'Tennis / padel', 'Svømming', 'Ski', 'Basketball', 'Klatring',
