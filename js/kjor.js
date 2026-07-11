@@ -9,10 +9,8 @@
 // skjermen på. Fullføring registreres som bevegelse (XP via
 // registrerBevegelse) — samme varme ferdigskjerm som all annen bevegelse.
 import { el, tom, ikon } from './ui.js';
-import { settPlanStatus, hentProfil } from './store.js';
+import { settPlanStatus } from './store.js';
 import { registrerOgLogg, visBevegelseFerdig } from './beveg.js';
-import { beregnXp } from './bevegelse.js';
-import { nivaFraTotalXp } from './niva.js';
 import { lagRing } from './animasjon.js';
 import { holdVaaken, slippVaaken } from './vaakenlaas.js';
 import { infoKnapp, ovelseInfo, ovelseBilde, visOvelseArk } from './ovelse.js';
@@ -269,9 +267,6 @@ export function visKjoreSkjerm(mount) {
 
   const blokkMin = okt.blokker.reduce((s, b) => s + (b.min || 0), 0);
   const totalSek = Math.max(1, (okt.varighetMin || blokkMin || 1) * 60);
-  const profil = hentProfil() || {};
-  const nivaInfo = nivaFraTotalXp(profil.globalXp || 0);
-  const momentXp = Math.max(1, beregnXp(okt.varighetMin || 1, okt.bevegelse || 'custom', okt.intensitet || 3));
 
   // --- tilstand ---
   let bIdx = 0;
@@ -302,10 +297,7 @@ export function visKjoreSkjerm(mount) {
   const fase = dagsfaseNaa();
   const bg = el('div', { class: 'kjor2__bg', 'aria-hidden': 'true', style: `background-image:url('icons/brand/hero-${fase}.webp')` });
   const topp = el('header', { class: 'kjor2__topp' },
-    el('div', { class: 'kjor2__titler' },
-      el('h1', { class: 'kjor2__tittel' }, okt.navn),
-      el('p', { class: 'kjor2__under' }, okt.beskrivelse || `${okt.varighetMin} min`),
-    ),
+    el('h1', { class: 'kjor2__tittel' }, okt.navn),
     el('button', { class: 'kjor2__lukk', type: 'button', 'aria-label': 'Avslutt', onclick: () => lukk() }, ikon('kryss')),
   );
 
@@ -363,20 +355,6 @@ export function visKjoreSkjerm(mount) {
     nbRolle, nbListe,
   );
 
-  // --- momentum ---
-  const momBar = el('i', { class: 'kjor2-mom__fyll', style: `width:${nivaInfo.pct}%` });
-  const momentumKort = el('div', { class: 'kort kjor2-mom' },
-    el('span', { class: 'kjor2-mom__flamme' }, ikon('flamme')),
-    el('div', { class: 'kjor2-mom__midt' },
-      el('div', { class: 'kjor2-mom__rad' },
-        el('span', { class: 'kjor2-mom__tekst' }, `Momentum +${momentXp}`),
-        el('span', { class: 'kjor2-mom__xp' }, `${nivaInfo.inne} / ${nivaInfo.tilNeste} XP`),
-      ),
-      el('div', { class: 'kjor2-mom__bar' }, momBar),
-    ),
-    el('span', { class: 'kjor2-mom__niva' }, ikon('lyn', 'ikon ikon--liten'), `Nivå ${nivaInfo.niva}`),
-  );
-
   // --- bunnlinje ---
   const bunnPauseGlyph = el('span', { class: 'kjor2-bunn__glyph' }, ikon('play'));
   const bunnPauseTekst = el('span', {}, 'Start');
@@ -388,7 +366,7 @@ export function visKjoreSkjerm(mount) {
 
   monter(mount,
     el('section', { class: 'kjor2' }, bg, topp,
-      el('div', { class: 'kjor2__stabel' }, sesjonKort, naKort, nesteKort, nesteBlokkKort, momentumKort),
+      el('div', { class: 'kjor2__stabel' }, sesjonKort, naKort, nesteKort, nesteBlokkKort),
     ),
     bunn,
   );
