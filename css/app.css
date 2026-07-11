@@ -1040,6 +1040,22 @@ body.fokusmodus { padding-bottom: 0; }
 .kjor2-na--teller .kjor2-ring__tall { color: var(--aksent); }
 .kjor2-na--pause { opacity: 0.92; }
 
+/* Sett-innmating (styrke): vekt + reps + fullfør */
+.kjor2-sett { margin-top: 14px; display: flex; flex-direction: column; gap: 12px; }
+.kjor2-sett__felter { display: flex; gap: 10px; }
+.kjor2-sett__gruppe { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.kjor2-sett__merk { font-size: 12px; font-weight: 600; color: var(--tekst-2); }
+.kjor2-sett__felt {
+  width: 100%; box-sizing: border-box; font-family: var(--font-display); font-size: 22px; font-weight: 600;
+  text-align: center; padding: 12px 10px; border: 1px solid var(--kant-sterk); border-radius: var(--radius-md);
+  background: var(--bg-kort); color: var(--tekst); appearance: none; -webkit-appearance: none;
+}
+.kjor2-sett__felt::-webkit-outer-spin-button, .kjor2-sett__felt::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.kjor2-sett__felt:focus { outline: none; border-color: var(--aksent); box-shadow: 0 0 0 3px var(--aksent-svak); }
+.kjor2-sett__hint { font-size: 11.5px; color: var(--dempet); text-align: center; min-height: 14px; }
+.kjor2-sett__knapp { width: 100%; }
+.kjor2-na__neste { width: 100%; margin-top: 14px; }
+
 /* Neste øvelse */
 .kjor2-neste { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; cursor: pointer; padding: 12px; }
 .kjor2-neste--laas { cursor: default; }

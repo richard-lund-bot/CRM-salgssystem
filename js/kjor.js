@@ -214,16 +214,51 @@ function dagsfaseNaa() {
   return 'kveld';
 }
 
-// Romslig gjettet arbeidstid for et reps-steg, så guiden flyter av seg selv
-// som i mockupen — «Hopp over» tar deg videre med en gang du er ferdig.
-function gjettTid(dose, unilateral) {
-  const reps = parseInt(String(dose || '').match(/\d+/)?.[0] || '', 10);
-  const base = Number.isFinite(reps) ? reps * 3.5 : 45;
-  return Math.round(Math.min(120, Math.max(30, base * (unilateral ? 1.7 : 1))));
+// Tolker en dosetekst til {sett, reps, holdSek, pauseSek, timeSek, perSide}.
+// «3×8, pause 90 s» → 3 sett à 8 reps, 90 s pause. «3×30 s» → 3 sett à 30 s
+// hold. «×10» → 1 sett à 10. «2 min» → én tidsperiode.
+function parseDose(dose) {
+  const s = String(dose || '');
+  const r = { sett: 0, reps: 0, holdSek: 0, pauseSek: 0, timeSek: 0, perSide: /per side/i.test(s) };
+  const pause = s.match(/pause\s*(\d+)\s*s/i);
+  if (pause) r.pauseSek = parseInt(pause[1], 10);
+  const sr = s.match(/(\d+)\s*[×x]\s*(\d+)\s*(s)?/i);
+  if (sr) {
+    if (sr[3]) { r.sett = parseInt(sr[1], 10); r.holdSek = parseInt(sr[2], 10); }
+    else { r.sett = parseInt(sr[1], 10); r.reps = parseInt(sr[2], 10); }
+  } else {
+    const bare = s.match(/^\s*[×x]\s*(\d+)/i);
+    if (bare) { r.sett = 1; r.reps = parseInt(bare[1], 10); }
+    else {
+      const min = s.match(/(\d+)\s*min/i);
+      if (min) r.timeSek = parseInt(min[1], 10) * 60;
+      else { const sek = s.match(/(\d+)\s*s\b/i); if (sek && !r.pauseSek) r.timeSek = parseInt(sek[1], 10); }
+    }
+  }
+  return r;
 }
 
-// Flater en blokk ut til en stegliste: {navn, dose, sek, type, bilde?}.
-// sek === null ⇒ selvstyrt steg (flyt) som venter på «Hopp over».
+// «Vekt forrige gang»-hint: enkel lokal logg per øvelsesnavn (ikke synk).
+const LS_VEKT = 'trening.styrkevekt';
+function lesVekt() {
+  try { return JSON.parse(localStorage.getItem(LS_VEKT) || '{}') || {}; } catch { return {}; }
+}
+function skrivVekt(navn, vekt, reps) {
+  try {
+    const m = lesVekt();
+    m[navn] = { vekt, reps, dato: new Date().toISOString().slice(0, 10) };
+    localStorage.setItem(LS_VEKT, JSON.stringify(m));
+  } catch { /* lagring valgfri */ }
+}
+
+// Flater en blokk ut til en stegliste. Hovedblokkene (styrke) bygges opp som
+// sett: hvert reps-sett er selvstyrt (skriv vekt + reps), med en pausetimer
+// mellom settene. Andre reps-steg (oppvarming/nedtrapping) er enten en
+// tidsperiode («2 min») eller selvstyrte «gjør reps, gå videre».
+//   sett-steg: {type:'sett', ovNavn, settNr, settAv, reps, perSide, sek:null}
+//   hold-sett: {type:'hold', settNr, settAv, sek:holdSek}
+//   pause:     {type:'hvile', sek:pauseSek}
+//   tidssteg:  {type:'arbeid', sek} · selvstyrt: {type:'reps', sek:null}
 function lagSteg(blk) {
   const p = blk.parametre || {};
   if (blk.kind === 'pust' && p.takt) {
@@ -252,12 +287,30 @@ function lagSteg(blk) {
   if (blk.kind === 'kondisjon' || blk.formatKlasse === 'dist' || blk.formatKlasse === 'klokke' || blk.formatKlasse === 'hold') {
     return fasePlan(blk).map((f) => ({ navn: f.navn, dose: null, sek: f.sek, type: f.type }));
   }
-  return (blk.ovelser || []).map((o) => ({
-    navn: o.navn,
-    dose: [o.dose, o.unilateral && !/per side/i.test(o.dose || '') && 'per side'].filter(Boolean).join(' · ') || null,
-    sek: gjettTid(o.dose, o.unilateral),
-    type: blk.formatKlasse === 'hold' ? 'hold' : 'reps',
-  }));
+  const erHoved = blk.rolle === 'hoved';
+  const blkPause = p.pauseSek;
+  const steg = [];
+  for (const o of (blk.ovelser || [])) {
+    const d = parseDose(o.dose);
+    const perSide = o.unilateral || d.perSide;
+    const sett = d.sett || p.sett || 0;
+    if (erHoved && sett >= 1 && (d.reps || p.reps || d.holdSek)) {
+      const reps = d.reps || p.reps || 0;
+      const pause = d.pauseSek || blkPause || 75;
+      for (let s = 1; s <= sett; s++) {
+        steg.push(d.holdSek
+          ? { navn: o.navn, ovNavn: o.navn, type: 'hold', settNr: s, settAv: sett, holdSek: d.holdSek, perSide, sek: d.holdSek }
+          : { navn: o.navn, ovNavn: o.navn, type: 'sett', settNr: s, settAv: sett, reps, perSide, sek: null });
+        if (s < sett) steg.push({ navn: 'Pause', type: 'hvile', sek: pause });
+      }
+    } else if (d.timeSek) {
+      steg.push({ navn: o.navn, dose: o.dose, sek: d.timeSek, type: 'arbeid' });
+    } else {
+      const sub = [o.dose, perSide && !/per side/i.test(o.dose || '') && 'per side'].filter(Boolean).join(' · ') || null;
+      steg.push({ navn: o.navn, dose: sub, sek: null, type: 'reps' });
+    }
+  }
+  return steg;
 }
 
 export function visKjoreSkjerm(mount) {
@@ -279,6 +332,9 @@ export function visKjoreSkjerm(mount) {
   let stegSlutt = null;   // ts når tidsstyrt steg er ferdig (kjørende)
   let stegIgjenMs = 0;    // gjenstår (pauset / utimet)
   let sisteTikk = null;
+  const sistVekt = lesVekt();
+  const arbeidsVekt = { ...sistVekt }; // oppdateres i økta, mater inputfeltene
+  const settLogg = [];
 
   const sesjonMs = () => sesjonAkkumMs + (sesjonStart ? Date.now() - sesjonStart : 0);
   const gj = () => steg[sIdx];
@@ -327,12 +383,26 @@ export function visKjoreSkjerm(mount) {
   const naTip = el('p', { class: 'kjor2-na__tip' }, ikon('lyn', 'ikon ikon--liten'), naTipTekst);
   const naInfoWrap = el('span', { class: 'kjor2-na__info' });
   const naRingTall = el('div', { class: 'kjor2-ring__tall' }, '');
+  const naRingEnhet = el('span', { class: 'kjor2-ring__enhet' }, 'sek');
   const { svg: naRingSvg, sett: naRingSett } = lagRing(50);
   const naRing = el('div', { class: 'kjor2-ring' }, naRingSvg,
-    el('div', { class: 'kjor2-ring__inn' }, naRingTall, el('span', { class: 'kjor2-ring__enhet' }, 'sek')));
+    el('div', { class: 'kjor2-ring__inn' }, naRingTall, naRingEnhet));
+  // Sett-innmating (vises kun på sett-steg): vekt + reps + fullfør.
+  const vektInn = el('input', { class: 'kjor2-sett__felt', type: 'number', inputmode: 'decimal', min: '0', step: '0.5', placeholder: '0', 'aria-label': 'Vekt i kg' });
+  const repsInn = el('input', { class: 'kjor2-sett__felt', type: 'number', inputmode: 'numeric', min: '0', step: '1', 'aria-label': 'Antall reps' });
+  const vektHint = el('span', { class: 'kjor2-sett__hint' }, '');
+  const settBlokk = el('div', { class: 'kjor2-sett' },
+    el('div', { class: 'kjor2-sett__felter' },
+      el('label', { class: 'kjor2-sett__gruppe' }, el('span', { class: 'kjor2-sett__merk' }, 'Vekt (kg)'), vektInn, vektHint),
+      el('label', { class: 'kjor2-sett__gruppe' }, el('span', { class: 'kjor2-sett__merk' }, 'Reps'), repsInn),
+    ),
+    el('button', { class: 'knapp kjor2-sett__knapp', type: 'button', onclick: () => fullforSteg() }, ikon('sjekk', 'ikon ikon--liten'), 'Fullfør sett'),
+  );
+  // «Neste øvelse» for selvstyrte ikke-sett-steg (oppvarming/nedtrapping, flyt).
+  const nesteEnkel = el('button', { class: 'knapp knapp--sekundaer kjor2-na__neste', type: 'button', onclick: () => fullforSteg() }, 'Neste øvelse');
   const naKort = el('div', { class: 'kort kjor2-na' },
     el('div', { class: 'kjor2-na__topp' }, el('span', { class: 'kjor2-na__merke' }, 'NÅ'), naInfoWrap, naRing),
-    naBilde, naNavn, naDose, naTip,
+    naBilde, naNavn, naDose, naTip, settBlokk, nesteEnkel,
   );
 
   // --- neste øvelse ---
@@ -376,21 +446,42 @@ export function visKjoreSkjerm(mount) {
     const g = gj();
     tom(naBilde); naBilde.append(stegBilde(g));
     naNavn.textContent = g ? g.navn : '';
-    naDose.textContent = doseTekst(g);
     const tip = g && ovelseInfo(g.navn)?.tips?.[0];
     naTip.style.display = tip ? '' : 'none';
     naTipTekst.textContent = tip ? ` ${tip}` : '';
     tom(naInfoWrap);
     const ik = g && infoKnapp(g.navn);
     if (ik) naInfoWrap.append(ik);
-    naRing.style.visibility = g && g.sek ? '' : 'hidden';
+
+    const erSett = !!(g && g.type === 'sett');
+    const selvstyrt = !!(g && !g.sek && !erSett); // oppvarming/nedtrapping reps, flyt
+    settBlokk.style.display = erSett ? '' : 'none';
+    nesteEnkel.style.display = selvstyrt ? '' : 'none';
+    naRing.style.visibility = (g && g.sek) || erSett ? '' : 'hidden';
+
+    if (erSett) {
+      naRingEnhet.textContent = `av ${g.settAv}`;
+      naRingTall.textContent = String(g.settNr);
+      naRingSett(g.settNr / g.settAv);
+      naDose.textContent = `Sett ${g.settNr} av ${g.settAv} · mål ${g.reps} reps${g.perSide ? ' · per side' : ''}`;
+      const sist = arbeidsVekt[g.ovNavn];
+      vektInn.value = sist && Number.isFinite(sist.vekt) ? String(sist.vekt) : '';
+      repsInn.value = g.reps ? String(g.reps) : '';
+      vektHint.textContent = sist && Number.isFinite(sist.vekt)
+        ? `sist: ${sist.vekt} kg${sist.reps ? ` × ${sist.reps}` : ''}` : 'ny øvelse';
+    } else {
+      naRingEnhet.textContent = 'sek';
+      naDose.textContent = (g && g.type === 'hold' && g.settAv)
+        ? `Sett ${g.settNr} av ${g.settAv} · ${g.holdSek} s hold${g.perSide ? ' · per side' : ''}`
+        : doseTekst(g);
+    }
 
     const n = nesteSteg();
     if (n) {
       nesteKort.style.display = '';
       tom(nesteBilde); nesteBilde.append(stegBilde(n));
       nesteNavn.textContent = n.navn;
-      nesteDose.textContent = doseTekst(n);
+      nesteDose.textContent = n.type === 'sett' ? `Sett ${n.settNr}/${n.settAv} · ${n.reps} reps` : doseTekst(n);
       nesteMerke.textContent = steg[sIdx + 1] ? 'Neste øvelse' : 'Neste blokk';
       nesteKort._navn = ovelseInfo(n.navn) ? n.navn : null;
       nesteKort.classList.toggle('kjor2-neste--laas', !nesteKort._navn);
@@ -404,12 +495,12 @@ export function visKjoreSkjerm(mount) {
       nbTeller.textContent = `Blokk ${bIdx + 2} av ${okt.blokker.length}`;
       nbRolle.textContent = `${rolleNavn(nb.rolle)} · ${nb.formatNavn}`;
       tom(nbListe);
-      const vist = [];
-      for (const x of lagSteg(nb)) { if (!vist.some((v) => v.navn === x.navn)) vist.push(x); if (vist.length >= 4) break; }
-      vist.forEach((x) => nbListe.append(el('div', { class: 'kjor2-nb__rad' },
-        el('span', { class: 'kjor2-nb__ikon' }, ikon(x.type === 'reps' ? 'vekt' : x.type === 'flyt' ? 'yoga' : 'stoppeklokke')),
-        el('span', { class: 'kjor2-nb__navn' }, x.navn),
-        el('span', { class: 'kjor2-nb__tid' }, x.dose || (x.sek ? tidTekst(x.sek) : '')),
+      const nbIkon = nb.formatKlasse === 'hold' ? 'stoppeklokke' : nb.kind === 'sekvens' ? 'yoga'
+        : nb.kind === 'pust' ? 'hjerte' : nb.kind === 'kondisjon' ? 'loper' : 'vekt';
+      (nb.ovelser || []).slice(0, 4).forEach((o) => nbListe.append(el('div', { class: 'kjor2-nb__rad' },
+        el('span', { class: 'kjor2-nb__ikon' }, ikon(nbIkon)),
+        el('span', { class: 'kjor2-nb__navn' }, o.navn),
+        el('span', { class: 'kjor2-nb__tid' }, String(o.dose || '').split(',')[0]),
       )));
     }
     blokkTeller.textContent = `Blokk ${bIdx + 1} av ${okt.blokker.length}`;
@@ -433,7 +524,7 @@ export function visKjoreSkjerm(mount) {
     barFyll.style.width = `${(sp * 100).toFixed(1)}%`;
 
     const g = gj();
-    if (!(g && g.sek)) { naRingTall.textContent = '—'; return; }
+    if (!(g && g.sek)) return; // sett/selvstyrt: tegnSteg eier NÅ-ringen
 
     let rem;
     if (spiller && stegSlutt != null) {
@@ -474,6 +565,27 @@ export function visKjoreSkjerm(mount) {
 
   function hopp() {
     if (!startet) { startet = true; }
+    if (!bytt()) return;
+    tegnSteg();
+    nyTiming();
+    oppdaterPause();
+    tikk();
+  }
+
+  // Loggfør et sett (vekt + reps) og gå videre — brukes av «Fullfør sett» og
+  // av «Neste øvelse» på selvstyrte steg. Starter sesjonsklokka om nødvendig
+  // så pausetimeren mellom sett løper.
+  function fullforSteg() {
+    const g = gj();
+    if (g && g.type === 'sett') {
+      const vekt = parseFloat(String(vektInn.value).replace(',', '.'));
+      const reps = parseInt(repsInn.value, 10);
+      const v = Number.isFinite(vekt) ? vekt : null;
+      const r = Number.isFinite(reps) ? reps : (g.reps || null);
+      settLogg.push({ ovNavn: g.ovNavn, settNr: g.settNr, vekt: v, reps: r });
+      if (v != null) { arbeidsVekt[g.ovNavn] = { vekt: v, reps: r }; skrivVekt(g.ovNavn, v, r); }
+    }
+    if (!spiller) settSpill(true);
     if (!bytt()) return;
     tegnSteg();
     nyTiming();
