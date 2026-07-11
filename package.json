@@ -7,13 +7,14 @@
   "scripts": {
     "merge": "node scripts/merge-parts.mjs",
     "validate": "node scripts/validate.mjs",
-    "test": "npm run test:bevegelse && npm run test:merker && npm run test:sync && npm run test:strava",
+    "test": "npm run test:bevegelse && npm run test:merker && npm run test:ovelser && npm run test:sync && npm run test:strava",
     "test:bevegelse": "node scripts/smoke-bevegelse.mjs",
     "test:merker": "node scripts/smoke-merker.mjs",
     "test:sync": "node scripts/smoke-sync.mjs",
     "test:strava": "node scripts/smoke-strava.mjs",
     "sjekk-versjon": "node scripts/sjekk-cache-versjon.mjs",
     "installer-hooks": "node scripts/installer-hooks.mjs",
-    "prepare": "node scripts/installer-hooks.mjs"
+    "prepare": "node scripts/installer-hooks.mjs",
+    "test:ovelser": "node scripts/smoke-ovelser.mjs"
   }
 }

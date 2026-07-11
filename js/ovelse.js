@@ -1,0 +1,175 @@
+// Øvelsessider (M16): hver øvelse i appen kan åpnes via en (i)-knapp og har
+// en dedikert side med beskrivelse, utførelse, tips, muskler og utstyr.
+// Innholdet bor i data/ovelsesinfo.json og slås opp på navn — øktene bærer
+// bare øvelsesnavn, så oppslaget normaliserer varianter («Katt–ku, myk og
+// langsom» → «katt-ku») og følger alias-lister. To visninger deler samme
+// innhold: en egen side (#/ovelse?n=…) for review/oppslag, og et bunnark
+// (overlegg) under kjøring så timer og økt-tilstand aldri forstyrres.
+import { el, tom, ikon } from './ui.js';
+import { MONSTER_NAVN } from './library.js';
+
+let _info = null;     // rå liste fra data/ovelsesinfo.json
+let _oppslag = null;  // normalisert navn/alias → oppføring
+let _bib = null;      // øvelsesoppslaget (exercises.json) som fallback
+
+export function settBib(bib) { _bib = bib; }
+
+/** Laster øvelsesinfoen (kalles ved oppstart; cache i minne + SW). */
+export async function lastOvelsesinfo() {
+  if (_info) return _info;
+  const res = await fetch('data/ovelsesinfo.json');
+  if (!res.ok) throw new Error(`Kunne ikke laste øvelsesinfo (${res.status})`);
+  _info = await res.json();
+  _oppslag = new Map();
+  for (const o of _info) {
+    for (const navn of [o.navn, ...(o.alias || [])]) {
+      _oppslag.set(grovNokkel(navn), o);
+      _oppslag.set(finNokkel(navn), o);
+    }
+  }
+  return _info;
+}
+
+// --- Navneoppslag -----------------------------------------------------------
+// Grov nøkkel: bare små bokstaver og ens bindestreker — treffer eksakte navn
+// og alias. Fin nøkkel: uten parenteser og halen etter komma/kolon — treffer
+// varianter som «Utfall (3 s ned)» og «Tyrkisk oppreisning, rolig tempo».
+function grovNokkel(navn) {
+  return String(navn).toLowerCase().replace(/[–—]/g, '-').replace(/\s+/g, ' ').trim();
+}
+
+function finNokkel(navn) {
+  let n = grovNokkel(navn);
+  n = n.replace(/\(.*?\)/g, '');
+  n = n.split(',')[0].split(':')[0].split('·')[0]; // «Knebøy · sett 1/3» → «knebøy»
+  n = n.replace(/[^a-z0-9æøå\- ]/g, ' ');
+  return n.replace(/\s+/g, ' ').trim();
+}
+
+/** Oppføringen for et øvelsesnavn, eller null. */
+export function ovelseInfo(navn) {
+  if (!_oppslag || !navn) return null;
+  return _oppslag.get(grovNokkel(navn)) || _oppslag.get(finNokkel(navn)) || null;
+}
+
+// Fallback: metadata fra øvelsesoppslaget (exercises.json) på navnetreff.
+function bibOppslag(navn) {
+  if (!_bib) return null;
+  const mål = finNokkel(navn);
+  return _bib.exercises.find((e) => finNokkel(e.navn) === mål) || null;
+}
+
+// --- (i)-knappen -------------------------------------------------------------
+/**
+ * Liten info-knapp for et øvelsesnavn — null hvis vi ikke har noe å vise.
+ * `somSide` åpner den dedikerte siden (review/oppslag); ellers åpnes
+ * bunnarket (kjøring — ingenting avbrytes).
+ */
+export function infoKnapp(navn, { dose = null, somSide = false } = {}) {
+  if (!ovelseInfo(navn) && !bibOppslag(navn)) return null;
+  return el('button', {
+    class: 'infoknapp', type: 'button', 'aria-label': `Om øvelsen ${navn}`,
+    onclick: (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      if (somSide) {
+        location.hash = `#/ovelse?n=${encodeURIComponent(navn)}${dose ? `&d=${encodeURIComponent(dose)}` : ''}`;
+      } else {
+        visOvelseArk(navn, dose);
+      }
+    },
+  }, ikon('info'));
+}
+
+// --- Delt innholdsrenderer ---------------------------------------------------
+function ovelseInnhold(navn, dose) {
+  const info = ovelseInfo(navn);
+  const bibE = bibOppslag(info?.navn || navn);
+  const deler = [];
+
+  if (info?.bilde) {
+    deler.push(el('div', { class: 'ovelsebilde' },
+      el('img', { src: `bilder/ovelser/${info.bilde}.webp`, alt: `Illustrasjon: ${info.navn}`, loading: 'lazy' }),
+    ));
+  }
+
+  if (dose) {
+    deler.push(el('p', { class: 'ovelsedose' }, ikon('repeat', 'ikon ikon--liten'), ` I denne økta: ${dose}`));
+  }
+
+  if (info) {
+    deler.push(el('p', { class: 'ovelsekort' }, info.kort));
+    if (info.steg?.length) {
+      deler.push(el('div', { class: 'kort' },
+        el('h2', {}, 'Slik gjør du'),
+        el('ol', { class: 'stegliste' }, ...info.steg.map((s) => el('li', {}, s))),
+      ));
+    }
+    if (info.tips?.length) {
+      deler.push(el('div', { class: 'kort' },
+        el('h2', {}, 'Tips'),
+        ...info.tips.map((t) => el('p', { class: 'ovelsetips' }, ikon('lyn', 'ikon ikon--liten'), ` ${t}`)),
+      ));
+    }
+  } else {
+    deler.push(el('p', { class: 'ovelsekort' },
+      'Ingen detaljert beskrivelse ennå — gjør øvelsen rolig og kontrollert, i ditt tempo.'));
+  }
+
+  const muskler = info?.muskler || [];
+  const utstyr = info?.utstyr
+    || (bibE ? [...new Set(bibE.varianter.flatMap((v) => v.utstyr))].map((u) => _bib?.utstyrMap?.get(u)?.navn || u) : []);
+  const tagger = [
+    ...muskler.map((m) => el('span', { class: 'tag tag--mod' }, m)),
+    ...(bibE ? [el('span', { class: 'tag' }, MONSTER_NAVN[bibE.monster] || bibE.monster)] : []),
+    ...utstyr.filter((u) => u && u !== 'ingen').slice(0, 4).map((u) => el('span', { class: 'tag' }, u)),
+  ];
+  if (tagger.length) deler.push(el('div', { class: 'ovelse__meta' }, ...tagger));
+
+  return deler;
+}
+
+// --- Dedikert side: #/ovelse?n=<navn>&d=<dose> --------------------------------
+export function visOvelseSkjerm(mount) {
+  const params = new URLSearchParams(location.hash.split('?')[1] || '');
+  const navn = params.get('n') || '';
+  const dose = params.get('d') || null;
+  const info = ovelseInfo(navn);
+
+  tom(mount);
+  mount.append(
+    el('header', { class: 'topp topp--kjor' },
+      el('button', { class: 'topp__tilbake', type: 'button', title: 'Tilbake', onclick: () => history.back() }, '‹'),
+      el('div', {},
+        el('h1', { class: 'topp__tittel' }, info?.navn || navn || 'Øvelse'),
+        el('p', { class: 'topp__under' }, 'Øvelse'),
+      ),
+    ),
+    el('main', { class: 'innhold' }, ...ovelseInnhold(navn, dose)),
+  );
+}
+
+// --- Bunnark: overlegg som ikke forstyrrer økta -------------------------------
+export function visOvelseArk(navn, dose = null) {
+  const info = ovelseInfo(navn);
+  document.querySelector('.ark')?.remove(); // aldri to ark oppå hverandre
+
+  const panel = el('div', { class: 'ark__panel', role: 'dialog', 'aria-label': `Om øvelsen ${navn}` },
+    el('i', { class: 'ark__grip', 'aria-hidden': 'true' }),
+    el('div', { class: 'ark__hode' },
+      el('h2', { class: 'ark__tittel' }, info?.navn || navn),
+      el('button', { class: 'ikonknapp', type: 'button', 'aria-label': 'Lukk', onclick: lukk }, ikon('kryss')),
+    ),
+    el('div', { class: 'ark__innhold' }, ...ovelseInnhold(navn, dose)),
+  );
+  const ark = el('div', { class: 'ark' }, panel);
+  ark.addEventListener('click', (ev) => { if (ev.target === ark) lukk(); });
+
+  function lukk() {
+    ark.classList.add('ark--lukker');
+    setTimeout(() => ark.remove(), 220);
+  }
+
+  document.body.append(ark);
+  requestAnimationFrame(() => ark.classList.add('ark--apen'));
+}

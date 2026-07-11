@@ -1,0 +1,2599 @@
+[
+ {
+  "navn": "Marsj på stedet",
+  "kort": "Lav og trygg oppvarming: løft knærne vekselvis i gangtempo og sving armene med.",
+  "steg": [
+   "Stå med god holdning og løft ett kne av gangen til hoftehøyde eller lavere.",
+   "Sving motsatt arm frem, som når du går.",
+   "Hold et jevnt tempo du kan snakke i."
+  ],
+  "alias": [
+   "Marsj på stedet, rolig",
+   "Gange/marsj på stedet",
+   "Marsj eller lett jogg",
+   "Kneløft"
+  ],
+  "tips": [
+   "Trekk opp tempoet eller løft knærne høyere hvis du vil ha mer varme."
+  ],
+  "muskler": [
+   "Hofter",
+   "Lår",
+   "Puls"
+  ]
+ },
+ {
+  "navn": "Lett jogg på stedet",
+  "kort": "Myk jogging på stedet — hælene lander lett, pulsen kryper rolig oppover.",
+  "steg": [
+   "Jogg på stedet med korte, lette steg.",
+   "Land mykt på forfoten og la hælene kysse gulvet.",
+   "Slapp av i skuldrene og pust rolig."
+  ],
+  "alias": [
+   "Jogg på stedet"
+  ],
+  "tips": [
+   "Bytt til marsj når som helst — varmen kommer uansett."
+  ],
+  "muskler": [
+   "Legger",
+   "Lår",
+   "Puls"
+  ]
+ },
+ {
+  "navn": "Rolig gange",
+  "kort": "Gange i behagelig tempo — brukes som oppvarming, pause mellom intervaller og nedtrapping.",
+  "steg": [
+   "Gå i et tempo der du lett kan snakke.",
+   "La armene svinge naturlig og se fremover.",
+   "Bruk gangen til å kjenne at pusten roer seg."
+  ],
+  "alias": [
+   "Rolig kondis",
+   "Rask gange"
+  ],
+  "muskler": [
+   "Puls"
+  ]
+ },
+ {
+  "navn": "Lett kondis",
+  "kort": "Valgfri lett kondisjon — trappegang, hoppetau-bevegelse uten tau eller rask marsj.",
+  "steg": [
+   "Velg en bevegelse som får pulsen litt opp: trapper, marsj eller små hopp.",
+   "Hold det lett — du skal bli varm, ikke sliten."
+  ],
+  "alias": [
+   "Lett kondis (trappegang/hopp uten tau)"
+  ],
+  "muskler": [
+   "Puls"
+  ]
+ },
+ {
+  "navn": "Rolige jumping jacks",
+  "kort": "Klassisk hoppende sprikhopp i rolig tempo — armer og bein ut og inn samtidig.",
+  "steg": [
+   "Hopp føttene ut til siden mens armene løftes ut og opp.",
+   "Hopp tilbake og senk armene i én myk bevegelse.",
+   "Land mykt med lett bøyde knær."
+  ],
+  "tips": [
+   "Uten hopp: step-jacks — sett ett bein ut til siden av gangen."
+  ],
+  "muskler": [
+   "Puls",
+   "Skuldre",
+   "Legger"
+  ]
+ },
+ {
+  "navn": "Armsirkler",
+  "kort": "Store, rolige sirkler med strake armer — varmer opp skuldrene i alle retninger.",
+  "steg": [
+   "Strekk armene ut til siden.",
+   "Tegn store sirkler fremover i rolig tempo.",
+   "Bytt retning halvveis."
+  ],
+  "alias": [
+   "Armsvinger"
+  ],
+  "tips": [
+   "Start med små sirkler og la dem vokse."
+  ],
+  "muskler": [
+   "Skuldre"
+  ]
+ },
+ {
+  "navn": "Skulderruller",
+  "kort": "Rull skuldrene i store, myke sirkler — løsner nakke- og skulderparti.",
+  "steg": [
+   "Løft skuldrene mot ørene.",
+   "Rull dem bakover og ned i en jevn sirkel.",
+   "Gjenta og bytt retning."
+  ],
+  "alias": [
+   "Skulderrulling",
+   "Skulderrull"
+  ],
+  "muskler": [
+   "Skuldre",
+   "Nakke"
+  ]
+ },
+ {
+  "navn": "Hofterotasjoner",
+  "kort": "Store sirkler med hoftene — som å snurre en rockering i sakte film.",
+  "steg": [
+   "Stå med føttene i hoftebreddes avstand og hendene på hoftene.",
+   "Tegn store, rolige sirkler med hoftene.",
+   "Bytt retning halvveis."
+  ],
+  "alias": [
+   "Hoftesirkler",
+   "Hoftesirkler stående"
+  ],
+  "muskler": [
+   "Hofter",
+   "Korsrygg"
+  ]
+ },
+ {
+  "navn": "Ankelsirkler",
+  "kort": "Rolige sirkler med ankelen — smører leddet før gange, løp og knebøy.",
+  "steg": [
+   "Løft én fot litt fra gulvet (hold i noe ved behov).",
+   "Tegn rolige sirkler med tærne, begge retninger.",
+   "Bytt fot."
+  ],
+  "muskler": [
+   "Ankler"
+  ]
+ },
+ {
+  "navn": "Håndleddssirkler",
+  "kort": "Myke sirkler og vipp med håndleddene — forbereder press- og støtteøvelser.",
+  "steg": [
+   "Flett fingrene og tegn rolige åttetall med håndleddene.",
+   "Vipp deretter hendene opp og ned med strake armer.",
+   "Rist løst ut til slutt."
+  ],
+  "alias": [
+   "Håndleddssirkler og -vipp",
+   "Håndleddstøy"
+  ],
+  "muskler": [
+   "Håndledd",
+   "Underarmer"
+  ]
+ },
+ {
+  "navn": "Nakkebevegelser side til side",
+  "kort": "Rolig nakkeoppmykning: se til side, tilbake til midten, og over til andre siden.",
+  "steg": [
+   "Sitt eller stå høyt og senk skuldrene.",
+   "Vri hodet rolig mot én side og stopp der det kjennes behagelig.",
+   "Hold et par pust og bytt side."
+  ],
+  "tips": [
+   "Aldri press — nakken liker små, rolige bevegelser."
+  ],
+  "muskler": [
+   "Nakke"
+  ]
+ },
+ {
+  "navn": "Skulderrotasjoner med lett manual",
+  "kort": "Utadrotasjon med lett vekt — vekker rotatorcuffen før press og roing.",
+  "steg": [
+   "Hold en lett manual med albuen inntil siden, bøyd 90 grader.",
+   "Rotér underarmen ut til siden, rolig og kontrollert.",
+   "Tilbake til start uten å slippe albuen fra kroppen."
+  ],
+  "tips": [
+   "Dette skal kjennes lett — det er smøring, ikke styrketrening."
+  ],
+  "muskler": [
+   "Skuldre",
+   "Rotatorcuff"
+  ],
+  "utstyr": [
+   "Manual"
+  ]
+ },
+ {
+  "navn": "Skulderrotasjoner med tom stang",
+  "kort": "Rolige rotasjoner og press med tom stang — forbereder skuldrene på baseløftene.",
+  "steg": [
+   "Hold stangen med bredt grep foran kroppen.",
+   "Løft den rolig over hodet og litt bak, så langt det er behagelig.",
+   "Tilbake foran hoften i samme rolige tempo."
+  ],
+  "muskler": [
+   "Skuldre",
+   "Øvre rygg"
+  ],
+  "utstyr": [
+   "Vektstang"
+  ]
+ },
+ {
+  "navn": "Skulderdislokater med strikk",
+  "kort": "Med strak arm føres strikken fra hoften, over hodet og bak ryggen — full skuldersirkel.",
+  "steg": [
+   "Hold strikken bredt med strake armer foran hoftene.",
+   "Før den rolig opp over hodet og videre bak, uten å bøye albuene.",
+   "Kom tilbake samme vei. Bredere grep = lettere."
+  ],
+  "tips": [
+   "Kjenner du klyping i skulderen: ta bredere grep."
+  ],
+  "muskler": [
+   "Skuldre",
+   "Bryst"
+  ],
+  "utstyr": [
+   "Strikk"
+  ]
+ },
+ {
+  "navn": "Scapula-armhevinger",
+  "kort": "I plankeposisjon: skyv skulderbladene fra hverandre og slipp dem sammen — armene holdes strake.",
+  "steg": [
+   "Stå i planke på strake armer.",
+   "Uten å bøye albuene: senk brystet litt ved å klemme skulderbladene sammen.",
+   "Skyv deretter gulvet fra deg så øvre rygg blir rund. Gjenta rolig."
+  ],
+  "tips": [
+   "Liten bevegelse — all jobben skjer mellom skulderbladene."
+  ],
+  "muskler": [
+   "Skulderblad",
+   "Serratus"
+  ]
+ },
+ {
+  "navn": "Skulderklapp i planke",
+  "kort": "Planke der du løfter én hånd og klapper motsatt skulder — anti-rotasjon og skulderkontroll.",
+  "steg": [
+   "Stå i planke med føttene litt bredere enn vanlig.",
+   "Løft én hånd rolig og legg den på motsatt skulder.",
+   "Sett den ned uten at hoftene vrir seg. Bytt side."
+  ],
+  "tips": [
+   "Tenk at en kopp vann står på korsryggen — den skal ikke velte."
+  ],
+  "muskler": [
+   "Kjerne",
+   "Skuldre"
+  ]
+ },
+ {
+  "navn": "Kryssmarsj stående",
+  "kort": "Stående kryss-koordinasjon: hånd mot motsatt kne, vekselvis — vekker kjerne og balanse.",
+  "steg": [
+   "Stå høyt og løft ett kne.",
+   "Før motsatt hånd ned mot kneet.",
+   "Bytt side i rolig marsjtempo."
+  ],
+  "alias": [
+   "Kryssmarsj stående, hånd mot motsatt kne"
+  ],
+  "muskler": [
+   "Kjerne",
+   "Hofter"
+  ]
+ },
+ {
+  "navn": "Hoftehengsler uten vekt",
+  "kort": "Selve grunnmønsteret for markløft: skyv hoftene bak med lang rygg, hendene glir langs lårene.",
+  "steg": [
+   "Stå med føtter i hoftebredde og myke knær.",
+   "Skyv hoftene rett bakover mens ryggen holdes lang — hendene glir nedover lårene.",
+   "Stopp når du kjenner strekk bak i lårene, og press hoftene frem til stående."
+  ],
+  "alias": [
+   "Hoftehengsler uten vekt (hendene glir langs lårene)"
+  ],
+  "tips": [
+   "Tenk «rumpa mot veggen bak deg», ikke «bøy deg ned»."
+  ],
+  "muskler": [
+   "Baklår",
+   "Sete",
+   "Korsrygg"
+  ]
+ },
+ {
+  "navn": "Knebøy",
+  "kort": "Kroppens mest grunnleggende styrkeøvelse: sett deg ned mellom hoftene og reis deg opp igjen.",
+  "steg": [
+   "Stå med føttene i skulderbredde, tærne lett utover.",
+   "Sett deg rolig ned og bak, som mot en stol — hælene i gulvet.",
+   "Gå så dypt det kjennes greit, og press deg opp igjen."
+  ],
+  "alias": [
+   "Knebøy uten vekt",
+   "Rolige knebøy",
+   "Dype knebøy uten vekt"
+  ],
+  "tips": [
+   "Knærne skal peke samme vei som tærne.",
+   "Hold brystet stolt — det ordner ryggen."
+  ],
+  "muskler": [
+   "Lår",
+   "Sete",
+   "Kjerne"
+  ],
+  "bilde": "kneboy"
+ },
+ {
+  "navn": "Knebøy med stolstøtte",
+  "kort": "Knebøy med en stol bak deg som trygghet — sett deg nesten ned, og reis deg igjen.",
+  "steg": [
+   "Stå foran en stol med føttene i skulderbredde.",
+   "Senk deg rolig til setet så vidt berører stolen.",
+   "Press deg opp uten å bruke hendene, om du kan."
+  ],
+  "tips": [
+   "Klarer du den fint? Prøv uten stol neste gang."
+  ],
+  "muskler": [
+   "Lår",
+   "Sete"
+  ],
+  "utstyr": [
+   "Stol"
+  ]
+ },
+ {
+  "navn": "Sitt-til-stå fra stol",
+  "kort": "Reis deg fra en stol uten hendene, og sett deg rolig ned igjen — hverdagsstyrke på sitt viktigste.",
+  "steg": [
+   "Sitt på stolkanten med føttene under knærne.",
+   "Len deg litt frem og reis deg opp uten å skyve fra med hendene.",
+   "Sett deg rolig ned igjen — bruk gjerne 3 sekunder ned."
+  ],
+  "alias": [
+   "Sitt-til-stå fra stol (3 s ned)"
+  ],
+  "tips": [
+   "Jo tregere ned, jo mer styrke bygger du."
+  ],
+  "muskler": [
+   "Lår",
+   "Sete"
+  ],
+  "utstyr": [
+   "Stol"
+  ]
+ },
+ {
+  "navn": "Goblet-knebøy",
+  "kort": "Knebøy med vekt holdt mot brystet — vekten balanserer deg og gjør dype knebøy lettere.",
+  "steg": [
+   "Hold en manual eller kettlebell med begge hender mot brystet.",
+   "Sett deg rolig ned mellom hoftene med hælene i gulvet.",
+   "Press deg opp igjen med brystet stolt."
+  ],
+  "tips": [
+   "Albuene kan gli innenfor knærne i bunn — det åpner hoftene."
+  ],
+  "muskler": [
+   "Lår",
+   "Sete",
+   "Kjerne"
+  ],
+  "utstyr": [
+   "Manual",
+   "Kettlebell"
+  ],
+  "bilde": "goblet-kneboy"
+ },
+ {
+  "navn": "«Prying» goblet-knebøy",
+  "kort": "Dyp goblet-knebøy der du blir værende i bunnposisjonen og vugger rolig — åpner hofter og ankler.",
+  "steg": [
+   "Hold vekten mot brystet og sett deg helt ned i bunn av knebøyen.",
+   "Bli der: vugg rolig fra side til side og press knærne ut med albuene.",
+   "Reis deg opp etter noen rolige pust."
+  ],
+  "tips": [
+   "Dette er mobilitet med vekt — ro, ikke reps."
+  ],
+  "muskler": [
+   "Hofter",
+   "Lår",
+   "Ankler"
+  ],
+  "utstyr": [
+   "Kettlebell",
+   "Manual"
+  ]
+ },
+ {
+  "navn": "Knebøy med stang",
+  "kort": "Baseløftet: stangen hviler på øvre rygg mens du setter deg ned og reiser deg med hele kroppen.",
+  "steg": [
+   "Legg stangen på øvre del av ryggen (ikke nakken) og løft den ut av stativet.",
+   "Sett deg rolig ned og bak med brystet stolt, til lårene er rundt parallelle.",
+   "Press hele foten i gulvet og reis deg opp."
+  ],
+  "tips": [
+   "Ta lett vekt til teknikken sitter — dybde og kontroll før kilo.",
+   "Pust inn øverst, hold pusten ned, pust ut på vei opp."
+  ],
+  "muskler": [
+   "Lår",
+   "Sete",
+   "Kjerne",
+   "Rygg"
+  ],
+  "utstyr": [
+   "Vektstang",
+   "Stativ"
+  ],
+  "bilde": "kneboy-stang"
+ },
+ {
+  "navn": "Dyp knebøy-hold",
+  "kort": "Bli sittende i bunn av en dyp knebøy — hoftene åpner seg gradvis mens du puster.",
+  "steg": [
+   "Sett deg helt ned i en dyp knebøy med hælene i gulvet.",
+   "Hold gjerne fast i noe foran deg ved behov.",
+   "Bli der og pust rolig — vekten kan skifte litt fra side til side."
+  ],
+  "alias": [
+   "Dyp knebøy-hold med rolige vektskift",
+   "Dyp knebøy-hold med rotasjonsrekk mot taket"
+  ],
+  "tips": [
+   "Kiler det i anklene: legg noe smalt under hælene."
+  ],
+  "muskler": [
+   "Hofter",
+   "Ankler",
+   "Lår"
+  ]
+ },
+ {
+  "navn": "Cossack squat",
+  "kort": "Sidelengs knebøy: all vekt over ett bein mens det andre strekkes ut til siden.",
+  "steg": [
+   "Stå bredt og skift vekten over mot én side.",
+   "Sett deg ned over det bøyde beinet — det andre er strakt med tå mot taket.",
+   "Kom rolig opp og skift side i sakte tempo."
+  ],
+  "tips": [
+   "Full dybde etter evne — hold gjerne i noe for balanse."
+  ],
+  "muskler": [
+   "Innside lår",
+   "Sete",
+   "Hofter"
+  ]
+ },
+ {
+  "navn": "Utfall",
+  "kort": "Ett langt steg frem, senk bakre kne mot gulvet, og skyv deg tilbake — styrke og balanse i ett.",
+  "steg": [
+   "Ta et godt steg frem.",
+   "Senk bakre kne rolig mot gulvet — fremre kne over foten.",
+   "Skyv fra fremre fot tilbake til stående, og bytt bein."
+  ],
+  "alias": [
+   "Utfall (3 s ned)"
+  ],
+  "tips": [
+   "Bruk gjerne 3 sekunder ned — kontroll slår tempo.",
+   "Vakler du? Kortere steg og fingertupp-støtte på en vegg."
+  ],
+  "muskler": [
+   "Lår",
+   "Sete",
+   "Balanse"
+  ],
+  "bilde": "utfall"
+ },
+ {
+  "navn": "Utfall bakover",
+  "kort": "Som utfall, men steget går bakover — mer skånsomt for knærne og lettere å balansere.",
+  "steg": [
+   "Ta et kontrollert steg bakover.",
+   "Senk bakre kne mot gulvet — vekten blir på fremre bein.",
+   "Skyv deg tilbake til stående og bytt side."
+  ],
+  "tips": [
+   "Fremre hæl i gulvet hele veien."
+  ],
+  "muskler": [
+   "Lår",
+   "Sete",
+   "Balanse"
+  ]
+ },
+ {
+  "navn": "Utfall med manualer",
+  "kort": "Utfall med en manual i hver hånd — samme mønster, mer styrke.",
+  "steg": [
+   "Hold en manual i hver hånd langs siden.",
+   "Ta et steg frem og senk bakre kne rolig mot gulvet.",
+   "Skyv deg tilbake og bytt bein."
+  ],
+  "tips": [
+   "Hold overkroppen høy — vektene skal henge rolig."
+  ],
+  "muskler": [
+   "Lår",
+   "Sete",
+   "Grep"
+  ],
+  "utstyr": [
+   "Manualer"
+  ]
+ },
+ {
+  "navn": "Utfall bakover med manualer",
+  "kort": "Bakoverutfall med manualer i hendene — knevennlig beinstyrke med ekstra last.",
+  "steg": [
+   "Hold en manual i hver hånd og ta et rolig steg bakover.",
+   "Senk bakre kne mot gulvet med overkroppen høy.",
+   "Skyv fra fremre fot tilbake til stående. Bytt side."
+  ],
+  "muskler": [
+   "Lår",
+   "Sete",
+   "Grep"
+  ],
+  "utstyr": [
+   "Manualer"
+  ]
+ },
+ {
+  "navn": "Rumensk markløft med manualer",
+  "kort": "Hoftehengsel med vekt: manualene glir langs lårene ned mens hoftene skyves bak — baksiden gjør jobben.",
+  "steg": [
+   "Stå med manualene foran lårene og myke knær.",
+   "Skyv hoftene bakover med lang rygg — vektene glir tett langs beina.",
+   "Stopp når det strekker bak i lårene, og press hoftene frem til stående."
+  ],
+  "alias": [
+   "Lett tilvenningssett: rumensk markløft"
+  ],
+  "tips": [
+   "Ryggen holdes lang hele veien — bevegelsen kommer fra hoftene.",
+   "Kjenn setet klype til på toppen."
+  ],
+  "muskler": [
+   "Baklår",
+   "Sete",
+   "Korsrygg"
+  ],
+  "utstyr": [
+   "Manualer"
+  ],
+  "bilde": "rumensk-markloft"
+ },
+ {
+  "navn": "Markløft med stang",
+  "kort": "Løft stangen fra gulvet til stående med lang rygg — hele baksiden av kroppen i ett løft.",
+  "steg": [
+   "Stå med midtfoten under stangen, grip like utenfor beina.",
+   "Senk hoftene, løft brystet og stram opp — armene er strake.",
+   "Press beina i gulvet og strekk hoftene frem til stående. Rolig ned samme vei."
+  ],
+  "tips": [
+   "Stangen skal gli tett langs beina hele veien.",
+   "Start lett og la teknikken bestemme vekten."
+  ],
+  "muskler": [
+   "Baklår",
+   "Sete",
+   "Rygg",
+   "Grep"
+  ],
+  "utstyr": [
+   "Vektstang"
+  ]
+ },
+ {
+  "navn": "Hoftebro",
+  "kort": "Liggende på ryggen: press hoftene mot taket og klem setet på toppen.",
+  "steg": [
+   "Ligg på ryggen med bøyde knær og føttene i gulvet.",
+   "Press gjennom hælene og løft hoftene til kroppen er en rett linje fra knær til skuldre.",
+   "Klem setet ett sekund på toppen, og senk rolig."
+  ],
+  "tips": [
+   "Ikke svai ryggen på toppen — det er setet som løfter."
+  ],
+  "muskler": [
+   "Sete",
+   "Baklår",
+   "Korsrygg"
+  ],
+  "bilde": "hoftebro"
+ },
+ {
+  "navn": "Armhevinger",
+  "kort": "Klassikeren: senk brystet mot gulvet og press deg opp — kroppen som én stiv planke.",
+  "steg": [
+   "Stå i planke med hendene litt bredere enn skuldrene.",
+   "Senk brystet rolig mot gulvet med albuene ca. 45 grader ut.",
+   "Press deg opp igjen uten å miste planken."
+  ],
+  "alias": [
+   "Armhevinger, sett 1–5 (starttest 6–10)"
+  ],
+  "tips": [
+   "For lett/tung? Vegg → kne → tå er progresjonen.",
+   "Hoftene følger kroppen — ingen heng eller topp."
+  ],
+  "muskler": [
+   "Bryst",
+   "Triceps",
+   "Skuldre",
+   "Kjerne"
+  ]
+ },
+ {
+  "navn": "Rolige armhevinger på kne",
+  "kort": "Armhevinger med knærne i gulvet — samme bevegelse, vennligere belastning.",
+  "steg": [
+   "Stå på alle fire og gå hendene litt frem, kroppen på skrå fra knær til hode.",
+   "Senk brystet rolig mot gulvet.",
+   "Press opp igjen med kroppen som en rett linje fra knærne."
+  ],
+  "tips": [
+   "Stram magen lett så hoftene ikke synker."
+  ],
+  "muskler": [
+   "Bryst",
+   "Triceps",
+   "Skuldre"
+  ]
+ },
+ {
+  "navn": "Armhevinger mot vegg",
+  "kort": "Armhevinger stående mot en vegg — den tryggeste veien inn i pressbevegelsen.",
+  "steg": [
+   "Stå en armlengde fra veggen med hendene i skulderhøyde.",
+   "Bøy albuene og la brystet komme mot veggen.",
+   "Press deg rolig tilbake."
+  ],
+  "tips": [
+   "Lenger fra veggen = tyngre."
+  ],
+  "muskler": [
+   "Bryst",
+   "Triceps",
+   "Skuldre"
+  ],
+  "utstyr": [
+   "Vegg"
+  ]
+ },
+ {
+  "navn": "Manualbenkpress",
+  "kort": "Press manualene fra brystet til strake armer, liggende på benk eller gulv.",
+  "steg": [
+   "Ligg på benk (eller gulv) med en manual i hver hånd ved brystet.",
+   "Press vektene rolig opp til strake armer.",
+   "Senk kontrollert tilbake til start."
+  ],
+  "alias": [
+   "Manualbenkpress (benk eller gulv)",
+   "Lett tilvenningssett: manualbenkpress",
+   "Gulvpress med manualer"
+  ],
+  "tips": [
+   "Føttene godt i gulvet, skulderbladene trukket lett sammen."
+  ],
+  "muskler": [
+   "Bryst",
+   "Triceps",
+   "Skuldre"
+  ],
+  "utstyr": [
+   "Manualer",
+   "Benk"
+  ]
+ },
+ {
+  "navn": "Benkpress med stang",
+  "kort": "Baseløftet for overkroppen: senk stangen til brystet og press til strake armer.",
+  "steg": [
+   "Ligg med øynene under stangen, grep litt bredere enn skuldrene.",
+   "Løft ut, senk stangen rolig til midt på brystet.",
+   "Press opp til strake armer over skuldrene."
+  ],
+  "tips": [
+   "Skulderbladene sammen og ned — det gir en stabil hylle.",
+   "Ha gjerne en spotter eller sikkerhetspinner på tyngre sett."
+  ],
+  "muskler": [
+   "Bryst",
+   "Triceps",
+   "Skuldre"
+  ],
+  "utstyr": [
+   "Vektstang",
+   "Benk"
+  ]
+ },
+ {
+  "navn": "Stående skulderpress med manualer",
+  "kort": "Press manualene fra skuldrene til strake armer over hodet, stående.",
+  "steg": [
+   "Stå med føttene i hoftebredde, manualene ved skuldrene.",
+   "Stram magen og press vektene rett opp.",
+   "Senk rolig tilbake til skuldrene."
+  ],
+  "tips": [
+   "Ikke len deg bak — tenk høy og stolt."
+  ],
+  "muskler": [
+   "Skuldre",
+   "Triceps",
+   "Kjerne"
+  ],
+  "utstyr": [
+   "Manualer"
+  ]
+ },
+ {
+  "navn": "Skulderpress uten vekt",
+  "kort": "Pressbevegelsen uten last — perfekt tilvenning før manualer.",
+  "steg": [
+   "Stå høyt med hendene i skulderhøyde.",
+   "Press hendene rolig opp til strake armer.",
+   "Senk kontrollert tilbake."
+  ],
+  "muskler": [
+   "Skuldre"
+  ]
+ },
+ {
+  "navn": "Enarms manualroing",
+  "kort": "Med støtte på benk: trekk manualen mot hoften med albuen tett på kroppen.",
+  "steg": [
+   "Sett kne og hånd på benken, ryggen lang og parallell med gulvet.",
+   "La manualen henge, og trekk den rolig opp mot hoftekammen.",
+   "Senk kontrollert. Fullfør settet og bytt side."
+  ],
+  "tips": [
+   "Trekk med ryggen, ikke bicepsen — tenk albuen mot baklomma."
+  ],
+  "muskler": [
+   "Rygg",
+   "Biceps",
+   "Skulderblad"
+  ],
+  "utstyr": [
+   "Manual",
+   "Benk"
+  ]
+ },
+ {
+  "navn": "Stående foroverbøyd manualroing",
+  "kort": "Hengslet frem med lang rygg: trekk begge manualene mot magen.",
+  "steg": [
+   "Hoftehengsel til overkroppen er godt på skrå, manualene hengende.",
+   "Trekk vektene mot nedre del av brystet/magen.",
+   "Senk rolig — ryggen holder samme vinkel hele settet."
+  ],
+  "tips": [
+   "Klem skulderbladene sammen i toppen."
+  ],
+  "muskler": [
+   "Rygg",
+   "Biceps",
+   "Baklår"
+  ],
+  "utstyr": [
+   "Manualer"
+  ]
+ },
+ {
+  "navn": "Bicepscurl med manualer",
+  "kort": "Bøy albuene og løft manualene mot skuldrene — kontrollert opp, rolig ned.",
+  "steg": [
+   "Stå med manualene langs siden, håndflatene frem.",
+   "Bøy albuene og løft vektene mot skuldrene uten å svinge.",
+   "Senk rolig helt ned."
+  ],
+  "tips": [
+   "Albuene blir ved siden — det er kun underarmene som flytter seg."
+  ],
+  "muskler": [
+   "Biceps",
+   "Underarmer"
+  ],
+  "utstyr": [
+   "Manualer"
+  ]
+ },
+ {
+  "navn": "Kettlebell-halo",
+  "kort": "Før kettlebellen i en rolig sirkel rundt hodet — mykt for skuldre og øvre rygg.",
+  "steg": [
+   "Hold kula opp-ned i hornene foran brystet.",
+   "Før den rolig rundt hodet, tett inntil, én vei.",
+   "Bytt retning etter halve settet."
+  ],
+  "tips": [
+   "Stå høyt og stille — det er armene som sirkler, ikke kroppen."
+  ],
+  "muskler": [
+   "Skuldre",
+   "Øvre rygg",
+   "Kjerne"
+  ],
+  "utstyr": [
+   "Kettlebell"
+  ]
+ },
+ {
+  "navn": "Ettarms kettlebellsving",
+  "kort": "Eksplosivt hoftehengsel: kula svinger til brysthøyde av hoftekraft — én arm av gangen.",
+  "steg": [
+   "Start med kula litt foran deg, grip med én hånd.",
+   "Hike den bak mellom beina med lang rygg.",
+   "Smell hoftene frem — kula flyter opp til brysthøyde og faller selv tilbake. Bytt arm hvert sett."
+  ],
+  "alias": [
+   "Ettarms kettlebellsving (bytt arm hvert sett)"
+  ],
+  "tips": [
+   "Armen er bare et tau — kraften kommer fra hoftene.",
+   "Klem setet hardt i toppen av hvert sving."
+  ],
+  "muskler": [
+   "Sete",
+   "Baklår",
+   "Kjerne",
+   "Grep"
+  ],
+  "utstyr": [
+   "Kettlebell"
+  ]
+ },
+ {
+  "navn": "Tyrkisk oppreisning",
+  "kort": "Fra liggende til stående med vekten over hodet hele veien — kontroll i sakte film.",
+  "steg": [
+   "Ligg på ryggen med kula presset til strak arm, samme sides kne bøyd.",
+   "Rull opp på albue, så hånd; løft hoften og træ beinet under til kne.",
+   "Reis deg rolig til stående med blikket mot kula — og samme vei ned igjen."
+  ],
+  "alias": [
+   "Tyrkisk oppreisning, rolig tempo"
+  ],
+  "tips": [
+   "Gjør den først uten vekt eller med en sko balansert på knyttneven.",
+   "Ro i hvert steg — det er sju små øvelser i én."
+  ],
+  "muskler": [
+   "Hele kroppen",
+   "Skuldre",
+   "Kjerne"
+  ],
+  "utstyr": [
+   "Kettlebell"
+  ]
+ },
+ {
+  "navn": "Gårdsbæring med manualer",
+  "kort": "Gå rolig med tunge manualer i hendene — ren hverdagsstyrke for grep, kjerne og holdning.",
+  "steg": [
+   "Løft en tung nok manual i hver hånd.",
+   "Gå rolig og høyreist en gitt distanse eller tid.",
+   "Sett vektene kontrollert ned og hvil."
+  ],
+  "tips": [
+   "Skuldrene ned fra ørene, blikket frem — som å bære handleposer med stil."
+  ],
+  "muskler": [
+   "Grep",
+   "Kjerne",
+   "Traps"
+  ],
+  "utstyr": [
+   "Manualer"
+  ]
+ },
+ {
+  "navn": "Planke",
+  "kort": "Hold kroppen som en rett, stiv linje på underarmer eller strake armer.",
+  "steg": [
+   "Sett albuene under skuldrene og strekk beina ut.",
+   "Stram mage og sete så kroppen blir én rett linje.",
+   "Hold mens du puster rolig."
+  ],
+  "tips": [
+   "Heller kortere hold med god form enn lange med hengende hofter."
+  ],
+  "muskler": [
+   "Kjerne",
+   "Skuldre"
+  ]
+ },
+ {
+  "navn": "Sideplanke",
+  "kort": "Planke på siden: underarm i gulvet, hoftene løftet — sidekjernen holder deg oppe.",
+  "steg": [
+   "Ligg på siden med albuen under skulderen.",
+   "Løft hoftene til kroppen er en rett linje.",
+   "Hold rolig, og bytt side."
+  ],
+  "alias": [
+   "Sideplanke fra knær eller føtter"
+  ],
+  "tips": [
+   "For lettere variant: knærne i gulvet."
+  ],
+  "muskler": [
+   "Sidekjerne",
+   "Skuldre",
+   "Hofter"
+  ]
+ },
+ {
+  "navn": "Modifisert curl-up",
+  "kort": "McGill-curlup: hendene under korsryggen, løft hode og skuldre en anelse — ryggvennlig kjernestyrke.",
+  "steg": [
+   "Ligg på ryggen, ett kne bøyd, hendene under korsryggens svai.",
+   "Løft hode og skuldre noen centimeter uten å runde korsryggen.",
+   "Hold noen sekunder, senk rolig. Bytt bein halvveis."
+  ],
+  "alias": [
+   "Modifisert curl-up, hender under korsryggen"
+  ],
+  "tips": [
+   "Bitteliten bevegelse — nakken holder seg nøytral."
+  ],
+  "muskler": [
+   "Kjerne"
+  ]
+ },
+ {
+  "navn": "Fuglehund",
+  "kort": "På alle fire: strekk motsatt arm og bein ut, hold, og «tegn en firkant» hjem — stabilitet uten belastning.",
+  "steg": [
+   "Stå på alle fire med rett rygg.",
+   "Strekk én arm frem og motsatt bein bak til de er i linje med kroppen.",
+   "Hold noen sekunder, kom rolig tilbake og bytt side."
+  ],
+  "alias": [
+   "Fuglehund — tegn en firkant med hånden hjem"
+  ],
+  "tips": [
+   "Hoftene skal peke rett ned hele tiden — ingen vridning."
+  ],
+  "muskler": [
+   "Kjerne",
+   "Korsrygg",
+   "Sete"
+  ]
+ },
+ {
+  "navn": "Hollow hold",
+  "kort": "Ligg på ryggen med korsryggen presset i gulvet, skuldre og bein løftet — turnernes kjerneposisjon.",
+  "steg": [
+   "Ligg på ryggen og press korsryggen ned i gulvet.",
+   "Løft skuldre og bein litt opp — start med bøyde knær.",
+   "Hold posisjonen mens du puster; strek ut beina etter hvert som du blir sterkere."
+  ],
+  "alias": [
+   "Hollow hold (start med bøyde knær, strekk gradvis)"
+  ],
+  "tips": [
+   "Mister du gulvkontakten i korsryggen: bøy knærne mer."
+  ],
+  "muskler": [
+   "Kjerne"
+  ]
+ },
+ {
+  "navn": "Rolige hollow rocks",
+  "kort": "Hollow-posisjonen i rolig vugging frem og tilbake — kjernen holder formen.",
+  "steg": [
+   "Innta hollow hold-posisjonen.",
+   "Vugg rolig frem og tilbake som en gyngestol.",
+   "Formen er hellig — blir den borte, ta pause."
+  ],
+  "muskler": [
+   "Kjerne"
+  ]
+ },
+ {
+  "navn": "Krabbeposisjon-hold",
+  "kort": "Hold deg på alle fire med knærne løftet en anelse fra gulvet — stillhet som brenner.",
+  "steg": [
+   "Stå på alle fire med hendene under skuldrene.",
+   "Løft knærne 2–3 cm fra gulvet.",
+   "Hold posisjonen med rolig pust og hodet i forlengelse av ryggen."
+  ],
+  "alias": [
+   "Krabbeposisjon-hold med hodet oppe"
+  ],
+  "muskler": [
+   "Kjerne",
+   "Lår",
+   "Skuldre"
+  ]
+ },
+ {
+  "navn": "Tåhev",
+  "kort": "Opp på tå og rolig ned igjen — styrker legger og ankler.",
+  "steg": [
+   "Stå med føttene i hoftebredde, gjerne med fingerstøtte på en vegg.",
+   "Press deg høyt opp på tå.",
+   "Senk rolig helt ned."
+  ],
+  "tips": [
+   "Rolig ned er halve øvelsen."
+  ],
+  "muskler": [
+   "Legger",
+   "Ankler"
+  ]
+ },
+ {
+  "navn": "Vegg-planke",
+  "kort": "Planke med føttene på veggen (magen mot veggen) — trygg vei mot håndstående.",
+  "steg": [
+   "Start i planke med føttene mot veggen.",
+   "Gå føttene oppover veggen og hendene nærmere — så langt det er komfortabelt.",
+   "Hold kort, og gå rolig ned samme vei."
+  ],
+  "alias": [
+   "Vegg-planke / halv veggklatring, magen mot veggen"
+  ],
+  "tips": [
+   "Kroppen i én linje — ikke svai. Kort og kontrollert vinner."
+  ],
+  "muskler": [
+   "Skuldre",
+   "Kjerne"
+  ],
+  "utstyr": [
+   "Vegg"
+  ]
+ },
+ {
+  "navn": "Oppspark mot vegg",
+  "kort": "Rolige spark opp mot håndstående med veggen som sikkerhet.",
+  "steg": [
+   "Sett hendene en håndlengde fra veggen.",
+   "Spark rolig opp med ett bein — det andre følger.",
+   "La hælene finne veggen, hold kort, og kom kontrollert ned."
+  ],
+  "alias": [
+   "Valgfritt: rolige oppspark mot vegg, strake armer"
+  ],
+  "tips": [
+   "Strake armer hele tiden — skuldrene skyver aktivt i gulvet."
+  ],
+  "muskler": [
+   "Skuldre",
+   "Kjerne",
+   "Balanse"
+  ],
+  "utstyr": [
+   "Vegg"
+  ]
+ },
+ {
+  "navn": "Kråke-forberedelse",
+  "kort": "Balansér knærne mot overarmene med vekten fremover — første steg mot kråka.",
+  "steg": [
+   "Sett hendene i gulvet i skulderbredde, fingrene spredt.",
+   "Plasser knærne mot overarmene og len vekten rolig fremover.",
+   "Løft eventuelt én fot av gangen — blikket litt frem, ikke ned."
+  ],
+  "alias": [
+   "Kråke-forberedelse (knær mot overarmer, vekt frem)"
+  ],
+  "tips": [
+   "Legg gjerne en pute foran deg de første gangene."
+  ],
+  "muskler": [
+   "Håndledd",
+   "Kjerne",
+   "Balanse"
+  ]
+ },
+ {
+  "navn": "Hip airplane",
+  "kort": "Ettbeinsstående hoftehengsel der hoften roterer inn og ut — balansens mesterøvelse.",
+  "steg": [
+   "Stå på ett bein og hengsle overkroppen frem med lang rygg.",
+   "Rotér hoften rolig ut (brystet vris opp) og deretter inn.",
+   "Hold gjerne fingertuppene i en vegg. Bytt side."
+  ],
+  "alias": [
+   "Hip airplane fra ettbeinsstående: rotér hofta inn og ut"
+  ],
+  "tips": [
+   "Små, rolige rotasjoner — det er hoften som styrer."
+  ],
+  "muskler": [
+   "Sete",
+   "Hofter",
+   "Balanse"
+  ]
+ },
+ {
+  "navn": "Knestående til stående uten hender",
+  "kort": "Fra knestående til stående og ned igjen — uten å bruke hendene.",
+  "steg": [
+   "Stå på knærne med høy overkropp.",
+   "Sett én fot frem og reis deg opp uten støtte.",
+   "Kom rolig ned igjen på motsatt kne. Bytt førstebein."
+  ],
+  "alias": [
+   "Knestående til stående overgang uten hender"
+  ],
+  "muskler": [
+   "Lår",
+   "Sete",
+   "Balanse"
+  ]
+ },
+ {
+  "navn": "Nakke-CARs",
+  "kort": "Kontrollerte rotasjoner med nakken gjennom hele det smertefrie bevegelsesutslaget.",
+  "steg": [
+   "Stå eller sitt høyt, senk skuldrene.",
+   "Tegn en stor, sakte sirkel med nesen: ned, til siden, opp og rundt.",
+   "Bytt retning. Stopp utenom alt som gjør vondt."
+  ],
+  "tips": [
+   "Sakte er poenget — sirkelen skal ta flere pust."
+  ],
+  "muskler": [
+   "Nakke"
+  ]
+ },
+ {
+  "navn": "Skulder-CARs",
+  "kort": "Store, sakte sirkler med strak arm gjennom skulderens fulle bevegelsesbane.",
+  "steg": [
+   "Stå høyt (eller på alle fire) med resten av kroppen helt stille.",
+   "Før én strak arm sakte frem, opp, bak og rundt i størst mulig sirkel.",
+   "Bytt retning og arm."
+  ],
+  "alias": [
+   "Skulder-CARs stående eller på alle fire"
+  ],
+  "tips": [
+   "Kroppen er statuen — bare armen flytter seg."
+  ],
+  "muskler": [
+   "Skuldre"
+  ]
+ },
+ {
+  "navn": "Albue- og håndledds-CARs",
+  "kort": "Rolige, fulle sirkler for albue og håndledd — smører leddene der de faktisk kan bevege seg.",
+  "steg": [
+   "Hold overarmen stille og rotér underarmen sakte gjennom hele banen.",
+   "Tegn deretter store sirkler med håndleddet, begge veier.",
+   "Bytt arm."
+  ],
+  "muskler": [
+   "Albuer",
+   "Håndledd"
+  ]
+ },
+ {
+  "navn": "Ryggrads-CARs",
+  "kort": "Segmentert katt–ku: rull ryggen sakte, virvel for virvel — kontroll gjennom hele ryggsøylen.",
+  "steg": [
+   "Stå på alle fire.",
+   "Rund ryggen sakte fra halebein til nakke, virvel for virvel.",
+   "Svai like sakte tilbake samme vei."
+  ],
+  "alias": [
+   "Ryggrads-CARs / segmentert katt-ku"
+  ],
+  "tips": [
+   "Tenk at ryggen er en sykkelkjede — ett ledd av gangen."
+  ],
+  "muskler": [
+   "Rygg",
+   "Kjerne"
+  ]
+ },
+ {
+  "navn": "Hofte-CARs",
+  "kort": "Store, sakte sirkler med kneet: opp, ut til siden, bak og hjem — hoftens fulle bane.",
+  "steg": [
+   "Stå med støtte i en vegg eller stol.",
+   "Løft ett kne, før det ut til siden, rotér bak og sett ned.",
+   "Reverser retningen. Bytt side."
+  ],
+  "alias": [
+   "Hofte-CARs stående med støtte"
+  ],
+  "tips": [
+   "Hold bekkenet stille — sirkelen skjer i hofteleddet."
+  ],
+  "muskler": [
+   "Hofter"
+  ]
+ },
+ {
+  "navn": "Kne- og ankel-CARs",
+  "kort": "Rolige sirkler og bøy/strekk for kne og ankel gjennom hele det komfortable utslaget.",
+  "steg": [
+   "Stå på ett bein med støtte, løft det andre kneet.",
+   "Tegn små sirkler med leggen fra kneet, begge veier.",
+   "Avslutt med rolige ankelsirkler. Bytt side."
+  ],
+  "muskler": [
+   "Knær",
+   "Ankler"
+  ]
+ },
+ {
+  "navn": "Hodenikk på alle fire",
+  "kort": "Små nikk med hodet opp og ned på alle fire — vekker dyp nakkekontroll.",
+  "steg": [
+   "Stå på alle fire med lang rygg.",
+   "Nikk hodet rolig ned (hake mot bryst) og opp, i lite utslag.",
+   "Resten av ryggen er helt stille."
+  ],
+  "alias": [
+   "Hodenikk på alle fire, opp/ned"
+  ],
+  "muskler": [
+   "Nakke"
+  ]
+ },
+ {
+  "navn": "Hodenikk-rotasjoner",
+  "kort": "På alle fire: vri hodet rolig side til side som et «nei» — nakkerotasjon med støtte.",
+  "steg": [
+   "Stå på alle fire med nakken i forlengelse av ryggen.",
+   "Vri hodet sakte mot én side, tilbake til midten, så andre siden.",
+   "Lite utslag, ingen pressing."
+  ],
+  "alias": [
+   "Hodenikk-rotasjoner side til side"
+  ],
+  "muskler": [
+   "Nakke"
+  ]
+ },
+ {
+  "navn": "Rulling rygg til mage",
+  "kort": "Rull fra rygg til mage ledet av armen — urgammel, myk kjernekoordinasjon.",
+  "steg": [
+   "Ligg på ryggen med armene over hodet.",
+   "Strekk én arm over kroppen og la den lede rullingen over på magen — beina slapper av.",
+   "Rull tilbake, og bytt side/retning."
+  ],
+  "alias": [
+   "Rulling rygg til mage ledet av arm"
+  ],
+  "tips": [
+   "Sakte og mykt — beina skal ikke sparke deg rundt."
+  ],
+  "muskler": [
+   "Kjerne",
+   "Koordinasjon"
+  ]
+ },
+ {
+  "navn": "Vugging på alle fire",
+  "kort": "Vugg rolig frem og tilbake på alle fire, hælene mot setet — åpner hofter og knær mykt.",
+  "steg": [
+   "Stå på alle fire.",
+   "Skyv hoftene rolig bakover mot hælene, så langt det er behagelig.",
+   "Vugg frem igjen og gjenta i rolig rytme."
+  ],
+  "alias": [
+   "Vugging på alle fire, hælene mot setet"
+  ],
+  "muskler": [
+   "Hofter",
+   "Knær",
+   "Rygg"
+  ]
+ },
+ {
+  "navn": "Gå-hopp frem",
+  "kort": "Lite, mykt hopp frem fra stående — landing med bøyde knær og full kontroll.",
+  "steg": [
+   "Stå med føttene i hoftebredde.",
+   "Sving armene og hopp et kort stykke frem.",
+   "Land mykt med bøyde knær, og gå rolig tilbake."
+  ],
+  "alias": [
+   "Gå/hopp frem"
+  ],
+  "tips": [
+   "Landingen er øvelsen — lydløs og stabil."
+  ],
+  "muskler": [
+   "Lår",
+   "Legger",
+   "Balanse"
+  ]
+ },
+ {
+  "navn": "Fjellstilling",
+  "kort": "Yogaens hvilepunkt: stå høy og stille med vekten jevnt fordelt — alt starter her.",
+  "steg": [
+   "Stå med føttene samlet eller i hoftebredde.",
+   "Strekk deg lang gjennom issen, slipp skuldrene ned.",
+   "Pust rolig og kjenn hele fotsålen mot gulvet."
+  ],
+  "alias": [
+   "Fjellstilling (ut)"
+  ],
+  "muskler": [
+   "Holdning"
+  ]
+ },
+ {
+  "navn": "Sittende fjellstilling",
+  "kort": "Fjellstillingens ro på en stol: sitt høyt med begge føttene i gulvet.",
+  "steg": [
+   "Sitt på stolkanten med føttene flatt i gulvet.",
+   "Strekk deg lang gjennom issen og senk skuldrene.",
+   "Hvil hendene på lårene og pust rolig."
+  ],
+  "muskler": [
+   "Holdning"
+  ],
+  "utstyr": [
+   "Stol"
+  ]
+ },
+ {
+  "navn": "Armer opp",
+  "kort": "Innpust-posisjonen i solhilsenen: armene løftes i en stor bue over hodet.",
+  "steg": [
+   "Fra stående (eller sittende): løft armene ut og opp på en innpust.",
+   "Strekk deg lang uten å heise skuldrene.",
+   "Blikket kan følge hendene om nakken vil."
+  ],
+  "alias": [
+   "Armer opp (inn)",
+   "Armer opp med strak rygg",
+   "Armer opp med strak rygg (inn)"
+  ],
+  "muskler": [
+   "Skuldre",
+   "Sidekropp"
+  ]
+ },
+ {
+  "navn": "Stående foroverbøy",
+  "kort": "Utpust-posisjonen: fold overkroppen mykt ned over beina med myke knær.",
+  "steg": [
+   "Fold deg frem fra hoftene på en utpust.",
+   "La hodet og armene henge tungt — knærne gjerne godt bøyd.",
+   "Reis deg rolig opp igjen, virvel for virvel."
+  ],
+  "alias": [
+   "Stående foroverbøy (ut)",
+   "Foroverbøy",
+   "Foroverbøy (ut)",
+   "Rolig foroverbøy"
+  ],
+  "tips": [
+   "Myke knær gjør folden god for både rygg og baklår."
+  ],
+  "muskler": [
+   "Baklår",
+   "Rygg"
+  ]
+ },
+ {
+  "navn": "Foroverbøy over lårene",
+  "kort": "Sittende på stol: fold overkroppen ned over lårene og la alt henge.",
+  "steg": [
+   "Sitt på stolkanten med føttene godt i gulvet.",
+   "Fold overkroppen ned over lårene på en utpust.",
+   "La hodet og armene henge tungt før du ruller rolig opp."
+  ],
+  "muskler": [
+   "Rygg",
+   "Baklår"
+  ],
+  "utstyr": [
+   "Stol"
+  ]
+ },
+ {
+  "navn": "Halvveis løft",
+  "kort": "Halvveis opp fra foroverbøyen: lang, flat rygg og blikket frem.",
+  "steg": [
+   "Fra foroverbøy: løft overkroppen halvveis på en innpust.",
+   "Hendene på skinnleggene eller lårene, ryggen lang som et bord.",
+   "Slipp ned igjen på utpust."
+  ],
+  "alias": [
+   "Halvveis løft (inn)"
+  ],
+  "muskler": [
+   "Rygg",
+   "Baklår"
+  ]
+ },
+ {
+  "navn": "Chaturanga",
+  "kort": "Yogaens lave planke: senk deg halvveis ned med albuene tett langs kroppen — knær i gulvet er helt fint.",
+  "steg": [
+   "Fra planke: senk deg rolig halvveis ned.",
+   "Albuene peker bakover og holder seg tett på ribbeina.",
+   "Sett gjerne knærne ned for kontroll."
+  ],
+  "alias": [
+   "Chaturanga (kne ok)"
+  ],
+  "tips": [
+   "Tenk «senk med stil» — heller knær enn kollaps."
+  ],
+  "muskler": [
+   "Bryst",
+   "Triceps",
+   "Kjerne"
+  ]
+ },
+ {
+  "navn": "Kobra",
+  "kort": "Mykt ryggsvai fra magen: brystet løftes med lett hjelp fra hendene.",
+  "steg": [
+   "Ligg på magen med hendene under skuldrene.",
+   "Løft brystet rolig på en innpust — albuene forblir bøyde.",
+   "Skuldrene glir ned fra ørene. Senk på utpust."
+  ],
+  "tips": [
+   "Løft med ryggen, ikke armene — hendene hjelper bare til."
+  ],
+  "muskler": [
+   "Rygg",
+   "Bryst"
+  ]
+ },
+ {
+  "navn": "Oppovervendt hund",
+  "kort": "Kraftfullt ryggsvai på strake armer: hofter og lår løftet fra gulvet.",
+  "steg": [
+   "Fra lav posisjon: press opp på strake armer.",
+   "Rull over tærne så vristene ligger i gulvet — lår og hofter løftes.",
+   "Brystet åpner frem, skuldrene ned."
+  ],
+  "tips": [
+   "For en snillere variant: ta kobra i stedet."
+  ],
+  "muskler": [
+   "Rygg",
+   "Bryst",
+   "Håndledd"
+  ]
+ },
+ {
+  "navn": "Nedovervendt hund",
+  "kort": "Omvendt V: hendene og føttene i gulvet, hoftene høyt — hele baksiden strekker seg.",
+  "steg": [
+   "Fra alle fire: løft knærne og skyv hoftene opp og bak.",
+   "Press gulvet fra deg med strake armer — ryggen lang.",
+   "Tråkk gjerne rolig med bøyde knær. Hælene trenger ikke nå gulvet."
+  ],
+  "alias": [
+   "Nedovervendt hund (5 pust)"
+  ],
+  "tips": [
+   "Bøyde knær og lang rygg slår strake bein og rund rygg."
+  ],
+  "muskler": [
+   "Skuldre",
+   "Baklår",
+   "Legger",
+   "Rygg"
+  ]
+ },
+ {
+  "navn": "Stol (utkatasana)",
+  "kort": "Sitt i en usynlig stol: knærne bøyd, brystet løftet, armene frem eller opp.",
+  "steg": [
+   "Fra stående: bøy knærne og senk hoftene som mot en stol.",
+   "Vekten i hælene, brystet stolt.",
+   "Armene strekkes frem eller opp. Hold og pust."
+  ],
+  "alias": [
+   "Stol"
+  ],
+  "muskler": [
+   "Lår",
+   "Sete",
+   "Kjerne"
+  ]
+ },
+ {
+  "navn": "Kriger 1",
+  "kort": "Utfallsposisjon med hoftene frem og armene mot taket — jordet og reist på én gang.",
+  "steg": [
+   "Ta et langt steg bakover og vinkle bakre fot litt ut.",
+   "Bøy fremre kne over ankelen — hoftene peker fremover.",
+   "Løft armene mot taket og senk skuldrene. Bytt side."
+  ],
+  "alias": [
+   "Kriger 1 høyre",
+   "Kriger 1 venstre"
+  ],
+  "muskler": [
+   "Lår",
+   "Hofter",
+   "Skuldre"
+  ]
+ },
+ {
+  "navn": "Kriger 2",
+  "kort": "Bredt utfall med åpne hofter: armene strakt hver sin vei, blikket over fremre hånd.",
+  "steg": [
+   "Stå bredt; fremre fot peker frem, bakre fot parallelt med bakkanten.",
+   "Bøy fremre kne over ankelen — hoftene åpne mot siden.",
+   "Strekk armene hver sin vei og se over fremre fingertupper."
+  ],
+  "muskler": [
+   "Lår",
+   "Hofter",
+   "Skuldre"
+  ]
+ },
+ {
+  "navn": "Fredfull kriger",
+  "kort": "Fra kriger 2: fremre arm løftes mot taket mens bakre hånd hviler på beinet — en myk sidebue.",
+  "steg": [
+   "Fra kriger 2: snu fremre håndflate opp.",
+   "Løft armen opp og bak på en innpust — bakre hånd glir nedover beinet.",
+   "Fremre kne forblir bøyd. Pust i buen, og bytt side."
+  ],
+  "muskler": [
+   "Sidekropp",
+   "Hofter"
+  ]
+ },
+ {
+  "navn": "Triangel",
+  "kort": "Strake bein, lang sidebøy over fremre bein — kroppen åpner seg som et trekantsegl.",
+  "steg": [
+   "Fra bredt stående: strekk fremre bein og len overkroppen frem over det.",
+   "Senk hånden til skinnleggen eller en kloss, den andre armen mot taket.",
+   "Åpne brystet og pust. Bytt side."
+  ],
+  "tips": [
+   "Len deg heller høyt med åpen overkropp enn dypt med kollaps."
+  ],
+  "muskler": [
+   "Baklår",
+   "Sidekropp",
+   "Hofter"
+  ]
+ },
+ {
+  "navn": "Utvidet sidevinkel",
+  "kort": "Fra kriger 2: underarmen på fremre lår, øverste arm strekkes over hodet — én lang linje.",
+  "steg": [
+   "Fra kriger 2: senk underarmen på fremre lår (eller hånden til gulvet).",
+   "Strekk øverste arm over hodet i forlengelse av kroppen.",
+   "Rull brystet opp og pust langs sidelinjen. Bytt side."
+  ],
+  "muskler": [
+   "Sidekropp",
+   "Lår",
+   "Hofter"
+  ]
+ },
+ {
+  "navn": "Stående sidebøy",
+  "kort": "Rett opp og ned: én arm over hodet, len rolig til motsatt side.",
+  "steg": [
+   "Stå høyt og løft én arm over hodet.",
+   "Len deg rolig over til motsatt side uten å lene deg frem eller bak.",
+   "Pust i strekket og bytt side."
+  ],
+  "muskler": [
+   "Sidekropp"
+  ]
+ },
+ {
+  "navn": "Sittende sidebøy",
+  "kort": "Sittende: én arm over hodet og len rolig mot motsatt side — sidekroppen puster.",
+  "steg": [
+   "Sitt høyt (på stol eller gulv) med begge sitteknuter tungt ned.",
+   "Løft én arm og len deg rolig over mot motsatt side.",
+   "Hold noen pust, kom opp og bytt side."
+  ],
+  "muskler": [
+   "Sidekropp"
+  ]
+ },
+ {
+  "navn": "Sittende twist",
+  "kort": "Rolig rotasjon fra sittende: vri overkroppen mot én side og bli der noen pust.",
+  "steg": [
+   "Sitt høyt og legg motsatt hånd på kneet/låret.",
+   "Voks deg lang på innpust, vri rolig lenger på utpust.",
+   "Noen rolige pust — så byttes side."
+  ],
+  "tips": [
+   "Rotasjonen kommer ovenfra: brystet leder, nakken følger til slutt."
+  ],
+  "muskler": [
+   "Rygg",
+   "Kjerne"
+  ]
+ },
+ {
+  "navn": "Sittende katt–ku",
+  "kort": "Katt–ku fra stol: rund og svai ryggen vekselvis i pustens tempo.",
+  "steg": [
+   "Sitt på stolkanten med hendene på lårene.",
+   "Innpust: løft brystet og svai ryggen lett.",
+   "Utpust: rund ryggen og slipp hodet mykt ned. Gjenta rolig."
+  ],
+  "muskler": [
+   "Rygg",
+   "Nakke"
+  ],
+  "utstyr": [
+   "Stol"
+  ]
+ },
+ {
+  "navn": "Katt–ku",
+  "kort": "Ryggens vindusvisker: veksle mykt mellom rund og svai rygg på alle fire, i takt med pusten.",
+  "steg": [
+   "Stå på alle fire med hendene under skuldrene.",
+   "Innpust: senk magen, løft brystet og blikket (ku).",
+   "Utpust: rund ryggen og slipp hodet ned (katt). Gjenta rolig."
+  ],
+  "alias": [
+   "Katt-ku (McGills cat-camel)",
+   "Katt-ku, myk og langsom",
+   "Katt–kamel",
+   "Katt-kamel"
+  ],
+  "tips": [
+   "La pusten styre tempoet — én pust per bevegelse."
+  ],
+  "muskler": [
+   "Rygg",
+   "Nakke",
+   "Kjerne"
+  ]
+ },
+ {
+  "navn": "Barnets stilling",
+  "kort": "Yogaens hvileposisjon: setet mot hælene, pannen mot matten, armene frem eller langs siden.",
+  "steg": [
+   "Fra knestående: senk setet mot hælene.",
+   "Legg pannen mot matten og la armene hvile frem eller bakover.",
+   "Pust rolig inn i ryggen og bli så lenge du vil."
+  ],
+  "alias": [
+   "Barnestilling",
+   "Barnets stilling — pannen mot matten, armene langs siden"
+  ],
+  "tips": [
+   "Knærne bredt gir plass til magen; en pute under pannen gjør alt bedre."
+  ],
+  "muskler": [
+   "Rygg",
+   "Hofter"
+  ]
+ },
+ {
+  "navn": "Barnets stilling med sidebøy",
+  "kort": "Barnets stilling der hendene vandrer til én side — strekker hele sidelinjen.",
+  "steg": [
+   "Innta barnets stilling med armene frem.",
+   "Gå begge hendene rolig over til én side til det strekker langs siden.",
+   "Noen rolige pust, så vandrer hendene over til den andre siden."
+  ],
+  "alias": [
+   "Barnets stilling m/ sidebøy"
+  ],
+  "muskler": [
+   "Sidekropp",
+   "Rygg"
+  ]
+ },
+ {
+  "navn": "Savasana",
+  "kort": "Avslutningens kunst: ligg flatt, la kroppen bli tung og gjør absolutt ingenting.",
+  "steg": [
+   "Ligg på ryggen med armene litt ut fra kroppen, håndflatene opp.",
+   "Lukk øynene og slipp all styring av pusten.",
+   "Bli liggende — stillheten er selve øvelsen."
+  ],
+  "alias": [
+   "Savasana eller sittende ro",
+   "Savasana — flatt på ryggen, la kroppen bli tung"
+  ],
+  "tips": [
+   "Et teppe over kroppen gjør det lettere å slippe taket."
+  ],
+  "muskler": [
+   "Hvile"
+  ]
+ },
+ {
+  "navn": "Rull til siden og sitt opp",
+  "kort": "Den myke veien ut av savasana: rull over på siden, hvil, og skyv deg rolig opp.",
+  "steg": [
+   "Trekk knærne mykt inntil og rull over på én side.",
+   "Bli liggende et par pust.",
+   "Skyv deg rolig opp til sittende med hendene."
+  ],
+  "alias": [
+   "Rull til siden, sitt opp langsomt"
+  ],
+  "muskler": [
+   "Hvile"
+  ]
+ },
+ {
+  "navn": "Sommerfuglen",
+  "kort": "Sittende med fotsålene samlet: la knærne falle ut og fold deg mykt frem med rund rygg.",
+  "steg": [
+   "Sitt med fotsålene mot hverandre et stykke fra hoftene.",
+   "La knærne synke ut til siden av egen vekt.",
+   "Fold deg mykt fremover med rund rygg og bli der, pust for pust."
+  ],
+  "alias": [
+   "Sommerfugl",
+   "Sommerfuglen (såler sammen, rund rygg frem)",
+   "Lyske sittende (såler sammen, lett press)",
+   "Lyske sittende"
+  ],
+  "tips": [
+   "I yin er slapp rygg lov — tyngdekraften gjør jobben."
+  ],
+  "muskler": [
+   "Hofter",
+   "Innside lår",
+   "Rygg"
+  ]
+ },
+ {
+  "navn": "Larven",
+  "kort": "Yin-versjonen av sittende fremoverbøy: fold deg frem over strake bein og la ryggen runde seg.",
+  "steg": [
+   "Sitt med beina strake (gjerne litt bøyde knær).",
+   "Fold overkroppen mykt fremover og la hodet henge.",
+   "Slipp ryggen rund og bli i folden flere rolige pust."
+  ],
+  "alias": [
+   "Caterpillar (sittende foroverbøy-yin)",
+   "Caterpillar",
+   "Larven (sittende fremoverbøy, avslappet rygg)",
+   "Sittende foroverbøy",
+   "Sittende fremoverbøy"
+  ],
+  "muskler": [
+   "Baklår",
+   "Rygg"
+  ]
+ },
+ {
+  "navn": "Sfinksen",
+  "kort": "Mageliggende på underarmene: et mildt, passivt ryggsvai du kan hvile i.",
+  "steg": [
+   "Ligg på magen og plasser albuene under skuldrene.",
+   "La underarmene bære deg — brystet åpent, skuldrene ned.",
+   "Slipp setet og beina helt avslappet og bli i posisjonen."
+  ],
+  "alias": [
+   "Sfinxen",
+   "Sfinksen (mageliggende på underarmer)"
+  ],
+  "muskler": [
+   "Rygg",
+   "Bryst"
+  ]
+ },
+ {
+  "navn": "Selen",
+  "kort": "Sfinksens storebror: press opp på strakere armer for et dypere, fortsatt passivt ryggsvai.",
+  "steg": [
+   "Fra sfinksen: sett hendene i gulvet og strekk armene mer.",
+   "La hoftene bli tunge i matten.",
+   "Kom rolig ned om korsryggen sier fra."
+  ],
+  "tips": [
+   "Sfinksen er alltid et godt alternativ."
+  ],
+  "muskler": [
+   "Rygg",
+   "Bryst"
+  ]
+ },
+ {
+  "navn": "Dragen",
+  "kort": "Yin-utfallet: lang, lav utfallsposisjon der hoftebøyeren får god tid til å slippe.",
+  "steg": [
+   "Fra alle fire: sett én fot langt frem mellom hendene.",
+   "La bakre kne hvile i gulvet og senk hoftene frem og ned.",
+   "Bli i posisjonen flere pust, og bytt side."
+  ],
+  "alias": [
+   "Dragen (lav utfall-yin)"
+  ],
+  "tips": [
+   "Pute under bakre kne gjør dragen mye vennligere."
+  ],
+  "muskler": [
+   "Hoftebøyere",
+   "Hofter",
+   "Lyske"
+  ]
+ },
+ {
+  "navn": "Svanen",
+  "kort": "Yin-versjonen av duen: fremre legg på tvers, bakre bein langt bak — fold deg frem og bli.",
+  "steg": [
+   "Fra alle fire: før ett kne frem bak håndleddet, leggen på skrå under deg.",
+   "Strekk det andre beinet langt bakover.",
+   "Fold overkroppen frem over fremre bein og hvil der. Bytt side."
+  ],
+  "alias": [
+   "Svanen (sovende due)",
+   "Duebein på gulv",
+   "Due / hoftetøy"
+  ],
+  "tips": [
+   "En pute under hoften gjør posisjonen jevn og trygg."
+  ],
+  "muskler": [
+   "Sete",
+   "Hofter"
+  ]
+ },
+ {
+  "navn": "Frosken",
+  "kort": "Knærne bredt, hoftene tilbake: en dyp og krevende yin-åpner for innside lår.",
+  "steg": [
+   "Fra alle fire: skyv knærne bredt ut til siden, leggene i gulvet.",
+   "Senk deg ned på underarmene og la hoftene sige bakover.",
+   "Bli i posisjonen med rolige pust — gå aldri lenger enn behagelig."
+  ],
+  "tips": [
+   "Puter under knærne er nesten obligatorisk."
+  ],
+  "muskler": [
+   "Innside lår",
+   "Hofter"
+  ]
+ },
+ {
+  "navn": "Sadelen",
+  "kort": "Yin-svai fra knestående: len deg bakover mot en pute langs ryggen — framside lår og hofter åpner.",
+  "steg": [
+   "Sitt på knærne med en pute/bolster bak deg.",
+   "Len deg rolig bakover på puten så langt det er behagelig.",
+   "Bli i posisjonen og pust — kom rolig opp på siden."
+  ],
+  "alias": [
+   "Sadelen med pute langs ryggen"
+  ],
+  "tips": [
+   "Kjenner du kneet: prøv én side av gangen eller hopp over."
+  ],
+  "muskler": [
+   "Framside lår",
+   "Hoftebøyere"
+  ],
+  "utstyr": [
+   "Pute"
+  ]
+ },
+ {
+  "navn": "Sneglen",
+  "kort": "Mild invertering: beina svinges over hodet med et brettet teppe under skuldrene.",
+  "steg": [
+   "Ligg på ryggen med et brettet teppe under skuldrene.",
+   "Sving beina rolig over hodet med støtte i ryggen med hendene.",
+   "Bli bare så lenge det er komfortabelt — rull rolig ned igjen."
+  ],
+  "alias": [
+   "Sneglen med brettet teppe under skuldrene"
+  ],
+  "tips": [
+   "Aldri vri hodet mens du er i posisjonen. Beina opp veggen er et fint alternativ."
+  ],
+  "muskler": [
+   "Rygg",
+   "Nakke"
+  ],
+  "utstyr": [
+   "Teppe"
+  ]
+ },
+ {
+  "navn": "Bananasana",
+  "kort": "Liggende banan: føtter og overkropp vandrer til samme side — en lang, lat sidestrekk.",
+  "steg": [
+   "Ligg på ryggen og flytt føttene til én side.",
+   "Flytt skuldre og armer til samme side — kroppen blir en banan.",
+   "Slapp helt av og bli der. Bytt side."
+  ],
+  "alias": [
+   "Bananasana (liggende banan, sidelinjestrekk)"
+  ],
+  "muskler": [
+   "Sidekropp"
+  ]
+ },
+ {
+  "navn": "Smeltende hjerte",
+  "kort": "Knestående med brystet smeltende mot gulvet, armene strakt frem — åpner bryst og skuldre.",
+  "steg": [
+   "Fra alle fire: la hoftene bli over knærne og gå hendene langt frem.",
+   "Senk brystet mot gulvet og la hjertet «smelte» ned.",
+   "Pannen eller haken hviler i matten. Bli og pust."
+  ],
+  "alias": [
+   "Smeltende hjerte (anahatasana, knestående, brystet mot gulvet)"
+  ],
+  "muskler": [
+   "Bryst",
+   "Skuldre",
+   "Rygg"
+  ]
+ },
+ {
+  "navn": "Liggende vridning",
+  "kort": "Ryggens favoritt: knærne faller til én side mens skuldrene hviler i gulvet.",
+  "steg": [
+   "Ligg på ryggen og trekk knærne opp.",
+   "La dem falle rolig til én side — armene ut, skuldrene tunge.",
+   "Se gjerne motsatt vei. Noen rolige pust, og bytt side."
+  ],
+  "alias": [
+   "Liggende twist"
+  ],
+  "tips": [
+   "La knærne hvile på en pute om de ikke når gulvet."
+  ],
+  "muskler": [
+   "Rygg",
+   "Bryst",
+   "Hofter"
+  ]
+ },
+ {
+  "navn": "Twisted roots",
+  "kort": "Liggende vridning med flettede bein — en dypere, mer konsentrert twist.",
+  "steg": [
+   "Ligg på ryggen og flett det ene benet over det andre.",
+   "La de flettede knærne falle til én side, skuldrene i gulvet.",
+   "Bli i vridningen flere pust, og bytt fletting og side."
+  ],
+  "alias": [
+   "Twisted roots (liggende vridning m/ bøyde, flettede knær)"
+  ],
+  "muskler": [
+   "Rygg",
+   "Hofter"
+  ]
+ },
+ {
+  "navn": "Sidefold over bredt bein",
+  "kort": "Sittende med beina bredt: len deg sidelengs over ett bein og pust i sidelinjen.",
+  "steg": [
+   "Sitt med beina bredt fra hverandre.",
+   "Len deg sidelengs ned over ett bein — underarmen kan hvile på låret.",
+   "Motsatt arm strekker over hodet. Bytt side."
+  ],
+  "alias": [
+   "Sidefold over bredt bein (sidebøy over strakt bein)"
+  ],
+  "muskler": [
+   "Sidekropp",
+   "Innside lår"
+  ]
+ },
+ {
+  "navn": "Beina opp langs vegg",
+  "kort": "Den mest gjenopprettende av alle: ligg med setet inntil veggen og beina hvilende opp.",
+  "steg": [
+   "Sitt sidelengs inntil en vegg og sving beina opp mens du legger deg ned.",
+   "Setet så nær veggen som behagelig — armene hviler åpent.",
+   "Bli i posisjonen og la pusten synke."
+  ],
+  "alias": [
+   "Viparita Karani — beina opp veggen, setet inntil vegg",
+   "Viparita karani beina opp veggen"
+  ],
+  "muskler": [
+   "Hvile",
+   "Sirkulasjon"
+  ],
+  "utstyr": [
+   "Vegg"
+  ]
+ },
+ {
+  "navn": "Supta Baddha Konasana",
+  "kort": "Liggende sommerfugl: fotsålene samlet, knærne åpne — hvil med støtte og pust.",
+  "steg": [
+   "Ligg på ryggen med fotsålene mot hverandre.",
+   "La knærne falle åpne — legg gjerne puter under dem.",
+   "Hendene på magen eller ut til siden. Hvil."
+  ],
+  "alias": [
+   "Supta Baddha Konasana — fotsålene samlet, knær ut til siden",
+   "Supta baddha konasana fotsålene samlet"
+  ],
+  "muskler": [
+   "Hofter",
+   "Hvile"
+  ]
+ },
+ {
+  "navn": "Hamstringtøyning",
+  "kort": "Rolig strekk for baksiden av låret — velg liggende, sittende eller stående variant.",
+  "steg": [
+   "Legg deg på ryggen og strekk ett bein mot taket (hold bak låret).",
+   "Trekk beinet mykt mot deg til det strekker bak låret.",
+   "Pust rolig, slipp litt til for hver utpust. Bytt side."
+  ],
+  "alias": [
+   "Hamstring liggende (hender bak lår, press hælen ned)",
+   "Hamstring liggende"
+  ],
+  "tips": [
+   "Aldri press til smerte — 6–7 av 10 i strekkfølelse holder lenge."
+  ],
+  "muskler": [
+   "Baklår"
+  ]
+ },
+ {
+  "navn": "Hamstring liggende med strikk",
+  "kort": "Liggende baklårstøyning med strikk rundt foten — presis og avslappet.",
+  "steg": [
+   "Ligg på ryggen med en strikk rundt fotsålen.",
+   "Strekk beinet mot taket og la strikken holde det oppe.",
+   "Slapp av i resten av kroppen og pust. Bytt side."
+  ],
+  "alias": [
+   "Hamstring liggende m/ strikk"
+  ],
+  "muskler": [
+   "Baklår"
+  ],
+  "utstyr": [
+   "Strikk"
+  ]
+ },
+ {
+  "navn": "Hamstring stående",
+  "kort": "Stående baklårstøyning: hælen frem, hoftene lener seg bak.",
+  "steg": [
+   "Sett én hæl litt frem med strakt bein, tærne opp.",
+   "Len hoftene bakover med lang rygg til det strekker bak låret.",
+   "Hendene kan hvile på det andre låret. Bytt side."
+  ],
+  "alias": [
+   "Hamstring stående (hæl frem, len hoften bak)"
+  ],
+  "muskler": [
+   "Baklår"
+  ]
+ },
+ {
+  "navn": "Halv splitt",
+  "kort": "Fra utfallsposisjon: strekk fremre bein og fold deg over det med lang rygg.",
+  "steg": [
+   "Fra kneststående utfall: skyv hoftene bakover og strekk fremre bein.",
+   "Vipp tærne mot deg og fold overkroppen frem med lang rygg.",
+   "Rolige pust, og bytt side."
+  ],
+  "alias": [
+   "Halv splitt (hamstring-fold i utfall)"
+  ],
+  "muskler": [
+   "Baklår",
+   "Legger"
+  ]
+ },
+ {
+  "navn": "Splittprogresjon med støtte",
+  "kort": "Rolig arbeid mot splitt med klosser eller puter som støtte — kun så langt kroppen vil.",
+  "steg": [
+   "Fra halv splitt: la fremre fot gli lenger frem med støtte under hendene.",
+   "Senk deg kun så langt det kjennes trygt — puter under fremre lår hjelper.",
+   "Pust rolig i ytterstillingen, og kom kontrollert opp. Bytt side."
+  ],
+  "alias": [
+   "Splittprogresjon m/ støtte"
+  ],
+  "tips": [
+   "Dette er tålmodighetsarbeid — millimeter er fremgang."
+  ],
+  "muskler": [
+   "Baklår",
+   "Hoftebøyere"
+  ],
+  "utstyr": [
+   "Puter",
+   "Klosser"
+  ]
+ },
+ {
+  "navn": "Hoftebøyertøyning",
+  "kort": "Knestående utfall: skyv hoften rolig frem til det strekker foran på bakre hofte.",
+  "steg": [
+   "Stå i knestående utfall med bakre kne i gulvet.",
+   "Klem bakre sete og skyv hoftene rolig frem — uten å svaie ryggen.",
+   "Strekker foran på hoften. Pust, og bytt side."
+  ],
+  "alias": [
+   "Knestående hoftebøyerstrekk",
+   "Hoftebøyer i dyp utfall (press bakre kne mot gulvet)",
+   "Hoftebøyer i dyp utfall"
+  ],
+  "tips": [
+   "Løft gjerne samme sides arm for ekstra lengde."
+  ],
+  "muskler": [
+   "Hoftebøyere",
+   "Framside lår"
+  ]
+ },
+ {
+  "navn": "Hoftebøyer sideliggende",
+  "kort": "Sideliggende: hælen trekkes mot setet mens hoften aktivt strekkes bak.",
+  "steg": [
+   "Ligg på siden og grip ankelen på øverste bein.",
+   "Trekk hælen mot setet og press hoften aktivt frem.",
+   "Ribbeina holdes nede. Bytt side."
+  ],
+  "alias": [
+   "Hoftebøyer sideliggende (hæl mot sete, aktiv hofteekstensjon)"
+  ],
+  "muskler": [
+   "Hoftebøyere",
+   "Framside lår"
+  ]
+ },
+ {
+  "navn": "Lårtøyning",
+  "kort": "Klassisk framside-lår-strekk: hælen mot setet, knærne samlet.",
+  "steg": [
+   "Stå på ett bein (hold i noe ved behov) og grip motsatt ankel.",
+   "Trekk hælen mykt mot setet med knærne nær hverandre.",
+   "Stå høy — ikke svai. Bytt side."
+  ],
+  "alias": [
+   "Lårtøy",
+   "Tøy framside lår",
+   "Quadriceps stående m/ balanse",
+   "Quadriceps stående m balanse"
+  ],
+  "muskler": [
+   "Framside lår",
+   "Hoftebøyere"
+  ]
+ },
+ {
+  "navn": "Leggtøy",
+  "kort": "Strekk for leggen: bakre bein strakt med hælen i gulvet, len deg mot veggen.",
+  "steg": [
+   "Stå mot en vegg med ett bein godt bak.",
+   "Press bakre hæl i gulvet og len deg frem til det strekker i leggen.",
+   "Bytt side. Bøy bakre kne litt for å nå dypere i leggen."
+  ],
+  "alias": [
+   "Legg mot vegg",
+   "Legg mot vegg (press tåballen mot veggen)"
+  ],
+  "muskler": [
+   "Legger",
+   "Ankler"
+  ],
+  "utstyr": [
+   "Vegg"
+  ]
+ },
+ {
+  "navn": "Legg med strikk",
+  "kort": "Sittende leggtøyning: strikk rundt fotsålen, trekk tærne mot deg.",
+  "steg": [
+   "Sitt med ett bein strakt og en strikk rundt fotsålen.",
+   "Trekk tærne rolig mot deg til det strekker i leggen.",
+   "Hold og pust. Bytt side."
+  ],
+  "alias": [
+   "Legg m/ strikk (fleksjon mot deg)",
+   "Legg m strikk"
+  ],
+  "muskler": [
+   "Legger"
+  ],
+  "utstyr": [
+   "Strikk"
+  ]
+ },
+ {
+  "navn": "Adduktor liggende med strikk",
+  "kort": "Liggende: beinet føres ut til siden med strikk — innsiden av låret slipper rolig.",
+  "steg": [
+   "Ligg på ryggen med strikk rundt én fotsåle.",
+   "Strekk beinet opp og la det falle rolig ut til siden.",
+   "Motsatt hofte blir tungt i gulvet. Bytt side."
+  ],
+  "alias": [
+   "Adduktor liggende m/ strikk (benet ut til siden)",
+   "Adduktor liggende m strikk"
+  ],
+  "muskler": [
+   "Innside lår"
+  ],
+  "utstyr": [
+   "Strikk"
+  ]
+ },
+ {
+  "navn": "Adduktor sittende ved vegg",
+  "kort": "Sittende mot vegg med knærne åpne: pressa knærne lett mot hendene — aktiv innsidetøyning.",
+  "steg": [
+   "Sitt med ryggen mot en vegg og fotsålene samlet.",
+   "Legg hendene på innsiden av knærne.",
+   "Press knærne lett mot hendene i noen sekunder, slipp — og la dem synke litt dypere."
+  ],
+  "alias": [
+   "Adduktor sittende v/ vegg (press knærne mot hendene)",
+   "Adduktor sittende v vegg"
+  ],
+  "muskler": [
+   "Innside lår"
+  ],
+  "utstyr": [
+   "Vegg"
+  ]
+ },
+ {
+  "navn": "Brysttøyning",
+  "kort": "Åpne brystet: armene bak kroppen eller mot en dørkarm — motgiften mot dagen ved skjermen.",
+  "steg": [
+   "Flett hendene bak ryggen (eller hold i en dørkarm).",
+   "Løft brystet og trekk skuldrene mykt bakover.",
+   "Pust inn i brystet og hold."
+  ],
+  "alias": [
+   "Brysttøy",
+   "Brysttøy med armer bak",
+   "Brysttøyning i dørkarm",
+   "Bryst i døråpning",
+   "Brysttøy på gulv"
+  ],
+  "muskler": [
+   "Bryst",
+   "Skuldre"
+  ]
+ },
+ {
+  "navn": "Brystsving liggende",
+  "kort": "Sideliggende: øverste arm åpner i en stor bue ut og ned — brystet følger etter.",
+  "steg": [
+   "Ligg på siden med knærne bøyd og armene samlet foran deg.",
+   "Løft øverste arm og sving den i en stor bue over til andre siden.",
+   "La blikket følge hånden, og sving rolig tilbake. Bytt side."
+  ],
+  "alias": [
+   "Brystsving liggende (armen aktivt ut/ned)"
+  ],
+  "muskler": [
+   "Bryst",
+   "Rygg"
+  ]
+ },
+ {
+  "navn": "Åpen bok",
+  "kort": "Sideliggende rotasjon: øverste arm åpner som en bokside — hold i ytterstillingen.",
+  "steg": [
+   "Ligg på siden med knærne bøyd 90 grader og armene strakt foran deg.",
+   "Åpne øverste arm over mot motsatt side, som en bok som åpnes.",
+   "Hold i ytterstillingen noen pust — knærne blir liggende. Bytt side."
+  ],
+  "alias": [
+   "Åpen bok (thorakal rotasjon, hold ytterstilling)"
+  ],
+  "muskler": [
+   "Bryst",
+   "Rygg"
+  ]
+ },
+ {
+  "navn": "Skulder kryssdrag",
+  "kort": "Trekk én arm på tvers over brystet — enkel og effektiv skulderstrekk.",
+  "steg": [
+   "Før én arm strakt over brystet.",
+   "Bruk den andre armen til å trekke den mykt inntil.",
+   "Skulderen holdes lav. Bytt side."
+  ],
+  "alias": [
+   "Skuldertøy"
+  ],
+  "muskler": [
+   "Skuldre"
+  ]
+ },
+ {
+  "navn": "Skulderåpner mot vegg",
+  "kort": "Hendene på veggen, brystet senkes ned — skuldrene åpner i full strekk.",
+  "steg": [
+   "Sett hendene på veggen i skulderhøyde og rygg litt tilbake.",
+   "Senk brystet ned mellom armene med lang rygg.",
+   "Pust der det strekker i skuldre og bryst."
+  ],
+  "muskler": [
+   "Skuldre",
+   "Bryst"
+  ],
+  "utstyr": [
+   "Vegg"
+  ]
+ },
+ {
+  "navn": "Nakke sidebøy",
+  "kort": "La øret synke rolig mot skulderen — nakkens enkleste og beste strekk.",
+  "steg": [
+   "Sitt eller stå høyt og senk begge skuldrene.",
+   "La øret synke rolig mot én skulder.",
+   "Hånden kan legges lett oppå hodet — kun tyngde, aldri drag. Bytt side."
+  ],
+  "muskler": [
+   "Nakke"
+  ]
+ },
+ {
+  "navn": "Underarmstøyning",
+  "kort": "Strekk underarmene: strak arm, bøy hånden opp og ned med lett hjelp.",
+  "steg": [
+   "Strekk én arm frem med håndflaten opp.",
+   "Bøy hånden ned med lett hjelp fra den andre — det strekker i underarmen.",
+   "Snu håndflaten ned og gjenta motsatt vei. Bytt arm."
+  ],
+  "muskler": [
+   "Underarmer",
+   "Håndledd"
+  ]
+ },
+ {
+  "navn": "QL-/sidestrekk",
+  "kort": "Dyp sidestrekk for korsryggens sidemuskel: len deg over med løftet arm og la siden puste.",
+  "steg": [
+   "Sitt eller stå med god høyde.",
+   "Løft én arm og len deg rolig over til motsatt side, litt frem.",
+   "Pust inn i siden av ryggen. Bytt side."
+  ],
+  "alias": [
+   "QL-sidestrekk",
+   "QL sidestrekk"
+  ],
+  "muskler": [
+   "Korsrygg",
+   "Sidekropp"
+  ]
+ },
+ {
+  "navn": "Verdens beste tøyning",
+  "kort": "Utfall, albue mot gulvet og rotasjon mot taket — hofter, rygg og bryst i én bevegelse.",
+  "steg": [
+   "Ta et langt utfall og sett begge hendene innenfor fremre fot.",
+   "Senk albuen på samme side som fremre bein mot gulvet.",
+   "Rotér så armen opp mot taket og følg med blikket. Bytt side."
+  ],
+  "alias": [
+   "Verdens beste tøyning: utfall, albue mot gulv, rotasjon, hofta bak"
+  ],
+  "tips": [
+   "Ta bevegelsen sakte — den heter ikke «verdens beste» uten grunn."
+  ],
+  "muskler": [
+   "Hofter",
+   "Rygg",
+   "Bryst"
+  ]
+ },
+ {
+  "navn": "Figur-4",
+  "kort": "Ankelen over motsatt kne — setet og dype hofterotatorer slipper taket.",
+  "steg": [
+   "Liggende: legg én ankel over motsatt kne.",
+   "Grip bak låret og trekk beina mykt mot deg.",
+   "Sittende på stol: len deg heller rolig frem. Bytt side."
+  ],
+  "alias": [
+   "Figur-4 (ankel over kne)",
+   "Figur-4 liggende",
+   "Hoftetøy"
+  ],
+  "muskler": [
+   "Sete",
+   "Hofter"
+  ]
+ },
+ {
+  "navn": "90/90-hoftetøyning",
+  "kort": "Begge bein i 90 grader på gulvet: len deg over fremre legg med lang rygg.",
+  "steg": [
+   "Sitt med fremre bein bøyd 90 grader foran deg og bakre bein 90 grader til siden.",
+   "Voks deg lang og len overkroppen rolig frem over fremre legg.",
+   "Pust der det strekker i setet. Bytt side."
+  ],
+  "alias": [
+   "90/90-hoftestrekk (len over fremre legg)",
+   "90/90-hoftestrekk",
+   "Fremoverlening over fremre legg med lang rygg"
+  ],
+  "muskler": [
+   "Sete",
+   "Hofter"
+  ]
+ },
+ {
+  "navn": "90/90-switches",
+  "kort": "Fra 90/90: knærne svinger sammen over til motsatt side uten hendene — aktiv hoftekontroll.",
+  "steg": [
+   "Sitt i 90/90-posisjonen med hendene lett bak deg (eller løftet).",
+   "Sving begge knærne rolig over til motsatt side.",
+   "Kontroll hele veien — ingen fart. Gjenta side til side."
+  ],
+  "alias": [
+   "90/90-switches uten hender",
+   "90/90-vipp side til side med hendene bak"
+  ],
+  "muskler": [
+   "Hofter"
+  ]
+ },
+ {
+  "navn": "Lift-off innadrotasjon",
+  "kort": "Fra 90/90: løft bakre fot fra gulvet mens kneet blir nede — styrke i hoftens innadrotasjon.",
+  "steg": [
+   "Sitt i 90/90 med høy overkropp.",
+   "Løft bakre fot fra gulvet uten at kneet forlater bakken.",
+   "Hold et par sekunder, senk rolig. Gjenta og bytt side."
+  ],
+  "alias": [
+   "Lift-off innadrotasjon: bakre fot løftes, kneet i bakken"
+  ],
+  "tips": [
+   "Liten bevegelse, stor effekt — ikke len deg vekk."
+  ],
+  "muskler": [
+   "Hofter"
+  ]
+ },
+ {
+  "navn": "Lift-off utadrotasjon",
+  "kort": "Fra 90/90: løft hele fremre legg fra gulvet — utadrotasjonens styrkeprøve.",
+  "steg": [
+   "Sitt i 90/90 med hendene lett bak deg.",
+   "Løft hele fremre legg noen centimeter fra gulvet.",
+   "Hold kort, senk rolig. Gjenta og bytt side."
+  ],
+  "alias": [
+   "Lift-off utadrotasjon: fremre legg løftes fra gulvet"
+  ],
+  "muskler": [
+   "Hofter",
+   "Sete"
+  ]
+ },
+ {
+  "navn": "Pigeon push-up",
+  "kort": "Fra dueposisjon: press overkroppen opp og ned fra fremre legg — aktiv hofteåpner.",
+  "steg": [
+   "Innta dueposisjonen med fremre legg på gulvet.",
+   "Press hendene i gulvet og løft overkroppen — kjenn presset i fremre hofte.",
+   "Senk rolig ned igjen. Gjenta og bytt side."
+  ],
+  "alias": [
+   "Pigeon push-up: press opp fra fremre legg"
+  ],
+  "muskler": [
+   "Sete",
+   "Hofter"
+  ]
+ },
+ {
+  "navn": "Rolig pust",
+  "kort": "Sitt eller ligg stille og la pusten bli lang og lav — nervesystemets av-knapp.",
+  "steg": [
+   "Finn en behagelig posisjon, sittende eller liggende.",
+   "Pust inn gjennom nesen, lavt ned i magen.",
+   "La utpusten bli litt lengre enn innpusten. Fortsett rolig."
+  ],
+  "alias": [
+   "Rolig pust liggende",
+   "Rolige pust med lukkede øyne"
+  ],
+  "muskler": [
+   "Ro",
+   "Pust"
+  ]
+ },
+ {
+  "navn": "Magepust liggende",
+  "kort": "Liggende med hendene på magen: pust så hendene løfter seg — dyp, rolig bukpust.",
+  "steg": [
+   "Ligg på ryggen med bøyde knær og hendene på magen.",
+   "Pust inn gjennom nesen så magen (og hendene) hever seg.",
+   "Pust langsomt ut og kjenn magen synke. Gjenta rolig."
+  ],
+  "alias": [
+   "Magepust liggende på rygg"
+  ],
+  "muskler": [
+   "Pust",
+   "Ro"
+  ]
+ },
+ {
+  "navn": "Boks-pust",
+  "kort": "Pust i firkant: inn 4 — hold 4 — ut 4 — hold 4. Enkelt, kraftfullt, roende.",
+  "steg": [
+   "Pust inn gjennom nesen mens du teller til 4.",
+   "Hold pusten i 4. Pust ut i 4. Hold tomt i 4.",
+   "Gjenta rundene i rolig tempo."
+  ],
+  "alias": [
+   "Boks-pust 4-4-4-4"
+  ],
+  "tips": [
+   "Blir 4 for lenge: bruk 3. Rytmen er viktigere enn tallet."
+  ],
+  "muskler": [
+   "Pust",
+   "Ro"
+  ]
+ },
+ {
+  "navn": "Koherent pust",
+  "kort": "Cirka 5,5 pust i minuttet: like lang inn- og utpust — hjertero på ren rytme.",
+  "steg": [
+   "Pust inn rolig i ca. 5,5 sekunder.",
+   "Pust ut like rolig i ca. 5,5 sekunder.",
+   "Fortsett — jevnt som en bølge, uten pauser."
+  ],
+  "alias": [
+   "Koherent pust 5,5/min",
+   "Koherent pust 5"
+  ],
+  "muskler": [
+   "Pust",
+   "Ro"
+  ]
+ },
+ {
+  "navn": "Syklisk sukk",
+  "kort": "Dobbel innpust gjennom nesen, lang utpust gjennom munnen — raskeste veien til roligere puls.",
+  "steg": [
+   "Pust inn gjennom nesen, og ta en liten ekstra innpust på toppen.",
+   "Slipp en lang, avslappet utpust gjennom munnen.",
+   "Gjenta i ett–to minutter."
+  ],
+  "muskler": [
+   "Pust",
+   "Ro"
+  ]
+ }
+]

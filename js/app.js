@@ -15,6 +15,7 @@ import { visReviewSkjerm, visKjoreSkjerm } from './kjor.js';
 import { settBib as settBibHist, visAktivitetSkjerm } from './historikk.js';
 import { visHurtigSkjerm, visLoggforSkjerm, aktivHurtig } from './beveg.js';
 import { slippVaaken } from './vaakenlaas.js';
+import { lastOvelsesinfo, settBib as settBibOvelse, visOvelseSkjerm } from './ovelse.js';
 import { visMerkerSkjerm } from './merker.js';
 import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
 import { lagFaneside, fanesideMedTittel, settNavger, dagsfase } from './banner.js';
@@ -48,11 +49,12 @@ const ruter = {
   meny: visMeny,
   innstillinger: visInnstillinger,
   bibliotek: visBibliotek,
+  ovelse: () => visOvelseSkjerm(app),
   om: visOm,
 };
 
 // Skjermene med egen tilbake-header er fokusmodus (skjuler tab-baren).
-const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender']);
+const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse']);
 
 // Gamle #/ny?m=STY-lenker (og bokmerker) sendes til riktig bibliotekkategori.
 function omdirigerGammelNyLenke() {
@@ -630,10 +632,11 @@ function ovelseKort(e) {
   const utstyr = [...new Set(e.varianter.flatMap((v) => v.utstyr))]
     .map((u) => bib.utstyrMap.get(u)?.navn || u).slice(0, 4).join(', ');
 
-  return el('div', { class: 'ovelse' },
+  // Hele kortet åpner øvelsessiden — (i)-ikonet viser at det er mer å se.
+  return el('a', { class: 'ovelse', href: `#/ovelse?n=${encodeURIComponent(e.navn)}` },
     el('div', { class: 'ovelse__topp' },
       el('span', { class: 'ovelse__navn' }, e.navn),
-      nivaPrikker,
+      el('span', { class: 'ovelse__hoyre' }, nivaPrikker, ikon('info', 'ikon ikon--liten')),
     ),
     el('div', { class: 'ovelse__meta' },
       el('span', { class: 'tag' }, MONSTER_NAVN[e.monster] || e.monster),
@@ -712,7 +715,7 @@ function skjulSplash() {
 // --- Oppstart ---
 async function start() {
   try {
-    [bib] = await Promise.all([lastBibliotek(), lastOkter()]);
+    [bib] = await Promise.all([lastBibliotek(), lastOkter(), lastOvelsesinfo()]);
   } catch (e) {
     skjulSplash();
     tom(app);
@@ -724,6 +727,7 @@ async function start() {
   }
   settBibHist(bib);
   settBibKal(bib);
+  settBibOvelse(bib);
   settNavger(navger); // pull-to-refresh (banner.js) tegner siden på nytt
   bruksTema(hentProfil()?.innstillinger?.tema);
   // Fanebytte starter alltid på toppen av siden (programmatiske redraws,

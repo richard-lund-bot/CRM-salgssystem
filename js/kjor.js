@@ -11,6 +11,7 @@ import { settPlanStatus } from './store.js';
 import { registrerOgLogg, visBevegelseFerdig } from './beveg.js';
 import { lagRing } from './animasjon.js';
 import { holdVaaken, slippVaaken } from './vaakenlaas.js';
+import { infoKnapp } from './ovelse.js';
 
 let gjeldendeOkt = null;
 let aktivInterval = null;
@@ -97,6 +98,7 @@ function tidTekst(sek) {
   return sek >= 60 && sek % 60 === 0 ? `${sek / 60} min` : `${sek} s`;
 }
 
+// Én rad per steg i review — med (i) til øvelsessiden når vi har innhold.
 function stegRad({ navn, sub = null, tid = null, type = 'arbeid' }) {
   return el('div', { class: 'rsteg rsteg--' + type },
     el('i', { class: 'rsteg__bar' }),
@@ -104,6 +106,7 @@ function stegRad({ navn, sub = null, tid = null, type = 'arbeid' }) {
       el('span', { class: 'rsteg__navn' }, navn),
       sub && el('span', { class: 'rsteg__sub' }, sub),
     ),
+    infoKnapp(navn, { dose: sub, somSide: true }),
     tid && el('span', { class: 'rsteg__tid' }, tid),
   );
 }
@@ -264,12 +267,16 @@ function guideFlate(blk) {
   if (paramT) wrap.append(el('p', { class: 'flate__param' }, paramT));
   const liste = el('div', { class: 'guide' });
   blk.ovelser.forEach((o) => {
-    const rad = el('button', { class: 'guide__rad', type: 'button' },
+    // Raden er en div med hake-knappen inni, så (i)-knappen kan stå ved
+    // siden av uten ugyldig knapp-i-knapp — og åpne bunnarket uten å
+    // forstyrre økta.
+    const velg = el('button', { class: 'guide__velg', type: 'button' },
       el('span', { class: 'guide__hake' }, ikon('sjekk')),
       el('span', { class: 'guide__navn' }, o.navn + (o.dose ? ` · ${o.dose}` : '')),
       o.unilateral && el('span', { class: 'tag tag--u' }, 'per side'),
     );
-    rad.addEventListener('click', () => {
+    const rad = el('div', { class: 'guide__rad' }, velg, infoKnapp(o.navn, { dose: o.dose }));
+    velg.addEventListener('click', () => {
       rad.classList.toggle('guide__rad--ferdig');
       rad.classList.remove('guide__rad--puls'); void rad.offsetWidth; rad.classList.add('guide__rad--puls');
     });
@@ -292,16 +299,21 @@ function sekvensFlate(blk) {
   const tittel = el('div', { class: 'flate__stor' });
   const teller = el('p', { class: 'dempet' });
   const beskr = el('p', { class: 'flate__beskr' }, seq?.beskrivelse || '');
+  const infoWrap = el('span', { class: 'flate__info' });
 
   function tegn() {
-    tom(tittel); tittel.append(navnTilLesbar(posisjoner[i] || '—'));
+    const navn = navnTilLesbar(posisjoner[i] || '—');
+    tom(tittel); tittel.append(navn);
+    tom(infoWrap);
+    const k = infoKnapp(navn);
+    if (k) infoWrap.append(k);
     teller.textContent = `${seq?.navn || ''} · posisjon ${i + 1}/${posisjoner.length}${runder > 1 ? ` · ${runder} runder` : ''}`;
   }
   const nav = el('div', { class: 'flate__knapper' },
     el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: () => { i = Math.max(0, i - 1); tegn(); } }, '‹ Forrige'),
     el('button', { class: 'knapp', type: 'button', onclick: () => { i = Math.min(posisjoner.length - 1, i + 1); tegn(); } }, 'Neste ›'),
   );
-  wrap.append(teller, tittel, beskr, nav, el('p', { class: 'dempet flate__hint' }, '1 bevegelse per pust. Gjenta hele sekvensen ' + runder + '×.'));
+  wrap.append(teller, el('div', { class: 'flate__tittelrad' }, tittel, infoWrap), beskr, nav, el('p', { class: 'dempet flate__hint' }, '1 bevegelse per pust. Gjenta hele sekvensen ' + runder + '×.'));
   tegn();
   return wrap;
 }
@@ -350,13 +362,17 @@ function timerFlate(blk) {
   const paramT = paramTekst(blk);
   const status = el('p', { class: 'dempet' }, plan.length > 1 ? `${plan.length} faser` : paramT);
   const neste = el('p', { class: 'flate__neste' }, '');
+  const infoWrap = el('span', { class: 'flate__info' });
   if (paramT) wrap.append(el('p', { class: 'flate__param' }, paramT));
-  wrap.append(fasenavn, klokkeWrap, neste, status);
+  wrap.append(el('div', { class: 'flate__tittelrad' }, fasenavn, infoWrap), klokkeWrap, neste, status);
   let totalSek = plan[0]?.sek || 1;
   wrap.append(timerKnapper(plan, {
     onFase: (f, i) => {
       fasenavn.textContent = f.navn;
       fasenavn.className = 'flate__stor flate__stor--' + f.type;
+      tom(infoWrap);
+      const k = infoKnapp(f.navn);
+      if (k) infoWrap.append(k);
       const n = plan[i + 1];
       neste.textContent = n ? `Neste: ${n.navn}` : 'Siste fase';
       totalSek = f.sek || 1;

@@ -3,7 +3,7 @@
 //   - navigasjon/HTML: network-first med cache-fallback (fersk UI når nett finnes)
 //   - data/JS/CSS/ikoner: cache-first (raskt, fungerer offline)
 // Bump CACHE_VERSION for å rulle ut ny cache.
-const CACHE_VERSION = 'mova-m15-2.5.3';
+const CACHE_VERSION = 'mova-m16-2.6.0';
 const SKALL = [
   './',
   './index.html',
@@ -26,6 +26,7 @@ const SKALL = [
   './js/banner.js',
   './js/merker.js',
   './js/vaakenlaas.js',
+  './js/ovelse.js',
   './js/animasjon.js',
   './manifest.webmanifest',
   './fonts/fredoka-var.woff2',
@@ -42,6 +43,7 @@ const SKALL = [
   './icons/brand/shoe-badge.png',
   './icons/brand/splash.webp',
   './data/okter.json',
+  './data/ovelsesinfo.json',
   './data/exercises.json',
   './data/equipment.json',
 ];
@@ -85,7 +87,7 @@ self.addEventListener('fetch', (e) => {
   e.respondWith(
     caches.match(request).then((truff) =>
       truff || fetch(request).then((res) => {
-        if (res.ok && (url.pathname.includes('/data/') || url.pathname.includes('/js/') || url.pathname.includes('/css/') || url.pathname.includes('/icons/') || url.pathname.includes('/fonts/'))) {
+        if (res.ok && (url.pathname.includes('/data/') || url.pathname.includes('/bilder/') || url.pathname.includes('/js/') || url.pathname.includes('/css/') || url.pathname.includes('/icons/') || url.pathname.includes('/fonts/'))) {
           const kopi = res.clone();
           caches.open(CACHE_VERSION).then((c) => c.put(request, kopi));
         }
