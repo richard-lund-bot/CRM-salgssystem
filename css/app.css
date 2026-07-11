@@ -1464,20 +1464,68 @@ body.fokusmodus { padding-bottom: 0; }
 .typeniva--teal .ringfremgang__fyll { stroke: #1FA89F; }
 
 /* Restitusjons-kroppskart (M17) på Min dag. */
-.restitusjonskort__tittel { margin: 0 0 2px; font-family: var(--font-display); font-weight: 600; font-size: 17px; }
-.kroppskart { display: block; width: 100%; max-width: 300px; margin: 4px auto; }
-.kroppskart__hode { fill: var(--ink-100); }
-.kroppskart__etikett { fill: var(--dempet); font-size: 9px; font-weight: 600; }
-.kroppskart__region { fill: #0BA69F; stroke: var(--bg-kort); stroke-width: 0.6; transition: fill 0.45s ease; }
-.kroppskart-forklaring { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--dempet); margin-top: 6px; }
-.kroppskart-forklaring__skala { flex: 1; height: 8px; border-radius: 4px; background: linear-gradient(90deg, #0BA69F, #F9CD55, #FF6F61); }
-.restitusjonskort__anbefaling {
-  display: inline-flex; align-items: center; gap: 7px; margin-top: 12px;
+.restitusjonskort__hode { display: flex; align-items: flex-start; gap: 12px; }
+.restitusjonskort__merke {
+  flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%;
   background: var(--aksent-svak); color: var(--aksent);
-  border-radius: var(--radius-pill); padding: 10px 16px;
-  font-size: 13.5px; font-weight: 600; text-decoration: none;
+  display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; font-size: 17px;
 }
-.restitusjonskort__anbefaling .ikon { flex: 0 0 auto; }
+.restitusjonskort__tittelrad { flex: 1; min-width: 0; }
+.restitusjonskort__tittel { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 20px; }
+.restitusjonskort__undertittel { margin: 2px 0 0; font-size: 12.5px; color: var(--dempet); line-height: 1.35; }
+.restitusjonskort__info {
+  flex: 0 0 auto; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--kant); padding: 0;
+  cursor: pointer; background: var(--bg-kort); color: var(--dempet); display: inline-grid; place-items: center;
+}
+.restitusjonskort__info .ikon { width: 15px; height: 15px; }
+.restitusjonskort__info:active { background: var(--aksent-svak); color: var(--aksent); }
+.restitusjonskort__hjelp {
+  margin: 8px 0 0; font-size: 12.5px; line-height: 1.45; color: var(--tekst-2);
+  background: var(--bg-kort-2); border-radius: var(--radius-sm); padding: 9px 11px;
+}
+
+.kroppskart { display: block; width: 100%; max-width: 330px; margin: 8px auto 4px; }
+.kroppskart__base { fill: var(--ink-100); }
+.kroppskart__hode { fill: var(--ink-200); }
+.kroppskart__etikett { fill: var(--tekst-2); font-size: 11px; font-weight: 600; }
+.kroppskart__region { fill: #0BA69F; stroke: var(--bg-kort); stroke-width: 0.7; transition: fill 0.45s ease; }
+
+.kroppskart-forklaring { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--dempet); margin-top: 4px; }
+.kroppskart-forklaring__skala { flex: 1; height: 8px; border-radius: 4px; background: linear-gradient(90deg, #0BA69F, #F9CD55, #FF6F61); }
+
+.restitusjon-oppsummering {
+  display: flex; align-items: stretch; margin-top: 14px;
+  background: var(--bg-kort-2); border-radius: var(--radius-md); padding: 10px 2px;
+}
+.restitusjon-oppsummering__halv { flex: 1; display: flex; align-items: center; gap: 9px; padding: 0 10px; min-width: 0; }
+.restitusjon-oppsummering__halv + .restitusjon-oppsummering__halv { border-left: 1px solid var(--kant); }
+.restitusjon-oppsummering__ikon {
+  flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--bg-kort); display: grid; place-items: center; color: var(--aksent);
+}
+.restitusjon-oppsummering__ikon .ikon { width: 16px; height: 16px; }
+.restitusjon-oppsummering__tekst { min-width: 0; }
+.restitusjon-oppsummering__navn { display: block; font-size: 12.5px; font-weight: 700; }
+.restitusjon-oppsummering__status { display: block; font-size: 11.5px; color: var(--dempet); line-height: 1.3; }
+
+.restitusjon-anbefaling {
+  display: flex; align-items: flex-start; gap: 12px; margin-top: 14px; text-decoration: none; color: inherit;
+  background: var(--aksent-svak); border: 1px solid var(--aksent-kant, var(--kant));
+  border-radius: var(--radius-md); padding: 14px;
+}
+.restitusjon-anbefaling__disk {
+  flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%;
+  background: var(--bg-kort); display: grid; place-items: center; color: var(--aksent);
+}
+.restitusjon-anbefaling__disk .ikon { width: 22px; height: 22px; }
+.restitusjon-anbefaling__meta { flex: 1; min-width: 0; }
+.restitusjon-anbefaling__tittel { display: block; font-family: var(--font-display); font-weight: 600; font-size: 15.5px; line-height: 1.25; }
+.restitusjon-anbefaling__under { display: block; font-size: 12px; color: var(--dempet); margin-top: 2px; line-height: 1.35; }
+.restitusjon-anbefaling__merker { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+.tag--ikon { display: inline-flex; align-items: center; gap: 4px; }
+.tag--ikon .ikon { width: 13px; height: 13px; }
+.tag--gronn { background: #E4F3EA; color: #2C7A55; }
+
 @media (prefers-reduced-motion: reduce) { .kroppskart__region { transition-duration: 0.01ms; } }
 
 .merkebolk {
@@ -1757,15 +1805,19 @@ body.fokusmodus { padding-bottom: 0; }
 .muskelrad__fyll { display: block; height: 100%; background: var(--aksent-lys); border-radius: var(--radius-pill); }
 .muskelrad__kg { flex: 0 0 auto; font-size: 12px; color: var(--dempet); font-variant-numeric: tabular-nums; }
 
-/* Profil-fanen (midten) — litt større, hevet teal-sirkel */
-.tabbar__knapp--stor { color: var(--aksent); }
+/* Profil-fanen (midten) — litt større, hevet sirkel. Grå når uvalgt,
+   fargelagt teal når valgt (eller på en meny-underside). */
+.tabbar__knapp--stor { color: var(--dempet); }
 .tabbar__knapp--stor .tabbar__ikon {
   width: 48px; height: 48px; margin-top: -20px; border-radius: 50%;
-  background: var(--aksent); color: #fff; box-shadow: var(--shadow-action);
+  background: var(--bg-kort-2); color: var(--dempet); box-shadow: var(--shadow-sm);
   border: 3px solid var(--bg-kort);
 }
 .tabbar__knapp--stor .tabbar__ikon .ikon { width: 24px; height: 24px; }
-.tabbar__knapp--stor.tabbar__knapp--aktiv .tabbar__ikon { background: var(--aksent-mork); }
+.tabbar__knapp--stor.tabbar__knapp--aktiv { color: var(--aksent); }
+.tabbar__knapp--stor.tabbar__knapp--aktiv .tabbar__ikon {
+  background: var(--aksent); color: #fff; box-shadow: var(--shadow-action);
+}
 
 /* ============================================================
    Lær — kompendium av læringsartikler (M18)

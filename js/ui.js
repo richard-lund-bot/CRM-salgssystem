@@ -79,6 +79,8 @@ const IKONER = {
   pause: '<rect x="7" y="5" width="3.4" height="14" rx="1" fill="currentColor" stroke="none"/><rect x="13.6" y="5" width="3.4" height="14" rx="1" fill="currentColor" stroke="none"/>',
   play: '<path d="M7 4.5v15a1 1 0 0 0 1.52.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z" fill="currentColor" stroke="none"/>',
   hoppover: '<path d="M5 4.5v15a1 1 0 0 0 1.52.86l9-7.5a1 1 0 0 0 0-1.72l-9-7.5A1 1 0 0 0 5 4.5z" fill="currentColor" stroke="none"/><rect x="17" y="4.5" width="3" height="15" rx="1" fill="currentColor" stroke="none"/>',
+  ben: '<path d="M9 3v6l3 4v8"/><path d="M12 21h5"/>',
+  stolper: '<rect x="4" y="13" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="11" rx="1"/><rect x="16" y="5" width="4" height="15" rx="1"/>',
 };
 
 /** Returnerer et inline SVG-ikon (arver farge). */

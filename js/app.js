@@ -162,25 +162,79 @@ function visHjem() {
   );
 }
 
-// Restitusjons-kroppskart (M17): tint fra grønn (frisk) til rød (nylig trent)
-// per kroppsregion, pluss en kroppskart-drevet «hva bør du trene nå»-anbefaling
-// med dyplenke til en passende øktkategori. Drives av hele loggen, så det vises
-// alltid — i motsetning til gnist-forslaget over.
+// Kort lesbar status for en 0..1-belastning (brukes i oppsummeringsraden).
+function belastningsTekst(score) {
+  if (score >= 0.6) return 'nylig hardt belastet';
+  if (score >= 0.35) return 'moderat belastet';
+  if (score >= 0.15) return 'klar for lett/moderat økt';
+  return 'frisk og klar';
+}
+
+// Restitusjons-kroppskart (M17): anatomisk for-/bakside-figur der hver
+// muskelgruppe tones grønn (klar) → rød (nylig belastet), med header, en
+// oppsummeringsrad (overkropp/ben) og et anbefalt-økt-kort med dyplenke til en
+// passende øktkategori. Drives av hele loggen, så det vises alltid.
 function restitusjonsKort(logg) {
   const scores = regionScores(logg);
   const kart = lagKroppskart();
   requestAnimationFrame(() => kart.sett(scores));
   const anbef = anbefalingFraRegioner(scores);
+  const overkropp = Math.max(scores.skuldre, scores.armer, scores.bryst, scores.rygg);
+  const underkropp = Math.max(scores.sete, scores.lar, scores.baklar, scores.legger);
+
+  const hjelp = el('p', { class: 'restitusjonskort__hjelp', hidden: true },
+    'Hver muskelgruppe farges fra grønn (klar) til rød (nylig belastet) ut fra hvor '
+    + 'nylig og hvor hardt du har trent den — det avtar over tre døgn. Bruk kartet til å '
+    + 'se hva som er lurt å trene i dag.');
+  const info = el('button', {
+    class: 'restitusjonskort__info', type: 'button', 'aria-label': 'Hvordan fungerer kroppskartet?',
+    onclick: () => { hjelp.hidden = !hjelp.hidden; },
+  }, ikon('info'));
+
+  const halvdel = (ikonNavn, navn, score) => el('div', { class: 'restitusjon-oppsummering__halv' },
+    el('span', { class: 'restitusjon-oppsummering__ikon' }, ikon(ikonNavn)),
+    el('div', { class: 'restitusjon-oppsummering__tekst' },
+      el('span', { class: 'restitusjon-oppsummering__navn' }, `${navn}:`),
+      el('span', { class: 'restitusjon-oppsummering__status' }, belastningsTekst(score)),
+    ),
+  );
+  const merkelapp = (ikonNavn, tekst, variant) => el('span', { class: `tag tag--ikon ${variant}` },
+    ikon(ikonNavn), tekst);
+
   return el('section', { class: 'kort restitusjonskort' },
-    el('h2', { class: 'restitusjonskort__tittel' }, 'Restitusjon'),
+    el('div', { class: 'restitusjonskort__hode' },
+      el('span', { class: 'restitusjonskort__merke' }, 'M'),
+      el('div', { class: 'restitusjonskort__tittelrad' },
+        el('h2', { class: 'restitusjonskort__tittel' }, 'Restitusjon'),
+        el('p', { class: 'restitusjonskort__undertittel' },
+          'Se hvor kroppen trenger ro eller er klar for belastning'),
+      ),
+      info,
+    ),
+    hjelp,
     kart.svg,
     el('div', { class: 'kroppskart-forklaring' },
-      el('span', {}, 'Frisk'),
+      el('span', {}, 'Klar'),
       el('span', { class: 'kroppskart-forklaring__skala' }),
-      el('span', {}, 'Nylig trent'),
+      el('span', {}, 'Nylig belastet'),
     ),
-    el('a', { class: 'restitusjonskort__anbefaling', href: `#/okter?kat=${anbef.kat}` },
-      ikon('lyn', 'ikon ikon--liten'), el('span', {}, anbef.tekst)),
+    el('div', { class: 'restitusjon-oppsummering' },
+      halvdel('person', 'Overkropp', overkropp),
+      halvdel('ben', 'Ben', underkropp),
+    ),
+    el('a', { class: 'restitusjon-anbefaling', href: `#/okter?kat=${anbef.kat}` },
+      el('span', { class: 'restitusjon-anbefaling__disk' }, ikon('vekt')),
+      el('div', { class: 'restitusjon-anbefaling__meta' },
+        el('span', { class: 'hero__eyebrow' }, 'Anbefalt økt'),
+        el('span', { class: 'restitusjon-anbefaling__tittel' }, anbef.tekst),
+        el('span', { class: 'restitusjon-anbefaling__under' }, `${anbef.undertekst} · ${anbef.varighet}`),
+        el('div', { class: 'restitusjon-anbefaling__merker' },
+          merkelapp('stolper', anbef.intensitet, 'tag--u'),
+          merkelapp('person', anbef.omfang, 'tag--gronn'),
+          merkelapp('blad', anbef.terskel, 'tag--mod'),
+        ),
+      ),
+    ),
   );
 }
 
