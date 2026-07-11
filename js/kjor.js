@@ -335,6 +335,9 @@ export function visKjoreSkjerm(mount) {
       : ikon(g && g.type === 'hvile' ? 'klokke' : g && (g.type === 'inn' || g.type === 'ut') ? 'hjerte' : 'vekt');
   }
   const doseTekst = (g) => (g ? (g.dose || TYPE_ORD[g.type] || '') : '');
+  // Manualøvelser (navnet sier «manual»): vekta gjelder per manual (én hånd).
+  // Goblet/kettlebell holdes som én vekt med begge hender, så de holdes utenfor.
+  const perManual = (navn) => /manual/i.test(navn);
 
   // --- topp (dagsfase-bakgrunn) ---
   const fase = dagsfaseNaa();
@@ -378,6 +381,7 @@ export function visKjoreSkjerm(mount) {
   const vektInn = el('input', { class: 'kjor2-sett__felt', type: 'number', inputmode: 'decimal', min: '0', step: '0.5', placeholder: '0', 'aria-label': 'Vekt i kg' });
   const repsInn = el('input', { class: 'kjor2-sett__felt', type: 'number', inputmode: 'numeric', min: '0', step: '1', 'aria-label': 'Antall reps' });
   const vektHint = el('span', { class: 'kjor2-sett__hint' }, '');
+  const vektMerk = el('span', { class: 'kjor2-sett__merk' }, 'Vekt (kg)'); // «per manual» ved manualer
   // RIR (reps i reserve): valgfri anstrengelse-chip 0–4+ som styrer neste anbefaling.
   let valgtRir = null;
   const rirChips = [0, 1, 2, 3, 4].map((n) => el('button', {
@@ -385,16 +389,25 @@ export function visKjoreSkjerm(mount) {
     onclick: () => { valgtRir = valgtRir === n ? null : n; oppdaterRir(); },
   }, n === 4 ? '4+' : String(n)));
   function oppdaterRir() { rirChips.forEach((c, i) => c.classList.toggle('kjor2-rir__chip--valgt', valgtRir === i)); }
+  const rirHjelp = el('p', { class: 'kjor2-rir__hjelp', hidden: true },
+    'RIR = «reps i reserve»: hvor mange flere reps du kunne tatt før du måtte gi deg. '
+    + '0 = helt tomt (til utmattelse), 2 = to igjen. Lavere RIR = tyngre sett. Brukes til å foreslå neste vekt.');
+  const rirInfo = el('button', {
+    class: 'kjor2-rir__i', type: 'button', 'aria-label': 'Hva betyr RIR?',
+    onclick: () => { rirHjelp.hidden = !rirHjelp.hidden; },
+  }, ikon('info'));
   const rirRad = el('div', { class: 'kjor2-rir' },
     el('span', { class: 'kjor2-rir__merk' }, 'Reps igjen (RIR)'),
+    rirInfo,
     el('div', { class: 'kjor2-rir__chips' }, ...rirChips),
   );
   const settBlokk = el('div', { class: 'kjor2-sett' },
     el('div', { class: 'kjor2-sett__felter' },
-      el('label', { class: 'kjor2-sett__gruppe' }, el('span', { class: 'kjor2-sett__merk' }, 'Vekt (kg)'), vektInn, vektHint),
+      el('label', { class: 'kjor2-sett__gruppe' }, vektMerk, vektInn, vektHint),
       el('label', { class: 'kjor2-sett__gruppe' }, el('span', { class: 'kjor2-sett__merk' }, 'Reps'), repsInn),
     ),
     rirRad,
+    rirHjelp,
     el('button', { class: 'knapp kjor2-sett__knapp', type: 'button', onclick: () => fullforSteg() }, ikon('sjekk', 'ikon ikon--liten'), 'Fullfør sett'),
   );
   // «Neste øvelse» for selvstyrte ikke-sett-steg (oppvarming/nedtrapping, flyt).
@@ -467,9 +480,11 @@ export function visKjoreSkjerm(mount) {
       const anbef = anbefaling(g.ovNavn, { reps: g.reps, sett: g.settAv });
       const forrige = sisteSett(g.ovNavn);                     // topp-sett fra historikk
       const forhaand = inn?.vekt ?? anbef.vekt ?? forrige?.vekt ?? null;
+      vektMerk.textContent = perManual(g.ovNavn) ? 'Vekt per manual (kg)' : 'Vekt (kg)';
       vektInn.value = Number.isFinite(forhaand) ? String(forhaand) : '';
       repsInn.value = g.reps ? String(g.reps) : '';
       valgtRir = null; oppdaterRir();
+      rirHjelp.hidden = true;
       vektHint.textContent = forrige
         ? `sist ${forrige.vekt} kg × ${forrige.reps}${anbef.vekt ? ` · anbefalt ${anbef.vekt}` : ''}`
         : (anbef.vekt ? `anbefalt ${anbef.vekt} kg` : 'ny øvelse — velg en trygg vekt');
