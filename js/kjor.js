@@ -378,11 +378,23 @@ export function visKjoreSkjerm(mount) {
   const vektInn = el('input', { class: 'kjor2-sett__felt', type: 'number', inputmode: 'decimal', min: '0', step: '0.5', placeholder: '0', 'aria-label': 'Vekt i kg' });
   const repsInn = el('input', { class: 'kjor2-sett__felt', type: 'number', inputmode: 'numeric', min: '0', step: '1', 'aria-label': 'Antall reps' });
   const vektHint = el('span', { class: 'kjor2-sett__hint' }, '');
+  // RIR (reps i reserve): valgfri anstrengelse-chip 0–4+ som styrer neste anbefaling.
+  let valgtRir = null;
+  const rirChips = [0, 1, 2, 3, 4].map((n) => el('button', {
+    class: 'kjor2-rir__chip', type: 'button',
+    onclick: () => { valgtRir = valgtRir === n ? null : n; oppdaterRir(); },
+  }, n === 4 ? '4+' : String(n)));
+  function oppdaterRir() { rirChips.forEach((c, i) => c.classList.toggle('kjor2-rir__chip--valgt', valgtRir === i)); }
+  const rirRad = el('div', { class: 'kjor2-rir' },
+    el('span', { class: 'kjor2-rir__merk' }, 'Reps igjen (RIR)'),
+    el('div', { class: 'kjor2-rir__chips' }, ...rirChips),
+  );
   const settBlokk = el('div', { class: 'kjor2-sett' },
     el('div', { class: 'kjor2-sett__felter' },
       el('label', { class: 'kjor2-sett__gruppe' }, el('span', { class: 'kjor2-sett__merk' }, 'Vekt (kg)'), vektInn, vektHint),
       el('label', { class: 'kjor2-sett__gruppe' }, el('span', { class: 'kjor2-sett__merk' }, 'Reps'), repsInn),
     ),
+    rirRad,
     el('button', { class: 'knapp kjor2-sett__knapp', type: 'button', onclick: () => fullforSteg() }, ikon('sjekk', 'ikon ikon--liten'), 'Fullfør sett'),
   );
   // «Neste øvelse» for selvstyrte ikke-sett-steg (oppvarming/nedtrapping, flyt).
@@ -457,6 +469,7 @@ export function visKjoreSkjerm(mount) {
       const forhaand = inn?.vekt ?? anbef.vekt ?? forrige?.vekt ?? null;
       vektInn.value = Number.isFinite(forhaand) ? String(forhaand) : '';
       repsInn.value = g.reps ? String(g.reps) : '';
+      valgtRir = null; oppdaterRir();
       vektHint.textContent = forrige
         ? `sist ${forrige.vekt} kg × ${forrige.reps}${anbef.vekt ? ` · anbefalt ${anbef.vekt}` : ''}`
         : (anbef.vekt ? `anbefalt ${anbef.vekt} kg` : 'ny øvelse — velg en trygg vekt');
@@ -573,7 +586,7 @@ export function visKjoreSkjerm(mount) {
       const reps = parseInt(repsInn.value, 10);
       const v = Number.isFinite(vekt) ? vekt : null;
       const r = Number.isFinite(reps) ? reps : (g.reps || null);
-      settLogg.push({ ovNavn: g.ovNavn, settNr: g.settNr, vekt: v, reps: r, perSide: !!g.perSide });
+      settLogg.push({ ovNavn: g.ovNavn, settNr: g.settNr, vekt: v, reps: r, rir: valgtRir, perSide: !!g.perSide });
       if (v != null) arbeidsVekt[g.ovNavn] = { vekt: v, reps: r };
     }
     if (!spiller) settSpill(true);

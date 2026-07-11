@@ -65,5 +65,21 @@ S.loggførStyrkeokt('P', [{ ovNavn: 'Press', vekt: 30, reps: 8 }], '2026-05-29')
 const pg = S.prognose('Press');
 sjekk(pg && pg.perUke > 0 && pg.om4Uker > pg.naa, `prognose: stigende trend (+${pg?.perUke}/uke → ${pg?.om4Uker})`);
 
+// --- RIR (reps i reserve) styrer økningen ---
+store.clear();
+S.loggførStyrkeokt('R', [{ ovNavn: 'Rir3', vekt: 50, reps: 8, rir: 3 }], '2026-06-01');
+S.loggførStyrkeokt('R', [{ ovNavn: 'Rir0', vekt: 50, reps: 8, rir: 0 }], '2026-06-01');
+const ar3 = S.anbefaling('Rir3', { reps: 8 });
+const ar0 = S.anbefaling('Rir0', { reps: 8 });
+sjekk(ar3.vekt > ar0.vekt, `RIR: mye igjen øker mer enn tomt (${ar3.vekt} > ${ar0.vekt})`);
+
+// --- aggregater for oversiktssiden ---
+const alle = S.alleØvelser();
+sjekk(alle.length === 2 && alle[0].e1rm >= alle[alle.length - 1].e1rm, 'alleØvelser sortert på e1RM');
+const ton = S.tonnasje();
+sjekk(ton.total === 800 && ton.serie.length === ton.okter, `tonnasje: total ${ton.total} + serie`);
+const mv = S.muskelVolum((n) => (n === 'Rir3' ? ['Lår', 'Sete'] : []));
+sjekk(mv.length === 2 && mv[0].kg === 200, 'muskelVolum fordeler volum på muskler');
+
 if (feil) { console.error(`\n${feil} feil.`); process.exit(1); }
 console.log('\n✓ Styrkelogg-algoritmene er grønne.');

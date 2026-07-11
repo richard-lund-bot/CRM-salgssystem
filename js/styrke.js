@@ -16,6 +16,9 @@ function skriv(a) {
 
 export function lesStyrkelogg() { return les(); }
 
+// Skriver hele loggen rått (brukes av synk etter fletting).
+export function settStyrkeloggRå(arr) { skriv(Array.isArray(arr) ? arr : []); }
+
 // Epley: 1RM ≈ vekt × (1 + reps/30). Enkelt, robust, god nok for trend.
 export function e1rm(vekt, reps) {
   const v = Number(vekt); const r = Number(reps);
@@ -31,7 +34,7 @@ function grupper(settLogg) {
   for (const s of settLogg || []) {
     const navn = s.ovNavn || s.navn;
     if (!m.has(navn)) m.set(navn, { navn, perSide: !!s.perSide, sett: [] });
-    m.get(navn).sett.push({ vekt: s.vekt ?? null, reps: s.reps ?? null });
+    m.get(navn).sett.push({ vekt: s.vekt ?? null, reps: s.reps ?? null, rir: s.rir ?? null });
   }
   return [...m.values()];
 }
@@ -104,9 +107,42 @@ export function loggførStyrkeokt(oktNavn, settLogg, dato) {
     dato: dato || new Date().toISOString().slice(0, 10),
     oktNavn: oktNavn || 'Styrke',
     ovelser: ovelser.map((o) => ({ ...o, sett: o.sett.filter((s) => Number(s.vekt) > 0 && Number(s.reps) > 0) })),
+    oppdatert: new Date().toISOString(), // for synk-fletting (last-write-wins)
   };
   const a = les(); a.push(rec); skriv(a);
   return rec;
+}
+
+// --- Aggregater for oversiktssiden ---------------------------------------
+// Alle loggførte øvelser med beste e1RM, antall økter og sist trent.
+export function alleØvelser() {
+  const navn = new Set();
+  les().forEach((ø) => (ø.ovelser || []).forEach((o) => navn.add(o.navn)));
+  return [...navn].map((n) => {
+    const h = ovelseØkter(n);
+    return { navn: n, e1rm: Math.round(Math.max(0, ...h.map((x) => x.e1rm))), toppVekt: Math.max(0, ...h.map((x) => x.toppVekt)), okter: h.length, sist: h[h.length - 1]?.dato || null };
+  }).filter((x) => x.okter > 0).sort((a, b) => b.e1rm - a.e1rm);
+}
+
+// Tonnasje per økt (kronologisk) + totalsum og antall økter.
+export function tonnasje() {
+  const logg = les().slice().sort((a, b) => String(a.dato).localeCompare(String(b.dato)));
+  const serie = logg.map((ø) => ({ dato: ø.dato, volum: oktVolum(ø.ovelser) }));
+  return { serie, total: serie.reduce((a, s) => a + s.volum, 0), okter: serie.length };
+}
+
+// Volum per muskelgruppe. `muskerFor(navn)` gir muskel-taggene for en øvelse.
+export function muskelVolum(muskerFor) {
+  const m = {};
+  for (const ø of les()) {
+    for (const o of ø.ovelser || []) {
+      const muskler = (muskerFor && muskerFor(o.navn)) || [];
+      if (!muskler.length) continue;
+      const del = oktVolum([o]) / muskler.length;
+      muskler.forEach((mu) => { m[mu] = (m[mu] || 0) + del; });
+    }
+  }
+  return Object.entries(m).map(([navn, kg]) => ({ navn, kg: Math.round(kg) })).sort((a, b) => b.kg - a.kg);
 }
 
 // --- Anbefaling: vekt + sett/reps for neste gang -------------------------
@@ -122,9 +158,18 @@ export function anbefaling(navn, { reps = 8, sett = 3 } = {}) {
   const toppSett = siste.sett.filter((s) => Number(s.vekt) === topp);
   const traff = toppSett.every((s) => (Number(s.reps) || 0) >= reps);
   const bom = toppSett.every((s) => (Number(s.reps) || 0) < reps);
+  // RIR (reps i reserve) på topp-settene styrer hvor mye vi øker: mye igjen
+  // → større hopp, helt tomt → knapt noe.
+  const rirVerdier = toppSett.map((s) => s.rir).filter((v) => Number.isFinite(v));
+  const rir = rirVerdier.length ? Math.min(...rirVerdier) : null;
   let vekt; let tekst;
-  if (traff) { vekt = Math.max(topp + 2.5, rund(topp * 1.05)); tekst = `Du klarte målet på ${topp} kg sist — prøv å øke.`; }
-  else if (bom) { vekt = rund(topp * 0.9); tekst = 'Tungt sist — ta litt ned og bygg opp igjen.'; }
+  if (traff) {
+    const faktor = rir == null ? 1.05 : rir >= 3 ? 1.075 : rir >= 1 ? 1.05 : 1.02;
+    vekt = Math.max(topp + 2.5, rund(topp * faktor));
+    tekst = rir == null ? `Du klarte målet på ${topp} kg sist — prøv å øke.`
+      : rir >= 3 ? `Lett sist (${rir} reps igjen) — øk godt.`
+        : rir === 0 ? 'Helt tomt sist — bygg videre forsiktig.' : 'Bra margin sist — øk litt.';
+  } else if (bom) { vekt = rund(topp * 0.9); tekst = 'Tungt sist — ta litt ned og bygg opp igjen.'; }
   else { vekt = topp; tekst = `Gjenta ${topp} kg og sikt på alle repsene.`; }
   return { vekt, sett, reps, tekst };
 }

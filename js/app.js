@@ -15,7 +15,8 @@ import { visReviewSkjerm, visKjoreSkjerm } from './kjor.js';
 import { settBib as settBibHist, visAktivitetSkjerm } from './historikk.js';
 import { visHurtigSkjerm, visLoggforSkjerm, aktivHurtig } from './beveg.js';
 import { slippVaaken } from './vaakenlaas.js';
-import { lastOvelsesinfo, settBib as settBibOvelse, visOvelseSkjerm } from './ovelse.js';
+import { lastOvelsesinfo, settBib as settBibOvelse, visOvelseSkjerm, ovelseInfo } from './ovelse.js';
+import { alleØvelser, tonnasje, muskelVolum, lagLinjegraf } from './styrke.js';
 import { visMerkerSkjerm } from './merker.js';
 import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
 import { lagFaneside, fanesideMedTittel, settNavger, dagsfase } from './banner.js';
@@ -50,6 +51,7 @@ const ruter = {
   innstillinger: visInnstillinger,
   bibliotek: visBibliotek,
   ovelse: () => visOvelseSkjerm(app),
+  styrke: visStyrke,
   om: visOm,
 };
 
@@ -74,7 +76,7 @@ function navger() {
 
 function oppdaterNav(rute) {
   const tabRute = ({
-    innstillinger: 'meny', bibliotek: 'meny', om: 'meny', plan: 'meny',
+    innstillinger: 'meny', bibliotek: 'meny', om: 'meny', plan: 'meny', styrke: 'meny',
     historikk: 'aktivitet', ny: 'beveg', okter: 'beveg',
     reise: 'merker', tilpass: 'merker',
   })[rute] || rute;
@@ -435,6 +437,7 @@ function visMeny() {
       el('div', { class: 'liste' },
         menyrad('kalender', 'Mosjonskalender', '#/kalender'),
         menyrad('bok', 'Øktbiblioteket', '#/okter'),
+        menyrad('vekt', 'Styrke & fremgang', '#/styrke'),
         menyrad('medalje', 'Merker', '#/merker'),
         menyrad('sok', 'Øvelsesoppslag', '#/bibliotek'),
         menyrad('gir', 'Innstillinger', '#/innstillinger'),
@@ -448,6 +451,50 @@ function visMeny() {
         el('span', { class: 'oppmuntring__tekst' }, 'Små steg hver dag gir varige resultater.'),
       ),
       el('span', { class: 'oppmuntring__chevron' }, ikon('chevron')),
+    ),
+  );
+}
+
+// ===========================================================================
+// Styrke & fremgang — oversikt på tvers av alle løft (M17)
+// ===========================================================================
+function visStyrke() {
+  const alle = alleØvelser();
+  const t = tonnasje();
+  if (!alle.length) {
+    fane('Styrke', 'Vekt, sett og fremgang — samlet.',
+      el('div', { class: 'kort tomstyrke' },
+        el('span', { class: 'tomstyrke__disk' }, ikon('vekt')),
+        el('p', { class: 'oppmuntring__tittel' }, 'Ingen løft logget ennå'),
+        el('p', { class: 'dempet' }, 'Kjør en styrkeøkt og skriv inn vekt og reps underveis — så dukker fremgangen din opp her.'),
+        el('a', { class: 'knapp', href: '#/okter?kat=styrke' }, 'Finn en styrkeøkt'),
+      ),
+    );
+    return;
+  }
+  const muskel = muskelVolum((n) => ovelseInfo(n)?.muskler || []);
+  const maxMuskel = Math.max(...muskel.map((m) => m.kg), 1);
+  fane('Styrke', `${t.total.toLocaleString('nb-NO')} kg løftet totalt`,
+    el('div', { class: 'kort' },
+      el('h2', {}, 'Tonnasje per økt'),
+      el('div', { class: 'histgraf' }, lagLinjegraf(t.serie.map((s) => s.volum), { hoyde: 110 })),
+      el('p', { class: 'histgraf__merk' }, `${t.okter} økter · ${t.total.toLocaleString('nb-NO')} kg til sammen`),
+    ),
+    el('div', { class: 'kort' },
+      el('h2', {}, 'Rekorder (est. 1RM)'),
+      el('div', { class: 'prvegg' }, ...alle.slice(0, 8).map((o) => el('a', { class: 'prkort', href: `#/ovelse?n=${encodeURIComponent(o.navn)}` },
+        el('span', { class: 'prkort__verdi' }, `${o.e1rm} kg`),
+        el('span', { class: 'prkort__navn' }, o.navn),
+        el('span', { class: 'prkort__sub' }, `tyngste ${o.toppVekt} kg · ${o.okter} ${o.okter === 1 ? 'økt' : 'økter'}`),
+      ))),
+    ),
+    muskel.length > 0 && el('div', { class: 'kort' },
+      el('h2', {}, 'Volum per muskelgruppe'),
+      ...muskel.slice(0, 8).map((m) => el('div', { class: 'muskelrad' },
+        el('span', { class: 'muskelrad__navn' }, m.navn),
+        el('span', { class: 'muskelrad__bar' }, el('i', { class: 'muskelrad__fyll', style: `width:${Math.round((m.kg / maxMuskel) * 100)}%` })),
+        el('span', { class: 'muskelrad__kg' }, `${m.kg.toLocaleString('nb-NO')} kg`),
+      )),
     ),
   );
 }

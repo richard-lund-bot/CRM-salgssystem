@@ -1055,6 +1055,15 @@ body.fokusmodus { padding-bottom: 0; }
 .kjor2-sett__hint { font-size: 11.5px; color: var(--dempet); text-align: center; min-height: 14px; }
 .kjor2-sett__knapp { width: 100%; }
 .kjor2-na__neste { width: 100%; margin-top: 14px; }
+.kjor2-rir { display: flex; align-items: center; gap: 10px; }
+.kjor2-rir__merk { flex: 0 0 auto; font-size: 12px; font-weight: 600; color: var(--tekst-2); }
+.kjor2-rir__chips { display: flex; gap: 6px; flex: 1; }
+.kjor2-rir__chip {
+  flex: 1; padding: 9px 0; border: 1px solid var(--kant-sterk); background: var(--bg-kort);
+  color: var(--tekst-2); border-radius: var(--radius-sm); font-family: var(--font-display);
+  font-weight: 600; font-size: 14px; cursor: pointer;
+}
+.kjor2-rir__chip--valgt { background: var(--aksent); border-color: var(--aksent); color: #fff; }
 
 /* Neste øvelse */
 .kjor2-neste { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; cursor: pointer; padding: 12px; }
@@ -1691,6 +1700,23 @@ body.fokusmodus { padding-bottom: 0; }
 .histrad__dato { color: var(--tekst-2); font-variant-numeric: tabular-nums; }
 .histrad__sett { flex: 1; color: var(--tekst); }
 .histrad__vol { color: var(--dempet); font-variant-numeric: tabular-nums; }
+
+/* Styrke-oversikt (#/styrke) */
+.tomstyrke { text-align: center; }
+.tomstyrke__disk { width: 56px; height: 56px; border-radius: 50%; background: var(--aksent-svak); color: var(--aksent); display: inline-grid; place-items: center; margin-bottom: 8px; }
+.tomstyrke__disk .ikon { width: 26px; height: 26px; }
+.tomstyrke .knapp { margin-top: 14px; }
+.prvegg { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.prkort { display: flex; flex-direction: column; gap: 2px; text-decoration: none; background: var(--bg-kort-2); border-radius: var(--radius-md); padding: 12px; }
+.prkort:active { background: var(--aksent-svak); }
+.prkort__verdi { font-family: var(--font-display); font-weight: 600; font-size: 22px; color: var(--aksent-mork); font-variant-numeric: tabular-nums; }
+.prkort__navn { font-weight: 600; font-size: 13.5px; color: var(--tekst); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.prkort__sub { font-size: 11.5px; color: var(--dempet); }
+.muskelrad { display: flex; align-items: center; gap: 10px; padding: 7px 0; }
+.muskelrad__navn { flex: 0 0 34%; font-size: 13.5px; color: var(--tekst); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.muskelrad__bar { flex: 1; height: 8px; border-radius: var(--radius-pill); background: var(--ink-100); overflow: hidden; }
+.muskelrad__fyll { display: block; height: 100%; background: var(--aksent-lys); border-radius: var(--radius-pill); }
+.muskelrad__kg { flex: 0 0 auto; font-size: 12px; color: var(--dempet); font-variant-numeric: tabular-nums; }
 
 /* Løftefeiring på ferdigskjermen */
 .loft { text-align: center; border-color: var(--aksent-kant); background: linear-gradient(165deg, var(--aksent-svak), var(--bg-kort) 78%); }

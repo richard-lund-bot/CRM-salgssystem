@@ -10,6 +10,7 @@ import {
   hentProfil, settProfilRå, hentLogg, settLoggRå,
   settEndringslytter,
 } from './store.js';
+import { lesStyrkelogg, settStyrkeloggRå, oktVolum } from './styrke.js';
 
 const AUTH = `${SUPABASE_URL}/auth/v1`;
 const REST = `${SUPABASE_URL}/rest/v1`;
@@ -131,6 +132,12 @@ async function pull() {
   const flettetProfil = flettProfil(hentProfil(), profilRader?.[0]);
   if (flettetProfil) settProfilRå(flettetProfil);
   settLoggRå(flettPerId(hentLogg(), loggRader, 'dato'));
+  // Styrkelogg synkes isolert — en manglende tabell/feil skal aldri stoppe
+  // resten av synken.
+  try {
+    const rader = await rest('styrke_logs?select=data,oppdatert&order=oppdatert.desc');
+    settStyrkeloggRå(flettPerId(lesStyrkelogg(), rader, 'dato'));
+  } catch (e) { console.warn('Styrkelogg-pull hoppet over', e.message); }
 }
 
 async function push() {
@@ -152,6 +159,18 @@ async function push() {
         data: o, oppdatert: o.oppdatert || o.dato || new Date().toISOString(),
       })),
     });
+  }
+  const styrke = lesStyrkelogg();
+  if (styrke.length) {
+    try {
+      await rest('styrke_logs?on_conflict=id', {
+        method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
+        body: styrke.map((o) => ({
+          id: o.id, user_id: uid, dato: (o.dato || '').slice(0, 10), okt_navn: o.oktNavn,
+          volum: oktVolum(o.ovelser), data: o, oppdatert: o.oppdatert || o.dato || new Date().toISOString(),
+        })),
+      });
+    } catch (e) { console.warn('Styrkelogg-push hoppet over', e.message); }
   }
 }
 
