@@ -16,7 +16,7 @@ import { settBib as settBibHist, visAktivitetSkjerm } from './historikk.js';
 import { visHurtigSkjerm, visLoggforSkjerm } from './beveg.js';
 import { visMerkerSkjerm } from './merker.js';
 import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
-import { lagBanner, sideHero } from './banner.js';
+import { lagFaneside, fanesideMedTittel, settNavger, dagsfase } from './banner.js';
 import { nivaFraTotalXp } from './niva.js';
 import { dagensGnist, dagerMedAktivitet, okterHref } from './bevegelse.js';
 import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN } from './bibliotek-okter.js';
@@ -63,7 +63,7 @@ function omdirigerGammelNyLenke() {
 function navger() {
   const rute = (location.hash.replace('#/', '') || 'hjem').split('?')[0];
   document.body.classList.toggle('fokusmodus', FOKUS.has(rute));
-  document.body.classList.remove('hjem-laast'); // settes på nytt av visHjem
+  document.body.classList.remove('fane-laast'); // settes på nytt av fanesidene
   (ruter[rute] || visHjem)();
   oppdaterNav(rute);
 }
@@ -87,17 +87,10 @@ function skjerm(tittel, ...innhold) {
   );
 }
 
-// Fane-skall: hvitt banner + stor sidetittel — samme førsteinntrykk som
-// Min dag og biblioteket på alle hovedfanene.
+// Fane-skall: banner + dagsfasebilde + pull-to-refresh + stor sidetittel —
+// samme førsteinntrykk som Min dag på alle hovedfanene.
 function fane(tittel, under, ...innhold) {
-  tom(app);
-  app.append(
-    lagBanner(),
-    el('div', { class: 'side' },
-      sideHero(tittel, under),
-      el('main', { class: 'innhold side__innhold' }, ...innhold),
-    ),
-  );
+  fanesideMedTittel(app, { tittel, under }).append(...innhold);
 }
 
 // ===========================================================================
@@ -140,15 +133,10 @@ function visHjem() {
     .filter((o) => (o.dato || '').slice(0, 10) === idagIso)
     .reduce((s, o) => s + (o.varighetMin || 0), 0);
 
-  // Hjem låser body og scroller innholdet i egen beholder: banneren står
-  // helt i ro, og innholdet får naturlig overskroll-sprett (iOS). Selve
-  // scrollflaten får himmelfargen til dagsfasen øverst, så overskroll aldri
-  // viser grått gap — og et dra ned fra toppen gir oppdaterings-snurren.
-  const fase = dagsfase(new Date(nå).getHours());
-  const scroll = el('div', {
-    class: `hjem-scroll hjem-scroll--${fase}`,
-    style: `background:linear-gradient(to bottom, ${HIMMELFARGE[fase]} 0%, ${HIMMELFARGE[fase]} 30%, var(--bg) 70%)`,
-  },
+  // Faneside-skallet (banner.js) låser body, legger dagsfasebildet bak
+  // innholdet og gir pull-to-refresh — hjem fyller på med hero og grid.
+  const scroll = lagFaneside(app);
+  scroll.append(
     heroVelkomst(profil, logg, nå),
     el('main', { class: 'innhold' },
       seksjonsHode(),
@@ -159,90 +147,13 @@ function visHjem() {
       streakKort(logg),
     ),
   );
-
-  document.body.classList.add('hjem-laast');
-  tom(app);
-  app.append(lagBanner(), scroll, lagPullOppdatering(scroll));
-}
-
-// Pull-to-refresh: dra ned fra toppen og en gjennomsiktig snurre-sirkel
-// glir ut fra bak banneren. Slipp forbi terskelen → den spinner mens vi
-// sjekker etter ny app-versjon, synker skydata og tegner skjermen på nytt.
-function lagPullOppdatering(scroll) {
-  const spinn = el('div', { class: 'pullspinn', 'aria-hidden': 'true' },
-    el('i', { class: 'pullspinn__ring' }));
-  let startY = null;
-  let dratt = 0;
-  let opptatt = false;
-
-  const bannerBunn = () => {
-    const banner = document.querySelector('.hjembanner');
-    return banner ? banner.getBoundingClientRect().bottom : 90;
-  };
-
-  scroll.addEventListener('touchstart', (ev) => {
-    if (opptatt || scroll.scrollTop > 0) { startY = null; return; }
-    startY = ev.touches[0].clientY;
-    dratt = 0;
-  }, { passive: true });
-
-  scroll.addEventListener('touchmove', (ev) => {
-    if (startY == null || opptatt) return;
-    const dy = ev.touches[0].clientY - startY;
-    if (dy <= 0 || scroll.scrollTop > 0) { dratt = 0; spinn.style.opacity = '0'; return; }
-    dratt = dy;
-    spinn.style.opacity = String(Math.min(1, dy / 70));
-    spinn.style.top = `${bannerBunn() - 46 + Math.min(1, dy / 130) * 72}px`;
-    spinn.style.setProperty('--vri', `${Math.round(dy * 1.6)}deg`);
-  }, { passive: true });
-
-  const slipp = () => {
-    if (startY == null || opptatt) return;
-    startY = null;
-    if (dratt >= 110) {
-      opptatt = true;
-      spinn.classList.add('pullspinn--aktiv');
-      spinn.style.top = `${bannerBunn() + 16}px`;
-      oppdaterHjem();
-    } else {
-      spinn.style.opacity = '0';
-    }
-  };
-  scroll.addEventListener('touchend', slipp, { passive: true });
-  scroll.addEventListener('touchcancel', slipp, { passive: true });
-  return spinn;
-}
-
-// Oppdatering fra pull-to-refresh: sjekk service worker (ny versjon tas i
-// bruk automatisk), synk skydata om innlogget, og tegn hjem på nytt.
-async function oppdaterHjem() {
-  const start = Date.now();
-  try { (await navigator.serviceWorker?.getRegistration())?.update(); } catch { /* uten nett: ignorer */ }
-  try { if (sync.erInnlogget()) await sync.synk(); } catch { /* uten nett: ignorer */ }
-  // La snurren leve lenge nok til å oppfattes, selv når alt går kjapt.
-  setTimeout(navger, Math.max(0, 700 - (Date.now() - start)));
 }
 
 // ===========================================================================
-// Velkomst-hero: dagsfasebilde bak hilsen + budskap, med statkortene delvis
-// over bildet som fader ut mot underlaget. Tre budskap: planlagt økt (boks),
-// «noe gjort — mer?» (gnist-pille), eller et åpent spørsmål.
+// Velkomst-hero: hilsen + budskap oppå dagsfasebildet, med statkortene
+// delvis over bildet som fader ut mot underlaget. Tre budskap: planlagt økt
+// (boks), «noe gjort — mer?» (gnist-pille), eller et åpent spørsmål.
 // ===========================================================================
-function dagsfase(h) {
-  if (h >= 22 || h < 5) return 'natt';
-  if (h < 9) return 'morgen';
-  if (h < 12) return 'formiddag';
-  if (h < 17) return 'dag';
-  return 'kveld';
-}
-
-// Snittfargen øverst i hvert fasebilde — brukes som scrollflatens topp så
-// overskroll fortsetter i samme himmel i stedet for å vise grått gap.
-const HIMMELFARGE = {
-  morgen: '#c0dbd0', formiddag: '#9fd0e2', dag: '#b2d5e1',
-  kveld: '#c3d0cb', natt: '#1c3c64',
-};
-
 function hilsenTekst(h) {
   if (h < 5 || h >= 23) return 'God natt';
   if (h < 10) return 'God morgen';
@@ -280,7 +191,6 @@ function heroVelkomst(profil, logg, nå) {
   }
 
   return el('section', { class: `hjemhero hjemhero--${fase}` },
-    el('div', { class: 'hjemhero__bilde', style: `background-image:url('icons/brand/hero-${fase}.webp')` }),
     el('div', { class: 'hjemhero__innhold' },
       navn
         ? [el('p', { class: 'hjemhero__hilsen' }, `${hilsen},`), el('h1', { class: 'hjemhero__navn' }, navn)]
@@ -812,6 +722,7 @@ async function start() {
   }
   settBibHist(bib);
   settBibKal(bib);
+  settNavger(navger); // pull-to-refresh (banner.js) tegner siden på nytt
   bruksTema(hentProfil()?.innstillinger?.tema);
   // Fanebytte starter alltid på toppen av siden (programmatiske redraws,
   // f.eks. etter synk, beholder scrollposisjonen).

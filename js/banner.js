@@ -1,16 +1,38 @@
-// Det hvite toppbanneret (M15) — delt av alle hovedfanene: profilikon med
-// nivå-boble, bjelle, sentrert wordmark og en høyre-knapp (kalender som
-// standard), med ukeskalender under. Banneret er sticky med buet underkant;
-// innholdet scroller under. Ukene ligger i et dra-bart spor (forrige · denne
-// · neste): dra med fingeren og uka følger med, slipp så glir den over.
-// En dag åpner mosjonskalenderen på den datoen — med mindre skjermen sender
-// inn sin egen dag-aksjon (biblioteket: logg/start/planlegg).
+// Faneside-skallet (M15) — delt av alle hovedfanene: det hvite banneret
+// (profilikon med nivå-boble, bjelle, wordmark, høyre-knapp, ukeskalender),
+// dagsfase-bakgrunnsbildet som fader mot underlaget, og pull-to-refresh.
+// Banneret ligger fast; innholdet scroller i egen beholder under den buede
+// kanten, akkurat som på Min dag. Ukene ligger i et dra-bart spor (forrige ·
+// denne · neste). En dag åpner mosjonskalenderen på den datoen — med mindre
+// skjermen sender inn sin egen dag-aksjon (biblioteket: logg/start/planlegg).
 import { el, tom, ikon } from './ui.js';
 import { hentProfil, hentLogg } from './store.js';
 import { nivaFraTotalXp } from './niva.js';
+import * as sync from './sync.js';
 
 const DAG = 86400000;
 const UKEDAG_NAVN = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
+
+// --- Dagsfase: styrer bakgrunnsbildet og himmelfargen -----------------------
+export function dagsfase(h) {
+  if (h >= 22 || h < 5) return 'natt';
+  if (h < 9) return 'morgen';
+  if (h < 12) return 'formiddag';
+  if (h < 17) return 'dag';
+  return 'kveld';
+}
+
+// Snittfargen øverst i hvert fasebilde — brukes som scrollflatens topp så
+// overskroll fortsetter i samme himmel i stedet for å vise grått gap.
+const HIMMELFARGE = {
+  morgen: '#c0dbd0', formiddag: '#9fd0e2', dag: '#b2d5e1',
+  kveld: '#c3d0cb', natt: '#1c3c64',
+};
+
+// Skjermtegneren (navger i app.js) — kobles opp ved oppstart så
+// pull-to-refresh kan tegne gjeldende side på nytt uten syklisk import.
+let _navger = () => {};
+export function settNavger(fn) { _navger = fn; }
 
 function isoDato(d) {
   const y = d.getFullYear();
@@ -160,4 +182,93 @@ export function sideHero(tittel, under) {
     el('h1', { class: 'sidehero__tittel' }, tittel),
     under && el('p', { class: 'sidehero__under' }, under),
   );
+}
+
+// ===========================================================================
+// Faneside-skallet: låser body, legger banneret fast øverst, og gir en egen
+// scrollflate med dagsfasebilde bak innholdet og pull-to-refresh — samme
+// oppsett som Min dag, på alle hovedfanene.
+// ===========================================================================
+export function lagFaneside(mount, { hoyre = null, dagAksjon = null } = {}) {
+  const fase = dagsfase(new Date().getHours());
+  // Gradienten bak bildet går over i underlaget der bildet fader ut
+  // (bildet er ~693px høyt med fade fra ~493px) — faste px, så korte og
+  // lange sider får samme overgang og innhold under sonen alltid står på
+  // underlagsfargen.
+  const scroll = el('div', {
+    class: `hjem-scroll fane-scroll fane-scroll--${fase}`,
+    style: `background:linear-gradient(to bottom, ${HIMMELFARGE[fase]} 0px, ${HIMMELFARGE[fase]} 300px, var(--bg) 660px)`,
+  },
+    el('div', { class: 'fanebilde', 'aria-hidden': 'true', style: `background-image:url('icons/brand/hero-${fase}.webp')` }),
+  );
+  document.body.classList.add('fane-laast');
+  tom(mount);
+  mount.append(lagBanner({ hoyre, dagAksjon }), scroll, lagPullOppdatering(scroll));
+  return scroll;
+}
+
+/** Faneside med standard sidetittel — returnerer main-elementet for innhold. */
+export function fanesideMedTittel(mount, { tittel, under = null, hoyre = null, dagAksjon = null } = {}) {
+  const scroll = lagFaneside(mount, { hoyre, dagAksjon });
+  const main = el('main', { class: 'innhold side__innhold' });
+  scroll.append(el('div', { class: 'side' }, sideHero(tittel, under), main));
+  return main;
+}
+
+// Pull-to-refresh: dra ned fra toppen og en gjennomsiktig snurre-sirkel
+// glir ut fra bak banneret. Slipp forbi terskelen → den spinner mens vi
+// sjekker etter ny app-versjon, synker skydata og tegner skjermen på nytt.
+function lagPullOppdatering(scroll) {
+  const spinn = el('div', { class: 'pullspinn', 'aria-hidden': 'true' },
+    el('i', { class: 'pullspinn__ring' }));
+  let startY = null;
+  let dratt = 0;
+  let opptatt = false;
+
+  const bannerBunn = () => {
+    const banner = document.querySelector('.hjembanner');
+    return banner ? banner.getBoundingClientRect().bottom : 90;
+  };
+
+  scroll.addEventListener('touchstart', (ev) => {
+    if (opptatt || scroll.scrollTop > 0) { startY = null; return; }
+    startY = ev.touches[0].clientY;
+    dratt = 0;
+  }, { passive: true });
+
+  scroll.addEventListener('touchmove', (ev) => {
+    if (startY == null || opptatt) return;
+    const dy = ev.touches[0].clientY - startY;
+    if (dy <= 0 || scroll.scrollTop > 0) { dratt = 0; spinn.style.opacity = '0'; return; }
+    dratt = dy;
+    spinn.style.opacity = String(Math.min(1, dy / 70));
+    spinn.style.top = `${bannerBunn() - 46 + Math.min(1, dy / 130) * 72}px`;
+    spinn.style.setProperty('--vri', `${Math.round(dy * 1.6)}deg`);
+  }, { passive: true });
+
+  const slipp = () => {
+    if (startY == null || opptatt) return;
+    startY = null;
+    if (dratt >= 110) {
+      opptatt = true;
+      spinn.classList.add('pullspinn--aktiv');
+      spinn.style.top = `${bannerBunn() + 16}px`;
+      oppdaterSide();
+    } else {
+      spinn.style.opacity = '0';
+    }
+  };
+  scroll.addEventListener('touchend', slipp, { passive: true });
+  scroll.addEventListener('touchcancel', slipp, { passive: true });
+  return spinn;
+}
+
+// Oppdatering fra pull-to-refresh: sjekk service worker (ny versjon tas i
+// bruk automatisk), synk skydata om innlogget, og tegn siden på nytt.
+async function oppdaterSide() {
+  const start = Date.now();
+  try { (await navigator.serviceWorker?.getRegistration())?.update(); } catch { /* uten nett: ignorer */ }
+  try { if (sync.erInnlogget()) await sync.synk(); } catch { /* uten nett: ignorer */ }
+  // La snurren leve lenge nok til å oppfattes, selv når alt går kjapt.
+  setTimeout(() => _navger(), Math.max(0, 700 - (Date.now() - start)));
 }

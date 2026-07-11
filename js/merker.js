@@ -7,7 +7,7 @@ import { el, tom, ikon } from './ui.js';
 import { hentProfil, hentLogg, hentPlan } from './store.js';
 import { nivaFraTotalXp, nivaKostnad, ukeNokkel, prsFraLogg } from './niva.js';
 import { loggBevegelse } from './bevegelse.js';
-import { lagBanner, sideHero } from './banner.js';
+import { fanesideMedTittel } from './banner.js';
 import { fyllInn } from './animasjon.js';
 
 const DAG = 86400000;
@@ -325,15 +325,6 @@ export function visMerkerSkjerm(mount) {
     );
   }
 
-  tom(mount);
-  mount.append(
-    lagBanner(),
-    el('div', { class: 'side' },
-      sideHero('Merker', 'Alt du får til, samles her. I ditt tempo.'),
-      el('main', { class: 'innhold side__innhold' },
-        hero,
-        ...MERKE_KATEGORIER.map(bolk),
-      ),
-    ),
-  );
+  fanesideMedTittel(mount, { tittel: 'Merker', under: 'Alt du får til, samles her. I ditt tempo.' })
+    .append(hero, ...MERKE_KATEGORIER.map(bolk));
 }

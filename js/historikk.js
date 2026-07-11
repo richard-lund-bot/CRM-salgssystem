@@ -7,7 +7,7 @@ import { hentLogg, hentProfil } from './store.js';
 import { prsFraLogg, ukeNokkel, globaltNiva } from './niva.js';
 import { BEVEGELSE_NAVN, aktivitetNavn, loggBevegelse, dagerMedAktivitet, MODALITET_TIL_BEVEGELSE } from './bevegelse.js';
 import { registrerOgLogg } from './beveg.js';
-import { lagBanner, sideHero } from './banner.js';
+import { fanesideMedTittel } from './banner.js';
 import { fyllInn } from './animasjon.js';
 
 let _bib = null;
@@ -32,15 +32,7 @@ export function visAktivitetSkjerm(mount) {
   tegn();
 
   function tegn() {
-    tom(mount);
-    const main = el('main', { class: 'innhold side__innhold' });
-    mount.append(
-      lagBanner(),
-      el('div', { class: 'side' },
-        sideHero('Aktivitet', 'Alt du har beveget deg — samlet og talt.'),
-        main,
-      ),
-    );
+    const main = fanesideMedTittel(mount, { tittel: 'Aktivitet', under: 'Alt du har beveget deg — samlet og talt.' });
     main.append(
       el('div', { class: 'segment' },
         el('button', { class: 'segment__knapp' + (fane === 'historikk' ? ' segment__knapp--aktiv' : ''), type: 'button', onclick: () => { fane = 'historikk'; tegn(); } }, 'Historikk'),

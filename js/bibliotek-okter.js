@@ -5,7 +5,7 @@
 import { el, tom, chip, ikon } from './ui.js';
 import { settØkt } from './kjor.js';
 import { BEVEGELSER, KATEGORI_TIL_BEVEGELSE } from './bevegelse.js';
-import { lagBanner } from './banner.js';
+import { lagFaneside } from './banner.js';
 
 let _okter = null;
 
@@ -205,8 +205,7 @@ export function visOkterSkjerm(mount) {
   }, ikon('filter'));
 
   const rot = el('div', { class: 'bib' });
-  tom(mount);
-  mount.append(lagBanner({ hoyre: filterKnapp, dagAksjon }), rot);
+  lagFaneside(mount, { hoyre: filterKnapp, dagAksjon }).append(rot);
 
   function tegn() {
     const bevegelse = KATEGORI_TIL_BEVEGELSE[state.kat];
@@ -216,7 +215,6 @@ export function visOkterSkjerm(mount) {
 
     tom(rot);
     rot.append(
-      el('div', { class: 'bib__bilde', style: "background-image:url('icons/brand/hero-dag.webp')" }),
       el('div', { class: 'bibhero' },
         el('h1', { class: 'bibhero__tittel' }, KATEGORI_TITTEL[state.kat] || 'Øktbiblioteket'),
         el('p', { class: 'bibhero__under' }, 'Velg en økt som passer dagen din.'),

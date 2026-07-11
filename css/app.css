@@ -347,18 +347,14 @@ body {
   display: grid; place-items: center; line-height: 1;
 }
 
-/* Overskroll på innholdet: hjem låser body, banneren ligger fast (fixed)
-   og scrollflaten fyller hele skjermen bak den. Innholdet starter dermed på
-   ekte viewport-topp — bakgrunnsbildet ligger bak banneren uten negative
-   posisjoner (iOS maler ikke innhold over scroll-origo), og ved overskroll
-   glir bildet frem fra bak headeren. */
-body.hjem-laast { height: 100dvh; overflow: hidden; padding-bottom: 0; }
-body.hjem-laast #app { height: 100%; }
-body.hjem-laast .hjembanner { position: fixed; top: 0; left: 0; right: 0; }
-body.hjem-laast .hjemhero {
-  margin-top: 0;
-  padding-top: calc(env(safe-area-inset-top, 0px) + 178px);
-}
+/* Overskroll på innholdet: fanesidene låser body, banneren ligger fast
+   (fixed) og scrollflaten fyller hele skjermen bak den. Innholdet starter
+   dermed på ekte viewport-topp — bakgrunnsbildet ligger bak banneren uten
+   negative posisjoner (iOS maler ikke innhold over scroll-origo), og ved
+   overskroll glir bildet frem fra bak headeren. */
+body.fane-laast { height: 100dvh; overflow: hidden; padding-bottom: 0; }
+body.fane-laast #app { height: 100%; }
+body.fane-laast .hjembanner { position: fixed; top: 0; left: 0; right: 0; }
 .hjem-scroll {
   height: 100%;
   min-height: 0;
@@ -366,6 +362,22 @@ body.hjem-laast .hjemhero {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
   padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 16px);
+}
+/* Faneside-skallet: plass til det faste banneret øverst, og dagsfasebildet
+   absolutt bak innholdet (samme proporsjoner/maske som på Min dag). */
+.fane-scroll {
+  position: relative;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 178px);
+}
+.fanebilde {
+  position: absolute; left: 0; right: 0; top: 0; z-index: 0;
+  aspect-ratio: 880 / 1564;
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 200px), transparent calc(100% - 6px));
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 200px), transparent calc(100% - 6px));
 }
 
 /* Pull-to-refresh: gjennomsiktig snurre-sirkel som glir ut fra bak banneren
@@ -423,30 +435,15 @@ body.hjem-laast .hjemhero {
 .hjemuke__prikk { width: 4px; height: 4px; border-radius: 50%; background: transparent; }
 .hjemuke__prikk--aktiv { background: var(--aksent-lys); }
 
-/* Velkomst-hero — dagsfasebilde som fader ut mot underlaget; hilsen, budskap
-   og statkortene ligger oppå. Bildet tuckes opp bak den buede banneren. */
+/* Velkomst-hero — hilsen, budskap og statkortene oppå dagsfasebildet
+   (bildet ligger i faneside-skallet, .fanebilde). */
 .hjemhero {
   position: relative;
-  margin-top: calc(-1 * var(--radius-2xl));
-  padding: calc(var(--radius-2xl) + 24px) 18px 4px;
+  padding: 0 18px 4px;
   animation: fadeInn 0.5s var(--ease-out) both;
 }
-.hjemhero__bilde {
-  /* Containeren har bildets ekte proporsjoner og starter på heroens topp —
-     som i låst modus er selve viewport-toppen, bak den faste banneren. Hele
-     bildet vises uten beskjæring: himmelen ligger bak headeren og glir frem
-     ved overskroll, og bunnen fader ut der bildet faktisk slutter. */
-  position: absolute; left: 0; right: 0; top: 0; z-index: 0;
-  aspect-ratio: 880 / 1564;
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
-  pointer-events: none;
-  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 200px), transparent calc(100% - 6px));
-  mask-image: linear-gradient(to bottom, #000 calc(100% - 200px), transparent calc(100% - 6px));
-}
 /* Innholdet under heroen skal male over bildekanten som kan ble inn i det */
-body.hjem-laast .innhold { position: relative; z-index: 1; }
+body.fane-laast .innhold { position: relative; z-index: 1; }
 .hjemhero__innhold { position: relative; z-index: 1; padding: 6px 2px 20px; }
 .hjemhero__hilsen { margin: 0 0 2px; font-size: 17px; font-weight: 500; color: var(--ink-700); }
 .hjemhero__navn {
@@ -1225,17 +1222,32 @@ body.fokusmodus { padding-bottom: 0; }
 .nymerke__tekst { display: block; font-size: 12px; color: var(--tekst-2); margin-top: 1px; }
 
 /* ==========================================================================
-   Faneside-skall (M15) — hvitt banner + stor Fredoka-tittel på underlaget.
+   Faneside-skall (M15) — stor Fredoka-tittel oppå dagsfasebildet.
    Sidemargen (25px) flukter med profilikonet i banneret, som i biblioteket.
    ========================================================================== */
-.side { position: relative; margin-top: calc(-1 * var(--radius-2xl)); --side-marg: 25px; }
-.sidehero { padding: calc(var(--radius-2xl) + 26px) var(--side-marg) 16px; }
+.side { position: relative; z-index: 1; --side-marg: 25px; }
+.sidehero { padding: 12px var(--side-marg) 16px; }
 .sidehero__tittel {
   margin: 0; font-family: var(--font-display); font-weight: 600;
   font-size: 30px; letter-spacing: -0.01em; color: var(--ink-900);
 }
 .sidehero__under { margin: 4px 0 0; font-size: 15px; color: var(--ink-700); }
 .side__innhold { padding-left: var(--side-marg); padding-right: var(--side-marg); }
+
+/* Natt-fasen har mørk himmel — tekst som alltid ligger i bildesonen lyses
+   opp, som på Min dag: sidetitler, segmentfanene (alltid øverst) og
+   bibliotekets første bolk-tittel (kun når den er første element — med
+   filterpanelet åpent flyttes den ned på underlaget og forblir mørk). */
+.fane-scroll--natt .sidehero__tittel,
+.fane-scroll--natt .bibhero__tittel { color: #fff; text-shadow: 0 1px 12px rgba(17, 38, 77, 0.45); }
+.fane-scroll--natt .sidehero__under,
+.fane-scroll--natt .bibhero__under { color: rgba(255, 255, 255, 0.85); text-shadow: 0 1px 10px rgba(17, 38, 77, 0.4); }
+.fane-scroll--natt .segment { border-bottom-color: rgba(255, 255, 255, 0.28); }
+.fane-scroll--natt .segment__knapp { color: rgba(255, 255, 255, 0.62); text-shadow: 0 1px 8px rgba(17, 38, 77, 0.4); }
+.fane-scroll--natt .segment__knapp--aktiv { color: #fff; border-bottom-color: #fff; }
+.fane-scroll--natt .bib__innhold > .bibbolk:first-child .bibbolk__tittel {
+  color: #fff; text-shadow: 0 1px 10px rgba(17, 38, 77, 0.45);
+}
 
 /* ==========================================================================
    Merker (M15) — nivåhero + merkegalleri
@@ -1350,26 +1362,13 @@ body.fokusmodus { padding-bottom: 0; }
 .kalform__okttid { color: var(--dempet); font-size: 12px; flex: 0 0 auto; }
 
 /* ==========================================================================
-   Øktbiblioteket (M13) — hero med fadet bakgrunnsbilde, horisontalt
-   skrollbare bolker per ferdighetsnivå, og kort i hjemflis-stilen.
-   ========================================================================== */
-/* Det hvite Min dag-banneret ligger sticky over; innholdet tuckes opp bak
-   den buede underkanten, og bakgrunnsbildet fader ut mot underlaget.
+   Øktbiblioteket (M13) — hero oppå dagsfasebildet (faneside-skallet),
+   horisontalt skrollbare bolker per ferdighetsnivå, kort i hjemflis-stilen.
    Sidemargen (25px) flukter med profilikonet i banneret: 12px bannerpadding
    + 4px radpadding + 9px sentrering av ikonet i knappen. */
-.bib { position: relative; margin-top: calc(-1 * var(--radius-2xl)); --bib-marg: 25px; }
-.bib__bilde {
-  position: absolute; left: 0; right: 0; top: 0; z-index: 0;
-  height: 330px;
-  background-size: cover;
-  background-position: center 32%;
-  background-repeat: no-repeat;
-  pointer-events: none;
-  -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent 98%);
-  mask-image: linear-gradient(to bottom, #000 40%, transparent 98%);
-}
+.bib { position: relative; z-index: 1; --bib-marg: 25px; }
 .ikonknapp--aktiv { color: var(--aksent); }
-.bibhero { position: relative; z-index: 1; padding: calc(var(--radius-2xl) + 26px) var(--bib-marg) 20px; }
+.bibhero { padding: 12px var(--bib-marg) 20px; }
 .bibhero__tittel {
   margin: 0; font-family: var(--font-display); font-weight: 600;
   font-size: 30px; letter-spacing: -0.01em; color: var(--ink-900);
