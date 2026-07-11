@@ -1,17 +1,21 @@
-// Øktspilleren (M13): review → kjøring av bibliotekøkter. Holder «gjeldende
-// økt» i minne mellom skjermene og kjører økta blokk for blokk: kondisjon-/
-// hold-/pust-blokker får en timer, reps/flyt får en guide-modus. Timerne
-// regner med veggklokke-tid (ikke tellende intervaller), så fasene løper
-// riktig videre selv om skjermen låses eller appen legges i bakgrunnen —
-// og våkenlåsen holder skjermen på mens økta kjører. Fullføring registreres
-// som bevegelse (XP via registrerBevegelse) — samme varme ferdigskjerm som
-// all annen bevegelse.
+// Øktspilleren (M13, «now playing»-oppsett M16.1): review → kjøring av
+// bibliotekøkter. Holder «gjeldende økt» i minne mellom skjermene. Kjøringa
+// flater hver blokk ut til en stegliste (lagSteg) og spiller ett steg om
+// gangen: tidsstyrte steg teller ned og går videre av seg selv, reps får en
+// romslig gjettet tid, og selvstyrte flyt-steg venter på «Hopp over». En
+// sesjonsklokke teller total tid, og både den og stegtimeren regner med
+// veggklokke-tid (ikke tellende intervaller), så alt løper riktig videre selv
+// om skjermen låses eller appen legges i bakgrunnen — og våkenlåsen holder
+// skjermen på. Fullføring registreres som bevegelse (XP via
+// registrerBevegelse) — samme varme ferdigskjerm som all annen bevegelse.
 import { el, tom, ikon } from './ui.js';
-import { settPlanStatus } from './store.js';
+import { settPlanStatus, hentProfil } from './store.js';
 import { registrerOgLogg, visBevegelseFerdig } from './beveg.js';
+import { beregnXp } from './bevegelse.js';
+import { nivaFraTotalXp } from './niva.js';
 import { lagRing } from './animasjon.js';
 import { holdVaaken, slippVaaken } from './vaakenlaas.js';
-import { infoKnapp, ovelseInfo } from './ovelse.js';
+import { infoKnapp, ovelseInfo, ovelseBilde, visOvelseArk } from './ovelse.js';
 
 let gjeldendeOkt = null;
 let aktivInterval = null;
@@ -195,266 +199,352 @@ function blokkSeksjon(blk) {
 }
 
 // ===========================================================================
-// 2) Kjøring
+// 2) Kjøring — «now playing»-oppsett: dagsfase-topp, sesjonsklokke med
+// sentral pauseknapp, NÅ-kort med illustrasjon + nedtelling, neste øvelse,
+// forhåndsvisning av neste blokk og momentum-stripe. Ett steg om gangen;
+// tidsstyrte steg teller ned (veggklokke) og går videre av seg selv, mens
+// bunnlinja (hopp/pause/ferdig) styrer flyten globalt.
 // ===========================================================================
+const TYPE_ORD = { arbeid: 'Arbeid', hvile: 'Hvile', hold: 'Hold', flyt: 'Flyt', inn: 'Pust inn', ut: 'Pust ut', reps: '' };
+
+function dagsfaseNaa() {
+  const h = new Date().getHours();
+  if (h >= 22 || h < 5) return 'natt';
+  if (h < 9) return 'morgen';
+  if (h < 12) return 'formiddag';
+  if (h < 17) return 'dag';
+  return 'kveld';
+}
+
+// Romslig gjettet arbeidstid for et reps-steg, så guiden flyter av seg selv
+// som i mockupen — «Hopp over» tar deg videre med en gang du er ferdig.
+function gjettTid(dose, unilateral) {
+  const reps = parseInt(String(dose || '').match(/\d+/)?.[0] || '', 10);
+  const base = Number.isFinite(reps) ? reps * 3.5 : 45;
+  return Math.round(Math.min(120, Math.max(30, base * (unilateral ? 1.7 : 1))));
+}
+
+// Flater en blokk ut til en stegliste: {navn, dose, sek, type, bilde?}.
+// sek === null ⇒ selvstyrt steg (flyt) som venter på «Hopp over».
+function lagSteg(blk) {
+  const p = blk.parametre || {};
+  if (blk.kind === 'pust' && p.takt) {
+    const t = p.takt; const en = [];
+    if (t.inn) en.push({ navn: 'Pust inn', sek: Math.round(t.inn), type: 'inn' });
+    if (t.holdInn) en.push({ navn: 'Hold', sek: Math.round(t.holdInn), type: 'hold' });
+    if (t.ut) en.push({ navn: 'Pust ut', sek: Math.round(t.ut), type: 'ut' });
+    if (t.holdUt) en.push({ navn: 'Hold', sek: Math.round(t.holdUt), type: 'hold' });
+    const per = en.reduce((s, f) => s + f.sek, 0) || 1;
+    const runder = Math.max(1, Math.round(((p.tidMin || 5) * 60) / per));
+    const pustNavn = blk.ovelser?.[0]?.navn || 'Pust';
+    const steg = [];
+    for (let r = 0; r < runder; r++) for (const f of en) steg.push({ ...f, dose: null, bilde: pustNavn });
+    return steg;
+  }
+  if (blk.kind === 'sekvens') {
+    const seq = blk.ovelser?.[0];
+    const runder = p.runder || 1;
+    const pos = seq?.posisjoner?.length ? seq.posisjoner : (seq ? [seq.navn] : []);
+    const steg = [];
+    for (let r = 0; r < runder; r++) pos.forEach((po) => steg.push({
+      navn: navnTilLesbar(po), dose: runder > 1 ? `Runde ${r + 1}/${runder}` : null, sek: null, type: 'flyt',
+    }));
+    return steg;
+  }
+  if (blk.kind === 'kondisjon' || blk.formatKlasse === 'dist' || blk.formatKlasse === 'klokke' || blk.formatKlasse === 'hold') {
+    return fasePlan(blk).map((f) => ({ navn: f.navn, dose: null, sek: f.sek, type: f.type }));
+  }
+  return (blk.ovelser || []).map((o) => ({
+    navn: o.navn,
+    dose: [o.dose, o.unilateral && !/per side/i.test(o.dose || '') && 'per side'].filter(Boolean).join(' · ') || null,
+    sek: gjettTid(o.dose, o.unilateral),
+    type: blk.formatKlasse === 'hold' ? 'hold' : 'reps',
+  }));
+}
+
 export function visKjoreSkjerm(mount) {
   if (!gjeldendeOkt) { location.hash = '#/okter'; return; }
   const okt = gjeldendeOkt;
-  let idx = 0;
+  stoppTimer();
 
-  function fremgang() {
-    return el('div', { class: 'kjor-fremgang' },
-      ...okt.blokker.map((_, i) => el('i', { class: 'kjor-fremgang__p' + (i < idx ? ' er-ferdig' : i === idx ? ' er-aktiv' : '') })),
-    );
+  const blokkMin = okt.blokker.reduce((s, b) => s + (b.min || 0), 0);
+  const totalSek = Math.max(1, (okt.varighetMin || blokkMin || 1) * 60);
+  const profil = hentProfil() || {};
+  const nivaInfo = nivaFraTotalXp(profil.globalXp || 0);
+  const momentXp = Math.max(1, beregnXp(okt.varighetMin || 1, okt.bevegelse || 'custom', okt.intensitet || 3));
+
+  // --- tilstand ---
+  let bIdx = 0;
+  let steg = lagSteg(okt.blokker[0]);
+  let sIdx = 0;
+  let spiller = false;
+  let startet = false;
+  let sesjonAkkumMs = 0;
+  let sesjonStart = null;
+  let stegSlutt = null;   // ts når tidsstyrt steg er ferdig (kjørende)
+  let stegIgjenMs = 0;    // gjenstår (pauset / utimet)
+  let sisteTikk = null;
+
+  const sesjonMs = () => sesjonAkkumMs + (sesjonStart ? Date.now() - sesjonStart : 0);
+  const gj = () => steg[sIdx];
+  const nesteSteg = () => steg[sIdx + 1] || (okt.blokker[bIdx + 1] ? lagSteg(okt.blokker[bIdx + 1])[0] : null);
+  const gjortMin = () => okt.blokker.slice(0, bIdx).reduce((s, b) => s + (b.min || 0), 0)
+    + Math.round((okt.blokker[bIdx]?.min || 0) * (sIdx / Math.max(1, steg.length)));
+
+  function stegBilde(g) {
+    const slug = g && ovelseBilde(g.bilde || g.navn);
+    return slug ? el('img', { src: `bilder/ovelser/${slug}.webp`, alt: '', loading: 'lazy' })
+      : ikon(g && g.type === 'hvile' ? 'klokke' : g && (g.type === 'inn' || g.type === 'ut') ? 'hjerte' : 'vekt');
   }
+  const doseTekst = (g) => (g ? (g.dose || TYPE_ORD[g.type] || '') : '');
 
-  function neste() {
-    if (idx < okt.blokker.length - 1) { idx++; tegn(); } else { stoppTimer(); fullfor(mount, okt, false); }
-  }
-  function forrige() { if (idx > 0) { idx--; tegn(); } }
+  // --- topp (dagsfase-bakgrunn) ---
+  const fase = dagsfaseNaa();
+  const bg = el('div', { class: 'kjor2__bg', 'aria-hidden': 'true', style: `background-image:url('icons/brand/hero-${fase}.webp')` });
+  const topp = el('header', { class: 'kjor2__topp' },
+    el('div', { class: 'kjor2__titler' },
+      el('h1', { class: 'kjor2__tittel' }, okt.navn),
+      el('p', { class: 'kjor2__under' }, okt.beskrivelse || `${okt.varighetMin} min`),
+    ),
+    el('button', { class: 'kjor2__lukk', type: 'button', 'aria-label': 'Avslutt', onclick: () => lukk() }, ikon('kryss')),
+  );
 
-  // Avslutte tidlig? Delvis gjennomføring teller (spec §7) — tilby å logge
-  // blokkene som er gjort i stedet for å forkaste alt.
-  function avbryt() {
-    const gjortMin = okt.blokker.slice(0, idx).reduce((s, b) => s + (b.min || 0), 0);
-    if (gjortMin < 1) {
-      if (confirm('Avslutte økta? Du kan starte igjen når du vil.')) location.hash = '#/review';
-      return;
+  // --- sesjonskort ---
+  const elForlopt = el('div', { class: 'kjor2-tid__stor' }, '00:00');
+  const elTotal = el('div', { class: 'kjor2-tid__stor' }, formatTid(totalSek));
+  const { svg: sesjRingSvg, sett: sesjRingSett } = lagRing(50);
+  const pauseGlyph = el('span', { class: 'kjor2-tid__glyph' }, ikon('play'));
+  const sentralPause = el('button', { class: 'kjor2-tid__pause', type: 'button', 'aria-label': 'Start', onclick: () => settSpill(!spiller) }, sesjRingSvg, pauseGlyph);
+  const barFyll = el('i', { class: 'kjor2-bar__fyll' });
+  const blokkTeller = el('p', { class: 'kjor2-tid__blokk' }, `Blokk 1 av ${okt.blokker.length}`);
+  const sesjonKort = el('div', { class: 'kort kjor2-tid' },
+    el('div', { class: 'kjor2-tid__rad' },
+      el('div', { class: 'kjor2-tid__kol' }, elForlopt, el('span', { class: 'kjor2-tid__merk' }, 'forløpt tid')),
+      sentralPause,
+      el('div', { class: 'kjor2-tid__kol' }, elTotal, el('span', { class: 'kjor2-tid__merk' }, 'total tid')),
+    ),
+    el('div', { class: 'kjor2-bar' }, barFyll),
+    blokkTeller,
+  );
+
+  // --- NÅ-kort ---
+  const naBilde = el('div', { class: 'kjor2-na__bilde' });
+  const naNavn = el('h2', { class: 'kjor2-na__navn' }, '');
+  const naDose = el('p', { class: 'kjor2-na__dose' }, '');
+  const naTipTekst = el('span', {}, '');
+  const naTip = el('p', { class: 'kjor2-na__tip' }, ikon('lyn', 'ikon ikon--liten'), naTipTekst);
+  const naInfoWrap = el('span', { class: 'kjor2-na__info' });
+  const naRingTall = el('div', { class: 'kjor2-ring__tall' }, '');
+  const { svg: naRingSvg, sett: naRingSett } = lagRing(50);
+  const naRing = el('div', { class: 'kjor2-ring' }, naRingSvg,
+    el('div', { class: 'kjor2-ring__inn' }, naRingTall, el('span', { class: 'kjor2-ring__enhet' }, 'sek')));
+  const naKort = el('div', { class: 'kort kjor2-na' },
+    el('div', { class: 'kjor2-na__topp' }, el('span', { class: 'kjor2-na__merke' }, 'NÅ'), naInfoWrap, naRing),
+    naBilde, naNavn, naDose, naTip,
+  );
+
+  // --- neste øvelse ---
+  const nesteBilde = el('div', { class: 'kjor2-neste__bilde' });
+  const nesteMerke = el('span', { class: 'kjor2-neste__merke' }, 'Neste øvelse');
+  const nesteNavn = el('span', { class: 'kjor2-neste__navn' }, '');
+  const nesteDose = el('span', { class: 'kjor2-neste__dose' }, '');
+  const nesteKort = el('button', { class: 'kort kjor2-neste', type: 'button', onclick: () => { if (nesteKort._navn) visOvelseArk(nesteKort._navn); } },
+    nesteBilde,
+    el('span', { class: 'kjor2-neste__tekst' }, nesteMerke, nesteNavn, nesteDose),
+    ikon('chevron', 'ikon kjor2-neste__pil'),
+  );
+
+  // --- neste blokk ---
+  const nbTeller = el('span', { class: 'kjor2-nb__teller' }, '');
+  const nbRolle = el('span', { class: 'kjor2-nb__rolle' }, '');
+  const nbListe = el('div', { class: 'kjor2-nb__liste' });
+  const nesteBlokkKort = el('div', { class: 'kort kjor2-nb' },
+    el('div', { class: 'kjor2-nb__hode' }, el('span', { class: 'kjor2-nb__merke' }, 'Neste blokk'), nbTeller),
+    nbRolle, nbListe,
+  );
+
+  // --- momentum ---
+  const momBar = el('i', { class: 'kjor2-mom__fyll', style: `width:${nivaInfo.pct}%` });
+  const momentumKort = el('div', { class: 'kort kjor2-mom' },
+    el('span', { class: 'kjor2-mom__flamme' }, ikon('flamme')),
+    el('div', { class: 'kjor2-mom__midt' },
+      el('div', { class: 'kjor2-mom__rad' },
+        el('span', { class: 'kjor2-mom__tekst' }, `Momentum +${momentXp}`),
+        el('span', { class: 'kjor2-mom__xp' }, `${nivaInfo.inne} / ${nivaInfo.tilNeste} XP`),
+      ),
+      el('div', { class: 'kjor2-mom__bar' }, momBar),
+    ),
+    el('span', { class: 'kjor2-mom__niva' }, ikon('lyn', 'ikon ikon--liten'), `Nivå ${nivaInfo.niva}`),
+  );
+
+  // --- bunnlinje ---
+  const bunnPauseGlyph = el('span', { class: 'kjor2-bunn__glyph' }, ikon('play'));
+  const bunnPauseTekst = el('span', {}, 'Start');
+  const bunn = el('div', { class: 'kjor2__bunn' },
+    el('button', { class: 'kjor2-bunn__knapp', type: 'button', onclick: () => hopp() }, ikon('hoppover', 'ikon ikon--liten'), 'Hopp over'),
+    el('button', { class: 'kjor2-bunn__knapp', type: 'button', onclick: () => settSpill(!spiller) }, bunnPauseGlyph, bunnPauseTekst),
+    el('button', { class: 'kjor2-bunn__knapp kjor2-bunn__knapp--primar', type: 'button', onclick: () => ferdigTrykk() }, ikon('sjekk', 'ikon ikon--liten'), 'Ferdig'),
+  );
+
+  monter(mount,
+    el('section', { class: 'kjor2' }, bg, topp,
+      el('div', { class: 'kjor2__stabel' }, sesjonKort, naKort, nesteKort, nesteBlokkKort, momentumKort),
+    ),
+    bunn,
+  );
+
+  // --- oppdatering ---
+  function tegnSteg() {
+    const g = gj();
+    tom(naBilde); naBilde.append(stegBilde(g));
+    naNavn.textContent = g ? g.navn : '';
+    naDose.textContent = doseTekst(g);
+    const tip = g && ovelseInfo(g.navn)?.tips?.[0];
+    naTip.style.display = tip ? '' : 'none';
+    naTipTekst.textContent = tip ? ` ${tip}` : '';
+    tom(naInfoWrap);
+    const ik = g && infoKnapp(g.navn);
+    if (ik) naInfoWrap.append(ik);
+    naRing.style.visibility = g && g.sek ? '' : 'hidden';
+
+    const n = nesteSteg();
+    if (n) {
+      nesteKort.style.display = '';
+      tom(nesteBilde); nesteBilde.append(stegBilde(n));
+      nesteNavn.textContent = n.navn;
+      nesteDose.textContent = doseTekst(n);
+      nesteMerke.textContent = steg[sIdx + 1] ? 'Neste øvelse' : 'Neste blokk';
+      nesteKort._navn = ovelseInfo(n.navn) ? n.navn : null;
+      nesteKort.classList.toggle('kjor2-neste--laas', !nesteKort._navn);
+    } else {
+      nesteKort.style.display = 'none';
     }
-    if (confirm(`Avslutte her? Du har beveget deg i ~${gjortMin} min — vil du telle det med?\n\nOK = logg det du rakk · Avbryt = fortsett økta`)) {
+
+    const nb = okt.blokker[bIdx + 1];
+    if (!nb) { nesteBlokkKort.style.display = 'none'; } else {
+      nesteBlokkKort.style.display = '';
+      nbTeller.textContent = `Blokk ${bIdx + 2} av ${okt.blokker.length}`;
+      nbRolle.textContent = `${rolleNavn(nb.rolle)} · ${nb.formatNavn}`;
+      tom(nbListe);
+      const vist = [];
+      for (const x of lagSteg(nb)) { if (!vist.some((v) => v.navn === x.navn)) vist.push(x); if (vist.length >= 4) break; }
+      vist.forEach((x) => nbListe.append(el('div', { class: 'kjor2-nb__rad' },
+        el('span', { class: 'kjor2-nb__ikon' }, ikon(x.type === 'reps' ? 'vekt' : x.type === 'flyt' ? 'yoga' : 'stoppeklokke')),
+        el('span', { class: 'kjor2-nb__navn' }, x.navn),
+        el('span', { class: 'kjor2-nb__tid' }, x.dose || (x.sek ? tidTekst(x.sek) : '')),
+      )));
+    }
+    blokkTeller.textContent = `Blokk ${bIdx + 1} av ${okt.blokker.length}`;
+  }
+
+  function oppdaterPause() {
+    const glyph = (startet && spiller) ? 'pause' : 'play';
+    tom(pauseGlyph); pauseGlyph.append(ikon(glyph));
+    tom(bunnPauseGlyph); bunnPauseGlyph.append(ikon(glyph));
+    const ord = !startet ? 'Start' : spiller ? 'Pause' : 'Fortsett';
+    bunnPauseTekst.textContent = ord;
+    sentralPause.setAttribute('aria-label', ord);
+    naKort.classList.toggle('kjor2-na--pause', startet && !spiller);
+  }
+
+  function tikk() {
+    const spent = sesjonMs();
+    elForlopt.textContent = formatTid(Math.floor(spent / 1000));
+    const sp = Math.min(1, spent / (totalSek * 1000));
+    sesjRingSett(sp);
+    barFyll.style.width = `${(sp * 100).toFixed(1)}%`;
+
+    const g = gj();
+    if (!(g && g.sek)) { naRingTall.textContent = '—'; return; }
+
+    let rem;
+    if (spiller && stegSlutt != null) {
+      if (stegSlutt - Date.now() <= 0) { if (!framAuto()) return; nyTiming(); return; }
+      rem = Math.max(0, Math.round((stegSlutt - Date.now()) / 1000));
+    } else {
+      rem = Math.round((stegIgjenMs || g.sek * 1000) / 1000);
+    }
+    naRingTall.textContent = String(rem);
+    naRingSett(rem / (g.sek || 1));
+    const teller = spiller && !!nesteSteg() && rem >= 1 && rem <= 5;
+    naKort.classList.toggle('kjor2-na--teller', teller);
+    if (teller && rem !== sisteTikk) { sisteTikk = rem; pling(700, 0.05); }
+    if (rem > 5) sisteTikk = null;
+  }
+
+  function nyTiming() {
+    const g = gj();
+    stegIgjenMs = g && g.sek ? g.sek * 1000 : 0;
+    stegSlutt = (spiller && g && g.sek) ? Date.now() + g.sek * 1000 : null;
+    sisteTikk = null;
+  }
+
+  function bytt() {
+    if (sIdx < steg.length - 1) { sIdx += 1; return true; }
+    if (bIdx < okt.blokker.length - 1) { bIdx += 1; steg = lagSteg(okt.blokker[bIdx]); sIdx = 0; return true; }
+    avsluttNaturlig();
+    return false;
+  }
+
+  function framAuto() {
+    if (!bytt()) return false;
+    tegnSteg();
+    const g = gj();
+    pling(g && g.type === 'hvile' ? 520 : g && g.type === 'hold' ? 660 : 880, 0.12);
+    return true;
+  }
+
+  function hopp() {
+    if (!startet) { startet = true; }
+    if (!bytt()) return;
+    tegnSteg();
+    nyTiming();
+    oppdaterPause();
+    tikk();
+  }
+
+  function settSpill(på) {
+    if (på === spiller) return;
+    const na = Date.now();
+    if (på) {
+      if (!startet) { startet = true; nyTiming(); }
+      spiller = true; sesjonStart = na;
+      const g = gj();
+      if (g && g.sek) stegSlutt = na + stegIgjenMs;
+      if (!aktivInterval) { aktivInterval = setInterval(tikk, 250); vedSynlig = tikk; }
+      holdVaaken();
+    } else {
+      spiller = false;
+      sesjonAkkumMs += na - (sesjonStart || na); sesjonStart = null;
+      if (stegSlutt != null) { stegIgjenMs = Math.max(0, stegSlutt - na); stegSlutt = null; }
+      slippVaaken();
+    }
+    oppdaterPause();
+    tikk();
+  }
+
+  function avsluttNaturlig() { stoppTimer(); fullfor(mount, okt, false); }
+
+  function ferdigTrykk() {
+    if (bIdx >= okt.blokker.length - 1) { stoppTimer(); fullfor(mount, okt, false); return; }
+    const min = Math.max(1, gjortMin());
+    if (confirm(`Avslutte økta nå? Vi teller ~${min} min du har gjort.`)) {
       stoppTimer();
-      fullfor(mount, { ...okt, varighetMin: gjortMin }, true);
+      fullfor(mount, { ...okt, varighetMin: min }, true);
     }
   }
 
-  function tegn() {
-    stoppTimer();
-    holdVaaken(); // skjermen holdes på gjennom hele økta
-    const blk = okt.blokker[idx];
-    monter(mount,
-      el('header', { class: 'topp topp--kjor' },
-        el('button', { class: 'topp__tilbake', type: 'button', onclick: avbryt, title: 'Avbryt' }, ikon('kryss')),
-        el('div', {},
-          el('h1', { class: 'topp__tittel' }, `${rolleNavn(blk.rolle)} · ${blk.formatNavn}`),
-          el('p', { class: 'topp__under' }, `Blokk ${idx + 1} av ${okt.blokker.length}`),
-        ),
-      ),
-      el('main', { class: 'innhold innhold--kjor' },
-        fremgang(),
-        renderBlokk(blk),
-        el('div', { class: 'kjor-nav' },
-          el('button', { class: 'knapp knapp--sekundaer' + (idx === 0 ? ' knapp--av' : ''), type: 'button', disabled: idx === 0, onclick: forrige }, 'Forrige'),
-          el('button', { class: 'knapp', type: 'button', onclick: neste }, idx === okt.blokker.length - 1 ? 'Fullfør økt ✓' : 'Neste blokk →'),
-        ),
-      ),
-    );
-  }
-
-  // Velg kjøreflate ut fra blokktype.
-  function renderBlokk(blk) {
-    if (blk.kind === 'pust' && blk.parametre?.takt) return pustFlate(blk);
-    if (blk.kind === 'sekvens') return sekvensFlate(blk);
-    if (blk.kind === 'kondisjon' || blk.formatKlasse === 'dist') return timerFlate(blk);
-    if (blk.formatKlasse === 'klokke' || blk.formatKlasse === 'hold') return timerFlate(blk);
-    return guideFlate(blk); // reps / runde / flyt / oppvarming
-  }
-
-  tegn();
-}
-
-// --- Kjøreflate: guide (checklist / posisjonsliste) ------------------------
-function guideFlate(blk) {
-  const wrap = el('div', { class: 'flate' });
-  const paramT = paramTekst(blk);
-  if (paramT) wrap.append(el('p', { class: 'flate__param' }, paramT));
-  const liste = el('div', { class: 'guide' });
-  blk.ovelser.forEach((o) => {
-    // Raden er en div med hake-knappen inni, så (i)-knappen kan stå ved
-    // siden av uten ugyldig knapp-i-knapp — og åpne bunnarket uten å
-    // forstyrre økta.
-    const velg = el('button', { class: 'guide__velg', type: 'button' },
-      el('span', { class: 'guide__hake' }, ikon('sjekk')),
-      el('span', { class: 'guide__navn' }, o.navn + (o.dose ? ` · ${o.dose}` : '')),
-      o.unilateral && el('span', { class: 'tag tag--u' }, 'per side'),
-    );
-    const rad = el('div', { class: 'guide__rad' }, velg, infoKnapp(o.navn, { dose: o.dose }));
-    velg.addEventListener('click', () => {
-      rad.classList.toggle('guide__rad--ferdig');
-      rad.classList.remove('guide__rad--puls'); void rad.offsetWidth; rad.classList.add('guide__rad--puls');
-    });
-    liste.append(rad);
-  });
-  wrap.append(liste);
-  if (!blk.ovelser.length) wrap.append(el('p', { class: 'dempet' }, kondisjonTekst(blk)));
-  wrap.append(el('p', { class: 'dempet flate__hint' }, 'Trykk for å hake av. Selvstyrt tempo — start neste blokk når du er klar.'));
-  return wrap;
-}
-
-// --- Kjøreflate: sekvens (posisjonsstepper) --------------------------------
-function sekvensFlate(blk) {
-  const seq = blk.ovelser[0];
-  const runder = blk.parametre?.runder || 1;
-  const posisjoner = seq?.posisjoner?.length ? seq.posisjoner : (seq ? [seq.navn] : []);
-  let i = 0;
-  const wrap = el('div', { class: 'flate flate--midt' });
-
-  const tittel = el('div', { class: 'flate__stor' });
-  const teller = el('p', { class: 'dempet' });
-  const beskr = el('p', { class: 'flate__beskr' }, seq?.beskrivelse || '');
-  const infoWrap = el('span', { class: 'flate__info' });
-
-  function tegn() {
-    const navn = navnTilLesbar(posisjoner[i] || '—');
-    tom(tittel); tittel.append(navn);
-    tom(infoWrap);
-    const k = infoKnapp(navn);
-    if (k) infoWrap.append(k);
-    teller.textContent = `${seq?.navn || ''} · posisjon ${i + 1}/${posisjoner.length}${runder > 1 ? ` · ${runder} runder` : ''}`;
-  }
-  const nav = el('div', { class: 'flate__knapper' },
-    el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: () => { i = Math.max(0, i - 1); tegn(); } }, '‹ Forrige'),
-    el('button', { class: 'knapp', type: 'button', onclick: () => { i = Math.min(posisjoner.length - 1, i + 1); tegn(); } }, 'Neste ›'),
-  );
-  wrap.append(teller, el('div', { class: 'flate__tittelrad' }, tittel, infoWrap), beskr, nav, el('p', { class: 'dempet flate__hint' }, '1 bevegelse per pust. Gjenta hele sekvensen ' + runder + '×.'));
-  tegn();
-  return wrap;
-}
-
-// --- Kjøreflate: pust (pusteguide) -----------------------------------------
-function pustFlate(blk) {
-  const t = blk.parametre.takt;
-  const tidMin = blk.parametre.tidMin || 5;
-  const faser = [];
-  if (t.inn) faser.push({ navn: 'Pust inn', sek: Math.round(t.inn), type: 'inn' });
-  if (t.holdInn) faser.push({ navn: 'Hold', sek: Math.round(t.holdInn), type: 'hold' });
-  if (t.ut) faser.push({ navn: 'Pust ut', sek: Math.round(t.ut), type: 'ut' });
-  if (t.holdUt) faser.push({ navn: 'Hold', sek: Math.round(t.holdUt), type: 'hold' });
-  const perRunde = faser.reduce((s, f) => s + f.sek, 0) || 1;
-  const runder = Math.max(1, Math.round((tidMin * 60) / perRunde));
-  const plan = [];
-  for (let r = 0; r < runder; r++) plan.push(...faser);
-
-  const wrap = el('div', { class: 'flate flate--midt' });
-  const ring = el('div', { class: 'pustering' });
-  const fasenavn = el('div', { class: 'flate__stor' }, 'Klar?');
-  const nedtelling = el('div', { class: 'pust-tall' }, '');
-  const igjen = el('p', { class: 'dempet' }, `${blk.ovelser[0]?.navn || 'Pust'} · ${runder} runder`);
-  wrap.append(igjen, ring, fasenavn, nedtelling);
-  wrap.append(timerKnapper(plan, {
-    onFase: (f) => {
-      fasenavn.textContent = f.navn;
-      ring.className = 'pustering pustering--' + f.type;
-      ring.style.setProperty('--pust-sek', f.sek + 's');
-      pling(f.type === 'inn' ? 660 : f.type === 'ut' ? 440 : 550, 0.08);
-    },
-    onSek: (s) => { nedtelling.textContent = String(s); },
-    onFerdig: () => { fasenavn.textContent = 'Ferdig 🙏'; nedtelling.textContent = ''; ring.className = 'pustering'; },
-  }));
-  return wrap;
-}
-
-// --- «Neste»-kort: miniatyr + navn av kommende fase, med nedtelling ---------
-// Viser hva som kommer etter denne fasen, og de siste 5 sekundene teller den
-// ned så øvelsesbyttet aldri kommer overraskende.
-function lagOppNest() {
-  const bilde = el('div', { class: 'oppnest__bilde' });
-  const merke = el('span', { class: 'oppnest__merke' }, 'Neste');
-  const navnEl = el('span', { class: 'oppnest__navn' }, '');
-  const nedtell = el('span', { class: 'oppnest__nedtell', 'aria-hidden': 'true' }, '');
-  const rot = el('div', { class: 'oppnest' },
-    bilde,
-    el('span', { class: 'oppnest__tekst' }, merke, navnEl),
-    nedtell,
-  );
-
-  function sett(fase) {
-    rot.classList.remove('oppnest--teller');
-    tom(bilde);
-    if (!fase) {
-      rot.classList.add('oppnest--tom');
-      merke.textContent = 'Snart ferdig';
-      navnEl.textContent = 'Siste fase';
-      bilde.append(ikon('sjekk'));
+  function lukk() {
+    if (!startet && bIdx === 0 && sIdx === 0) {
+      if (confirm('Avslutte økta? Du kan starte igjen når du vil.')) { stoppTimer(); slippVaaken(); location.hash = '#/review'; }
       return;
     }
-    rot.classList.remove('oppnest--tom');
-    const hvile = fase.type === 'hvile';
-    merke.textContent = hvile ? 'Straks' : 'Neste';
-    navnEl.textContent = fase.navn;
-    const slug = hvile ? null : ovelseInfo(fase.navn)?.bilde;
-    if (slug) bilde.append(el('img', { src: `bilder/ovelser/${slug}.webp`, alt: '', loading: 'lazy' }));
-    else bilde.append(ikon(hvile ? 'klokke' : 'vekt'));
+    ferdigTrykk();
   }
 
-  function tell(sek) {
-    if (sek == null) { rot.classList.remove('oppnest--teller'); nedtell.textContent = ''; return; }
-    nedtell.textContent = String(sek);
-    rot.classList.add('oppnest--teller');
-    nedtell.classList.remove('oppnest__nedtell--pop'); void nedtell.offsetWidth;
-    nedtell.classList.add('oppnest__nedtell--pop');
-  }
-
-  return { el: rot, sett, tell };
-}
-
-// --- Kjøreflate: timer (intervall / hold / distanse) -----------------------
-function timerFlate(blk) {
-  const plan = fasePlan(blk);
-  const wrap = el('div', { class: 'flate flate--midt' });
-  const fasenavn = el('div', { class: 'flate__stor' }, 'Klar?');
-  const klokke = el('div', { class: 'kjor-klokke' }, formatTid(plan[0]?.sek || 0));
-  const { svg: ringSvg, sett: ringSett } = lagRing();
-  const klokkeWrap = el('div', { class: 'kjor-klokke-wrap' }, ringSvg, klokke);
-  const paramT = paramTekst(blk);
-  const status = el('p', { class: 'dempet' }, plan.length > 1 ? `${plan.length} faser` : paramT);
-  const oppnest = lagOppNest();
-  const infoWrap = el('span', { class: 'flate__info' });
-  if (paramT) wrap.append(el('p', { class: 'flate__param' }, paramT));
-  wrap.append(el('div', { class: 'flate__tittelrad' }, fasenavn, infoWrap), klokkeWrap, oppnest.el, status);
-  oppnest.sett(plan[1] || null); // vis hva som venter allerede før start
-
-  let totalSek = plan[0]?.sek || 1;
-  let naaI = 0;          // gjeldende faseindeks (for «neste»-oppslag)
-  let sisteTikk = null;  // sist annonserte nedtellingssekund (mot dobbelt-pling)
-  wrap.append(timerKnapper(plan, {
-    onFase: (f, i) => {
-      fasenavn.textContent = f.navn;
-      fasenavn.className = 'flate__stor flate__stor--' + f.type;
-      tom(infoWrap);
-      const k = infoKnapp(f.navn);
-      if (k) infoWrap.append(k);
-      naaI = i;
-      sisteTikk = null;
-      oppnest.sett(plan[i + 1] || null);
-      totalSek = f.sek || 1;
-      ringSett(1);
-      pling(f.type === 'arbeid' || f.type === 'hold' ? 880 : 520, 0.1);
-    },
-    onSek: (s) => {
-      klokke.textContent = formatTid(s);
-      ringSett(s / totalSek);
-      // Siste 5 sek før et fasebytte: tell ned på «neste»-kortet + mykt tikk.
-      const harNeste = !!plan[naaI + 1];
-      const teller = harNeste && s >= 1 && s <= 5;
-      klokke.classList.toggle('kjor-klokke--teller', teller);
-      if (teller) {
-        oppnest.tell(s);
-        if (s !== sisteTikk) { sisteTikk = s; pling(700, 0.05); }
-      } else {
-        oppnest.tell(null);
-      }
-    },
-    onFerdig: () => {
-      fasenavn.textContent = 'Blokk ferdig ✓';
-      fasenavn.className = 'flate__stor';
-      klokke.textContent = '00:00';
-      klokke.classList.remove('kjor-klokke--teller');
-      oppnest.sett(null);
-      ringSett(0);
-      pling(990, 0.2);
-    },
-  }));
-  return wrap;
+  tegnSteg();
+  oppdaterPause();
+  tikk();
 }
 
 // Bygger fase-planen (label + sekunder) for en timer-blokk.
@@ -519,79 +609,6 @@ function fasePlan(blk) {
   // Fallback: en enkelt arbeidsperiode.
   faser.push({ navn: blk.formatNavn, sek: (blk.min || 5) * 60, type: 'arbeid' });
   return faser;
-}
-
-// Timer-motoren: spiller en fase-plan med pause/hopp. Regner med veggklokke-
-// tid (`slutt`-tidsstempel i stedet for å telle intervaller), så minutter i
-// bakgrunnen flytter fasene riktig videre — flere faser kan passere mens
-// skjermen er av, og appen lander på riktig fase når den våkner.
-function timerKnapper(plan, { onFase, onSek, onFerdig }) {
-  let i = 0;
-  let igjen = (plan[0]?.sek || 0) * 1000; // gjenstående ms (når pauset)
-  let slutt = null;                       // ts når fasen er ferdig (når kjørende)
-  let kjorer = false;
-  let startet = false;
-
-  const startKnapp = el('button', { class: 'knapp', type: 'button' }, 'Start');
-  const hoppKnapp = el('button', { class: 'knapp knapp--sekundaer', type: 'button' }, 'Hopp over');
-
-  function ferdig() {
-    stoppTimer();
-    kjorer = false;
-    startKnapp.textContent = 'Ferdig';
-    startKnapp.disabled = true;
-    onFerdig();
-  }
-
-  // Tegner gjeldende tilstand — og ruller gjennom faser som er passert i
-  // bakgrunnen. Bare fasen vi lander på annonseres (én pling, ikke ti).
-  function vis() {
-    if (!kjorer) { onSek(Math.max(0, Math.round(igjen / 1000))); return; }
-    const nå = Date.now();
-    let byttet = false;
-    while (slutt - nå <= 0) {
-      i += 1;
-      if (i >= plan.length) { ferdig(); return; }
-      slutt += plan[i].sek * 1000;
-      byttet = true;
-    }
-    if (byttet) onFase(plan[i], i);
-    onSek(Math.max(0, Math.round((slutt - nå) / 1000)));
-  }
-
-  function start() {
-    if (kjorer) { // pause
-      igjen = Math.max(0, slutt - Date.now());
-      stoppTimer();
-      kjorer = false;
-      startKnapp.textContent = 'Fortsett';
-    } else {
-      kjorer = true;
-      startKnapp.textContent = 'Pause';
-      if (!startet) { startet = true; onFase(plan[i], i); }
-      slutt = Date.now() + igjen;
-      stoppTimer();
-      aktivInterval = setInterval(vis, 500);
-      vedSynlig = vis;
-      vis();
-    }
-  }
-
-  function hopp() {
-    const varIgang = kjorer;
-    stoppTimer(); kjorer = false;
-    i += 1;
-    if (i >= plan.length) { ferdig(); return; }
-    startet = true;
-    igjen = plan[i].sek * 1000;
-    onFase(plan[i], i);
-    onSek(plan[i].sek);
-    startKnapp.textContent = varIgang ? 'Fortsett' : startKnapp.textContent;
-  }
-
-  startKnapp.addEventListener('click', start);
-  hoppKnapp.addEventListener('click', hopp);
-  return el('div', { class: 'flate__knapper' }, startKnapp, hoppKnapp);
 }
 
 // ===========================================================================
