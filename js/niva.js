@@ -4,7 +4,7 @@
 // total-XP og loggen ved lesetid — ingenting kan «mistes», og sync trenger
 // aldri lagre noe ekstra.
 
-import { beregnXp } from './bevegelse.js';
+import { beregnXp, loggBevegelse, BEVEGELSE_TIL_NIVATYPER } from './bevegelse.js';
 
 const DAG = 86400000;
 
@@ -29,6 +29,43 @@ export function nivaFraTotalXp(totalXp) {
 /** Globalt nivå fra total-XP (snarvei for visninger). */
 export function globaltNiva(totalXp) {
   return nivaFraTotalXp(totalXp).niva;
+}
+
+// --- Nivå per treningstype (M17) -------------------------------------------
+// Tre uavhengige nivåer avledet av loggen ved lesetid, samme kurve som globalt.
+// En økt kan telle mot flere typer; XP deles LIKT mellom dem, så summen av de
+// tre ≈ total logget XP. Alt avledet — ingen nye felt, ingenting å synke.
+
+/** Typene en loggrad teller mot (0-3). `oktTyper` = kuratert override fra økt. */
+export function typerForLogg(o, oktTyper) {
+  if (oktTyper && oktTyper.length) return oktTyper;
+  const bev = loggBevegelse(o);
+  const t = BEVEGELSE_TIL_NIVATYPER[bev];
+  if (t && t.length) return t;
+  // Tvetydig (sport/custom): la sekundærsignaler på loggraden avgjøre.
+  if (o.volumKg || (o.resultater && o.resultater.length)) return ['styrke'];
+  if (o.distanseM || o.snittPuls) return ['kondisjon'];
+  return bev === 'sport' ? ['kondisjon'] : []; // sport uten signal → kondisjon; custom → kun globalt
+}
+
+/**
+ * Tre nivåer {kondisjon, styrke, mobilitet}, hver som nivaFraTotalXp(sum).
+ * `oktTyperFor(o)` er en valgfri callback som gir per-økt override uten at
+ * niva.js må importere øktbiblioteket (unngår kobling).
+ */
+export function nivaPerType(logg, oktTyperFor = null) {
+  const sum = { kondisjon: 0, styrke: 0, mobilitet: 0 };
+  for (const o of logg || []) {
+    const typer = typerForLogg(o, oktTyperFor ? oktTyperFor(o) : null);
+    if (!typer.length) continue;
+    const del = (o.xp || 0) / typer.length; // lik fordeling mellom typene
+    for (const t of typer) sum[t] += del;
+  }
+  return {
+    kondisjon: nivaFraTotalXp(sum.kondisjon),
+    styrke: nivaFraTotalXp(sum.styrke),
+    mobilitet: nivaFraTotalXp(sum.mobilitet),
+  };
 }
 
 // --- Ukenøkkel (brukes av ukesvolum og ukemål-merker) ----------------------

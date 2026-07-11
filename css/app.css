@@ -1448,6 +1448,38 @@ body.fokusmodus { padding-bottom: 0; }
 .merkehero__bar { height: 8px; margin: 8px 0 7px; }
 .merkehero__sub { display: block; font-size: 12px; color: var(--dempet); }
 
+/* Nivå per treningstype (M17) — tre små ringer rett under profil-heroen. */
+.typenivarad { display: flex; gap: 12px; justify-content: space-around; }
+.typeniva { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
+.typeniva__ring { position: relative; width: 60px; height: 60px; }
+.typeniva__ring .ringfremgang { display: block; width: 100%; height: 100%; }
+.typeniva__niva {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-family: var(--font-display); font-weight: 600; font-size: 20px;
+}
+.typeniva__navn { font-size: 12.5px; font-weight: 600; }
+.typeniva__sub { font-size: 11px; color: var(--dempet); }
+.typeniva--koral .ringfremgang__fyll { stroke: #E8503F; }
+.typeniva--blaa .ringfremgang__fyll { stroke: #2F4EB5; }
+.typeniva--teal .ringfremgang__fyll { stroke: #1FA89F; }
+
+/* Restitusjons-kroppskart (M17) på Min dag. */
+.restitusjonskort__tittel { margin: 0 0 2px; font-family: var(--font-display); font-weight: 600; font-size: 17px; }
+.kroppskart { display: block; width: 100%; max-width: 300px; margin: 4px auto; }
+.kroppskart__hode { fill: var(--ink-100); }
+.kroppskart__etikett { fill: var(--dempet); font-size: 9px; font-weight: 600; }
+.kroppskart__region { fill: #0BA69F; stroke: var(--bg-kort); stroke-width: 0.6; transition: fill 0.45s ease; }
+.kroppskart-forklaring { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--dempet); margin-top: 6px; }
+.kroppskart-forklaring__skala { flex: 1; height: 8px; border-radius: 4px; background: linear-gradient(90deg, #0BA69F, #F9CD55, #FF6F61); }
+.restitusjonskort__anbefaling {
+  display: inline-flex; align-items: center; gap: 7px; margin-top: 12px;
+  background: var(--aksent-svak); color: var(--aksent);
+  border-radius: var(--radius-pill); padding: 10px 16px;
+  font-size: 13.5px; font-weight: 600; text-decoration: none;
+}
+.restitusjonskort__anbefaling .ikon { flex: 0 0 auto; }
+@media (prefers-reduced-motion: reduce) { .kroppskart__region { transition-duration: 0.01ms; } }
+
 .merkebolk {
   background: var(--bg-kort); border: 1px solid var(--kant);
   border-radius: var(--radius-lg); padding: 16px;
