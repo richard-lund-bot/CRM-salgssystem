@@ -153,7 +153,7 @@ function visHjem() {
     el('main', { class: 'innhold' },
       seksjonsHode(),
       bevegelsesGrid(),
-      restitusjonsKort(logg),
+      restitusjonsKort(logg, profil),
       // Heroen har alt en CTA når noe er planlagt eller påbegynt — da
       // trengs ikke anbefalingskortet i tillegg.
       !planer.length && minutterIdag === 0 && anbefalingKort(profil, logg, nå),
@@ -162,25 +162,29 @@ function visHjem() {
   );
 }
 
-// Kort lesbar status for en 0..1-belastning (brukes i oppsummeringsraden).
-function belastningsTekst(score) {
-  if (score >= 0.6) return 'nylig hardt belastet';
-  if (score >= 0.35) return 'moderat belastet';
-  if (score >= 0.15) return 'klar for lett/moderat økt';
-  return 'frisk og klar';
+// Velger en konkret bibliotekøkt fra anbefalingen. Øktbibliotekets id-er følger
+// nettet «<kategori>-<skill>-<intensitet>», så vi kan bygge id-en direkte:
+// intensitet fra anbefalingen, skill fra brukerens varighetsklasse (kappet til
+// lav/medium — appen har ingen bruker-skill, så vi unngår «Erfaren»).
+function anbefaltOkt(anbef, profil) {
+  const intensitet = (anbef.intensitet === 'Høy' || anbef.terskel === 'Full innsats') ? 'intens' : 'lett';
+  const skill = { mikro: 'lav', kort: 'lav', standard: 'medium', lang: 'medium' }[profil?.varighetsklasse] || 'medium';
+  return oktMedId(`${anbef.kat}-${skill}-${intensitet}`)
+      || oktMedId(`${anbef.kat}-lav-lett`)
+      || null;
 }
 
 // Restitusjons-kroppskart (M17): anatomisk for-/bakside-figur der hver
-// muskelgruppe tones grønn (klar) → rød (nylig belastet), med header, en
-// oppsummeringsrad (overkropp/ben) og et anbefalt-økt-kort med dyplenke til en
-// passende øktkategori. Drives av hele loggen, så det vises alltid.
-function restitusjonsKort(logg) {
+// muskelgruppe tones grønn (klar) → rød (nylig belastet), med header og et
+// anbefalt-økt-kort som peker på en konkret, startbar økt. Drives av hele
+// loggen, så det vises alltid.
+function restitusjonsKort(logg, profil) {
   const scores = regionScores(logg);
   const kart = lagKroppskart();
   requestAnimationFrame(() => kart.sett(scores));
   const anbef = anbefalingFraRegioner(scores);
-  const overkropp = Math.max(scores.skuldre, scores.armer, scores.bryst, scores.rygg);
-  const underkropp = Math.max(scores.sete, scores.lar, scores.baklar, scores.legger);
+  const okt = anbefaltOkt(anbef, profil);
+  const startHref = okt ? `#/okter?start=${okt.id}` : `#/okter?kat=${anbef.kat}`;
 
   const hjelp = el('p', { class: 'restitusjonskort__hjelp', hidden: true },
     'Hver muskelgruppe farges fra grønn (klar) til rød (nylig belastet) ut fra hvor '
@@ -191,13 +195,6 @@ function restitusjonsKort(logg) {
     onclick: () => { hjelp.hidden = !hjelp.hidden; },
   }, ikon('info'));
 
-  const halvdel = (ikonNavn, navn, score) => el('div', { class: 'restitusjon-oppsummering__halv' },
-    el('span', { class: 'restitusjon-oppsummering__ikon' }, ikon(ikonNavn)),
-    el('div', { class: 'restitusjon-oppsummering__tekst' },
-      el('span', { class: 'restitusjon-oppsummering__navn' }, `${navn}:`),
-      el('span', { class: 'restitusjon-oppsummering__status' }, belastningsTekst(score)),
-    ),
-  );
   const merkelapp = (ikonNavn, tekst, variant) => el('span', { class: `tag tag--ikon ${variant}` },
     ikon(ikonNavn), tekst);
 
@@ -218,21 +215,19 @@ function restitusjonsKort(logg) {
       el('span', { class: 'kroppskart-forklaring__skala' }),
       el('span', {}, 'Nylig belastet'),
     ),
-    el('div', { class: 'restitusjon-oppsummering' },
-      halvdel('person', 'Overkropp', overkropp),
-      halvdel('ben', 'Ben', underkropp),
-    ),
-    el('a', { class: 'restitusjon-anbefaling', href: `#/okter?kat=${anbef.kat}` },
+    el('div', { class: 'restitusjon-anbefaling' },
       el('span', { class: 'restitusjon-anbefaling__disk' }, ikon('vekt')),
       el('div', { class: 'restitusjon-anbefaling__meta' },
         el('span', { class: 'hero__eyebrow' }, 'Anbefalt økt'),
-        el('span', { class: 'restitusjon-anbefaling__tittel' }, anbef.tekst),
-        el('span', { class: 'restitusjon-anbefaling__under' }, `${anbef.undertekst} · ${anbef.varighet}`),
+        el('span', { class: 'restitusjon-anbefaling__tittel' }, okt ? okt.navn : anbef.tekst),
+        el('span', { class: 'restitusjon-anbefaling__under' }, anbef.tekst),
         el('div', { class: 'restitusjon-anbefaling__merker' },
           merkelapp('stolper', anbef.intensitet, 'tag--u'),
           merkelapp('person', anbef.omfang, 'tag--gronn'),
-          merkelapp('blad', anbef.terskel, 'tag--mod'),
+          merkelapp('klokke', okt ? `${okt.varighetMin} min` : anbef.varighet, 'tag--mod'),
         ),
+        el('a', { class: 'knapp restitusjon-anbefaling__start', href: startHref },
+          okt ? 'Start økt' : 'Se økter'),
       ),
     ),
   );

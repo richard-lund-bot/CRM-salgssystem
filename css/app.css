@@ -1492,23 +1492,8 @@ body.fokusmodus { padding-bottom: 0; }
 .kroppskart-forklaring { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--dempet); margin-top: 4px; }
 .kroppskart-forklaring__skala { flex: 1; height: 8px; border-radius: 4px; background: linear-gradient(90deg, #0BA69F, #F9CD55, #FF6F61); }
 
-.restitusjon-oppsummering {
-  display: flex; align-items: stretch; margin-top: 14px;
-  background: var(--bg-kort-2); border-radius: var(--radius-md); padding: 10px 2px;
-}
-.restitusjon-oppsummering__halv { flex: 1; display: flex; align-items: center; gap: 9px; padding: 0 10px; min-width: 0; }
-.restitusjon-oppsummering__halv + .restitusjon-oppsummering__halv { border-left: 1px solid var(--kant); }
-.restitusjon-oppsummering__ikon {
-  flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%;
-  background: var(--bg-kort); display: grid; place-items: center; color: var(--aksent);
-}
-.restitusjon-oppsummering__ikon .ikon { width: 16px; height: 16px; }
-.restitusjon-oppsummering__tekst { min-width: 0; }
-.restitusjon-oppsummering__navn { display: block; font-size: 12.5px; font-weight: 700; }
-.restitusjon-oppsummering__status { display: block; font-size: 11.5px; color: var(--dempet); line-height: 1.3; }
-
 .restitusjon-anbefaling {
-  display: flex; align-items: flex-start; gap: 12px; margin-top: 14px; text-decoration: none; color: inherit;
+  display: flex; align-items: flex-start; gap: 12px; margin-top: 14px;
   background: var(--aksent-svak); border: 1px solid var(--aksent-kant, var(--kant));
   border-radius: var(--radius-md); padding: 14px;
 }
@@ -1517,10 +1502,11 @@ body.fokusmodus { padding-bottom: 0; }
   background: var(--bg-kort); display: grid; place-items: center; color: var(--aksent);
 }
 .restitusjon-anbefaling__disk .ikon { width: 22px; height: 22px; }
-.restitusjon-anbefaling__meta { flex: 1; min-width: 0; }
+.restitusjon-anbefaling__meta { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
 .restitusjon-anbefaling__tittel { display: block; font-family: var(--font-display); font-weight: 600; font-size: 15.5px; line-height: 1.25; }
 .restitusjon-anbefaling__under { display: block; font-size: 12px; color: var(--dempet); margin-top: 2px; line-height: 1.35; }
 .restitusjon-anbefaling__merker { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+.restitusjon-anbefaling__start { margin-top: 12px; text-decoration: none; }
 .tag--ikon { display: inline-flex; align-items: center; gap: 4px; }
 .tag--ikon .ikon { width: 13px; height: 13px; }
 .tag--gronn { background: #E4F3EA; color: #2C7A55; }
