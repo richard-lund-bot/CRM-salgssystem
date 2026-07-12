@@ -251,20 +251,15 @@ function heroVelkomst(profil, logg, nå) {
     budskap = el('p', { class: 'hjemhero__melding' },
       `${minutter} minutter i dag — dagsmålet er nådd. Alt videre er bonus.`);
   } else if (minutter > 0) {
-    // Samme smarte motor som «Vi anbefaler»-karusellen (restitusjon +
-    // treningspreferanser), vist kompakt som en «legge på litt til»-pille.
-    const okt = anbefaltOkt(regionScores(logg), profil);
+    // Trent litt, men ikke nådd dagsmålet → samme anbefaling (karusellen) som ved
+    // 0 min, med en positiv kvittering over. Aldri skam — alltid anerkjenn innsats.
     budskap = el('div', {},
       el('p', { class: 'hjemhero__melding' }, `${minutter} minutter i boks. Vil du legge på litt til?`),
-      okt
-        ? el('a', { class: 'hjemhero__pille', href: `#/okter?start=${okt.id}` },
-            ikon(KAT_IKON[okt.kategori] || 'lyn', 'ikon ikon--liten'), `${okt.navn} · ${okt.varighetMin} min`)
-        : el('a', { class: 'hjemhero__pille', href: '#/beveg' },
-            ikon('lyn', 'ikon ikon--liten'), 'Se økter'),
+      heroAnbefalBoks(logg, profil),
     );
   } else {
     // Ingenting planlagt og ingenting påbegynt → anbefalingsmotoren fyller
-    // heroen med én konkret, startbar økt (samme glass-stil som planboksen).
+    // heroen med den samme «Vi anbefaler»-karusellen.
     budskap = heroAnbefalBoks(logg, profil);
   }
 

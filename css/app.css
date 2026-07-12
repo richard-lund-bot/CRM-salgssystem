@@ -459,19 +459,6 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 .hjemhero--natt .hjemhero__navn,
 .hjemhero--natt .hjemhero__melding { color: #fff; text-shadow: 0 1px 12px rgba(17, 38, 77, 0.45); }
 
-/* Gnist-pille («noe gjort — mer?») */
-.hjemhero__pille {
-  display: inline-flex; align-items: center; gap: 7px; margin-top: 12px;
-  background: rgba(255, 255, 255, 0.6);
-  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  border-radius: var(--radius-pill);
-  padding: 10px 16px; font-size: 13.5px; font-weight: 600;
-  color: var(--aksent-mork); text-decoration: none;
-  box-shadow: var(--shadow-xs);
-}
-.hjemhero__pille .ikon--liten { color: var(--aksent); }
-
 /* Planlagt økt-boks (frostet glass) */
 .hjemhero__plan {
   margin-top: 14px; max-width: 430px;
@@ -561,7 +548,7 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
   box-shadow: 0 8px 24px rgba(17, 38, 77, 0.1);
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .statkort-rad--glass .statkort, .hjemhero__plan, .hjemhero__pille { background: rgba(255, 255, 255, 0.9); }
+  .statkort-rad--glass .statkort, .hjemhero__plan { background: rgba(255, 255, 255, 0.9); }
 }
 
 /* Tre statkort: dagens minutter, aktive dager, nivå/XP */
