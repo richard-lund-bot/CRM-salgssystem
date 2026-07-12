@@ -22,7 +22,7 @@ import { visMerkerSkjerm } from './merker.js';
 import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
 import { lagFaneside, fanesideMedTittel, settNavger, settUlestSjekk, dagsfase } from './banner.js';
 import { nivaFraTotalXp } from './niva.js';
-import { dagensGnist, dagerMedAktivitet, okterHref } from './bevegelse.js';
+import { dagerMedAktivitet, okterHref } from './bevegelse.js';
 import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN, KATEGORIER } from './bibliotek-okter.js';
 import { fyllInn } from './animasjon.js';
 import { regionScores, anbefalingFraRegioner, regionAndelForOkt, REGION_NAVN } from './kroppskart.js';
@@ -251,10 +251,16 @@ function heroVelkomst(profil, logg, nå) {
     budskap = el('p', { class: 'hjemhero__melding' },
       `${minutter} minutter i dag — dagsmålet er nådd. Alt videre er bonus.`);
   } else if (minutter > 0) {
-    const g = dagensGnist(profil, logg, nå);
+    // Samme smarte motor som «Vi anbefaler»-karusellen (restitusjon +
+    // treningspreferanser), vist kompakt som en «legge på litt til»-pille.
+    const okt = anbefaltOkt(regionScores(logg), profil);
     budskap = el('div', {},
       el('p', { class: 'hjemhero__melding' }, `${minutter} minutter i boks. Vil du legge på litt til?`),
-      el('a', { class: 'hjemhero__pille', href: g.href }, ikon('lyn', 'ikon ikon--liten'), `${g.tittel} · ≈ +${g.xp} XP`),
+      okt
+        ? el('a', { class: 'hjemhero__pille', href: `#/okter?start=${okt.id}` },
+            ikon(KAT_IKON[okt.kategori] || 'lyn', 'ikon ikon--liten'), `${okt.navn} · ${okt.varighetMin} min`)
+        : el('a', { class: 'hjemhero__pille', href: '#/beveg' },
+            ikon('lyn', 'ikon ikon--liten'), 'Se økter'),
     );
   } else {
     // Ingenting planlagt og ingenting påbegynt → anbefalingsmotoren fyller
