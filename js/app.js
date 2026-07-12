@@ -51,7 +51,7 @@ const ruter = {
   kjor: () => visKjoreSkjerm(app),
   aktivitet: () => visAktivitetSkjerm(app),
   historikk: () => visAktivitetSkjerm(app), // gammel lenke — samme skjerm
-  meny: () => { location.hash = '#/merker'; }, // Meny bor nå på Profil-fanen
+  meny: visMeny, // hub bak tannhjulet — snarveier + inngang til innstillinger
   varsler: visVarsler,
   innstillinger: visInnstillinger,
   bibliotek: visBibliotek,
@@ -83,8 +83,9 @@ function navger() {
 
 function oppdaterNav(rute) {
   const tabRute = ({
-    // Meny er nå en del av Profil-fanen — alle «meny-sidene» lyser opp Profil.
-    meny: 'merker', innstillinger: 'merker', bibliotek: 'merker', om: 'merker', varsler: 'merker',
+    // Meny-huben og innstillinger har eget signal (aktivt tannhjul), så de skal
+    // ikke lyse opp Profil-fanen. Resten av «meny-sidene» lyser fortsatt Profil.
+    bibliotek: 'merker', om: 'merker', varsler: 'merker',
     plan: 'merker', styrke: 'merker', kalender: 'merker', reise: 'merker', tilpass: 'merker',
     historikk: 'aktivitet', ny: 'beveg', okter: 'beveg',
     artikkel: 'laer',
@@ -539,6 +540,28 @@ function visVarsler() {
 
   skjerm('Varsler', innhold);
   merkVarslerSett(feed[0]?.ts); // alt som vises nå (feeden er nyeste-først) regnes som sett
+}
+
+// Meny-hub bak tannhjulet: bare en liste med snarveier. «Innstillinger» her er
+// en vanlig lenke til innstillings-kortene (#/innstillinger), som nå er en
+// subside av denne huben. Full faneside (banner) så tannhjulet kan vises aktivt.
+function visMeny() {
+  if (!hentProfil()) { location.hash = '#/hjem'; return; }
+  const lenke = (ikonNavn, tekst, href) => el('a', { class: 'listerad', href },
+    el('span', { class: 'listerad__ikon' }, ikon(ikonNavn)),
+    el('span', { class: 'listerad__navn' }, tekst),
+    el('span', { class: 'listerad__chevron' }, ikon('chevron')),
+  );
+  fane('Meny', 'Snarveier, oppslag og innstillinger.',
+    el('div', { class: 'kort' },
+      el('div', { class: 'liste' },
+        lenke('vekt', 'Styrke & fremgang', '#/styrke'),
+        lenke('sok', 'Øvelsesoppslag', '#/bibliotek'),
+        lenke('gir', 'Innstillinger', '#/innstillinger'),
+        lenke('info', 'Om Mova', '#/om'),
+      ),
+    ),
+  );
 }
 
 function visInnstillinger() {

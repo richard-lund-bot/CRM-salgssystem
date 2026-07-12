@@ -57,12 +57,16 @@ function wordmark() {
     'mova', el('span', { class: 'wordmark__prikk' }, '.'));
 }
 
-// Tannhjul til Innstillinger oppe til venstre. Profil (med nivå og merker) bor
-// nå som midt-fanen, så headeren trenger ikke lenger et eget profilikon.
+// Tannhjul oppe til venstre — åpner meny-huben (#/meny). Lyser aktivt når man er
+// i tannhjul-seksjonen (meny eller innstillinger), i stedet for at Profil-fanen
+// lyser. Banneret bygges på nytt ved hver faneside-tegning, så vi leser ruten her.
 function innstillingerKnapp() {
-  return el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/innstillinger', 'aria-label': 'Innstillinger' },
-    ikon('gir'),
-  );
+  const rute = (location.hash.replace('#/', '') || 'hjem').split('?')[0];
+  const aktiv = rute === 'meny' || rute === 'innstillinger';
+  return el('a', {
+    class: 'ikonknapp ikonknapp--plain' + (aktiv ? ' ikonknapp--aktiv' : ''),
+    href: '#/meny', 'aria-label': 'Meny og innstillinger',
+  }, ikon('gir'));
 }
 
 export function lagBanner({ hoyre = null, dagAksjon = null } = {}) {

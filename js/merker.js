@@ -383,24 +383,12 @@ export function visMerkerSkjerm(mount) {
     typeRing('mobilitet', 'teal'),
   );
 
-  const lenke = (ikonNavn, tekst, href) => el('a', { class: 'listerad', href },
-    el('span', { class: 'listerad__ikon' }, ikon(ikonNavn)),
-    el('span', { class: 'listerad__navn' }, tekst),
-    el('span', { class: 'listerad__chevron' }, ikon('chevron')),
-  );
-  const menyKort = el('div', { class: 'kort' },
-    el('div', { class: 'liste' },
-      lenke('vekt', 'Styrke & fremgang', '#/styrke'),
-      lenke('sok', 'Øvelsesoppslag', '#/bibliotek'),
-      lenke('gir', 'Innstillinger', '#/innstillinger'),
-      lenke('info', 'Om Mova', '#/om'),
-    ),
-  );
-
+  // Meny-lista (snarveier + innstillinger) bor nå bak tannhjulet (#/meny),
+  // ikke lenger på Profil.
   const restitusjon = kroppskartWidget(hentLogg());
 
   fanesideMedTittel(mount, { tittel: 'Profil', under: 'Nivået ditt, merkene dine — og alt det andre.' })
-    .append(hero, typerad, restitusjon, menyKort, ...MERKE_KATEGORIER.map(bolk));
+    .append(hero, typerad, restitusjon, ...MERKE_KATEGORIER.map(bolk));
 
   // Kommer man fra «restitusjonsbehov»-lenka på Min dag, scroll widgeten inn.
   if (vis === 'restitusjon') {

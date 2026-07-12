@@ -334,6 +334,9 @@ body {
 .hjembanner__hoyre { margin-left: auto; }
 .ikonknapp--plain { background: transparent; color: var(--ink-800); width: 40px; height: 40px; }
 .ikonknapp--plain .ikon { width: 22px; height: 22px; }
+/* Aktivt tannhjul (i meny-/innstillinger-seksjonen) — samme aksent-språk som en aktiv fane */
+.ikonknapp--aktiv { background: var(--aksent-svak); color: var(--aksent); }
+.ikonknapp--aktiv .ikon { stroke-width: 2.3; }
 
 /* Nivå-boblen på profilikonet — nivået som et lite, stille tall. */
 .ikonknapp--profil { position: relative; }
