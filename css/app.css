@@ -510,6 +510,28 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 .hjemhero__planbegrunn { display: block; margin-top: 4px; font-size: 12.5px; color: var(--ink-700); line-height: 1.35; }
 .hjemhero__planinfo { align-self: flex-start; background: rgba(255, 255, 255, 0.75); }
 
+/* Topp-3-anbefalinger: sveipbar karusell (speiler .bibbolk__rad) + nummererte
+   sirkler man kan trykke på. Full-breddes slides som snapper én og én. */
+.hjemhero__karusell {
+  display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  /* Ingen egen margin/padding: hver slide = 100% av boksens innhold, så de
+     snapper rent uten at nabo-sliden titter frem i kanten. */
+}
+.hjemhero__karusell::-webkit-scrollbar { display: none; }
+.hjemhero__slide {
+  flex: 0 0 100%; scroll-snap-align: start;
+  display: flex; flex-direction: column; gap: 12px; /* samme rytme som dagens boks */
+}
+.hjemhero__prikker { display: flex; justify-content: center; gap: 8px; }
+.hjemhero__prikk {
+  width: 24px; height: 24px; border-radius: 50%; padding: 0;
+  border: 1.5px solid var(--aksent-kant, var(--kant)); background: rgba(255, 255, 255, 0.55);
+  color: var(--ink-700); font-family: var(--font-display); font-weight: 600; font-size: 12px;
+  display: grid; place-items: center; cursor: pointer;
+}
+.hjemhero__prikk--aktiv { background: var(--aksent); color: #fff; border-color: var(--aksent); }
+
 /* Kompakt streak: flamme + tall øverst til høyre i heroen (lenker til Merker) */
 .streakflamme {
   position: absolute; top: 4px; right: 2px; z-index: 2;

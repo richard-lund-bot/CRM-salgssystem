@@ -151,17 +151,17 @@ function visHjem() {
 
 const KAT_IKON = Object.fromEntries(KATEGORIER.map((k) => [k.id, k.ikon]));
 
-// Velger den beste bibliotekøkta ut fra restitusjon + preferanser.
-// `fit` = deknings-vektet snitt-ferskhet av øktas målmuskler, MINUS en straff
-// for hvor stor del av økta som treffer allerede-røde muskler (>0.5 belastning).
-// Slik unngår vi at en helkropps-/bein-økt som hamrer trette ben vinner bare
-// fordi den også så vidt treffer ferske muskler. Ganges med preferanse-
-// multiplikator + varighets-/skill-vekt. Skjulte former (mult 0) hoppes over;
-// økter uten muskeldekning (kondisjon) får nøytral fit så de kan løftes av mult.
-function anbefaltOkt(scores, profil) {
+// Scorer alle synlige bibliotekøkter ut fra restitusjon + preferanser, sortert
+// best først. `fit` = deknings-vektet snitt-ferskhet av øktas målmuskler, MINUS
+// en straff for hvor stor del av økta som treffer allerede-røde muskler (>0.5
+// belastning). Slik unngår vi at en helkropps-/bein-økt som hamrer trette ben
+// vinner bare fordi den også så vidt treffer ferske muskler. Ganges med
+// preferanse-multiplikator + varighets-/skill-vekt. Skjulte former (mult 0)
+// hoppes over; økter uten muskeldekning (kondisjon) får nøytral fit så de kan
+// løftes av mult.
+function skaarOkter(scores, profil) {
   const malMin = DAGSMAAL[profil?.varighetsklasse] || 40;
-  let best = null;
-  let bestScore = -1;
+  const ut = [];
   for (const okt of hentOkter()) {
     const mult = prefMult(profil, okt.kategori);
     if (mult === 0) continue; // skjult form
@@ -183,10 +183,27 @@ function anbefaltOkt(scores, profil) {
       : 0.35;
     const varfit = 0.6 + 0.4 * (1 - Math.min(1, Math.abs((okt.varighetMin || malMin) - malMin) / malMin));
     const skillvekt = okt.skill === 'hoy' ? 0.7 : 1; // mild «unngå Erfaren» (ingen bruker-skill finnes)
-    const score = fit * mult * varfit * skillvekt;
-    if (score > bestScore) { bestScore = score; best = okt; }
+    ut.push({ okt, score: fit * mult * varfit * skillvekt });
   }
-  return best;
+  return ut.sort((a, b) => b.score - a.score);
+}
+
+// Topp-n anbefalte økter med ÉN økt per kategori — så man blar mellom ulike
+// treningsformer (variasjon), ikke tre varianter av samme form.
+function anbefalteOkter(scores, profil, n = 3) {
+  const sett = new Set();
+  const ut = [];
+  for (const { okt } of skaarOkter(scores, profil)) {
+    if (sett.has(okt.kategori)) continue;
+    sett.add(okt.kategori);
+    ut.push(okt);
+    if (ut.length === n) break;
+  }
+  return ut;
+}
+
+function anbefaltOkt(scores, profil) {
+  return anbefalteOkter(scores, profil, 1)[0] || null;
 }
 
 // Begrunnelse tett på valgt økt: navngi de ferske musklene økta treffer mest.
@@ -266,18 +283,11 @@ function heroVelkomst(profil, logg, nå) {
   );
 }
 
-// «Vi anbefaler»-boks i heroen: speiler heroPlanBoks (frostet glass), men
-// innholdet kommer fra anbefalingsmotoren — én konkret økt valgt ut fra
-// restitusjonsbehov + preferanser. Info-«i» forklarer grunnlaget og lenker
-// (blått, understreket) til restitusjons-widgeten og prioriteringene.
-function heroAnbefalBoks(logg, profil) {
-  const scores = regionScores(logg);
-  const okt = anbefaltOkt(scores, profil);
-  const anbef = anbefalingFraRegioner(scores); // fallback-tekst når ingen økt
-  const startHref = okt ? `#/okter?start=${okt.id}` : `#/okter?kat=${anbef.kat}`;
-  const tittel = okt ? okt.navn : anbef.tekst;
-  const begrunnelse = okt ? oktBegrunnelse(okt, scores, anbef) : anbef.tekst;
-
+// «Vi anbefaler»-boks i heroen: speiler heroPlanBoks (frostet glass). Viser de
+// tre beste øktene fra anbefalingsmotoren (restitusjonsbehov + preferanser) som
+// en sveipbar karusell med nummererte sirkler (1-2-3). Hver slide har sin egen
+// info-«i» som lenker (blått) til restitusjons-widgeten og prioriteringene.
+function anbefalingSlide(okt, scores, anbef) {
   const hjelp = el('p', { class: 'restitusjonskort__hjelp', hidden: true },
     'Valgt ut fra ',
     el('a', { class: 'tekstlenke', href: '#/merker?vis=restitusjon' }, 'restitusjonsbehov'),
@@ -289,24 +299,67 @@ function heroAnbefalBoks(logg, profil) {
     onclick: () => { hjelp.hidden = !hjelp.hidden; },
   }, ikon('info'));
 
-  return el('div', { class: 'hjemhero__plan' },
+  return el('div', { class: 'hjemhero__slide' },
     el('div', { class: 'hjemhero__planrad' },
-      el('span', { class: 'hjemhero__plandisk' }, ikon(okt ? (KAT_IKON[okt.kategori] || 'vekt') : 'vekt')),
+      el('span', { class: 'hjemhero__plandisk' }, ikon(KAT_IKON[okt.kategori] || 'vekt')),
       el('div', { class: 'hjemhero__planmeta' },
         el('span', { class: 'hjemhero__planeyebrow' }, 'Vi anbefaler'),
-        el('span', { class: 'hjemhero__plantittel' }, tittel),
-        el('span', { class: 'hjemhero__planbegrunn' }, begrunnelse),
+        el('span', { class: 'hjemhero__plantittel' }, okt.navn),
+        el('span', { class: 'hjemhero__planbegrunn' }, oktBegrunnelse(okt, scores, anbef)),
       ),
       info,
     ),
     hjelp,
     el('div', { class: 'hjemhero__planbunn' },
-      okt
-        ? el('span', { class: 'hjemhero__plantid' }, ikon('klokke', 'ikon ikon--liten'),
-            `${okt.varighetMin} min · ${KATEGORI_NAVN[okt.kategori]}`)
-        : el('span', { class: 'hjemhero__plantid' }, ikon('klokke', 'ikon ikon--liten'), anbef.varighet),
-      el('a', { class: 'hjemhero__knapp', href: startHref }, okt ? 'Start økt' : 'Se økter'),
+      el('span', { class: 'hjemhero__plantid' }, ikon('klokke', 'ikon ikon--liten'),
+        `${okt.varighetMin} min · ${KATEGORI_NAVN[okt.kategori]}`),
+      el('a', { class: 'hjemhero__knapp', href: `#/okter?start=${okt.id}` }, 'Start økt'),
     ),
+  );
+}
+
+function heroAnbefalBoks(logg, profil) {
+  const scores = regionScores(logg);
+  const anbef = anbefalingFraRegioner(scores); // fallback-tekst når ingen økt
+  const okter = anbefalteOkter(scores, profil, 3);
+
+  // Ingen synlig økt (alt skjult) → samme fallback som før: tekst + «Se økter».
+  if (!okter.length) {
+    return el('div', { class: 'hjemhero__plan' },
+      el('div', { class: 'hjemhero__planrad' },
+        el('span', { class: 'hjemhero__plandisk' }, ikon('vekt')),
+        el('div', { class: 'hjemhero__planmeta' },
+          el('span', { class: 'hjemhero__planeyebrow' }, 'Vi anbefaler'),
+          el('span', { class: 'hjemhero__plantittel' }, anbef.tekst),
+        ),
+      ),
+      el('div', { class: 'hjemhero__planbunn' },
+        el('span', { class: 'hjemhero__plantid' }, ikon('klokke', 'ikon ikon--liten'), anbef.varighet),
+        el('a', { class: 'hjemhero__knapp', href: `#/okter?kat=${anbef.kat}` }, 'Se økter'),
+      ),
+    );
+  }
+
+  // Bare én synlig form → én slide, ingen karusell/prikker.
+  if (okter.length === 1) {
+    return el('div', { class: 'hjemhero__plan' }, anbefalingSlide(okter[0], scores, anbef));
+  }
+
+  const karusell = el('div', { class: 'hjemhero__karusell' },
+    ...okter.map((okt) => anbefalingSlide(okt, scores, anbef)));
+  const prikker = okter.map((_, i) => el('button', {
+    class: 'hjemhero__prikk' + (i === 0 ? ' hjemhero__prikk--aktiv' : ''),
+    type: 'button', 'aria-label': `Vis anbefaling ${i + 1}`,
+    onclick: () => karusell.scrollTo({ left: i * karusell.clientWidth, behavior: 'smooth' }),
+  }, String(i + 1)));
+  karusell.addEventListener('scroll', () => {
+    const i = Math.round(karusell.scrollLeft / karusell.clientWidth);
+    prikker.forEach((p, j) => p.classList.toggle('hjemhero__prikk--aktiv', j === i));
+  });
+
+  return el('div', { class: 'hjemhero__plan hjemhero__plan--karusell' },
+    karusell,
+    el('div', { class: 'hjemhero__prikker' }, ...prikker),
   );
 }
 
