@@ -23,9 +23,10 @@ import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
 import { lagFaneside, fanesideMedTittel, settNavger, dagsfase } from './banner.js';
 import { nivaFraTotalXp } from './niva.js';
 import { dagensGnist, dagerMedAktivitet, okterHref } from './bevegelse.js';
-import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN } from './bibliotek-okter.js';
+import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN, KATEGORIER } from './bibliotek-okter.js';
 import { fyllInn } from './animasjon.js';
-import { regionScores, anbefalingFraRegioner } from './kroppskart.js';
+import { regionScores, anbefalingFraRegioner, regionAndelForOkt, REGION_NAVN } from './kroppskart.js';
+import { prefMult, prefNiva, PREF_NIVAER } from './preferanser.js';
 import * as sync from './sync.js';
 import { krediterNye, stravaKort } from './strava.js';
 
@@ -162,16 +163,57 @@ function visHjem() {
   );
 }
 
-// Velger en konkret bibliotekøkt fra anbefalingen. Øktbibliotekets id-er følger
-// nettet «<kategori>-<skill>-<intensitet>», så vi kan bygge id-en direkte:
-// intensitet fra anbefalingen, skill fra brukerens varighetsklasse (kappet til
-// lav/medium — appen har ingen bruker-skill, så vi unngår «Erfaren»).
-function anbefaltOkt(anbef, profil) {
-  const intensitet = (anbef.intensitet === 'Høy' || anbef.terskel === 'Full innsats') ? 'intens' : 'lett';
-  const skill = { mikro: 'lav', kort: 'lav', standard: 'medium', lang: 'medium' }[profil?.varighetsklasse] || 'medium';
-  return oktMedId(`${anbef.kat}-${skill}-${intensitet}`)
-      || oktMedId(`${anbef.kat}-lav-lett`)
-      || null;
+const KAT_IKON = Object.fromEntries(KATEGORIER.map((k) => [k.id, k.ikon]));
+
+// Velger den beste bibliotekøkta ut fra restitusjon + preferanser.
+// `fit` = deknings-vektet snitt-ferskhet av øktas målmuskler, MINUS en straff
+// for hvor stor del av økta som treffer allerede-røde muskler (>0.5 belastning).
+// Slik unngår vi at en helkropps-/bein-økt som hamrer trette ben vinner bare
+// fordi den også så vidt treffer ferske muskler. Ganges med preferanse-
+// multiplikator + varighets-/skill-vekt. Skjulte former (mult 0) hoppes over;
+// økter uten muskeldekning (kondisjon) får nøytral fit så de kan løftes av mult.
+function anbefaltOkt(scores, profil) {
+  const malMin = DAGSMAAL[profil?.varighetsklasse] || 40;
+  let best = null;
+  let bestScore = -1;
+  for (const okt of hentOkter()) {
+    const mult = prefMult(profil, okt.kategori);
+    if (mult === 0) continue; // skjult form
+    const andel = regionAndelForOkt(okt);
+    let wsum = 0;
+    let dekning = 0;
+    let roedDekning = 0;
+    for (const r in andel) {
+      const load = scores[r] ?? 0;
+      wsum += andel[r] * (1 - load);
+      dekning += andel[r];
+      if (load > 0.5) roedDekning += andel[r];
+    }
+    // Deknings-vektet snitt-ferskhet minus rød-straff; nøytral 0.35 for økter
+    // uten muskeldekning (kondisjon) — lavere enn en fersk-fokusert økt, så de
+    // vinner bare når alt er rødt (da faller de muskeldekkede mot 0).
+    const fit = dekning > 0
+      ? Math.max(0, wsum / dekning - 0.5 * (roedDekning / dekning))
+      : 0.35;
+    const varfit = 0.6 + 0.4 * (1 - Math.min(1, Math.abs((okt.varighetMin || malMin) - malMin) / malMin));
+    const skillvekt = okt.skill === 'hoy' ? 0.7 : 1; // mild «unngå Erfaren» (ingen bruker-skill finnes)
+    const score = fit * mult * varfit * skillvekt;
+    if (score > bestScore) { bestScore = score; best = okt; }
+  }
+  return best;
+}
+
+// Begrunnelse tett på valgt økt: navngi de ferske musklene økta treffer mest.
+function oktBegrunnelse(okt, scores, anbef) {
+  const andel = regionAndelForOkt(okt);
+  const ferske = Object.entries(andel)
+    .filter(([r, a]) => a >= 0.5 && (scores[r] ?? 0) < 0.4)
+    .sort((x, y) => y[1] - x[1])
+    .slice(0, 2)
+    .map(([r]) => (REGION_NAVN[r] || r).toLowerCase());
+  if (ferske.length === 2) return `Treffer ${ferske[0]} og ${ferske[1]}, som er klare i dag.`;
+  if (ferske.length === 1) return `Treffer ${ferske[0]}, som er klar i dag.`;
+  return anbef.tekst; // kondisjon/mobilitet eller lite muskelsignal → fall tilbake
 }
 
 // Anbefalt-økt-kort (Min dag): peker på en konkret, startbar økt valgt ut fra
@@ -179,8 +221,8 @@ function anbefaltOkt(anbef, profil) {
 // info-«i» forklarer grunnlaget og lenker til restitusjons-widgeten der.
 function anbefaltOktKort(logg, profil) {
   const scores = regionScores(logg);
-  const anbef = anbefalingFraRegioner(scores);
-  const okt = anbefaltOkt(anbef, profil);
+  const okt = anbefaltOkt(scores, profil);
+  const anbef = anbefalingFraRegioner(scores); // fallback-tekst når ingen økt
   const startHref = okt ? `#/okter?start=${okt.id}` : `#/okter?kat=${anbef.kat}`;
 
   const hjelp = el('p', { class: 'restitusjonskort__hjelp', hidden: true },
@@ -195,6 +237,9 @@ function anbefaltOktKort(logg, profil) {
   const merkelapp = (ikonNavn, tekst, variant) => el('span', { class: `tag tag--ikon ${variant}` },
     ikon(ikonNavn), tekst);
 
+  const intens = okt ? (okt.intensitet === 'intens' ? 'Hard' : 'Rolig') : anbef.intensitet;
+  const form = okt ? KATEGORI_NAVN[okt.kategori] : anbef.omfang;
+
   return el('section', { class: 'kort anbefaltkort' },
     el('div', { class: 'anbefaltkort__hode' },
       el('h2', { class: 'anbefaltkort__tittel' }, 'Anbefalt økt'),
@@ -202,13 +247,13 @@ function anbefaltOktKort(logg, profil) {
     ),
     hjelp,
     el('div', { class: 'restitusjon-anbefaling' },
-      el('span', { class: 'restitusjon-anbefaling__disk' }, ikon('vekt')),
+      el('span', { class: 'restitusjon-anbefaling__disk' }, ikon(okt ? (KAT_IKON[okt.kategori] || 'vekt') : 'vekt')),
       el('div', { class: 'restitusjon-anbefaling__meta' },
         el('span', { class: 'restitusjon-anbefaling__tittel' }, okt ? okt.navn : anbef.tekst),
-        el('span', { class: 'restitusjon-anbefaling__under' }, anbef.tekst),
+        el('span', { class: 'restitusjon-anbefaling__under' }, okt ? oktBegrunnelse(okt, scores, anbef) : anbef.tekst),
         el('div', { class: 'restitusjon-anbefaling__merker' },
-          merkelapp('stolper', anbef.intensitet, 'tag--u'),
-          merkelapp('person', anbef.omfang, 'tag--gronn'),
+          merkelapp('stolper', intens, 'tag--u'),
+          merkelapp(okt ? (KAT_IKON[okt.kategori] || 'person') : 'person', form, 'tag--gronn'),
           merkelapp('klokke', okt ? `${okt.varighetMin} min` : anbef.varighet, 'tag--mod'),
         ),
         el('a', { class: 'knapp restitusjon-anbefaling__start', href: startHref },
@@ -571,6 +616,32 @@ function visInnstillinger() {
         ...[2, 3, 4, 5, 6].map((n) => chip(String(n), {
           aktiv: profil.ukemaal === n, onClick: () => lagre((p) => { p.ukemaal = n; }),
         })),
+      ),
+    ),
+    el('div', { class: 'kort' },
+      el('h2', {}, 'Treningspreferanser'),
+      el('p', { class: 'dempet', style: 'margin-top:-4px' },
+        'Skjul former du ikke vil ha, og løft favorittene — det styrer anbefalingene dine.'),
+      el('div', { class: 'prefliste' },
+        ...KATEGORIER.map((kat) => {
+          const naa = prefNiva(profil, kat.id);
+          return el('div', { class: 'prefrad' },
+            el('div', { class: 'prefrad__hode' },
+              el('span', { class: 'prefrad__ikon' }, ikon(kat.ikon)),
+              el('span', { class: 'prefrad__navn' }, kat.navn),
+            ),
+            el('div', { class: 'chiprad prefrad__valg' },
+              ...PREF_NIVAER.map((niv) => chip(niv.navn, {
+                aktiv: naa === niv.id,
+                onClick: () => lagre((p) => {
+                  const t = { ...(p.treningsPreferanser || {}) };
+                  if (niv.id === 'noytral') delete t[kat.id]; else t[kat.id] = niv.id;
+                  p.treningsPreferanser = t;
+                }),
+              })),
+            ),
+          );
+        }),
       ),
     ),
     el('div', { class: 'kort' },

@@ -7,7 +7,7 @@
 import { hentLogg } from './store.js';
 import { oktMedId } from './bibliotek-okter.js';
 import { ovelseInfo } from './ovelse.js';
-import { loggBevegelse } from './bevegelse.js';
+import { loggBevegelse, KATEGORI_TIL_BEVEGELSE } from './bevegelse.js';
 import { KROPPSKART_MARKUP } from './kroppskart-svg.js';
 
 // --- Regioner + muskel→region ----------------------------------------------
@@ -58,10 +58,12 @@ function belastning(o) {
 }
 
 // Fordeling av en økt over regionene (summerer til 1), fra øvelsenes muskler.
+// `o` kan være en loggrad (med oktId/bevegelse) ELLER en rå bibliotekøkt (med
+// blokker/kategori) — sistnevnte brukes av anbefalingens innholds-scoring.
 function regionAndel(o) {
   const teller = {};
   let sum = 0;
-  const okt = o.oktId && oktMedId(o.oktId);
+  const okt = o.blokker ? o : (o.oktId && oktMedId(o.oktId));
   if (okt) {
     for (const blk of okt.blokker || []) {
       if (blk.kind !== 'ovelser' && blk.kind !== 'sekvens') continue;
@@ -74,7 +76,8 @@ function regionAndel(o) {
     }
   }
   if (!sum) {
-    for (const r of (BEVEGELSE_REGIONHINT[loggBevegelse(o)] || [])) { teller[r] = 1; sum++; }
+    const bev = o.blokker ? KATEGORI_TIL_BEVEGELSE[o.kategori] : loggBevegelse(o);
+    for (const r of (BEVEGELSE_REGIONHINT[bev] || [])) { teller[r] = 1; sum++; }
   }
   // Normaliser mot den mest belastede regionen: primærfokuset får full
   // øktbelastning, resten proporsjonalt. (Å dele på summen ville tynne ut selv
@@ -84,6 +87,11 @@ function regionAndel(o) {
   const ut = {};
   if (maks) for (const r in teller) ut[r] = teller[r] / maks;
   return ut;
+}
+
+/** Regionfordeling for en rå bibliotekøkt (til anbefalingens innholds-scoring). */
+export function regionAndelForOkt(okt) {
+  return regionAndel(okt);
 }
 
 /** 0..1 per region: 0 = frisk (grønn), 1 = nylig/tungt trent (rød). */

@@ -7,6 +7,8 @@ import { settØkt } from './kjor.js';
 import { BEVEGELSER, KATEGORI_TIL_BEVEGELSE } from './bevegelse.js';
 import { lagFaneside } from './banner.js';
 import { lagArtikkelStripe } from './laer.js';
+import { hentProfil } from './store.js';
+import { erSkjult } from './preferanser.js';
 
 // Kategori → artikkel-tag, så biblioteket kan vise relaterte læringsartikler.
 const KAT_ARTIKKELTAG = {
@@ -125,6 +127,12 @@ export function visOkterSkjerm(mount) {
     filterApen: false, // panelet er skjult til filterknappen åpner det
   };
 
+  // «Skjul overalt»: filtrer bort kategorier brukeren har skjult i preferansene.
+  // Har man skjult alt, vis alt (ellers blir biblioteket tomt).
+  const profil = hentProfil();
+  const synligeKat = KATEGORIER.filter((k) => !erSkjult(profil, k.id));
+  const brukSkjul = synligeKat.length > 0 && synligeKat.length < KATEGORIER.length;
+
   function utstyrTekst(o) {
     const u = o.utstyr || [];
     if (!u.length) return 'Uten utstyr';
@@ -159,6 +167,7 @@ export function visOkterSkjerm(mount) {
   function bolk(skill, radIdx) {
     const okter = hentOkter()
       .filter((o) => o.skill === skill)
+      .filter((o) => !brukSkjul || !erSkjult(profil, o.kategori))
       .filter((o) => !state.kat || o.kategori === state.kat)
       .sort((a, b) => KATEGORIER.findIndex((k) => k.id === a.kategori) - KATEGORIER.findIndex((k) => k.id === b.kategori)
         || (a.intensitet === 'lett' ? 0 : 1) - (b.intensitet === 'lett' ? 0 : 1));
@@ -176,7 +185,7 @@ export function visOkterSkjerm(mount) {
       el('h2', {}, 'Type bevegelse'),
       el('div', { class: 'chiprad' },
         chip('Alle', { aktiv: !state.kat, onClick: () => { state.kat = null; tegn(); } }),
-        ...KATEGORIER.map((k) => chip(k.navn, {
+        ...(brukSkjul ? synligeKat : KATEGORIER).map((k) => chip(k.navn, {
           aktiv: state.kat === k.id, onClick: () => { state.kat = k.id; tegn(); },
         })),
       ),

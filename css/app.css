@@ -1518,6 +1518,16 @@ body.fokusmodus { padding-bottom: 0; }
 /* Blå, understreket tekstlenke i brødtekst (f.eks. «restitusjonsbehov»). */
 .tekstlenke { color: #2F4EB5; text-decoration: underline; font-weight: 600; }
 
+/* Treningspreferanser i Innstillinger: én rad per form med nivåvelger. */
+.prefliste { display: flex; flex-direction: column; gap: 16px; margin-top: 12px; }
+.prefrad__hode { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
+.prefrad__ikon { flex: 0 0 auto; width: 28px; height: 28px; border-radius: 8px;
+  background: var(--bg-kort-2); display: grid; place-items: center; color: var(--aksent); }
+.prefrad__ikon .ikon { width: 16px; height: 16px; }
+.prefrad__navn { font-weight: 600; font-size: 14px; }
+.prefrad__valg { display: flex; flex-wrap: wrap; gap: 6px; overflow: visible; }
+.prefrad__valg .chip { padding: 7px 12px; font-size: 12.5px; }
+
 @media (prefers-reduced-motion: reduce) { .kroppskart__region { transition-duration: 0.01ms; } }
 
 .merkebolk {
