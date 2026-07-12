@@ -1852,6 +1852,16 @@ body.fokusmodus { padding-bottom: 0; }
 .artkropp__p { margin: 0; font-size: 15.5px; line-height: 1.62; color: var(--tekst); }
 .topp--kjor .artfav { margin-left: auto; }
 
+/* Kilder / grunnlaget (forskning, bøker, kjente figurer) */
+.artkilder { margin-top: 22px; padding: 16px 18px; background: var(--bg-kort-2); border: 1px solid var(--kant); border-radius: var(--radius-lg); }
+.artkilder__tittel { display: flex; align-items: center; gap: 7px; margin: 0 0 4px; font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--tekst); }
+.artkilder__tittel .ikon { color: var(--aksent-mork); }
+.artkilder__ingress { margin: 0 0 12px; font-size: 13px; color: var(--dempet); }
+.artkilder__liste { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.artkilder__rad { display: flex; flex-direction: column; gap: 2px; padding-left: 12px; border-left: 2px solid var(--aksent-svak); }
+.artkilder__kilde { font-size: 14px; font-weight: 600; line-height: 1.35; color: var(--tekst); }
+.artkilder__om { font-size: 13px; line-height: 1.5; color: var(--tekst-2); }
+
 /* «Les mer»-stripe (relaterte artikler i biblioteket o.l.) */
 .artstripe { margin-top: 4px; }
 .artstripe__tittel { margin: 0 0 10px; font-family: var(--font-display); font-size: 16px; font-weight: 600; }

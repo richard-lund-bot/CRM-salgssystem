@@ -131,7 +131,24 @@ export function visArtikkelSkjerm(mount) {
       el('div', { class: 'artkropp' }, ...(a.avsnitt || []).map((b) => (
         b.h ? el('h2', { class: 'artkropp__h' }, b.h) : el('p', { class: 'artkropp__p' }, b.p)
       ))),
+      kilderSeksjon(a),
     ),
+  );
+}
+
+// --- Kilder / videre lesning ---------------------------------------------
+// Alt under «Lær» skal ha dekning i forskning, bøker eller kjente figurer.
+// Kildene bor på artikkelen (data/artikler.json → «kilder») og vises nederst.
+function kilderSeksjon(a) {
+  const kilder = a.kilder || [];
+  if (!kilder.length) return null;
+  return el('section', { class: 'artkilder' },
+    el('h2', { class: 'artkilder__tittel' }, ikon('bok', 'ikon ikon--liten'), ' Grunnlaget'),
+    el('p', { class: 'artkilder__ingress' }, 'Innholdet bygger på:'),
+    el('ul', { class: 'artkilder__liste' }, ...kilder.map((k) => el('li', { class: 'artkilder__rad' },
+      el('span', { class: 'artkilder__kilde' }, k.kilde),
+      k.om ? el('span', { class: 'artkilder__om' }, k.om) : null,
+    ))),
   );
 }
 

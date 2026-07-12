@@ -11,10 +11,16 @@
    { "p": "Motivasjon kommer og går. Det som bærer deg gjennom en travel uke er ikke viljestyrke, men en vane som er så liten at du nesten ikke kan si nei." },
    { "h": "Gjør inngangen latterlig lav" },
    { "p": "Bestem deg for én bevegelse du kan gjøre på under to minutter — ti knebøy, en runde katt–ku, en rask tur rundt kvartalet. Målet er ikke økta, men å møte opp. Når du først er i gang, blir det ofte mer." },
+   { "p": "James Clear kaller dette to-minutters-regelen: gjør starten så kort at terskelen forsvinner. Atferdsforskeren BJ Fogg ved Stanford sier det samme med andre ord — krymp vanen til den nesten ikke krever motivasjon, så vokser den av seg selv." },
    { "h": "Fest vanen til noe du alt gjør" },
-   { "p": "«Etter morgenkaffen ruller jeg ut matta.» Å koble den nye vanen til et fast holdepunkt gjør at du slipper å bestemme deg på nytt hver dag." },
+   { "p": "«Etter morgenkaffen ruller jeg ut matta.» Å koble den nye vanen til et fast holdepunkt gjør at du slipper å bestemme deg på nytt hver dag. Grepet har navn i forskningen — «habit stacking» hos Clear og «anchoring» hos Fogg — og bygger på at vaner styres mer av faste signaler i omgivelsene enn av dagsform." },
    { "h": "Feir at du dukket opp" },
    { "p": "Hver gjennomførte økt — også den korte — teller. I Mova ser du streaken og merkene vokse, og nettopp den følelsen av framgang er det som gjør at du kommer tilbake i morgen." }
+  ],
+  "kilder": [
+   { "kilde": "James Clear – «Atomic Habits» (2018)", "om": "To-minutters-regelen og «habit stacking»: gjør vanen enkel, og heng den på noe du alt gjør." },
+   { "kilde": "BJ Fogg – «Tiny Habits» (2019), Stanford Behavior Design Lab", "om": "«Anchoring»: fest en bitteliten ny vane til en fast rutine og la den vokse gradvis." },
+   { "kilde": "Wendy Wood – «Good Habits, Bad Habits» (2019)", "om": "Forskning på at rundt 40 % av det vi gjør er vaner styrt av kontekst, ikke bevisste valg." }
   ]
  },
  {
@@ -27,12 +33,18 @@
   "lesetid": 5,
   "avsnitt": [
    { "p": "Styrke bygges når du gradvis gir musklene litt mer enn de er vant til. Prinsippet heter progressiv overbelastning, og det er selve motoren i all styrketrening." },
+   { "p": "Ideen er eldgammel. Den greske bryteren Milo fra Kroton skal ha båret den samme kalven på skuldrene hver dag til den ble en fullvoksen okse — belastningen vokste litt om gangen, og kroppen fulgte med. På 1940-tallet satte den amerikanske legen Thomas DeLorme det samme i system som «progressiv motstandstrening» i rehabilitering av soldater." },
    { "h": "Fire måter å øke på" },
    { "p": "Du trenger ikke alltid mer vekt. Du kan gjøre flere reps, flere sett, roligere tempo eller kortere pauser. Alle fire gjør økta hardere og gir kroppen en grunn til å bli sterkere." },
    { "h": "Små hopp holder lengst" },
    { "p": "Klarte du alle repsene med god margin sist? Legg på 2,5 kg. Var det tungt? Gjenta samme vekt til teknikken sitter. Mova foreslår neste vekt automatisk ut fra hvordan forrige økt gikk — bruk det som et utgangspunkt, ikke en fasit." },
    { "h": "Teknikk før tall" },
    { "p": "En ekstra kilo er aldri verdt en dårlig rygg. Øk først når bevegelsen er ren og kontrollert gjennom hele settet." }
+  ],
+  "kilder": [
+   { "kilde": "Milo fra Kroton (antikk fortelling)", "om": "Det klassiske bildet på gradvis økt belastning — kalven som ble til en okse." },
+   { "kilde": "Thomas DeLorme – «Restoration of muscle power by heavy-resistance exercises» (1945)", "om": "La det vitenskapelige grunnlaget for systematisk «progressive resistance exercise»." },
+   { "kilde": "American College of Sports Medicine – posisjonsuttalelse om progresjon i styrketrening (2009)", "om": "Bekrefter at vekt, volum, tempo og pause må økes gradvis for fortsatt framgang." }
   ]
  },
  {
@@ -45,11 +57,17 @@
   "lesetid": 4,
   "avsnitt": [
    { "p": "Under økta bryter du faktisk kroppen litt ned. Selve oppbyggingen — den som gjør deg sterkere og raskere — skjer i timene og dagene etterpå, mens du hviler." },
+   { "p": "Fenomenet har et navn: superkompensasjon. Etter en hard nok økt bygger kroppen seg opp litt over sitt gamle nivå — men bare hvis den får hvile. Stressforskeren Hans Selye viste alt på 1950-tallet at kroppen svarer på belastning i faser, og at for mye uten pause til slutt tipper over i utmattelse." },
    { "h": "Lytt til de tydelige signalene" },
    { "p": "Vedvarende sår muskulatur, dårlig søvn, irritabilitet og stagnasjon er kroppens måte å be om en roligere dag på. Å ta den er ikke latskap — det er en del av planen." },
    { "h": "Aktiv hvile teller også" },
    { "p": "En rolig gåtur, lett yoga eller mobilitet holder blodet i sirkulasjon og løsner stive ledd uten å tære på deg. På Mova teller alt dette som bevegelse." },
    { "p": "Regelen er enkel: tren hardt nok til å utfordre deg, hvil godt nok til å bli bedre av det." }
+  ],
+  "kilder": [
+   { "kilde": "Hans Selye – «The Stress of Life» (1956)", "om": "Generelt tilpasningssyndrom: kroppen går fra alarm til motstand og — uten hvile — til utmattelse." },
+   { "kilde": "Superkompensasjonsmodellen (Nikolai Jakovlev, sovjetisk idrettsfysiologi, 1950-tallet)", "om": "Formen stiger over utgangspunktet i restitusjonsfasen, ikke under selve økta." },
+   { "kilde": "Kellmann m.fl. – konsensusuttalelse om restitusjon og prestasjon (2018)", "om": "Anbefaler å balansere belastning og hvile for å unngå overtrening." }
   ]
  },
  {
@@ -62,12 +80,18 @@
   "lesetid": 5,
   "avsnitt": [
    { "p": "Der dynamisk yoga jobber med musklene, jobber yin med bindevevet — leddbånd, fascie og ledd. Du holder posisjonene lenge, gjerne tre til fem minutter, og lar tyngdekraften gjøre jobben." },
+   { "p": "Stilen ble formet av Paulie Zink, med røtter i taoistisk yoga, og gjort kjent i Vesten av Paul Grilley og Sarah Powers. Det var de som fremhevet nettopp de lange, rolige holdene som når bindevevet framfor musklene." },
    { "h": "Pusten gjør arbeidet" },
    { "p": "I stedet for å presse, senker du deg inn i stillingen og puster rolig. For hver utpust slipper du litt mer. Det er en øvelse i tålmodighet like mye som i bevegelighet." },
    { "h": "Bra etter harde dager" },
    { "p": "Yin passer perfekt som motvekt til løping og styrke, eller på en kveld da kroppen og hodet trenger å lande. Du reiser deg mykere enn du la deg ned." },
    { "h": "Ubehag, ikke smerte" },
    { "p": "Kjenn etter en mild strekk, aldri en skarp smerte. Trekk litt ut hvis det svir, og gi kroppen tid — bevegeligheten kommer med jevnlig øving." }
+  ],
+  "kilder": [
+   { "kilde": "Paul Grilley – «Yin Yoga: Principles and Practice» (2002)", "om": "Systematiserte de lange holdene og fokuset på fascie og ledd framfor muskler." },
+   { "kilde": "Sarah Powers – «Insight Yoga» (2008)", "om": "Koblet yin-praksisen til pust, oppmerksomhet og roen mellom innsats og hvile." },
+   { "kilde": "Paulie Zink", "om": "Opphavet til yin yoga, med bakgrunn i taoistisk yoga og kampkunst." }
   ]
  },
  {
@@ -80,12 +104,17 @@
   "lesetid": 5,
   "avsnitt": [
    { "p": "God kondisjon bygges på et fundament av rolig trening, toppet med litt hardt arbeid. Trikset er å vite når du gjør hva." },
+   { "p": "Den norsk-amerikanske fysiologen Stephen Seiler ved Universitetet i Agder har satt tall på det: godt trente utholdenhetsutøvere legger gjerne rundt 80 % av øktene i rolig tempo og bare 20 % hardt. Modellen kalles polarisert trening." },
    { "h": "Sone 2 — den rolige gullgruva" },
    { "p": "Det meste av kondisjonstreningen bør skje i sone 2: et tempo der du fortsatt kan holde en samtale gående. Det føles nesten for lett, men det er her utholdenheten bygges." },
    { "h": "Intervaller — den harde krydderen" },
    { "p": "En til to ganger i uka kan du legge inn intervaller i sone 4: korte, harde drag med pauser mellom. Det løfter makskapasiteten. Mer er sjelden bedre." },
    { "h": "Snakketesten" },
-   { "p": "Uten pulsklokke kan du bruke pusten som guide: kan du snakke i hele setninger, er du rolig nok. Får du bare fram enkeltord, jobber du hardt." }
+   { "p": "Uten pulsklokke kan du bruke pusten som guide: kan du snakke i hele setninger, er du rolig nok. Får du bare fram enkeltord, jobber du hardt. Testen er ingen tilfeldighet — den er validert i forskning mot pustemønsteret som skifter når du passerer den første intensitetsterskelen." }
+  ],
+  "kilder": [
+   { "kilde": "Stephen Seiler (Universitetet i Agder) – forskning på polarisert utholdenhetstrening", "om": "80/20-fordelingen: mest rolig mengde, litt hardt arbeid — grunnlaget for sone-tenkningen." },
+   { "kilde": "Carl Foster m.fl. – studier av «the talk test»", "om": "Snakketesten er validert som en enkel pekepinn på om du ligger under eller over den aerobe terskelen." }
   ]
  },
  {
@@ -99,11 +128,16 @@
   "avsnitt": [
    { "p": "Protein er byggesteinene kroppen bruker til å reparere og bygge muskler etter trening. Får du for lite, går du glipp av mye av jobben du la ned i økta." },
    { "h": "Et enkelt utgangspunkt" },
-   { "p": "For de som trener regelmessig er 1,6–2 gram protein per kilo kroppsvekt et godt mål. Veier du 70 kg, snakker vi om rundt 110–140 gram i løpet av dagen." },
+   { "p": "For de som trener regelmessig er 1,6–2 gram protein per kilo kroppsvekt et godt mål. Veier du 70 kg, snakker vi om rundt 110–140 gram i løpet av dagen. Tallet er ikke plukket ut av lufta: en stor forskningsgjennomgang av Morton og kolleger (2018) fant at fordelen for de fleste flater ut rundt 1,6 gram per kilo." },
    { "h": "Fordel utover dagen" },
-   { "p": "Kroppen tar best vare på proteinet når du sprer det over flere måltider, gjerne 20–40 gram om gangen, i stedet for alt på middagen." },
+   { "p": "Kroppen tar best vare på proteinet når du sprer det over flere måltider, gjerne 20–40 gram om gangen, i stedet for alt på middagen. Det er også rådet fra idrettsernæringsforskningen, som peker på jevn fordeling framfor ett stort inntak." },
    { "h": "Vanlig mat holder langt" },
    { "p": "Egg, kylling, fisk, meieri, bønner og linser gjør jobben. Tilskudd kan være praktisk, men er ikke nødvendig hvis maten er variert." }
+  ],
+  "kilder": [
+   { "kilde": "Morton m.fl. – metaanalyse i «British Journal of Sports Medicine» (2018)", "om": "Fordelen av mer protein flater ut rundt ~1,6 g per kilo kroppsvekt per dag." },
+   { "kilde": "International Society of Sports Nutrition – posisjonsuttalelse (Jäger m.fl., 2017)", "om": "Anbefaler 1,4–2,0 g/kg og 0,25–0,55 g/kg per måltid — altså fordelt utover dagen." },
+   { "kilde": "Brad Schoenfeld – forskning på proteinfordeling og muskelvekst", "om": "Å spre inntaket over flere måltider utnytter muskelproteinsyntesen bedre enn ett stort måltid." }
   ]
  },
  {
@@ -116,11 +150,16 @@
   "lesetid": 4,
   "avsnitt": [
    { "p": "Søvn er den kraftigste — og billigste — restitusjonen du har. Det er om natta kroppen skiller ut hormonene som reparerer muskler og fester det du har lært." },
+   { "p": "Søvnforskeren Matthew Walker kaller søvn den kraftigste prestasjonsfremmeren vi har — og den eneste som er gratis. En Stanford-studie ledet av Cheri Mah viste at basketspillere som forlenget søvnen, både sprang raskere og traff mer presist." },
    { "h": "Sikt mot sju til ni timer" },
    { "p": "For lite søvn gir svakere økter, tregere framgang og større skaderisiko. Én dårlig natt er ufarlig; uke etter uke setter det spor." },
    { "h": "Kveldsrutinen former natta" },
    { "p": "Demp lyset, legg vekk skjermen en stund før leggetid, og hold soverommet kjølig og mørkt. En rolig pusteøvelse eller litt yin kan senke skuldrene før du sovner." },
    { "p": "Trener du på kvelden? Prøv å avslutte den harde delen et par timer før du legger deg, så pulsen får roet seg." }
+  ],
+  "kilder": [
+   { "kilde": "Matthew Walker – «Why We Sleep» (2017)", "om": "Dyp søvn skiller ut veksthormon som reparerer kroppen; søvn er restitusjonens grunnmur." },
+   { "kilde": "Cheri Mah m.fl. – studie i tidsskriftet «Sleep» (2011)", "om": "Mer søvn ga bedre sprint, presisjon og reaksjon hos idrettsutøvere ved Stanford." }
   ]
  },
  {
@@ -135,10 +174,15 @@
    { "p": "Tøying handler om hvor langt et ledd kan bevege seg. Mobilitet handler om hvor langt du kan bevege det med styrke og kontroll. Du trenger begge — men mobilitet gir mest igjen for hverdagen og treningen." },
    { "h": "Aktivt slår passivt" },
    { "p": "I stedet for å henge passivt i en tøyning, jobber mobilitetsøvelser leddet gjennom hele banen med muskelkraft: hofterotasjoner, CARs og kontrollerte utfall. Da blir bevegeligheten din å bruke, ikke bare å vise fram." },
+   { "p": "Begrepene CARs og kontrollerte rotasjoner kommer fra Functional Range Conditioning, et system utviklet av legen Andreo Spina, som nettopp skiller passiv tøybarhet fra aktiv, styrt bevegelse." },
    { "h": "Litt, ofte" },
    { "p": "Fem til ti minutter mobilitet på oppvarmingen, eller som egen liten økt et par ganger i uka, holder ledd og muskler smidige — og gjør de tunge løftene tryggere." },
    { "h": "Bruk det du åpner" },
    { "p": "Har du nettopp åpnet hoftene, gjør noen knebøy rett etterpå. Bevegelighet du bruker, blir bevegelighet du beholder." }
+  ],
+  "kilder": [
+   { "kilde": "Andreo Spina – Functional Range Conditioning (FRC) og CARs", "om": "Skiller passiv fleksibilitet fra aktiv mobilitet: styrke og kontroll gjennom hele leddbanen." },
+   { "kilde": "American College of Sports Medicine – retningslinjer for bevegelighetstrening", "om": "Aktiv, kontrollert bevegelse gir mer funksjonell bevegelighet enn passiv tøying alene." }
   ]
  }
 ]
