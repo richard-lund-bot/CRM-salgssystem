@@ -25,7 +25,7 @@ import { nivaFraTotalXp } from './niva.js';
 import { dagensGnist, dagerMedAktivitet, okterHref } from './bevegelse.js';
 import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN } from './bibliotek-okter.js';
 import { fyllInn } from './animasjon.js';
-import { regionScores, anbefalingFraRegioner, lagKroppskart } from './kroppskart.js';
+import { regionScores, anbefalingFraRegioner } from './kroppskart.js';
 import * as sync from './sync.js';
 import { krediterNye, stravaKort } from './strava.js';
 
@@ -153,7 +153,7 @@ function visHjem() {
     el('main', { class: 'innhold' },
       seksjonsHode(),
       bevegelsesGrid(),
-      restitusjonsKort(logg, profil),
+      anbefaltOktKort(logg, profil),
       // Heroen har alt en CTA når noe er planlagt eller påbegynt — da
       // trengs ikke anbefalingskortet i tillegg.
       !planer.length && minutterIdag === 0 && anbefalingKort(profil, logg, nå),
@@ -174,51 +174,36 @@ function anbefaltOkt(anbef, profil) {
       || null;
 }
 
-// Restitusjons-kroppskart (M17): anatomisk for-/bakside-figur der hver
-// muskelgruppe tones grønn (klar) → rød (nylig belastet), med header og et
-// anbefalt-økt-kort som peker på en konkret, startbar økt. Drives av hele
-// loggen, så det vises alltid.
-function restitusjonsKort(logg, profil) {
+// Anbefalt-økt-kort (Min dag): peker på en konkret, startbar økt valgt ut fra
+// preferanser + restitusjonsbehov. Selve kroppskartet bor nå på Profil; en
+// info-«i» forklarer grunnlaget og lenker til restitusjons-widgeten der.
+function anbefaltOktKort(logg, profil) {
   const scores = regionScores(logg);
-  const kart = lagKroppskart();
-  requestAnimationFrame(() => kart.sett(scores));
   const anbef = anbefalingFraRegioner(scores);
   const okt = anbefaltOkt(anbef, profil);
   const startHref = okt ? `#/okter?start=${okt.id}` : `#/okter?kat=${anbef.kat}`;
 
   const hjelp = el('p', { class: 'restitusjonskort__hjelp', hidden: true },
-    'Hver muskelgruppe farges fra grønn (klar) til rød (nylig belastet) ut fra hvor '
-    + 'nylig og hvor hardt du har trent den — det avtar over tre døgn. Bruk kartet til å '
-    + 'se hva som er lurt å trene i dag.');
+    'Denne økta er valgt ut fra preferansene dine og ',
+    el('a', { class: 'tekstlenke', href: '#/merker?vis=restitusjon' }, 'restitusjonsbehov'),
+    '.');
   const info = el('button', {
-    class: 'restitusjonskort__info', type: 'button', 'aria-label': 'Hvordan fungerer kroppskartet?',
+    class: 'restitusjonskort__info', type: 'button', 'aria-label': 'Hvorfor denne økta?',
     onclick: () => { hjelp.hidden = !hjelp.hidden; },
   }, ikon('info'));
 
   const merkelapp = (ikonNavn, tekst, variant) => el('span', { class: `tag tag--ikon ${variant}` },
     ikon(ikonNavn), tekst);
 
-  return el('section', { class: 'kort restitusjonskort' },
-    el('div', { class: 'restitusjonskort__hode' },
-      el('span', { class: 'restitusjonskort__merke' }, 'M'),
-      el('div', { class: 'restitusjonskort__tittelrad' },
-        el('h2', { class: 'restitusjonskort__tittel' }, 'Restitusjon'),
-        el('p', { class: 'restitusjonskort__undertittel' },
-          'Se hvor kroppen trenger ro eller er klar for belastning'),
-      ),
+  return el('section', { class: 'kort anbefaltkort' },
+    el('div', { class: 'anbefaltkort__hode' },
+      el('h2', { class: 'anbefaltkort__tittel' }, 'Anbefalt økt'),
       info,
     ),
     hjelp,
-    kart.svg,
-    el('div', { class: 'kroppskart-forklaring' },
-      el('span', {}, 'Klar'),
-      el('span', { class: 'kroppskart-forklaring__skala' }),
-      el('span', {}, 'Nylig belastet'),
-    ),
     el('div', { class: 'restitusjon-anbefaling' },
       el('span', { class: 'restitusjon-anbefaling__disk' }, ikon('vekt')),
       el('div', { class: 'restitusjon-anbefaling__meta' },
-        el('span', { class: 'hero__eyebrow' }, 'Anbefalt økt'),
         el('span', { class: 'restitusjon-anbefaling__tittel' }, okt ? okt.navn : anbef.tekst),
         el('span', { class: 'restitusjon-anbefaling__under' }, anbef.tekst),
         el('div', { class: 'restitusjon-anbefaling__merker' },

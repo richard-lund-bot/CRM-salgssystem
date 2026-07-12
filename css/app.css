@@ -1511,6 +1511,13 @@ body.fokusmodus { padding-bottom: 0; }
 .tag--ikon .ikon { width: 13px; height: 13px; }
 .tag--gronn { background: #E4F3EA; color: #2C7A55; }
 
+/* «Anbefalt økt»-kortet på Min dag (uten kroppskart — det bor på Profil). */
+.anbefaltkort__hode { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.anbefaltkort__tittel { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 18px; }
+
+/* Blå, understreket tekstlenke i brødtekst (f.eks. «restitusjonsbehov»). */
+.tekstlenke { color: #2F4EB5; text-decoration: underline; font-weight: 600; }
+
 @media (prefers-reduced-motion: reduce) { .kroppskart__region { transition-duration: 0.01ms; } }
 
 .merkebolk {

@@ -8,6 +8,7 @@ import { hentProfil, hentLogg, hentPlan } from './store.js';
 import { nivaFraTotalXp, nivaKostnad, ukeNokkel, prsFraLogg, nivaPerType } from './niva.js';
 import { loggBevegelse, NIVATYPE_NAVN } from './bevegelse.js';
 import { oktMedId } from './bibliotek-okter.js';
+import { regionScores, lagKroppskart } from './kroppskart.js';
 import { fanesideMedTittel } from './banner.js';
 import { fyllInn, lagRing } from './animasjon.js';
 
@@ -283,9 +284,44 @@ function datoTekst(iso) {
   return d.toLocaleDateString('nb-NO', iar ? { day: 'numeric', month: 'short' } : { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
+// Restitusjons-kroppskart (flyttet fra Min dag M20): anatomisk for-/bakside-
+// figur som tones grønn→rød per muskelgruppe. Bor nå på Profil; anbefalt økt på
+// Min dag lenker hit via #/merker?vis=restitusjon.
+function kroppskartWidget(logg) {
+  const kart = lagKroppskart();
+  requestAnimationFrame(() => kart.sett(regionScores(logg)));
+  const hjelp = el('p', { class: 'restitusjonskort__hjelp', hidden: true },
+    'Hver muskelgruppe farges fra grønn (klar) til rød (nylig belastet) ut fra hvor '
+    + 'nylig og hvor hardt du har trent den — det avtar over tre døgn. Bruk kartet til å '
+    + 'se hva som er lurt å trene i dag.');
+  const info = el('button', {
+    class: 'restitusjonskort__info', type: 'button', 'aria-label': 'Hvordan fungerer kroppskartet?',
+    onclick: () => { hjelp.hidden = !hjelp.hidden; },
+  }, ikon('info'));
+  return el('section', { class: 'kort restitusjonskort' },
+    el('div', { class: 'restitusjonskort__hode' },
+      el('span', { class: 'restitusjonskort__merke' }, 'M'),
+      el('div', { class: 'restitusjonskort__tittelrad' },
+        el('h2', { class: 'restitusjonskort__tittel' }, 'Restitusjon'),
+        el('p', { class: 'restitusjonskort__undertittel' },
+          'Se hvor kroppen trenger ro eller er klar for belastning'),
+      ),
+      info,
+    ),
+    hjelp,
+    kart.svg,
+    el('div', { class: 'kroppskart-forklaring' },
+      el('span', {}, 'Klar'),
+      el('span', { class: 'kroppskart-forklaring__skala' }),
+      el('span', {}, 'Nylig belastet'),
+    ),
+  );
+}
+
 export function visMerkerSkjerm(mount) {
   const profil = hentProfil();
   if (!profil) { location.hash = '#/hjem'; return; }
+  const vis = new URLSearchParams(location.hash.split('?')[1] || '').get('vis');
   const merker = beregnMerker(profil, hentLogg(), hentPlan());
   const info = nivaFraTotalXp(profil.globalXp || 0);
   const oppnadd = merker.filter((m) => m.oppnadd).length;
@@ -361,6 +397,14 @@ export function visMerkerSkjerm(mount) {
     ),
   );
 
+  const restitusjon = kroppskartWidget(hentLogg());
+
   fanesideMedTittel(mount, { tittel: 'Profil', under: 'Nivået ditt, merkene dine — og alt det andre.' })
-    .append(hero, typerad, menyKort, ...MERKE_KATEGORIER.map(bolk));
+    .append(hero, typerad, restitusjon, menyKort, ...MERKE_KATEGORIER.map(bolk));
+
+  // Kommer man fra «restitusjonsbehov»-lenka på Min dag, scroll widgeten inn.
+  if (vis === 'restitusjon') {
+    requestAnimationFrame(() =>
+      mount.querySelector('.restitusjonskort')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  }
 }
