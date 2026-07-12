@@ -33,6 +33,12 @@ const HIMMELFARGE = {
 let _navger = () => {};
 export function settNavger(fn) { _navger = fn; }
 
+// Uleste-sjekk for bjella (harUlesteVarsler i varsler.js) — injiseres ved
+// oppstart av samme grunn: banner.js slipper å importere varsler-modulen
+// (som selv importerer merker/banner) og vi unngår syklisk import.
+let _harUleste = () => false;
+export function settUlestSjekk(fn) { _harUleste = fn; }
+
 function isoDato(d) {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, '0');
@@ -160,10 +166,14 @@ export function lagBanner({ hoyre = null, dagAksjon = null } = {}) {
   tegnUker();
 
   if (hoyre) hoyre.classList.add('hjembanner__hoyre');
+  const ulest = _harUleste();
   return el('div', { class: 'hjembanner' },
     el('div', { class: 'hjembanner__rad' },
       innstillingerKnapp(),
-      el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/innstillinger', 'aria-label': 'Varsler og innstillinger' }, ikon('bjelle')),
+      el('a', {
+        class: 'ikonknapp ikonknapp--plain ikonknapp--bjelle', href: '#/varsler',
+        'aria-label': ulest ? 'Varsler — nye' : 'Varsler',
+      }, ikon('bjelle'), ulest && el('i', { class: 'varselprikk' })),
       el('span', { class: 'hjembanner__logo' }, wordmark()),
       hoyre || el('a', { class: 'ikonknapp ikonknapp--plain hjembanner__hoyre', href: '#/kalender', 'aria-label': 'Mosjonskalender' }, ikon('kalender')),
     ),

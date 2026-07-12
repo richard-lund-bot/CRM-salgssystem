@@ -20,7 +20,7 @@ import { alleØvelser, tonnasje, muskelVolum, lagLinjegraf } from './styrke.js';
 import { lastArtikler, visLaerSkjerm, visArtikkelSkjerm } from './laer.js';
 import { visMerkerSkjerm } from './merker.js';
 import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
-import { lagFaneside, fanesideMedTittel, settNavger, dagsfase } from './banner.js';
+import { lagFaneside, fanesideMedTittel, settNavger, settUlestSjekk, dagsfase } from './banner.js';
 import { nivaFraTotalXp } from './niva.js';
 import { dagensGnist, dagerMedAktivitet, okterHref } from './bevegelse.js';
 import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN, KATEGORIER } from './bibliotek-okter.js';
@@ -29,6 +29,7 @@ import { regionScores, anbefalingFraRegioner, regionAndelForOkt, REGION_NAVN } f
 import { prefMult, prefNiva, PREF_NIVAER } from './preferanser.js';
 import * as sync from './sync.js';
 import { krediterNye, stravaKort } from './strava.js';
+import { byggVarsler, merkVarslerSett, varselKort, harUlesteVarsler } from './varsler.js';
 
 const app = document.getElementById('app');
 let bib = null;
@@ -51,6 +52,7 @@ const ruter = {
   aktivitet: () => visAktivitetSkjerm(app),
   historikk: () => visAktivitetSkjerm(app), // gammel lenke — samme skjerm
   meny: () => { location.hash = '#/merker'; }, // Meny bor nå på Profil-fanen
+  varsler: visVarsler,
   innstillinger: visInnstillinger,
   bibliotek: visBibliotek,
   ovelse: () => visOvelseSkjerm(app),
@@ -82,7 +84,7 @@ function navger() {
 function oppdaterNav(rute) {
   const tabRute = ({
     // Meny er nå en del av Profil-fanen — alle «meny-sidene» lyser opp Profil.
-    meny: 'merker', innstillinger: 'merker', bibliotek: 'merker', om: 'merker',
+    meny: 'merker', innstillinger: 'merker', bibliotek: 'merker', om: 'merker', varsler: 'merker',
     plan: 'merker', styrke: 'merker', kalender: 'merker', reise: 'merker', tilpass: 'merker',
     historikk: 'aktivitet', ny: 'beveg', okter: 'beveg',
     artikkel: 'laer',
@@ -518,6 +520,27 @@ const TEMAER = [
   { id: 'gull', navn: 'Gull', prikk: '#B08D2A' },
 ];
 
+// Varsler (bak bjella): en avledet feed av fullførte økter, nivå-opp og
+// opptjente merker (js/varsler.js). Å åpne skjermen markerer alt som sett, så
+// prikken på bjella forsvinner ved neste tegning.
+function visVarsler() {
+  const profil = hentProfil();
+  if (!profil) { location.hash = '#/hjem'; return; }
+  const feed = byggVarsler();
+
+  const innhold = feed.length
+    ? el('div', { class: 'varselliste' }, ...feed.map(varselKort))
+    : el('div', { class: 'kort tomstyrke' },
+        el('span', { class: 'tomstyrke__disk' }, ikon('bjelle')),
+        el('p', { class: 'oppmuntring__tittel' }, 'Ingen varsler ennå'),
+        el('p', { class: 'dempet' }, 'Fullfør en økt, så dukker den opp her — sammen med nivå-opp og nye merker.'),
+        el('a', { class: 'knapp', href: '#/beveg' }, 'Finn en økt'),
+      );
+
+  skjerm('Varsler', innhold);
+  merkVarslerSett(feed[0]?.ts); // alt som vises nå (feeden er nyeste-først) regnes som sett
+}
+
 function visInnstillinger() {
   const profil = hentProfil();
   if (!profil) { location.hash = '#/hjem'; return; }
@@ -800,6 +823,7 @@ async function start() {
   settBibKal(bib);
   settBibOvelse(bib);
   settNavger(navger); // pull-to-refresh (banner.js) tegner siden på nytt
+  settUlestSjekk(harUlesteVarsler); // uleste-prikk på bjella (banner.js)
   bruksTema(hentProfil()?.innstillinger?.tema);
   // Fanebytte starter alltid på toppen av siden (programmatiske redraws,
   // f.eks. etter synk, beholder scrollposisjonen).
