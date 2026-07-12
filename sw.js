@@ -3,7 +3,7 @@
 //   - navigasjon/HTML: network-first med cache-fallback (fersk UI når nett finnes)
 //   - data/JS/CSS/ikoner: cache-first (raskt, fungerer offline)
 // Bump CACHE_VERSION for å rulle ut ny cache.
-const CACHE_VERSION = 'mova-m28-2.24.0';
+const CACHE_VERSION = 'mova-m28-2.25.0';
 const SKALL = [
   './',
   './index.html',
@@ -29,6 +29,7 @@ const SKALL = [
   './js/ovelse.js',
   './js/styrke.js',
   './js/laer.js',
+  './js/medlem.js',
   './js/animasjon.js',
   './js/kroppskart.js',
   './js/kroppskart-svg.js',
@@ -48,6 +49,8 @@ const SKALL = [
   './icons/brand/hero-natt.webp',
   './icons/brand/shoe-badge.png',
   './icons/brand/splash.webp',
+  './icons/brand/auth-logg-inn.webp',
+  './icons/brand/auth-bli-medlem.webp',
   './data/okter.json',
   './data/ovelsesinfo.json',
   './data/artikler.json',

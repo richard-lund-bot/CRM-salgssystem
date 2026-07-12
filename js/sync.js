@@ -86,6 +86,79 @@ export async function gyldigToken() {
 
 export function loggUt() { slettSesjon(); meldStatus('utlogget'); }
 
+// --- Auth: e-post + passord og OAuth --------------------------------------
+// Direkte mot GoTrue (samme avhengighetsfrie mønster som magic link over).
+// signup → /signup, innlogging → /token?grant_type=password,
+// Apple/Facebook → /authorize (redirect, fanges av fangRetur ved retur).
+
+/** Oversetter GoTrue-feil til vennlig norsk. */
+function authFeil(d, status) {
+  const m = String(d?.msg || d?.error_description || d?.error || d?.message || '').toLowerCase();
+  if (m.includes('invalid login') || m.includes('invalid credentials')) return 'Feil e-post eller passord.';
+  if (m.includes('already') && (m.includes('registered') || m.includes('exists'))) return 'Denne e-posten er allerede registrert. Prøv å logge inn.';
+  if (m.includes('password') && m.includes('least')) return 'Passordet må ha minst 6 tegn.';
+  if (m.includes('weak password') || (m.includes('password') && m.includes('short'))) return 'Velg et lengre passord (minst 6 tegn).';
+  if (m.includes('email') && (m.includes('invalid') || m.includes('validate'))) return 'Sjekk at e-postadressen er gyldig.';
+  if (m.includes('not confirmed') || m.includes('email not')) return 'Bekreft e-posten din først — se innboksen.';
+  if (status === 429 || m.includes('rate limit')) return 'For mange forsøk. Vent litt og prøv igjen.';
+  return d?.msg || d?.error_description || 'Noe gikk galt. Prøv igjen.';
+}
+
+/** Lagrer en token-respons fra GoTrue som aktiv sesjon. */
+async function lagreFraToken(d) {
+  const utløp = Date.now() + (Number(d.expires_in) || 3600) * 1000;
+  const bruker = d.user || await hentBruker(d.access_token);
+  lagreSesjon({
+    access_token: d.access_token, refresh_token: d.refresh_token,
+    utløp, epost: bruker?.email, uid: bruker?.id,
+  });
+  meldStatus('innlogget');
+  return bruker;
+}
+
+/** Registrer ny bruker med e-post + passord. Navn lagres som user-metadata.
+ *  Returnerer { innlogget } — false betyr at e-post må bekreftes først. */
+export async function registrerMedEpost({ navn, epost, passord }) {
+  const redirectTo = location.origin + location.pathname;
+  const res = await fetch(`${AUTH}/signup?redirect_to=${encodeURIComponent(redirectTo)}`, {
+    method: 'POST', headers: felles,
+    body: JSON.stringify({ email: epost, password: passord, data: navn ? { navn, full_name: navn } : {} }),
+  });
+  const d = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(authFeil(d, res.status));
+  if (d.access_token) { await lagreFraToken(d); return { innlogget: true }; }
+  return { innlogget: false, måBekrefte: true }; // e-postbekreftelse er slått på
+}
+
+/** Logg inn med e-post + passord. */
+export async function loggInnMedEpost({ epost, passord }) {
+  const res = await fetch(`${AUTH}/token?grant_type=password`, {
+    method: 'POST', headers: felles,
+    body: JSON.stringify({ email: epost, password: passord }),
+  });
+  const d = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(authFeil(d, res.status));
+  await lagreFraToken(d);
+  return { innlogget: true };
+}
+
+/** OAuth med Apple/Facebook — navigerer bort; retur fanges av fangRetur().
+ *  Krever at leverandøren er aktivert i Supabase (Auth → Providers). */
+export function startOAuth(provider) {
+  const redirectTo = location.origin + location.pathname;
+  location.href = `${AUTH}/authorize?provider=${encodeURIComponent(provider)}&redirect_to=${encodeURIComponent(redirectTo)}`;
+}
+
+/** Send lenke for å tilbakestille glemt passord. */
+export async function sendPassordTilbakestilling(epost) {
+  const redirectTo = location.origin + location.pathname;
+  const res = await fetch(`${AUTH}/recover?redirect_to=${encodeURIComponent(redirectTo)}`, {
+    method: 'POST', headers: felles, body: JSON.stringify({ email: epost }),
+  });
+  if (!res.ok) throw new Error(`Kunne ikke sende lenke (${res.status})`);
+  return true;
+}
+
 // --- REST-hjelper ---------------------------------------------------------
 async function rest(path, { method = 'GET', body, prefer } = {}) {
   const token = await gyldigToken();

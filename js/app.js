@@ -18,6 +18,7 @@ import { slippVaaken } from './vaakenlaas.js';
 import { lastOvelsesinfo, settBib as settBibOvelse, visOvelseSkjerm, ovelseInfo } from './ovelse.js';
 import { alleØvelser, tonnasje, muskelVolum, lagLinjegraf } from './styrke.js';
 import { lastArtikler, visLaerSkjerm, visArtikkelSkjerm } from './laer.js';
+import { visLoggInnSkjerm, visRegistrerSkjerm, settEtterInnlogget } from './medlem.js';
 import { visMerkerSkjerm } from './merker.js';
 import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
 import { lagFaneside, fanesideMedTittel, settNavger, settUlestSjekk, dagsfase } from './banner.js';
@@ -60,10 +61,15 @@ const ruter = {
   laer: () => visLaerSkjerm(app),
   artikkel: () => visArtikkelSkjerm(app),
   om: visOm,
+  'logg-inn': () => visLoggInnSkjerm(app),
+  'bli-medlem': () => visRegistrerSkjerm(app),
 };
 
 // Skjermene med egen tilbake-header er fokusmodus (skjuler tab-baren).
-const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel']);
+const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel', 'logg-inn', 'bli-medlem']);
+
+// Medlemssidene (auth). Uinnloggede sendes hit; innloggede slippes forbi.
+const AUTH_RUTER = new Set(['logg-inn', 'bli-medlem']);
 
 // Gamle #/ny?m=STY-lenker (og bokmerker) sendes til riktig bibliotekkategori.
 function omdirigerGammelNyLenke() {
@@ -74,6 +80,10 @@ function omdirigerGammelNyLenke() {
 
 function navger() {
   const rute = (location.hash.replace('#/', '') || 'hjem').split('?')[0];
+  // Medlemsgate: uinnlogget → send til innlogging; innlogget som står på en
+  // auth-side → slippes videre inn i appen.
+  if (!sync.erInnlogget() && !AUTH_RUTER.has(rute)) { location.hash = '#/logg-inn'; return; }
+  if (sync.erInnlogget() && AUTH_RUTER.has(rute)) { location.hash = '#/hjem'; return; }
   document.body.classList.toggle('fokusmodus', FOKUS.has(rute));
   document.body.classList.remove('fane-laast'); // settes på nytt av fanesidene
   if (rute !== 'kjor' && rute !== 'hurtig') slippVaaken(); // timer-skjermene eier låsen
@@ -722,7 +732,7 @@ function skyKort() {
           class: 'knapp', type: 'button',
           onclick: async (ev) => { ev.target.textContent = 'Synker…'; await sync.synk(); visInnstillinger(); },
         }, 'Synk nå'),
-        el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: () => { sync.loggUt(); visInnstillinger(); } }, 'Logg ut'),
+        el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: () => { sync.loggUt(); location.hash = '#/logg-inn'; } }, 'Logg ut'),
       ),
     );
   } else {
@@ -869,6 +879,17 @@ function startOnboarding() {
   });
 }
 
+// --- Etter innlogging/registrering (fra medlem.js) ---
+// Ny sesjon: hent ev. skyprofil før vi avgjør onboarding vs. appen. Nye
+// medlemmer uten profil sendes til onboarding; ellers rett inn i Min dag.
+async function fullførInnlogging() {
+  document.body.classList.remove('fokusmodus');
+  try { await sync.synk(); } catch (e) { console.warn('Synk etter innlogging feilet', e); }
+  if (!harProfil()) { startOnboarding(); return; }
+  byggTabbar();
+  if (location.hash === '#/hjem') navger(); else location.hash = '#/hjem';
+}
+
 // --- Splash (fersk åpning) ---
 // Vises av index.html før noe annet er lastet; fades ut når appen er klar,
 // men står minst ~700 ms så merket rekker å lande i stedet for å blinke.
@@ -911,6 +932,7 @@ async function start() {
   // inn — hent ned profilen før vi avgjør om onboarding skal kjøre.
   // Strava-krediteringen kjører mellom pull og push i hver synk-runde.
   sync.settEtterPull(krediterNye);
+  settEtterInnlogget(fullførInnlogging);
   try {
     const { innlogget } = await sync.init();
     if (innlogget && !harProfil()) await sync.synk();
@@ -918,6 +940,14 @@ async function start() {
     sync.påStatus(oppdaterSyncMerke);
   } catch (e) {
     console.warn('Sync utilgjengelig', e);
+  }
+
+  // Medlemsgate: uten innlogging møter du «Velkommen tilbake» / «Bli medlem».
+  if (!sync.erInnlogget()) {
+    const rute = (location.hash.replace('#/', '') || '').split('?')[0];
+    if (AUTH_RUTER.has(rute)) navger(); else location.hash = '#/logg-inn';
+    skjulSplash();
+    return;
   }
 
   if (!harProfil()) {

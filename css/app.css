@@ -1862,6 +1862,57 @@ body.fokusmodus { padding-bottom: 0; }
 .artkilder__kilde { font-size: 14px; font-weight: 600; line-height: 1.35; color: var(--tekst); }
 .artkilder__om { font-size: 13px; line-height: 1.5; color: var(--tekst-2); }
 
+/* ===========================================================================
+   Medlem (auth) — innlogging + registrering. Fullskjerm med bakgrunnsbilde
+   øverst som toner ut i sidefargen, mova-merke + hilsen, og et flytende hvitt
+   kort med skjema, leverandørknapper og bytt-lenke.
+   =========================================================================== */
+.auth { position: relative; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; overflow-x: hidden; background: var(--bg); }
+.auth__bg { position: absolute; inset: 0 0 auto 0; height: 66%; background-size: cover; background-position: center 28%; z-index: 0; }
+.auth__bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,255,255,0) 38%, var(--bg) 96%); }
+.auth__innhold { position: relative; z-index: 1; display: flex; flex-direction: column; flex: 1 1 auto; min-height: 100dvh; }
+.auth__topp { flex: 0 0 auto; min-height: 34vh; display: flex; flex-direction: column; padding: calc(env(safe-area-inset-top, 0px) + 30px) 28px 20px; }
+
+.auth__merke { line-height: 1; }
+.auth__logo { display: block; font-family: var(--font-display); font-size: 42px; font-weight: 600; letter-spacing: -0.015em; color: var(--teal-900); }
+.auth__tagline { display: block; margin-top: 3px; font-family: var(--font-display); font-size: 13px; letter-spacing: 0.06em; color: var(--teal-700); }
+.auth__tittel { margin: auto 0 0; padding-top: 22px; font-family: var(--font-display); font-size: 34px; font-weight: 600; line-height: 1.1; letter-spacing: -0.01em; color: var(--teal-900); }
+.auth__under { margin: 12px 0 0; font-size: 16px; line-height: 1.5; color: var(--teal-900); opacity: 0.82; }
+
+.auth__kort { margin-top: auto; background: var(--bg-kort); border-radius: 28px 28px 0 0; box-shadow: 0 -10px 34px rgba(1, 63, 64, 0.10); padding: 26px 22px calc(env(safe-area-inset-bottom, 0px) + 24px); }
+.auth-form { display: flex; flex-direction: column; gap: 12px; }
+
+.auth-felt { display: flex; align-items: center; gap: 10px; height: 54px; padding: 0 14px; background: var(--bg-kort-2); border: 1px solid var(--kant); border-radius: 14px; transition: border-color 0.15s, box-shadow 0.15s; }
+.auth-felt:focus-within { border-color: var(--aksent); box-shadow: 0 0 0 3px var(--aksent-svak); }
+.auth-felt__ikon { width: 20px; height: 20px; color: var(--dempet); }
+.auth-felt__inn { flex: 1 1 auto; min-width: 0; border: none; background: none; outline: none; font-family: var(--font-body); font-size: 16px; color: var(--tekst); }
+.auth-felt__inn::placeholder { color: var(--dempet); }
+.auth-felt__oye { flex: 0 0 auto; display: grid; place-items: center; padding: 6px; border: none; background: none; color: var(--dempet); cursor: pointer; }
+.auth-felt__oye .ikon { width: 20px; height: 20px; }
+
+.auth-glemt-rad { display: flex; justify-content: center; margin: 2px 0; }
+.auth-glemt { border: none; background: none; padding: 4px; font-size: 14px; color: var(--teal-700); text-decoration: underline; cursor: pointer; }
+
+.auth-primaer { position: relative; display: flex; align-items: center; justify-content: center; gap: 8px; height: 56px; margin-top: 4px; border: none; border-radius: 16px; background: var(--teal-900); color: #fff; font-family: var(--font-display); font-size: 17px; font-weight: 600; cursor: pointer; box-shadow: var(--shadow-sm); }
+.auth-primaer__pil { position: absolute; right: 20px; width: 20px; height: 20px; }
+.auth-primaer:active { transform: scale(0.99); background: var(--teal-700); }
+.auth-primaer--laster { opacity: 0.65; pointer-events: none; }
+
+.auth-skille { display: flex; align-items: center; gap: 12px; margin: 12px 0 4px; }
+.auth-skille::before, .auth-skille::after { content: ''; flex: 1 1 auto; height: 1px; background: var(--kant); }
+.auth-skille__tekst { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--dempet); }
+
+.auth-provider { display: flex; align-items: center; justify-content: center; gap: 10px; height: 52px; border: 1px solid var(--kant); border-radius: 14px; background: var(--bg-kort); color: var(--tekst); font-family: var(--font-body); font-size: 15px; font-weight: 600; cursor: pointer; }
+.auth-provider:active { transform: scale(0.99); background: var(--bg-kort-2); }
+.merkeikon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; flex: 0 0 auto; }
+
+.auth__bytt { margin: 18px 0 0; text-align: center; font-size: 14px; color: var(--tekst-2); }
+.auth-lenke { color: var(--teal-700); font-weight: 600; text-decoration: underline; }
+
+.auth-melding { margin: 0 0 2px; padding: 10px 12px; border-radius: 12px; font-size: 13.5px; line-height: 1.45; }
+.auth-melding--feil { background: var(--coral-100); color: var(--fare); }
+.auth-melding--info { background: var(--aksent-svak); color: var(--aksent-mork); }
+
 /* «Les mer»-stripe (relaterte artikler i biblioteket o.l.) */
 .artstripe { margin-top: 4px; }
 .artstripe__tittel { margin: 0 0 10px; font-family: var(--font-display); font-size: 16px; font-weight: 600; }
