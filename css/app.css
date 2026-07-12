@@ -502,6 +502,30 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 }
 .hjemhero__knapp:active { background: var(--aksent-svak); }
 
+/* «Vi anbefaler»-boks: gjenbruker .hjemhero__plan* med begrunnelse + info-«i» */
+.hjemhero__planmeta { flex: 1; min-width: 0; }
+.hjemhero__planbegrunn { display: block; margin-top: 4px; font-size: 12.5px; color: var(--ink-700); line-height: 1.35; }
+.hjemhero__planinfo { align-self: flex-start; background: rgba(255, 255, 255, 0.75); }
+
+/* Kompakt streak: flamme + tall øverst til høyre i heroen (lenker til Merker) */
+.streakflamme {
+  position: absolute; top: 4px; right: 2px; z-index: 2;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 5px 11px 5px 9px; border-radius: var(--radius-pill);
+  background: var(--coral-100); color: var(--coral-700);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  font-family: var(--font-display); font-weight: 700; font-size: 15px;
+  text-decoration: none; box-shadow: var(--shadow-xs);
+}
+.streakflamme .ikon { width: 16px; height: 16px; color: var(--coral-500); }
+.streakflamme__tall { line-height: 1; }
+.hjemhero--natt .streakflamme {
+  background: rgba(255, 255, 255, 0.9); box-shadow: 0 4px 14px rgba(17, 38, 77, 0.35);
+}
+@keyframes streakpuls { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+.streakflamme--fare { animation: streakpuls 2.2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .streakflamme--fare { animation: none; } }
+
 /* Statkortene i heroen: frostet hvit flate så bakgrunnen skinner gjennom */
 .hjemhero .statkort-rad { position: relative; z-index: 1; }
 .statkort-rad--glass .statkort {
@@ -591,60 +615,6 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 .movflis--oransje { background: linear-gradient(180deg, #F8B067, #E07A24); }
 .movflis--gul { background: linear-gradient(180deg, #F9CD55, #E99A26); }
 .movflis--indigo { background: linear-gradient(180deg, #97A1F3, #545ED4); }
-
-/* Dagens anbefaling — disk, tekst, stille pilleknapp */
-.anbefaling {
-  display: flex; align-items: center; gap: 13px;
-  background: var(--bg-kort); border: 1px solid var(--kant);
-  border-radius: var(--radius-xl); padding: 14px;
-  box-shadow: var(--shadow-sm);
-}
-.anbefaling__disk {
-  width: 52px; height: 52px; border-radius: 50%; overflow: hidden; flex: 0 0 auto;
-  background: var(--aksent-svak); color: var(--aksent);
-  display: flex; align-items: center; justify-content: center;
-}
-.anbefaling__disk img { width: 100%; height: 100%; object-fit: cover; }
-.anbefaling__disk .ikon { width: 24px; height: 24px; }
-.anbefaling__meta { flex: 1; min-width: 0; }
-.anbefaling__topp { display: block; font-size: 14px; color: var(--tekst); }
-.anbefaling__topp strong { font-family: var(--font-display); font-weight: 600; }
-.anbefaling__tekst { display: block; font-size: 12.5px; color: var(--tekst-2); margin-top: 3px; line-height: 1.4; }
-.anbefaling__knapp {
-  flex: 0 0 auto; white-space: nowrap; text-decoration: none;
-  border: 1.5px solid var(--aksent); color: var(--aksent);
-  font-family: var(--font-display); font-weight: 500; font-size: 13.5px;
-  border-radius: var(--radius-pill); padding: 9px 15px;
-}
-.anbefaling__knapp:active { background: var(--aksent-svak); }
-
-/* Streak-indikator — flamme + ukens dager med haker (lenker til Merker) */
-.streakrad {
-  display: flex; align-items: center; gap: 12px;
-  background: var(--bg-kort); border: 1px solid var(--kant);
-  border-radius: var(--radius-xl); padding: 13px 14px;
-  box-shadow: var(--shadow-sm);
-  color: var(--tekst); text-decoration: none;
-}
-.streakrad__disk {
-  width: 44px; height: 44px; border-radius: 50%; flex: 0 0 auto;
-  background: var(--coral-100); color: var(--coral-500);
-  display: flex; align-items: center; justify-content: center;
-}
-.streakrad__disk .ikon { width: 21px; height: 21px; }
-.streakrad__meta { flex: 1; min-width: 0; }
-.streakrad__tittel { display: block; font-family: var(--font-display); font-weight: 600; font-size: 15px; }
-.streakrad__tekst { display: block; font-size: 11.5px; color: var(--tekst-2); margin-top: 2px; }
-.streakuke { display: flex; gap: 4px; flex: 0 0 auto; }
-.streakuke__dag { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-.streakuke__sirkel {
-  width: 17px; height: 17px; border-radius: 50%;
-  background: var(--ink-100); color: #fff;
-  display: grid; place-items: center;
-}
-.streakuke__sirkel--aktiv { background: var(--teal-500); }
-.streakuke__sirkel .ikon { width: 9px; height: 9px; stroke-width: 3.5; }
-.streakuke__navn { font-size: 8.5px; font-weight: 600; color: var(--dempet); }
 
 /* EncouragementBanner — lavmælt dult på fersken-flate. Aldri høylytt. */
 .oppmuntring {
@@ -1298,13 +1268,13 @@ body.fokusmodus { padding-bottom: 0; }
 /* Trykk-feedback — rolig nedskalering, aldri sprett */
 .listerad, .modrad, .temaknapp, .ob-kort, .okt__topp,
 .chip, .tabbar__knapp, .knapp, .ikonknapp, .movflis, .oppmuntring,
-.modrad--knapp, .hjemuke__dag, .streakrad {
+.modrad--knapp, .hjemuke__dag {
   transition: transform var(--dur-fast) var(--ease-standard), opacity var(--dur-fast) ease, background-color 0.18s ease, border-color 0.18s ease;
 }
 .listerad:active, .modrad:active, .temaknapp:active,
 .ob-kort:active, .okt__topp:active, .chip:active,
 .ikonknapp:active, .movflis:active, .oppmuntring:active,
-.modrad--knapp:active, .hjemuke__dag:active, .streakrad:active {
+.modrad--knapp:active, .hjemuke__dag:active {
   transform: scale(0.97);
 }
 .tabbar__knapp:active .tabbar__ikon { transform: scale(0.9); }
@@ -1342,7 +1312,7 @@ body.fokusmodus { padding-bottom: 0; }
   .tabbar__knapp:active .tabbar__ikon, .listerad:active, .modrad:active,
   .temaknapp:active, .ob-kort:active, .okt__topp:active,
   .chip:active, .ikonknapp:active, .movflis:active, .oppmuntring:active,
-  .modrad--knapp:active, .hjemuke__dag:active, .streakrad:active { transform: none; }
+  .modrad--knapp:active, .hjemuke__dag:active { transform: none; }
 }
 
 /* ==========================================================================
@@ -1491,29 +1461,6 @@ body.fokusmodus { padding-bottom: 0; }
 
 .kroppskart-forklaring { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--dempet); margin-top: 4px; }
 .kroppskart-forklaring__skala { flex: 1; height: 8px; border-radius: 4px; background: linear-gradient(90deg, #0BA69F, #F9CD55, #FF6F61); }
-
-.restitusjon-anbefaling {
-  display: flex; align-items: flex-start; gap: 12px; margin-top: 14px;
-  background: var(--aksent-svak); border: 1px solid var(--aksent-kant, var(--kant));
-  border-radius: var(--radius-md); padding: 14px;
-}
-.restitusjon-anbefaling__disk {
-  flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%;
-  background: var(--bg-kort); display: grid; place-items: center; color: var(--aksent);
-}
-.restitusjon-anbefaling__disk .ikon { width: 22px; height: 22px; }
-.restitusjon-anbefaling__meta { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
-.restitusjon-anbefaling__tittel { display: block; font-family: var(--font-display); font-weight: 600; font-size: 15.5px; line-height: 1.25; }
-.restitusjon-anbefaling__under { display: block; font-size: 12px; color: var(--dempet); margin-top: 2px; line-height: 1.35; }
-.restitusjon-anbefaling__merker { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
-.restitusjon-anbefaling__start { margin-top: 12px; text-decoration: none; }
-.tag--ikon { display: inline-flex; align-items: center; gap: 4px; }
-.tag--ikon .ikon { width: 13px; height: 13px; }
-.tag--gronn { background: #E4F3EA; color: #2C7A55; }
-
-/* «Anbefalt økt»-kortet på Min dag (uten kroppskart — det bor på Profil). */
-.anbefaltkort__hode { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
-.anbefaltkort__tittel { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 18px; }
 
 /* Blå, understreket tekstlenke i brødtekst (f.eks. «restitusjonsbehov»). */
 .tekstlenke { color: #2F4EB5; text-decoration: underline; font-weight: 600; }

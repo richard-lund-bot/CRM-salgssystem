@@ -1,13 +1,12 @@
 // Faneside-skallet (M15) — delt av alle hovedfanene: det hvite banneret
-// (profilikon med nivå-boble, bjelle, wordmark, høyre-knapp, ukeskalender),
+// (tannhjul til Innstillinger, bjelle, wordmark, høyre-knapp, ukeskalender),
 // dagsfase-bakgrunnsbildet som fader mot underlaget, og pull-to-refresh.
 // Banneret ligger fast; innholdet scroller i egen beholder under den buede
 // kanten, akkurat som på Min dag. Ukene ligger i et dra-bart spor (forrige ·
 // denne · neste). En dag åpner mosjonskalenderen på den datoen — med mindre
 // skjermen sender inn sin egen dag-aksjon (biblioteket: logg/start/planlegg).
 import { el, tom, ikon } from './ui.js';
-import { hentProfil, hentLogg } from './store.js';
-import { nivaFraTotalXp } from './niva.js';
+import { hentLogg } from './store.js';
 import * as sync from './sync.js';
 
 const DAG = 86400000;
@@ -52,14 +51,11 @@ function wordmark() {
     'mova', el('span', { class: 'wordmark__prikk' }, '.'));
 }
 
-// Profilikonet bærer nivået som en liten boble — «levels med XP som et lite
-// tall», resten av feiringen bor på Merker-siden.
-function profilKnapp() {
-  const profil = hentProfil();
-  const niva = profil ? nivaFraTotalXp(profil.globalXp || 0).niva : null;
-  return el('a', { class: 'ikonknapp ikonknapp--plain ikonknapp--profil', href: '#/merker', 'aria-label': `Profil og merker — nivå ${niva ?? 1}` },
-    ikon('person'),
-    niva != null && el('span', { class: 'nivaboble' }, String(niva)),
+// Tannhjul til Innstillinger oppe til venstre. Profil (med nivå og merker) bor
+// nå som midt-fanen, så headeren trenger ikke lenger et eget profilikon.
+function innstillingerKnapp() {
+  return el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/innstillinger', 'aria-label': 'Innstillinger' },
+    ikon('gir'),
   );
 }
 
@@ -166,7 +162,7 @@ export function lagBanner({ hoyre = null, dagAksjon = null } = {}) {
   if (hoyre) hoyre.classList.add('hjembanner__hoyre');
   return el('div', { class: 'hjembanner' },
     el('div', { class: 'hjembanner__rad' },
-      profilKnapp(),
+      innstillingerKnapp(),
       el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/innstillinger', 'aria-label': 'Varsler og innstillinger' }, ikon('bjelle')),
       el('span', { class: 'hjembanner__logo' }, wordmark()),
       hoyre || el('a', { class: 'ikonknapp ikonknapp--plain hjembanner__hoyre', href: '#/kalender', 'aria-label': 'Mosjonskalender' }, ikon('kalender')),

@@ -109,23 +109,17 @@ function fane(tittel, under, ...innhold) {
 // ===========================================================================
 // Min dag — Mova-dashbord: hvit banner med header + ukeskalender (buet
 // underkant — resten av siden ligger som underlag), tre statistikk-kort
-// (dagens minutter, ukas aktive dager, nivå/XP), bevegelsesgrid, dagens
-// anbefaling og streak-indikator.
+// (dagens minutter, ukas aktive dager, nivå/XP) og bevegelsesgrid. Heroen
+// samler dagens budskap: planlagt økt, positiv kvittering, eller «Vi
+// anbefaler»-boksen fra anbefalingsmotoren; streaken vises som kompakt flamme.
 // ===========================================================================
 const DAG = 86400000;
-const UKEDAG_BOKSTAV = ['M', 'T', 'O', 'T', 'F', 'L', 'S'];
 
 function isoDato(d) {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, '0');
   const dg = String(d.getDate()).padStart(2, '0');
   return `${y}-${m}-${dg}`;
-}
-
-function mandagFor(d) {
-  const m = new Date(d);
-  m.setHours(0, 0, 0, 0);
-  return new Date(m.getTime() - ((m.getDay() + 6) % 7) * DAG);
 }
 
 // Dagsmål i minutter, avledet av foretrukket varighetsklasse.
@@ -140,12 +134,6 @@ function visHjem() {
   const logg = hentLogg();
   const nå = Date.now();
 
-  const idagIso = isoDato(new Date(nå));
-  const planer = planForDato(idagIso);
-  const minutterIdag = logg
-    .filter((o) => (o.dato || '').slice(0, 10) === idagIso)
-    .reduce((s, o) => s + (o.varighetMin || 0), 0);
-
   // Faneside-skallet (banner.js) låser body, legger dagsfasebildet bak
   // innholdet og gir pull-to-refresh — hjem fyller på med hero og grid.
   const scroll = lagFaneside(app);
@@ -154,11 +142,6 @@ function visHjem() {
     el('main', { class: 'innhold' },
       seksjonsHode(),
       bevegelsesGrid(),
-      anbefaltOktKort(logg, profil),
-      // Heroen har alt en CTA når noe er planlagt eller påbegynt — da
-      // trengs ikke anbefalingskortet i tillegg.
-      !planer.length && minutterIdag === 0 && anbefalingKort(profil, logg, nå),
-      streakKort(logg),
     ),
   );
 }
@@ -216,53 +199,6 @@ function oktBegrunnelse(okt, scores, anbef) {
   return anbef.tekst; // kondisjon/mobilitet eller lite muskelsignal → fall tilbake
 }
 
-// Anbefalt-økt-kort (Min dag): peker på en konkret, startbar økt valgt ut fra
-// preferanser + restitusjonsbehov. Selve kroppskartet bor nå på Profil; en
-// info-«i» forklarer grunnlaget og lenker til restitusjons-widgeten der.
-function anbefaltOktKort(logg, profil) {
-  const scores = regionScores(logg);
-  const okt = anbefaltOkt(scores, profil);
-  const anbef = anbefalingFraRegioner(scores); // fallback-tekst når ingen økt
-  const startHref = okt ? `#/okter?start=${okt.id}` : `#/okter?kat=${anbef.kat}`;
-
-  const hjelp = el('p', { class: 'restitusjonskort__hjelp', hidden: true },
-    'Denne økta er valgt ut fra preferansene dine og ',
-    el('a', { class: 'tekstlenke', href: '#/merker?vis=restitusjon' }, 'restitusjonsbehov'),
-    '.');
-  const info = el('button', {
-    class: 'restitusjonskort__info', type: 'button', 'aria-label': 'Hvorfor denne økta?',
-    onclick: () => { hjelp.hidden = !hjelp.hidden; },
-  }, ikon('info'));
-
-  const merkelapp = (ikonNavn, tekst, variant) => el('span', { class: `tag tag--ikon ${variant}` },
-    ikon(ikonNavn), tekst);
-
-  const intens = okt ? (okt.intensitet === 'intens' ? 'Hard' : 'Rolig') : anbef.intensitet;
-  const form = okt ? KATEGORI_NAVN[okt.kategori] : anbef.omfang;
-
-  return el('section', { class: 'kort anbefaltkort' },
-    el('div', { class: 'anbefaltkort__hode' },
-      el('h2', { class: 'anbefaltkort__tittel' }, 'Anbefalt økt'),
-      info,
-    ),
-    hjelp,
-    el('div', { class: 'restitusjon-anbefaling' },
-      el('span', { class: 'restitusjon-anbefaling__disk' }, ikon(okt ? (KAT_IKON[okt.kategori] || 'vekt') : 'vekt')),
-      el('div', { class: 'restitusjon-anbefaling__meta' },
-        el('span', { class: 'restitusjon-anbefaling__tittel' }, okt ? okt.navn : anbef.tekst),
-        el('span', { class: 'restitusjon-anbefaling__under' }, okt ? oktBegrunnelse(okt, scores, anbef) : anbef.tekst),
-        el('div', { class: 'restitusjon-anbefaling__merker' },
-          merkelapp('stolper', intens, 'tag--u'),
-          merkelapp(okt ? (KAT_IKON[okt.kategori] || 'person') : 'person', form, 'tag--gronn'),
-          merkelapp('klokke', okt ? `${okt.varighetMin} min` : anbef.varighet, 'tag--mod'),
-        ),
-        el('a', { class: 'knapp restitusjon-anbefaling__start', href: startHref },
-          okt ? 'Start økt' : 'Se økter'),
-      ),
-    ),
-  );
-}
-
 // ===========================================================================
 // Velkomst-hero: hilsen + budskap oppå dagsfasebildet, med statkortene
 // delvis over bildet som fader ut mot underlaget. Tre budskap: planlagt økt
@@ -301,17 +237,73 @@ function heroVelkomst(profil, logg, nå) {
       el('a', { class: 'hjemhero__pille', href: g.href }, ikon('lyn', 'ikon ikon--liten'), `${g.tittel} · ≈ +${g.xp} XP`),
     );
   } else {
-    budskap = el('p', { class: 'hjemhero__melding' }, 'Hvordan vil du bevege deg i dag?');
+    // Ingenting planlagt og ingenting påbegynt → anbefalingsmotoren fyller
+    // heroen med én konkret, startbar økt (samme glass-stil som planboksen).
+    budskap = heroAnbefalBoks(logg, profil);
   }
+
+  // Kompakt streak øverst til høyre: flamme + tall. Skjules ved 0. En svak puls
+  // når man ikke har trent i dag (streaken «i fare») dulter mot å holde den i live.
+  const streak = beregnStreak(logg);
+  const trentIdag = minutter > 0;
 
   return el('section', { class: `hjemhero hjemhero--${fase}` },
     el('div', { class: 'hjemhero__innhold' },
+      streak >= 1 && el('a', {
+        class: 'streakflamme' + (trentIdag ? '' : ' streakflamme--fare'),
+        href: '#/merker',
+        'aria-label': `${streak} ${streak === 1 ? 'dags' : 'dagers'} streak`,
+      }, ikon('flamme'), el('span', { class: 'streakflamme__tall' }, String(streak))),
       navn
         ? [el('p', { class: 'hjemhero__hilsen' }, `${hilsen},`), el('h1', { class: 'hjemhero__navn' }, navn)]
         : el('h1', { class: 'hjemhero__navn hjemhero__navn--hilsen' }, hilsen),
       budskap,
     ),
     statKortRad(profil, logg, true),
+  );
+}
+
+// «Vi anbefaler»-boks i heroen: speiler heroPlanBoks (frostet glass), men
+// innholdet kommer fra anbefalingsmotoren — én konkret økt valgt ut fra
+// restitusjonsbehov + preferanser. Info-«i» forklarer grunnlaget og lenker
+// (blått, understreket) til restitusjons-widgeten og prioriteringene.
+function heroAnbefalBoks(logg, profil) {
+  const scores = regionScores(logg);
+  const okt = anbefaltOkt(scores, profil);
+  const anbef = anbefalingFraRegioner(scores); // fallback-tekst når ingen økt
+  const startHref = okt ? `#/okter?start=${okt.id}` : `#/okter?kat=${anbef.kat}`;
+  const tittel = okt ? okt.navn : anbef.tekst;
+  const begrunnelse = okt ? oktBegrunnelse(okt, scores, anbef) : anbef.tekst;
+
+  const hjelp = el('p', { class: 'restitusjonskort__hjelp', hidden: true },
+    'Valgt ut fra ',
+    el('a', { class: 'tekstlenke', href: '#/merker?vis=restitusjon' }, 'restitusjonsbehov'),
+    ' og preferansene dine. Juster ',
+    el('a', { class: 'tekstlenke', href: '#/innstillinger' }, 'prioriteringene'),
+    ' i Innstillinger.');
+  const info = el('button', {
+    class: 'restitusjonskort__info hjemhero__planinfo', type: 'button', 'aria-label': 'Hvorfor denne økta?',
+    onclick: () => { hjelp.hidden = !hjelp.hidden; },
+  }, ikon('info'));
+
+  return el('div', { class: 'hjemhero__plan' },
+    el('div', { class: 'hjemhero__planrad' },
+      el('span', { class: 'hjemhero__plandisk' }, ikon(okt ? (KAT_IKON[okt.kategori] || 'vekt') : 'vekt')),
+      el('div', { class: 'hjemhero__planmeta' },
+        el('span', { class: 'hjemhero__planeyebrow' }, 'Vi anbefaler'),
+        el('span', { class: 'hjemhero__plantittel' }, tittel),
+        el('span', { class: 'hjemhero__planbegrunn' }, begrunnelse),
+      ),
+      info,
+    ),
+    hjelp,
+    el('div', { class: 'hjemhero__planbunn' },
+      okt
+        ? el('span', { class: 'hjemhero__plantid' }, ikon('klokke', 'ikon ikon--liten'),
+            `${okt.varighetMin} min · ${KATEGORI_NAVN[okt.kategori]}`)
+        : el('span', { class: 'hjemhero__plantid' }, ikon('klokke', 'ikon ikon--liten'), anbef.varighet),
+      el('a', { class: 'hjemhero__knapp', href: startHref }, okt ? 'Start økt' : 'Se økter'),
+    ),
   );
 }
 
@@ -443,39 +435,6 @@ function bevegelsesGrid() {
   return el('div', { class: 'movgrid' }, ...HJEM_FLISER.map((f) => flis(...f)), overrask);
 }
 
-// Dagens anbefaling: planlagt økt hvis den finnes, ellers Dagens gnist (§5.1).
-function anbefalingKort(profil, logg, nå) {
-  const planer = planForDato(isoDato(new Date()));
-  const bilde = el('img', { src: 'icons/brand/shoe-badge.png', alt: '', loading: 'lazy' });
-  const disk = el('span', { class: 'anbefaling__disk' }, bilde);
-  bilde.addEventListener('error', () => { bilde.remove(); disk.append(ikon('sko')); });
-
-  let tittel, tekst, href, knapp;
-  if (planer.length) {
-    const p = planer[0];
-    const vis = planVisning(p);
-    tittel = vis.kortTittel;
-    tekst = 'Planlagt økt i dag';
-    href = vis.href;
-    knapp = 'Åpne plan';
-  } else {
-    const g = dagensGnist(profil, logg, nå);
-    tittel = g.tittel;
-    tekst = `${g.undertekst} · ≈ +${g.xp} XP`;
-    href = g.href;
-    knapp = 'Kjør i gang';
-  }
-
-  return el('div', { class: 'anbefaling' },
-    disk,
-    el('div', { class: 'anbefaling__meta' },
-      el('span', { class: 'anbefaling__topp' }, el('strong', {}, 'I dag'), ` · ${tittel}`),
-      el('span', { class: 'anbefaling__tekst' }, tekst),
-    ),
-    el('a', { class: 'anbefaling__knapp', href }, knapp),
-  );
-}
-
 // Streak: sammenhengende dager med bevegelse. Dagens økt kan fortsatt komme,
 // så en aktiv gårsdag holder streaken i live til dagen er omme.
 function beregnStreak(logg) {
@@ -487,41 +446,6 @@ function beregnStreak(logg) {
   let streak = 0;
   while (aktivSett.has(isoDato(new Date(t)))) { streak++; t -= DAG; }
   return streak;
-}
-
-function streakKort(logg) {
-  const streak = beregnStreak(logg);
-  const aktivSett = new Set(logg.map((o) => (o.dato || '').slice(0, 10)));
-  const idag = new Date();
-  idag.setHours(0, 0, 0, 0);
-  const man = mandagFor(idag);
-
-  const uke = [];
-  for (let i = 0; i < 7; i++) {
-    const iso = isoDato(new Date(man.getTime() + i * DAG));
-    const aktiv = aktivSett.has(iso);
-    uke.push(el('span', { class: 'streakuke__dag' },
-      el('span', { class: 'streakuke__sirkel' + (aktiv ? ' streakuke__sirkel--aktiv' : '') },
-        aktiv && ikon('sjekk')),
-      el('span', { class: 'streakuke__navn' }, UKEDAG_BOKSTAV[i]),
-    ));
-  }
-
-  const tittel = streak > 0
-    ? `${streak} ${streak === 1 ? 'dags' : 'dagers'} streak`
-    : 'Klar for en ny streak?';
-  const tekst = streak >= 3 ? 'Flott jobba! Hold trenden i gang.'
-    : streak > 0 ? 'God start — hold rytmen i morgen også.'
-      : 'Én liten bevegelse i dag starter en ny.';
-
-  return el('a', { class: 'streakrad', href: '#/merker' },
-    el('span', { class: 'streakrad__disk' }, ikon('flamme')),
-    el('div', { class: 'streakrad__meta' },
-      el('span', { class: 'streakrad__tittel' }, tittel),
-      el('span', { class: 'streakrad__tekst' }, tekst),
-    ),
-    el('div', { class: 'streakuke' }, ...uke),
-  );
 }
 
 function velkommenKort() {
