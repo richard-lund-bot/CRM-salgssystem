@@ -6,7 +6,8 @@
     "ikon": "vekt",
     "farge": "teal",
     "status": "aktiv",
-    "seksjoner": ["kroppsvekt-nybegynner"]
+    "seksjoner": ["kroppsvekt-nybegynner"],
+    "kapsteiner": ["push-opp"]
   },
   {
     "id": "loping",

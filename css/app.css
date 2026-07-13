@@ -2466,6 +2466,32 @@ body.fokusmodus { padding-bottom: 0; }
   .mester-feiring__kort { opacity: 1; transform: none; }
 }
 
+/* Enhet-/seksjon-fullført-feiring: jubel-panda + konfetti, teal-tema. */
+.laer-feiring { position: fixed; inset: 0; z-index: 3400; display: grid; place-items: center; pointer-events: none; opacity: 0; transition: opacity 0.3s ease; }
+.laer-feiring--pa { opacity: 1; }
+.laer-feiring--ut { opacity: 0; }
+.laer-feiring__glo { position: absolute; inset: 0; background: radial-gradient(circle at 50% 42%, rgba(220,246,240,0.92) 0%, rgba(45,168,140,0.4) 16%, rgba(1,63,64,0.1) 36%, transparent 60%); animation: mester-glo 2.2s ease-out; }
+.laer-feiring__kort { position: relative; text-align: center; transform: scale(0.6); opacity: 0; animation: mester-kort 2.2s var(--ease-standard) forwards; }
+.laer-feiring--stor .laer-feiring__kort { animation-duration: 2.7s; }
+.laer-feiring__panda { width: 140px; height: 128px; margin: 0 auto 4px; filter: drop-shadow(0 8px 16px rgba(1,63,64,0.28)); }
+.laer-feiring--stor .laer-feiring__panda { width: 168px; height: 152px; }
+.laer-feiring__stjerner { justify-content: center; gap: 12px; margin-bottom: 8px; }
+.laer-feiring__stjerner .stjernerad__stj .ikon { width: 34px; height: 34px; color: #F5B301; fill: #F5B301; filter: drop-shadow(0 2px 4px rgba(184,122,26,0.4)); }
+.laer-feiring__stjerner .stjernerad__stj:nth-child(2) { transform: translateY(-7px); }
+.laer-feiring__merke { display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #fff; background: var(--teal-700); border-radius: 999px; padding: 5px 14px; }
+.laer-feiring__tittel { margin: 10px 0 0; font-family: var(--font-display); font-size: 30px; font-weight: 800; color: var(--teal-900); text-shadow: 0 2px 10px rgba(1,63,64,0.18); }
+.laer-feiring--stor .laer-feiring__tittel { font-size: 34px; }
+.laer-feiring__under { margin: 8px auto 0; max-width: 26ch; font-size: 15px; font-weight: 600; color: var(--tekst-2); }
+@media (prefers-reduced-motion: reduce) {
+  .laer-feiring__glo, .laer-feiring__kort { animation: none; }
+  .laer-feiring__kort { opacity: 1; transform: none; }
+}
+
+/* Kapstein-kort (push-up-pandaen i disiplin-oversikten). */
+.seksjonkort--kapstein .seksjonkort__panda { width: 104px; height: 108px; right: 14px; }
+.seksjonkort__stjerner .stjernerad__stj .ikon { width: 16px; height: 16px; color: var(--kant); }
+.seksjonkort__stjerner .stjernerad__stj--pa .ikon { color: #F5B301; fill: #F5B301; }
+
 /* === Disipliner → Seksjoner (Fase 2) ================================== */
 /* Disiplin-rad øverst i Lær */
 .disiplinrad { margin-bottom: 16px; }

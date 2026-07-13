@@ -14,6 +14,12 @@ import { fyllInn, lagRing } from './animasjon.js';
 
 const DAG = 86400000;
 
+// Seksjonsstrukturen (metadata, ikke brukerdata) injiseres av sti.js etter at
+// data/seksjoner.json er lastet, så enhet-/seksjon-fullført-merker kan avledes
+// rent fra loggen uten at merker.js selv må laste JSON. Tom → merkene står på 0.
+let _seksjonsstruktur = [];
+export function settSeksjonsstruktur(seksjoner) { _seksjonsstruktur = seksjoner || []; }
+
 // --- Kontekst: én gjennomgang av loggen gir alt merkene trenger -------------
 function dagsStart(ts) {
   const d = new Date(ts);
@@ -50,6 +56,9 @@ function byggKontekst(profil, logg, planer) {
   // Tellere per kilde.
   const kildeTeller = {};
   const laerDatoListe = []; // dato for hvert fullførte ferdighetstrinn (kilde 'laer', ikke boss)
+  const laerNodeForste = new Map(); // «sti::node» → dato første gang trinnet ble mestret
+  const perfekteSet = new Set();    // «sti::node» som har nådd 3 stjerner
+  const perfektDatoListe = [];      // datoer (kronologisk) hvert nye trinn ble feilfritt
   const bossStjernePerSti = new Map(); // stiId → høyeste vunne boss-nivå (stjerner)
   const bossSlaattDato = new Map();    // stiId → dato da 3. stjerne ble nådd
 
@@ -94,6 +103,14 @@ function byggKontekst(profil, logg, planer) {
       }
     } else if (o.kilde === 'laer') {
       laerDatoListe.push(o.dato); // ekte ferdighetstrinn (ikke boss-runder)
+      if (o.node && o.sti) {
+        const k = o.sti + '::' + o.node;
+        if (!laerNodeForste.has(k)) laerNodeForste.set(k, o.dato);
+        if ((o.stjerner || 0) >= 3 && !perfekteSet.has(k)) {
+          perfekteSet.add(k);
+          perfektDatoListe.push(o.dato); // rader er sortert stigende → kronologisk
+        }
+      }
     }
     if (o.kilde === 'strava') settForste('strava', o);
     if (o.kilde === 'bibliotek') {
@@ -153,6 +170,27 @@ function byggKontekst(profil, logg, planer) {
 
   const planGjort = (planer || []).filter((p) => p.status === 'gjort').length;
 
+  // Enhet-/seksjon-fullført: avledes av at alle steg-noder er mestret. Datoen er
+  // da den siste noden i enheten/seksjonen ble tatt. Krever injisert struktur.
+  const enhetDatoer = [];
+  const seksjonDatoer = [];
+  for (const seksjon of _seksjonsstruktur) {
+    const seksjonNoder = [];
+    let alleEnheterFerdig = true;
+    for (const enhet of seksjon.enheter || []) {
+      const noder = (enhet.steg || []).map((s) => seksjon.id + '::' + s.ovelse);
+      seksjonNoder.push(...noder);
+      const datoer = noder.map((k) => laerNodeForste.get(k));
+      if (noder.length && datoer.every(Boolean)) enhetDatoer.push(datoer.reduce((m, x) => (x > m ? x : m)));
+      else alleEnheterFerdig = false;
+    }
+    if (alleEnheterFerdig && seksjonNoder.length) {
+      seksjonDatoer.push(seksjonNoder.map((k) => laerNodeForste.get(k)).reduce((m, x) => (x > m ? x : m)));
+    }
+  }
+  enhetDatoer.sort();
+  seksjonDatoer.sort();
+
   return {
     antall: rader.length,
     antallDato: (n) => antallDato.get(n) || null,
@@ -174,6 +212,12 @@ function byggKontekst(profil, logg, planer) {
     bibliotekAntall: kildeTeller.bibliotek || 0,
     laerAntall: laerDatoListe.length,
     laerDato: (n) => laerDatoListe[n - 1] || null,
+    perfekteSteg: perfekteSet.size,
+    perfektDato: (n) => perfektDatoListe[n - 1] || null,
+    enheterFullfort: enhetDatoer.length,
+    enheterFullfortDato: (n) => enhetDatoer[n - 1] || null,
+    seksjonerFullfort: seksjonDatoer.length,
+    seksjonerFullfortDato: (n) => seksjonDatoer[n - 1] || null,
     bossStjerner: (stiId) => bossStjernePerSti.get(stiId) || 0,
     bossSlaattDato: (stiId) => bossSlaattDato.get(stiId) || null,
     planGjort,
@@ -227,6 +271,11 @@ export const MERKER = {
     teller('laer-1', 'Første trinn', 'Fullført ditt første ferdighetstrinn', 'stjerne', 'lime', 1, (c) => c.laerAntall, (c) => c.laerDato(1)),
     teller('laer-5', 'På vei', 'Fullført 5 ferdighetstrinn', 'graf', 'teal', 5, (c) => c.laerAntall, (c) => c.laerDato(5)),
     teller('laer-10', 'Ferdighetsbygger', 'Fullført 10 ferdighetstrinn', 'hexstjerne', 'blaa', 10, (c) => c.laerAntall, (c) => c.laerDato(10)),
+    teller('laer-perfekt', 'Feilfritt', 'Tok tre stjerner på et ferdighetstrinn', 'stjerne', 'gul', 1, (c) => c.perfekteSteg, (c) => c.perfektDato(1)),
+    teller('laer-perfekt-5', 'Perfeksjonist', 'Tre stjerner på 5 ferdighetstrinn', 'hexstjerne', 'oransje', 5, (c) => c.perfekteSteg, (c) => c.perfektDato(5)),
+    teller('enhet-1', 'Klassekamerat', 'Fullført din første enhet', 'medalje', 'koral', 1, (c) => c.enheterFullfort, (c) => c.enheterFullfortDato(1)),
+    teller('enhet-3', 'Klasseturnering', 'Fullført 3 enheter', 'kalender', 'blaa', 3, (c) => c.enheterFullfort, (c) => c.enheterFullfortDato(3)),
+    teller('seksjon-1', 'Seksjonsmester', 'Fullført en hel seksjon', 'trofe', 'lilla', 1, (c) => c.seksjonerFullfort, (c) => c.seksjonerFullfortDato(1)),
     teller('push-mester', 'Push-up-mester', 'Slo push-up-pandaen — tre stjerner', 'trofe', 'gul', 3, (c) => c.bossStjerner('push-opp'), (c) => c.bossSlaattDato('push-opp')),
   ],
   nytt: [

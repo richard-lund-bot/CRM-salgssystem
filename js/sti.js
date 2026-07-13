@@ -12,6 +12,7 @@
 // mestret.
 import { el, tom, ikon } from './ui.js';
 import { hentLogg } from './store.js';
+import { settSeksjonsstruktur } from './merker.js';
 import { ovelseInfo, ovelseBilde, visOvelseArk } from './ovelse.js';
 import { registrerOgLogg } from './beveg.js';
 import { beregnXp } from './bevegelse.js';
@@ -82,6 +83,7 @@ export async function lastSeksjoner() {
   const res = await fetch('data/seksjoner.json');
   if (!res.ok) throw new Error(`Kunne ikke laste seksjoner (${res.status})`);
   _seksjoner = await res.json();
+  settSeksjonsstruktur(_seksjoner); // gi merkene enhet-/seksjon-strukturen
   return _seksjoner;
 }
 
@@ -375,7 +377,34 @@ export function visDisiplinSkjerm(mount) {
     ),
     el('main', { class: 'innhold' },
       ...seksjoner.map((s, i) => seksjonKort(s, i, d)),
+      ...(d.kapsteiner || []).map((id) => kapsteinKort(id, d)).filter(Boolean),
       el('p', { class: 'sti-fot dempet' }, seksjoner.length ? 'Flere seksjoner låses opp etter hvert.' : 'Innhold i denne disiplinen er på vei.'),
+    ),
+  );
+}
+
+// Kapstein-kort: en frittstående ferdighetssti (f.eks. push-up-pandaen) som
+// bor i disiplinen. Beholder sin egen reise (#/sti?id=) + boss + mester-tema.
+function kapsteinKort(stiId, d) {
+  const sti = finnSti(stiId);
+  if (!sti) return null;
+  const stj = sti.boss ? bossStjerner(sti.id) : 0;
+  const slaatt = stj >= BOSS_MAKS_STJERNER;
+  return el('a', { class: `seksjonkort seksjonkort--kapstein seksjonkort--${d.farge}`, href: `#/sti?id=${encodeURIComponent(sti.id)}` },
+    el('div', { class: 'seksjonkort__topp' },
+      el('div', { class: 'seksjonkort__snakk' }, slaatt ? 'Mestret!' : 'Bosskamp'),
+      pandaImg(slaatt ? 'cheer' : 'flex', 'seksjonkort__panda'),
+    ),
+    el('div', { class: 'seksjonkort__bunn' },
+      el('div', {},
+        el('span', { class: 'seksjonkort__merke' }, 'Kapstein'),
+        el('h2', { class: 'seksjonkort__tittel' }, sti.tittel),
+        el('p', { class: 'seksjonkort__under' }, sti.undertittel),
+      ),
+      el('div', { class: 'seksjonkort__framdrift' },
+        stjerneRad(stj, 'seksjonkort__stjerner'),
+        el('span', { class: 'seksjonkort__pil' }, ikon('chevron')),
+      ),
     ),
   );
 }
@@ -468,6 +497,23 @@ export function visSeksjonSkjerm(mount) {
         : el('p', { class: 'sti-fot dempet' }, 'Mestre et steg for å låse opp det neste.'),
     ),
   );
+
+  // Feiring: første gang en enhet eller hele seksjonen blir mestret. Seksjons-
+  // feiringen vinner (vises alene) når begge skjer samtidig; enhets-flaggene
+  // settes uansett så de ikke trigges senere.
+  let feiret = false;
+  if (ferdig && !harFeiret(seksjonNokkel(seksjon.id))) {
+    settFeiret(seksjonNokkel(seksjon.id));
+    feirSeksjon(seksjon.navn);
+    feiret = true;
+  }
+  enheter.forEach((enhet) => {
+    const komplett = enhet.steg.every((st) => mestret.has(st.ovelse));
+    if (komplett && !harFeiret(enhetNokkel(seksjon.id, enhet.id))) {
+      settFeiret(enhetNokkel(seksjon.id, enhet.id));
+      if (!feiret) { feirEnhet(enhet.navn); feiret = true; }
+    }
+  });
 }
 
 // --- Sti-skjerm (#/sti?id=) ----------------------------------------------
@@ -561,6 +607,16 @@ function settMesterFeiret(stiId) {
   try { localStorage.setItem('mova.mesterFeiret.' + stiId, '1'); } catch { /* privat modus e.l. */ }
 }
 
+// Engangs-flagg for enhet-/seksjon-fullført-feiring (som mesterFeiret).
+function harFeiret(nokkel) {
+  try { return localStorage.getItem(nokkel) === '1'; } catch { return true; }
+}
+function settFeiret(nokkel) {
+  try { localStorage.setItem(nokkel, '1'); } catch { /* privat modus e.l. */ }
+}
+const enhetNokkel = (seksjonId, enhetId) => `mova.enhetFeiret.${seksjonId}.${enhetId}`;
+const seksjonNokkel = (seksjonId) => `mova.seksjonFeiret.${seksjonId}`;
+
 // Liten gull-krone (SVG) — over bossen og i feiringen.
 function kroneSvg(klasse) {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -603,6 +659,35 @@ function feirMester(skjerm) {
   // Morph temaet inn i feiringen, så det er gull når overlegget forsvinner.
   setTimeout(() => { skjerm.classList.add('reise-skjerm--mester'); skjerm.prepend(mesterDekor()); vibrer('riktig'); }, 520);
   setTimeout(() => { overlay.classList.add('mester-feiring--ut'); setTimeout(() => overlay.remove(), 420); }, 2400);
+}
+
+// --- Enhet-/seksjon-fullført: fullskjerm-feiring (jubel-panda + konfetti) ---
+// Vises én gang idet en enhet eller hele seksjonen blir mestret. `stor` gir
+// seksjons-varianten (større, med tre stjerner).
+function feirFullfort({ merke, tittel, under, stor = false }) {
+  vibrer('feiring');
+  const overlay = el('div', { class: 'laer-feiring' + (stor ? ' laer-feiring--stor' : '') },
+    el('div', { class: 'laer-feiring__glo' }),
+    el('div', { class: 'laer-feiring__kort' },
+      pandaImg('cheer', 'laer-feiring__panda'),
+      stor ? stjerneRad(BOSS_MAKS_STJERNER, 'laer-feiring__stjerner') : null,
+      el('span', { class: 'laer-feiring__merke' }, merke),
+      el('h1', { class: 'laer-feiring__tittel' }, tittel),
+      el('p', { class: 'laer-feiring__under' }, under),
+    ),
+  );
+  document.body.append(overlay);
+  try { overlay.append(lagKonfetti()); } catch { /* valgfri feiring */ }
+  requestAnimationFrame(() => overlay.classList.add('laer-feiring--pa'));
+  setTimeout(() => vibrer('riktig'), 420);
+  const holdMs = stor ? 2700 : 2100;
+  setTimeout(() => { overlay.classList.add('laer-feiring--ut'); setTimeout(() => overlay.remove(), 420); }, holdMs);
+}
+function feirEnhet(navn) {
+  feirFullfort({ merke: 'Enhet fullført', tittel: navn, under: 'Alle stegene er mestret — sterkt jobba!' });
+}
+function feirSeksjon(navn) {
+  feirFullfort({ merke: 'Seksjon fullført', tittel: navn, under: 'Du har lagt grunnmuren. På tide med neste seksjon!', stor: true });
 }
 
 // Kompakt, klebrig topp-kort (Duolingo-aktig «unit header»): ikon, etikett,
