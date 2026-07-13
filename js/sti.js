@@ -158,37 +158,27 @@ export function visStiSkjerm(mount) {
     return { l, i, tilstand };
   });
 
-  // Boss-tilstand: låst (til «etterNode» er mestret) / klar / slått (3 stjerner).
+  // Boss: push-up-pandaen kan utfordres til enhver tid (ingen låsing) — klar,
+  // eller slått (tre stjerner). Han står på siden av stien og gjør push-ups
+  // der han står; posisjoneres etter render (måles mot en node).
   const boss = sti.boss || null;
-  const bossAapen = boss ? mestret.has(boss.etterNode) : false;
   const bossStj = boss ? bossStjerner(sti.id) : 0;
-  const bossTilstand = !boss ? null
-    : !bossAapen ? 'laast'
-      : bossStj >= BOSS_MAKS_STJERNER ? 'slaatt' : 'klar';
+  const bossTilstand = !boss ? null : (bossStj >= BOSS_MAKS_STJERNER ? 'slaatt' : 'klar');
 
-  // Reise-innhold: guide + noder, med bossen flettet inn rett etter «etterNode».
-  const guideSnakk = bossTilstand === 'slaatt'
-    ? 'Push-up-pandaen er slått — du er offisielt push-up-mester 🐼'
-    : bossTilstand === 'klar'
-      ? 'Push-up-pandaen står klar. Tør du en push-up-kamp?'
-      : antallMestret >= ledd.length
-        ? 'Wow — hele stien! Sterkt jobba.'
-        : 'Push-up-pandaen heier på deg. Ett trinn om gangen!';
-  const reiseBarn = [
+  const guideSnakk = !boss
+    ? (antallMestret >= ledd.length ? 'Wow — hele stien! Sterkt jobba.' : 'Ett trinn om gangen — du fikser dette!')
+    : bossTilstand === 'slaatt'
+      ? 'Push-up-pandaen er slått — du er offisielt push-up-mester 🐼'
+      : 'Push-up-pandaen står langs stien. Utfordre den når du vil!';
+
+  const reiseEl = el('div', { class: 'reise' },
     el('div', { class: 'reise-guide' },
       pandaAnim('idle', 'wave', 'reise-guide__panda', 'idle'),
       el('span', { class: 'reise-guide__snakk' }, guideSnakk),
     ),
-  ];
-  let bossSatt = false;
-  noder.forEach((n) => {
-    reiseBarn.push(reiseNode(sti, n));
-    if (boss && !bossSatt && n.l.ovelse === boss.etterNode) {
-      reiseBarn.push(reiseBoss(sti, boss, bossTilstand, bossStj));
-      bossSatt = true;
-    }
-  });
-  if (boss && !bossSatt) reiseBarn.push(reiseBoss(sti, boss, bossTilstand, bossStj));
+    ...noder.map((n) => reiseNode(sti, n)),
+  );
+  if (boss) reiseEl.append(reiseBoss(sti, boss, bossTilstand, bossStj));
 
   tom(mount);
   mount.append(
@@ -206,7 +196,7 @@ export function visStiSkjerm(mount) {
         el('p', { class: 'sti-hero__intro' }, sti.intro),
         stiFramdrift(antallMestret, ledd.length),
       ),
-      el('div', { class: 'reise' }, ...reiseBarn),
+      reiseEl,
       bossTilstand === 'slaatt'
         ? el('p', { class: 'sti-fot sti-fot--ferdig' }, ikon('trofe', 'ikon'), ' Push-up-pandaen er slått — du er push-up-mester!')
         : antallMestret >= ledd.length && ledd.length
@@ -214,6 +204,15 @@ export function visStiSkjerm(mount) {
           : el('p', { class: 'sti-fot dempet' }, 'Mestre et trinn for å låse opp det neste.'),
     ),
   );
+
+  // Plasser bossen i høyre rennestein, på høyde med en venstreforskjøvet node
+  // (så gutteren er klar). Måles etter at DOM finnes — robust mot tekstbrytning.
+  if (boss) {
+    const bossEl = reiseEl.querySelector('.reise-boss');
+    const nodeEls = reiseEl.querySelectorAll('.reise-node');
+    const anker = nodeEls[Math.min(5, nodeEls.length - 1)];
+    if (bossEl && anker) bossEl.style.top = `${anker.offsetTop + anker.offsetHeight / 2}px`;
+  }
 }
 
 function stiFramdrift(gjort, av) {
@@ -507,67 +506,57 @@ function startLeksjon(sti, ledd) {
 // Tre nivåer, én stjerne pr. slått nivå, tre stjerner = mestret øvelse.
 // ===========================================================================
 function reiseBoss(sti, boss, tilstand, stjerner) {
-  const figur = tilstand === 'slaatt'
-    ? pandaImg('cheer', 'reise-boss__panda')
-    : pandaAnim('idle', 'wave', 'reise-boss__panda', 'idle');
-
+  // Ingen tittel/plate — bare pandaen (som gjør push-ups) og tre stjerner under.
   const scene = el('button', {
     class: 'reise-boss__scene', type: 'button',
-    'aria-label': `${boss.tittel} — ${stjerner} av ${BOSS_MAKS_STJERNER} stjerner`,
+    'aria-label': `Push-up-pandaen — ${stjerner} av ${BOSS_MAKS_STJERNER} stjerner. Utfordre til push-up-kamp.`,
   },
     el('div', { class: 'reise-boss__glow' }),
-    tilstand === 'laast' ? el('span', { class: 'reise-boss__zzz' }, 'z z') : null,
-    figur,
-    el('div', { class: 'reise-boss__plate' },
-      el('span', { class: 'reise-boss__navn' }, boss.tittel),
-      stjerneRad(stjerner, 'reise-boss__stjerner'),
-    ),
+    pandaAnim('pushup-up', 'pushup-down', 'reise-boss__panda', 'pushup'),
+    stjerneRad(stjerner, 'reise-boss__stjerner'),
   );
 
   const wrap = el('div', { class: `reise-boss reise-boss--${tilstand}` }, scene);
-  wrap.style.setProperty('--dx', '0px');
   scene.addEventListener('click', (ev) => {
     ev.stopPropagation();
-    apneBossPopover(sti, boss, tilstand, stjerner, wrap);
+    apneBossModal(sti, boss, stjerner);
   });
   return wrap;
 }
 
-function apneBossPopover(sti, boss, tilstand, stjerner, wrap) {
-  const alleredeApen = _aktivWrap === wrap;
+// Utfordrings-modal (sentrert): bossen står i rennesteinen, så en tail-popover
+// ville klippe mot kanten — vi bruker et lite midtstilt kort i stedet.
+let _bossModal = null;
+function lukkBossModal() {
+  const m = _bossModal;
+  _bossModal = null;
+  if (!m) return;
+  m.classList.add('bosskort-lag--ut');
+  setTimeout(() => m.remove(), 180);
+}
+
+function apneBossModal(sti, boss, stjerner) {
   lukkPopover();
-  if (alleredeApen) return;
+  if (_bossModal) { lukkBossModal(); return; }
   vibrer('lett');
-
-  let kort;
-  if (tilstand === 'laast') {
-    kort = el('div', { class: 'reise-popover reise-popover--laast' },
-      el('span', { class: 'reise-popover__tail' }),
-      el('h3', { class: 'reise-popover__navn' }, boss.tittel),
-      el('p', { class: 'reise-popover__meta' }, boss.laasHint),
-    );
-  } else {
-    const revansje = stjerner >= BOSS_MAKS_STJERNER;
-    const cta = revansje ? 'Ta en revansje'
-      : stjerner === 0 ? 'Utfordre pandaen'
-        : `Nivå ${stjerner + 1} av ${BOSS_MAKS_STJERNER}`;
-    kort = el('div', { class: 'reise-popover reise-popover--boss' },
-      el('span', { class: 'reise-popover__tail' }),
-      el('h3', { class: 'reise-popover__navn' }, boss.tittel),
-      el('p', { class: 'reise-popover__meta' }, revansje ? 'Push-up-mester! Alle tre stjerner er dine.' : boss.innbydelse),
-      stjerneRad(stjerner, 'reise-popover__stjerner'),
-      knappStart(cta, () => startBossKamp(sti, boss, revansje ? 0 : stjerner)),
-    );
-  }
-
-  const scrim = el('div', { class: 'reise-scrim' });
-  scrim.addEventListener('click', lukkPopover);
-  wrap.parentElement.append(scrim);
-  wrap.append(kort);
-  wrap.classList.add('reise-node--aktiv');
-  _apenPopover = kort;
-  _aktivWrap = wrap;
-  requestAnimationFrame(() => kort.classList.add('reise-popover--inn'));
+  const revansje = stjerner >= BOSS_MAKS_STJERNER;
+  const cta = revansje ? 'Ta en revansje'
+    : stjerner === 0 ? 'Utfordre pandaen'
+      : `Nivå ${stjerner + 1} av ${BOSS_MAKS_STJERNER}`;
+  const kort = el('div', { class: 'bosskort' },
+    pandaImg('flex', 'bosskort__panda'),
+    stjerneRad(stjerner, 'bosskort__stjerner'),
+    el('p', { class: 'bosskort__tekst' },
+      revansje ? 'Push-up-mester! Alle tre stjerner er dine — tør du en revansje?' : boss.innbydelse),
+    knappStart(cta, () => { lukkBossModal(); startBossKamp(sti, boss, revansje ? 0 : stjerner); }),
+    el('button', { class: 'bosskort__avbryt', type: 'button', onclick: lukkBossModal }, 'Ikke nå'),
+  );
+  const scrim = el('div', { class: 'bosskort__scrim' });
+  scrim.addEventListener('click', lukkBossModal);
+  const lag = el('div', { class: 'bosskort-lag' }, scrim, kort);
+  document.body.append(lag);
+  _bossModal = lag;
+  requestAnimationFrame(() => lag.classList.add('bosskort-lag--inn'));
 }
 
 // --- Selve kampen: tell push-ups sammen med pandaen, ett nivå om gangen -----

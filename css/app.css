@@ -2257,24 +2257,39 @@ body.fokusmodus { padding-bottom: 0; }
 .stjernerad__stj--pa .ikon { color: #F5B301; fill: #F5B301; }
 .stjernerad__stj--ny .ikon { animation: kamp-stjerne 0.45s var(--ease-standard) both; }
 
-/* Boss-figur som står ved stien */
-.reise-boss { position: relative; display: flex; flex-direction: column; align-items: center; margin: 2px 0; }
-.reise-boss__scene { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px; background: none; border: none; cursor: pointer; }
-.reise-boss__glow { position: absolute; top: 4px; left: 50%; width: 148px; height: 148px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle, var(--aksent-svak) 0%, transparent 68%); z-index: 0; }
-.reise-boss__panda { position: relative; z-index: 1; width: 132px; height: 150px; }
-.reise-boss__plate { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 8px 16px; background: var(--bg-kort); border: 1px solid var(--kant); border-radius: 16px; box-shadow: var(--shadow-sm); }
-.reise-boss__navn { font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--teal-900); }
-.reise-boss__zzz { position: absolute; top: 8px; right: 14px; z-index: 2; font-family: var(--font-display); font-weight: 700; font-size: 15px; letter-spacing: 0.1em; color: var(--dempet); }
-.reise-boss__scene:active { transform: translateY(2px); }
-.reise-boss--laast .reise-boss__panda { filter: grayscale(1) opacity(0.5); }
-.reise-boss--laast .reise-boss__glow { display: none; }
-.reise-boss--slaatt .reise-boss__glow { background: radial-gradient(circle, rgba(245,179,1,0.3) 0%, transparent 68%); }
+/* Boss: push-up-pandaen står på siden av stien (høyre rennestein) og gjør
+   push-ups. Ingen tittel — bare figuren og tre stjerner i bue under. */
+.reise-boss { position: absolute; right: 2px; z-index: 3; transform: translateY(-50%); }
+.reise-boss__scene { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 6px; background: none; border: none; cursor: pointer; }
+.reise-boss__glow { position: absolute; top: -6px; left: 50%; width: 150px; height: 150px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle, var(--aksent-svak) 0%, transparent 66%); z-index: 0; }
+.reise-boss__panda { position: relative; z-index: 1; width: 132px; height: 116px; }
+.reise-boss__scene:active { transform: scale(0.96); }
+.reise-boss--slaatt .reise-boss__glow { background: radial-gradient(circle, rgba(245,179,1,0.32) 0%, transparent 66%); }
 
-/* Boss-popover (samme mekanikk som node-popoveren, egen teal-gradient) */
-.reise-popover--boss { background: linear-gradient(160deg, var(--teal-700), var(--teal-900)); }
-.reise-popover--boss .reise-popover__tail { border-bottom-color: var(--teal-700); }
-.reise-popover__stjerner { margin-top: 12px; }
-.reise-popover__stjerner .stjernerad__stj .ikon { color: rgba(255,255,255,0.35); }
+/* Tre stjerner i bue: 1 høyere, 1 lavere, 1 høyere (som Duolingo-bossen) */
+.reise-boss__stjerner { position: relative; z-index: 1; gap: 7px; }
+.reise-boss__stjerner .stjernerad__stj .ikon { width: 22px; height: 22px; color: #C7CDCD; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.08)); }
+.reise-boss__stjerner .stjernerad__stj--pa .ikon { color: #F5B301; fill: #F5B301; }
+.reise-boss__stjerner .stjernerad__stj:nth-child(1) { transform: translateY(-5px); }
+.reise-boss__stjerner .stjernerad__stj:nth-child(2) { transform: translateY(4px); }
+.reise-boss__stjerner .stjernerad__stj:nth-child(3) { transform: translateY(-5px); }
+
+/* Utfordrings-modal (sentrert kort + scrim) — bossen står i rennesteinen, så
+   en tail-popover ville klippe mot kanten. */
+.bosskort-lag { position: fixed; inset: 0; z-index: 3200; display: grid; place-items: center; padding: 24px; }
+.bosskort__scrim { position: absolute; inset: 0; background: rgba(10,20,20,0.45); opacity: 0; transition: opacity 0.18s; }
+.bosskort-lag--inn .bosskort__scrim { opacity: 1; }
+.bosskort-lag--ut .bosskort__scrim { opacity: 0; }
+.bosskort { position: relative; z-index: 1; width: min(320px, 86vw); display: flex; flex-direction: column; align-items: center; text-align: center; padding: 20px 20px 16px; border-radius: 24px; background: linear-gradient(165deg, var(--teal-700), var(--teal-900)); color: #fff; box-shadow: 0 22px 50px rgba(1,63,64,0.4); transform: translateY(12px) scale(0.96); opacity: 0; transition: transform 0.2s var(--ease-standard), opacity 0.2s; }
+.bosskort-lag--inn .bosskort { transform: none; opacity: 1; }
+.bosskort-lag--ut .bosskort { transform: translateY(12px) scale(0.96); opacity: 0; }
+.bosskort__panda { width: 130px; height: 150px; margin-top: -4px; }
+.bosskort__stjerner { margin-top: 2px; gap: 8px; }
+.bosskort__stjerner .stjernerad__stj .ikon { width: 24px; height: 24px; color: rgba(255,255,255,0.32); }
+.bosskort__stjerner .stjernerad__stj--pa .ikon { color: #FFD34E; fill: #FFD34E; }
+.bosskort__tekst { margin: 12px 2px 0; font-size: 14.5px; line-height: 1.5; opacity: 0.95; }
+.bosskort .reise-popover__start { margin-top: 16px; }
+.bosskort__avbryt { margin-top: 8px; border: none; background: none; color: rgba(255,255,255,0.75); font-size: 14px; padding: 6px; cursor: pointer; }
 
 /* Push-up-kamp (fullskjerm-overlegg, arver .leksjon) */
 .kamp__tittel { flex: 1 1 auto; text-align: center; font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--teal-900); }
