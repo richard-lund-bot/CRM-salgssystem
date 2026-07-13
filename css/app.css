@@ -138,6 +138,20 @@ body {
   padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 16px);
 }
 
+/* Statuslinje-skygge (edge-to-edge). Med black-translucent fyller innholdet
+   hele skjermen bak den hvite iOS-klokka; denne diskrete toningen holder
+   klokke/batteri lesbare over lyse flater på alle skjermer. Usynlig der det
+   ikke finnes en safe-area (desktop). */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: calc(env(safe-area-inset-top, 0px) + 4px);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0));
+  z-index: 2000;
+  pointer-events: none;
+}
+
 .laster {
   display: grid;
   place-items: center;
