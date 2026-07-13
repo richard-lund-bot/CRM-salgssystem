@@ -853,8 +853,8 @@ function settOppSkrymping(container) {
   const oppdater = () => {
     rafId = null;
     const h = window.innerHeight;
-    const fokusY = h * 0.44;   // hvor noden er «i fokus» (full størrelse)
-    const dodsone = h * 0.26;  // ingen krymp innenfor dette båndet
+    const fokusY = h * 0.44;   // hvor noden er «i fokus» (full størrelse, boble åpen)
+    const dodsone = h * 0.2;   // ingen krymp/kollaps innenfor dette båndet
     const range = h * 0.4;
     for (const node of maal) {
       const inner = node.querySelector('.reise-node__skala') || node.querySelector('.reise-grad') || node;
@@ -863,7 +863,7 @@ function settOppSkrymping(container) {
       const avstand = Math.max(0, Math.abs(r.top + r.height / 2 - fokusY) - dodsone);
       const t = Math.min(1, avstand / range);
       inner.style.setProperty('--krymp', (1 - t * 0.42).toFixed(3));
-      node.classList.toggle('reise-node--krympet', t > 0.5);
+      node.classList.toggle('reise-node--krympet', t > 0.12); // kollaps boba tidlig
     }
   };
   const paa = () => { if (!rafId) rafId = requestAnimationFrame(oppdater); };

@@ -2156,8 +2156,11 @@ body.fokusmodus { padding-bottom: 0; }
 .reise-node__puls { position: absolute; top: 44px; left: 50%; width: 88px; height: 88px; transform: translate(-50%,-50%); border-radius: 50%; border: 4px solid var(--c, var(--aksent)); opacity: 0; z-index: 0; pointer-events: none; animation: node-puls 1.9s ease-out infinite; }
 @keyframes node-puls { 0% { opacity: 0.45; transform: translate(-50%,-50%) scale(1); } 100% { opacity: 0; transform: translate(-50%,-50%) scale(1.55); } }
 
-/* Fast «START»-boble på gjeldende node (popper opp, lyn rundt knappen). */
-.reise-boble { position: absolute; top: calc(100% + 13px); left: 50%; z-index: 3; width: max-content; max-width: min(260px, 76vw); transform: translateX(-50%); background: var(--c, var(--aksent)); color: #fff; border-radius: 18px; padding: 11px 13px 12px; box-shadow: 0 14px 30px rgba(1,63,64,0.26); transform-origin: top center; animation: boble-inn 0.55s cubic-bezier(0.34,1.56,0.64,1) both 0.25s; }
+/* Fast «START»-boble på gjeldende node (popper opp, lyn rundt knappen).
+   «backwards» (ikke «both») så entré-fyllet ikke låser transform — da kan
+   boblen kollapse mykt når noden scrolles vekk (.reise-node--krympet). */
+.reise-boble { position: absolute; top: calc(100% + 13px); left: 50%; z-index: 3; width: max-content; max-width: min(260px, 76vw); transform: translateX(-50%); opacity: 1; background: var(--c, var(--aksent)); color: #fff; border-radius: 18px; padding: 11px 13px 12px; box-shadow: 0 14px 30px rgba(1,63,64,0.26); transform-origin: top center; transition: opacity 0.2s ease, transform 0.24s var(--ease-standard); animation: boble-inn 0.55s cubic-bezier(0.34,1.56,0.64,1) backwards 0.25s; }
+.reise-node--krympet .reise-boble { opacity: 0; transform: translateX(-50%) scale(0.4) translateY(-12px); pointer-events: none; }
 .reise-boble__tail { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); border: 9px solid transparent; border-bottom-color: var(--c, var(--aksent)); }
 .reise-boble__navn { display: block; font-family: var(--font-display); font-weight: 700; font-size: 14.5px; text-align: center; margin-bottom: 9px; line-height: 1.2; }
 .reise-boble__rad { position: relative; display: flex; align-items: center; justify-content: center; }
