@@ -794,24 +794,6 @@ function lynSvg(klasse) {
   return svg;
 }
 
-// Fast «START»-boble på den gjeldende noden (Duolingo-aktig): popper opp, med
-// lyn rundt knappen. Ligger i .reise-node__hopp så den spretter med noden.
-function byggStartBoble(sti, ledd, navn) {
-  const data = (sti.trinn && sti.trinn[ledd.ovelse]) || {};
-  const xp = beregnXp(data.minutter || 3, sti.bevegelse || 'bodyweight', 3);
-  const start = el('button', { class: 'reise-boble__start', type: 'button' }, `START · +${xp} XP`);
-  start.addEventListener('click', (ev) => { ev.stopPropagation(); vibrer('medium'); startMedAnimasjon(sti, ledd); });
-  return el('div', { class: 'reise-boble' },
-    el('span', { class: 'reise-boble__tail' }),
-    el('span', { class: 'reise-boble__navn' }, navn),
-    el('div', { class: 'reise-boble__rad' },
-      lynSvg('reise-boble__lyn reise-boble__lyn--a'),
-      start,
-      lynSvg('reise-boble__lyn reise-boble__lyn--b'),
-    ),
-  );
-}
-
 function reiseNode(sti, { l, i, tilstand }) {
   const e = _bib?.ovelse(l.ovelse);
   const navn = e?.navn || l.ovelse;
@@ -824,20 +806,17 @@ function reiseNode(sti, { l, i, tilstand }) {
       : ikon('stjerne', 'ikon');
 
   // Tre lag så tre bevegelser ikke kolliderer: skala (scroll-krymp) → hopp
-  // (sprett-animasjon + boble) → knapp (3D-trykk på :active).
+  // (sprett-animasjon) → knapp (3D-trykk på :active).
   const knapp = el('button', { class: `reise-node__knapp ${niva.klasse}`, type: 'button', 'aria-label': navn, title: navn }, innhold);
   const hopp = el('div', { class: 'reise-node__hopp' }, gjeldende ? el('span', { class: 'reise-node__puls' }) : null, knapp);
   const skala = el('div', { class: 'reise-node__skala' }, hopp);
   const wrap = el('div', { class: `reise-node reise-node--${tilstand}`, style: `transform:translateX(${dx}px)` }, skala);
   wrap.style.setProperty('--reise-forsinkelse', `${i * 55}ms`);
   wrap.style.setProperty('--dx', `${dx}px`);
-
-  if (gjeldende) {
-    hopp.append(byggStartBoble(sti, l, navn));
-    knapp.addEventListener('click', (ev) => { ev.stopPropagation(); vibrer('lett'); startMedAnimasjon(sti, l); });
-  } else {
-    knapp.addEventListener('click', (ev) => { ev.stopPropagation(); apneNodePopover(sti, l, tilstand, wrap); });
-  }
+  // Alle noder deler samme popover (start / øv igjen / låst). Lagre kontekst så
+  // scroll-styringen kan auto-åpne den gjeldende når den er i fokus.
+  wrap._sti = sti; wrap._ledd = l; wrap._tilstand = tilstand;
+  knapp.addEventListener('click', (ev) => { ev.stopPropagation(); apneNodePopover(sti, l, tilstand, wrap); });
   return wrap;
 }
 
@@ -845,25 +824,39 @@ function reiseNode(sti, { l, i, tilstand }) {
 // den scrolles vekk fra fokus-båndet, som i Duolingo. rAF-throttlet, og forrige
 // lytter ryddes før en ny settes opp (unngår lekkasje + arbeid på løsrevne noder).
 let _skrympRydd = null;
+// Hvor langt en node er fra fokus-båndet: 0 = i fokus, 1 = langt vekk.
+function fokusAvstand(node) {
+  const h = window.innerHeight;
+  const r = node.getBoundingClientRect();
+  if (!r.height) return 1;
+  const avstand = Math.max(0, Math.abs(r.top + r.height / 2 - h * 0.44) - h * 0.2);
+  return Math.min(1, avstand / (h * 0.4));
+}
 function settOppSkrymping(container) {
   if (_skrympRydd) { _skrympRydd(); _skrympRydd = null; }
   const maal = [...container.querySelectorAll('.reise-node--gjeldende, .reise-grad--gjeldende')];
+  const gj = container.querySelector('.reise-node--gjeldende');
   if (!maal.length) return;
   let rafId = null;
   const oppdater = () => {
     rafId = null;
-    const h = window.innerHeight;
-    const fokusY = h * 0.44;   // hvor noden er «i fokus» (full størrelse, boble åpen)
-    const dodsone = h * 0.2;   // ingen krymp/kollaps innenfor dette båndet
-    const range = h * 0.4;
     for (const node of maal) {
       const inner = node.querySelector('.reise-node__skala') || node.querySelector('.reise-grad') || node;
-      const r = node.getBoundingClientRect();
-      if (!r.height) continue;
-      const avstand = Math.max(0, Math.abs(r.top + r.height / 2 - fokusY) - dodsone);
-      const t = Math.min(1, avstand / range);
+      const t = fokusAvstand(node);
       inner.style.setProperty('--krymp', (1 - t * 0.42).toFixed(3));
-      node.classList.toggle('reise-node--krympet', t > 0.12); // kollaps boba tidlig
+      node.classList.toggle('reise-node--krympet', t > 0.12);
+    }
+    // Popover-styring (én åpen om gangen): lukk den aktive når noden scrolles
+    // nær kanten; auto-åpne den gjeldende når den er komfortabelt i synsfeltet.
+    // Ulike terskler (hysterese) så den ikke blafrer på kanten.
+    const h = window.innerHeight;
+    const senter = (n) => { const r = n.getBoundingClientRect(); return r.height ? r.top + r.height / 2 : null; };
+    if (_aktivWrap && _aktivWrap.isConnected) {
+      const c = senter(_aktivWrap);
+      if (c != null && (c < h * 0.1 || c > h * 0.82)) lukkPopover();
+    } else if (!_aktivWrap && gj && gj.isConnected && gj._ledd) {
+      const c = senter(gj);
+      if (c != null && c > h * 0.18 && c < h * 0.72) apneNodePopover(gj._sti, gj._ledd, 'gjeldende', gj, { stille: true });
     }
   };
   const paa = () => { if (!rafId) rafId = requestAnimationFrame(oppdater); };
@@ -874,7 +867,7 @@ function settOppSkrymping(container) {
     window.removeEventListener('resize', paa);
     if (rafId) cancelAnimationFrame(rafId);
   };
-  setTimeout(oppdater, 80); // etter inngangs-staggeren
+  setTimeout(oppdater, 150); // etter inngangs-staggeren; auto-åpner gjeldende i fokus
 }
 
 // --- Node-popover (trykk på node → kort med START + XP) -------------------
@@ -882,9 +875,10 @@ let _apenPopover = null;
 let _aktivWrap = null;
 
 function lukkPopover() {
-  _apenPopover?.remove(); _apenPopover = null;
-  _aktivWrap?.classList.remove('reise-node--aktiv'); _aktivWrap = null;
-  document.querySelector('.reise-scrim')?.remove();
+  const kort = _apenPopover; const wrap = _aktivWrap;
+  _apenPopover = null; _aktivWrap = null;
+  if (kort) { kort.classList.add('reise-popover--ut'); setTimeout(() => kort.remove(), 180); }
+  wrap?.classList.remove('reise-node--aktiv');
 }
 
 function knappStart(tekst, onclick, sekundaer = false) {
@@ -893,11 +887,13 @@ function knappStart(tekst, onclick, sekundaer = false) {
   return b;
 }
 
-function apneNodePopover(sti, ledd, tilstand, wrap) {
+// Én delt popover for alle noder — start / øv igjen / låst. Bare én åpen om
+// gangen (denne lukker forrige), og scroll-styringen lukker/åpner den etter fokus.
+function apneNodePopover(sti, ledd, tilstand, wrap, { stille = false } = {}) {
   const alleredeApen = _aktivWrap === wrap;
   lukkPopover();
   if (alleredeApen) return; // andre trykk lukker igjen
-  vibrer('lett');
+  if (!stille) vibrer('lett');
 
   const e = _bib?.ovelse(ledd.ovelse);
   const navn = e?.navn || ledd.ovelse;
@@ -914,19 +910,20 @@ function apneNodePopover(sti, ledd, tilstand, wrap) {
       knappStart('Se øvelsen', () => { lukkPopover(); visOvelseArk(navn); }, true),
     );
   } else {
-    const cta = tilstand === 'mestret' ? 'Øv igjen' : 'Start';
-    kort = el('div', { class: `reise-popover ${niva.klasse}` },
+    const start = tilstand !== 'mestret'; // gjeldende → START med lyn
+    const cta = start ? 'Start' : 'Øv igjen';
+    const knapp = knappStart(`${cta} · +${xp} XP`, () => startMedAnimasjon(sti, ledd));
+    const ctaEl = start
+      ? el('div', { class: 'reise-popover__cta' }, lynSvg('reise-boble__lyn reise-boble__lyn--a'), knapp, lynSvg('reise-boble__lyn reise-boble__lyn--b'))
+      : knapp;
+    kort = el('div', { class: `reise-popover ${niva.klasse}` + (start ? ' reise-popover--start' : '') },
       el('span', { class: 'reise-popover__tail' }),
       el('h3', { class: 'reise-popover__navn' }, navn),
-      el('p', { class: 'reise-popover__meta' }, niva.ord),
-      knappStart(`${cta} · +${xp} XP`, () => startMedAnimasjon(sti, ledd)),
+      el('p', { class: 'reise-popover__meta' }, tilstand === 'mestret' ? 'Mestret' : niva.ord),
+      ctaEl,
     );
   }
 
-  const scrim = el('div', { class: 'reise-scrim' });
-  scrim.addEventListener('click', lukkPopover);
-  const reise = wrap.parentElement;
-  reise.append(scrim);
   wrap.append(kort);
   wrap.classList.add('reise-node--aktiv');
   _apenPopover = kort;
