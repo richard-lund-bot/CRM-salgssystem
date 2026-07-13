@@ -14,7 +14,34 @@ import { el, tom, ikon } from './ui.js';
 import { hentLogg } from './store.js';
 import { ovelseInfo, ovelseBilde, visOvelseArk } from './ovelse.js';
 import { registrerOgLogg } from './beveg.js';
+import { beregnXp } from './bevegelse.js';
 import { lagKonfetti } from './animasjon.js';
+
+// Mova-maskot: en søt panda som elsker bevegelse (flat SVG, teal pannebånd).
+// Brukes som «guide» øverst i stien og på lasteskjermen mellom sti og modul.
+function movaPanda(klasse = 'mova-panda') {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 120 124');
+  svg.setAttribute('class', klasse);
+  svg.setAttribute('aria-hidden', 'true');
+  svg.innerHTML = [
+    '<ellipse cx="60" cy="118" rx="30" ry="6" fill="#000" opacity="0.06"/>',
+    '<circle cx="32" cy="34" r="15" fill="#2f2f33"/><circle cx="88" cy="34" r="15" fill="#2f2f33"/>',
+    '<circle cx="32" cy="34" r="7" fill="#4a4a50"/><circle cx="88" cy="34" r="7" fill="#4a4a50"/>',
+    '<circle cx="60" cy="62" r="40" fill="#ffffff" stroke="#E7EBEB" stroke-width="2"/>',
+    '<path d="M22 52 Q60 35 98 52 L98 61 Q60 44 22 61 Z" fill="#0BA69F"/>',
+    '<circle cx="97" cy="56" r="5.5" fill="#008382"/>',
+    '<ellipse cx="45" cy="67" rx="12" ry="15" fill="#2f2f33" transform="rotate(20 45 67)"/>',
+    '<ellipse cx="75" cy="67" rx="12" ry="15" fill="#2f2f33" transform="rotate(-20 75 67)"/>',
+    '<circle cx="47" cy="67" r="6" fill="#fff"/><circle cx="73" cy="67" r="6" fill="#fff"/>',
+    '<circle cx="48" cy="68" r="3" fill="#2f2f33"/><circle cx="72" cy="68" r="3" fill="#2f2f33"/>',
+    '<circle cx="49.4" cy="66.4" r="1.1" fill="#fff"/><circle cx="73.4" cy="66.4" r="1.1" fill="#fff"/>',
+    '<circle cx="39" cy="80" r="5" fill="#FFC9BC"/><circle cx="81" cy="80" r="5" fill="#FFC9BC"/>',
+    '<ellipse cx="60" cy="79" rx="5" ry="3.6" fill="#2f2f33"/>',
+    '<path d="M60 82 L60 86 M60 86 Q54.5 90 50.5 86 M60 86 Q65.5 90 69.5 86" stroke="#2f2f33" stroke-width="2.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
+  ].join('');
+  return svg;
+}
 
 let _stier = null;
 let _kjeder = null;
@@ -124,7 +151,13 @@ export function visStiSkjerm(mount) {
         el('p', { class: 'sti-hero__intro' }, sti.intro),
         stiFramdrift(antallMestret, ledd.length),
       ),
-      el('div', { class: 'reise' }, ...noder.map((n) => reiseNode(sti, n))),
+      el('div', { class: 'reise' },
+        el('div', { class: 'reise-guide' },
+          movaPanda('reise-guide__panda'),
+          el('span', { class: 'reise-guide__snakk' }, antallMestret >= ledd.length ? 'Wow — hele stien! Du er en push-up-mester 🐼' : 'Push-up-pandaen heier på deg. Ett trinn om gangen!'),
+        ),
+        ...noder.map((n) => reiseNode(sti, n)),
+      ),
       antallMestret >= ledd.length && ledd.length
         ? el('p', { class: 'sti-fot sti-fot--ferdig' }, ikon('trofe', 'ikon'), ' Hele stien er mestret — sterkt jobba!')
         : el('p', { class: 'sti-fot dempet' }, 'Mestre et trinn for å låse opp det neste.'),
@@ -155,21 +188,98 @@ function reiseNode(sti, { l, i, tilstand }) {
       : ikon('stjerne', 'ikon');
 
   const knapp = el('button', { class: `reise-node__knapp ${niva.klasse}`, type: 'button', 'aria-label': navn, title: navn }, innhold);
-  knapp.addEventListener('click', () => {
-    if (tilstand === 'laast') visOvelseArk(navn); // forhåndstitt, men ingen leksjon
-    else startLeksjon(sti, l);
-  });
-
-  const wrap = el('div', { class: `reise-node reise-node--${tilstand}`, style: `transform:translateX(${dx}px)` },
-    tilstand === 'gjeldende'
-      ? el('div', { class: 'reise-node__boble' },
-        el('span', { class: 'reise-node__boble-navn' }, navn),
-        el('span', { class: 'reise-node__boble-cta' }, 'Start ›'))
-      : null,
-    knapp,
-  );
+  const wrap = el('div', { class: `reise-node reise-node--${tilstand}`, style: `transform:translateX(${dx}px)` }, knapp);
   wrap.style.setProperty('--reise-forsinkelse', `${i * 55}ms`);
+  wrap.style.setProperty('--dx', `${dx}px`);
+  knapp.addEventListener('click', (ev) => {
+    ev.stopPropagation();
+    apneNodePopover(sti, l, tilstand, wrap);
+  });
   return wrap;
+}
+
+// --- Node-popover (trykk på node → kort med START + XP) -------------------
+let _apenPopover = null;
+let _aktivWrap = null;
+
+function lukkPopover() {
+  _apenPopover?.remove(); _apenPopover = null;
+  _aktivWrap?.classList.remove('reise-node--aktiv'); _aktivWrap = null;
+  document.querySelector('.reise-scrim')?.remove();
+}
+
+function knappStart(tekst, onclick, sekundaer = false) {
+  const b = el('button', { class: 'reise-popover__start' + (sekundaer ? ' reise-popover__start--sek' : ''), type: 'button' }, tekst);
+  b.addEventListener('click', (ev) => { ev.stopPropagation(); onclick(); });
+  return b;
+}
+
+function apneNodePopover(sti, ledd, tilstand, wrap) {
+  const alleredeApen = _aktivWrap === wrap;
+  lukkPopover();
+  if (alleredeApen) return; // andre trykk lukker igjen
+
+  const e = _bib?.ovelse(ledd.ovelse);
+  const navn = e?.navn || ledd.ovelse;
+  const niva = NIVA[ledd.niva] || NIVA[1];
+  const data = (sti.trinn && sti.trinn[ledd.ovelse]) || {};
+  const xp = beregnXp(data.minutter || 3, sti.bevegelse || 'bodyweight', 3);
+
+  let kort;
+  if (tilstand === 'laast') {
+    kort = el('div', { class: `reise-popover ${niva.klasse} reise-popover--laast` },
+      el('span', { class: 'reise-popover__tail' }),
+      el('h3', { class: 'reise-popover__navn' }, navn),
+      el('p', { class: 'reise-popover__meta' }, 'Fullfør forrige trinn for å låse opp.'),
+      knappStart('Se øvelsen', () => { lukkPopover(); visOvelseArk(navn); }, true),
+    );
+  } else {
+    const cta = tilstand === 'mestret' ? 'Øv igjen' : 'Start';
+    kort = el('div', { class: `reise-popover ${niva.klasse}` },
+      el('span', { class: 'reise-popover__tail' }),
+      el('h3', { class: 'reise-popover__navn' }, navn),
+      el('p', { class: 'reise-popover__meta' }, niva.ord),
+      knappStart(`${cta} · +${xp} XP`, () => startMedAnimasjon(sti, ledd)),
+    );
+  }
+
+  const scrim = el('div', { class: 'reise-scrim' });
+  scrim.addEventListener('click', lukkPopover);
+  const reise = wrap.parentElement;
+  reise.append(scrim);
+  wrap.append(kort);
+  wrap.classList.add('reise-node--aktiv');
+  _apenPopover = kort;
+  _aktivWrap = wrap;
+  requestAnimationFrame(() => kort.classList.add('reise-popover--inn'));
+}
+
+// --- Overgang til modulen: zoom + fade til hvitt → lasteskjerm med panda --
+const LASTETEKSTER = [
+  'Push-up-pandaen varmer opp for deg …',
+  'Visste du? Push-ups trener bryst, skuldre, triceps og kjernen på én gang.',
+  'Ti rolige reps slår null reps. Hver gang.',
+  'Teknikk før tempo — rent og kontrollert vinner.',
+  'Klar? Pandaen teller ned …',
+];
+
+function startMedAnimasjon(sti, ledd) {
+  lukkPopover();
+  const i = Math.floor((Date.now() / 1000) % LASTETEKSTER.length);
+  const laster = el('div', { class: 'reise-laster' },
+    el('div', { class: 'reise-laster__inn' },
+      el('div', { class: 'reise-laster__panda' }, movaPanda('reise-laster__figur')),
+      el('p', { class: 'reise-laster__merke' }, 'Laster …'),
+      el('p', { class: 'reise-laster__tekst' }, LASTETEKSTER[i]),
+    ),
+  );
+  document.body.append(laster);
+  requestAnimationFrame(() => laster.classList.add('reise-laster--pa'));
+  setTimeout(() => {
+    startLeksjon(sti, ledd);
+    requestAnimationFrame(() => laster.classList.add('reise-laster--ut'));
+    setTimeout(() => laster.remove(), 400);
+  }, 1050);
 }
 
 // --- Mini-leksjon (lær → teknikk-sjekk → praksis → mestret) ---------------

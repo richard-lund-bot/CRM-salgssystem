@@ -2138,6 +2138,44 @@ body.fokusmodus { padding-bottom: 0; }
 @media (prefers-reduced-motion: reduce) {
   .reise-node__knapp, .reise-node--gjeldende .reise-node__knapp, .reise-node__boble { animation: none; }
 }
+.reise-node--aktiv { z-index: 6; }
+.reise-scrim { position: absolute; inset: -60px 0; z-index: 4; background: rgba(20,30,30,0.03); }
+
+/* Panda-guide øverst i stien */
+.reise-guide { display: flex; align-items: center; gap: 12px; align-self: stretch; margin: -10px 6px 6px; padding: 12px 14px; background: var(--bg-kort); border: 1px solid var(--kant); border-radius: var(--radius-lg); box-shadow: var(--shadow-xs); }
+.reise-guide__panda { width: 58px; height: 60px; flex: 0 0 auto; }
+.reise-guide__snakk { font-size: 14px; line-height: 1.4; color: var(--tekst-2); }
+
+/* Node-popover (trykk → kort med START + XP), sentrert på skjermen, pil mot node */
+.reise-popover {
+  position: absolute; top: calc(100% + 14px); left: 50%; z-index: 6; width: min(300px, 84vw);
+  transform: translate(calc(-50% - var(--dx, 0px)), 8px); transform-origin: top center;
+  background: var(--c, var(--aksent)); color: #fff; border-radius: 20px; padding: 16px 16px 14px;
+  box-shadow: 0 14px 34px rgba(1,63,64,0.28); opacity: 0; transition: opacity 0.16s, transform 0.18s var(--ease-standard);
+}
+.reise-popover--inn { opacity: 1; transform: translate(calc(-50% - var(--dx, 0px)), 0); }
+.reise-popover--laast { background: var(--bg-kort); color: var(--tekst); border: 1px solid var(--kant); }
+.reise-popover__tail { position: absolute; bottom: 100%; left: calc(50% + var(--dx, 0px)); transform: translateX(-50%); border: 9px solid transparent; border-bottom-color: var(--c, var(--aksent)); }
+.reise-popover--laast .reise-popover__tail { border-bottom-color: var(--bg-kort); }
+.reise-popover__navn { margin: 0; font-family: var(--font-display); font-size: 19px; font-weight: 600; line-height: 1.2; }
+.reise-popover__meta { margin: 3px 0 0; font-size: 13px; opacity: 0.92; }
+.reise-popover--laast .reise-popover__meta { color: var(--tekst-2); opacity: 1; }
+.reise-popover__start { display: block; width: 100%; margin-top: 14px; height: 48px; border: none; border-radius: 14px; background: #fff; color: var(--teal-900); font-family: var(--font-display); font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 3px 0 rgba(0,0,0,0.12); }
+.reise-popover__start:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,0.12); }
+.reise-popover__start--sek { background: rgba(0,0,0,0.06); color: var(--tekst); box-shadow: none; }
+
+/* Overgang: fade til hvitt → lasteskjerm med panda → modul */
+.reise-laster { position: fixed; inset: 0; z-index: 3600; background: #fff; display: grid; place-items: center; opacity: 0; transition: opacity 0.28s var(--ease-standard); }
+.reise-laster--pa { opacity: 1; }
+.reise-laster--ut { opacity: 0; }
+.reise-laster__inn { text-align: center; padding: 0 32px; transform: scale(0.92); opacity: 0; transition: transform 0.35s var(--ease-standard), opacity 0.35s; }
+.reise-laster--pa .reise-laster__inn { transform: scale(1); opacity: 1; transition-delay: 0.1s; }
+.reise-laster__panda { width: 120px; height: 124px; margin: 0 auto 18px; animation: reise-panda-bob 1.1s ease-in-out infinite; }
+.reise-laster__figur { width: 100%; height: 100%; }
+.reise-laster__merke { margin: 0; font-family: var(--font-display); font-size: 13px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dempet); }
+.reise-laster__tekst { margin: 10px auto 0; max-width: 30ch; font-size: 15.5px; line-height: 1.5; color: var(--tekst-2); }
+@keyframes reise-panda-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@media (prefers-reduced-motion: reduce) { .reise-laster__panda { animation: none; } }
 
 /* ===========================================================================
    Mini-leksjon (lær → teknikk-sjekk → praksis → mestret). Fullskjerm-overlegg.
