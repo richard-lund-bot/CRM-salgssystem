@@ -316,33 +316,39 @@ export function visStiSkjerm(mount) {
   const bossStj = boss ? bossStjerner(sti.id) : 0;
   const bossTilstand = !boss ? null : (bossStj >= BOSS_MAKS_STJERNER ? 'slaatt' : 'klar');
 
-  const guideSnakk = !boss
-    ? (antallMestret >= ledd.length ? 'Wow — hele stien! Sterkt jobba.' : 'Ett trinn om gangen — du fikser dette!')
-    : bossTilstand === 'slaatt'
-      ? 'Push-up-pandaen er slått — du er offisielt push-up-mester 🐼'
-      : 'Push-up-pandaen står langs stien. Utfordre den når du vil!';
+  // Mester-tilstand: bossen slått (3 stjerner) → hele skjermen får gulltema.
+  const mester = bossTilstand === 'slaatt';
+  const visMesterTema = mester && mesterFeiret(sti.id); // allerede feiret → gulltema med en gang
 
-  const reiseEl = el('div', { class: 'reise' },
-    el('div', { class: 'reise-guide' },
+  const reiseBarn = [];
+  if (!mester) {
+    // I mester-tema erstattes guide-kortet av selve restylingen.
+    const guideSnakk = !boss
+      ? (antallMestret >= ledd.length ? 'Wow — hele stien! Sterkt jobba.' : 'Ett trinn om gangen — du fikser dette!')
+      : 'Push-up-pandaen står langs stien. Utfordre den når du vil!';
+    reiseBarn.push(el('div', { class: 'reise-guide' },
       pandaAnim('idle', 'wave', 'reise-guide__panda', 'idle'),
       el('span', { class: 'reise-guide__snakk' }, guideSnakk),
-    ),
-    ...noder.map((n) => reiseNode(sti, n)),
-  );
+    ));
+  }
+  reiseBarn.push(...noder.map((n) => reiseNode(sti, n)));
+  const reiseEl = el('div', { class: 'reise' }, ...reiseBarn);
   if (boss) reiseEl.append(reiseBoss(sti, boss, bossTilstand, bossStj));
 
-  tom(mount);
-  mount.append(
+  const fot = mester
+    ? el('p', { class: 'sti-fot sti-fot--mester' }, ikon('trofe', 'ikon'), ' Du er push-up-mester')
+    : antallMestret >= ledd.length && ledd.length
+      ? el('p', { class: 'sti-fot sti-fot--ferdig' }, ikon('trofe', 'ikon'), ' Hele stien er mestret — sterkt jobba!')
+      : el('p', { class: 'sti-fot dempet' }, 'Mestre et trinn for å låse opp det neste.');
+
+  const skjerm = el('div', { class: 'reise-skjerm' + (visMesterTema ? ' reise-skjerm--mester' : '') },
+    visMesterTema ? mesterDekor() : null,
     reiseTopp(sti, antallMestret, ledd.length),
-    el('main', { class: 'innhold innhold--ovelse innhold--reise' },
-      reiseEl,
-      bossTilstand === 'slaatt'
-        ? el('p', { class: 'sti-fot sti-fot--ferdig' }, ikon('trofe', 'ikon'), ' Push-up-pandaen er slått — du er push-up-mester!')
-        : antallMestret >= ledd.length && ledd.length
-          ? el('p', { class: 'sti-fot sti-fot--ferdig' }, ikon('trofe', 'ikon'), ' Hele stien er mestret — sterkt jobba!')
-          : el('p', { class: 'sti-fot dempet' }, 'Mestre et trinn for å låse opp det neste.'),
-    ),
+    el('main', { class: 'innhold innhold--ovelse innhold--reise' }, reiseEl, fot),
   );
+
+  tom(mount);
+  mount.append(skjerm);
 
   // Plasser bossen i høyre rennestein, på høyde med en venstreforskjøvet node
   // (så gutteren er klar). Måles etter at DOM finnes — robust mot tekstbrytning.
@@ -354,6 +360,61 @@ export function visStiSkjerm(mount) {
   }
 
   if (_pendingInngang) avsluttInngang();
+
+  // Første gang skjermen lastes etter at bossen er slått: stor tema-transformasjon.
+  if (mester && !mesterFeiret(sti.id)) { settMesterFeiret(sti.id); feirMester(skjerm); }
+}
+
+// --- Push-up-mester: gulltema + engangs-transformasjon --------------------
+function mesterFeiret(stiId) {
+  try { return localStorage.getItem('mova.mesterFeiret.' + stiId) === '1'; } catch { return true; }
+}
+function settMesterFeiret(stiId) {
+  try { localStorage.setItem('mova.mesterFeiret.' + stiId, '1'); } catch { /* privat modus e.l. */ }
+}
+
+// Liten gull-krone (SVG) — over bossen og i feiringen.
+function kroneSvg(klasse) {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 48 34');
+  svg.setAttribute('class', 'krone' + (klasse ? ' ' + klasse : ''));
+  svg.setAttribute('aria-hidden', 'true');
+  svg.innerHTML = '<path d="M4 30 L2 11 L15 21 L24 5 L33 21 L46 11 L44 30 Z" fill="#F5C542" stroke="#D9992B" stroke-width="2" stroke-linejoin="round"/>'
+    + '<circle cx="2" cy="11" r="3.2" fill="#F5C542" stroke="#D9992B" stroke-width="1.5"/>'
+    + '<circle cx="46" cy="11" r="3.2" fill="#F5C542" stroke="#D9992B" stroke-width="1.5"/>'
+    + '<circle cx="24" cy="5" r="3.4" fill="#F5C542" stroke="#D9992B" stroke-width="1.5"/>'
+    + '<circle cx="24" cy="26" r="2.4" fill="#fff" opacity="0.85"/>';
+  return svg;
+}
+
+// Flytende gull-glimt-stjerner over hele skjermen (kun i mester-tema).
+function mesterDekor() {
+  const d = el('div', { class: 'mester-dekor', 'aria-hidden': 'true' });
+  const POS = [[8, 15], [23, 40], [41, 11], [58, 31], [75, 17], [89, 45], [15, 66], [34, 82], [52, 60], [71, 75], [87, 66], [27, 24]];
+  POS.forEach(([x, y], i) => d.append(
+    el('span', { class: 'mester-dekor__stj', style: `left:${x}%;top:${y}%;--d:${(i * 0.31).toFixed(2)}s;--sz:${8 + (i % 3) * 4}px` }, '✦'),
+  ));
+  return d;
+}
+
+// Stor transformasjon: normal → gulltema, med gull-burst, krone, banner,
+// stjerner, konfetti og haptikk. Kjøres kun første gang etter seier.
+function feirMester(skjerm) {
+  vibrer('feiring');
+  const overlay = el('div', { class: 'mester-feiring' },
+    el('div', { class: 'mester-feiring__glo' }),
+    el('div', { class: 'mester-feiring__kort' },
+      kroneSvg('mester-feiring__krone'),
+      el('h1', { class: 'mester-feiring__tittel' }, 'PUSH-UP-MESTER'),
+      el('p', { class: 'mester-feiring__under' }, 'Du slo push-up-pandaen 🐼'),
+    ),
+  );
+  document.body.append(overlay);
+  try { overlay.append(lagKonfetti()); } catch { /* valgfri feiring */ }
+  requestAnimationFrame(() => overlay.classList.add('mester-feiring--pa'));
+  // Morph temaet inn i feiringen, så det er gull når overlegget forsvinner.
+  setTimeout(() => { skjerm.classList.add('reise-skjerm--mester'); skjerm.prepend(mesterDekor()); vibrer('riktig'); }, 520);
+  setTimeout(() => { overlay.classList.add('mester-feiring--ut'); setTimeout(() => overlay.remove(), 420); }, 2400);
 }
 
 // Kompakt, klebrig topp-kort (Duolingo-aktig «unit header»): ikon, etikett,
@@ -667,7 +728,10 @@ function reiseBoss(sti, boss, tilstand, stjerner) {
     'aria-label': `Push-up-pandaen — ${stjerner} av ${BOSS_MAKS_STJERNER} stjerner. Utfordre til push-up-kamp.`,
   },
     el('div', { class: 'reise-boss__glow' }),
-    pandaAnim('pushup-up', 'pushup-down', 'reise-boss__panda', 'pushup'),
+    el('span', { class: 'reise-boss__krone' }, kroneSvg()), // vises kun i mester-tema (CSS)
+    tilstand === 'slaatt'
+      ? pandaImg('cheer', 'reise-boss__panda')             // slått → jubel-positur
+      : pandaAnim('pushup-up', 'pushup-down', 'reise-boss__panda', 'pushup'),
     stjerneRad(stjerner, 'reise-boss__stjerner'),
   );
 

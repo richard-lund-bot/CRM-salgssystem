@@ -2395,3 +2395,55 @@ body.fokusmodus { padding-bottom: 0; }
   .reise-boss__scene::before, .reise-boss__scene::after, .kamp__push::before { animation: none; }
   .reise-boss__scene::before, .reise-boss__scene::after { opacity: 0; }
 }
+
+/* === Push-up-mester: gulltema når bossen er slått ===================== */
+.reise-skjerm { position: relative; }
+.krone { display: block; width: 100%; height: auto; }
+
+/* Varm gull-vask bak innholdet */
+.reise-skjerm--mester::before {
+  content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(135% 72% at 50% -8%, rgba(245,197,66,0.24), rgba(245,197,66,0.06) 44%, transparent 66%);
+}
+.reise-skjerm--mester .reise-topp, .reise-skjerm--mester .innhold--reise { position: relative; z-index: 1; }
+
+/* Header i gull */
+.reise-skjerm--mester .reise-topp__kort { background: linear-gradient(150deg, #EBAE3E 0%, #C0801B 100%); box-shadow: 0 10px 26px rgba(184,122,26,0.42); }
+.reise-skjerm--mester .reise-topp__fyll { background: #FFEAAB; }
+.reise-skjerm--mester .reise-topp__ikon { background: rgba(255,255,255,0.24); }
+
+/* Noder i gull (mestret + gjeldende, med gull-glød på den gjeldende) */
+.reise-skjerm--mester .reise-node--mestret .reise-node__knapp { background: linear-gradient(160deg, #F5C542, #D9992B); box-shadow: 0 6px 0 rgba(150,100,10,0.28), 0 10px 16px rgba(184,122,26,0.24); }
+.reise-skjerm--mester .reise-node--gjeldende .reise-node__knapp { background: linear-gradient(160deg, #FBD65E, #E0A62E); box-shadow: 0 7px 0 rgba(150,100,10,0.28), 0 12px 22px rgba(184,122,26,0.24), 0 0 0 5px rgba(245,197,66,0.3), 0 0 15px 3px rgba(245,197,66,0.5); }
+
+/* Krone + gull-aura på bossen */
+.reise-boss__krone { display: none; }
+.reise-skjerm--mester .reise-boss__krone { display: block; position: absolute; z-index: 3; top: -8px; left: 50%; width: 46px; transform: translateX(-50%); filter: drop-shadow(0 3px 5px rgba(184,122,26,0.5)); animation: krone-sprett 2.4s ease-in-out infinite; }
+.reise-skjerm--mester .reise-boss__glow { background: radial-gradient(circle, rgba(245,197,66,0.55) 0%, transparent 66%); }
+@keyframes krone-sprett { 0%, 100% { transform: translateX(-50%) translateY(0) rotate(-5deg); } 50% { transform: translateX(-50%) translateY(-5px) rotate(5deg); } }
+
+/* Flytende gull-glimt over hele skjermen */
+.mester-dekor { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.mester-dekor__stj { position: absolute; font-size: var(--sz, 12px); line-height: 1; color: #F5C542; text-shadow: 0 0 8px rgba(245,197,66,0.85); opacity: 0; animation: dekor-glimt 3.6s ease-in-out infinite; animation-delay: var(--d, 0s); }
+@keyframes dekor-glimt { 0%, 100% { opacity: 0; transform: scale(0.5) translateY(0); } 45% { opacity: 0.95; transform: scale(1) translateY(-7px); } }
+
+.sti-fot--mester { display: flex; align-items: center; justify-content: center; gap: 6px; color: #A9720F; font-weight: 700; }
+.sti-fot--mester .ikon { width: 18px; height: 18px; color: #E0983A; }
+
+/* Stor tema-transformasjon (normal → mester), engangs */
+.mester-feiring { position: fixed; inset: 0; z-index: 3400; display: grid; place-items: center; pointer-events: none; opacity: 0; transition: opacity 0.3s ease; }
+.mester-feiring--pa { opacity: 1; }
+.mester-feiring--ut { opacity: 0; }
+.mester-feiring__glo { position: absolute; inset: 0; background: radial-gradient(circle at 50% 42%, rgba(255,246,214,0.9) 0%, rgba(245,197,66,0.5) 16%, rgba(245,197,66,0.12) 34%, transparent 58%); animation: mester-glo 2.4s ease-out; }
+@keyframes mester-glo { 0% { opacity: 0; transform: scale(0.5); } 12% { opacity: 1; } 100% { opacity: 0.55; transform: scale(1.25); } }
+.mester-feiring__kort { position: relative; text-align: center; transform: scale(0.6); opacity: 0; animation: mester-kort 2.4s var(--ease-standard) forwards; }
+@keyframes mester-kort { 0% { transform: scale(0.55); opacity: 0; } 16% { transform: scale(1.12); opacity: 1; } 28% { transform: scale(1); } 82% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.02); } }
+.mester-feiring__krone { width: 88px; margin: 0 auto 10px; filter: drop-shadow(0 6px 14px rgba(184,122,26,0.55)); }
+.mester-feiring__tittel { margin: 0; font-family: var(--font-display); font-size: 34px; font-weight: 800; letter-spacing: 0.02em; color: #fff; text-shadow: 0 3px 0 #C0801B, 0 7px 20px rgba(184,122,26,0.6); }
+.mester-feiring__under { margin: 10px 0 0; font-size: 16px; font-weight: 600; color: #8A5E10; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reise-skjerm--mester .reise-boss__krone, .mester-dekor__stj, .mester-feiring__glo, .mester-feiring__kort { animation: none; }
+  .mester-dekor__stj { opacity: 0.85; }
+  .mester-feiring__kort { opacity: 1; transform: none; }
+}
