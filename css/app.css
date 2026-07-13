@@ -2143,7 +2143,7 @@ body.fokusmodus { padding-bottom: 0; }
 
 /* Panda-guide øverst i stien */
 .reise-guide { display: flex; align-items: center; gap: 12px; align-self: stretch; margin: -10px 6px 6px; padding: 12px 14px; background: var(--bg-kort); border: 1px solid var(--kant); border-radius: var(--radius-lg); box-shadow: var(--shadow-xs); }
-.reise-guide__panda { width: 58px; height: 60px; flex: 0 0 auto; }
+.reise-guide__panda { width: 56px; height: 64px; flex: 0 0 auto; }
 .reise-guide__snakk { font-size: 14px; line-height: 1.4; color: var(--tekst-2); }
 
 /* Node-popover (trykk → kort med START + XP), sentrert på skjermen, pil mot node */
@@ -2225,3 +2225,87 @@ body.fokusmodus { padding-bottom: 0; }
 .leksjon-feiring__xp .ikon { width: 20px; height: 20px; color: #E0983A; }
 .leksjon-feiring__merke { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 14px; font-size: 14px; color: var(--aksent-mork); font-weight: 600; }
 .leksjon-feiring__merke .ikon { width: 18px; height: 18px; }
+
+/* ===========================================================================
+   Push-up-pandaen: illustrert maskot, boss ved stien og push-up-kamp.
+   =========================================================================== */
+/* Maskot-bilder og to-frames-animasjon (idle-vink / push-up-flipbok / kamp). */
+.panda-bilde { display: block; object-fit: contain; max-width: 100%; user-select: none; -webkit-user-drag: none; }
+.panda-anim { position: relative; display: block; }
+.panda-anim__lag { width: 100%; height: 100%; }
+.panda-anim__lag--a { position: relative; z-index: 0; }
+.panda-anim__lag--b { position: absolute; inset: 0; z-index: 1; }
+.panda-anim--idle { animation: panda-bob 3.4s ease-in-out infinite; }
+.panda-anim--idle .panda-anim__lag--b { opacity: 0; animation: panda-vink 5.5s ease-in-out infinite; }
+.panda-anim--pushup .panda-anim__lag--b { opacity: 0; animation: panda-flip 0.9s steps(1, end) infinite; }
+.panda-anim--kamp .panda-anim__lag--a, .panda-anim--kamp .panda-anim__lag--b { transition: opacity 0.08s linear; }
+.panda-anim--kamp .panda-anim__lag--b { opacity: 0; }
+.panda-anim--kamp.panda-anim--ned .panda-anim__lag--a { opacity: 0; }
+.panda-anim--kamp.panda-anim--ned .panda-anim__lag--b { opacity: 1; }
+@keyframes panda-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@keyframes panda-vink { 0%, 62%, 100% { opacity: 0; } 72%, 88% { opacity: 1; } }
+@keyframes panda-flip { 0%, 49.9% { opacity: 0; } 50%, 100% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .panda-anim--idle, .panda-anim--idle .panda-anim__lag--b, .panda-anim--pushup .panda-anim__lag--b { animation: none; }
+  .panda-anim--idle .panda-anim__lag--b, .panda-anim--pushup .panda-anim__lag--b { opacity: 0; }
+}
+
+/* Stjernerad (boss-framgang) */
+.stjernerad { display: inline-flex; gap: 5px; }
+.stjernerad__stj { display: grid; place-items: center; }
+.stjernerad__stj .ikon { width: 20px; height: 20px; color: var(--kant); transition: color 0.2s; }
+.stjernerad__stj--pa .ikon { color: #F5B301; fill: #F5B301; }
+.stjernerad__stj--ny .ikon { animation: kamp-stjerne 0.45s var(--ease-standard) both; }
+
+/* Boss-figur som står ved stien */
+.reise-boss { position: relative; display: flex; flex-direction: column; align-items: center; margin: 2px 0; }
+.reise-boss__scene { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px; background: none; border: none; cursor: pointer; }
+.reise-boss__glow { position: absolute; top: 4px; left: 50%; width: 148px; height: 148px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle, var(--aksent-svak) 0%, transparent 68%); z-index: 0; }
+.reise-boss__panda { position: relative; z-index: 1; width: 132px; height: 150px; }
+.reise-boss__plate { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 8px 16px; background: var(--bg-kort); border: 1px solid var(--kant); border-radius: 16px; box-shadow: var(--shadow-sm); }
+.reise-boss__navn { font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--teal-900); }
+.reise-boss__zzz { position: absolute; top: 8px; right: 14px; z-index: 2; font-family: var(--font-display); font-weight: 700; font-size: 15px; letter-spacing: 0.1em; color: var(--dempet); }
+.reise-boss__scene:active { transform: translateY(2px); }
+.reise-boss--laast .reise-boss__panda { filter: grayscale(1) opacity(0.5); }
+.reise-boss--laast .reise-boss__glow { display: none; }
+.reise-boss--slaatt .reise-boss__glow { background: radial-gradient(circle, rgba(245,179,1,0.3) 0%, transparent 68%); }
+
+/* Boss-popover (samme mekanikk som node-popoveren, egen teal-gradient) */
+.reise-popover--boss { background: linear-gradient(160deg, var(--teal-700), var(--teal-900)); }
+.reise-popover--boss .reise-popover__tail { border-bottom-color: var(--teal-700); }
+.reise-popover__stjerner { margin-top: 12px; }
+.reise-popover__stjerner .stjernerad__stj .ikon { color: rgba(255,255,255,0.35); }
+
+/* Push-up-kamp (fullskjerm-overlegg, arver .leksjon) */
+.kamp__tittel { flex: 1 1 auto; text-align: center; font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--teal-900); }
+.kamp__pips { flex: 0 0 auto; }
+.kamp__kropp { flex: 1 1 auto; overflow-y: auto; -webkit-overflow-scrolling: touch; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 6px 22px 14px; }
+.kamp__merke { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--aksent-mork); background: var(--aksent-svak); border-radius: 999px; padding: 4px 12px; }
+.kamp__navn { margin: 10px 0 0; font-family: var(--font-display); font-size: 24px; font-weight: 600; color: var(--teal-900); }
+.kamp__panda { width: 210px; height: 190px; margin: 4px auto 0; }
+.kamp__oppgave { margin: 4px auto 0; max-width: 30ch; font-size: 15px; line-height: 1.5; color: var(--tekst-2); }
+.kamp__teller { display: flex; align-items: baseline; justify-content: center; gap: 6px; margin-top: 8px; font-family: var(--font-display); }
+.kamp__tall { font-size: 46px; font-weight: 700; color: var(--teal-900); font-variant-numeric: tabular-nums; line-height: 1; }
+.kamp__maal { font-size: 20px; font-weight: 600; color: var(--dempet); }
+.kamp__hint { margin: 6px auto 0; max-width: 28ch; font-size: 12.5px; }
+.kamp__push { width: 100%; height: 62px; border: none; border-radius: 18px; background: var(--teal-900); color: #fff; font-family: var(--font-display); font-size: 20px; font-weight: 800; letter-spacing: 0.1em; cursor: pointer; box-shadow: 0 5px 0 rgba(1,63,64,0.35); }
+.kamp__push:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(1,63,64,0.35); }
+.kamp__push--puls { animation: kamp-puls 0.18s ease; }
+.kamp__ferdig-lenke { display: block; width: 100%; margin-top: 12px; border: none; background: none; color: var(--teal-700); font-size: 14px; text-decoration: underline; cursor: pointer; }
+@keyframes kamp-puls { 50% { transform: scale(1.05); } }
+
+/* Runde-vunnet-mellomsteg + endelig seier */
+.kamp__runde, .kamp__seier { display: flex; flex-direction: column; align-items: center; padding-top: 3vh; }
+.kamp__runde-panda { width: 156px; height: 172px; }
+.kamp__runde-tittel { margin: 6px 0 0; font-family: var(--font-display); font-size: 26px; font-weight: 600; color: var(--teal-900); }
+.kamp__runde-stjerne { margin-top: 10px; }
+.kamp__runde-stjerne .ikon { width: 56px; height: 56px; color: #F5B301; fill: #F5B301; filter: drop-shadow(0 3px 8px rgba(245,179,1,0.5)); animation: kamp-stjerne 0.5s var(--ease-standard) both; }
+.kamp__seier-panda { width: 188px; height: 200px; }
+.kamp__seier-stjerner { margin: 6px 0 0; }
+.kamp__seier-stjerner .ikon { width: 30px; height: 30px; }
+.kamp__seier-tittel { margin: 12px 0 0; font-family: var(--font-display); font-size: 30px; font-weight: 600; color: var(--teal-900); }
+.kamp__seier-under { margin: 6px 0 0; font-size: 16px; color: var(--tekst-2); }
+@keyframes kamp-stjerne { from { transform: scale(0) rotate(-40deg); opacity: 0; } to { transform: none; opacity: 1; } }
+
+.reise-laster__panda--pushup { width: 172px; height: 152px; animation: none; }
+@media (prefers-reduced-motion: reduce) { .kamp__push--puls, .kamp__runde-stjerne .ikon { animation: none; } }

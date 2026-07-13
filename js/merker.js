@@ -49,7 +49,9 @@ function byggKontekst(profil, logg, planer) {
 
   // Tellere per kilde.
   const kildeTeller = {};
-  const laerDatoListe = []; // dato for hvert fullførte ferdighetstrinn (kilde 'laer')
+  const laerDatoListe = []; // dato for hvert fullførte ferdighetstrinn (kilde 'laer', ikke boss)
+  const bossStjernePerSti = new Map(); // stiId → høyeste vunne boss-nivå (stjerner)
+  const bossSlaattDato = new Map();    // stiId → dato da 3. stjerne ble nådd
 
   for (const o of rader) {
     antallDato.set(antallDato.size + 1, o.dato);
@@ -84,7 +86,15 @@ function byggKontekst(profil, logg, planer) {
     }
 
     if (o.kilde) kildeTeller[o.kilde] = (kildeTeller[o.kilde] || 0) + 1;
-    if (o.kilde === 'laer') laerDatoListe.push(o.dato);
+    if (o.kilde === 'laer' && o.node === 'boss' && o.sti) {
+      const stj = o.bossNiva || 0;
+      if (stj > (bossStjernePerSti.get(o.sti) || 0)) {
+        bossStjernePerSti.set(o.sti, stj);
+        if (stj >= 3 && !bossSlaattDato.has(o.sti)) bossSlaattDato.set(o.sti, o.dato);
+      }
+    } else if (o.kilde === 'laer') {
+      laerDatoListe.push(o.dato); // ekte ferdighetstrinn (ikke boss-runder)
+    }
     if (o.kilde === 'strava') settForste('strava', o);
     if (o.kilde === 'bibliotek') {
       settForste('bibliotek', o);
@@ -162,8 +172,10 @@ function byggKontekst(profil, logg, planer) {
     prAntall: prOvelser.size,
     prDato: (n) => prDato.get(n) || null,
     bibliotekAntall: kildeTeller.bibliotek || 0,
-    laerAntall: kildeTeller.laer || 0,
+    laerAntall: laerDatoListe.length,
     laerDato: (n) => laerDatoListe[n - 1] || null,
+    bossStjerner: (stiId) => bossStjernePerSti.get(stiId) || 0,
+    bossSlaattDato: (stiId) => bossSlaattDato.get(stiId) || null,
     planGjort,
     niva: nivaFraTotalXp(profil?.globalXp || 0).niva,
   };
@@ -215,6 +227,7 @@ export const MERKER = {
     teller('laer-1', 'Første trinn', 'Fullført ditt første ferdighetstrinn', 'stjerne', 'lime', 1, (c) => c.laerAntall, (c) => c.laerDato(1)),
     teller('laer-5', 'På vei', 'Fullført 5 ferdighetstrinn', 'graf', 'teal', 5, (c) => c.laerAntall, (c) => c.laerDato(5)),
     teller('laer-10', 'Ferdighetsbygger', 'Fullført 10 ferdighetstrinn', 'hexstjerne', 'blaa', 10, (c) => c.laerAntall, (c) => c.laerDato(10)),
+    teller('push-mester', 'Push-up-mester', 'Slo push-up-pandaen — tre stjerner', 'trofe', 'gul', 3, (c) => c.bossStjerner('push-opp'), (c) => c.bossSlaattDato('push-opp')),
   ],
   nytt: [
     teller('nytt-2', 'Nysgjerrig', 'Prøvd 2 ulike bevegelsestyper', 'terning', 'lime', 2, (c) => c.typer, (c) => c.typerDato(2)),

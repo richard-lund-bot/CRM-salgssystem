@@ -7,6 +7,17 @@
     "kjede": "push-h",
     "bevegelse": "bodyweight",
     "intro": "Push-up er grunnøvelsen for overkroppen — bryst, skuldre, triceps og en stødig kjerne, helt uten utstyr. Denne stien tar deg fra den aller enkleste varianten og bygger styrke trinn for trinn. Gå videre når et trinn kjennes rent og kontrollert — det haster ikke.",
+    "boss": {
+      "tittel": "Push-up-pandaen",
+      "etterNode": "push-up",
+      "laasHint": "Mestre standard push-up på stien for å utfordre pandaen.",
+      "innbydelse": "Tre runder push-ups mot pandaen. Slå alle tre og bli push-up-mester.",
+      "nivaer": [
+        { "navn": "Oppvarming", "reps": 8, "tekst": "Match pandaen med 8 rolige push-ups. Kne-variant teller like fullt." },
+        { "navn": "Utfordring", "reps": 12, "tekst": "Pandaen tar opp tempoet — 12 push-ups med ren teknikk." },
+        { "navn": "Mesterprøven", "reps": 15, "tekst": "Alt du har igjen: 15 kontrollerte push-ups. Slå pandaen!" }
+      ]
+    },
     "trinn": {
       "vegg-pushup": {
         "blurb": "Presset stående mot en vegg. Trygt og lett på leddene — perfekt for å lære retning og spenning i kroppen.",

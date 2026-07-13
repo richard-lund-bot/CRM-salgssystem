@@ -18,30 +18,25 @@ import { beregnXp } from './bevegelse.js';
 import { lagKonfetti } from './animasjon.js';
 import { vibrer } from './haptikk.js';
 
-// Mova-maskot: en søt panda som elsker bevegelse (flat SVG, teal pannebånd).
-// Brukes som «guide» øverst i stien og på lasteskjermen mellom sti og modul.
-function movaPanda(klasse = 'mova-panda') {
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('viewBox', '0 0 120 124');
-  svg.setAttribute('class', klasse);
-  svg.setAttribute('aria-hidden', 'true');
-  svg.innerHTML = [
-    '<ellipse cx="60" cy="118" rx="30" ry="6" fill="#000" opacity="0.06"/>',
-    '<circle cx="32" cy="34" r="15" fill="#2f2f33"/><circle cx="88" cy="34" r="15" fill="#2f2f33"/>',
-    '<circle cx="32" cy="34" r="7" fill="#4a4a50"/><circle cx="88" cy="34" r="7" fill="#4a4a50"/>',
-    '<circle cx="60" cy="62" r="40" fill="#ffffff" stroke="#E7EBEB" stroke-width="2"/>',
-    '<path d="M22 52 Q60 35 98 52 L98 61 Q60 44 22 61 Z" fill="#0BA69F"/>',
-    '<circle cx="97" cy="56" r="5.5" fill="#008382"/>',
-    '<ellipse cx="45" cy="67" rx="12" ry="15" fill="#2f2f33" transform="rotate(20 45 67)"/>',
-    '<ellipse cx="75" cy="67" rx="12" ry="15" fill="#2f2f33" transform="rotate(-20 75 67)"/>',
-    '<circle cx="47" cy="67" r="6" fill="#fff"/><circle cx="73" cy="67" r="6" fill="#fff"/>',
-    '<circle cx="48" cy="68" r="3" fill="#2f2f33"/><circle cx="72" cy="68" r="3" fill="#2f2f33"/>',
-    '<circle cx="49.4" cy="66.4" r="1.1" fill="#fff"/><circle cx="73.4" cy="66.4" r="1.1" fill="#fff"/>',
-    '<circle cx="39" cy="80" r="5" fill="#FFC9BC"/><circle cx="81" cy="80" r="5" fill="#FFC9BC"/>',
-    '<ellipse cx="60" cy="79" rx="5" ry="3.6" fill="#2f2f33"/>',
-    '<path d="M60 82 L60 86 M60 86 Q54.5 90 50.5 86 M60 86 Q65.5 90 69.5 86" stroke="#2f2f33" stroke-width="2.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
-  ].join('');
-  return svg;
+// Mova-maskot: den ekte push-up-pandaen — illustrerte poser i icons/brand/panda.
+// Poser: idle, wave, flex, cheer, pushup-up, pushup-down. Brukes som guide, på
+// lasteskjermen, som boss langs stien og i push-up-kampen.
+const PANDA = 'icons/brand/panda/panda-';
+function pandaImg(pose, klasse) {
+  return el('img', {
+    class: 'panda-bilde' + (klasse ? ' ' + klasse : ''),
+    src: `${PANDA}${pose}.webp`, alt: '', 'aria-hidden': 'true', draggable: 'false',
+  });
+}
+// To-frames maskot som veksler mellom to poser. `variant` styrer rytmen i CSS:
+//   'idle'   → rolig idle↔vink (står ved stien)
+//   'pushup' → flip-bok som gjør push-ups (lasteskjerm)
+//   'kamp'   → viser topp-posituren; ett dukk pr. rep (drives via .dukk())
+function pandaAnim(poseA, poseB, klasse, variant = 'idle') {
+  return el('div', { class: `panda-anim panda-anim--${variant}` + (klasse ? ' ' + klasse : ''), 'aria-hidden': 'true' },
+    pandaImg(poseA, 'panda-anim__lag panda-anim__lag--a'),
+    pandaImg(poseB, 'panda-anim__lag panda-anim__lag--b'),
+  );
 }
 
 let _stier = null;
@@ -87,9 +82,36 @@ const NIVA = {
 function mestredeNoder(stiId) {
   const sett = new Set();
   for (const o of hentLogg()) {
-    if (o.kilde === 'laer' && o.sti === stiId && o.node) sett.add(o.node);
+    if (o.kilde === 'laer' && o.sti === stiId && o.node && o.node !== 'boss') sett.add(o.node);
   }
   return sett;
+}
+
+// --- Boss: push-up-pandaen (tre stjerner = mestret øvelse) ------------------
+const BOSS_MAKS_STJERNER = 3;
+
+/** Stjerner vunnet mot bossen på en sti (0–3) — avledet fra bevegelsesloggen. */
+function bossStjerner(stiId) {
+  let maks = 0;
+  for (const o of hentLogg()) {
+    if (o.kilde === 'laer' && o.sti === stiId && o.node === 'boss') maks = Math.max(maks, o.bossNiva || 0);
+  }
+  return Math.min(BOSS_MAKS_STJERNER, maks);
+}
+
+/** Rad med tre stjerner; de `fylte` første er gullfylte. */
+function stjerneRad(fylte, klasse) {
+  return el('div', { class: 'stjernerad' + (klasse ? ' ' + klasse : '') },
+    ...Array.from({ length: BOSS_MAKS_STJERNER }, (_, i) =>
+      el('span', { class: 'stjernerad__stj' + (i < fylte ? ' stjernerad__stj--pa' : '') }, ikon('stjerne', 'ikon'))),
+  );
+}
+
+/** Felles primærknapp for kamp-skjermene (samme stil som leksjonen). */
+function leksjonPrimaer(tekst, onclick) {
+  const b = el('button', { class: 'leksjon-primaer', type: 'button' }, tekst);
+  b.addEventListener('click', onclick);
+  return b;
 }
 
 // --- Inngangskort til Lær-feeden -----------------------------------------
@@ -136,6 +158,38 @@ export function visStiSkjerm(mount) {
     return { l, i, tilstand };
   });
 
+  // Boss-tilstand: låst (til «etterNode» er mestret) / klar / slått (3 stjerner).
+  const boss = sti.boss || null;
+  const bossAapen = boss ? mestret.has(boss.etterNode) : false;
+  const bossStj = boss ? bossStjerner(sti.id) : 0;
+  const bossTilstand = !boss ? null
+    : !bossAapen ? 'laast'
+      : bossStj >= BOSS_MAKS_STJERNER ? 'slaatt' : 'klar';
+
+  // Reise-innhold: guide + noder, med bossen flettet inn rett etter «etterNode».
+  const guideSnakk = bossTilstand === 'slaatt'
+    ? 'Push-up-pandaen er slått — du er offisielt push-up-mester 🐼'
+    : bossTilstand === 'klar'
+      ? 'Push-up-pandaen står klar. Tør du en push-up-kamp?'
+      : antallMestret >= ledd.length
+        ? 'Wow — hele stien! Sterkt jobba.'
+        : 'Push-up-pandaen heier på deg. Ett trinn om gangen!';
+  const reiseBarn = [
+    el('div', { class: 'reise-guide' },
+      pandaAnim('idle', 'wave', 'reise-guide__panda', 'idle'),
+      el('span', { class: 'reise-guide__snakk' }, guideSnakk),
+    ),
+  ];
+  let bossSatt = false;
+  noder.forEach((n) => {
+    reiseBarn.push(reiseNode(sti, n));
+    if (boss && !bossSatt && n.l.ovelse === boss.etterNode) {
+      reiseBarn.push(reiseBoss(sti, boss, bossTilstand, bossStj));
+      bossSatt = true;
+    }
+  });
+  if (boss && !bossSatt) reiseBarn.push(reiseBoss(sti, boss, bossTilstand, bossStj));
+
   tom(mount);
   mount.append(
     el('header', { class: 'topp topp--kjor' },
@@ -152,16 +206,12 @@ export function visStiSkjerm(mount) {
         el('p', { class: 'sti-hero__intro' }, sti.intro),
         stiFramdrift(antallMestret, ledd.length),
       ),
-      el('div', { class: 'reise' },
-        el('div', { class: 'reise-guide' },
-          movaPanda('reise-guide__panda'),
-          el('span', { class: 'reise-guide__snakk' }, antallMestret >= ledd.length ? 'Wow — hele stien! Du er en push-up-mester 🐼' : 'Push-up-pandaen heier på deg. Ett trinn om gangen!'),
-        ),
-        ...noder.map((n) => reiseNode(sti, n)),
-      ),
-      antallMestret >= ledd.length && ledd.length
-        ? el('p', { class: 'sti-fot sti-fot--ferdig' }, ikon('trofe', 'ikon'), ' Hele stien er mestret — sterkt jobba!')
-        : el('p', { class: 'sti-fot dempet' }, 'Mestre et trinn for å låse opp det neste.'),
+      el('div', { class: 'reise' }, ...reiseBarn),
+      bossTilstand === 'slaatt'
+        ? el('p', { class: 'sti-fot sti-fot--ferdig' }, ikon('trofe', 'ikon'), ' Push-up-pandaen er slått — du er push-up-mester!')
+        : antallMestret >= ledd.length && ledd.length
+          ? el('p', { class: 'sti-fot sti-fot--ferdig' }, ikon('trofe', 'ikon'), ' Hele stien er mestret — sterkt jobba!')
+          : el('p', { class: 'sti-fot dempet' }, 'Mestre et trinn for å låse opp det neste.'),
     ),
   );
 }
@@ -271,7 +321,8 @@ function startMedAnimasjon(sti, ledd) {
   const i = Math.floor((Date.now() / 1000) % LASTETEKSTER.length);
   const laster = el('div', { class: 'reise-laster' },
     el('div', { class: 'reise-laster__inn' },
-      el('div', { class: 'reise-laster__panda' }, movaPanda('reise-laster__figur')),
+      el('div', { class: 'reise-laster__panda reise-laster__panda--pushup' },
+        pandaAnim('pushup-up', 'pushup-down', 'reise-laster__figur', 'pushup')),
       el('p', { class: 'reise-laster__merke' }, 'Laster …'),
       el('p', { class: 'reise-laster__tekst' }, LASTETEKSTER[i]),
     ),
@@ -447,6 +498,207 @@ function startLeksjon(sti, ledd) {
       ),
     );
     bunn.append(primaer('Fortsett', () => { lukk(); if (_mount) visStiSkjerm(_mount); }));
+    try { overlay.append(lagKonfetti()); } catch { /* valgfri feiring */ }
+  }
+}
+
+// ===========================================================================
+// Boss: push-up-pandaen står ved stien og kan utfordres til push-up-kamp.
+// Tre nivåer, én stjerne pr. slått nivå, tre stjerner = mestret øvelse.
+// ===========================================================================
+function reiseBoss(sti, boss, tilstand, stjerner) {
+  const figur = tilstand === 'slaatt'
+    ? pandaImg('cheer', 'reise-boss__panda')
+    : pandaAnim('idle', 'wave', 'reise-boss__panda', 'idle');
+
+  const scene = el('button', {
+    class: 'reise-boss__scene', type: 'button',
+    'aria-label': `${boss.tittel} — ${stjerner} av ${BOSS_MAKS_STJERNER} stjerner`,
+  },
+    el('div', { class: 'reise-boss__glow' }),
+    tilstand === 'laast' ? el('span', { class: 'reise-boss__zzz' }, 'z z') : null,
+    figur,
+    el('div', { class: 'reise-boss__plate' },
+      el('span', { class: 'reise-boss__navn' }, boss.tittel),
+      stjerneRad(stjerner, 'reise-boss__stjerner'),
+    ),
+  );
+
+  const wrap = el('div', { class: `reise-boss reise-boss--${tilstand}` }, scene);
+  wrap.style.setProperty('--dx', '0px');
+  scene.addEventListener('click', (ev) => {
+    ev.stopPropagation();
+    apneBossPopover(sti, boss, tilstand, stjerner, wrap);
+  });
+  return wrap;
+}
+
+function apneBossPopover(sti, boss, tilstand, stjerner, wrap) {
+  const alleredeApen = _aktivWrap === wrap;
+  lukkPopover();
+  if (alleredeApen) return;
+  vibrer('lett');
+
+  let kort;
+  if (tilstand === 'laast') {
+    kort = el('div', { class: 'reise-popover reise-popover--laast' },
+      el('span', { class: 'reise-popover__tail' }),
+      el('h3', { class: 'reise-popover__navn' }, boss.tittel),
+      el('p', { class: 'reise-popover__meta' }, boss.laasHint),
+    );
+  } else {
+    const revansje = stjerner >= BOSS_MAKS_STJERNER;
+    const cta = revansje ? 'Ta en revansje'
+      : stjerner === 0 ? 'Utfordre pandaen'
+        : `Nivå ${stjerner + 1} av ${BOSS_MAKS_STJERNER}`;
+    kort = el('div', { class: 'reise-popover reise-popover--boss' },
+      el('span', { class: 'reise-popover__tail' }),
+      el('h3', { class: 'reise-popover__navn' }, boss.tittel),
+      el('p', { class: 'reise-popover__meta' }, revansje ? 'Push-up-mester! Alle tre stjerner er dine.' : boss.innbydelse),
+      stjerneRad(stjerner, 'reise-popover__stjerner'),
+      knappStart(cta, () => startBossKamp(sti, boss, revansje ? 0 : stjerner)),
+    );
+  }
+
+  const scrim = el('div', { class: 'reise-scrim' });
+  scrim.addEventListener('click', lukkPopover);
+  wrap.parentElement.append(scrim);
+  wrap.append(kort);
+  wrap.classList.add('reise-node--aktiv');
+  _apenPopover = kort;
+  _aktivWrap = wrap;
+  requestAnimationFrame(() => kort.classList.add('reise-popover--inn'));
+}
+
+// --- Selve kampen: tell push-ups sammen med pandaen, ett nivå om gangen -----
+function startBossKamp(sti, boss, startNiva) {
+  lukkPopover();
+  vibrer('medium');
+  const nivaer = boss.nivaer || [];
+  if (!nivaer.length) return;
+  let niva = Math.max(0, Math.min(startNiva, nivaer.length - 1));
+  let stjerner = bossStjerner(sti.id);
+
+  const lukkX = el('button', { class: 'leksjon__lukk', type: 'button', 'aria-label': 'Avslutt', onclick: lukk }, ikon('kryss'));
+  const pips = stjerneRad(stjerner, 'kamp__pips');
+  const kropp = el('div', { class: 'kamp__kropp' });
+  const bunn = el('div', { class: 'leksjon__bunn' });
+  const overlay = el('div', { class: 'leksjon kamp' },
+    el('div', { class: 'leksjon__topp' }, lukkX, el('span', { class: 'kamp__tittel' }, boss.tittel), pips),
+    kropp, bunn,
+  );
+  document.body.append(overlay);
+  requestAnimationFrame(() => overlay.classList.add('leksjon--apen'));
+  tegnRunde();
+
+  function lukk() {
+    overlay.classList.add('leksjon--lukker');
+    setTimeout(() => overlay.remove(), 200);
+    if (_mount) visStiSkjerm(_mount);
+  }
+
+  function settPips(n, nySiste = false) {
+    pips.querySelectorAll('.stjernerad__stj').forEach((s, i) => {
+      const pa = i < n;
+      s.classList.toggle('stjernerad__stj--pa', pa);
+      s.classList.toggle('stjernerad__stj--ny', pa && nySiste && i === n - 1);
+    });
+  }
+
+  function tegnRunde() {
+    const n = nivaer[niva];
+    const maal = n.reps || 10;
+    let reps = 0;
+    let avgjort = false;
+
+    const panda = pandaAnim('pushup-up', 'pushup-down', 'kamp__panda', 'kamp');
+    const tall = el('span', { class: 'kamp__tall' }, '0');
+    const pushKnapp = el('button', { class: 'kamp__push', type: 'button' }, 'PUSH');
+    let dukkTimer = null;
+
+    function dunk() {
+      if (avgjort) return;
+      reps = Math.min(maal, reps + 1);
+      tall.textContent = String(reps);
+      vibrer('lett');
+      panda.classList.add('panda-anim--ned');
+      clearTimeout(dukkTimer);
+      dukkTimer = setTimeout(() => panda.classList.remove('panda-anim--ned'), 200);
+      pushKnapp.classList.remove('kamp__push--puls');
+      void pushKnapp.offsetWidth;
+      pushKnapp.classList.add('kamp__push--puls');
+      if (reps >= maal) rundeVunnet();
+    }
+    pushKnapp.addEventListener('click', dunk);
+
+    tom(kropp); tom(bunn);
+    kropp.append(
+      el('span', { class: 'kamp__merke' }, `Nivå ${niva + 1} av ${nivaer.length}`),
+      el('h1', { class: 'kamp__navn' }, n.navn),
+      panda,
+      el('p', { class: 'kamp__oppgave' }, n.tekst),
+      el('div', { class: 'kamp__teller' }, tall, el('span', { class: 'kamp__maal' }, `/ ${maal}`)),
+      el('p', { class: 'kamp__hint dempet' }, 'Pandaen gjør dem sammen med deg. Trykk PUSH for hver.'),
+    );
+    bunn.append(
+      pushKnapp,
+      el('button', { class: 'kamp__ferdig-lenke', type: 'button', onclick: rundeVunnet }, 'Jeg klarte runden ✓'),
+    );
+
+    function rundeVunnet() {
+      if (avgjort) return;
+      avgjort = true;
+      clearTimeout(dukkTimer);
+      vibrer('riktig');
+      const vunnet = niva + 1;
+      let res = { xp: 0, nyeMerker: [] };
+      try {
+        res = registrerOgLogg({
+          bevegelse: sti.bevegelse || 'bodyweight',
+          varighetMin: 3,
+          intensitet: 4,
+          tittel: `${boss.tittel}: ${n.navn}`,
+          kilde: 'laer',
+          ekstra: { sti: sti.id, node: 'boss', bossNiva: vunnet },
+        });
+      } catch (err) { console.warn('Kunne ikke logge boss-runde', err); }
+      if (vunnet > stjerner) { stjerner = vunnet; settPips(stjerner, true); }
+      if (niva >= nivaer.length - 1) tegnSeier(res);
+      else tegnMellom(res);
+    }
+  }
+
+  function tegnMellom(res) {
+    tom(kropp); tom(bunn);
+    kropp.append(
+      el('div', { class: 'kamp__runde' },
+        pandaImg('cheer', 'kamp__runde-panda'),
+        el('h1', { class: 'kamp__runde-tittel' }, 'Runde vunnet!'),
+        el('div', { class: 'kamp__runde-stjerne' }, ikon('stjerne', 'ikon')),
+        el('div', { class: 'leksjon-feiring__xp' }, ikon('lyn', 'ikon'), ` +${res.xp || 0} XP`),
+      ),
+    );
+    bunn.append(leksjonPrimaer('Neste runde', () => { niva += 1; tegnRunde(); }));
+    try { overlay.append(lagKonfetti()); } catch { /* valgfri feiring */ }
+  }
+
+  function tegnSeier(res) {
+    vibrer('feiring');
+    lukkX.style.visibility = 'hidden';
+    tom(kropp); tom(bunn);
+    kropp.append(
+      el('div', { class: 'kamp__seier' },
+        pandaImg('cheer', 'kamp__seier-panda'),
+        stjerneRad(BOSS_MAKS_STJERNER, 'kamp__seier-stjerner'),
+        el('h1', { class: 'kamp__seier-tittel' }, 'Pandaen er slått!'),
+        el('p', { class: 'kamp__seier-under' }, 'Du er push-up-mester 🐼'),
+        el('div', { class: 'leksjon-feiring__xp' }, ikon('lyn', 'ikon'), ` +${res.xp || 0} XP`),
+        ...((res.nyeMerker || []).length
+          ? [el('div', { class: 'leksjon-feiring__merke' }, ikon('medalje', 'ikon'), ' Nytt merke: ' + res.nyeMerker.map((m) => m.navn).join(', '))]
+          : []),
+      ),
+    );
+    bunn.append(leksjonPrimaer('Fortsett', lukk));
     try { overlay.append(lagKonfetti()); } catch { /* valgfri feiring */ }
   }
 }

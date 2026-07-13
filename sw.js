@@ -3,7 +3,7 @@
 //   - navigasjon/HTML: network-first med cache-fallback (fersk UI når nett finnes)
 //   - data/JS/CSS/ikoner: cache-first (raskt, fungerer offline)
 // Bump CACHE_VERSION for å rulle ut ny cache.
-const CACHE_VERSION = 'mova-m28-2.39.0';
+const CACHE_VERSION = 'mova-m28-2.40.0';
 const SKALL = [
   './',
   './index.html',
@@ -57,6 +57,12 @@ const SKALL = [
   './icons/brand/splash.webp',
   './icons/brand/auth-logg-inn.webp',
   './icons/brand/auth-bli-medlem.webp',
+  './icons/brand/panda/panda-idle.webp',
+  './icons/brand/panda/panda-wave.webp',
+  './icons/brand/panda/panda-flex.webp',
+  './icons/brand/panda/panda-cheer.webp',
+  './icons/brand/panda/panda-pushup-up.webp',
+  './icons/brand/panda/panda-pushup-down.webp',
   './data/okter.json',
   './data/ovelsesinfo.json',
   './data/artikler.json',
