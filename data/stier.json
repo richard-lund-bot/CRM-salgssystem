@@ -1,0 +1,22 @@
+[
+  {
+    "id": "push-opp",
+    "tittel": "Push-up-reisen",
+    "undertittel": "Fra vegg-push til ettarms — steg for steg.",
+    "ikon": "vekt",
+    "kjede": "push-h",
+    "intro": "Push-up er grunnøvelsen for overkroppen — bryst, skuldre, triceps og en stødig kjerne, helt uten utstyr. Denne stien tar deg fra den aller enkleste varianten og bygger styrke trinn for trinn. Gå videre når et trinn kjennes rent og kontrollert — det haster ikke.",
+    "trinn": {
+      "vegg-pushup": "Presset stående mot en vegg. Trygt og lett på leddene — perfekt for å lære retning og spenning i kroppen.",
+      "skra-pushup-sofa-benk": "Hendene på en sofa eller benk. Jo høyere flate, jo lettere — senk høyden etter hvert som du blir sterkere.",
+      "kne-pushup": "På knærne i stedet for tærne. Halverer belastningen, men lærer deg den rette veien ned mot gulvet.",
+      "push-up": "Standarden: rett kropp fra hode til hæl, albuene litt inn, ned til brystet nesten tar gulvet.",
+      "diamant-smal-push-up": "Hendene tett sammen under brystet. Flytter mer av jobben til triceps og indre bryst.",
+      "dekline-push-up": "Føttene hevet på en forhøyning. Vinkelen legger mer vekt på øvre bryst og skuldre.",
+      "ring-push-up": "Push-up i ringer eller slynger. Det ustabile taket tvinger fram kontroll i hele skuldergjorden.",
+      "archer-push-up": "Vekten forskyves mot én arm mens den andre strekkes ut til siden. Et stort steg mot ettarms.",
+      "pseudo-planche-push-up": "Hendene ved hoftene og kroppen lent framover. Bygger den fremoverlente styrken som trengs videre.",
+      "ettarms-progresjon": "Målet: én arm, full kontroll. Bygges gradvis med bredere fotstilling og mindre støtte for hver økt."
+    }
+  }
+]

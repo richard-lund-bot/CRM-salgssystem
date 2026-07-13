@@ -2033,3 +2033,50 @@ body.fokusmodus { padding-bottom: 0; }
 .splash { transition: opacity 0.45s var(--ease-standard); }
 .splash--skjul { opacity: 0; pointer-events: none; }
 @media (prefers-reduced-motion: reduce) { .splash { transition: none; } }
+
+/* ===========================================================================
+   Ferdighetsstier (Lær → progresjonssti). Inngangskort i Lær-feeden + en
+   vertikal sti av trinn (progresjonskjede), farget etter nivå 1–5.
+   =========================================================================== */
+.stikort {
+  display: flex; align-items: center; gap: 14px; position: relative; text-decoration: none;
+  color: #fff; background: linear-gradient(135deg, var(--teal-700), var(--teal-900));
+  border-radius: var(--radius-lg); padding: 16px; margin-bottom: 14px; box-shadow: var(--shadow-sm);
+}
+.stikort:active { transform: scale(0.99); }
+.stikort__merke { position: absolute; top: 10px; right: 12px; font-size: 10px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; background: rgba(255,255,255,0.22); padding: 3px 8px; border-radius: var(--radius-pill); }
+.stikort__ikon { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 14px; background: rgba(255,255,255,0.16); display: grid; place-items: center; }
+.stikort__ikon .ikon { width: 24px; height: 24px; color: #fff; }
+.stikort__kropp { flex: 1 1 auto; min-width: 0; }
+.stikort__over { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.85; }
+.stikort__tittel { margin: 2px 0; font-family: var(--font-display); font-size: 18px; font-weight: 600; }
+.stikort__under { margin: 0; font-size: 13px; line-height: 1.4; opacity: 0.9; }
+.stikort__pil { flex: 0 0 auto; opacity: 0.8; }
+.stikort__pil .ikon { width: 20px; height: 20px; color: #fff; }
+
+.sti-hero { text-align: center; padding: 6px 0 18px; }
+.sti-hero__ikon { width: 56px; height: 56px; margin: 0 auto 12px; border-radius: 18px; background: var(--aksent-svak); display: grid; place-items: center; }
+.sti-hero__ikon .ikon { width: 28px; height: 28px; color: var(--aksent-mork); }
+.sti-hero__tittel { margin: 0; font-family: var(--font-display); font-size: 24px; font-weight: 600; letter-spacing: -0.01em; }
+.sti-hero__intro { margin: 8px auto 0; max-width: 46ch; font-size: 15px; line-height: 1.6; color: var(--tekst-2); }
+
+.sti { display: flex; flex-direction: column; }
+.sti-node { display: flex; align-items: flex-start; gap: 14px; position: relative; width: 100%; padding: 0 0 20px; background: none; border: none; text-align: left; cursor: pointer; font-family: inherit; color: var(--tekst); }
+.sti-node:not(:last-of-type)::before { content: ''; position: absolute; left: 22px; top: 44px; bottom: -2px; width: 2px; background: var(--kant); transform: translateX(-1px); }
+.sti-node__pin { flex: 0 0 auto; position: relative; z-index: 1; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; font-size: 17px; color: #fff; background: var(--c, var(--aksent)); box-shadow: 0 2px 8px rgba(1,63,64,0.18); }
+.sti-node__kropp { flex: 1 1 auto; min-width: 0; padding-top: 3px; }
+.sti-node__hode { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.sti-node__navn { font-family: var(--font-display); font-weight: 600; font-size: 16px; }
+.sti-niv { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: var(--radius-pill); background: var(--bg-kort-2); border: 1px solid var(--c, var(--aksent)); color: var(--c, var(--aksent-mork)); }
+.sti-node__blurb { margin: 4px 0 0; font-size: 13.5px; line-height: 1.5; color: var(--tekst-2); }
+.sti-node__bilde { flex: 0 0 auto; width: 52px; height: 52px; border-radius: 12px; background-size: cover; background-position: center; align-self: center; }
+.sti-node__gaa { flex: 0 0 auto; align-self: center; color: var(--dempet); }
+.sti-node__gaa .ikon { width: 20px; height: 20px; }
+.sti-node:active .sti-node__pin { transform: scale(0.94); }
+.sti-fot { text-align: center; margin-top: 6px; font-size: 13px; }
+
+.sti-niv--1 { --c: #2FB3AE; }
+.sti-niv--2 { --c: #0BA69F; }
+.sti-niv--3 { --c: #008382; }
+.sti-niv--4 { --c: #DE9433; }
+.sti-niv--5 { --c: #E15C38; }

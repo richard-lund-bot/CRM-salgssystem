@@ -19,6 +19,7 @@ import { lastOvelsesinfo, settBib as settBibOvelse, visOvelseSkjerm, ovelseInfo 
 import { alleØvelser, tonnasje, muskelVolum, lagLinjegraf } from './styrke.js';
 import { lastArtikler, visLaerSkjerm, visArtikkelSkjerm } from './laer.js';
 import { visLoggInnSkjerm, visRegistrerSkjerm, settEtterInnlogget } from './medlem.js';
+import { lastStier, lastKjeder, settBib as settBibSti, visStiSkjerm } from './sti.js';
 import { visMerkerSkjerm } from './merker.js';
 import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
 import { lagFaneside, fanesideMedTittel, settNavger, settUlestSjekk, dagsfase } from './banner.js';
@@ -60,13 +61,14 @@ const ruter = {
   styrke: visStyrke,
   laer: () => visLaerSkjerm(app),
   artikkel: () => visArtikkelSkjerm(app),
+  sti: () => visStiSkjerm(app),
   om: visOm,
   'logg-inn': () => visLoggInnSkjerm(app),
   'bli-medlem': () => visRegistrerSkjerm(app),
 };
 
 // Skjermene med egen tilbake-header er fokusmodus (skjuler tab-baren).
-const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel', 'logg-inn', 'bli-medlem']);
+const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel', 'sti', 'logg-inn', 'bli-medlem']);
 
 // Medlemssidene (auth). Uinnloggede sendes hit; innloggede slippes forbi.
 const AUTH_RUTER = new Set(['logg-inn', 'bli-medlem']);
@@ -98,7 +100,7 @@ function oppdaterNav(rute) {
     bibliotek: 'merker', om: 'merker', varsler: 'merker',
     plan: 'merker', styrke: 'merker', kalender: 'merker', reise: 'merker', tilpass: 'merker',
     historikk: 'aktivitet', ny: 'beveg', okter: 'beveg',
-    artikkel: 'laer',
+    artikkel: 'laer', sti: 'laer',
   })[rute] || rute;
   document.querySelectorAll('.tabbar__knapp').forEach((b) => {
     b.classList.toggle('tabbar__knapp--aktiv', b.dataset.rute === tabRute);
@@ -917,7 +919,7 @@ function skjulSplash() {
 // --- Oppstart ---
 async function start() {
   try {
-    [bib] = await Promise.all([lastBibliotek(), lastOkter(), lastOvelsesinfo(), lastArtikler()]);
+    [bib] = await Promise.all([lastBibliotek(), lastOkter(), lastOvelsesinfo(), lastArtikler(), lastStier(), lastKjeder()]);
   } catch (e) {
     skjulSplash();
     tom(app);
@@ -930,6 +932,7 @@ async function start() {
   settBibHist(bib);
   settBibKal(bib);
   settBibOvelse(bib);
+  settBibSti(bib);
   settNavger(navger); // pull-to-refresh (banner.js) tegner siden på nytt
   settUlestSjekk(harUlesteVarsler); // uleste-prikk på bjella (banner.js)
   bruksTema(hentProfil()?.innstillinger?.tema);
