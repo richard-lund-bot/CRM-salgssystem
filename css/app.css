@@ -2188,13 +2188,14 @@ body.fokusmodus { padding-bottom: 0; }
    sprett, og kollapser når scroll-styringen legger på .reise-popover--ut. */
 .reise-popover {
   position: absolute; top: calc(100% + 14px); left: 50%; z-index: 6; width: min(300px, 84vw);
-  transform: translate(calc(-50% - var(--dx, 0px)), -6px) scale(0.7); transform-origin: top center;
+  transform: translate(calc(-50% - var(--dx, 0px)), -6px) scale(0.55); transform-origin: top center;
   background: var(--c, var(--aksent)); color: #fff; border-radius: 20px; padding: 16px 16px 14px;
   box-shadow: 0 14px 34px rgba(1,63,64,0.28); opacity: 0;
-  transition: opacity 0.18s ease, transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
+  /* Sakte zoom inn; rask kollaps (skjules med en gang man scroller). */
+  transition: opacity 0.34s ease, transform 0.52s cubic-bezier(0.34,1.42,0.5,1);
 }
 .reise-popover--inn { opacity: 1; transform: translate(calc(-50% - var(--dx, 0px)), 0) scale(1); }
-.reise-popover--ut { opacity: 0; transform: translate(calc(-50% - var(--dx, 0px)), -6px) scale(0.55); transition: opacity 0.15s ease, transform 0.16s ease; pointer-events: none; }
+.reise-popover--ut { opacity: 0; transform: translate(calc(-50% - var(--dx, 0px)), -4px) scale(0.6); transition: opacity 0.12s ease, transform 0.12s ease; pointer-events: none; }
 .reise-popover--laast { background: var(--bg-kort); color: var(--tekst); border: 1px solid var(--kant); }
 .reise-popover__tail { position: absolute; bottom: 100%; left: calc(50% + var(--dx, 0px)); transform: translateX(-50%); border: 9px solid transparent; border-bottom-color: var(--c, var(--aksent)); }
 .reise-popover--laast .reise-popover__tail { border-bottom-color: var(--bg-kort); }

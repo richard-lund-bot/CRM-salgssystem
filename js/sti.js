@@ -838,6 +838,8 @@ function settOppSkrymping(container) {
   const gj = container.querySelector('.reise-node--gjeldende');
   if (!maal.length) return;
   let rafId = null;
+  let stoppTimer = null;
+  // Kun node-krympingen (kontinuerlig under scroll).
   const oppdater = () => {
     rafId = null;
     for (const node of maal) {
@@ -846,28 +848,31 @@ function settOppSkrymping(container) {
       inner.style.setProperty('--krymp', (1 - t * 0.42).toFixed(3));
       node.classList.toggle('reise-node--krympet', t > 0.12);
     }
-    // Popover-styring (én åpen om gangen): lukk den aktive når noden scrolles
-    // nær kanten; auto-åpne den gjeldende når den er komfortabelt i synsfeltet.
-    // Ulike terskler (hysterese) så den ikke blafrer på kanten.
-    const h = window.innerHeight;
-    const senter = (n) => { const r = n.getBoundingClientRect(); return r.height ? r.top + r.height / 2 : null; };
-    if (_aktivWrap && _aktivWrap.isConnected) {
-      const c = senter(_aktivWrap);
-      if (c != null && (c < h * 0.1 || c > h * 0.82)) lukkPopover();
-    } else if (!_aktivWrap && gj && gj.isConnected && gj._ledd) {
-      const c = senter(gj);
-      if (c != null && c > h * 0.18 && c < h * 0.72) apneNodePopover(gj._sti, gj._ledd, 'gjeldende', gj, { stille: true });
-    }
   };
-  const paa = () => { if (!rafId) rafId = requestAnimationFrame(oppdater); };
+  // Auto-åpne den gjeldende STARTen når scrollen har lagt seg og noden er i synsfeltet.
+  const autoApne = () => {
+    if (_aktivWrap || !gj || !gj.isConnected || !gj._ledd) return;
+    const h = window.innerHeight;
+    const r = gj.getBoundingClientRect();
+    if (!r.height) return;
+    const c = r.top + r.height / 2;
+    if (c > h * 0.18 && c < h * 0.72) apneNodePopover(gj._sti, gj._ledd, 'gjeldende', gj, { stille: true });
+  };
+  const paa = () => {
+    if (_aktivWrap) lukkPopover();          // skjul boba straks man scroller
+    if (!rafId) rafId = requestAnimationFrame(oppdater);
+    clearTimeout(stoppTimer);
+    stoppTimer = setTimeout(autoApne, 220); // kom tilbake når scrollen har lagt seg
+  };
   window.addEventListener('scroll', paa, { passive: true, capture: true });
   window.addEventListener('resize', paa, { passive: true });
   _skrympRydd = () => {
     window.removeEventListener('scroll', paa, { capture: true });
     window.removeEventListener('resize', paa);
     if (rafId) cancelAnimationFrame(rafId);
+    clearTimeout(stoppTimer);
   };
-  setTimeout(oppdater, 150); // etter inngangs-staggeren; auto-åpner gjeldende i fokus
+  setTimeout(() => { oppdater(); autoApne(); }, 150); // første visning etter inngangs-staggeren
 }
 
 // --- Node-popover (trykk på node → kort med START + XP) -------------------
