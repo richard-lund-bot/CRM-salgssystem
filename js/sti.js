@@ -838,7 +838,6 @@ function settOppSkrymping(container) {
   const gj = container.querySelector('.reise-node--gjeldende');
   if (!maal.length) return;
   let rafId = null;
-  let stoppTimer = null;
   // Kun node-krympingen (kontinuerlig under scroll).
   const oppdater = () => {
     rafId = null;
@@ -849,8 +848,8 @@ function settOppSkrymping(container) {
       node.classList.toggle('reise-node--krympet', t > 0.12);
     }
   };
-  // Auto-åpne den gjeldende STARTen når scrollen har lagt seg og noden er i synsfeltet.
-  const autoApne = () => {
+  // Vis den gjeldende STARTen én gang (ved innlasting) om noden er i synsfeltet.
+  const visForste = () => {
     if (_aktivWrap || !gj || !gj.isConnected || !gj._ledd) return;
     const h = window.innerHeight;
     const r = gj.getBoundingClientRect();
@@ -858,11 +857,11 @@ function settOppSkrymping(container) {
     const c = r.top + r.height / 2;
     if (c > h * 0.18 && c < h * 0.72) apneNodePopover(gj._sti, gj._ledd, 'gjeldende', gj, { stille: true });
   };
+  // Skjul boba straks man scroller — den kommer IKKE tilbake av seg selv
+  // (tapp noden for å åpne igjen).
   const paa = () => {
-    if (_aktivWrap) lukkPopover();          // skjul boba straks man scroller
+    if (_aktivWrap) lukkPopover();
     if (!rafId) rafId = requestAnimationFrame(oppdater);
-    clearTimeout(stoppTimer);
-    stoppTimer = setTimeout(autoApne, 220); // kom tilbake når scrollen har lagt seg
   };
   window.addEventListener('scroll', paa, { passive: true, capture: true });
   window.addEventListener('resize', paa, { passive: true });
@@ -870,9 +869,8 @@ function settOppSkrymping(container) {
     window.removeEventListener('scroll', paa, { capture: true });
     window.removeEventListener('resize', paa);
     if (rafId) cancelAnimationFrame(rafId);
-    clearTimeout(stoppTimer);
   };
-  setTimeout(() => { oppdater(); autoApne(); }, 150); // første visning etter inngangs-staggeren
+  setTimeout(() => { oppdater(); visForste(); }, 150); // første visning etter inngangs-staggeren
 }
 
 // --- Node-popover (trykk på node → kort med START + XP) -------------------
