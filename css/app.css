@@ -2257,16 +2257,21 @@ body.fokusmodus { padding-bottom: 0; }
 .panda-anim__lag--b { position: absolute; inset: 0; z-index: 1; }
 .panda-anim--idle { animation: panda-bob 3.4s ease-in-out infinite; }
 .panda-anim--idle .panda-anim__lag--b { opacity: 0; animation: panda-vink 5.5s ease-in-out infinite; }
-.panda-anim--pushup .panda-anim__lag--b { opacity: 0; animation: panda-flip 0.9s steps(1, end) infinite; }
+/* Push-up-flip: begge lagene veksler i motfase (steg-hardt), så bare ETT bilde
+   er synlig om gangen — ellers «lekker» det gjennomsiktige laget under gjennom. */
+.panda-anim--pushup .panda-anim__lag--a { animation: panda-flip-a 0.9s steps(1, end) infinite; }
+.panda-anim--pushup .panda-anim__lag--b { opacity: 0; animation: panda-flip-b 0.9s steps(1, end) infinite; }
 .panda-anim--kamp .panda-anim__lag--a, .panda-anim--kamp .panda-anim__lag--b { transition: opacity 0.08s linear; }
 .panda-anim--kamp .panda-anim__lag--b { opacity: 0; }
 .panda-anim--kamp.panda-anim--ned .panda-anim__lag--a { opacity: 0; }
 .panda-anim--kamp.panda-anim--ned .panda-anim__lag--b { opacity: 1; }
 @keyframes panda-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 @keyframes panda-vink { 0%, 62%, 100% { opacity: 0; } 72%, 88% { opacity: 1; } }
-@keyframes panda-flip { 0%, 49.9% { opacity: 0; } 50%, 100% { opacity: 1; } }
+@keyframes panda-flip-a { 0% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes panda-flip-b { 0% { opacity: 0; } 50% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
-  .panda-anim--idle, .panda-anim--idle .panda-anim__lag--b, .panda-anim--pushup .panda-anim__lag--b { animation: none; }
+  .panda-anim--idle, .panda-anim--idle .panda-anim__lag--b,
+  .panda-anim--pushup .panda-anim__lag--a, .panda-anim--pushup .panda-anim__lag--b { animation: none; }
   .panda-anim--idle .panda-anim__lag--b, .panda-anim--pushup .panda-anim__lag--b { opacity: 0; }
 }
 
