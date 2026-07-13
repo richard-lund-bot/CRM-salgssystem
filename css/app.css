@@ -2115,7 +2115,7 @@ body.fokusmodus { padding-bottom: 0; }
 .reise-topp__tittel { margin: 1px 0 0; font-family: var(--font-display); font-size: 20px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .reise-topp__tall { flex: 0 0 auto; font-family: var(--font-display); font-weight: 800; font-size: 15px; color: #fff; font-variant-numeric: tabular-nums; background: rgba(255,255,255,0.16); padding: 4px 10px; border-radius: 999px; }
 .reise-topp__spor { margin-top: 10px; height: 7px; border-radius: 999px; background: rgba(255,255,255,0.2); overflow: hidden; }
-.reise-topp__fyll { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #7CF2D8, #34D9C0); box-shadow: 0 0 10px rgba(80,240,210,0.6); transition: width 0.5s var(--ease-standard); }
+.reise-topp__fyll { height: 100%; border-radius: 999px; background: #63DBC2; transition: width 0.5s var(--ease-standard); }
 .reise-topp__glans { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.22) 48%, transparent 66%); transform: translateX(-120%); animation: reise-glans 5.5s ease-in-out 1.2s infinite; }
 @keyframes reise-glans { 0% { transform: translateX(-120%); } 22%, 100% { transform: translateX(120%); } }
 .innhold--reise { padding-top: 2px; }
@@ -2346,15 +2346,11 @@ body.fokusmodus { padding-bottom: 0; }
 @media (prefers-reduced-motion: reduce) { .kamp__push--puls, .kamp__runde-stjerne .ikon { animation: none; } }
 
 /* === Skinn & glimt i spillmodulen ==================================== */
-/* Blank «candy»-glans + skinn-sveip på node-knappene */
+/* Skinn-sveip på node-knappene (flat stil — ingen blank «candy»-glans) */
 .reise-node__knapp { position: relative; overflow: hidden; }
-.reise-node__knapp::after {
-  content: ''; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
-  background: radial-gradient(125% 80% at 32% 20%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 52%);
-}
 .reise-node__knapp::before {
   content: ''; position: absolute; top: 0; left: 0; width: 62%; height: 100%; pointer-events: none;
-  background: linear-gradient(105deg, transparent 22%, rgba(255,255,255,0.5) 50%, transparent 78%);
+  background: linear-gradient(105deg, transparent 26%, rgba(255,255,255,0.38) 50%, transparent 74%);
   transform: translateX(-180%) skewX(-12deg);
 }
 .reise-node--mestret .reise-node__knapp::before { animation: node-skinn 4.6s ease-in-out infinite; animation-delay: var(--reise-forsinkelse, 0ms); }
@@ -2362,7 +2358,7 @@ body.fokusmodus { padding-bottom: 0; }
 @keyframes node-skinn { 0% { transform: translateX(-180%) skewX(-12deg); } 30%, 100% { transform: translateX(320%) skewX(-12deg); } }
 .reise-node--gjeldende .reise-node__knapp {
   box-shadow: 0 7px 0 rgba(0,0,0,0.18), 0 12px 22px rgba(1,63,64,0.22),
-              0 0 0 6px var(--aksent-svak), 0 0 22px 5px rgba(11,166,159,0.45);
+              0 0 0 5px var(--aksent-svak), 0 0 15px 3px rgba(11,166,159,0.3);
 }
 
 /* Gull-stjerner som tindrer (hvilende, ikke pips-en som allerede spretter) */

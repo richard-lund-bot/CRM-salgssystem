@@ -139,7 +139,7 @@ export function stiInngang() {
     if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return; // la lenken navigere
     if (_pendingInngang) { ev.preventDefault(); return; }
     ev.preventDefault();
-    try { flyvInn(kort, href); } catch { location.hash = href; }
+    try { flyvInn(kort, href, sti, mestret, antall); } catch { location.hash = href; }
   });
   return kort;
 }
@@ -170,17 +170,38 @@ function ryddInngang() {
   if (app) { app.style.transition = ''; app.style.transform = ''; app.style.opacity = ''; }
 }
 
-function flyvInn(kortEl, href) {
+// Måler nøyaktig hvor (og hvor stort) reise-topp-kortet lander, ved å rendre
+// headeren skjult og lese størrelsen — så klonen morphes til eksakt samme boks.
+function maalHeaderRect(sti, gjort, av) {
+  let h = 84;
+  try {
+    const bar = reiseTopp(sti, gjort, av);
+    Object.assign(bar.style, { position: 'fixed', left: '0', top: '0', width: `${window.innerWidth}px`, visibility: 'hidden', pointerEvents: 'none', zIndex: '-1' });
+    document.body.appendChild(bar);
+    const kort = bar.querySelector('.reise-topp__kort');
+    if (kort) h = kort.getBoundingClientRect().height;
+    bar.remove();
+  } catch { /* fallback-høyde */ }
+  return { left: 12, top: safeTop() + 8, width: window.innerWidth - 24, height: h };
+}
+
+// Felles morph-oppsett på en klon: fast plassert, myk overgang på boksen.
+function settOppKlon(klon, fra, ms = 0.44) {
+  Object.assign(klon.style, {
+    position: 'fixed', margin: '0', boxSizing: 'border-box',
+    left: `${fra.left}px`, top: `${fra.top}px`, width: `${fra.width}px`, height: `${fra.height}px`,
+    zIndex: '4000', pointerEvents: 'none', overflow: 'hidden',
+    transition: `left ${ms}s var(--ease-standard), top ${ms}s var(--ease-standard), width ${ms}s var(--ease-standard), height ${ms}s var(--ease-standard), border-radius ${ms}s var(--ease-standard)`,
+    boxShadow: '0 16px 38px rgba(1,63,64,0.3)',
+  });
+}
+
+function flyvInn(kortEl, href, sti, gjort, av) {
   const fra = kortEl.getBoundingClientRect();
+  const to = maalHeaderRect(sti, gjort, av);
   const klon = kortEl.cloneNode(true);
   klon.removeAttribute('href');
-  Object.assign(klon.style, {
-    position: 'fixed', margin: '0', left: `${fra.left}px`, top: `${fra.top}px`,
-    width: `${fra.width}px`, height: `${fra.height}px`, zIndex: '4000',
-    transformOrigin: 'top left', pointerEvents: 'none', willChange: 'transform',
-    transition: 'transform 0.44s var(--ease-standard), border-radius 0.44s var(--ease-standard)',
-    boxShadow: '0 18px 40px rgba(1,63,64,0.32)',
-  });
+  settOppKlon(klon, fra);
   document.body.appendChild(klon);
   kortEl.style.visibility = 'hidden';
   _inngangKlon = klon;
@@ -192,19 +213,59 @@ function flyvInn(kortEl, href) {
     app.style.transition = 'transform 0.4s var(--ease-standard), opacity 0.32s ease';
   }
 
-  // Mål: der reise-topp-kortet lander (12px sidemarg, safe-area + 8px topp).
-  const maalV = 12, maalT = safeTop() + 8;
-  const skala = (window.innerWidth - 24) / Math.max(1, fra.width); // uniform → ingen forvrengning
-  const tx = maalV - fra.left, ty = maalT - fra.top;
-
   requestAnimationFrame(() => {
-    klon.style.transform = `translate(${tx}px, ${ty}px) scale(${skala})`;
-    klon.style.borderRadius = '20px';
+    Object.assign(klon.style, { left: `${to.left}px`, top: `${to.top}px`, width: `${to.width}px`, height: `${to.height}px`, borderRadius: '20px' });
     if (app) { app.style.transform = 'translateY(-46px)'; app.style.opacity = '0'; }
   });
 
-  setTimeout(() => { location.hash = href; }, 300);
+  setTimeout(() => { location.hash = href; }, 320);
   setTimeout(() => { if (_pendingInngang) ryddInngang(); }, 1300); // sikkerhetsnett
+}
+
+// Revers: fra reisen tilbake til Lær — headeren morphes ned til Lær-kortet
+// mens Lær-skjermen glir inn ovenfra. Kalles fra tilbake-knappen i headeren.
+function tilbakeFraReise() {
+  if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) { history.back(); return; }
+  const kort = document.getElementById('reise-topp-kort');
+  if (!kort) { history.back(); return; }
+  const fra = kort.getBoundingClientRect();
+  const klon = kort.cloneNode(true);
+  settOppKlon(klon, fra, 0.42);
+  document.body.appendChild(klon);
+  let ferdig = false;
+  const rydd = () => { if (ferdig) return; ferdig = true; klon.remove(); };
+
+  window.addEventListener('hashchange', function once() {
+    window.removeEventListener('hashchange', once);
+    requestAnimationFrame(() => {
+      const maal = document.querySelector('.stikort');
+      const app = document.getElementById('app');
+      if (app) {
+        app.style.transition = 'none';
+        app.style.transformOrigin = 'top center';
+        app.style.transform = 'translateY(-40px)';
+        app.style.opacity = '0';
+        requestAnimationFrame(() => {
+          app.style.transition = 'transform 0.4s var(--ease-standard), opacity 0.34s ease';
+          app.style.transform = '';
+          app.style.opacity = '';
+        });
+      }
+      if (maal) {
+        const to = maal.getBoundingClientRect();
+        maal.style.visibility = 'hidden';
+        requestAnimationFrame(() => {
+          Object.assign(klon.style, { left: `${to.left}px`, top: `${to.top}px`, width: `${to.width}px`, height: `${to.height}px`, borderRadius: getComputedStyle(maal).borderRadius });
+          klon.style.transition += ', opacity 0.18s ease 0.3s';
+          klon.style.opacity = '0';
+        });
+        setTimeout(() => { maal.style.visibility = ''; rydd(); }, 560);
+      } else { rydd(); }
+    });
+  }, { once: true });
+
+  setTimeout(rydd, 1500); // sikkerhetsnett
+  history.back();
 }
 
 // Kalles fra visStiSkjerm når en inngangsanimasjon er i gang: reisen er alt
@@ -304,7 +365,7 @@ function reiseTopp(sti, gjort, av) {
     el('div', { class: 'reise-topp__kort', id: 'reise-topp-kort' },
       el('div', { class: 'reise-topp__glans' }),
       el('div', { class: 'reise-topp__rad' },
-        el('button', { class: 'reise-topp__tilbake', type: 'button', title: 'Tilbake', onclick: () => history.back() }, '‹'),
+        el('button', { class: 'reise-topp__tilbake', type: 'button', title: 'Tilbake', onclick: tilbakeFraReise }, '‹'),
         el('div', { class: 'reise-topp__ikon' }, ikon(sti.ikon || 'vekt')),
         el('div', { class: 'reise-topp__tekst' },
           el('span', { class: 'reise-topp__over' }, 'Ferdighetssti'),
