@@ -145,6 +145,15 @@ function enhetStjerner(seksjonId, enhetId) {
   return Math.min(BOSS_MAKS_STJERNER, maks);
 }
 
+/** Om en enhet er gjort legendarisk (bestått uteksaminering med dobbelt opp). */
+function enhetLegendarisk(seksjonId, enhetId) {
+  for (const o of hentLogg()) {
+    if (o.kilde === 'laer' && o.sti === seksjonId && o.node === 'graduation'
+      && o.enhet === enhetId && o.legendarisk && (o.stjerner || 0) >= BOSS_MAKS_STJERNER) return true;
+  }
+  return false;
+}
+
 /** Rad med tre stjerner; de `fylte` første er gullfylte. */
 function stjerneRad(fylte, klasse) {
   return el('div', { class: 'stjernerad' + (klasse ? ' ' + klasse : '') },
@@ -455,7 +464,7 @@ export function visSeksjonSkjerm(mount) {
   // Uteksaminerings-stjerner + gradert (3★) pr. enhet — driver opprykk.
   const gradInfo = enheter.map((enhet) => {
     const stjerner = enhetStjerner(seksjon.id, enhet.id);
-    return { stjerner, gradert: stjerner >= BOSS_MAKS_STJERNER };
+    return { stjerner, gradert: stjerner >= BOSS_MAKS_STJERNER, legendarisk: enhetLegendarisk(seksjon.id, enhet.id) };
   });
   const antallGradert = gradInfo.filter((g) => g.gradert).length;
   const ferdig = antallGradert >= enheter.length && enheter.length;
@@ -505,7 +514,7 @@ export function visSeksjonSkjerm(mount) {
     if (gradert) gradTilstand = 'mestret';
     else if (enhetTilgj && alleTekniskLaert && !gjeldendeFunnet) { gradTilstand = 'gjeldende'; gjeldendeFunnet = true; }
     else gradTilstand = 'laast';
-    reise.append(reiseGradNode(seksjon, enhet, gradTilstand, stjerner, idx));
+    reise.append(reiseGradNode(seksjon, enhet, gradTilstand, stjerner, idx, gradInfo[ei].legendarisk));
     idx += 1;
     forrigeGradert = gradert;
   });
@@ -553,19 +562,20 @@ export function visSeksjonSkjerm(mount) {
 
 // Uteksaminerings-node på reisen: coach-pandaen som «enhets-boss». Låst til alle
 // teknikk-steg i enheten er lært; deretter utfordrbar; 3★ = uteksaminert.
-function reiseGradNode(seksjon, enhet, tilstand, stjerner, i) {
+function reiseGradNode(seksjon, enhet, tilstand, stjerner, i, legendarisk = false) {
   const laast = tilstand === 'laast';
   const gradert = tilstand === 'mestret';
   const scene = el('button', {
-    class: `reise-grad reise-grad--${tilstand}`, type: 'button',
-    'aria-label': `${enhet.navn} — uteksaminering, ${stjerner} av ${BOSS_MAKS_STJERNER} stjerner`,
+    class: `reise-grad reise-grad--${tilstand}` + (legendarisk ? ' reise-grad--legendarisk' : ''), type: 'button',
+    'aria-label': `${enhet.navn} — ${legendarisk ? 'legendarisk' : 'uteksaminering'}, ${stjerner} av ${BOSS_MAKS_STJERNER} stjerner`,
   },
     el('div', { class: 'reise-grad__glow' }),
     tilstand === 'gjeldende' ? el('span', { class: 'reise-node__puls reise-grad__puls' }) : null,
+    legendarisk ? kroneSvg('reise-grad__krone') : null,
     laast ? el('span', { class: 'reise-grad__laas' }, ikon('las', 'ikon'))
       : gradert ? pandaImg('cheer', 'reise-grad__panda')
         : pandaAnim('pushup-up', 'pushup-down', 'reise-grad__panda', 'pushup'),
-    el('span', { class: 'reise-grad__merke' }, gradert ? 'Uteksaminert' : 'Uteksaminering'),
+    el('span', { class: 'reise-grad__merke' }, legendarisk ? 'Legendarisk' : (gradert ? 'Uteksaminert' : 'Uteksaminering')),
     tilstand === 'gjeldende'
       ? el('div', { class: 'reise-grad__lyn-rad' }, lynSvg('reise-boble__lyn reise-boble__lyn--a'), lynSvg('reise-boble__lyn reise-boble__lyn--b'))
       : null,
@@ -1151,11 +1161,14 @@ function isoLokalDato(d) {
   return z.toISOString().slice(0, 10);
 }
 
-function startUteksaminering(seksjon, enhet) {
+function startUteksaminering(seksjon, enhet, startLegendarisk = false) {
   const u = enhet.uteksaminering;
   if (!u || !(u.ovelser || []).length) return;
   vibrer('medium');
   const ovNavn = (id) => _bib?.ovelse(id)?.navn || id;
+  const alleredeGradert = enhetStjerner(seksjon.id, enhet.id) >= BOSS_MAKS_STJERNER;
+  let legendarisk = startLegendarisk && alleredeGradert;
+  const mult = () => (legendarisk ? 2 : 1); // legendarisk = dobbelt opp med reps/hold
 
   // Flat stegliste: oppvarming → (sett, pause)… → nedtrapping → følelse.
   const ovelser = u.ovelser;
@@ -1181,10 +1194,17 @@ function startUteksaminering(seksjon, enhet) {
   const framdrift = el('div', { class: 'leksjon__framdrift' });
   const kropp = el('div', { class: 'kamp__kropp' });
   const bunn = el('div', { class: 'leksjon__bunn' });
+  const tittelSpan = el('span', { class: 'kamp__tittel' });
   const overlay = el('div', { class: 'leksjon kamp uteks' },
-    el('div', { class: 'leksjon__topp' }, lukkX, el('span', { class: 'kamp__tittel' }, `${enhet.navn} · uteksaminering`), framdrift),
+    el('div', { class: 'leksjon__topp' }, lukkX, tittelSpan, framdrift),
     kropp, bunn,
   );
+  function settModus(v) {
+    legendarisk = v && alleredeGradert;
+    tittelSpan.textContent = `${enhet.navn} · ${legendarisk ? 'legendarisk' : 'uteksaminering'}`;
+    overlay.classList.toggle('uteks--legendarisk', legendarisk);
+  }
+  settModus(legendarisk);
   document.body.append(overlay);
   requestAnimationFrame(() => overlay.classList.add('leksjon--apen'));
   tegnIntro();
@@ -1203,15 +1223,23 @@ function startUteksaminering(seksjon, enhet) {
     settFramdrift();
     tom(kropp); tom(bunn);
     kropp.append(
-      el('span', { class: 'kamp__merke' }, 'Uteksaminering'),
+      el('span', { class: 'kamp__merke' + (legendarisk ? ' kamp__merke--gull' : '') }, legendarisk ? 'Legendarisk' : 'Uteksaminering'),
       el('h1', { class: 'kamp__navn' }, enhet.navn),
-      pandaImg('flex', 'kamp__panda'),
-      el('p', { class: 'kamp__oppgave' }, 'Coach-pandaen tar deg gjennom hele økta. Treff rep-målet i alle settene → tre stjerner → uteksaminert.'),
+      legendarisk ? kroneSvg('uteks-krone') : pandaImg('flex', 'kamp__panda'),
+      el('p', { class: 'kamp__oppgave' }, legendarisk
+        ? 'Legendarisk: dobbelt opp med reps i alle sett. Klarer du alt rent, blir enheten legendarisk! 👑'
+        : 'Coach-pandaen tar deg gjennom hele økta. Treff rep-målet i alle settene → tre stjerner → uteksaminert.'),
       el('ul', { class: 'uteks__liste' }, ...ovelser.map((o) => el('li', { class: 'uteks__rad' },
         el('span', { class: 'uteks__ov' }, ovNavn(o.ovelse)),
-        el('span', { class: 'uteks__dose' }, `${o.sett}×${o.holdSek ? o.holdSek + ' s' : o.reps}${o.perSide ? '/side' : ''}`)))),
+        el('span', { class: 'uteks__dose' }, `${o.sett}×${(o.holdSek || o.reps) * mult()}${o.holdSek ? ' s' : ''}${o.perSide ? '/side' : ''}`)))),
     );
-    bunn.append(leksjonPrimaer('Start økta', () => { idx = 0; tegnSteg(); }));
+    bunn.append(leksjonPrimaer(legendarisk ? 'Start legendarisk' : (alleredeGradert ? 'Øv igjen' : 'Start økta'), () => { idx = 0; tegnSteg(); }));
+    if (alleredeGradert && !legendarisk) {
+      bunn.append(el('button', { class: 'uteks-legendarisk-knapp', type: 'button', onclick: () => { settModus(true); vibrer('lett'); tegnIntro(); } },
+        kroneSvg('uteks-legendarisk-knapp__krone'), ' Legendarisk · dobbelt opp'));
+    } else if (legendarisk) {
+      bunn.append(el('button', { class: 'kamp__ferdig-lenke', type: 'button', onclick: () => { settModus(false); tegnIntro(); } }, 'Tilbake til normal'));
+    }
   }
 
   function tegnSteg() {
@@ -1238,24 +1266,25 @@ function startUteksaminering(seksjon, enhet) {
 
   function tegnSett(s) {
     let bekreftet = false;
+    const maal = s.maal * mult(); // legendarisk = dobbelt opp
     const enhetTekst = s.hold ? 'sek' : (s.perSide ? 'reps/side' : 'reps');
-    const maks = Math.max(s.maal + 10, s.maal * 2); // rom for å registrere ekstra
-    let val = s.maal; // default = målet; du justerer til det du faktisk klarte
+    const maks = Math.max(maal + 10, maal * 2); // rom for å registrere ekstra
+    let val = maal; // default = målet; du justerer til det du faktisk klarte
     const panda = s.hold ? pandaImg('flex', 'kamp__panda') : pandaAnim('pushup-up', 'pushup-down', 'kamp__panda', 'pushup');
     const visTall = el('span', { class: 'uteks__just-tall' }, String(val));
     const minus = el('button', { class: 'uteks__just-knapp', type: 'button', 'aria-label': 'Færre' }, '−');
     const pluss = el('button', { class: 'uteks__just-knapp', type: 'button', 'aria-label': 'Flere' }, '+');
     const oppdater = () => {
       visTall.textContent = String(val);
-      visTall.classList.toggle('uteks__just-tall--under', val < s.maal);
+      visTall.classList.toggle('uteks__just-tall--under', val < maal);
       minus.disabled = val <= 0; pluss.disabled = val >= maks;
     };
     minus.addEventListener('click', () => { val = Math.max(0, val - 1); vibrer('lett'); oppdater(); });
     pluss.addEventListener('click', () => { val = Math.min(maks, val + 1); vibrer('lett'); oppdater(); });
 
     kropp.append(
-      el('span', { class: 'kamp__merke' }, `${s.navn} · sett ${s.settNr} av ${s.settAv}`),
-      el('h1', { class: 'kamp__navn' }, `Mål: ${s.maal} ${enhetTekst}`),
+      el('span', { class: 'kamp__merke' + (legendarisk ? ' kamp__merke--gull' : '') }, `${s.navn} · sett ${s.settNr} av ${s.settAv}`),
+      el('h1', { class: 'kamp__navn' }, `Mål: ${maal} ${enhetTekst}`),
       panda,
       el('p', { class: 'uteks__just-etikett' }, s.hold ? 'Sekunder du holdt' : 'Reps du klarte'),
       el('div', { class: 'uteks__just uteks__just--stor' }, minus,
@@ -1266,7 +1295,7 @@ function startUteksaminering(seksjon, enhet) {
     bunn.append(leksjonPrimaer('Registrer sett', () => {
       if (bekreftet) return; bekreftet = true;
       vibrer('riktig');
-      resultater.push({ maal: s.maal, faktisk: val });
+      resultater.push({ maal, faktisk: val });
       neste();
     }));
   }
@@ -1310,11 +1339,11 @@ function startUteksaminering(seksjon, enhet) {
     try {
       res = registrerOgLogg({
         bevegelse: 'bodyweight',
-        varighetMin: u.varighetMin || 15,
-        intensitet: u.intensitet || 3,
-        tittel: `${enhet.navn}: uteksaminering`,
+        varighetMin: Math.round((u.varighetMin || 15) * (legendarisk ? 1.6 : 1)),
+        intensitet: Math.min(5, (u.intensitet || 3) + (legendarisk ? 1 : 0)),
+        tittel: `${enhet.navn}: ${legendarisk ? 'legendarisk' : 'uteksaminering'}`,
         kilde: 'laer',
-        ekstra: { sti: seksjon.id, node: 'graduation', enhet: enhet.id, stjerner, reps: totalReps },
+        ekstra: { sti: seksjon.id, node: 'graduation', enhet: enhet.id, stjerner, reps: totalReps, ...(legendarisk ? { legendarisk: true } : {}) },
       });
     } catch (err) { console.warn('Kunne ikke logge uteksaminering', err); }
     tegnSummary(res, stjerner);
@@ -1322,24 +1351,29 @@ function startUteksaminering(seksjon, enhet) {
 
   function tegnSummary(res, stjerner) {
     const bestatt = stjerner >= BOSS_MAKS_STJERNER;
+    const legendVunnet = bestatt && legendarisk;
     stopTimer();
     lukkX.style.visibility = 'hidden';
     tom(kropp); tom(bunn);
     settFramdrift();
     if (bestatt) ryddPlanlagteUteks(seksjon.id, enhet.id); // ferdig → dropp ev. planlagt revansje
-    const seier = el('div', { class: 'kamp__seier' },
+    const seier = el('div', { class: 'kamp__seier' + (legendVunnet ? ' kamp__seier--gull' : '') },
+      legendVunnet ? kroneSvg('kamp__seier-krone') : null,
       pandaImg(bestatt ? 'cheer' : 'flex', 'kamp__seier-panda'),
       stjerneRad(stjerner, 'kamp__seier-stjerner'),
-      el('h1', { class: 'kamp__seier-tittel' }, bestatt ? 'Uteksaminert!' : 'Bra økt!'),
-      el('p', { class: 'kamp__seier-under' }, bestatt
-        ? `${enhet.navn} er fullført — neste enhet er åpen! 🐼`
-        : 'Ikke helt uteksaminert ennå — traff du rep-målet i alle settene, får du tre stjerner. Legg en plan for neste forsøk?'),
+      el('h1', { class: 'kamp__seier-tittel' }, legendVunnet ? 'Legendarisk!' : (bestatt ? 'Uteksaminert!' : 'Bra økt!')),
+      el('p', { class: 'kamp__seier-under' }, legendVunnet
+        ? `${enhet.navn} er nå legendarisk — du tok dobbelt opp! 👑`
+        : bestatt ? `${enhet.navn} er fullført — neste enhet er åpen! 🐼`
+          : (legendarisk
+            ? 'Ikke helt legendarisk ennå — du må treffe alle de doble målene. Prøv igjen når du er klar.'
+            : 'Ikke helt uteksaminert ennå — traff du rep-målet i alle settene, får du tre stjerner. Legg en plan for neste forsøk?')),
       el('div', { class: 'leksjon-feiring__xp' }, ikon('lyn', 'ikon'), ` +${res.xp || 0} XP`),
       ...((res.nyeMerker || []).length
         ? [el('div', { class: 'leksjon-feiring__merke' }, ikon('medalje', 'ikon'), ' Nytt merke: ' + res.nyeMerker.map((m) => m.navn).join(', '))]
         : []),
     );
-    if (!bestatt) seier.append(planleggBlokk());
+    if (!bestatt && !legendarisk) seier.append(planleggBlokk());
     kropp.append(seier);
     bunn.append(leksjonPrimaer('Fortsett', lukk));
     try { overlay.append(lagKonfetti()); } catch { /* valgfri feiring */ }

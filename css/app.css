@@ -2187,7 +2187,9 @@ body.fokusmodus { padding-bottom: 0; }
 /* Delt node-popover (start / øv igjen / låst): pil mot node, popper opp med
    sprett, og kollapser når scroll-styringen legger på .reise-popover--ut. */
 .reise-popover {
-  position: absolute; top: calc(100% + 14px); left: 50%; z-index: 6; width: min(300px, 84vw);
+  /* Sentrert på skjermen, noen px smalere enn hoved-kortet (enhet-header er
+     100vw − 44px; popover-en er 100vw − 52px = 4px innsmett hver side). */
+  position: absolute; top: calc(100% + 14px); left: 50%; z-index: 6; width: calc(100vw - 52px);
   transform: translate(calc(-50% - var(--dx, 0px)), -4px) scale(0.5); transform-origin: top center;
   background: var(--c, var(--aksent)); color: #fff; border-radius: 20px; padding: 16px 16px 14px;
   box-shadow: 0 14px 34px rgba(1,63,64,0.28); opacity: 0;
@@ -2628,3 +2630,20 @@ body.fokusmodus { padding-bottom: 0; }
 .uteks-plan__dato { flex: 1 1 auto; font-family: var(--font-display); font-weight: 600; font-size: 14.5px; color: var(--tekst); }
 .uteks-plan__bekreftet { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 0; font-size: 14px; font-weight: 600; color: var(--aksent-mork); }
 .uteks-plan__bekreftet .ikon { color: #2FA84F; }
+
+/* Legendarisk uteksaminering — dobbelt opp med reps, gull-tema. */
+.kamp__merke--gull { color: #8A5E10; background: #FFF0C7; }
+.uteks-krone { width: 150px; height: 106px; margin: 6px auto 0; filter: drop-shadow(0 6px 14px rgba(184,122,26,0.5)); }
+.uteks-legendarisk-knapp { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin-top: 10px; height: 52px; border: none; border-radius: 15px; background: linear-gradient(135deg, #FBD65E, #E0A62E); color: #6E4A0C; font-family: var(--font-display); font-size: 15.5px; font-weight: 800; letter-spacing: 0.02em; cursor: pointer; box-shadow: 0 4px 0 rgba(150,100,10,0.35), 0 0 16px 2px rgba(245,197,66,0.4); }
+.uteks-legendarisk-knapp:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(150,100,10,0.35); }
+.uteks-legendarisk-knapp__krone { width: 26px; height: 18px; }
+.uteks--legendarisk .kamp__push, .uteks--legendarisk .uteks__just-tall { color: #B8791A; }
+.kamp__seier--gull .kamp__seier-tittel { color: #B8791A; }
+.kamp__seier-krone { width: 92px; height: 66px; margin: 0 auto 6px; filter: drop-shadow(0 6px 14px rgba(184,122,26,0.55)); }
+/* Legendarisk grad-node på reisen: gull-krone + gull-glød. */
+.reise-grad__krone { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); width: 52px; height: 37px; z-index: 3; filter: drop-shadow(0 3px 6px rgba(184,122,26,0.5)); }
+.reise-grad--legendarisk .reise-grad__glow { background: radial-gradient(circle, rgba(245,197,66,0.4), transparent 68%); display: block; }
+.reise-grad--legendarisk .reise-grad__merke { color: #8A5E10; background: #FFF0C7; }
+@media (prefers-reduced-motion: no-preference) {
+  .reise-grad--legendarisk .reise-grad__krone { animation: stjerne-tindre 2.6s ease-in-out infinite; }
+}

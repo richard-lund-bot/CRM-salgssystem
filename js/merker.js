@@ -58,6 +58,7 @@ function byggKontekst(profil, logg, planer) {
   const laerDatoListe = []; // dato for hvert lærte teknikk-steg (kilde 'laer', ikke boss/graduation)
   const gradBesteStjerner = new Map();   // «sti::enhet» → høyeste uteksaminerings-stjerner
   const gradTreStjernerDato = new Map(); // «sti::enhet» → dato første gang 3★ (uteksaminert)
+  const legendariskDato = new Map();     // «sti::enhet» → dato første gang legendarisk (3★ m/ dobbelt opp)
   const bossStjernePerSti = new Map(); // stiId → høyeste vunne boss-nivå (stjerner)
   const bossSlaattDato = new Map();    // stiId → dato da 3. stjerne ble nådd
 
@@ -105,6 +106,7 @@ function byggKontekst(profil, logg, planer) {
       const stj = o.stjerner || 0;
       if (stj > (gradBesteStjerner.get(k) || 0)) gradBesteStjerner.set(k, stj);
       if (stj >= 3 && !gradTreStjernerDato.has(k)) gradTreStjernerDato.set(k, o.dato);
+      if (stj >= 3 && o.legendarisk && !legendariskDato.has(k)) legendariskDato.set(k, o.dato);
     } else if (o.kilde === 'laer') {
       laerDatoListe.push(o.dato); // lært teknikk-steg (ikke boss/graduation)
     }
@@ -170,6 +172,7 @@ function byggKontekst(profil, logg, planer) {
   // er fullført når den har en 3★-graduation-rad; en seksjon når alle enhetene
   // er uteksaminert. Datoen er da 3★ først ble nådd. Krever injisert struktur.
   const perfektDatoListe = [...gradTreStjernerDato.values()].sort(); // 3★-uteksamineringer, kronologisk
+  const legendariskListe = [...legendariskDato.values()].sort();     // legendariske enheter, kronologisk
   const enhetDatoer = [];
   const seksjonDatoer = [];
   for (const seksjon of _seksjonsstruktur) {
@@ -208,6 +211,8 @@ function byggKontekst(profil, logg, planer) {
     laerDato: (n) => laerDatoListe[n - 1] || null,
     perfekteSteg: perfektDatoListe.length,
     perfektDato: (n) => perfektDatoListe[n - 1] || null,
+    legendariskeEnheter: legendariskListe.length,
+    legendariskDato: (n) => legendariskListe[n - 1] || null,
     enheterFullfort: enhetDatoer.length,
     enheterFullfortDato: (n) => enhetDatoer[n - 1] || null,
     seksjonerFullfort: seksjonDatoer.length,
@@ -270,6 +275,7 @@ export const MERKER = {
     teller('enhet-1', 'Klassekamerat', 'Uteksaminert din første enhet', 'medalje', 'koral', 1, (c) => c.enheterFullfort, (c) => c.enheterFullfortDato(1)),
     teller('enhet-3', 'Klasseturnering', 'Uteksaminert 3 enheter', 'kalender', 'blaa', 3, (c) => c.enheterFullfort, (c) => c.enheterFullfortDato(3)),
     teller('seksjon-1', 'Seksjonsmester', 'Uteksaminert en hel seksjon', 'trofe', 'lilla', 1, (c) => c.seksjonerFullfort, (c) => c.seksjonerFullfortDato(1)),
+    teller('legendarisk-1', 'Legendarisk', 'Tok en enhet legendarisk — dobbelt opp med reps', 'hexstjerne', 'gul', 1, (c) => c.legendariskeEnheter, (c) => c.legendariskDato(1)),
     teller('push-mester', 'Push-up-mester', 'Slo push-up-pandaen — tre stjerner', 'trofe', 'gul', 3, (c) => c.bossStjerner('push-opp'), (c) => c.bossSlaattDato('push-opp')),
   ],
   nytt: [
