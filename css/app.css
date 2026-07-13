@@ -1871,11 +1871,12 @@ body.fokusmodus { padding-bottom: 0; }
 .auth__bg { position: absolute; inset: 0; background-repeat: no-repeat; background-size: 126%; z-index: 0; }
 /* Løft motivet (personene) opp så de synes godt over skjemakortet. Egen
    ramme per bilde siden løperen og paret sitter litt ulikt. */
-.auth--logg-inn .auth__bg { background-position: 62% 88%; }
-.auth--bli-medlem .auth__bg { background-position: 58% 84%; }
-/* Hvit toning fra toppen og nedover — holder logo/hilsen lesbare og lar
-   motivet tre fram lenger ned mot kortet. */
-.auth__bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.62) 15%, rgba(255,255,255,0) 45%); }
+.auth--logg-inn .auth__bg { background-position: 62% 96%; }
+.auth--bli-medlem .auth__bg { background-position: 58% 92%; }
+/* Toning fra toppen og nedover — samme farge som sidebakgrunnen (--bg) så
+   den går sømløst i ett med statuslinja/toppen, holder logo/hilsen lesbare
+   og lar motivet tre fram lenger ned mot kortet. */
+.auth__bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgb(246,247,248) 0%, rgba(246,247,248,0.6) 16%, rgba(246,247,248,0) 46%); }
 .auth__innhold { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; }
 .auth__topp { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; padding: calc(env(safe-area-inset-top, 0px) + 34px) 28px 16px; }
 
