@@ -521,6 +521,7 @@ export function visSeksjonSkjerm(mount) {
         : el('p', { class: 'sti-fot dempet' }, 'Lær teknikken, så uteksaminer enheten for å låse opp neste.'),
     ),
   );
+  settOppSkrymping(mount);
 
   // Feiring: første gang en enhet er uteksaminert (3★) eller hele seksjonen er
   // ferdig. Seksjons-feiringen vinner (vises alene) når begge skjer samtidig;
@@ -560,10 +561,14 @@ function reiseGradNode(seksjon, enhet, tilstand, stjerner, i) {
     'aria-label': `${enhet.navn} — uteksaminering, ${stjerner} av ${BOSS_MAKS_STJERNER} stjerner`,
   },
     el('div', { class: 'reise-grad__glow' }),
+    tilstand === 'gjeldende' ? el('span', { class: 'reise-node__puls reise-grad__puls' }) : null,
     laast ? el('span', { class: 'reise-grad__laas' }, ikon('las', 'ikon'))
       : gradert ? pandaImg('cheer', 'reise-grad__panda')
         : pandaAnim('pushup-up', 'pushup-down', 'reise-grad__panda', 'pushup'),
     el('span', { class: 'reise-grad__merke' }, gradert ? 'Uteksaminert' : 'Uteksaminering'),
+    tilstand === 'gjeldende'
+      ? el('div', { class: 'reise-grad__lyn-rad' }, lynSvg('reise-boble__lyn reise-boble__lyn--a'), lynSvg('reise-boble__lyn reise-boble__lyn--b'))
+      : null,
     stjerneRad(stjerner, 'reise-grad__stjerner'),
   );
   const wrap = el('div', { class: 'reise-node reise-grad-wrap' });
@@ -645,6 +650,7 @@ export function visStiSkjerm(mount) {
 
   tom(mount);
   mount.append(skjerm);
+  settOppSkrymping(mount);
 
   // Plasser bossen i høyre rennestein, på høyde med en venstreforskjøvet node
   // (så gutteren er klar). Måles etter at DOM finnes — robust mot tekstbrytning.
@@ -778,25 +784,97 @@ function reiseTopp(sti, gjort, av, overtekst = 'Ferdighetssti', tilbake = tilbak
 const REISE_MONSTER = [0, 0.6, 1, 0.6, 0, -0.6, -1, -0.6];
 const REISE_AMP = 66; // px
 
+// Liten cyan lyn-bolt (SVG) — sprer «energi» rundt START-knappen.
+function lynSvg(klasse) {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 20 34');
+  svg.setAttribute('class', klasse);
+  svg.setAttribute('aria-hidden', 'true');
+  svg.innerHTML = '<path d="M12 1 L3 19 L9 19 L7 33 L18 12 L11 12 Z" fill="#6EE7F9" stroke="#22D3EE" stroke-width="1.4" stroke-linejoin="round"/>';
+  return svg;
+}
+
+// Fast «START»-boble på den gjeldende noden (Duolingo-aktig): popper opp, med
+// lyn rundt knappen. Ligger i .reise-node__hopp så den spretter med noden.
+function byggStartBoble(sti, ledd, navn) {
+  const data = (sti.trinn && sti.trinn[ledd.ovelse]) || {};
+  const xp = beregnXp(data.minutter || 3, sti.bevegelse || 'bodyweight', 3);
+  const start = el('button', { class: 'reise-boble__start', type: 'button' }, `START · +${xp} XP`);
+  start.addEventListener('click', (ev) => { ev.stopPropagation(); vibrer('medium'); startMedAnimasjon(sti, ledd); });
+  return el('div', { class: 'reise-boble' },
+    el('span', { class: 'reise-boble__tail' }),
+    el('span', { class: 'reise-boble__navn' }, navn),
+    el('div', { class: 'reise-boble__rad' },
+      lynSvg('reise-boble__lyn reise-boble__lyn--a'),
+      start,
+      lynSvg('reise-boble__lyn reise-boble__lyn--b'),
+    ),
+  );
+}
+
 function reiseNode(sti, { l, i, tilstand }) {
   const e = _bib?.ovelse(l.ovelse);
   const navn = e?.navn || l.ovelse;
   const niva = NIVA[l.niva] || NIVA[1];
   const dx = Math.round(REISE_AMP * REISE_MONSTER[i % REISE_MONSTER.length]);
+  const gjeldende = tilstand === 'gjeldende';
 
   const innhold = tilstand === 'mestret' ? ikon('sjekk', 'ikon')
     : tilstand === 'laast' ? ikon('las', 'ikon')
       : ikon('stjerne', 'ikon');
 
+  // Tre lag så tre bevegelser ikke kolliderer: skala (scroll-krymp) → hopp
+  // (sprett-animasjon + boble) → knapp (3D-trykk på :active).
   const knapp = el('button', { class: `reise-node__knapp ${niva.klasse}`, type: 'button', 'aria-label': navn, title: navn }, innhold);
-  const wrap = el('div', { class: `reise-node reise-node--${tilstand}`, style: `transform:translateX(${dx}px)` }, knapp);
+  const hopp = el('div', { class: 'reise-node__hopp' }, gjeldende ? el('span', { class: 'reise-node__puls' }) : null, knapp);
+  const skala = el('div', { class: 'reise-node__skala' }, hopp);
+  const wrap = el('div', { class: `reise-node reise-node--${tilstand}`, style: `transform:translateX(${dx}px)` }, skala);
   wrap.style.setProperty('--reise-forsinkelse', `${i * 55}ms`);
   wrap.style.setProperty('--dx', `${dx}px`);
-  knapp.addEventListener('click', (ev) => {
-    ev.stopPropagation();
-    apneNodePopover(sti, l, tilstand, wrap);
-  });
+
+  if (gjeldende) {
+    hopp.append(byggStartBoble(sti, l, navn));
+    knapp.addEventListener('click', (ev) => { ev.stopPropagation(); vibrer('lett'); startMedAnimasjon(sti, l); });
+  } else {
+    knapp.addEventListener('click', (ev) => { ev.stopPropagation(); apneNodePopover(sti, l, tilstand, wrap); });
+  }
   return wrap;
+}
+
+// Scroll-krymp: den gjeldende noden (og uteksaminerings-noden) minker mykt når
+// den scrolles vekk fra fokus-båndet, som i Duolingo. rAF-throttlet, og forrige
+// lytter ryddes før en ny settes opp (unngår lekkasje + arbeid på løsrevne noder).
+let _skrympRydd = null;
+function settOppSkrymping(container) {
+  if (_skrympRydd) { _skrympRydd(); _skrympRydd = null; }
+  const maal = [...container.querySelectorAll('.reise-node--gjeldende, .reise-grad--gjeldende')];
+  if (!maal.length) return;
+  let rafId = null;
+  const oppdater = () => {
+    rafId = null;
+    const h = window.innerHeight;
+    const fokusY = h * 0.44;   // hvor noden er «i fokus» (full størrelse)
+    const dodsone = h * 0.26;  // ingen krymp innenfor dette båndet
+    const range = h * 0.4;
+    for (const node of maal) {
+      const inner = node.querySelector('.reise-node__skala') || node.querySelector('.reise-grad') || node;
+      const r = node.getBoundingClientRect();
+      if (!r.height) continue;
+      const avstand = Math.max(0, Math.abs(r.top + r.height / 2 - fokusY) - dodsone);
+      const t = Math.min(1, avstand / range);
+      inner.style.setProperty('--krymp', (1 - t * 0.42).toFixed(3));
+      node.classList.toggle('reise-node--krympet', t > 0.5);
+    }
+  };
+  const paa = () => { if (!rafId) rafId = requestAnimationFrame(oppdater); };
+  window.addEventListener('scroll', paa, { passive: true, capture: true });
+  window.addEventListener('resize', paa, { passive: true });
+  _skrympRydd = () => {
+    window.removeEventListener('scroll', paa, { capture: true });
+    window.removeEventListener('resize', paa);
+    if (rafId) cancelAnimationFrame(rafId);
+  };
+  setTimeout(oppdater, 80); // etter inngangs-staggeren
 }
 
 // --- Node-popover (trykk på node → kort med START + XP) -------------------
