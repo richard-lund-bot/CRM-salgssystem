@@ -95,6 +95,12 @@ function byttLenke(tekst, href, lenketekst) {
     el('a', { class: 'auth-lenke', href }, lenketekst));
 }
 
+function juridiskFot() {
+  return el('p', { class: 'auth__juridisk' }, 'Ved å fortsette godtar du våre ',
+    el('a', { href: 'vilkar.html' }, 'vilkår'), ' og ',
+    el('a', { href: 'personvern.html' }, 'personvernerklæring'), '.');
+}
+
 // --- Ramme ----------------------------------------------------------------
 function ramme(mount, { variant, bilde, tittel, underLinjer, kort }) {
   tom(mount);
@@ -144,7 +150,7 @@ export function visLoggInnSkjerm(mount) {
   ramme(mount, {
     variant: 'logg-inn', bilde: 'auth-logg-inn', tittel: 'Velkommen tilbake',
     underLinjer: ['Godt å se deg igjen.', 'La oss fortsette reisen.'],
-    kort: el('div', { class: 'auth__kort' }, form, byttLenke('Har du ikke en konto?', '#/bli-medlem', 'Bli medlem')),
+    kort: el('div', { class: 'auth__kort' }, form, byttLenke('Har du ikke en konto?', '#/bli-medlem', 'Bli medlem'), juridiskFot()),
   });
 }
 
@@ -184,7 +190,7 @@ export function visRegistrerSkjerm(mount) {
   ramme(mount, {
     variant: 'bli-medlem', bilde: 'auth-bli-medlem', tittel: 'Bli medlem',
     underLinjer: ['Et nytt kapittel begynner nå.', 'Vi heier på deg hele veien.'],
-    kort: el('div', { class: 'auth__kort' }, form, byttLenke('Har du allerede en konto?', '#/logg-inn', 'Logg inn')),
+    kort: el('div', { class: 'auth__kort' }, form, byttLenke('Har du allerede en konto?', '#/logg-inn', 'Logg inn'), juridiskFot()),
   });
 }
 

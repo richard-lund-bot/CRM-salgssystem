@@ -3,11 +3,15 @@
 //   - navigasjon/HTML: network-first med cache-fallback (fersk UI når nett finnes)
 //   - data/JS/CSS/ikoner: cache-first (raskt, fungerer offline)
 // Bump CACHE_VERSION for å rulle ut ny cache.
-const CACHE_VERSION = 'mova-m28-2.26.0';
+const CACHE_VERSION = 'mova-m28-2.27.0';
 const SKALL = [
   './',
   './index.html',
+  './personvern.html',
+  './vilkar.html',
+  './sletting.html',
   './css/app.css',
+  './css/sider.css',
   './js/app.js',
   './js/library.js',
   './js/bibliotek-okter.js',

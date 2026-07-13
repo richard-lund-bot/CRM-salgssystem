@@ -1,0 +1,46 @@
+/* Statiske innholdssider (personvern, vilkår, sletting) — utenfor app-skallet,
+   egne URL-er som Facebook/Meta o.l. kan lenke til. Mova-stil i miniatyr. */
+@font-face {
+  font-family: 'Fredoka';
+  src: url('../fonts/fredoka-var.woff2') format('woff2');
+  font-weight: 300 700; font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/inter-var.woff2') format('woff2');
+  font-weight: 100 900; font-display: swap;
+}
+
+:root {
+  --blekk: #013F40; --teal: #027170; --tekst: #1f2b2b; --dempet: #5c6b6b;
+  --bg: #F6F7F8; --kort: #ffffff; --kant: #e4e8e8;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--tekst); }
+body {
+  font-family: 'Inter', system-ui, sans-serif; line-height: 1.62; font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.side { max-width: 720px; margin: 0 auto; padding: 28px 22px 64px; }
+.side__hjem { display: inline-block; margin-bottom: 22px; color: var(--teal); text-decoration: none; font-size: 14px; font-weight: 600; }
+.side__hjem:hover { text-decoration: underline; }
+.side__logo { display: block; font-family: 'Fredoka', sans-serif; font-size: 34px; font-weight: 600; letter-spacing: -0.015em; color: var(--blekk); line-height: 1; }
+
+.side h1 { font-family: 'Fredoka', sans-serif; font-size: 30px; font-weight: 600; letter-spacing: -0.01em; color: var(--blekk); margin: 26px 0 4px; line-height: 1.15; }
+.side h2 { font-family: 'Fredoka', sans-serif; font-size: 20px; font-weight: 600; color: var(--blekk); margin: 30px 0 8px; }
+.side p, .side li { color: var(--tekst); }
+.side p { margin: 0 0 12px; }
+.side ul { margin: 0 0 14px; padding-left: 22px; }
+.side li { margin: 0 0 6px; }
+.side a { color: var(--teal); }
+.side strong { color: var(--blekk); }
+
+.side__oppdatert { color: var(--dempet); font-size: 14px; margin: 0 0 8px; }
+.side__inn { background: var(--kort); border: 1px solid var(--kant); border-radius: 16px; padding: 22px 22px 8px; margin-top: 18px; box-shadow: 0 6px 22px rgba(1,63,64,0.05); }
+
+.side__fot { margin-top: 34px; padding-top: 18px; border-top: 1px solid var(--kant); font-size: 14px; color: var(--dempet); }
+.side__fot a { color: var(--teal); text-decoration: none; }
+.side__fot a:hover { text-decoration: underline; }
+.side__fot p { margin: 10px 0 0; }

@@ -1908,6 +1908,8 @@ body.fokusmodus { padding-bottom: 0; }
 
 .auth__bytt { margin: 18px 0 0; text-align: center; font-size: 14px; color: var(--tekst-2); }
 .auth-lenke { color: var(--teal-700); font-weight: 600; text-decoration: underline; }
+.auth__juridisk { margin: 12px 0 0; text-align: center; font-size: 12px; line-height: 1.5; color: var(--dempet); }
+.auth__juridisk a { color: var(--dempet); text-decoration: underline; }
 
 .auth-melding { margin: 0 0 2px; padding: 10px 12px; border-radius: 12px; font-size: 13.5px; line-height: 1.45; }
 .auth-melding--feil { background: var(--coral-100); color: var(--fare); }
