@@ -1872,7 +1872,7 @@ body.fokusmodus { padding-bottom: 0; }
 /* Løft motivet (personene) opp så de synes godt over skjemakortet. Egen
    ramme per bilde siden løperen og paret sitter litt ulikt. */
 .auth--logg-inn .auth__bg { background-position: 62% 96%; }
-.auth--bli-medlem .auth__bg { background-size: 134%; background-position: 56% 100%; }
+.auth--bli-medlem .auth__bg { background-size: 145%; background-position: 56% 100%; }
 /* Toning fra toppen og nedover — samme farge som sidebakgrunnen (--bg) så
    den går sømløst i ett med statuslinja/toppen, holder logo/hilsen lesbare
    og lar motivet tre fram lenger ned mot kortet. */
