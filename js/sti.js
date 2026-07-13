@@ -16,6 +16,7 @@ import { ovelseInfo, ovelseBilde, visOvelseArk } from './ovelse.js';
 import { registrerOgLogg } from './beveg.js';
 import { beregnXp } from './bevegelse.js';
 import { lagKonfetti } from './animasjon.js';
+import { vibrer } from './haptikk.js';
 
 // Mova-maskot: en søt panda som elsker bevegelse (flat SVG, teal pannebånd).
 // Brukes som «guide» øverst i stien og på lasteskjermen mellom sti og modul.
@@ -218,6 +219,7 @@ function apneNodePopover(sti, ledd, tilstand, wrap) {
   const alleredeApen = _aktivWrap === wrap;
   lukkPopover();
   if (alleredeApen) return; // andre trykk lukker igjen
+  vibrer('lett');
 
   const e = _bib?.ovelse(ledd.ovelse);
   const navn = e?.navn || ledd.ovelse;
@@ -265,6 +267,7 @@ const LASTETEKSTER = [
 
 function startMedAnimasjon(sti, ledd) {
   lukkPopover();
+  vibrer('medium');
   const i = Math.floor((Date.now() / 1000) % LASTETEKSTER.length);
   const laster = el('div', { class: 'reise-laster' },
     el('div', { class: 'reise-laster__inn' },
@@ -383,6 +386,7 @@ function startLeksjon(sti, ledd) {
       if (!besvart) {
         besvart = true;
         const riktig = valgt === q.riktig;
+        vibrer(riktig ? 'riktig' : 'feil');
         valgKnapper.forEach((k, j) => {
           k.disabled = true;
           if (j === q.riktig) k.classList.add('leksjon-valg--riktig');
@@ -411,6 +415,7 @@ function startLeksjon(sti, ledd) {
   }
 
   function fullfor() {
+    vibrer('medium');
     let res = { xp: 0, nyeMerker: [] };
     try {
       res = registrerOgLogg({
@@ -427,6 +432,7 @@ function startLeksjon(sti, ledd) {
 
   function tegnFeiring(res) {
     settFramdrift(steg.length - 1);
+    vibrer('feiring');
     tom(kropp); tom(bunn);
     lukkX.style.visibility = 'hidden';
     kropp.append(
