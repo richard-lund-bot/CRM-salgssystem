@@ -2101,6 +2101,26 @@ body.fokusmodus { padding-bottom: 0; }
 .sti-fot--ferdig { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--aksent-mork); font-weight: 600; }
 .sti-fot--ferdig .ikon { width: 18px; height: 18px; }
 
+/* Kompakt, klebrig reise-header (Duolingo-aktig «unit»-kort). Erstatter den
+   store intro-heroen, og er målet for «kortet flyr til toppen»-animasjonen. */
+.reise-topp { position: sticky; top: 0; z-index: 8; padding: calc(env(safe-area-inset-top) + 8px) 12px 6px; background: var(--bg); }
+.reise-topp__kort { position: relative; overflow: hidden; padding: 11px 14px 12px; border-radius: 20px; background: linear-gradient(150deg, var(--teal-700) 0%, var(--teal-900) 100%); color: #fff; box-shadow: 0 10px 26px rgba(1,63,64,0.26); }
+.reise-topp__rad { display: flex; align-items: center; gap: 11px; }
+.reise-topp__tilbake { flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%; border: none; background: rgba(255,255,255,0.16); color: #fff; font-size: 1.25rem; line-height: 1; cursor: pointer; display: grid; place-items: center; }
+.reise-topp__tilbake:active { transform: scale(0.92); }
+.reise-topp__ikon { flex: 0 0 auto; width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.15); display: grid; place-items: center; }
+.reise-topp__ikon .ikon { width: 22px; height: 22px; color: #fff; }
+.reise-topp__tekst { flex: 1 1 auto; min-width: 0; }
+.reise-topp__over { display: block; font-size: 10.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.72); }
+.reise-topp__tittel { margin: 1px 0 0; font-family: var(--font-display); font-size: 20px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.reise-topp__tall { flex: 0 0 auto; font-family: var(--font-display); font-weight: 800; font-size: 15px; color: #fff; font-variant-numeric: tabular-nums; background: rgba(255,255,255,0.16); padding: 4px 10px; border-radius: 999px; }
+.reise-topp__spor { margin-top: 10px; height: 7px; border-radius: 999px; background: rgba(255,255,255,0.2); overflow: hidden; }
+.reise-topp__fyll { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #7CF2D8, #34D9C0); box-shadow: 0 0 10px rgba(80,240,210,0.6); transition: width 0.5s var(--ease-standard); }
+.reise-topp__glans { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.22) 48%, transparent 66%); transform: translateX(-120%); animation: reise-glans 5.5s ease-in-out 1.2s infinite; }
+@keyframes reise-glans { 0% { transform: translateX(-120%); } 22%, 100% { transform: translateX(120%); } }
+.innhold--reise { padding-top: 2px; }
+@media (prefers-reduced-motion: reduce) { .reise-topp__glans { animation: none; opacity: 0; } }
+
 /* Slyngende «reise»-sti (Duolingo-aktig): animerte 3D-noder i sikksakk. */
 .reise { display: flex; flex-direction: column; align-items: center; gap: 30px; padding: 30px 0 12px; position: relative; }
 .reise-node { position: relative; display: flex; flex-direction: column; align-items: center; }
@@ -2324,3 +2344,55 @@ body.fokusmodus { padding-bottom: 0; }
 
 .reise-laster__panda--pushup { width: 172px; height: 152px; animation: none; }
 @media (prefers-reduced-motion: reduce) { .kamp__push--puls, .kamp__runde-stjerne .ikon { animation: none; } }
+
+/* === Skinn & glimt i spillmodulen ==================================== */
+/* Blank «candy»-glans + skinn-sveip på node-knappene */
+.reise-node__knapp { position: relative; overflow: hidden; }
+.reise-node__knapp::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(125% 80% at 32% 20%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 52%);
+}
+.reise-node__knapp::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 62%; height: 100%; pointer-events: none;
+  background: linear-gradient(105deg, transparent 22%, rgba(255,255,255,0.5) 50%, transparent 78%);
+  transform: translateX(-180%) skewX(-12deg);
+}
+.reise-node--mestret .reise-node__knapp::before { animation: node-skinn 4.6s ease-in-out infinite; animation-delay: var(--reise-forsinkelse, 0ms); }
+.reise-node--gjeldende .reise-node__knapp::before { animation: node-skinn 2.7s ease-in-out 0.6s infinite; }
+@keyframes node-skinn { 0% { transform: translateX(-180%) skewX(-12deg); } 30%, 100% { transform: translateX(320%) skewX(-12deg); } }
+.reise-node--gjeldende .reise-node__knapp {
+  box-shadow: 0 7px 0 rgba(0,0,0,0.18), 0 12px 22px rgba(1,63,64,0.22),
+              0 0 0 6px var(--aksent-svak), 0 0 22px 5px rgba(11,166,159,0.45);
+}
+
+/* Gull-stjerner som tindrer (hvilende, ikke pips-en som allerede spretter) */
+.reise-boss__stjerner .stjernerad__stj--pa .ikon,
+.kamp__seier-stjerner .stjernerad__stj--pa .ikon { animation: stjerne-tindre 2.6s ease-in-out infinite; }
+.reise-boss__stjerner .stjernerad__stj--pa:nth-child(2) .ikon { animation-delay: 0.5s; }
+.reise-boss__stjerner .stjernerad__stj--pa:nth-child(3) .ikon { animation-delay: 1s; }
+@keyframes stjerne-tindre { 0%, 100% { filter: drop-shadow(0 0 0 rgba(245,179,1,0)); } 50% { filter: drop-shadow(0 0 6px rgba(245,179,1,0.75)); } }
+
+/* Glimt rundt bossen */
+.reise-boss__scene::before, .reise-boss__scene::after {
+  content: '✦'; position: absolute; z-index: 2; pointer-events: none;
+  color: #FFE08A; font-size: 13px; opacity: 0; text-shadow: 0 0 6px rgba(255,210,90,0.9);
+}
+.reise-boss__scene::before { top: 12px; left: 4px; animation: boss-glimt 3.2s ease-in-out infinite; }
+.reise-boss__scene::after { top: 44px; right: 2px; font-size: 10px; animation: boss-glimt 3.2s ease-in-out 1.5s infinite; }
+@keyframes boss-glimt { 0%, 100% { opacity: 0; transform: scale(0.4); } 45% { opacity: 1; transform: scale(1); } }
+
+/* PUSH-knapp med vandrende skinn */
+.kamp__push { position: relative; overflow: hidden; }
+.kamp__push::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.3) 50%, transparent 65%);
+  transform: translateX(-140%); animation: kamp-skinn 2.8s ease-in-out infinite;
+}
+@keyframes kamp-skinn { 0% { transform: translateX(-140%); } 40%, 100% { transform: translateX(140%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .reise-node__knapp::before,
+  .reise-boss__stjerner .stjernerad__stj--pa .ikon, .kamp__seier-stjerner .stjernerad__stj--pa .ikon,
+  .reise-boss__scene::before, .reise-boss__scene::after, .kamp__push::before { animation: none; }
+  .reise-boss__scene::before, .reise-boss__scene::after { opacity: 0; }
+}

@@ -123,7 +123,8 @@ export function stiInngang() {
   const antall = kjede?.ledd?.length || 0;
   const mestret = mestredeNoder(sti.id).size;
   const under = mestret > 0 ? `${mestret} av ${antall} trinn mestret` : sti.undertittel;
-  return el('a', { class: 'stikort', href: `#/sti?id=${encodeURIComponent(sti.id)}` },
+  const href = `#/sti?id=${encodeURIComponent(sti.id)}`;
+  const kort = el('a', { class: 'stikort', href },
     el('span', { class: 'stikort__merke' }, mestret > 0 ? 'Fortsett' : 'Nytt'),
     el('div', { class: 'stikort__ikon' }, ikon(sti.ikon || 'vekt')),
     el('div', { class: 'stikort__kropp' },
@@ -133,11 +134,100 @@ export function stiInngang() {
     ),
     el('span', { class: 'stikort__pil' }, ikon('chevron')),
   );
+  kort.addEventListener('click', (ev) => {
+    if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button === 1) return; // ny fane som normalt
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return; // la lenken navigere
+    if (_pendingInngang) { ev.preventDefault(); return; }
+    ev.preventDefault();
+    try { flyvInn(kort, href); } catch { location.hash = href; }
+  });
+  return kort;
+}
+
+// --- «Kortet flyr til toppen»-animasjon ----------------------------------
+// Ved trykk på Lær-kortet: kortet glir opp og blir reise-headeren, mens Lær-
+// skjermen (mova-header + innhold) sklir ut oppover. Bunnbaren blir stående
+// (den ligger på body, ikke i #app). Første leksjon/kamp skjuler alt via egne
+// fullskjerm-overlegg. Degraderer til vanlig navigasjon ved redusert bevegelse.
+let _inngangKlon = null;
+let _pendingInngang = false;
+
+function safeTop() {
+  try {
+    const p = document.createElement('div');
+    p.style.cssText = 'position:fixed;top:0;left:0;width:0;height:env(safe-area-inset-top);';
+    document.body.appendChild(p);
+    const h = p.offsetHeight; p.remove();
+    return h || 0;
+  } catch { return 0; }
+}
+
+function ryddInngang() {
+  _pendingInngang = false;
+  _inngangKlon?.remove();
+  _inngangKlon = null;
+  const app = document.getElementById('app');
+  if (app) { app.style.transition = ''; app.style.transform = ''; app.style.opacity = ''; }
+}
+
+function flyvInn(kortEl, href) {
+  const fra = kortEl.getBoundingClientRect();
+  const klon = kortEl.cloneNode(true);
+  klon.removeAttribute('href');
+  Object.assign(klon.style, {
+    position: 'fixed', margin: '0', left: `${fra.left}px`, top: `${fra.top}px`,
+    width: `${fra.width}px`, height: `${fra.height}px`, zIndex: '4000',
+    transformOrigin: 'top left', pointerEvents: 'none', willChange: 'transform',
+    transition: 'transform 0.44s var(--ease-standard), border-radius 0.44s var(--ease-standard)',
+    boxShadow: '0 18px 40px rgba(1,63,64,0.32)',
+  });
+  document.body.appendChild(klon);
+  kortEl.style.visibility = 'hidden';
+  _inngangKlon = klon;
+  _pendingInngang = true;
+
+  const app = document.getElementById('app');
+  if (app) {
+    app.style.transformOrigin = 'top center';
+    app.style.transition = 'transform 0.4s var(--ease-standard), opacity 0.32s ease';
+  }
+
+  // Mål: der reise-topp-kortet lander (12px sidemarg, safe-area + 8px topp).
+  const maalV = 12, maalT = safeTop() + 8;
+  const skala = (window.innerWidth - 24) / Math.max(1, fra.width); // uniform → ingen forvrengning
+  const tx = maalV - fra.left, ty = maalT - fra.top;
+
+  requestAnimationFrame(() => {
+    klon.style.transform = `translate(${tx}px, ${ty}px) scale(${skala})`;
+    klon.style.borderRadius = '20px';
+    if (app) { app.style.transform = 'translateY(-46px)'; app.style.opacity = '0'; }
+  });
+
+  setTimeout(() => { location.hash = href; }, 300);
+  setTimeout(() => { if (_pendingInngang) ryddInngang(); }, 1300); // sikkerhetsnett
+}
+
+// Kalles fra visStiSkjerm når en inngangsanimasjon er i gang: reisen er alt
+// tegnet på rett plass (transform nullstilt i toppen), så vi bare toner klonen
+// ut idet den lander — headeren under avsløres.
+function avsluttInngang() {
+  _pendingInngang = false;
+  const klon = _inngangKlon; _inngangKlon = null;
+  if (!klon) return;
+  setTimeout(() => {
+    klon.style.transition = 'opacity 0.2s ease';
+    klon.style.opacity = '0';
+    setTimeout(() => klon.remove(), 220);
+  }, 150);
 }
 
 // --- Sti-skjerm (#/sti?id=) ----------------------------------------------
 export function visStiSkjerm(mount) {
   _mount = mount;
+  // Nullstill ev. «flyv inn»-transform på #app så reisen tegnes på rett plass.
+  mount.style.transition = 'none';
+  mount.style.transform = '';
+  mount.style.opacity = '';
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
   const sti = finnSti(params.get('id') || '');
   if (!sti) { location.hash = '#/laer'; return; }
@@ -182,20 +272,8 @@ export function visStiSkjerm(mount) {
 
   tom(mount);
   mount.append(
-    el('header', { class: 'topp topp--kjor' },
-      el('button', { class: 'topp__tilbake', type: 'button', title: 'Tilbake', onclick: () => history.back() }, '‹'),
-      el('div', {},
-        el('h1', { class: 'topp__tittel' }, 'Ferdighetssti'),
-        el('p', { class: 'topp__under' }, `${antallMestret} av ${ledd.length} mestret`),
-      ),
-    ),
-    el('main', { class: 'innhold innhold--ovelse' },
-      el('div', { class: 'sti-hero' },
-        el('div', { class: 'sti-hero__ikon' }, ikon(sti.ikon || 'vekt')),
-        el('h1', { class: 'sti-hero__tittel' }, sti.tittel),
-        el('p', { class: 'sti-hero__intro' }, sti.intro),
-        stiFramdrift(antallMestret, ledd.length),
-      ),
+    reiseTopp(sti, antallMestret, ledd.length),
+    el('main', { class: 'innhold innhold--ovelse innhold--reise' },
       reiseEl,
       bossTilstand === 'slaatt'
         ? el('p', { class: 'sti-fot sti-fot--ferdig' }, ikon('trofe', 'ikon'), ' Push-up-pandaen er slått — du er push-up-mester!')
@@ -213,13 +291,29 @@ export function visStiSkjerm(mount) {
     const anker = nodeEls[Math.min(5, nodeEls.length - 1)];
     if (bossEl && anker) bossEl.style.top = `${anker.offsetTop + anker.offsetHeight / 2}px`;
   }
+
+  if (_pendingInngang) avsluttInngang();
 }
 
-function stiFramdrift(gjort, av) {
+// Kompakt, klebrig topp-kort (Duolingo-aktig «unit header»): ikon, etikett,
+// tittel og en tynn framdriftslinje — mye lettere enn den gamle intro-heroen.
+// Dette kortet er også målet for «kortet flyr til toppen»-animasjonen.
+function reiseTopp(sti, gjort, av) {
   const pct = av ? Math.round((gjort / av) * 100) : 0;
-  return el('div', { class: 'sti-framdrift' },
-    el('div', { class: 'sti-framdrift__spor' }, el('div', { class: 'sti-framdrift__fyll', style: `width:${pct}%` })),
-    el('span', { class: 'sti-framdrift__tall' }, `${gjort}/${av}`),
+  return el('header', { class: 'reise-topp' },
+    el('div', { class: 'reise-topp__kort', id: 'reise-topp-kort' },
+      el('div', { class: 'reise-topp__glans' }),
+      el('div', { class: 'reise-topp__rad' },
+        el('button', { class: 'reise-topp__tilbake', type: 'button', title: 'Tilbake', onclick: () => history.back() }, '‹'),
+        el('div', { class: 'reise-topp__ikon' }, ikon(sti.ikon || 'vekt')),
+        el('div', { class: 'reise-topp__tekst' },
+          el('span', { class: 'reise-topp__over' }, 'Ferdighetssti'),
+          el('h1', { class: 'reise-topp__tittel' }, sti.tittel),
+        ),
+        el('span', { class: 'reise-topp__tall' }, `${gjort}/${av}`),
+      ),
+      el('div', { class: 'reise-topp__spor' }, el('div', { class: 'reise-topp__fyll', style: `width:${pct}%` })),
+    ),
   );
 }
 

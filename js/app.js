@@ -68,7 +68,9 @@ const ruter = {
 };
 
 // Skjermene med egen tilbake-header er fokusmodus (skjuler tab-baren).
-const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel', 'sti', 'logg-inn', 'bli-medlem']);
+// «sti» (ferdighetsreisen) er bevisst IKKE fokus: bunnbaren blir stående helt
+// til man går inn i en leksjon/kamp (som er egne fullskjerm-overlegg).
+const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel', 'logg-inn', 'bli-medlem']);
 
 // Medlemssidene (auth). Uinnloggede sendes hit; innloggede slippes forbi.
 const AUTH_RUTER = new Set(['logg-inn', 'bli-medlem']);
