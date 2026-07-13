@@ -138,20 +138,6 @@ body {
   padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 16px);
 }
 
-/* Statuslinje-skygge (edge-to-edge). Med black-translucent fyller innholdet
-   hele skjermen bak den hvite iOS-klokka; denne diskrete toningen holder
-   klokke/batteri lesbare over lyse flater på alle skjermer. Usynlig der det
-   ikke finnes en safe-area (desktop). */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: calc(env(safe-area-inset-top, 0px) + 4px);
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0));
-  z-index: 2000;
-  pointer-events: none;
-}
-
 .laster {
   display: grid;
   place-items: center;
@@ -1882,9 +1868,14 @@ body.fokusmodus { padding-bottom: 0; }
    frosted glass-kort med skjema flyter over i bunnen.
    =========================================================================== */
 .auth { position: relative; height: 100vh; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
-.auth__bg { position: absolute; inset: 0; background-size: cover; background-position: center 20%; z-index: 0; }
-/* Lett lys vask øverst så logo/hilsen holder kontrast mot himmelen. */
-.auth__bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(246,247,248,0.42) 0%, rgba(246,247,248,0) 26%); }
+.auth__bg { position: absolute; inset: 0; background-repeat: no-repeat; background-size: 126%; z-index: 0; }
+/* Løft motivet (personene) opp så de synes godt over skjemakortet. Egen
+   ramme per bilde siden løperen og paret sitter litt ulikt. */
+.auth--logg-inn .auth__bg { background-position: 62% 88%; }
+.auth--bli-medlem .auth__bg { background-position: 58% 84%; }
+/* Hvit toning fra toppen og nedover — holder logo/hilsen lesbare og lar
+   motivet tre fram lenger ned mot kortet. */
+.auth__bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.62) 15%, rgba(255,255,255,0) 45%); }
 .auth__innhold { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; }
 .auth__topp { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; padding: calc(env(safe-area-inset-top, 0px) + 34px) 28px 16px; }
 
