@@ -4,7 +4,15 @@
 // Supabase GoTrue via js/sync.js: e-post + passord, samt Apple/Facebook (OAuth).
 // Ingen tab-bar (fokusmodus). Onboarding bygges på nytt i neste steg.
 import { el, tom, ikon } from './ui.js';
+import { OAUTH_PROVIDERE } from './config.js';
 import * as sync from './sync.js';
+
+// Leverandør-metadata (merkeikon + visningsnavn). Hvilke som vises styres av
+// OAUTH_PROVIDERE i config.js.
+const PROVIDERE = {
+  apple: { navn: 'Apple', merke: 'apple' },
+  facebook: { navn: 'Facebook', merke: 'facebook' },
+};
 
 let _etterInnlogget = null;
 /** app.js registrerer hva som skjer etter vellykket innlogging (synk + ruting). */
@@ -49,13 +57,20 @@ function skille(tekst = 'Eller fortsett med') {
 }
 
 function providerKnapper() {
-  const lag = (merke, navn, provider) => {
+  return OAUTH_PROVIDERE.map((id) => {
+    const p = PROVIDERE[id];
+    if (!p) return null;
     const k = el('button', { class: 'auth-provider', type: 'button' },
-      ikon(merke, 'merkeikon'), el('span', {}, `Fortsett med ${navn}`));
-    k.addEventListener('click', () => sync.startOAuth(provider));
+      ikon(p.merke, 'merkeikon'), el('span', {}, `Fortsett med ${p.navn}`));
+    k.addEventListener('click', () => sync.startOAuth(id));
     return k;
-  };
-  return [lag('apple', 'Apple', 'apple'), lag('facebook', 'Facebook', 'facebook')];
+  }).filter(Boolean);
+}
+
+/** Skille + leverandørknapper — tomt hvis ingen leverandører er aktivert. */
+function providerSeksjon() {
+  const knapper = providerKnapper();
+  return knapper.length ? [skille(), ...knapper] : [];
 }
 
 function primaerKnapp(tekst) {
@@ -108,7 +123,7 @@ export function visLoggInnSkjerm(mount) {
   const form = el('form', { class: 'auth-form', novalidate: true },
     melding, epost.rad, passord.rad,
     el('div', { class: 'auth-glemt-rad' }, glemt),
-    knapp, skille(), ...providerKnapper(),
+    knapp, ...providerSeksjon(),
   );
   form.addEventListener('submit', async (ev) => {
     ev.preventDefault();
@@ -143,7 +158,7 @@ export function visRegistrerSkjerm(mount) {
 
   const form = el('form', { class: 'auth-form', novalidate: true },
     melding, navn.rad, epost.rad, passord.rad,
-    knapp, skille(), ...providerKnapper(),
+    knapp, ...providerSeksjon(),
   );
   form.addEventListener('submit', async (ev) => {
     ev.preventDefault();
