@@ -124,7 +124,7 @@ export function visStiSkjerm(mount) {
         el('p', { class: 'sti-hero__intro' }, sti.intro),
         stiFramdrift(antallMestret, ledd.length),
       ),
-      el('div', { class: 'sti' }, ...noder.map((n) => stiNode(sti, n))),
+      el('div', { class: 'reise' }, ...noder.map((n) => reiseNode(sti, n))),
       antallMestret >= ledd.length && ledd.length
         ? el('p', { class: 'sti-fot sti-fot--ferdig' }, ikon('trofe', 'ikon'), ' Hele stien er mestret — sterkt jobba!')
         : el('p', { class: 'sti-fot dempet' }, 'Mestre et trinn for å låse opp det neste.'),
@@ -140,33 +140,36 @@ function stiFramdrift(gjort, av) {
   );
 }
 
-function stiNode(sti, { l, i, tilstand }) {
+// Slyngende sti («reise»): horisontal forskyvning per node lager S-kurven.
+const REISE_MONSTER = [0, 0.6, 1, 0.6, 0, -0.6, -1, -0.6];
+const REISE_AMP = 66; // px
+
+function reiseNode(sti, { l, i, tilstand }) {
   const e = _bib?.ovelse(l.ovelse);
   const navn = e?.navn || l.ovelse;
   const niva = NIVA[l.niva] || NIVA[1];
-  const data = (sti.trinn && sti.trinn[l.ovelse]) || {};
-  const blurb = data.blurb || ovelseInfo(navn)?.kort || '';
+  const dx = Math.round(REISE_AMP * REISE_MONSTER[i % REISE_MONSTER.length]);
 
-  const pinInnhold = tilstand === 'mestret' ? ikon('sjekk', 'ikon')
+  const innhold = tilstand === 'mestret' ? ikon('sjekk', 'ikon')
     : tilstand === 'laast' ? ikon('las', 'ikon')
-      : String(i + 1);
+      : ikon('stjerne', 'ikon');
 
-  const node = el('button', { class: `sti-node sti-node--${tilstand}`, type: 'button' },
-    el('span', { class: `sti-node__pin ${niva.klasse}` }, pinInnhold),
-    el('div', { class: 'sti-node__kropp' },
-      el('div', { class: 'sti-node__hode' },
-        el('span', { class: 'sti-node__navn' }, navn),
-        el('span', { class: `sti-niv ${niva.klasse}` }, niva.ord),
-      ),
-      blurb ? el('p', { class: 'sti-node__blurb' }, blurb) : null,
-      tilstand === 'gjeldende' ? el('span', { class: 'sti-node__cta' }, 'Start trinnet ›') : null,
-    ),
-  );
-  node.addEventListener('click', () => {
+  const knapp = el('button', { class: `reise-node__knapp ${niva.klasse}`, type: 'button', 'aria-label': navn, title: navn }, innhold);
+  knapp.addEventListener('click', () => {
     if (tilstand === 'laast') visOvelseArk(navn); // forhåndstitt, men ingen leksjon
     else startLeksjon(sti, l);
   });
-  return node;
+
+  const wrap = el('div', { class: `reise-node reise-node--${tilstand}`, style: `transform:translateX(${dx}px)` },
+    tilstand === 'gjeldende'
+      ? el('div', { class: 'reise-node__boble' },
+        el('span', { class: 'reise-node__boble-navn' }, navn),
+        el('span', { class: 'reise-node__boble-cta' }, 'Start ›'))
+      : null,
+    knapp,
+  );
+  wrap.style.setProperty('--reise-forsinkelse', `${i * 55}ms`);
+  return wrap;
 }
 
 // --- Mini-leksjon (lær → teknikk-sjekk → praksis → mestret) ---------------

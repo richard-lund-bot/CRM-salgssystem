@@ -2101,6 +2101,44 @@ body.fokusmodus { padding-bottom: 0; }
 .sti-fot--ferdig { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--aksent-mork); font-weight: 600; }
 .sti-fot--ferdig .ikon { width: 18px; height: 18px; }
 
+/* Slyngende «reise»-sti (Duolingo-aktig): animerte 3D-noder i sikksakk. */
+.reise { display: flex; flex-direction: column; align-items: center; gap: 30px; padding: 30px 0 12px; position: relative; }
+.reise-node { position: relative; display: flex; flex-direction: column; align-items: center; }
+.reise-node__knapp {
+  width: 76px; height: 76px; border-radius: 50%; border: none; cursor: pointer;
+  background: var(--c, var(--aksent)); color: #fff; display: grid; place-items: center;
+  box-shadow: 0 6px 0 rgba(0,0,0,0.16), 0 10px 16px rgba(1,63,64,0.16);
+  transition: transform 0.08s, box-shadow 0.08s;
+  animation: reise-pop 0.45s var(--ease-standard) both; animation-delay: var(--reise-forsinkelse, 0ms);
+}
+.reise-node__knapp .ikon { width: 34px; height: 34px; stroke-width: 2.4; }
+.reise-node__knapp:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,0.16), 0 4px 8px rgba(1,63,64,0.16); }
+
+.reise-node--gjeldende .reise-node__knapp {
+  width: 88px; height: 88px;
+  box-shadow: 0 7px 0 rgba(0,0,0,0.18), 0 12px 22px rgba(1,63,64,0.22);
+  animation: reise-pop 0.45s var(--ease-standard) both, reise-hopp 1.7s ease-in-out 700ms infinite;
+}
+.reise-node--gjeldende .reise-node__knapp .ikon { width: 42px; height: 42px; fill: currentColor; stroke: none; }
+.reise-node--laast .reise-node__knapp { background: var(--bg-kort-2); color: var(--dempet); box-shadow: 0 5px 0 rgba(0,0,0,0.06), 0 6px 10px rgba(0,0,0,0.05); }
+.reise-node--laast .reise-node__knapp .ikon { width: 26px; height: 26px; }
+
+.reise-node__boble {
+  position: absolute; bottom: calc(100% + 12px); left: 50%; transform: translateX(-50%); z-index: 2;
+  max-width: 190px; background: var(--bg-kort); border: 1px solid var(--kant); border-radius: 16px;
+  padding: 9px 15px; box-shadow: var(--shadow-md); display: flex; flex-direction: column; align-items: center; gap: 1px;
+  animation: reise-pop 0.5s var(--ease-standard) both 0.3s;
+}
+.reise-node__boble::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 7px solid transparent; border-top-color: var(--bg-kort); margin-top: -1px; }
+.reise-node__boble-navn { font-family: var(--font-display); font-weight: 600; font-size: 14.5px; color: var(--tekst); text-align: center; line-height: 1.2; }
+.reise-node__boble-cta { font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--aksent-mork); }
+
+@keyframes reise-pop { from { opacity: 0; transform: translateY(10px) scale(0.8); } to { opacity: 1; transform: none; } }
+@keyframes reise-hopp { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@media (prefers-reduced-motion: reduce) {
+  .reise-node__knapp, .reise-node--gjeldende .reise-node__knapp, .reise-node__boble { animation: none; }
+}
+
 /* ===========================================================================
    Mini-leksjon (lær → teknikk-sjekk → praksis → mestret). Fullskjerm-overlegg.
    =========================================================================== */
