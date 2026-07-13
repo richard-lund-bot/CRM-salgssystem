@@ -2447,3 +2447,51 @@ body.fokusmodus { padding-bottom: 0; }
   .mester-dekor__stj { opacity: 0.85; }
   .mester-feiring__kort { opacity: 1; transform: none; }
 }
+
+/* === Disipliner → Seksjoner (Fase 2) ================================== */
+/* Disiplin-rad øverst i Lær */
+.disiplinrad { margin-bottom: 16px; }
+.disiplinrad__tittel { margin: 2px 2px 10px; font-family: var(--font-display); font-size: 18px; font-weight: 600; }
+.disiplinliste { display: flex; flex-direction: column; gap: 10px; }
+.disiplinkort { display: flex; align-items: center; gap: 14px; text-decoration: none; color: #fff; border-radius: var(--radius-lg); padding: 14px 16px; box-shadow: var(--shadow-sm); position: relative; overflow: hidden; }
+.disiplinkort--teal { background: linear-gradient(135deg, var(--teal-700), var(--teal-900)); }
+.disiplinkort--koral { background: linear-gradient(135deg, #E8734E, #C8452A); }
+.disiplinkort--blaa { background: linear-gradient(135deg, #3E7CC4, #29508C); }
+.disiplinkort--lilla { background: linear-gradient(135deg, #8A6BC4, #5E3F92); }
+.disiplinkort--laast { filter: saturate(0.35) opacity(0.72); }
+.disiplinkort:active { transform: scale(0.99); }
+.disiplinkort__ikon { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 14px; background: rgba(255,255,255,0.18); display: grid; place-items: center; }
+.disiplinkort__ikon .ikon { width: 24px; height: 24px; color: #fff; }
+.disiplinkort__kropp { flex: 1 1 auto; min-width: 0; }
+.disiplinkort__navn { display: block; font-family: var(--font-display); font-weight: 700; font-size: 18px; }
+.disiplinkort__under { display: block; font-size: 12.5px; line-height: 1.35; opacity: 0.9; margin-top: 1px; }
+.disiplinkort__pil, .disiplinkort__las { flex: 0 0 auto; opacity: 0.85; }
+.disiplinkort__pil .ikon, .disiplinkort__las .ikon { width: 20px; height: 20px; color: #fff; }
+
+/* Seksjons-kort (Duolingo-aktig) */
+.seksjonkort { display: block; text-decoration: none; color: var(--tekst); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); margin-bottom: 16px; background: var(--bg-kort); border: 1px solid var(--kant); }
+.seksjonkort:active { transform: scale(0.99); }
+.seksjonkort__topp { position: relative; height: 118px; display: flex; align-items: center; padding: 0 18px; overflow: hidden; }
+.seksjonkort--teal .seksjonkort__topp { background: linear-gradient(135deg, var(--teal-500), var(--teal-700)); }
+.seksjonkort--koral .seksjonkort__topp { background: linear-gradient(135deg, #E8734E, #C8452A); }
+.seksjonkort--blaa .seksjonkort__topp { background: linear-gradient(135deg, #3E7CC4, #29508C); }
+.seksjonkort--lilla .seksjonkort__topp { background: linear-gradient(135deg, #8A6BC4, #5E3F92); }
+.seksjonkort__snakk { position: relative; background: #fff; color: var(--tekst); border-radius: 14px; padding: 8px 14px; font-family: var(--font-display); font-weight: 600; font-size: 15px; box-shadow: var(--shadow-xs); }
+.seksjonkort__snakk::after { content: ''; position: absolute; top: 100%; left: 22px; border: 7px solid transparent; border-top-color: #fff; }
+.seksjonkort__panda { position: absolute; right: 12px; bottom: -8px; width: 92px; height: 104px; }
+.seksjonkort__bunn { display: flex; align-items: center; gap: 12px; padding: 14px 16px; }
+.seksjonkort__merke { font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--aksent-mork); }
+.seksjonkort__tittel { margin: 2px 0 0; font-family: var(--font-display); font-size: 20px; font-weight: 600; }
+.seksjonkort__under { margin: 3px 0 0; font-size: 13px; line-height: 1.4; color: var(--tekst-2); }
+.seksjonkort__framdrift { margin-left: auto; display: flex; align-items: center; gap: 6px; flex: 0 0 auto; }
+.seksjonkort__tall { font-family: var(--font-display); font-weight: 700; font-size: 13px; color: var(--tekst-2); }
+.seksjonkort__pil .ikon { width: 22px; height: 22px; color: var(--dempet); }
+
+/* Enhets-header inne i seksjons-reisen */
+.enhet-header { align-self: stretch; display: flex; align-items: flex-start; gap: 12px; margin: 8px 4px 2px; padding: 12px 16px; border-radius: 16px; background: linear-gradient(135deg, var(--teal-700), var(--teal-900)); color: #fff; box-shadow: var(--shadow-sm); }
+.enhet-header--ferdig { background: linear-gradient(135deg, #EBAE3E, #C0801B); }
+.enhet-header__merke { flex: 0 0 auto; font-size: 10.5px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8; margin-top: 3px; }
+.enhet-header__midt { flex: 1 1 auto; min-width: 0; }
+.enhet-header__navn { margin: 0; font-family: var(--font-display); font-size: 17px; font-weight: 700; }
+.enhet-header__intro { margin: 3px 0 0; font-size: 12.5px; line-height: 1.4; opacity: 0.9; }
+.enhet-header__tall { flex: 0 0 auto; font-family: var(--font-display); font-weight: 800; font-size: 14px; background: rgba(255,255,255,0.18); padding: 4px 10px; border-radius: 999px; margin-top: 2px; }

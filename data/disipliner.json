@@ -1,0 +1,38 @@
+[
+  {
+    "id": "kroppsvekt",
+    "navn": "Kroppsvekt",
+    "undertittel": "Callisthenics — bygg styrke fra bunnen, uten utstyr.",
+    "ikon": "vekt",
+    "farge": "teal",
+    "status": "aktiv",
+    "seksjoner": ["kroppsvekt-nybegynner"]
+  },
+  {
+    "id": "loping",
+    "navn": "Løping",
+    "undertittel": "Fra gåtur til 5 km — steg for steg.",
+    "ikon": "loper",
+    "farge": "koral",
+    "status": "kommer",
+    "seksjoner": []
+  },
+  {
+    "id": "mobilitet",
+    "navn": "Mobilitet",
+    "undertittel": "Bevegelighet og myke ledd for hele kroppen.",
+    "ikon": "puls",
+    "farge": "blaa",
+    "status": "kommer",
+    "seksjoner": []
+  },
+  {
+    "id": "yoga",
+    "navn": "Yoga",
+    "undertittel": "Flyt, pust og ro — matte-basert.",
+    "ikon": "hjerte",
+    "farge": "lilla",
+    "status": "kommer",
+    "seksjoner": []
+  }
+]

@@ -1,0 +1,82 @@
+[
+  {
+    "id": "kroppsvekt-nybegynner",
+    "disiplin": "kroppsvekt",
+    "navn": "Nybegynner",
+    "undertittel": "Bygg grunnmuren: en balansert base av push, bein, drag og kjerne.",
+    "farge": "teal",
+    "nivaBand": [1, 2],
+    "enheter": [
+      {
+        "id": "grunnstilling",
+        "navn": "Grunnstilling",
+        "intro": "De aller enkleste variantene av hver bevegelse. Lær retningen og spenningen i kroppen — helt uten belastning på leddene.",
+        "steg": [
+          { "ovelse": "vegg-pushup", "familie": "push-h", "niva": 1, "maal": { "type": "reps", "verdi": 12 },
+            "blurb": "Stå en armlengde fra veggen, hendene i brysthøyde. Senk deg rolig inn og press ut — rett kropp hele veien.",
+            "dose": "12 rolige reps", "minutter": 3,
+            "sjekk": { "sporsmal": "Hva skal holde en rett linje i en vegg-pushup?", "valg": ["Bare armene", "Hele kroppen fra hode til hæl", "Bena bøyd"], "riktig": 1, "forklaring": "Spenn magen og baken så kroppen er én rett linje — ikke la hoftene henge." } },
+          { "ovelse": "stol-kneboy", "familie": "kneboy", "niva": 1, "maal": { "type": "reps", "verdi": 12 },
+            "blurb": "Sett deg rolig ned til en stol og reis deg opp uten å bruke hendene. Vekten på hælene, brystet opp.",
+            "dose": "12 reps", "minutter": 3 },
+          { "ovelse": "ringrow-hoy-vinkel", "familie": "pull-h", "niva": 1, "maal": { "type": "reps", "verdi": 8 },
+            "blurb": "Bruk et stødig bord, ringer eller en stang i brysthøyde. Kroppen rett, dra brystet mot hendene.",
+            "dose": "8 reps", "minutter": 3,
+            "sjekk": { "sporsmal": "Hvordan gjør du en ringrow lettere?", "valg": ["Legg deg mer vannrett", "Stå mer oppreist (høyere vinkel)", "Bøy knærne"], "riktig": 1, "forklaring": "Jo mer oppreist du står, jo mindre av kroppsvekten drar du — perfekt for å lære draget." } },
+          { "ovelse": "glute-bridge", "familie": "hengsel", "niva": 1, "maal": { "type": "reps", "verdi": 12 },
+            "blurb": "Ligg på rygg, føttene i gulvet. Press hoftene opp og klem baken hardt på toppen.",
+            "dose": "12 reps", "minutter": 3 },
+          { "ovelse": "planke", "familie": "core-antiekst", "niva": 1, "maal": { "type": "hold", "verdi": 20 },
+            "blurb": "På underarmene, rett linje fra hode til hæl. Stram mage og bak — ikke la ryggen svaie.",
+            "dose": "Hold i 20 sekunder", "minutter": 3 }
+        ]
+      },
+      {
+        "id": "forste-klasse",
+        "navn": "Første klasse",
+        "intro": "Ett hakk opp på hver bevegelse. Nå begynner vi å bygge ekte styrke i alle mønstrene samtidig.",
+        "steg": [
+          { "ovelse": "skra-pushup-sofa-benk", "familie": "push-h", "niva": 1, "maal": { "type": "reps", "verdi": 10 },
+            "blurb": "Hendene på en sofa eller benk. Jo lavere flate, jo tyngre — senk høyden når det kjennes lett.",
+            "dose": "10 reps", "minutter": 3 },
+          { "ovelse": "air-squat", "familie": "kneboy", "niva": 1, "maal": { "type": "reps", "verdi": 15 },
+            "blurb": "Fri knebøy uten stol. Ned til lårene er vannrette, knærne følger tærne, brystet opp.",
+            "dose": "15 reps", "minutter": 3,
+            "sjekk": { "sporsmal": "Hvor bør vekten ligge i en knebøy?", "valg": ["På tærne", "Jevnt på hele foten / hælene", "Kun på hælene, tærne løftet"], "riktig": 1, "forklaring": "Hold hele foten plantet med god vekt på hælene — da står du stødig og skåner knærne." } },
+          { "ovelse": "ringrow", "familie": "pull-h", "niva": 2, "maal": { "type": "reps", "verdi": 8 },
+            "blurb": "Samme drag, men kroppen mer vannrett nå. Skuldrene ned og bak, dra med albuene.",
+            "dose": "8 reps", "minutter": 3 },
+          { "ovelse": "ettbens-glute-bridge", "familie": "hengsel", "niva": 2, "maal": { "type": "reps", "verdi": 8 },
+            "blurb": "Glute bridge på ett ben. Strekk det andre benet rett ut og press opp med det som står i gulvet.",
+            "dose": "8 reps per side", "minutter": 3 },
+          { "ovelse": "dead-bug", "familie": "hollow", "niva": 1, "maal": { "type": "reps", "verdi": 10 },
+            "blurb": "Ligg på rygg, armer og bøyde ben opp. Senk motsatt arm og ben rolig ned — korsryggen presset i gulvet.",
+            "dose": "10 reps per side", "minutter": 3 }
+        ]
+      },
+      {
+        "id": "byggeklosser",
+        "navn": "Byggeklosser",
+        "intro": "Måløvelsene for nybegynner-seksjonen. Klarer du disse rent, har du en solid callisthenics-base.",
+        "steg": [
+          { "ovelse": "kne-pushup", "familie": "push-h", "niva": 1, "maal": { "type": "reps", "verdi": 10 },
+            "blurb": "På knærne i stedet for tærne. Rett linje fra knær til hode — den direkte broen til en full push-up.",
+            "dose": "10 reps", "minutter": 3,
+            "sjekk": { "sporsmal": "Hvor bør albuene peke i en push-up?", "valg": ["Rett ut til sidene (90°)", "Litt inn mot kroppen (~45°)", "Rett bakover"], "riktig": 1, "forklaring": "Albuene litt inn mot kroppen skåner skuldrene og gir mer kraft." } },
+          { "ovelse": "goblet-squat", "familie": "kneboy", "niva": 2, "maal": { "type": "reps", "verdi": 12 },
+            "blurb": "Hold noe tungt (kettlebell, sekk, vannkanne) mot brystet. Det hjelper deg å sitte dypt og oppreist.",
+            "dose": "12 reps", "minutter": 3 },
+          { "ovelse": "hip-thrust-sofa", "familie": "hengsel", "niva": 2, "maal": { "type": "reps", "verdi": 12 },
+            "blurb": "Øvre rygg mot sofakanten, press hoftene opp til kroppen er vannrett. Sterkeste bakside-øvelsen her.",
+            "dose": "12 reps", "minutter": 3 },
+          { "ovelse": "hollow-tuck", "familie": "hollow", "niva": 2, "maal": { "type": "hold", "verdi": 20 },
+            "blurb": "Ligg på rygg, press korsryggen ned, løft skuldre og bøyde ben. Hold spennet — grunnlaget for all kjernestyrke.",
+            "dose": "Hold i 20 sekunder", "minutter": 3 },
+          { "ovelse": "utfall-bak", "familie": "utfall", "niva": 2, "maal": { "type": "reps", "verdi": 8 },
+            "blurb": "Steg bakover og senk bakre kne mot gulvet. Tryggere for knærne enn utfall fremover.",
+            "dose": "8 reps per side", "minutter": 3 }
+        ]
+      }
+    ]
+  }
+]

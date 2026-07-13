@@ -41,6 +41,8 @@ function pandaAnim(poseA, poseB, klasse, variant = 'idle') {
 
 let _stier = null;
 let _kjeder = null;
+let _disipliner = null;
+let _seksjoner = null;
 let _bib = null;
 let _mount = null;
 
@@ -65,9 +67,38 @@ export async function lastKjeder() {
   return _kjeder;
 }
 
+/** Laster disiplinene (treningsformer) — data/disipliner.json. */
+export async function lastDisipliner() {
+  if (_disipliner) return _disipliner;
+  const res = await fetch('data/disipliner.json');
+  if (!res.ok) throw new Error(`Kunne ikke laste disipliner (${res.status})`);
+  _disipliner = await res.json();
+  return _disipliner;
+}
+
+/** Laster seksjonene (nivå-tiers m/ enheter) — data/seksjoner.json. */
+export async function lastSeksjoner() {
+  if (_seksjoner) return _seksjoner;
+  const res = await fetch('data/seksjoner.json');
+  if (!res.ok) throw new Error(`Kunne ikke laste seksjoner (${res.status})`);
+  _seksjoner = await res.json();
+  return _seksjoner;
+}
+
 export function alleStier() { return _stier || []; }
+export function alleDisipliner() { return _disipliner || []; }
 function finnSti(id) { return (_stier || []).find((s) => s.id === id) || null; }
 function finnKjede(id) { return (_kjeder || []).find((k) => k.id === id) || null; }
+function finnDisiplin(id) { return (_disipliner || []).find((d) => d.id === id) || null; }
+function finnSeksjon(id) { return (_seksjoner || []).find((s) => s.id === id) || null; }
+
+// Re-tegn den aktive reisen (enkelt-sti eller seksjon) etter en leksjon.
+function reTegnReise() {
+  if (!_mount) return;
+  const rute = (location.hash.replace('#/', '') || '').split('?')[0];
+  if (rute === 'seksjon') visSeksjonSkjerm(_mount);
+  else visStiSkjerm(_mount);
+}
 
 // Nivå 1–5 → ord + fargeklasse (brukes på pin og pille).
 const NIVA = {
@@ -282,6 +313,151 @@ function avsluttInngang() {
   }, 150);
 }
 
+// --- Disiplin-rad i Lær + disiplin/seksjon-skjermer ----------------------
+/** Rad med disiplin-kort til toppen av Lær-feeden. */
+export function disiplinRad() {
+  const disipliner = alleDisipliner();
+  if (!disipliner.length) return null;
+  return el('section', { class: 'disiplinrad' },
+    el('h2', { class: 'disiplinrad__tittel' }, 'Ferdighetsløp'),
+    el('div', { class: 'disiplinliste' }, ...disipliner.map(disiplinKort)),
+  );
+}
+
+function disiplinKort(d) {
+  const aktiv = d.status === 'aktiv';
+  const kort = el('a', {
+    class: `disiplinkort disiplinkort--${d.farge}` + (aktiv ? '' : ' disiplinkort--laast'),
+    href: aktiv ? `#/disiplin?id=${encodeURIComponent(d.id)}` : '#/laer',
+    'aria-disabled': aktiv ? null : 'true',
+  },
+    el('div', { class: 'disiplinkort__ikon' }, ikon(d.ikon || 'vekt')),
+    el('div', { class: 'disiplinkort__kropp' },
+      el('span', { class: 'disiplinkort__navn' }, d.navn),
+      el('span', { class: 'disiplinkort__under' }, aktiv ? d.undertittel : 'Kommer snart'),
+    ),
+    aktiv ? el('span', { class: 'disiplinkort__pil' }, ikon('chevron'))
+      : el('span', { class: 'disiplinkort__las' }, ikon('las')),
+  );
+  if (!aktiv) kort.addEventListener('click', (ev) => ev.preventDefault());
+  return kort;
+}
+
+/** #/disiplin?id= — seksjons-oversikt for en disiplin. */
+export function visDisiplinSkjerm(mount) {
+  _mount = mount;
+  mount.style.transition = 'none'; mount.style.transform = ''; mount.style.opacity = '';
+  const id = new URLSearchParams(location.hash.split('?')[1] || '').get('id') || '';
+  const d = finnDisiplin(id);
+  if (!d) { location.hash = '#/laer'; return; }
+  const seksjoner = (d.seksjoner || []).map(finnSeksjon).filter(Boolean);
+
+  tom(mount);
+  mount.append(
+    el('header', { class: 'topp topp--kjor' },
+      el('button', { class: 'topp__tilbake', type: 'button', title: 'Tilbake', onclick: () => { location.hash = '#/laer'; } }, '‹'),
+      el('div', {},
+        el('h1', { class: 'topp__tittel' }, d.navn),
+        el('p', { class: 'topp__under' }, d.undertittel),
+      ),
+    ),
+    el('main', { class: 'innhold' },
+      ...seksjoner.map((s, i) => seksjonKort(s, i, d)),
+      el('p', { class: 'sti-fot dempet' }, seksjoner.length ? 'Flere seksjoner låses opp etter hvert.' : 'Innhold i denne disiplinen er på vei.'),
+    ),
+  );
+}
+
+function seksjonKort(s, i, d) {
+  const antall = (s.enheter || []).reduce((n, u) => n + u.steg.length, 0);
+  const mestret = mestredeNoder(s.id).size;
+  return el('a', { class: `seksjonkort seksjonkort--${s.farge || d.farge}`, href: `#/seksjon?id=${encodeURIComponent(s.id)}` },
+    el('div', { class: 'seksjonkort__topp' },
+      el('div', { class: 'seksjonkort__snakk' }, mestret > 0 ? 'Fortsett!' : 'La oss starte!'),
+      pandaImg(mestret >= antall && antall ? 'cheer' : 'wave', 'seksjonkort__panda'),
+    ),
+    el('div', { class: 'seksjonkort__bunn' },
+      el('div', {},
+        el('span', { class: 'seksjonkort__merke' }, `Seksjon ${i + 1}`),
+        el('h2', { class: 'seksjonkort__tittel' }, s.navn),
+        el('p', { class: 'seksjonkort__under' }, s.undertittel),
+      ),
+      el('div', { class: 'seksjonkort__framdrift' },
+        el('span', { class: 'seksjonkort__tall' }, mestret > 0 ? `${mestret}/${antall}` : `${(s.enheter || []).length} enheter`),
+        el('span', { class: 'seksjonkort__pil' }, ikon('chevron')),
+      ),
+    ),
+  );
+}
+
+/** #/seksjon?id= — reisen for en seksjon: enheter (headere) + steg-noder. */
+export function visSeksjonSkjerm(mount) {
+  _mount = mount;
+  mount.style.transition = 'none'; mount.style.transform = ''; mount.style.opacity = '';
+  const id = new URLSearchParams(location.hash.split('?')[1] || '').get('id') || '';
+  const seksjon = finnSeksjon(id);
+  if (!seksjon) { location.hash = '#/laer'; return; }
+  const disiplin = finnDisiplin(seksjon.disiplin);
+  const enheter = seksjon.enheter || [];
+  const alleSteg = enheter.flatMap((u) => u.steg);
+
+  // Syntetisk «sti» så hele leksjons-/popover-motoren gjenbrukes uendret.
+  const syntSti = {
+    id: seksjon.id, tittel: seksjon.navn, bevegelse: 'bodyweight',
+    ikon: disiplin?.ikon || 'vekt',
+    trinn: Object.fromEntries(alleSteg.map((st) => [st.ovelse, st])),
+  };
+  const mestret = mestredeNoder(seksjon.id);
+  const antallMestret = alleSteg.filter((st) => mestret.has(st.ovelse)).length;
+  const ferdig = antallMestret >= alleSteg.length && alleSteg.length;
+
+  const reise = el('div', { class: 'reise' },
+    el('div', { class: 'reise-guide' },
+      pandaAnim('idle', 'wave', 'reise-guide__panda', 'idle'),
+      el('span', { class: 'reise-guide__snakk' }, ferdig
+        ? 'Hele seksjonen er mestret — sterkt jobba! 🐼'
+        : 'Én klasse om gangen: push, bein, drag og kjerne — balansert.'),
+    ),
+  );
+
+  let gjeldendeFunnet = false;
+  let idx = 0;
+  enheter.forEach((enhet, ei) => {
+    const enhetMestret = enhet.steg.filter((st) => mestret.has(st.ovelse)).length;
+    const enhetFerdig = enhetMestret >= enhet.steg.length;
+    reise.append(el('div', { class: 'enhet-header' + (enhetFerdig ? ' enhet-header--ferdig' : '') },
+      el('span', { class: 'enhet-header__merke' }, `Enhet ${ei + 1}`),
+      el('div', { class: 'enhet-header__midt' },
+        el('h2', { class: 'enhet-header__navn' }, enhet.navn),
+        el('p', { class: 'enhet-header__intro' }, enhet.intro),
+      ),
+      el('span', { class: 'enhet-header__tall' }, `${enhetMestret}/${enhet.steg.length}`),
+    ));
+    enhet.steg.forEach((st) => {
+      const erMestret = mestret.has(st.ovelse);
+      const forrigeMestret = idx === 0 || mestret.has(alleSteg[idx - 1].ovelse);
+      let tilstand;
+      if (erMestret) tilstand = 'mestret';
+      else if (forrigeMestret && !gjeldendeFunnet) { tilstand = 'gjeldende'; gjeldendeFunnet = true; }
+      else tilstand = 'laast';
+      reise.append(reiseNode(syntSti, { l: st, i: idx, tilstand }));
+      idx += 1;
+    });
+  });
+
+  tom(mount);
+  mount.append(
+    reiseTopp(syntSti, antallMestret, alleSteg.length, `${disiplin?.navn || 'Kroppsvekt'} · Seksjon`,
+      () => { location.hash = `#/disiplin?id=${encodeURIComponent(seksjon.disiplin)}`; }),
+    el('main', { class: 'innhold innhold--ovelse innhold--reise' },
+      reise,
+      ferdig
+        ? el('p', { class: 'sti-fot sti-fot--ferdig' }, ikon('trofe', 'ikon'), ' Seksjonen er fullført — sterkt jobba!')
+        : el('p', { class: 'sti-fot dempet' }, 'Mestre et steg for å låse opp det neste.'),
+    ),
+  );
+}
+
 // --- Sti-skjerm (#/sti?id=) ----------------------------------------------
 export function visStiSkjerm(mount) {
   _mount = mount;
@@ -420,16 +596,16 @@ function feirMester(skjerm) {
 // Kompakt, klebrig topp-kort (Duolingo-aktig «unit header»): ikon, etikett,
 // tittel og en tynn framdriftslinje — mye lettere enn den gamle intro-heroen.
 // Dette kortet er også målet for «kortet flyr til toppen»-animasjonen.
-function reiseTopp(sti, gjort, av) {
+function reiseTopp(sti, gjort, av, overtekst = 'Ferdighetssti', tilbake = tilbakeFraReise) {
   const pct = av ? Math.round((gjort / av) * 100) : 0;
   return el('header', { class: 'reise-topp' },
     el('div', { class: 'reise-topp__kort', id: 'reise-topp-kort' },
       el('div', { class: 'reise-topp__glans' }),
       el('div', { class: 'reise-topp__rad' },
-        el('button', { class: 'reise-topp__tilbake', type: 'button', title: 'Tilbake', onclick: tilbakeFraReise }, '‹'),
+        el('button', { class: 'reise-topp__tilbake', type: 'button', title: 'Tilbake', onclick: tilbake }, '‹'),
         el('div', { class: 'reise-topp__ikon' }, ikon(sti.ikon || 'vekt')),
         el('div', { class: 'reise-topp__tekst' },
-          el('span', { class: 'reise-topp__over' }, 'Ferdighetssti'),
+          el('span', { class: 'reise-topp__over' }, overtekst),
           el('h1', { class: 'reise-topp__tittel' }, sti.tittel),
         ),
         el('span', { class: 'reise-topp__tall' }, `${gjort}/${av}`),
@@ -712,7 +888,7 @@ function startLeksjon(sti, ledd) {
           : []),
       ),
     );
-    bunn.append(primaer('Fortsett', () => { lukk(); if (_mount) visStiSkjerm(_mount); }));
+    bunn.append(primaer('Fortsett', () => { lukk(); reTegnReise(); }));
     try { overlay.append(lagKonfetti()); } catch { /* valgfri feiring */ }
   }
 }
@@ -802,7 +978,7 @@ function startBossKamp(sti, boss, startNiva) {
   function lukk() {
     overlay.classList.add('leksjon--lukker');
     setTimeout(() => overlay.remove(), 200);
-    if (_mount) visStiSkjerm(_mount);
+    reTegnReise();
   }
 
   function settPips(n, nySiste = false) {

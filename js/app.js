@@ -19,7 +19,7 @@ import { lastOvelsesinfo, settBib as settBibOvelse, visOvelseSkjerm, ovelseInfo 
 import { alleØvelser, tonnasje, muskelVolum, lagLinjegraf } from './styrke.js';
 import { lastArtikler, visLaerSkjerm, visArtikkelSkjerm } from './laer.js';
 import { visLoggInnSkjerm, visRegistrerSkjerm, settEtterInnlogget } from './medlem.js';
-import { lastStier, lastKjeder, settBib as settBibSti, visStiSkjerm } from './sti.js';
+import { lastStier, lastKjeder, lastDisipliner, lastSeksjoner, settBib as settBibSti, visStiSkjerm, visDisiplinSkjerm, visSeksjonSkjerm } from './sti.js';
 import { visMerkerSkjerm } from './merker.js';
 import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
 import { lagFaneside, fanesideMedTittel, settNavger, settUlestSjekk, dagsfase } from './banner.js';
@@ -62,6 +62,8 @@ const ruter = {
   laer: () => visLaerSkjerm(app),
   artikkel: () => visArtikkelSkjerm(app),
   sti: () => visStiSkjerm(app),
+  disiplin: () => visDisiplinSkjerm(app),
+  seksjon: () => visSeksjonSkjerm(app),
   om: visOm,
   'logg-inn': () => visLoggInnSkjerm(app),
   'bli-medlem': () => visRegistrerSkjerm(app),
@@ -102,7 +104,7 @@ function oppdaterNav(rute) {
     bibliotek: 'merker', om: 'merker', varsler: 'merker',
     plan: 'merker', styrke: 'merker', kalender: 'merker', reise: 'merker', tilpass: 'merker',
     historikk: 'aktivitet', ny: 'beveg', okter: 'beveg',
-    artikkel: 'laer', sti: 'laer',
+    artikkel: 'laer', sti: 'laer', disiplin: 'laer', seksjon: 'laer',
   })[rute] || rute;
   document.querySelectorAll('.tabbar__knapp').forEach((b) => {
     b.classList.toggle('tabbar__knapp--aktiv', b.dataset.rute === tabRute);
@@ -921,7 +923,7 @@ function skjulSplash() {
 // --- Oppstart ---
 async function start() {
   try {
-    [bib] = await Promise.all([lastBibliotek(), lastOkter(), lastOvelsesinfo(), lastArtikler(), lastStier(), lastKjeder()]);
+    [bib] = await Promise.all([lastBibliotek(), lastOkter(), lastOvelsesinfo(), lastArtikler(), lastStier(), lastKjeder(), lastDisipliner(), lastSeksjoner()]);
   } catch (e) {
     skjulSplash();
     tom(app);

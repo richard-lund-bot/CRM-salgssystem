@@ -3,7 +3,7 @@
 // filtreres på. Innholdet bor i data/artikler.json (bilder i bilder/artikler).
 import { el, tom, ikon } from './ui.js';
 import { fanesideMedTittel } from './banner.js';
-import { stiInngang } from './sti.js';
+import { disiplinRad } from './sti.js';
 
 let _artikler = null;
 const LS_FAV = 'trening.artikkelfav';
@@ -104,7 +104,7 @@ export function visLaerSkjerm(mount) {
   chipFav.addEventListener('click', () => settFilter('fav'));
 
   const side = fanesideMedTittel(mount, { tittel: 'Lær', under: 'Et lite kompendium — les når det passer.' });
-  const inngang = stiInngang();
+  const inngang = disiplinRad();
   if (inngang) side.append(inngang);
   side.append(el('div', { class: 'artfilter' }, chipAlle, chipFav), liste);
   settFilter('alle');
