@@ -5,18 +5,119 @@
     "undertittel": "Fra vegg-push til ettarms — steg for steg.",
     "ikon": "vekt",
     "kjede": "push-h",
+    "bevegelse": "bodyweight",
     "intro": "Push-up er grunnøvelsen for overkroppen — bryst, skuldre, triceps og en stødig kjerne, helt uten utstyr. Denne stien tar deg fra den aller enkleste varianten og bygger styrke trinn for trinn. Gå videre når et trinn kjennes rent og kontrollert — det haster ikke.",
     "trinn": {
-      "vegg-pushup": "Presset stående mot en vegg. Trygt og lett på leddene — perfekt for å lære retning og spenning i kroppen.",
-      "skra-pushup-sofa-benk": "Hendene på en sofa eller benk. Jo høyere flate, jo lettere — senk høyden etter hvert som du blir sterkere.",
-      "kne-pushup": "På knærne i stedet for tærne. Halverer belastningen, men lærer deg den rette veien ned mot gulvet.",
-      "push-up": "Standarden: rett kropp fra hode til hæl, albuene litt inn, ned til brystet nesten tar gulvet.",
-      "diamant-smal-push-up": "Hendene tett sammen under brystet. Flytter mer av jobben til triceps og indre bryst.",
-      "dekline-push-up": "Føttene hevet på en forhøyning. Vinkelen legger mer vekt på øvre bryst og skuldre.",
-      "ring-push-up": "Push-up i ringer eller slynger. Det ustabile taket tvinger fram kontroll i hele skuldergjorden.",
-      "archer-push-up": "Vekten forskyves mot én arm mens den andre strekkes ut til siden. Et stort steg mot ettarms.",
-      "pseudo-planche-push-up": "Hendene ved hoftene og kroppen lent framover. Bygger den fremoverlente styrken som trengs videre.",
-      "ettarms-progresjon": "Målet: én arm, full kontroll. Bygges gradvis med bredere fotstilling og mindre støtte for hver økt."
+      "vegg-pushup": {
+        "blurb": "Presset stående mot en vegg. Trygt og lett på leddene — perfekt for å lære retning og spenning i kroppen.",
+        "dose": "10 reps",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "Hva er hovedpoenget med å presse mot en vegg?",
+          "valg": ["Det gjør øvelsen tyngre", "Det senker belastningen så du lærer teknikken trygt", "Det trener bena"],
+          "riktig": 1,
+          "forklaring": "Jo mer oppreist du står, jo lettere blir presset — perfekt for å lære bevegelsen."
+        }
+      },
+      "skra-pushup-sofa-benk": {
+        "blurb": "Hendene på en sofa eller benk. Jo høyere flate, jo lettere — senk høyden etter hvert som du blir sterkere.",
+        "dose": "8 reps",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "Hvordan gjør du en skrå pushup lettere?",
+          "valg": ["Legg hendene høyere opp", "Legg hendene lavere", "Løft føttene"],
+          "riktig": 0,
+          "forklaring": "Jo høyere flate hendene hviler på, jo mindre vekt bærer du."
+        }
+      },
+      "kne-pushup": {
+        "blurb": "På knærne i stedet for tærne. Halverer belastningen, men lærer deg den rette veien ned mot gulvet.",
+        "dose": "8 reps",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "Hva bør holde en rett linje i en kne-pushup?",
+          "valg": ["Fra knærne til hodet", "Fra hælene til hodet", "Bare korsryggen"],
+          "riktig": 0,
+          "forklaring": "Hold kroppen rett fra knærne til hodet — ikke la hoftene synke."
+        }
+      },
+      "push-up": {
+        "blurb": "Standarden: rett kropp fra hode til hæl, albuene litt inn, ned til brystet nesten tar gulvet.",
+        "dose": "5 reps",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "Hvor bør albuene peke i en push-up?",
+          "valg": ["Rett ut til sidene (90°)", "Litt inn mot kroppen (~45°)", "Rett bakover"],
+          "riktig": 1,
+          "forklaring": "Albuene litt inn mot kroppen skåner skuldrene og gir mer kraft."
+        }
+      },
+      "diamant-smal-push-up": {
+        "blurb": "Hendene tett sammen under brystet. Flytter mer av jobben til triceps og indre bryst.",
+        "dose": "5 reps",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "Hva trener en diamant/smal push-up ekstra?",
+          "valg": ["Ryggen", "Triceps og indre bryst", "Bena"],
+          "riktig": 1,
+          "forklaring": "Smal håndstilling flytter mer av jobben til triceps."
+        }
+      },
+      "dekline-push-up": {
+        "blurb": "Føttene hevet på en forhøyning. Vinkelen legger mer vekt på øvre bryst og skuldre.",
+        "dose": "5 reps",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "Hva gjør hevede føtter i en dekline push-up?",
+          "valg": ["Legger mer vekt på øvre bryst og skuldre", "Gjør den lettere", "Trener bena"],
+          "riktig": 0,
+          "forklaring": "Vinkelen flytter belastningen mot øvre bryst og skuldre."
+        }
+      },
+      "ring-push-up": {
+        "blurb": "Push-up i ringer eller slynger. Det ustabile taket tvinger fram kontroll i hele skuldergjorden.",
+        "dose": "5 reps",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "Hvorfor er push-up i ringer vanskeligere?",
+          "valg": ["Ringene er tyngre", "Det ustabile taket krever mer kontroll", "Du må hoppe"],
+          "riktig": 1,
+          "forklaring": "Ringene vingler, så skuldre og kjerne må jobbe hardt for å holde deg stø."
+        }
+      },
+      "archer-push-up": {
+        "blurb": "Vekten forskyves mot én arm mens den andre strekkes ut til siden. Et stort steg mot ettarms.",
+        "dose": "3 reps per side",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "Hva skjer med armene i en archer push-up?",
+          "valg": ["Begge presser likt", "Den ene bærer mest mens den andre strekkes ut", "Du bruker bare én arm"],
+          "riktig": 1,
+          "forklaring": "Vekten forskyves mot én arm — et steg på veien mot ettarms."
+        }
+      },
+      "pseudo-planche-push-up": {
+        "blurb": "Hendene ved hoftene og kroppen lent framover. Bygger den fremoverlente styrken som trengs videre.",
+        "dose": "5 reps",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "Hvor er hendene i en pseudo-planche push-up?",
+          "valg": ["Ved hoftene, kroppen lent framover", "Over hodet", "Bak ryggen"],
+          "riktig": 0,
+          "forklaring": "Hendene ved hoftene og kroppen lent framover bygger den fremoverlente styrken."
+        }
+      },
+      "ettarms-progresjon": {
+        "blurb": "Målet: én arm, full kontroll. Bygges gradvis med bredere fotstilling og mindre støtte for hver økt.",
+        "dose": "3 reps per side",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "Hvordan bygger du ettarms push-up trygt?",
+          "valg": ["Hopp rett på", "Gradvis: bredere fotstilling og mindre støtte", "Bare med vekter"],
+          "riktig": 1,
+          "forklaring": "Bygg gradvis med bredere føtter og mindre støtte for hver økt."
+        }
+      }
     }
   }
 ]

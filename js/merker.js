@@ -49,6 +49,7 @@ function byggKontekst(profil, logg, planer) {
 
   // Tellere per kilde.
   const kildeTeller = {};
+  const laerDatoListe = []; // dato for hvert fullførte ferdighetstrinn (kilde 'laer')
 
   for (const o of rader) {
     antallDato.set(antallDato.size + 1, o.dato);
@@ -83,6 +84,7 @@ function byggKontekst(profil, logg, planer) {
     }
 
     if (o.kilde) kildeTeller[o.kilde] = (kildeTeller[o.kilde] || 0) + 1;
+    if (o.kilde === 'laer') laerDatoListe.push(o.dato);
     if (o.kilde === 'strava') settForste('strava', o);
     if (o.kilde === 'bibliotek') {
       settForste('bibliotek', o);
@@ -160,6 +162,8 @@ function byggKontekst(profil, logg, planer) {
     prAntall: prOvelser.size,
     prDato: (n) => prDato.get(n) || null,
     bibliotekAntall: kildeTeller.bibliotek || 0,
+    laerAntall: kildeTeller.laer || 0,
+    laerDato: (n) => laerDatoListe[n - 1] || null,
     planGjort,
     niva: nivaFraTotalXp(profil?.globalXp || 0).niva,
   };
@@ -178,6 +182,7 @@ export const MERKE_KATEGORIER = [
   { id: 'milepaler', navn: 'Milepæler' },
   { id: 'streak', navn: 'Streak' },
   { id: 'rytme', navn: 'Ukerytme' },
+  { id: 'laering', navn: 'Ferdighetsstier' },
   { id: 'nytt', navn: 'Prøv noe nytt' },
   { id: 'tid', navn: 'Tid i bevegelse' },
   { id: 'niva', navn: 'Nivå' },
@@ -205,6 +210,11 @@ export const MERKER = {
     teller('uker-2', 'To gode uker', 'Ukemålet nådd 2 uker på rad', 'kalender', 'teal', 2, (c) => c.maksUker, (c) => c.ukerDato(2)),
     teller('uker-4', 'Månedsrytme', 'Ukemålet nådd 4 uker på rad', 'kalender', 'blaa', 4, (c) => c.maksUker, (c) => c.ukerDato(4)),
     teller('uker-8', 'Vanedyr', 'Ukemålet nådd 8 uker på rad', 'kalender', 'lilla', 8, (c) => c.maksUker, (c) => c.ukerDato(8)),
+  ],
+  laering: [
+    teller('laer-1', 'Første trinn', 'Fullført ditt første ferdighetstrinn', 'stjerne', 'lime', 1, (c) => c.laerAntall, (c) => c.laerDato(1)),
+    teller('laer-5', 'På vei', 'Fullført 5 ferdighetstrinn', 'graf', 'teal', 5, (c) => c.laerAntall, (c) => c.laerDato(5)),
+    teller('laer-10', 'Ferdighetsbygger', 'Fullført 10 ferdighetstrinn', 'hexstjerne', 'blaa', 10, (c) => c.laerAntall, (c) => c.laerDato(10)),
   ],
   nytt: [
     teller('nytt-2', 'Nysgjerrig', 'Prøvd 2 ulike bevegelsestyper', 'terning', 'lime', 2, (c) => c.typer, (c) => c.typerDato(2)),
