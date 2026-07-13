@@ -2,7 +2,7 @@
   {
     "id": "kroppsvekt",
     "navn": "Kroppsvekt",
-    "undertittel": "Callisthenics — bygg styrke fra bunnen, uten utstyr.",
+    "undertittel": "Hjemme, minimalt utstyr — bygg styrke fra bunnen.",
     "ikon": "vekt",
     "farge": "teal",
     "status": "aktiv",
@@ -10,11 +10,20 @@
     "kapsteiner": ["push-opp"]
   },
   {
+    "id": "frivekt",
+    "navn": "Frivekt",
+    "undertittel": "Gym — manualer, stang og kettlebells.",
+    "ikon": "vekt",
+    "farge": "koral",
+    "status": "kommer",
+    "seksjoner": []
+  },
+  {
     "id": "loping",
-    "navn": "Løping",
+    "navn": "Løp",
     "undertittel": "Fra gåtur til 5 km — steg for steg.",
     "ikon": "loper",
-    "farge": "koral",
+    "farge": "oransje",
     "status": "kommer",
     "seksjoner": []
   },

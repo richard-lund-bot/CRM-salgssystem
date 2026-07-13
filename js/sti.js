@@ -132,12 +132,13 @@ function bossStjerner(stiId) {
   return Math.min(BOSS_MAKS_STJERNER, maks);
 }
 
-/** Stjerner (0–3) tjent på et steg — maks over alle forsøk i loggen. Et steg
- *  med rep-/holde-mål gir 1–3 stjerner ut fra hvordan økta gikk (se leksjonen). */
-function stegStjerner(stiId, nodeId) {
+/** Stjerner (0–3) tjent på en enhets uteksaminering — maks over alle forsøk i
+ *  loggen. 3 stjerner = uteksaminert (traff alle rep-mål med margin). */
+function enhetStjerner(seksjonId, enhetId) {
   let maks = 0;
   for (const o of hentLogg()) {
-    if (o.kilde === 'laer' && o.sti === stiId && o.node === nodeId && typeof o.stjerner === 'number') {
+    if (o.kilde === 'laer' && o.sti === seksjonId && o.node === 'graduation'
+      && o.enhet === enhetId && typeof o.stjerner === 'number') {
       maks = Math.max(maks, o.stjerner);
     }
   }
@@ -378,7 +379,7 @@ export function visDisiplinSkjerm(mount) {
     el('main', { class: 'innhold' },
       ...seksjoner.map((s, i) => seksjonKort(s, i, d)),
       ...(d.kapsteiner || []).map((id) => kapsteinKort(id, d)).filter(Boolean),
-      el('p', { class: 'sti-fot dempet' }, seksjoner.length ? 'Flere seksjoner låses opp etter hvert.' : 'Innhold i denne disiplinen er på vei.'),
+      el('p', { class: 'sti-fot dempet' }, seksjoner.length ? 'Velg en variant — flere kommer etter hvert.' : 'Innhold i denne disiplinen er på vei.'),
     ),
   );
 }
@@ -410,21 +411,23 @@ function kapsteinKort(stiId, d) {
 }
 
 function seksjonKort(s, i, d) {
-  const antall = (s.enheter || []).reduce((n, u) => n + u.steg.length, 0);
-  const mestret = mestredeNoder(s.id).size;
+  const enheter = s.enheter || [];
+  const gradert = enheter.filter((e) => enhetStjerner(s.id, e.id) >= BOSS_MAKS_STJERNER).length;
+  const startet = gradert > 0 || mestredeNoder(s.id).size > 0;
+  const ferdig = gradert >= enheter.length && enheter.length;
   return el('a', { class: `seksjonkort seksjonkort--${s.farge || d.farge}`, href: `#/seksjon?id=${encodeURIComponent(s.id)}` },
     el('div', { class: 'seksjonkort__topp' },
-      el('div', { class: 'seksjonkort__snakk' }, mestret > 0 ? 'Fortsett!' : 'La oss starte!'),
-      pandaImg(mestret >= antall && antall ? 'cheer' : 'wave', 'seksjonkort__panda'),
+      el('div', { class: 'seksjonkort__snakk' }, startet ? 'Fortsett!' : 'La oss starte!'),
+      pandaImg(ferdig ? 'cheer' : 'wave', 'seksjonkort__panda'),
     ),
     el('div', { class: 'seksjonkort__bunn' },
       el('div', {},
-        el('span', { class: 'seksjonkort__merke' }, `Seksjon ${i + 1}`),
+        el('span', { class: 'seksjonkort__merke' }, 'Variant'),
         el('h2', { class: 'seksjonkort__tittel' }, s.navn),
         el('p', { class: 'seksjonkort__under' }, s.undertittel),
       ),
       el('div', { class: 'seksjonkort__framdrift' },
-        el('span', { class: 'seksjonkort__tall' }, mestret > 0 ? `${mestret}/${antall}` : `${(s.enheter || []).length} enheter`),
+        el('span', { class: 'seksjonkort__tall' }, startet ? `${gradert}/${enheter.length}` : `${enheter.length} enheter`),
         el('span', { class: 'seksjonkort__pil' }, ikon('chevron')),
       ),
     ),
@@ -442,78 +445,126 @@ export function visSeksjonSkjerm(mount) {
   const enheter = seksjon.enheter || [];
   const alleSteg = enheter.flatMap((u) => u.steg);
 
-  // Syntetisk «sti» så hele leksjons-/popover-motoren gjenbrukes uendret.
+  // Syntetisk «sti» så hele teknikk-leksjons-/popover-motoren gjenbrukes uendret.
   const syntSti = {
     id: seksjon.id, tittel: seksjon.navn, bevegelse: 'bodyweight',
     ikon: disiplin?.ikon || 'vekt',
     trinn: Object.fromEntries(alleSteg.map((st) => [st.ovelse, st])),
   };
-  const mestret = mestredeNoder(seksjon.id);
-  const antallMestret = alleSteg.filter((st) => mestret.has(st.ovelse)).length;
-  const ferdig = antallMestret >= alleSteg.length && alleSteg.length;
+  const mestret = mestredeNoder(seksjon.id); // teknikk lært pr. øvelse
+  // Uteksaminerings-stjerner + gradert (3★) pr. enhet — driver opprykk.
+  const gradInfo = enheter.map((enhet) => {
+    const stjerner = enhetStjerner(seksjon.id, enhet.id);
+    return { stjerner, gradert: stjerner >= BOSS_MAKS_STJERNER };
+  });
+  const antallGradert = gradInfo.filter((g) => g.gradert).length;
+  const ferdig = antallGradert >= enheter.length && enheter.length;
 
   const reise = el('div', { class: 'reise' },
     el('div', { class: 'reise-guide' },
       pandaAnim('idle', 'wave', 'reise-guide__panda', 'idle'),
       el('span', { class: 'reise-guide__snakk' }, ferdig
-        ? 'Hele seksjonen er mestret — sterkt jobba! 🐼'
-        : 'Én klasse om gangen: push, bein, drag og kjerne — balansert.'),
+        ? 'Hele seksjonen er uteksaminert — sterkt jobba! 🐼'
+        : 'Lær teknikken på hver øvelse, så uteksaminer enheten med coach-pandaen.'),
     ),
   );
 
   let gjeldendeFunnet = false;
   let idx = 0;
+  let forrigeGradert = true; // enhet 1 er alltid tilgjengelig
   enheter.forEach((enhet, ei) => {
-    const enhetMestret = enhet.steg.filter((st) => mestret.has(st.ovelse)).length;
-    const enhetFerdig = enhetMestret >= enhet.steg.length;
-    reise.append(el('div', { class: 'enhet-header' + (enhetFerdig ? ' enhet-header--ferdig' : '') },
+    const { stjerner, gradert } = gradInfo[ei];
+    const enhetTilgj = forrigeGradert; // låst opp når forrige enhet er uteksaminert
+    const alleTekniskLaert = enhet.steg.every((st) => mestret.has(st.ovelse));
+
+    reise.append(el('div', { class: 'enhet-header' + (gradert ? ' enhet-header--ferdig' : '') + (enhetTilgj ? '' : ' enhet-header--laast') },
       el('span', { class: 'enhet-header__merke' }, `Enhet ${ei + 1}`),
       el('div', { class: 'enhet-header__midt' },
         el('h2', { class: 'enhet-header__navn' }, enhet.navn),
         el('p', { class: 'enhet-header__intro' }, enhet.intro),
       ),
-      el('span', { class: 'enhet-header__tall' }, `${enhetMestret}/${enhet.steg.length}`),
+      stjerneRad(stjerner, 'enhet-header__stjerner'),
     ));
-    enhet.steg.forEach((st) => {
-      const erMestret = mestret.has(st.ovelse);
-      const forrigeMestret = idx === 0 || mestret.has(alleSteg[idx - 1].ovelse);
+
+    enhet.steg.forEach((st, si) => {
+      const laert = mestret.has(st.ovelse);
       let tilstand;
-      if (erMestret) tilstand = 'mestret';
-      else if (forrigeMestret && !gjeldendeFunnet) { tilstand = 'gjeldende'; gjeldendeFunnet = true; }
-      else tilstand = 'laast';
+      if (!enhetTilgj) tilstand = 'laast';
+      else if (laert) tilstand = 'mestret';
+      else {
+        const forrigeLaert = si === 0 || mestret.has(enhet.steg[si - 1].ovelse);
+        if (forrigeLaert && !gjeldendeFunnet) { tilstand = 'gjeldende'; gjeldendeFunnet = true; }
+        else tilstand = 'laast';
+      }
       reise.append(reiseNode(syntSti, { l: st, i: idx, tilstand }));
       idx += 1;
     });
+
+    // Uteksaminerings-node (coach-panda) til slutt i enheten.
+    let gradTilstand;
+    if (gradert) gradTilstand = 'mestret';
+    else if (enhetTilgj && alleTekniskLaert && !gjeldendeFunnet) { gradTilstand = 'gjeldende'; gjeldendeFunnet = true; }
+    else gradTilstand = 'laast';
+    reise.append(reiseGradNode(seksjon, enhet, gradTilstand, stjerner, idx));
+    idx += 1;
+    forrigeGradert = gradert;
   });
 
   tom(mount);
   mount.append(
-    reiseTopp(syntSti, antallMestret, alleSteg.length, `${disiplin?.navn || 'Kroppsvekt'} · Seksjon`,
+    reiseTopp(syntSti, antallGradert, enheter.length, disiplin?.navn || 'Kroppsvekt',
       () => { location.hash = `#/disiplin?id=${encodeURIComponent(seksjon.disiplin)}`; }),
     el('main', { class: 'innhold innhold--ovelse innhold--reise' },
       reise,
       ferdig
         ? el('p', { class: 'sti-fot sti-fot--ferdig' }, ikon('trofe', 'ikon'), ' Seksjonen er fullført — sterkt jobba!')
-        : el('p', { class: 'sti-fot dempet' }, 'Mestre et steg for å låse opp det neste.'),
+        : el('p', { class: 'sti-fot dempet' }, 'Lær teknikken, så uteksaminer enheten for å låse opp neste.'),
     ),
   );
 
-  // Feiring: første gang en enhet eller hele seksjonen blir mestret. Seksjons-
-  // feiringen vinner (vises alene) når begge skjer samtidig; enhets-flaggene
-  // settes uansett så de ikke trigges senere.
+  // Feiring: første gang en enhet er uteksaminert (3★) eller hele seksjonen er
+  // ferdig. Seksjons-feiringen vinner (vises alene) når begge skjer samtidig;
+  // enhets-flaggene settes uansett så de ikke trigges senere.
   let feiret = false;
   if (ferdig && !harFeiret(seksjonNokkel(seksjon.id))) {
     settFeiret(seksjonNokkel(seksjon.id));
     feirSeksjon(seksjon.navn);
     feiret = true;
   }
-  enheter.forEach((enhet) => {
-    const komplett = enhet.steg.every((st) => mestret.has(st.ovelse));
-    if (komplett && !harFeiret(enhetNokkel(seksjon.id, enhet.id))) {
+  enheter.forEach((enhet, ei) => {
+    if (gradInfo[ei].gradert && !harFeiret(enhetNokkel(seksjon.id, enhet.id))) {
       settFeiret(enhetNokkel(seksjon.id, enhet.id));
       if (!feiret) { feirEnhet(enhet.navn); feiret = true; }
     }
   });
+}
+
+// Uteksaminerings-node på reisen: coach-pandaen som «enhets-boss». Låst til alle
+// teknikk-steg i enheten er lært; deretter utfordrbar; 3★ = uteksaminert.
+function reiseGradNode(seksjon, enhet, tilstand, stjerner, i) {
+  const laast = tilstand === 'laast';
+  const gradert = tilstand === 'mestret';
+  const scene = el('button', {
+    class: `reise-grad reise-grad--${tilstand}`, type: 'button',
+    'aria-label': `${enhet.navn} — uteksaminering, ${stjerner} av ${BOSS_MAKS_STJERNER} stjerner`,
+  },
+    el('div', { class: 'reise-grad__glow' }),
+    laast ? el('span', { class: 'reise-grad__laas' }, ikon('las', 'ikon'))
+      : gradert ? pandaImg('cheer', 'reise-grad__panda')
+        : pandaAnim('pushup-up', 'pushup-down', 'reise-grad__panda', 'pushup'),
+    el('span', { class: 'reise-grad__merke' }, gradert ? 'Uteksaminert' : 'Uteksaminering'),
+    stjerneRad(stjerner, 'reise-grad__stjerner'),
+  );
+  const wrap = el('div', { class: 'reise-node reise-grad-wrap' });
+  wrap.style.setProperty('--reise-forsinkelse', `${i * 55}ms`);
+  scene.addEventListener('click', (ev) => {
+    ev.stopPropagation();
+    lukkPopover();
+    if (laast) { vibrer('feil'); return; }
+    startUteksaminering(seksjon, enhet);
+  });
+  wrap.append(scene);
+  return wrap;
 }
 
 // --- Sti-skjerm (#/sti?id=) ----------------------------------------------
@@ -727,12 +778,7 @@ function reiseNode(sti, { l, i, tilstand }) {
       : ikon('stjerne', 'ikon');
 
   const knapp = el('button', { class: `reise-node__knapp ${niva.klasse}`, type: 'button', 'aria-label': navn, title: navn }, innhold);
-  // Steg med rep-/holde-mål viser 1–3 tjente stjerner under en mestret node.
-  const visStjerner = tilstand === 'mestret' && l.maal;
-  const stjRad = visStjerner
-    ? stjerneRad(stegStjerner(sti.id, l.ovelse), 'reise-node__stjerner')
-    : null;
-  const wrap = el('div', { class: `reise-node reise-node--${tilstand}`, style: `transform:translateX(${dx}px)` }, knapp, stjRad);
+  const wrap = el('div', { class: `reise-node reise-node--${tilstand}`, style: `transform:translateX(${dx}px)` }, knapp);
   wrap.style.setProperty('--reise-forsinkelse', `${i * 55}ms`);
   wrap.style.setProperty('--dx', `${dx}px`);
   knapp.addEventListener('click', (ev) => {
@@ -841,7 +887,6 @@ function startLeksjon(sti, ledd) {
   if (data.sjekk) steg.push('sjekk');
   steg.push('praksis');
   let idx = 0;
-  let aktivTimer = null; // holde-timer rydder seg selv når leksjonen lukkes
 
   const lukkX = el('button', { class: 'leksjon__lukk', type: 'button', 'aria-label': 'Avslutt', onclick: lukk }, ikon('kryss'));
   const framdrift = el('div', { class: 'leksjon__framdrift' });
@@ -856,7 +901,6 @@ function startLeksjon(sti, ledd) {
   tegn();
 
   function lukk() {
-    clearInterval(aktivTimer); aktivTimer = null;
     overlay.classList.add('leksjon--lukker');
     setTimeout(() => overlay.remove(), 200);
   }
@@ -949,154 +993,21 @@ function startLeksjon(sti, ledd) {
     bunn.append(knapp);
   }
 
-  // Praksis: har steget et rep-/holde-mål, kjøres en guidet økt (teller/timer)
-  // som gir 1–3 stjerner. Ellers faller vi tilbake til enkel «jeg gjorde det».
+  // Praksis: en lett teknikk-øvelse uten stjernepress — kjenn bevegelsen, så
+  // «jeg gjorde det». Reps, stjerner og opprykk hører hjemme i uteksamineringen.
   function tegnPraksis() {
-    if (data.maal && (data.maal.type === 'reps' || data.maal.type === 'hold')) { tegnOktIntro(); return; }
     kropp.append(
       el('span', { class: 'leksjon__merke' }, 'Din tur'),
-      el('h2', { class: 'leksjon__sporsmal' }, 'Gjør ' + (data.dose || 'noen rolige reps')),
+      el('h2', { class: 'leksjon__sporsmal' }, 'Prøv ' + (data.dose || 'noen rolige reps')),
       heroBilde(),
-      el('p', { class: 'leksjon__blurb' }, 'Ta det i ditt tempo og med god teknikk. Klarer du ikke alle, teller det du gjør.'),
+      el('p', { class: 'leksjon__blurb' }, 'Rolig og kontrollert — bare kjenn på bevegelsen. Nå lærer vi teknikken; styrken tester vi i uteksamineringen.'),
       el('button', { class: 'leksjon-lenke', type: 'button', onclick: () => visOvelseArk(navn) }, 'Vis hvordan igjen'),
     );
-    bunn.append(primaer('Jeg gjorde det ✓', () => fullfor(null)));
+    bunn.append(primaer('Jeg gjorde det ✓', fullfor));
   }
 
-  // Intro til den guidete økta: hva målet er + «start».
-  function tegnOktIntro() {
-    const hold = data.maal.type === 'hold';
-    const m = data.maal.verdi;
-    tom(kropp); tom(bunn);
-    kropp.append(
-      el('span', { class: 'leksjon__merke' }, 'Din tur'),
-      el('h2', { class: 'leksjon__sporsmal' }, hold ? `Hold i ${m} sekunder` : `Gjør ${m} reps`),
-      heroBilde(),
-      el('p', { class: 'leksjon__blurb' }, hold
-        ? 'Start klokka og hold stillingen med god spenning. Trykk stopp når du slipper — hvert sekund teller.'
-        : 'Tell med for hver rep i ditt eget tempo og med god teknikk. Klarer du ikke alle, teller det du gjør.'),
-      el('button', { class: 'leksjon-lenke', type: 'button', onclick: () => visOvelseArk(navn) }, 'Vis hvordan igjen'),
-    );
-    bunn.append(primaer('Start økta', () => (hold ? tegnOktHold() : tegnOktReps())));
-  }
-
-  // Rep-teller: pandaen teller med, ett dukk pr. rep (som i boss-kampen).
-  function tegnOktReps() {
-    settFramdrift(steg.length - 1);
-    const maal = data.maal.verdi;
-    let reps = 0, avgjort = false, dukkTimer = null;
-    const panda = pandaAnim('pushup-up', 'pushup-down', 'kamp__panda', 'kamp');
-    const tall = el('span', { class: 'kamp__tall' }, '0');
-    const tellKnapp = el('button', { class: 'kamp__push', type: 'button' }, '+1 REP');
-
-    function ferdig() {
-      if (avgjort) return;
-      avgjort = true; clearTimeout(dukkTimer);
-      tegnFolelse(reps, maal);
-    }
-    function tell() {
-      if (avgjort) return;
-      reps += 1;
-      tall.textContent = String(reps);
-      vibrer('lett');
-      panda.classList.add('panda-anim--ned');
-      clearTimeout(dukkTimer);
-      dukkTimer = setTimeout(() => panda.classList.remove('panda-anim--ned'), 200);
-      tellKnapp.classList.remove('kamp__push--puls'); void tellKnapp.offsetWidth; tellKnapp.classList.add('kamp__push--puls');
-      if (reps >= maal) { vibrer('riktig'); avgjort = true; clearTimeout(dukkTimer); setTimeout(() => tegnFolelse(reps, maal), 380); }
-    }
-    tellKnapp.addEventListener('click', tell);
-
-    tom(kropp); tom(bunn);
-    kropp.append(
-      el('span', { class: 'kamp__merke' }, 'Din tur'),
-      el('h1', { class: 'kamp__navn' }, navn),
-      panda,
-      el('div', { class: 'kamp__teller' }, tall, el('span', { class: 'kamp__maal' }, `/ ${maal}`)),
-      el('p', { class: 'kamp__hint dempet' }, 'Pandaen teller med deg. Trykk for hver rep.'),
-    );
-    bunn.append(tellKnapp, el('button', { class: 'kamp__ferdig-lenke', type: 'button', onclick: ferdig }, 'Ferdig'));
-  }
-
-  // Holde-timer: klokka teller opp mot målet, panda holder spenn.
-  function tegnOktHold() {
-    settFramdrift(steg.length - 1);
-    const maal = data.maal.verdi;
-    let sek = 0, kjorer = false, avgjort = false;
-    const tall = el('span', { class: 'kamp__tall' }, '0');
-    const maalEl = el('span', { class: 'kamp__maal' }, `sek / ${maal}`);
-    const teller = el('div', { class: 'kamp__teller' }, tall, maalEl);
-    const knapp = el('button', { class: 'kamp__push', type: 'button' }, 'START');
-
-    function stopp() {
-      if (avgjort) return;
-      avgjort = true; kjorer = false;
-      clearInterval(aktivTimer); aktivTimer = null;
-      tegnFolelse(sek, maal);
-    }
-    function tikk() {
-      sek += 1;
-      tall.textContent = String(sek);
-      if (sek >= maal) { teller.classList.add('kamp__teller--naadd'); vibrer('lett'); }
-    }
-    function veksle() {
-      if (avgjort) return;
-      if (!kjorer) {
-        kjorer = true; knapp.textContent = 'STOPP'; vibrer('lett');
-        clearInterval(aktivTimer);
-        aktivTimer = setInterval(tikk, 1000);
-      } else { stopp(); }
-    }
-    knapp.addEventListener('click', veksle);
-
-    tom(kropp); tom(bunn);
-    kropp.append(
-      el('span', { class: 'kamp__merke' }, 'Din tur'),
-      el('h1', { class: 'kamp__navn' }, navn),
-      pandaImg('flex', 'kamp__panda'),
-      teller,
-      el('p', { class: 'kamp__hint dempet' }, 'Start klokka og hold stillingen. Trykk stopp når du slipper.'),
-    );
-    bunn.append(knapp);
-  }
-
-  // Ærlig kvalitets-signal: traff du målet, og hvor mye hadde du igjen?
-  //   traff + god margin → 3 stjerner · traff (så vidt/maks) → 2 · nådde ikke → 1.
-  function tegnFolelse(faktisk, maal) {
-    const hold = data.maal.type === 'hold';
-    const traff = faktisk >= maal;
-    tom(kropp); tom(bunn);
-    const valg = [
-      { t: hold ? 'Kunne holdt lengre' : 'Hadde flere igjen', s: 'lett' },
-      { t: hold ? 'Ristet mot slutten' : 'Så vidt siste rep', s: 'grense' },
-      { t: hold ? 'Klarte ikke helt' : 'Klarte ikke alle', s: 'tungt' },
-    ];
-    const knapper = valg.map((v) => {
-      const b = el('button', { class: 'leksjon-valg', type: 'button' }, v.t);
-      b.addEventListener('click', () => {
-        knapper.forEach((k) => { k.disabled = true; });
-        const stjerner = !traff ? 1 : (v.s === 'lett' ? 3 : 2);
-        fullfor(stjerner, { faktisk, maal });
-      });
-      return b;
-    });
-    kropp.append(
-      el('span', { class: 'kamp__merke' }, 'Hvordan gikk det?'),
-      el('h2', { class: 'leksjon__sporsmal' }, traff
-        ? (hold ? `Sterkt — du holdt i ${faktisk} sekunder!` : `Sterkt — du klarte ${faktisk} reps!`)
-        : (hold ? `Du holdt i ${faktisk} sekunder — hvert forsøk teller.` : `Du gjorde ${faktisk} reps — hvert forsøk teller.`)),
-      el('p', { class: 'leksjon__blurb' }, 'Vær ærlig — det styrer hvor fort vi øker vekta.'),
-      el('div', { class: 'leksjon-valg-liste' }, ...knapper),
-    );
-  }
-
-  function fullfor(stjerner = null, detalj = null) {
+  function fullfor() {
     vibrer('medium');
-    const ekstra = { sti: sti.id, node: ledd.ovelse };
-    if (stjerner != null) {
-      ekstra.stjerner = stjerner;
-      if (detalj) { ekstra.faktisk = detalj.faktisk; ekstra.maal = detalj.maal; }
-    }
     let res = { xp: 0, nyeMerker: [] };
     try {
       res = registrerOgLogg({
@@ -1105,37 +1016,243 @@ function startLeksjon(sti, ledd) {
         intensitet: 3,
         tittel: `${sti.tittel}: ${navn}`,
         kilde: 'laer',
-        ekstra,
+        ekstra: { sti: sti.id, node: ledd.ovelse },
       });
     } catch (err) { console.warn('Kunne ikke logge leksjon', err); }
-    tegnFeiring(res, stjerner);
+    tegnFeiring(res);
   }
 
-  function tegnFeiring(res, stjerner = null) {
+  function tegnFeiring(res) {
     settFramdrift(steg.length - 1);
     vibrer('feiring');
     tom(kropp); tom(bunn);
     lukkX.style.visibility = 'hidden';
-    const tittel = stjerner == null ? 'Trinn mestret!'
-      : stjerner >= 3 ? 'Mestret — helt rent!'
-        : stjerner === 2 ? 'Godt jobba!' : 'Bra innsats!';
     kropp.append(
       el('div', { class: 'leksjon-feiring' },
-        stjerner != null
-          ? stjerneRad(stjerner, 'leksjon-feiring__stjerner')
-          : el('div', { class: 'leksjon-feiring__ikon' }, ikon('sjekk', 'ikon')),
-        el('h1', { class: 'leksjon-feiring__tittel' }, tittel),
+        el('div', { class: 'leksjon-feiring__ikon' }, ikon('sjekk', 'ikon')),
+        el('h1', { class: 'leksjon-feiring__tittel' }, 'Teknikk lært!'),
         el('p', { class: 'leksjon-feiring__under' }, navn),
         el('div', { class: 'leksjon-feiring__xp' }, ikon('lyn', 'ikon'), ` +${res.xp || 0} XP`),
-        stjerner != null && stjerner < 3
-          ? el('p', { class: 'leksjon-feiring__hint dempet' }, 'Øv igjen for å ta alle tre stjernene.')
-          : null,
         ...((res.nyeMerker || []).length
           ? [el('div', { class: 'leksjon-feiring__merke' }, ikon('medalje', 'ikon'), ' Nytt merke: ' + res.nyeMerker.map((m) => m.navn).join(', '))]
           : []),
       ),
     );
     bunn.append(primaer('Fortsett', () => { lukk(); reTegnReise(); }));
+    try { overlay.append(lagKonfetti()); } catch { /* valgfri feiring */ }
+  }
+}
+
+// ===========================================================================
+// Uteksaminering: coach-pandaen kjører deg gjennom enhetens øvelser som en
+// ekte økt (oppvarming → sett × reps m/ pause → nedtrapping). Reps + følelse
+// gir 1–3 stjerner; 3 = uteksaminert (traff alle rep-mål med margin) → opprykk.
+// ===========================================================================
+function startUteksaminering(seksjon, enhet) {
+  const u = enhet.uteksaminering;
+  if (!u || !(u.ovelser || []).length) return;
+  vibrer('medium');
+  const ovNavn = (id) => _bib?.ovelse(id)?.navn || id;
+
+  // Flat stegliste: oppvarming → (sett, pause)… → nedtrapping → følelse.
+  const ovelser = u.ovelser;
+  const steg = [];
+  if (u.oppvarming) steg.push({ type: 'info', merke: 'Oppvarming', tittel: 'Oppvarming', tekst: u.oppvarming, cta: 'Jeg er varm' });
+  ovelser.forEach((o, oi) => {
+    const antall = o.sett || 1;
+    for (let s = 1; s <= antall; s++) {
+      steg.push({ type: o.holdSek ? 'hold' : 'reps', ovelse: o.ovelse, navn: ovNavn(o.ovelse),
+        settNr: s, settAv: antall, maal: o.holdSek || o.reps, hold: !!o.holdSek, perSide: !!o.perSide });
+      const sisteSett = oi === ovelser.length - 1 && s === antall;
+      if (!sisteSett) steg.push({ type: 'pause', sek: o.pauseSek || 60 });
+    }
+  });
+  if (u.nedtrapping) steg.push({ type: 'info', merke: 'Nedtrapping', tittel: 'Nedtrapping', tekst: u.nedtrapping, cta: 'Ferdig' });
+  steg.push({ type: 'feel' });
+
+  const settSteg = steg.filter((s) => s.type === 'reps' || s.type === 'hold');
+  const resultater = []; // { maal, faktisk } pr. fullført sett
+  let idx = 0;
+  let timer = null;
+
+  const lukkX = el('button', { class: 'leksjon__lukk', type: 'button', 'aria-label': 'Avslutt', onclick: lukk }, ikon('kryss'));
+  const framdrift = el('div', { class: 'leksjon__framdrift' });
+  const kropp = el('div', { class: 'kamp__kropp' });
+  const bunn = el('div', { class: 'leksjon__bunn' });
+  const overlay = el('div', { class: 'leksjon kamp uteks' },
+    el('div', { class: 'leksjon__topp' }, lukkX, el('span', { class: 'kamp__tittel' }, `${enhet.navn} · uteksaminering`), framdrift),
+    kropp, bunn,
+  );
+  document.body.append(overlay);
+  requestAnimationFrame(() => overlay.classList.add('leksjon--apen'));
+  tegnIntro();
+
+  function stopTimer() { clearInterval(timer); timer = null; }
+  function lukk() { stopTimer(); overlay.classList.add('leksjon--lukker'); setTimeout(() => overlay.remove(), 200); reTegnReise(); }
+
+  function settFramdrift() {
+    const gjort = resultater.length;
+    tom(framdrift);
+    settSteg.forEach((_, i) => framdrift.append(el('span', { class: 'leksjon__seg' + (i < gjort ? ' leksjon__seg--fyllt' : '') })));
+  }
+  function neste() { idx += 1; tegnSteg(); }
+
+  function tegnIntro() {
+    settFramdrift();
+    tom(kropp); tom(bunn);
+    kropp.append(
+      el('span', { class: 'kamp__merke' }, 'Uteksaminering'),
+      el('h1', { class: 'kamp__navn' }, enhet.navn),
+      pandaImg('flex', 'kamp__panda'),
+      el('p', { class: 'kamp__oppgave' }, 'Coach-pandaen tar deg gjennom hele økta. Treff alle rep-målene med litt igjen i tanken → tre stjerner → uteksaminert.'),
+      el('ul', { class: 'uteks__liste' }, ...ovelser.map((o) => el('li', { class: 'uteks__rad' },
+        el('span', { class: 'uteks__ov' }, ovNavn(o.ovelse)),
+        el('span', { class: 'uteks__dose' }, `${o.sett}×${o.holdSek ? o.holdSek + ' s' : o.reps}${o.perSide ? '/side' : ''}`)))),
+    );
+    bunn.append(leksjonPrimaer('Start økta', () => { idx = 0; tegnSteg(); }));
+  }
+
+  function tegnSteg() {
+    stopTimer();
+    if (idx >= steg.length) return;
+    const s = steg[idx];
+    settFramdrift();
+    tom(kropp); tom(bunn);
+    if (s.type === 'info') tegnInfo(s);
+    else if (s.type === 'pause') tegnPause(s);
+    else if (s.type === 'feel') tegnFeel();
+    else tegnSett(s);
+    kropp.scrollTop = 0;
+  }
+
+  function tegnInfo(s) {
+    kropp.append(
+      el('span', { class: 'kamp__merke' }, s.merke),
+      el('h1', { class: 'kamp__navn' }, s.tittel),
+      pandaImg('wave', 'kamp__panda'),
+      el('p', { class: 'kamp__oppgave' }, s.tekst),
+    );
+    bunn.append(leksjonPrimaer(s.cta || 'Videre', neste));
+  }
+
+  function tegnSett(s) {
+    const doseTekst = s.hold ? `Hold i ${s.maal} sek` : `${s.maal} reps${s.perSide ? ' per side' : ''}`;
+    let bekreftet = false;
+    const panda = s.hold ? pandaImg('flex', 'kamp__panda') : pandaAnim('pushup-up', 'pushup-down', 'kamp__panda', 'pushup');
+    kropp.append(
+      el('span', { class: 'kamp__merke' }, `${s.navn} · sett ${s.settNr} av ${s.settAv}`),
+      el('h1', { class: 'kamp__navn' }, doseTekst),
+      panda,
+      el('p', { class: 'kamp__hint dempet' }, s.hold ? 'Hold stillingen sammen med pandaen.' : 'Gjør settet i rolig, kontrollert tempo sammen med pandaen.'),
+    );
+    function fullforSett(faktisk) {
+      if (bekreftet) return; bekreftet = true;
+      vibrer('riktig');
+      resultater.push({ maal: s.maal, faktisk });
+      neste();
+    }
+    const ferdig = leksjonPrimaer(s.hold ? 'Fullført ✓' : 'Ferdig sett ✓', () => fullforSett(s.maal));
+    const mindre = el('button', { class: 'kamp__ferdig-lenke', type: 'button' }, s.hold ? 'Holdt ikke helt' : 'Klarte ikke alle');
+    mindre.addEventListener('click', () => {
+      tom(bunn);
+      let val = Math.max(0, s.maal - 1);
+      const visTall = el('span', { class: 'uteks__just-tall' }, String(val));
+      const minus = el('button', { class: 'uteks__just-knapp', type: 'button', 'aria-label': 'Færre' }, '−');
+      const pluss = el('button', { class: 'uteks__just-knapp', type: 'button', 'aria-label': 'Flere' }, '+');
+      minus.addEventListener('click', () => { val = Math.max(0, val - 1); visTall.textContent = String(val); });
+      pluss.addEventListener('click', () => { val = Math.min(s.maal, val + 1); visTall.textContent = String(val); });
+      bunn.append(
+        el('div', { class: 'uteks__just' }, minus,
+          el('div', { class: 'uteks__just-midt' }, visTall, el('span', { class: 'uteks__just-enhet' }, s.hold ? 'sek' : 'reps')), pluss),
+        leksjonPrimaer('Bekreft', () => fullforSett(val)),
+      );
+    });
+    bunn.append(ferdig, mindre);
+  }
+
+  function tegnPause(s) {
+    const nesteSteg = steg.slice(idx + 1).find((x) => x.type === 'reps' || x.type === 'hold');
+    const nesteTekst = nesteSteg ? `Neste: ${nesteSteg.navn} · sett ${nesteSteg.settNr}` : '';
+    const sluttTs = Date.now() + s.sek * 1000;
+    const tall = el('span', { class: 'uteks__pause-tall' }, String(s.sek));
+    kropp.append(
+      el('span', { class: 'kamp__merke' }, 'Pause'),
+      el('h1', { class: 'kamp__navn' }, 'Hvil'),
+      el('div', { class: 'uteks__pause' }, tall, el('span', { class: 'uteks__pause-enhet' }, 'sek')),
+      el('p', { class: 'kamp__hint dempet' }, nesteTekst),
+    );
+    bunn.append(el('button', { class: 'kamp__ferdig-lenke', type: 'button', onclick: () => { stopTimer(); neste(); } }, 'Hopp over pause'));
+    stopTimer();
+    timer = setInterval(() => {
+      const igjen = Math.max(0, Math.ceil((sluttTs - Date.now()) / 1000));
+      tall.textContent = String(igjen);
+      if (igjen <= 0) { stopTimer(); vibrer('lett'); neste(); }
+    }, 250);
+  }
+
+  function tegnFeel() {
+    const allHit = resultater.length > 0 && resultater.every((r) => r.faktisk >= r.maal);
+    tom(kropp); tom(bunn);
+    const valg = [
+      { t: 'Hadde flere reps igjen', s: 'kontroll' },
+      { t: 'Akkurat nok / så vidt', s: 'grense' },
+      { t: 'Gikk helt til failure', s: 'failure' },
+    ];
+    const knapper = valg.map((v) => {
+      const b = el('button', { class: 'leksjon-valg', type: 'button' }, v.t);
+      b.addEventListener('click', () => {
+        knapper.forEach((k) => { k.disabled = true; });
+        const stjerner = !allHit ? 1 : (v.s === 'kontroll' ? 3 : 2);
+        fullfor(stjerner);
+      });
+      return b;
+    });
+    kropp.append(
+      el('span', { class: 'kamp__merke' }, 'Siste spørsmål'),
+      el('h2', { class: 'leksjon__sporsmal' }, 'Hvor mye hadde du igjen på det tyngste settet?'),
+      el('p', { class: 'leksjon__blurb' }, 'Vær ærlig — 3 stjerner (uteksaminert) krever at du traff alle rep-målene med litt igjen i tanken.'),
+      el('div', { class: 'leksjon-valg-liste' }, ...knapper),
+    );
+  }
+
+  function fullfor(stjerner) {
+    vibrer('feiring');
+    const totalReps = resultater.reduce((n, r) => n + (r.faktisk || 0), 0);
+    let res = { xp: 0, nyeMerker: [] };
+    try {
+      res = registrerOgLogg({
+        bevegelse: 'bodyweight',
+        varighetMin: u.varighetMin || 15,
+        intensitet: u.intensitet || 3,
+        tittel: `${enhet.navn}: uteksaminering`,
+        kilde: 'laer',
+        ekstra: { sti: seksjon.id, node: 'graduation', enhet: enhet.id, stjerner, reps: totalReps },
+      });
+    } catch (err) { console.warn('Kunne ikke logge uteksaminering', err); }
+    tegnSummary(res, stjerner);
+  }
+
+  function tegnSummary(res, stjerner) {
+    const bestatt = stjerner >= BOSS_MAKS_STJERNER;
+    stopTimer();
+    lukkX.style.visibility = 'hidden';
+    tom(kropp); tom(bunn);
+    settFramdrift();
+    kropp.append(
+      el('div', { class: 'kamp__seier' },
+        pandaImg(bestatt ? 'cheer' : 'flex', 'kamp__seier-panda'),
+        stjerneRad(stjerner, 'kamp__seier-stjerner'),
+        el('h1', { class: 'kamp__seier-tittel' }, bestatt ? 'Uteksaminert!' : 'Bra økt!'),
+        el('p', { class: 'kamp__seier-under' }, bestatt
+          ? `${enhet.navn} er fullført — neste enhet er åpen! 🐼`
+          : 'Ikke helt uteksaminert ennå — traff du alle rep-målene med litt margin, får du tre stjerner. Ta økta igjen når du er klar.'),
+        el('div', { class: 'leksjon-feiring__xp' }, ikon('lyn', 'ikon'), ` +${res.xp || 0} XP`),
+        ...((res.nyeMerker || []).length
+          ? [el('div', { class: 'leksjon-feiring__merke' }, ikon('medalje', 'ikon'), ' Nytt merke: ' + res.nyeMerker.map((m) => m.navn).join(', '))]
+          : []),
+      ),
+    );
+    bunn.append(leksjonPrimaer('Fortsett', lukk));
     try { overlay.append(lagKonfetti()); } catch { /* valgfri feiring */ }
   }
 }

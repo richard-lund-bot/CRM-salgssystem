@@ -2539,3 +2539,46 @@ body.fokusmodus { padding-bottom: 0; }
 .enhet-header__navn { margin: 0; font-family: var(--font-display); font-size: 17px; font-weight: 700; }
 .enhet-header__intro { margin: 3px 0 0; font-size: 12.5px; line-height: 1.4; opacity: 0.9; }
 .enhet-header__tall { flex: 0 0 auto; font-family: var(--font-display); font-weight: 800; font-size: 14px; background: rgba(255,255,255,0.18); padding: 4px 10px; border-radius: 999px; margin-top: 2px; }
+.enhet-header--laast { background: linear-gradient(135deg, #7C8A8A, #59696A); opacity: 0.85; }
+.enhet-header__stjerner { flex: 0 0 auto; gap: 4px; margin-top: 3px; }
+.enhet-header__stjerner .stjernerad__stj .ikon { width: 16px; height: 16px; color: rgba(255,255,255,0.35); }
+.enhet-header__stjerner .stjernerad__stj--pa .ikon { color: #FFD34E; fill: #FFD34E; }
+
+/* Disiplin-kort: oransje variant (Løp). */
+.disiplinkort--oransje { background: linear-gradient(135deg, #E8913E, #C4661B); }
+
+/* Uteksaminerings-node på reisen (coach-panda «enhets-boss»). */
+.reise-grad-wrap { margin: 10px 0 2px; }
+.reise-grad { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; border: none; background: none; cursor: pointer; padding: 6px 10px; -webkit-tap-highlight-color: transparent; }
+.reise-grad__glow { position: absolute; top: 4px; left: 50%; width: 120px; height: 120px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle, rgba(245,181,1,0.28), transparent 68%); z-index: 0; }
+.reise-grad--laast .reise-grad__glow { display: none; }
+.reise-grad__panda { position: relative; z-index: 1; width: 128px; height: 118px; }
+.reise-grad--gjeldende .reise-grad__panda { animation: grad-hopp 1.8s ease-in-out infinite; }
+@keyframes grad-hopp { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.reise-grad__laas { position: relative; z-index: 1; width: 96px; height: 96px; display: grid; place-items: center; border-radius: 50%; background: var(--bg-kort-2); box-shadow: 0 5px 0 rgba(0,0,0,0.06), 0 6px 10px rgba(0,0,0,0.05); }
+.reise-grad__laas .ikon { width: 34px; height: 34px; color: var(--dempet); }
+.reise-grad__merke { position: relative; z-index: 1; font-size: 11px; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--aksent-mork); background: var(--aksent-svak); padding: 4px 12px; border-radius: 999px; }
+.reise-grad--laast .reise-grad__merke { color: var(--dempet); background: var(--bg-kort-2); }
+.reise-grad--mestret .reise-grad__merke { color: #8A5E10; background: #FFF3D6; }
+.reise-grad__stjerner { position: relative; z-index: 1; gap: 8px; }
+.reise-grad__stjerner .stjernerad__stj .ikon { width: 22px; height: 22px; color: var(--kant); filter: drop-shadow(0 1px 1px rgba(0,0,0,0.08)); }
+.reise-grad__stjerner .stjernerad__stj--pa .ikon { color: #F5B301; fill: #F5B301; }
+.reise-grad__stjerner .stjernerad__stj:nth-child(1) { transform: translateY(-4px); }
+.reise-grad__stjerner .stjernerad__stj:nth-child(2) { transform: translateY(3px); }
+.reise-grad__stjerner .stjernerad__stj:nth-child(3) { transform: translateY(-4px); }
+@media (prefers-reduced-motion: reduce) { .reise-grad--gjeldende .reise-grad__panda { animation: none; } }
+
+/* Uteksaminerings-økta (coach-panda-modul) — gjenbruker .kamp__* + disse. */
+.uteks__liste { list-style: none; margin: 14px auto 0; padding: 0; max-width: 320px; display: flex; flex-direction: column; gap: 8px; }
+.uteks__rad { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; background: var(--bg-kort); border: 1px solid var(--kant); border-radius: 12px; }
+.uteks__ov { font-weight: 600; font-size: 14.5px; color: var(--tekst); }
+.uteks__dose { font-family: var(--font-display); font-weight: 700; font-size: 13px; color: var(--aksent-mork); }
+.uteks__pause { display: flex; align-items: baseline; justify-content: center; gap: 6px; margin-top: 8px; font-family: var(--font-display); }
+.uteks__pause-tall { font-size: 64px; font-weight: 800; color: var(--teal-900); font-variant-numeric: tabular-nums; line-height: 1; }
+.uteks__pause-enhet { font-size: 20px; font-weight: 700; color: var(--dempet); }
+.uteks__just { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 12px; }
+.uteks__just-knapp { width: 48px; height: 48px; border-radius: 14px; border: 2px solid var(--kant); background: var(--bg-kort); font-size: 26px; font-weight: 700; color: var(--teal-900); cursor: pointer; line-height: 1; }
+.uteks__just-knapp:active { transform: translateY(2px); }
+.uteks__just-midt { display: flex; flex-direction: column; align-items: center; min-width: 84px; }
+.uteks__just-tall { font-family: var(--font-display); font-size: 40px; font-weight: 800; color: var(--teal-900); line-height: 1; font-variant-numeric: tabular-nums; }
+.uteks__just-enhet { font-size: 12px; font-weight: 600; color: var(--dempet); text-transform: uppercase; letter-spacing: 0.05em; }

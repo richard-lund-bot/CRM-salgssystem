@@ -55,10 +55,9 @@ function byggKontekst(profil, logg, planer) {
 
   // Tellere per kilde.
   const kildeTeller = {};
-  const laerDatoListe = []; // dato for hvert fullførte ferdighetstrinn (kilde 'laer', ikke boss)
-  const laerNodeForste = new Map(); // «sti::node» → dato første gang trinnet ble mestret
-  const perfekteSet = new Set();    // «sti::node» som har nådd 3 stjerner
-  const perfektDatoListe = [];      // datoer (kronologisk) hvert nye trinn ble feilfritt
+  const laerDatoListe = []; // dato for hvert lærte teknikk-steg (kilde 'laer', ikke boss/graduation)
+  const gradBesteStjerner = new Map();   // «sti::enhet» → høyeste uteksaminerings-stjerner
+  const gradTreStjernerDato = new Map(); // «sti::enhet» → dato første gang 3★ (uteksaminert)
   const bossStjernePerSti = new Map(); // stiId → høyeste vunne boss-nivå (stjerner)
   const bossSlaattDato = new Map();    // stiId → dato da 3. stjerne ble nådd
 
@@ -101,16 +100,13 @@ function byggKontekst(profil, logg, planer) {
         bossStjernePerSti.set(o.sti, stj);
         if (stj >= 3 && !bossSlaattDato.has(o.sti)) bossSlaattDato.set(o.sti, o.dato);
       }
+    } else if (o.kilde === 'laer' && o.node === 'graduation' && o.sti && o.enhet) {
+      const k = o.sti + '::' + o.enhet;
+      const stj = o.stjerner || 0;
+      if (stj > (gradBesteStjerner.get(k) || 0)) gradBesteStjerner.set(k, stj);
+      if (stj >= 3 && !gradTreStjernerDato.has(k)) gradTreStjernerDato.set(k, o.dato);
     } else if (o.kilde === 'laer') {
-      laerDatoListe.push(o.dato); // ekte ferdighetstrinn (ikke boss-runder)
-      if (o.node && o.sti) {
-        const k = o.sti + '::' + o.node;
-        if (!laerNodeForste.has(k)) laerNodeForste.set(k, o.dato);
-        if ((o.stjerner || 0) >= 3 && !perfekteSet.has(k)) {
-          perfekteSet.add(k);
-          perfektDatoListe.push(o.dato); // rader er sortert stigende → kronologisk
-        }
-      }
+      laerDatoListe.push(o.dato); // lært teknikk-steg (ikke boss/graduation)
     }
     if (o.kilde === 'strava') settForste('strava', o);
     if (o.kilde === 'bibliotek') {
@@ -170,23 +166,21 @@ function byggKontekst(profil, logg, planer) {
 
   const planGjort = (planer || []).filter((p) => p.status === 'gjort').length;
 
-  // Enhet-/seksjon-fullført: avledes av at alle steg-noder er mestret. Datoen er
-  // da den siste noden i enheten/seksjonen ble tatt. Krever injisert struktur.
+  // Enhet-/seksjon-fullført: avledes av uteksaminering (3★ pr. enhet). En enhet
+  // er fullført når den har en 3★-graduation-rad; en seksjon når alle enhetene
+  // er uteksaminert. Datoen er da 3★ først ble nådd. Krever injisert struktur.
+  const perfektDatoListe = [...gradTreStjernerDato.values()].sort(); // 3★-uteksamineringer, kronologisk
   const enhetDatoer = [];
   const seksjonDatoer = [];
   for (const seksjon of _seksjonsstruktur) {
-    const seksjonNoder = [];
-    let alleEnheterFerdig = true;
+    let alleGradert = true;
+    let sisteDato = null;
     for (const enhet of seksjon.enheter || []) {
-      const noder = (enhet.steg || []).map((s) => seksjon.id + '::' + s.ovelse);
-      seksjonNoder.push(...noder);
-      const datoer = noder.map((k) => laerNodeForste.get(k));
-      if (noder.length && datoer.every(Boolean)) enhetDatoer.push(datoer.reduce((m, x) => (x > m ? x : m)));
-      else alleEnheterFerdig = false;
+      const dato = gradTreStjernerDato.get(seksjon.id + '::' + enhet.id);
+      if (dato) { enhetDatoer.push(dato); if (!sisteDato || dato > sisteDato) sisteDato = dato; }
+      else alleGradert = false;
     }
-    if (alleEnheterFerdig && seksjonNoder.length) {
-      seksjonDatoer.push(seksjonNoder.map((k) => laerNodeForste.get(k)).reduce((m, x) => (x > m ? x : m)));
-    }
+    if (alleGradert && (seksjon.enheter || []).length) seksjonDatoer.push(sisteDato);
   }
   enhetDatoer.sort();
   seksjonDatoer.sort();
@@ -212,7 +206,7 @@ function byggKontekst(profil, logg, planer) {
     bibliotekAntall: kildeTeller.bibliotek || 0,
     laerAntall: laerDatoListe.length,
     laerDato: (n) => laerDatoListe[n - 1] || null,
-    perfekteSteg: perfekteSet.size,
+    perfekteSteg: perfektDatoListe.length,
     perfektDato: (n) => perfektDatoListe[n - 1] || null,
     enheterFullfort: enhetDatoer.length,
     enheterFullfortDato: (n) => enhetDatoer[n - 1] || null,
@@ -268,14 +262,14 @@ export const MERKER = {
     teller('uker-8', 'Vanedyr', 'Ukemålet nådd 8 uker på rad', 'kalender', 'lilla', 8, (c) => c.maksUker, (c) => c.ukerDato(8)),
   ],
   laering: [
-    teller('laer-1', 'Første trinn', 'Fullført ditt første ferdighetstrinn', 'stjerne', 'lime', 1, (c) => c.laerAntall, (c) => c.laerDato(1)),
-    teller('laer-5', 'På vei', 'Fullført 5 ferdighetstrinn', 'graf', 'teal', 5, (c) => c.laerAntall, (c) => c.laerDato(5)),
-    teller('laer-10', 'Ferdighetsbygger', 'Fullført 10 ferdighetstrinn', 'hexstjerne', 'blaa', 10, (c) => c.laerAntall, (c) => c.laerDato(10)),
-    teller('laer-perfekt', 'Feilfritt', 'Tok tre stjerner på et ferdighetstrinn', 'stjerne', 'gul', 1, (c) => c.perfekteSteg, (c) => c.perfektDato(1)),
-    teller('laer-perfekt-5', 'Perfeksjonist', 'Tre stjerner på 5 ferdighetstrinn', 'hexstjerne', 'oransje', 5, (c) => c.perfekteSteg, (c) => c.perfektDato(5)),
-    teller('enhet-1', 'Klassekamerat', 'Fullført din første enhet', 'medalje', 'koral', 1, (c) => c.enheterFullfort, (c) => c.enheterFullfortDato(1)),
-    teller('enhet-3', 'Klasseturnering', 'Fullført 3 enheter', 'kalender', 'blaa', 3, (c) => c.enheterFullfort, (c) => c.enheterFullfortDato(3)),
-    teller('seksjon-1', 'Seksjonsmester', 'Fullført en hel seksjon', 'trofe', 'lilla', 1, (c) => c.seksjonerFullfort, (c) => c.seksjonerFullfortDato(1)),
+    teller('laer-1', 'Første trinn', 'Lærte din første øvelses-teknikk', 'stjerne', 'lime', 1, (c) => c.laerAntall, (c) => c.laerDato(1)),
+    teller('laer-5', 'På vei', 'Lærte teknikken på 5 øvelser', 'graf', 'teal', 5, (c) => c.laerAntall, (c) => c.laerDato(5)),
+    teller('laer-10', 'Ferdighetsbygger', 'Lærte teknikken på 10 øvelser', 'hexstjerne', 'blaa', 10, (c) => c.laerAntall, (c) => c.laerDato(10)),
+    teller('laer-perfekt', 'Uteksaminert', 'Tok tre stjerner på en uteksaminering', 'stjerne', 'gul', 1, (c) => c.perfekteSteg, (c) => c.perfektDato(1)),
+    teller('laer-perfekt-5', 'Toppkarakter', 'Tre stjerner på 5 uteksamineringer', 'hexstjerne', 'oransje', 5, (c) => c.perfekteSteg, (c) => c.perfektDato(5)),
+    teller('enhet-1', 'Klassekamerat', 'Uteksaminert din første enhet', 'medalje', 'koral', 1, (c) => c.enheterFullfort, (c) => c.enheterFullfortDato(1)),
+    teller('enhet-3', 'Klasseturnering', 'Uteksaminert 3 enheter', 'kalender', 'blaa', 3, (c) => c.enheterFullfort, (c) => c.enheterFullfortDato(3)),
+    teller('seksjon-1', 'Seksjonsmester', 'Uteksaminert en hel seksjon', 'trofe', 'lilla', 1, (c) => c.seksjonerFullfort, (c) => c.seksjonerFullfortDato(1)),
     teller('push-mester', 'Push-up-mester', 'Slo push-up-pandaen — tre stjerner', 'trofe', 'gul', 3, (c) => c.bossStjerner('push-opp'), (c) => c.bossSlaattDato('push-opp')),
   ],
   nytt: [

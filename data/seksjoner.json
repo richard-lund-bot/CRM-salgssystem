@@ -2,8 +2,8 @@
   {
     "id": "kroppsvekt-nybegynner",
     "disiplin": "kroppsvekt",
-    "navn": "Nybegynner",
-    "undertittel": "Bygg grunnmuren: en balansert base av push, bein, drag og kjerne.",
+    "navn": "Basic kroppsvekt",
+    "undertittel": "Grunnleggende kroppsvektstyrke — én balansert base av push, bein, drag og kjerne.",
     "farge": "teal",
     "nivaBand": [1, 2],
     "enheter": [
@@ -29,7 +29,19 @@
           { "ovelse": "planke", "familie": "core-antiekst", "niva": 1, "maal": { "type": "hold", "verdi": 20 },
             "blurb": "På underarmene, rett linje fra hode til hæl. Stram mage og bak — ikke la ryggen svaie.",
             "dose": "Hold i 20 sekunder", "minutter": 3 }
-        ]
+        ],
+        "uteksaminering": {
+          "varighetMin": 16, "intensitet": 3,
+          "oppvarming": "Rull skuldre og hofter, ta noen rolige knebøy og pust dypt i ett minutt.",
+          "nedtrapping": "Rist løs, pust rolig ut og tøy lett det som kjennes stramt.",
+          "ovelser": [
+            { "ovelse": "vegg-pushup", "sett": 3, "reps": 12, "pauseSek": 45 },
+            { "ovelse": "stol-kneboy", "sett": 3, "reps": 12, "pauseSek": 45 },
+            { "ovelse": "ringrow-hoy-vinkel", "sett": 3, "reps": 8, "pauseSek": 60 },
+            { "ovelse": "glute-bridge", "sett": 3, "reps": 12, "pauseSek": 45 },
+            { "ovelse": "planke", "sett": 3, "holdSek": 20, "pauseSek": 45 }
+          ]
+        }
       },
       {
         "id": "forste-klasse",
@@ -52,7 +64,19 @@
           { "ovelse": "dead-bug", "familie": "hollow", "niva": 1, "maal": { "type": "reps", "verdi": 10 },
             "blurb": "Ligg på rygg, armer og bøyde ben opp. Senk motsatt arm og ben rolig ned — korsryggen presset i gulvet.",
             "dose": "10 reps per side", "minutter": 3 }
-        ]
+        ],
+        "uteksaminering": {
+          "varighetMin": 18, "intensitet": 4,
+          "oppvarming": "Skulderkretser, hoftesirkler og noen lette knebøy — bli varm i to minutter.",
+          "nedtrapping": "Gå litt på stedet, pust ned og tøy hofter og bryst.",
+          "ovelser": [
+            { "ovelse": "skra-pushup-sofa-benk", "sett": 3, "reps": 10, "pauseSek": 45 },
+            { "ovelse": "air-squat", "sett": 3, "reps": 15, "pauseSek": 60 },
+            { "ovelse": "ringrow", "sett": 3, "reps": 8, "pauseSek": 60 },
+            { "ovelse": "ettbens-glute-bridge", "sett": 3, "reps": 8, "perSide": true, "pauseSek": 45 },
+            { "ovelse": "dead-bug", "sett": 3, "reps": 10, "perSide": true, "pauseSek": 45 }
+          ]
+        }
       },
       {
         "id": "byggeklosser",
@@ -75,7 +99,19 @@
           { "ovelse": "utfall-bak", "familie": "utfall", "niva": 2, "maal": { "type": "reps", "verdi": 8 },
             "blurb": "Steg bakover og senk bakre kne mot gulvet. Tryggere for knærne enn utfall fremover.",
             "dose": "8 reps per side", "minutter": 3 }
-        ]
+        ],
+        "uteksaminering": {
+          "varighetMin": 20, "intensitet": 4,
+          "oppvarming": "Full oppvarming: sirkler for skuldre og hofter, noen air-squats og armhevinger mot vegg.",
+          "nedtrapping": "Rolig nedpust, tøy lår, hofter og bryst i ett minutt.",
+          "ovelser": [
+            { "ovelse": "kne-pushup", "sett": 3, "reps": 10, "pauseSek": 60 },
+            { "ovelse": "goblet-squat", "sett": 3, "reps": 12, "pauseSek": 60 },
+            { "ovelse": "hip-thrust-sofa", "sett": 3, "reps": 12, "pauseSek": 45 },
+            { "ovelse": "hollow-tuck", "sett": 3, "holdSek": 20, "pauseSek": 45 },
+            { "ovelse": "utfall-bak", "sett": 3, "reps": 8, "perSide": true, "pauseSek": 60 }
+          ]
+        }
       }
     ]
   }
