@@ -2259,20 +2259,18 @@ body.fokusmodus { padding-bottom: 0; }
 .panda-anim--idle .panda-anim__lag--b { opacity: 0; animation: panda-vink 5.5s ease-in-out infinite; }
 /* Push-up-flip: begge lagene veksler i motfase (steg-hardt), så bare ETT bilde
    er synlig om gangen — ellers «lekker» det gjennomsiktige laget under gjennom. */
-.panda-anim--pushup .panda-anim__lag--a { animation: panda-flip-a 0.9s steps(1, end) infinite; }
-.panda-anim--pushup .panda-anim__lag--b { opacity: 0; animation: panda-flip-b 0.9s steps(1, end) infinite; }
-.panda-anim--kamp .panda-anim__lag--a, .panda-anim--kamp .panda-anim__lag--b { transition: opacity 0.08s linear; }
-.panda-anim--kamp .panda-anim__lag--b { opacity: 0; }
-.panda-anim--kamp.panda-anim--ned .panda-anim__lag--a { opacity: 0; }
-.panda-anim--kamp.panda-anim--ned .panda-anim__lag--b { opacity: 1; }
+/* Push-up = ETT bilde som «presser» seg ned (squash med origo ved potene).
+   Ingen frame-veksling → alltid perfekt registrert, ingen hopp mellom bildene. */
+.panda-anim--pushup .panda-anim__lag--b, .panda-anim--kamp .panda-anim__lag--b { display: none; }
+.panda-anim--pushup .panda-anim__lag--a { transform-origin: center 90%; animation: pushup-press 0.95s ease-in-out infinite; }
+.panda-anim--kamp .panda-anim__lag--a { transform-origin: center 90%; transition: transform 0.13s ease; }
+.panda-anim--kamp.panda-anim--ned .panda-anim__lag--a { transform: scaleY(0.85) translateY(3px); }
+@keyframes pushup-press { 0%, 100% { transform: scaleY(1); } 48% { transform: scaleY(0.87) translateY(2px); } }
 @keyframes panda-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 @keyframes panda-vink { 0%, 62%, 100% { opacity: 0; } 72%, 88% { opacity: 1; } }
-@keyframes panda-flip-a { 0% { opacity: 1; } 50% { opacity: 0; } }
-@keyframes panda-flip-b { 0% { opacity: 0; } 50% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
-  .panda-anim--idle, .panda-anim--idle .panda-anim__lag--b,
-  .panda-anim--pushup .panda-anim__lag--a, .panda-anim--pushup .panda-anim__lag--b { animation: none; }
-  .panda-anim--idle .panda-anim__lag--b, .panda-anim--pushup .panda-anim__lag--b { opacity: 0; }
+  .panda-anim--idle, .panda-anim--idle .panda-anim__lag--b, .panda-anim--pushup .panda-anim__lag--a { animation: none; }
+  .panda-anim--idle .panda-anim__lag--b { opacity: 0; }
 }
 
 /* Stjernerad (boss-framgang) */
