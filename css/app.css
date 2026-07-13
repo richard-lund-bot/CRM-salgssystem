@@ -2195,7 +2195,7 @@ body.fokusmodus { padding-bottom: 0; }
   transition: opacity 0.34s ease, transform 0.52s cubic-bezier(0.34,1.42,0.5,1);
 }
 .reise-popover--inn { opacity: 1; transform: translate(calc(-50% - var(--dx, 0px)), 0) scale(1); }
-.reise-popover--ut { opacity: 0; transform: translate(calc(-50% - var(--dx, 0px)), -4px) scale(0.6); transition: opacity 0.12s ease, transform 0.12s ease; pointer-events: none; }
+.reise-popover--ut { opacity: 0; transform: translate(calc(-50% - var(--dx, 0px)), -4px) scale(0.5); transition: opacity 0.3s ease, transform 0.34s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; }
 .reise-popover--laast { background: var(--bg-kort); color: var(--tekst); border: 1px solid var(--kant); }
 .reise-popover__tail { position: absolute; bottom: 100%; left: calc(50% + var(--dx, 0px)); transform: translateX(-50%); border: 9px solid transparent; border-bottom-color: var(--c, var(--aksent)); }
 .reise-popover--laast .reise-popover__tail { border-bottom-color: var(--bg-kort); }

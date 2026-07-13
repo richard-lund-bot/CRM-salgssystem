@@ -880,7 +880,7 @@ let _aktivWrap = null;
 function lukkPopover() {
   const kort = _apenPopover; const wrap = _aktivWrap;
   _apenPopover = null; _aktivWrap = null;
-  if (kort) { kort.classList.add('reise-popover--ut'); setTimeout(() => kort.remove(), 180); }
+  if (kort) { kort.classList.add('reise-popover--ut'); setTimeout(() => kort.remove(), 380); }
   wrap?.classList.remove('reise-node--aktiv');
 }
 
