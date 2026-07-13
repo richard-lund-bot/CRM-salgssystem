@@ -709,6 +709,17 @@ function visInnstillinger() {
       ),
       el('p', { class: 'dempet' }, 'Setter opp preferansene på nytt — rører aldri logg/XP.'),
     ),
+    sync.erInnlogget() ? el('div', { class: 'kort' },
+      el('h2', {}, 'Konto'),
+      el('p', { class: 'dempet', style: 'margin-top:-4px' },
+        'Logget inn som ', el('strong', {}, sync.brukerEpost() || 'medlem'), '.'),
+      el('div', { class: 'knapprad' },
+        el('button', {
+          class: 'knapp knapp--sekundaer', type: 'button',
+          onclick: () => { sync.loggUt(); location.hash = '#/logg-inn'; },
+        }, 'Logg ut'),
+      ),
+    ) : null,
     el('div', { class: 'kort' },
       el('h2', {}, 'Faresone'),
       el('button', {
@@ -732,7 +743,6 @@ function skyKort() {
           class: 'knapp', type: 'button',
           onclick: async (ev) => { ev.target.textContent = 'Synker…'; await sync.synk(); visInnstillinger(); },
         }, 'Synk nå'),
-        el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: () => { sync.loggUt(); location.hash = '#/logg-inn'; } }, 'Logg ut'),
       ),
     );
   } else {
