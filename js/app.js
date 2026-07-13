@@ -383,6 +383,15 @@ function heroAnbefalBoks(logg, profil) {
 // Viser en planlagt økt: nye planer peker på en bibliotekøkt (oktId), gamle
 // bærer modalitet — begge får tittel, varighet og en startlenke.
 function planVisning(p) {
+  // Lær-modul (f.eks. et nytt uteksaminerings-forsøk) — peker inn i reisen og
+  // åpner rett enhets-økt via &uteks=.
+  if (p.type === 'uteks' && p.sti) {
+    return {
+      tittel: p.tittel || 'Uteksaminering',
+      kortTittel: p.tittel || 'Uteksaminering',
+      href: `#/seksjon?id=${encodeURIComponent(p.sti)}${p.enhet ? `&uteks=${encodeURIComponent(p.enhet)}` : ''}`,
+    };
+  }
   const okt = p.oktId ? oktMedId(p.oktId) : null;
   if (okt) {
     return {

@@ -11,7 +11,7 @@
 // motoren, og alt synker som vanlig. Neste trinn låses opp når forrige er
 // mestret.
 import { el, tom, ikon } from './ui.js';
-import { hentLogg } from './store.js';
+import { hentLogg, hentPlan, leggTilPlan, fjernPlan } from './store.js';
 import { settSeksjonsstruktur } from './merker.js';
 import { ovelseInfo, ovelseBilde, visOvelseArk } from './ovelse.js';
 import { registrerOgLogg } from './beveg.js';
@@ -537,6 +537,17 @@ export function visSeksjonSkjerm(mount) {
       if (!feiret) { feirEnhet(enhet.navn); feiret = true; }
     }
   });
+
+  // Dyplenke fra en planlagt økt (hjemmesiden): #/seksjon?id=…&uteks=<enhet>
+  // åpner rett enhets-uteksaminering. Strip param først så reTegnReise ikke
+  // gjenåpner den, og bare hvis enheten finnes og ikke alt er uteksaminert.
+  const uteksParam = new URLSearchParams(location.hash.split('?')[1] || '').get('uteks');
+  if (uteksParam && !feiret) {
+    try { history.replaceState(null, '', `#/seksjon?id=${encodeURIComponent(seksjon.id)}`); } catch { /* ok */ }
+    const målEnhet = enheter.find((e) => e.id === uteksParam);
+    const alt = målEnhet && enhetStjerner(seksjon.id, målEnhet.id) >= BOSS_MAKS_STJERNER;
+    if (målEnhet && målEnhet.uteksaminering && !alt) setTimeout(() => startUteksaminering(seksjon, målEnhet), 320);
+  }
 }
 
 // Uteksaminerings-node på reisen: coach-pandaen som «enhets-boss». Låst til alle
@@ -1048,6 +1059,20 @@ function startLeksjon(sti, ledd) {
 // ekte økt (oppvarming → sett × reps m/ pause → nedtrapping). Reps + følelse
 // gir 1–3 stjerner; 3 = uteksaminert (traff alle rep-mål med margin) → opprykk.
 // ===========================================================================
+// Fjern ev. planlagte revansje-forsøk for en enhet (når den er uteksaminert
+// eller når vi legger en ny plan, så vi ikke hoper opp duplikater).
+function ryddPlanlagteUteks(seksjonId, enhetId) {
+  try {
+    for (const p of hentPlan()) {
+      if (p.type === 'uteks' && p.sti === seksjonId && p.enhet === enhetId && p.status === 'planlagt') fjernPlan(p.id);
+    }
+  } catch { /* valgfri */ }
+}
+function isoLokalDato(d) {
+  const z = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+  return z.toISOString().slice(0, 10);
+}
+
 function startUteksaminering(seksjon, enhet) {
   const u = enhet.uteksaminering;
   if (!u || !(u.ovelser || []).length) return;
@@ -1068,7 +1093,6 @@ function startUteksaminering(seksjon, enhet) {
     }
   });
   if (u.nedtrapping) steg.push({ type: 'info', merke: 'Nedtrapping', tittel: 'Nedtrapping', tekst: u.nedtrapping, cta: 'Ferdig' });
-  steg.push({ type: 'feel' });
 
   const settSteg = steg.filter((s) => s.type === 'reps' || s.type === 'hold');
   const resultater = []; // { maal, faktisk } pr. fullført sett
@@ -1095,7 +1119,7 @@ function startUteksaminering(seksjon, enhet) {
     tom(framdrift);
     settSteg.forEach((_, i) => framdrift.append(el('span', { class: 'leksjon__seg' + (i < gjort ? ' leksjon__seg--fyllt' : '') })));
   }
-  function neste() { idx += 1; tegnSteg(); }
+  function neste() { idx += 1; if (idx >= steg.length) fullfor(); else tegnSteg(); }
 
   function tegnIntro() {
     settFramdrift();
@@ -1104,7 +1128,7 @@ function startUteksaminering(seksjon, enhet) {
       el('span', { class: 'kamp__merke' }, 'Uteksaminering'),
       el('h1', { class: 'kamp__navn' }, enhet.navn),
       pandaImg('flex', 'kamp__panda'),
-      el('p', { class: 'kamp__oppgave' }, 'Coach-pandaen tar deg gjennom hele økta. Treff alle rep-målene med litt igjen i tanken → tre stjerner → uteksaminert.'),
+      el('p', { class: 'kamp__oppgave' }, 'Coach-pandaen tar deg gjennom hele økta. Treff rep-målet i alle settene → tre stjerner → uteksaminert.'),
       el('ul', { class: 'uteks__liste' }, ...ovelser.map((o) => el('li', { class: 'uteks__rad' },
         el('span', { class: 'uteks__ov' }, ovNavn(o.ovelse)),
         el('span', { class: 'uteks__dose' }, `${o.sett}×${o.holdSek ? o.holdSek + ' s' : o.reps}${o.perSide ? '/side' : ''}`)))),
@@ -1120,7 +1144,6 @@ function startUteksaminering(seksjon, enhet) {
     tom(kropp); tom(bunn);
     if (s.type === 'info') tegnInfo(s);
     else if (s.type === 'pause') tegnPause(s);
-    else if (s.type === 'feel') tegnFeel();
     else tegnSett(s);
     kropp.scrollTop = 0;
   }
@@ -1136,38 +1159,38 @@ function startUteksaminering(seksjon, enhet) {
   }
 
   function tegnSett(s) {
-    const doseTekst = s.hold ? `Hold i ${s.maal} sek` : `${s.maal} reps${s.perSide ? ' per side' : ''}`;
     let bekreftet = false;
+    const enhetTekst = s.hold ? 'sek' : (s.perSide ? 'reps/side' : 'reps');
+    const maks = Math.max(s.maal + 10, s.maal * 2); // rom for å registrere ekstra
+    let val = s.maal; // default = målet; du justerer til det du faktisk klarte
     const panda = s.hold ? pandaImg('flex', 'kamp__panda') : pandaAnim('pushup-up', 'pushup-down', 'kamp__panda', 'pushup');
+    const visTall = el('span', { class: 'uteks__just-tall' }, String(val));
+    const minus = el('button', { class: 'uteks__just-knapp', type: 'button', 'aria-label': 'Færre' }, '−');
+    const pluss = el('button', { class: 'uteks__just-knapp', type: 'button', 'aria-label': 'Flere' }, '+');
+    const oppdater = () => {
+      visTall.textContent = String(val);
+      visTall.classList.toggle('uteks__just-tall--under', val < s.maal);
+      minus.disabled = val <= 0; pluss.disabled = val >= maks;
+    };
+    minus.addEventListener('click', () => { val = Math.max(0, val - 1); vibrer('lett'); oppdater(); });
+    pluss.addEventListener('click', () => { val = Math.min(maks, val + 1); vibrer('lett'); oppdater(); });
+
     kropp.append(
       el('span', { class: 'kamp__merke' }, `${s.navn} · sett ${s.settNr} av ${s.settAv}`),
-      el('h1', { class: 'kamp__navn' }, doseTekst),
+      el('h1', { class: 'kamp__navn' }, `Mål: ${s.maal} ${enhetTekst}`),
       panda,
-      el('p', { class: 'kamp__hint dempet' }, s.hold ? 'Hold stillingen sammen med pandaen.' : 'Gjør settet i rolig, kontrollert tempo sammen med pandaen.'),
+      el('p', { class: 'uteks__just-etikett' }, s.hold ? 'Sekunder du holdt' : 'Reps du klarte'),
+      el('div', { class: 'uteks__just uteks__just--stor' }, minus,
+        el('div', { class: 'uteks__just-midt' }, visTall, el('span', { class: 'uteks__just-enhet' }, s.hold ? 'sek' : 'reps')), pluss),
+      el('p', { class: 'kamp__hint dempet' }, 'Juster til antallet du faktisk klarte før du registrerer.'),
     );
-    function fullforSett(faktisk) {
+    oppdater();
+    bunn.append(leksjonPrimaer('Registrer sett', () => {
       if (bekreftet) return; bekreftet = true;
       vibrer('riktig');
-      resultater.push({ maal: s.maal, faktisk });
+      resultater.push({ maal: s.maal, faktisk: val });
       neste();
-    }
-    const ferdig = leksjonPrimaer(s.hold ? 'Fullført ✓' : 'Ferdig sett ✓', () => fullforSett(s.maal));
-    const mindre = el('button', { class: 'kamp__ferdig-lenke', type: 'button' }, s.hold ? 'Holdt ikke helt' : 'Klarte ikke alle');
-    mindre.addEventListener('click', () => {
-      tom(bunn);
-      let val = Math.max(0, s.maal - 1);
-      const visTall = el('span', { class: 'uteks__just-tall' }, String(val));
-      const minus = el('button', { class: 'uteks__just-knapp', type: 'button', 'aria-label': 'Færre' }, '−');
-      const pluss = el('button', { class: 'uteks__just-knapp', type: 'button', 'aria-label': 'Flere' }, '+');
-      minus.addEventListener('click', () => { val = Math.max(0, val - 1); visTall.textContent = String(val); });
-      pluss.addEventListener('click', () => { val = Math.min(s.maal, val + 1); visTall.textContent = String(val); });
-      bunn.append(
-        el('div', { class: 'uteks__just' }, minus,
-          el('div', { class: 'uteks__just-midt' }, visTall, el('span', { class: 'uteks__just-enhet' }, s.hold ? 'sek' : 'reps')), pluss),
-        leksjonPrimaer('Bekreft', () => fullforSett(val)),
-      );
-    });
-    bunn.append(ferdig, mindre);
+    }));
   }
 
   function tegnPause(s) {
@@ -1190,32 +1213,19 @@ function startUteksaminering(seksjon, enhet) {
     }, 250);
   }
 
-  function tegnFeel() {
-    const allHit = resultater.length > 0 && resultater.every((r) => r.faktisk >= r.maal);
-    tom(kropp); tom(bunn);
-    const valg = [
-      { t: 'Hadde flere reps igjen', s: 'kontroll' },
-      { t: 'Akkurat nok / så vidt', s: 'grense' },
-      { t: 'Gikk helt til failure', s: 'failure' },
-    ];
-    const knapper = valg.map((v) => {
-      const b = el('button', { class: 'leksjon-valg', type: 'button' }, v.t);
-      b.addEventListener('click', () => {
-        knapper.forEach((k) => { k.disabled = true; });
-        const stjerner = !allHit ? 1 : (v.s === 'kontroll' ? 3 : 2);
-        fullfor(stjerner);
-      });
-      return b;
-    });
-    kropp.append(
-      el('span', { class: 'kamp__merke' }, 'Siste spørsmål'),
-      el('h2', { class: 'leksjon__sporsmal' }, 'Hvor mye hadde du igjen på det tyngste settet?'),
-      el('p', { class: 'leksjon__blurb' }, 'Vær ærlig — 3 stjerner (uteksaminert) krever at du traff alle rep-målene med litt igjen i tanken.'),
-      el('div', { class: 'leksjon-valg-liste' }, ...knapper),
-    );
+  // Stjerner rent fra registrerte reps/hold: traff du alle mål → 3★ (uteksaminert);
+  // ellers ut fra hvor stor andel av det foreskrevne du klarte (hvert sett teller
+  // maks sitt eget mål, så et bommet sett kan ikke kjøpes tilbake med ekstra andre).
+  function beregnStjerner() {
+    if (!resultater.length) return 1;
+    if (resultater.every((r) => r.faktisk >= r.maal)) return 3;
+    const totMaal = resultater.reduce((n, r) => n + r.maal, 0);
+    const totTruffet = resultater.reduce((n, r) => n + Math.min(r.faktisk, r.maal), 0);
+    return totMaal && totTruffet / totMaal >= 0.75 ? 2 : 1;
   }
 
-  function fullfor(stjerner) {
+  function fullfor() {
+    const stjerner = beregnStjerner();
     vibrer('feiring');
     const totalReps = resultater.reduce((n, r) => n + (r.faktisk || 0), 0);
     let res = { xp: 0, nyeMerker: [] };
@@ -1238,22 +1248,57 @@ function startUteksaminering(seksjon, enhet) {
     lukkX.style.visibility = 'hidden';
     tom(kropp); tom(bunn);
     settFramdrift();
-    kropp.append(
-      el('div', { class: 'kamp__seier' },
-        pandaImg(bestatt ? 'cheer' : 'flex', 'kamp__seier-panda'),
-        stjerneRad(stjerner, 'kamp__seier-stjerner'),
-        el('h1', { class: 'kamp__seier-tittel' }, bestatt ? 'Uteksaminert!' : 'Bra økt!'),
-        el('p', { class: 'kamp__seier-under' }, bestatt
-          ? `${enhet.navn} er fullført — neste enhet er åpen! 🐼`
-          : 'Ikke helt uteksaminert ennå — traff du alle rep-målene med litt margin, får du tre stjerner. Ta økta igjen når du er klar.'),
-        el('div', { class: 'leksjon-feiring__xp' }, ikon('lyn', 'ikon'), ` +${res.xp || 0} XP`),
-        ...((res.nyeMerker || []).length
-          ? [el('div', { class: 'leksjon-feiring__merke' }, ikon('medalje', 'ikon'), ' Nytt merke: ' + res.nyeMerker.map((m) => m.navn).join(', '))]
-          : []),
-      ),
+    if (bestatt) ryddPlanlagteUteks(seksjon.id, enhet.id); // ferdig → dropp ev. planlagt revansje
+    const seier = el('div', { class: 'kamp__seier' },
+      pandaImg(bestatt ? 'cheer' : 'flex', 'kamp__seier-panda'),
+      stjerneRad(stjerner, 'kamp__seier-stjerner'),
+      el('h1', { class: 'kamp__seier-tittel' }, bestatt ? 'Uteksaminert!' : 'Bra økt!'),
+      el('p', { class: 'kamp__seier-under' }, bestatt
+        ? `${enhet.navn} er fullført — neste enhet er åpen! 🐼`
+        : 'Ikke helt uteksaminert ennå — traff du rep-målet i alle settene, får du tre stjerner. Legg en plan for neste forsøk?'),
+      el('div', { class: 'leksjon-feiring__xp' }, ikon('lyn', 'ikon'), ` +${res.xp || 0} XP`),
+      ...((res.nyeMerker || []).length
+        ? [el('div', { class: 'leksjon-feiring__merke' }, ikon('medalje', 'ikon'), ' Nytt merke: ' + res.nyeMerker.map((m) => m.navn).join(', '))]
+        : []),
     );
+    if (!bestatt) seier.append(planleggBlokk());
+    kropp.append(seier);
     bunn.append(leksjonPrimaer('Fortsett', lukk));
     try { overlay.append(lagKonfetti()); } catch { /* valgfri feiring */ }
+  }
+
+  // «Planlegg neste forsøk»: en enkel dag-velger (default om 2 dager) som legger
+  // et uteksaminerings-forsøk i planen — det dukker opp på hjemmesiden den dagen.
+  function planleggBlokk() {
+    const DAG = 86400000;
+    let n = 2;
+    const datoTekst = el('span', { class: 'uteks-plan__dato' });
+    const minus = el('button', { class: 'uteks__just-knapp', type: 'button', 'aria-label': 'Tidligere' }, '−');
+    const pluss = el('button', { class: 'uteks__just-knapp', type: 'button', 'aria-label': 'Senere' }, '+');
+    const relTekst = (k) => (k === 1 ? 'I morgen' : `Om ${k} dager`);
+    function oppdater() {
+      const d = new Date(Date.now() + n * DAG);
+      datoTekst.textContent = `${relTekst(n)} · ${d.toLocaleDateString('nb-NO', { weekday: 'long', day: 'numeric', month: 'long' })}`;
+      minus.disabled = n <= 1; pluss.disabled = n >= 14;
+    }
+    minus.addEventListener('click', () => { n = Math.max(1, n - 1); vibrer('lett'); oppdater(); });
+    pluss.addEventListener('click', () => { n = Math.min(14, n + 1); vibrer('lett'); oppdater(); });
+    const wrap = el('div', { class: 'uteks-plan' },
+      el('p', { class: 'uteks-plan__tittel' }, ikon('kalender', 'ikon ikon--liten'), ' Planlegg neste forsøk'),
+      el('div', { class: 'uteks-plan__velger' }, minus, datoTekst, pluss),
+      leksjonPrimaer('Planlegg forsøket', () => {
+        ryddPlanlagteUteks(seksjon.id, enhet.id);
+        try {
+          leggTilPlan({ dato: isoLokalDato(new Date(Date.now() + n * DAG)), type: 'uteks', sti: seksjon.id, enhet: enhet.id, tittel: `${enhet.navn}: uteksaminering` });
+        } catch (err) { console.warn('Kunne ikke planlegge', err); }
+        vibrer('riktig');
+        const rel = relTekst(n).toLowerCase();
+        tom(wrap);
+        wrap.append(el('p', { class: 'uteks-plan__bekreftet' }, ikon('sjekk', 'ikon ikon--liten'), ` Planlagt — du finner økta på hjemmesiden ${rel}.`));
+      }),
+    );
+    oppdater();
+    return wrap;
   }
 }
 

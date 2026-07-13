@@ -2579,6 +2579,22 @@ body.fokusmodus { padding-bottom: 0; }
 .uteks__just { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 12px; }
 .uteks__just-knapp { width: 48px; height: 48px; border-radius: 14px; border: 2px solid var(--kant); background: var(--bg-kort); font-size: 26px; font-weight: 700; color: var(--teal-900); cursor: pointer; line-height: 1; }
 .uteks__just-knapp:active { transform: translateY(2px); }
+.uteks__just-knapp:disabled { opacity: 0.4; cursor: default; }
 .uteks__just-midt { display: flex; flex-direction: column; align-items: center; min-width: 84px; }
 .uteks__just-tall { font-family: var(--font-display); font-size: 40px; font-weight: 800; color: var(--teal-900); line-height: 1; font-variant-numeric: tabular-nums; }
 .uteks__just-enhet { font-size: 12px; font-weight: 600; color: var(--dempet); text-transform: uppercase; letter-spacing: 0.05em; }
+/* Stor, alltid-synlig rep-stepper i settene. */
+.uteks__just--stor { gap: 22px; margin: 6px 0 4px; }
+.uteks__just--stor .uteks__just-knapp { width: 60px; height: 60px; border-radius: 18px; font-size: 32px; box-shadow: 0 3px 0 rgba(1,63,64,0.14); }
+.uteks__just--stor .uteks__just-knapp:active { transform: translateY(3px); box-shadow: 0 0 0 rgba(1,63,64,0.14); }
+.uteks__just--stor .uteks__just-midt { min-width: 110px; }
+.uteks__just--stor .uteks__just-tall { font-size: 58px; }
+.uteks__just-tall--under { color: var(--coral-500); }
+.uteks__just-etikett { margin: 8px 0 0; font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--aksent-mork); }
+/* «Planlegg neste forsøk» i oppsummeringen etter en ikke-bestått uteksaminering. */
+.uteks-plan { margin: 22px auto 0; max-width: 340px; padding: 16px; border: 1px solid var(--kant); border-radius: 16px; background: var(--bg-kort); }
+.uteks-plan__tittel { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 0 0 12px; font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--teal-900); }
+.uteks-plan__velger { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.uteks-plan__dato { flex: 1 1 auto; font-family: var(--font-display); font-weight: 600; font-size: 14.5px; color: var(--tekst); }
+.uteks-plan__bekreftet { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 0; font-size: 14px; font-weight: 600; color: var(--aksent-mork); }
+.uteks-plan__bekreftet .ikon { color: #2FA84F; }

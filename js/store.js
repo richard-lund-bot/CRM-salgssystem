@@ -75,13 +75,15 @@ export function hentPlan() {
 }
 
 /** Legger til en planlagt økt og returnerer den nye oppføringen.
- *  Nye planer peker på en bibliotekøkt (oktId); eldre bærer modalitet. */
-export function leggTilPlan({ dato, oktId, modalitet, varighetsklasse, lokasjon }) {
+ *  Nye planer peker på en bibliotekøkt (oktId) eller en Lær-modul (type/sti/enhet);
+ *  eldre bærer modalitet. */
+export function leggTilPlan({ dato, oktId, modalitet, varighetsklasse, lokasjon, type, sti, enhet, tittel }) {
   const liste = hentPlan();
   const ny = {
     id: nyPlanId(), dato, oktId: oktId || null, modalitet: modalitet || null,
     varighetsklasse: varighetsklasse || null,
     lokasjon: lokasjon || null, status: 'planlagt', opprettet: nåISO(),
+    ...(type ? { type, sti: sti || null, enhet: enhet || null, tittel: tittel || null } : {}),
   };
   liste.push(ny);
   skriv(LS.plan, liste);
