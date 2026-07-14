@@ -10,6 +10,7 @@
 import { hentLogg } from './store.js';
 import { ovelseKanon } from './ovelse.js';
 import { brukerEpost } from './sync.js';
+import { LS } from './config.js';
 
 // Node-verdier i Lær-loggen som IKKE er øvelser (skal ikke telle som «lært»).
 const IKKE_OVELSE = new Set(['boss', 'graduation', 'teori']);
@@ -19,10 +20,32 @@ const ADMIN_EPOSTER = new Set(['richard-lund@hotmail.com']);
 let _bib = null;
 export function settBib(bib) { _bib = bib; }
 
-/** Om innlogget bruker er admin (kan åpne låste økter for testing). */
-export function erAdmin() {
+/** Om innlogget bruker i det hele tatt HAR admin-tilgang (e-posten står på lista).
+ *  Uavhengig av av/på-bryteren — brukes for å vise selve admin-valget. */
+export function erAdminEpost() {
   const e = brukerEpost();
   return !!e && ADMIN_EPOSTER.has(e.trim().toLowerCase());
+}
+
+/** Om admin-modus er slått PÅ på denne enheten (default på). En admin kan skru den
+ *  av i Innstillinger for å oppleve appen slik et vanlig medlem gjør — da forblir
+ *  låste økter låst. Lagres lokalt per enhet, synkes ikke. */
+export function adminModusPaa() {
+  try { return localStorage.getItem(LS.adminAv) !== '1'; } catch { return true; }
+}
+
+/** Skru admin-modus av/på (kun meningsfullt for admin-e-poster). */
+export function settAdminModus(paa) {
+  try {
+    if (paa) localStorage.removeItem(LS.adminAv);
+    else localStorage.setItem(LS.adminAv, '1');
+  } catch { /* ignorer — appen faller trygt tilbake til admin på */ }
+}
+
+/** Om innlogget bruker er admin NÅ (kan åpne låste økter for testing).
+ *  Krever både admin-e-post og at admin-modus er skrudd på. */
+export function erAdmin() {
+  return erAdminEpost() && adminModusPaa();
 }
 
 /** Alle øvelser brukeren har lært teknikken på (globalt, alle Lær-seksjoner),

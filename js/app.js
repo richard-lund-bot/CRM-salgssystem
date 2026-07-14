@@ -26,7 +26,7 @@ import { lagFaneside, fanesideMedTittel, settNavger, settUlestSjekk, dagsfase } 
 import { nivaFraTotalXp } from './niva.js';
 import { dagerMedAktivitet, okterHref, beregnStreak } from './bevegelse.js';
 import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN, KATEGORIER } from './bibliotek-okter.js';
-import { settBib as settBibOpp, settOkterKilde } from './opplasing.js';
+import { settBib as settBibOpp, settOkterKilde, erAdminEpost, adminModusPaa, settAdminModus } from './opplasing.js';
 import { fyllInn, tallOpp, stagger, REDUSERT } from './animasjon.js';
 import { settLydAv } from './lyd.js';
 import { settHaptikkAv } from './haptikk.js';
@@ -840,12 +840,43 @@ function visInnstillinger() {
         }, 'Logg ut'),
       ),
     ) : null,
+    adminKort(),
     el('div', { class: 'kort' },
       el('h2', {}, 'Faresone'),
       el('button', {
         class: 'knapp knapp--fare', type: 'button',
         onclick: () => { if (confirm('Slette ALT — profil, logg, XP og historikk? Kan ikke angres.')) { nullstillAlt(); location.hash = '#/hjem'; location.reload(); } },
       }, 'Full nullstilling'),
+    ),
+  );
+}
+
+// Admin-kort: vises kun for admin-e-poster. Bryter for å oppleve appen som et
+// vanlig medlem (av → låste økter forblir låst, ingen admin-bypass).
+function adminKort() {
+  if (!erAdminEpost()) return null;
+  const paa = adminModusPaa();
+  return el('div', { class: 'kort' },
+    el('h2', {}, 'Admin'),
+    el('p', { class: 'dempet', style: 'margin-top:-4px' },
+      'Med admin på kan du åpne låste økter for testing. Skru av for å se appen slik et vanlig medlem opplever den — da forblir låste økter låst.'),
+    el('div', { class: 'prefliste' },
+      el('div', { class: 'prefrad' },
+        el('div', { class: 'prefrad__hode' },
+          el('span', { class: 'prefrad__ikon' }, ikon(paa ? 'lasopp' : 'las')),
+          el('span', { class: 'prefrad__navn' }, 'Admin-modus'),
+        ),
+        el('div', { class: 'chiprad prefrad__valg' },
+          chip('På', {
+            aktiv: paa,
+            onClick: () => { settAdminModus(true); varsle('Admin-modus på'); visInnstillinger(); },
+          }),
+          chip('Av', {
+            aktiv: !paa,
+            onClick: () => { settAdminModus(false); varsle('Ser appen som et vanlig medlem'); visInnstillinger(); },
+          }),
+        ),
+      ),
     ),
   );
 }
