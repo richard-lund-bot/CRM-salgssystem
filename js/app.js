@@ -1072,6 +1072,9 @@ async function start() {
   const lydHapt = hentProfil()?.innstillinger || {};
   settLydAv(lydHapt.lyd === false);
   settHaptikkAv(lydHapt.haptikk === false);
+  // Der View Transitions finnes, eier VT-en skjerm-inngangen — skru av den gamle
+  // .innhold>*-fadeInn permanent (ellers re-trigges den når data-vt fjernes → flicker).
+  if (typeof document.startViewTransition === 'function') document.documentElement.classList.add('har-vt');
   // Navigasjon håndterer scroll selv (navger → gjenopprettScroll): nye skjermer
   // starter på toppen, mens en fane man kommer tilbake til gjenoppretter posisjon.
   window.addEventListener('hashchange', navger);

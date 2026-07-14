@@ -1378,7 +1378,7 @@ body.fokusmodus { padding-bottom: 0; }
    pinnes med eget navn så den ikke glir med sidebyttet. */
 .tabbar { view-transition-name: tabbar; }
 ::view-transition-group(tabbar) { animation: none; }
-html[data-vt] .innhold > * { animation: none !important; } /* unngå dobbel inn-fade */
+html.har-vt .innhold > * { animation: none; } /* VT eier inngangen — ingen fadeInn-replay når data-vt fjernes */
 ::view-transition-old(root) { animation: vt-ut 220ms var(--ease-standard) both; }
 ::view-transition-new(root) { animation: vt-inn 300ms var(--ease-out) both; }
 html[data-vt="tilbake"]::view-transition-old(root) { animation: vt-ut-t 220ms var(--ease-standard) both; }
