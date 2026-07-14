@@ -2249,6 +2249,16 @@ body.fokusmodus { padding-bottom: 0; }
 .leksjon__steg { margin: 0; padding-left: 20px; }
 .leksjon__steg li { margin: 0 0 6px; font-size: 15px; line-height: 1.55; }
 .leksjon__tips { margin: 0 0 4px; font-size: 14.5px; line-height: 1.5; color: var(--tekst-2); }
+/* Teori-lesning (kompendium): ingress, brødtekst og «Grunnlaget»-kilder. */
+.leksjon__blurb--ingress { font-size: 17px; color: var(--tekst-2); }
+.leksjon__avsnitt { margin: 10px 0 0; font-size: 15.5px; line-height: 1.65; color: var(--tekst); }
+.teori-kilder { margin-top: 24px; padding-top: 14px; border-top: 1px solid var(--kant); }
+.teori-kilder .leksjon__h { display: flex; align-items: center; gap: 6px; }
+.teori-kilder .leksjon__h .ikon { width: 16px; height: 16px; color: var(--dempet); }
+.teori-kilder__liste { margin: 8px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.teori-kilder__rad { display: flex; flex-direction: column; gap: 2px; }
+.teori-kilder__kilde { font-size: 13.5px; font-weight: 600; color: var(--tekst); }
+.teori-kilder__om { font-size: 13px; line-height: 1.5; color: var(--dempet); }
 
 .leksjon-valg-liste { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
 .leksjon-valg { text-align: left; padding: 16px; border: 2px solid var(--kant); border-radius: 14px; background: var(--bg-kort); font-family: inherit; font-size: 15.5px; color: var(--tekst); cursor: pointer; transition: border-color 0.12s, background 0.12s; }
@@ -2575,6 +2585,21 @@ body.fokusmodus { padding-bottom: 0; }
 .enhet-header__stjerner { flex: 0 0 auto; gap: 4px; margin-top: 3px; }
 .enhet-header__stjerner .stjernerad__stj .ikon { width: 16px; height: 16px; color: rgba(255,255,255,0.35); }
 .enhet-header__stjerner .stjernerad__stj--pa .ikon { color: #FFD34E; fill: #FFD34E; }
+
+/* Teori-kort («les først»-kompendium) rett under enhets-headeren. */
+.teori-kort { align-self: stretch; display: flex; align-items: center; gap: 12px; margin: 2px 4px 6px; padding: 12px 14px; border: 1px solid var(--kant); border-radius: 14px; background: var(--bg-kort); box-shadow: var(--shadow-sm); text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: transform 0.12s var(--ease-standard), border-color 0.12s; }
+.teori-kort:active { transform: scale(0.99); }
+.teori-kort__ikon { flex: 0 0 auto; width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--aksent-svak); color: var(--aksent-mork); }
+.teori-kort__ikon .ikon { width: 22px; height: 22px; }
+.teori-kort__tekst { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.teori-kort__merke { font-size: 10.5px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--aksent-mork); }
+.teori-kort__tittel { font-family: var(--font-display); font-size: 15.5px; font-weight: 700; color: var(--tekst); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.teori-kort__meta { font-size: 12px; color: var(--dempet); }
+.teori-kort__pil { flex: 0 0 auto; font-size: 20px; color: var(--dempet); font-weight: 700; }
+.teori-kort--ferdig .teori-kort__ikon { background: #E7F6EC; color: #1C6B34; }
+.teori-kort--ferdig .teori-kort__merke { color: #1C6B34; }
+.teori-kort--laast { opacity: 0.55; cursor: default; }
+.teori-kort--laast .teori-kort__ikon { background: var(--bg-kort-2); color: var(--dempet); }
 
 /* Disiplin-kort: oransje variant (Løp). */
 .disiplinkort--oransje { background: linear-gradient(135deg, #E8913E, #C4661B); }

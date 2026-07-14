@@ -2733,5 +2733,310 @@
    "Ro"
   ],
   "bilde": "syklisk-sukk"
+ },
+ {
+  "navn": "Vegg-pushup",
+  "kort": "Den mildeste pressbevegelsen: stå mot en vegg og skyv deg inn og ut med rett kropp — lær retningen uten belastning på leddene.",
+  "steg": [
+   "Stå en armlengde fra veggen med føttene i hoftebredde og hendene flatt på veggen i brysthøyde, litt bredere enn skuldrene.",
+   "Stram mage og sete så kroppen er én rett linje fra hode til hæl.",
+   "Bøy albuene rolig og la brystet nærme seg veggen — albuene peker skrått bakover, ikke rett ut til siden.",
+   "Press deg tilbake til strake armer uten å miste den rette linjen."
+  ],
+  "tips": [
+   "Vil du ha det tyngre? Flytt føttene lenger fra veggen.",
+   "Hoftene henger ikke etter og stikker ikke opp — hele kroppen beveger seg som én planke."
+  ],
+  "muskler": [
+   "Bryst",
+   "Triceps",
+   "Skuldre",
+   "Kjerne"
+  ],
+  "utstyr": [
+   "Vegg"
+  ],
+  "bilde": "vegg-pushup"
+ },
+ {
+  "navn": "Stol-knebøy",
+  "kort": "Sett deg rolig ned mot en stol og reis deg opp uten hendene — den tryggeste inngangen til knebøy.",
+  "steg": [
+   "Stå foran en stol med føttene i skulderbredde og tærne lett utover.",
+   "Skyv hoftene bakover og sett deg rolig ned til setet så vidt berører stolen.",
+   "Hold vekten på hælene og brystet stolt.",
+   "Reis deg opp uten å skyve fra med hendene, om du kan."
+  ],
+  "tips": [
+   "Jo tregere du senker deg, jo mer styrke bygger du.",
+   "Klarer du den lett? Bruk en lavere stol, eller dropp berøringen og bytt til fri knebøy."
+  ],
+  "muskler": [
+   "Lår",
+   "Sete",
+   "Kjerne"
+  ],
+  "utstyr": [
+   "Stol"
+  ],
+  "bilde": "kneboy-stol"
+ },
+ {
+  "navn": "Ringrow høy vinkel",
+  "kort": "Den letteste dragbevegelsen: stå nokså oppreist og trekk brystet mot hendene — jo høyere vinkel, jo lettere.",
+  "steg": [
+   "Grip ringer, en stang eller kanten av et stødig bord i brysthøyde.",
+   "Gå føttene litt frem så du lener deg bakover med strak kropp — nokså oppreist til å begynne med.",
+   "Trekk brystet mot hendene ved å føre albuene bak og klemme skulderbladene sammen.",
+   "Senk deg rolig tilbake til strake armer med full kontroll."
+  ],
+  "tips": [
+   "Mer oppreist = lettere. Vil du ha det tyngre, gå føttene lenger frem så kroppen blir mer vannrett.",
+   "Hold kroppen rett som en planke hele veien — ingen svai i korsryggen."
+  ],
+  "muskler": [
+   "Rygg",
+   "Biceps",
+   "Skulderblad"
+  ],
+  "utstyr": [
+   "Ringer",
+   "Stang"
+  ],
+  "bilde": "ringrow-hoy-vinkel"
+ },
+ {
+  "navn": "Glute bridge",
+  "kort": "Ligg på rygg og press hoftene mot taket — den enkleste måten å vekke og styrke setet på.",
+  "steg": [
+   "Ligg på ryggen med bøyde knær og føttene flatt i gulvet, i hoftebreddes avstand.",
+   "Press gjennom hælene og løft hoftene til kroppen er en rett linje fra knær til skuldre.",
+   "Klem setet hardt i ett sekund på toppen.",
+   "Senk hoftene rolig ned igjen uten å slippe spennet helt."
+  ],
+  "tips": [
+   "Kraften kommer fra setet, ikke korsryggen — ikke svai ryggen på toppen.",
+   "Kjenner du det mest i baklårene? Flytt føttene litt nærmere setet."
+  ],
+  "muskler": [
+   "Sete",
+   "Baklår",
+   "Kjerne"
+  ],
+  "bilde": "hoftebro"
+ },
+ {
+  "navn": "Skrå pushup (sofa/benk)",
+  "kort": "Armhevinger med hendene hevet på en sofa eller benk — jo lavere flate, jo tyngre. Broen mellom vegg og gulv.",
+  "steg": [
+   "Sett hendene på kanten av en sofa eller benk, litt bredere enn skuldrene.",
+   "Gå føttene bak til kroppen er en rett, stram linje fra hode til hæl.",
+   "Senk brystet rolig mot kanten med albuene ca. 45 grader inn mot kroppen.",
+   "Press deg opp igjen til strake armer uten å miste planken."
+  ],
+  "tips": [
+   "Senk høyden på flaten når det kjennes lett — trappetrinn, sofa, lav benk.",
+   "Hoftene følger kroppen — ingen heng og ingen topp."
+  ],
+  "muskler": [
+   "Bryst",
+   "Triceps",
+   "Skuldre",
+   "Kjerne"
+  ],
+  "utstyr": [
+   "Benk",
+   "Sofa"
+  ],
+  "bilde": "skra-pushup"
+ },
+ {
+  "navn": "Air squat",
+  "kort": "Fri knebøy uten støtte: sett deg ned mellom hoftene til lårene er vannrette, og reis deg opp.",
+  "steg": [
+   "Stå med føttene i skulderbredde og tærne lett utover.",
+   "Skyv hoftene bak og ned som mot en usynlig stol — knærne følger tærnes retning.",
+   "Gå ned til lårene er omtrent vannrette, med hælene i gulvet og brystet oppe.",
+   "Press hele foten i gulvet og reis deg helt opp."
+  ],
+  "tips": [
+   "Vekten jevnt på hele foten med god kontakt i hælene.",
+   "Vondt i knærne? Sjekk at de peker samme vei som tærne, og gå ikke dypere enn du har kontroll."
+  ],
+  "muskler": [
+   "Lår",
+   "Sete",
+   "Kjerne"
+  ],
+  "bilde": "kneboy"
+ },
+ {
+  "navn": "Ringrow",
+  "kort": "Samme drag som høy vinkel, men kroppen er mer vannrett nå — et ekte steg opp i ryggstyrke.",
+  "steg": [
+   "Grip ringer eller en stang i brysthøyde og gå føttene frem til kroppen er godt på skrå.",
+   "Stram mage og sete så kroppen er en rett linje.",
+   "Trekk brystet mot hendene med skuldrene ned og bak og albuene tett langs kroppen.",
+   "Senk deg rolig ut til strake armer med full kontroll."
+  ],
+  "tips": [
+   "Dra med ryggen, ikke armene — tenk «albuene bak og skulderbladene sammen».",
+   "Jo mer vannrett kroppen er, jo tyngre blir draget."
+  ],
+  "muskler": [
+   "Rygg",
+   "Biceps",
+   "Skulderblad",
+   "Kjerne"
+  ],
+  "utstyr": [
+   "Ringer",
+   "Stang"
+  ],
+  "bilde": "ringrow"
+ },
+ {
+  "navn": "Ettbens glute bridge",
+  "kort": "Hoftebro på ett ben — dobbelt så mye jobb på setet, og den avslører om en side er svakere.",
+  "steg": [
+   "Ligg på ryggen med bøyde knær og føttene i gulvet.",
+   "Strekk det ene benet rett ut, i forlengelse av låret.",
+   "Press gjennom hælen på benet som står i gulvet og løft hoftene til en rett linje.",
+   "Klem setet på toppen, senk rolig, og fullfør settet før du bytter side."
+  ],
+  "tips": [
+   "Hold hoftene i vater — la ikke den frie siden synke ned.",
+   "For lett? Hold en liten pause på toppen av hvert løft."
+  ],
+  "muskler": [
+   "Sete",
+   "Baklår",
+   "Kjerne"
+  ],
+  "bilde": "ettbens-glute-bridge"
+ },
+ {
+  "navn": "Dead bug",
+  "kort": "Ligg på rygg og senk motsatt arm og ben rolig ned mens korsryggen presses i gulvet — trygg, dyp kjernestyrke.",
+  "steg": [
+   "Ligg på ryggen med armene rett opp og hoftene og knærne bøyd 90 grader.",
+   "Press korsryggen ned i gulvet så svaien forsvinner.",
+   "Senk motsatt arm og ben rolig mot gulvet uten at ryggen løfter seg.",
+   "Kom tilbake til start og bytt side i rolig tempo."
+  ],
+  "tips": [
+   "Mister korsryggen gulvkontakten? Senk mindre, eller behold beina stille og flytt bare armene.",
+   "Pust rolig ut når du strekker ut — det hjelper kjernen å holde."
+  ],
+  "muskler": [
+   "Kjerne"
+  ],
+  "bilde": "dead-bug"
+ },
+ {
+  "navn": "Kne-pushup",
+  "kort": "Armhevinger på knærne — samme bevegelse med mindre last, den direkte broen til en full armheving fra tå.",
+  "steg": [
+   "Stå på alle fire og sett hendene litt bredere enn skuldrene, litt foran dem.",
+   "Senk knærne i gulvet og strekk kroppen ut til en rett linje fra knær til hode.",
+   "Senk brystet rolig mot gulvet med albuene ca. 45 grader inn.",
+   "Press deg opp igjen uten at hoftene synker eller stikker opp."
+  ],
+  "tips": [
+   "Legg noe mykt under knærne om det kniper.",
+   "Klar for mer? Flytt hendene lenger frem, eller avslutt med én rep fra tærne."
+  ],
+  "muskler": [
+   "Bryst",
+   "Triceps",
+   "Skuldre",
+   "Kjerne"
+  ],
+  "bilde": "armhevinger-kne"
+ },
+ {
+  "navn": "Goblet squat",
+  "kort": "Knebøy med vekt holdt mot brystet — vekten balanserer deg og gjør det lettere å sitte dypt og oppreist.",
+  "steg": [
+   "Hold en manual, kettlebell eller noe tungt med begge hender mot brystet.",
+   "Sett deg rolig ned mellom hoftene med hælene i gulvet.",
+   "Gå så dypt du har kontroll, med albuene innenfor knærne i bunn.",
+   "Press hele foten i gulvet og reis deg opp med brystet stolt."
+  ],
+  "tips": [
+   "Vekten foran hjelper deg å holde overkroppen oppreist.",
+   "La albuene gli innenfor knærne i bunn — det åpner hoftene."
+  ],
+  "muskler": [
+   "Lår",
+   "Sete",
+   "Kjerne"
+  ],
+  "utstyr": [
+   "Manual",
+   "Kettlebell"
+  ],
+  "bilde": "goblet-kneboy"
+ },
+ {
+  "navn": "Hip thrust (sofa)",
+  "kort": "Øvre rygg mot sofakanten, press hoftene opp til vannrett — den sterkeste bakside-øvelsen du kan gjøre hjemme.",
+  "steg": [
+   "Sett deg på gulvet med øvre del av ryggen mot kanten av en sofa, føttene flatt i gulvet.",
+   "Press gjennom hælene og løft hoftene til kroppen er vannrett fra knær til skuldre.",
+   "Klem setet hardt på toppen og hold haken lett inn.",
+   "Senk hoftene rolig ned og gjenta uten å hvile helt i bunn."
+  ],
+  "tips": [
+   "Skinnleggene bør stå omtrent loddrett på toppen — juster fotplasseringen til det stemmer.",
+   "Vil du ha mer? Hold en pause på toppen, eller legg en vekt over hoftene."
+  ],
+  "muskler": [
+   "Sete",
+   "Baklår",
+   "Kjerne"
+  ],
+  "utstyr": [
+   "Sofa"
+  ],
+  "bilde": "hip-thrust-sofa"
+ },
+ {
+  "navn": "Hollow tuck",
+  "kort": "Ligg på rygg, press korsryggen ned og løft skuldre og bøyde ben — grunnlaget for all kjernestyrke.",
+  "steg": [
+   "Ligg på ryggen og press korsryggen hardt ned i gulvet.",
+   "Løft skuldrene litt opp fra gulvet og trekk knærne opp mot 90 grader.",
+   "Hold spennet med bøyde ben (tuck) mens du puster rolig.",
+   "Strekk beina lenger ut etter hvert som du blir sterkere — men bare så lenge korsryggen blir i gulvet."
+  ],
+  "tips": [
+   "Mister du gulvkontakten i korsryggen: trekk knærne nærmere brystet igjen.",
+   "Liten, stødig posisjon slår en stor som kollapser."
+  ],
+  "muskler": [
+   "Kjerne"
+  ],
+  "bilde": "hollow-tuck"
+ },
+ {
+  "navn": "Utfall bak",
+  "kort": "Steg bakover og senk bakre kne mot gulvet — tryggere for knærne og lettere å balansere enn utfall fremover.",
+  "steg": [
+   "Stå høyt med føttene i hoftebredde.",
+   "Ta et kontrollert steg bakover og senk bakre kne rolig mot gulvet.",
+   "Hold vekten på fremre bein med hælen i gulvet og overkroppen høy.",
+   "Skyv fra fremre fot tilbake til stående, og bytt side."
+  ],
+  "tips": [
+   "Kortere steg gir mer i lårene, lengre steg mer i setet.",
+   "Vakler du? Hold en fingertupp mot en vegg for balanse."
+  ],
+  "muskler": [
+   "Lår",
+   "Sete",
+   "Balanse"
+  ],
+  "bilde": "utfall-bak"
  }
 ]

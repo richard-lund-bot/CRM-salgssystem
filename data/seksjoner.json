@@ -11,6 +11,78 @@
         "id": "grunnstilling",
         "navn": "Grunnstilling",
         "intro": "De aller enkleste variantene av hver bevegelse. Lær retningen og spenningen i kroppen — helt uten belastning på leddene.",
+        "teori": {
+          "id": "kv-teori-1",
+          "tittel": "Derfor lønner det seg å begynne",
+          "undertittel": "Hva kroppsvekttrening er — og hvorfor selv korte økter forandrer kroppen.",
+          "lesetid": 4,
+          "bilde": "kv-teori-1",
+          "avsnitt": [
+            {
+              "p": "Du trenger verken gym eller utstyr for å bli sterkere. Kroppen din er alt du trenger — og den er alltid med deg. Dette er den første av tre korte leksjoner som til sammen blir ditt lille kompendium i kroppsvekttrening."
+            },
+            {
+              "h": "Hva er kroppsvekttrening?"
+            },
+            {
+              "p": "Kroppsvekttrening (kalt callisthenics) bruker din egen vekt som motstand. All styrke bygges gjennom noen få grunnbevegelser: å presse fra deg (push), å dra mot deg (drag), å bøye og strekke i beina (knebøy), og å holde kroppen stiv og stødig (kjerne). Klarer du disse, klarer du det meste."
+            },
+            {
+              "h": "Hvorfor det virker fra dag én"
+            },
+            {
+              "p": "Regelmessig bevegelse gjør musklene sterkere, beina tettere og humøret bedre — og senker risikoen for de vanligste livsstilssykdommene. Verdens helseorganisasjon anbefaler minst 150 minutter aktivitet i uka pluss styrke to dager, men det viktigste funnet er at selv litt er mye bedre enn ingenting. Den største helsegevinsten kommer når du går fra å være inaktiv til å bevege deg litt."
+            },
+            {
+              "h": "Start der du er"
+            },
+            {
+              "p": "Derfor begynner planen med de aller letteste variantene — armhevinger mot en vegg, knebøy til en stol. Ikke fordi de er «juks», men fordi god teknikk læres best uten tung belastning. Kontroll først, styrke etterpå. Kjenner du bevegelsen riktig i kroppen nå, har du et trygt fundament å bygge videre på."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva bruker du som motstand i kroppsvekttrening?",
+              "valg": [
+                "Manualer og vektstang",
+                "Din egen kroppsvekt",
+                "Strikk og maskiner"
+              ],
+              "riktig": 1,
+              "forklaring": "Kroppsvekttrening bruker din egen vekt som motstand — derfor kan du gjøre den hvor som helst."
+            },
+            {
+              "sporsmal": "Hva er viktigst når du akkurat har begynt?",
+              "valg": [
+                "Å ta så mange reps som mulig",
+                "God teknikk og kontroll",
+                "Å gå så tungt du klarer"
+              ],
+              "riktig": 1,
+              "forklaring": "Ren, kontrollert teknikk bygger et trygt fundament. Styrken og repsene kommer av seg selv etterpå."
+            },
+            {
+              "sporsmal": "Hvorfor starter planen med de letteste variantene?",
+              "valg": [
+                "For å lære bevegelsen trygt før belastning",
+                "Fordi de er de eneste som teller",
+                "For å slippe å svette"
+              ],
+              "riktig": 0,
+              "forklaring": "De letteste variantene lar deg lære retningen og spennet i bevegelsen uten å belaste leddene — et bevisst førstesteg."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Verdens helseorganisasjon (WHO) – retningslinjer for fysisk aktivitet (2020)",
+              "om": "Anbefaler minst 150 min aktivitet i uka pluss styrketrening to dager — og understreker at litt er langt bedre enn ingenting."
+            },
+            {
+              "kilde": "American College of Sports Medicine – posisjonsuttalelse om trening for friske voksne",
+              "om": "Bekrefter at push, drag, bein og kjerne bør trenes for en balansert base."
+            }
+          ]
+        },
         "steg": [
           { "ovelse": "vegg-pushup", "familie": "push-h", "niva": 1, "maal": { "type": "reps", "verdi": 12 },
             "blurb": "Stå en armlengde fra veggen, hendene i brysthøyde. Senk deg rolig inn og press ut — rett kropp hele veien.",
@@ -47,6 +119,78 @@
         "id": "forste-klasse",
         "navn": "Første klasse",
         "intro": "Ett hakk opp på hver bevegelse. Nå begynner vi å bygge ekte styrke i alle mønstrene samtidig.",
+        "teori": {
+          "id": "kv-teori-2",
+          "tittel": "Slik blir du sterkere — litt etter litt",
+          "undertittel": "Progressiv overbelastning uten vekter, og de fire mønstrene som dekker hele kroppen.",
+          "lesetid": 5,
+          "bilde": "kv-teori-2",
+          "avsnitt": [
+            {
+              "p": "I forrige leksjon lærte du hva kroppsvekttrening er. Nå ser vi på selve motoren: hvordan bevegelsene faktisk gjør deg sterkere over tid."
+            },
+            {
+              "h": "Progressiv overbelastning — også uten jern"
+            },
+            {
+              "p": "Kroppen tilpasser seg det du ber den om. Gir du den gradvis litt mer enn den er vant til, bygger den seg sterkere. Dette prinsippet heter progressiv overbelastning, og det gjelder helt uten vekter. Uten jern øker du på fire måter: vanskeligere spak (senk hendene fra vegg til benk til gulv), flere reps, roligere tempo, eller kortere pauser. Alle fire gir kroppen en grunn til å bli sterkere."
+            },
+            {
+              "h": "Fire mønstre, hele kroppen"
+            },
+            {
+              "p": "Hver enhet trener bevisst de samme fire mønstrene samtidig: en press, et drag, en knebøy og en kjerneøvelse. Slik unngår du en skjev kropp der brystet er sterkt og ryggen svak. En balansert base beveger seg bedre, holder seg skadefri og ser harmonisk ut."
+            },
+            {
+              "h": "Jevnlighet slår intensitet"
+            },
+            {
+              "p": "Det som avgjør framgangen din er ikke hvor hardt du tar i én gang, men hvor jevnt du møter opp. To til tre rolige økter i uka, uke etter uke, slår en enkelt brutal økt du blir støl en uke av. Små steg, ofte — det er hele hemmeligheten."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hvordan gjør du en kroppsvektøvelse tyngre uten vekter?",
+              "valg": [
+                "Du kan ikke — uten vekter stopper framgangen",
+                "Endrer vinkel/spak, tar flere reps eller roligere tempo",
+                "Du må kjøpe utstyr"
+              ],
+              "riktig": 1,
+              "forklaring": "Vanskeligere spak, flere reps, roligere tempo eller kortere pause gjør øvelsen tyngre helt uten jern."
+            },
+            {
+              "sporsmal": "Hvorfor trener modulen push, drag, bein og kjerne samtidig?",
+              "valg": [
+                "Tilfeldig rekkefølge",
+                "For en balansert base — hele kroppen",
+                "Fordi det er raskest"
+              ],
+              "riktig": 1,
+              "forklaring": "De fire mønstrene dekker hele kroppen. Trent samtidig gir de en balansert, skadefri base."
+            },
+            {
+              "sporsmal": "Hva betyr mest for framgang over tid?",
+              "valg": [
+                "Å ta i maksimalt hver gang",
+                "Å trene jevnlig, uke etter uke",
+                "Å trene lengst mulig én dag"
+              ],
+              "riktig": 1,
+              "forklaring": "Jevnlighet slår intensitet. Små, hyppige økter bygger mer varig styrke enn enkeltstående skippertak."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Thomas DeLorme – «Restoration of muscle power by heavy-resistance exercises» (1945)",
+              "om": "La det vitenskapelige grunnlaget for progressiv motstandstrening — gradvis økt belastning."
+            },
+            {
+              "kilde": "American College of Sports Medicine – posisjonsuttalelse om progresjon i styrketrening (2009)",
+              "om": "Bekrefter at belastning (her: spak, reps, tempo, pause) må økes gradvis for fortsatt framgang."
+            }
+          ]
+        },
         "steg": [
           { "ovelse": "skra-pushup-sofa-benk", "familie": "push-h", "niva": 1, "maal": { "type": "reps", "verdi": 10 },
             "blurb": "Hendene på en sofa eller benk. Jo lavere flate, jo tyngre — senk høyden når det kjennes lett.",
@@ -82,6 +226,82 @@
         "id": "byggeklosser",
         "navn": "Byggeklosser",
         "intro": "Måløvelsene for nybegynner-seksjonen. Klarer du disse rent, har du en solid callisthenics-base.",
+        "teori": {
+          "id": "kv-teori-3",
+          "tittel": "Hvile, framgang og veien videre",
+          "undertittel": "Hvorfor hvile bygger deg, og hvordan du gjør treningen til en vane som varer.",
+          "lesetid": 5,
+          "bilde": "kv-teori-3",
+          "avsnitt": [
+            {
+              "p": "Du vet nå hva kroppsvekttrening er og hvordan du gjør den tyngre. Den siste brikken i kompendiet er den mange glemmer: hvile — og hvordan du holder det gående."
+            },
+            {
+              "h": "Du blir sterk mens du hviler"
+            },
+            {
+              "p": "Under selve økta bryter du faktisk kroppen litt ned. Oppbyggingen — den som gjør deg sterkere — skjer i timene og dagene etterpå, mens du hviler. Fenomenet kalles superkompensasjon: får kroppen ro, mat og søvn, bygger den seg opp litt over sitt gamle nivå. Derfor er en hviledag ikke latskap, men en del av planen. Søvn og nok protein er de kraftigste verktøyene du har."
+            },
+            {
+              "h": "Sett sammen din egen økt"
+            },
+            {
+              "p": "Nå kan du lage din egen balanserte økt: varm opp et par minutter, velg én øvelse fra hvert mønster (press, drag, bein, kjerne), ta 2–4 sett av hver, og trapp rolig ned til slutt. Det er hele oppskriften — resten er å velge variantene som passer dagens form."
+            },
+            {
+              "h": "Veien videre"
+            },
+            {
+              "p": "Denne seksjonen er grunnmuren. Herfra kan du gå videre til tyngre varianter — kne-armhevinger mot fulle armhevinger, dypere knebøy, hardere kjernehold — eller ta med deg den samme jevnligheten inn i løping, mobilitet eller yoga. Det viktigste du tar med deg er ikke en enkelt øvelse, men vanen: å møte opp, litt om gangen, igjen og igjen."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Når blir musklene faktisk sterkere?",
+              "valg": [
+                "Under selve økta",
+                "I hvilen og restitusjonen etter økta",
+                "Bare hvis du trener hver dag"
+              ],
+              "riktig": 1,
+              "forklaring": "Oppbyggingen skjer i restitusjonsfasen — superkompensasjon — når kroppen får ro, mat og søvn."
+            },
+            {
+              "sporsmal": "Hvordan setter du sammen en balansert kroppsvektøkt?",
+              "valg": [
+                "Bare det du liker best",
+                "Én øvelse fra hvert mønster: press, drag, bein, kjerne",
+                "Så mange øvelser som mulig"
+              ],
+              "riktig": 1,
+              "forklaring": "Én øvelse fra hvert av de fire mønstrene gir en balansert økt som trener hele kroppen."
+            },
+            {
+              "sporsmal": "Hva er det viktigste du tar med deg videre?",
+              "valg": [
+                "Én bestemt øvelse",
+                "Vanen med å møte opp jevnlig",
+                "Å alltid trene til utmattelse"
+              ],
+              "riktig": 1,
+              "forklaring": "Selve fundamentet er vanen — å bevege seg litt om gangen, jevnlig, over tid."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Superkompensasjonsmodellen (Nikolai Jakovlev, sovjetisk idrettsfysiologi, 1950-tallet)",
+              "om": "Formen stiger over utgangspunktet i restitusjonsfasen — ikke under selve økta."
+            },
+            {
+              "kilde": "Matthew Walker – «Why We Sleep» (2017)",
+              "om": "Dyp søvn skiller ut hormonene som reparerer kroppen; søvn er restitusjonens grunnmur."
+            },
+            {
+              "kilde": "Morton m.fl. – metaanalyse i «British Journal of Sports Medicine» (2018)",
+              "om": "Nok protein, jevnt fordelt, støtter muskeloppbyggingen mellom øktene."
+            }
+          ]
+        },
         "steg": [
           { "ovelse": "kne-pushup", "familie": "push-h", "niva": 1, "maal": { "type": "reps", "verdi": 10 },
             "blurb": "På knærne i stedet for tærne. Rett linje fra knær til hode — den direkte broen til en full push-up.",

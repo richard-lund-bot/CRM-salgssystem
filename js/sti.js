@@ -495,6 +495,10 @@ export function visSeksjonSkjerm(mount) {
       stjerneRad(stjerner, 'enhet-header__stjerner'),
     ));
 
+    // Teori-kort (kompendium): les-først-leksjon øverst i enheten. Tilgjengelig
+    // så snart enheten er låst opp — den gater ikke teknikk-stegene.
+    if (enhet.teori) reise.append(teoriKort(seksjon, enhet, enhetTilgj));
+
     enhet.steg.forEach((st, si) => {
       const laert = mestret.has(st.ovelse);
       let tilstand;
@@ -547,6 +551,16 @@ export function visSeksjonSkjerm(mount) {
       if (!feiret) { feirEnhet(enhet.navn); feiret = true; }
     }
   });
+
+  // Kompendium: alle enheters teori er lest → feires én gang. Egen spor,
+  // uavhengig av uteksamineringene.
+  const teoriEnheter = enheter.filter((e) => e.teori);
+  if (teoriEnheter.length && teoriEnheter.every((e) => teoriFullfort(seksjon.id, e.teori.id))
+    && !harFeiret(kompendiumNokkel(seksjon.id)) && !feiret) {
+    settFeiret(kompendiumNokkel(seksjon.id));
+    feirKompendium(seksjon.navn);
+    feiret = true;
+  }
 
   // Dyplenke fra en planlagt økt (hjemmesiden): #/seksjon?id=…&uteks=<enhet>
   // åpner rett enhets-uteksaminering. Strip param først så reTegnReise ikke
@@ -766,6 +780,10 @@ function feirEnhet(navn) {
 }
 function feirSeksjon(navn) {
   feirFullfort({ merke: 'Seksjon fullført', tittel: navn, under: 'Du har lagt grunnmuren. På tide med neste seksjon!', stor: true });
+}
+const kompendiumNokkel = (seksjonId) => `mova.kompendiumFeiret.${seksjonId}`;
+function feirKompendium(navn) {
+  feirFullfort({ merke: 'Kompendium fullført', tittel: `${navn} — teorien`, under: 'Du har lest hele kompendiet. Nå vet du hvorfor treningen virker!', stor: true });
 }
 
 // Kompakt, klebrig topp-kort (Duolingo-aktig «unit header»): ikon, etikett,
@@ -1137,6 +1155,203 @@ function startLeksjon(sti, ledd) {
         el('div', { class: 'leksjon-feiring__ikon' }, ikon('sjekk', 'ikon')),
         el('h1', { class: 'leksjon-feiring__tittel' }, 'Teknikk lært!'),
         el('p', { class: 'leksjon-feiring__under' }, navn),
+        el('div', { class: 'leksjon-feiring__xp' }, ikon('lyn', 'ikon'), ` +${res.xp || 0} XP`),
+        ...((res.nyeMerker || []).length
+          ? [el('div', { class: 'leksjon-feiring__merke' }, ikon('medalje', 'ikon'), ' Nytt merke: ' + res.nyeMerker.map((m) => m.navn).join(', '))]
+          : []),
+      ),
+    );
+    bunn.append(primaer('Fortsett', () => { lukk(); reTegnReise(); }));
+    try { overlay.append(lagKonfetti()); } catch { /* valgfri feiring */ }
+  }
+}
+
+// ===========================================================================
+// Teori (kompendium): en «les først»-leksjon per enhet. Kort artikkel med
+// header, avsnitt og kilder, etterfulgt av noen flervalgs-spørsmål. Fullført
+// logges (kilde 'laer', node 'teori') så den gir XP, mater streaken og kan
+// feires — og de tre teoriene til sammen danner seksjonens kompendium.
+// ===========================================================================
+/** Om enhetens teori er lest ferdig — avledet fra bevegelsesloggen. */
+function teoriFullfort(seksjonId, teoriId) {
+  for (const o of hentLogg()) {
+    if (o.kilde === 'laer' && o.sti === seksjonId && o.node === 'teori' && o.teori === teoriId) return true;
+  }
+  return false;
+}
+
+// «Les først»-kort øverst i enheten (bok-ikon, tittel, lesetid + antall spørsmål).
+function teoriKort(seksjon, enhet, tilgjengelig) {
+  const t = enhet.teori;
+  const ferdig = teoriFullfort(seksjon.id, t.id);
+  const n = (t.sporsmal || []).length;
+  const kort = el('button', {
+    class: 'teori-kort' + (ferdig ? ' teori-kort--ferdig' : '') + (tilgjengelig ? '' : ' teori-kort--laast'),
+    type: 'button', 'aria-label': `Teori: ${t.tittel}`,
+  },
+    el('span', { class: 'teori-kort__ikon' }, ikon(ferdig ? 'sjekk' : (tilgjengelig ? 'bok' : 'las'))),
+    el('div', { class: 'teori-kort__tekst' },
+      el('span', { class: 'teori-kort__merke' }, ferdig ? 'Teori · fullført' : 'Teori · les først'),
+      el('span', { class: 'teori-kort__tittel' }, t.tittel),
+      el('span', { class: 'teori-kort__meta' }, `${t.lesetid || 4} min lesing · ${n} spørsmål`),
+    ),
+    el('span', { class: 'teori-kort__pil' }, ferdig ? '↻' : '›'),
+  );
+  kort.addEventListener('click', (ev) => {
+    ev.stopPropagation();
+    lukkPopover();
+    if (!tilgjengelig) { vibrer('feil'); return; }
+    startTeori(seksjon, enhet);
+  });
+  return kort;
+}
+
+// Kompakt «Grunnlaget»-seksjon (kilder) nederst i teori-lesningen.
+function teoriKilder(t) {
+  const kilder = t.kilder || [];
+  if (!kilder.length) return null;
+  return el('div', { class: 'teori-kilder' },
+    el('h2', { class: 'leksjon__h' }, ikon('bok', 'ikon ikon--liten'), ' Grunnlaget'),
+    el('ul', { class: 'teori-kilder__liste' }, ...kilder.map((k) => el('li', { class: 'teori-kilder__rad' },
+      el('span', { class: 'teori-kilder__kilde' }, k.kilde),
+      k.om ? el('span', { class: 'teori-kilder__om' }, k.om) : null,
+    ))),
+  );
+}
+
+// Teori-leseren: les → ett spørsmål av gangen → feiring. Gjenbruker
+// leksjon-overleggets stil og segment-framdrift.
+function startTeori(seksjon, enhet) {
+  const t = enhet.teori;
+  const sporsmal = t.sporsmal || [];
+  const steg = ['les', ...sporsmal.map(() => 'sp')];
+  let idx = 0;
+
+  const lukkX = el('button', { class: 'leksjon__lukk', type: 'button', 'aria-label': 'Avslutt', onclick: lukk }, ikon('kryss'));
+  const framdrift = el('div', { class: 'leksjon__framdrift' });
+  const kropp = el('div', { class: 'leksjon__kropp' });
+  const bunn = el('div', { class: 'leksjon__bunn' });
+  const overlay = el('div', { class: 'leksjon leksjon--teori' },
+    el('div', { class: 'leksjon__topp' }, lukkX, framdrift),
+    kropp, bunn,
+  );
+  document.body.append(overlay);
+  requestAnimationFrame(() => overlay.classList.add('leksjon--apen'));
+  tegn();
+
+  function lukk() { overlay.classList.add('leksjon--lukker'); setTimeout(() => overlay.remove(), 200); }
+
+  function settFramdrift(fylte) {
+    tom(framdrift);
+    steg.forEach((_, i) => framdrift.append(el('span', { class: 'leksjon__seg' + (i <= fylte ? ' leksjon__seg--fyllt' : '') })));
+  }
+
+  function primaer(tekst, onclick, { av = false } = {}) {
+    const tx = el('span', {}, tekst);
+    const b = el('button', { class: 'leksjon-primaer' + (av ? ' leksjon-primaer--av' : ''), type: 'button' }, tx);
+    b.disabled = av;
+    b.addEventListener('click', onclick);
+    b.settTekst = (x) => { tx.textContent = x; };
+    b.settAv = (v) => { b.disabled = v; b.classList.toggle('leksjon-primaer--av', v); };
+    return b;
+  }
+
+  function tegn() {
+    settFramdrift(idx - 1);
+    tom(kropp); tom(bunn);
+    if (steg[idx] === 'les') tegnLes();
+    else tegnSporsmal(idx - 1);
+    kropp.scrollTop = 0;
+  }
+
+  function tegnLes() {
+    kropp.append(
+      el('span', { class: 'leksjon__merke' }, 'Teori'),
+      el('h1', { class: 'leksjon__tittel' }, t.tittel),
+      t.bilde ? el('div', { class: 'leksjon__bilde', style: `background-image:url('bilder/artikler/${t.bilde}.webp')` }) : null,
+      el('p', { class: 'leksjon__blurb leksjon__blurb--ingress' }, t.undertittel),
+      ...(t.avsnitt || []).map((b) => (b.h
+        ? el('h2', { class: 'leksjon__h' }, b.h)
+        : el('p', { class: 'leksjon__avsnitt' }, b.p))),
+      teoriKilder(t),
+    );
+    bunn.append(primaer(sporsmal.length ? 'Til spørsmålene' : 'Fullfør', () => {
+      if (sporsmal.length) { idx++; tegn(); } else fullfor();
+    }));
+  }
+
+  function tegnSporsmal(qi) {
+    const q = sporsmal[qi];
+    const sisteSp = qi === sporsmal.length - 1;
+    let valgt = null;
+    let besvart = false;
+    const valgKnapper = q.valg.map((v, i) => {
+      const b = el('button', { class: 'leksjon-valg', type: 'button' }, v);
+      b.addEventListener('click', () => {
+        if (besvart) return;
+        valgt = i;
+        valgKnapper.forEach((k, j) => k.classList.toggle('leksjon-valg--valgt', j === i));
+        knapp.settAv(false);
+      });
+      return b;
+    });
+    const feedback = el('div', { class: 'leksjon-feedback', hidden: true });
+    kropp.append(
+      el('span', { class: 'leksjon__merke' }, `Spørsmål ${qi + 1} av ${sporsmal.length}`),
+      el('h2', { class: 'leksjon__sporsmal' }, q.sporsmal),
+      el('div', { class: 'leksjon-valg-liste' }, ...valgKnapper),
+      feedback,
+    );
+    const knapp = primaer('Sjekk', () => {
+      if (valgt == null) return;
+      if (!besvart) {
+        besvart = true;
+        const riktig = valgt === q.riktig;
+        vibrer(riktig ? 'riktig' : 'feil');
+        valgKnapper.forEach((k, j) => {
+          k.disabled = true;
+          if (j === q.riktig) k.classList.add('leksjon-valg--riktig');
+          else if (j === valgt) k.classList.add('leksjon-valg--feil');
+        });
+        feedback.hidden = false;
+        feedback.className = 'leksjon-feedback ' + (riktig ? 'leksjon-feedback--riktig' : 'leksjon-feedback--feil');
+        feedback.textContent = (riktig ? 'Riktig! ' : 'Nesten — ') + q.forklaring;
+        knapp.settTekst(sisteSp ? 'Fullfør' : 'Neste spørsmål');
+      } else if (sisteSp) {
+        fullfor();
+      } else {
+        idx++; tegn();
+      }
+    }, { av: true });
+    bunn.append(knapp);
+  }
+
+  function fullfor() {
+    vibrer('medium');
+    let res = { xp: 0, nyeMerker: [] };
+    try {
+      res = registrerOgLogg({
+        bevegelse: 'bodyweight',
+        varighetMin: t.lesetid || 4,
+        intensitet: 1,
+        tittel: `${seksjon.navn}: ${t.tittel}`,
+        kilde: 'laer',
+        ekstra: { sti: seksjon.id, node: 'teori', enhet: enhet.id, teori: t.id },
+      });
+    } catch (err) { console.warn('Kunne ikke logge teori', err); }
+    tegnFeiring(res);
+  }
+
+  function tegnFeiring(res) {
+    settFramdrift(steg.length - 1);
+    vibrer('feiring');
+    tom(kropp); tom(bunn);
+    lukkX.style.visibility = 'hidden';
+    kropp.append(
+      el('div', { class: 'leksjon-feiring' },
+        el('div', { class: 'leksjon-feiring__ikon' }, ikon('bok', 'ikon')),
+        el('h1', { class: 'leksjon-feiring__tittel' }, 'Teori fullført!'),
+        el('p', { class: 'leksjon-feiring__under' }, t.tittel),
         el('div', { class: 'leksjon-feiring__xp' }, ikon('lyn', 'ikon'), ` +${res.xp || 0} XP`),
         ...((res.nyeMerker || []).length
           ? [el('div', { class: 'leksjon-feiring__merke' }, ikon('medalje', 'ikon'), ' Nytt merke: ' + res.nyeMerker.map((m) => m.navn).join(', '))]
