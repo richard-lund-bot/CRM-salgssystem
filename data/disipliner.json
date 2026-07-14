@@ -72,5 +72,18 @@
       "yoga-balanse",
       "yoga-hvile"
     ]
+  },
+  {
+    "id": "hiit",
+    "navn": "HIIT",
+    "undertittel": "Korte, harde intervaller — maksimal effekt på minimal tid.",
+    "ikon": "lyn",
+    "farge": "gul",
+    "status": "aktiv",
+    "seksjoner": [
+      "hiit-grunnlag",
+      "hiit-bevegelser",
+      "hiit-protokoller"
+    ]
   }
 ]

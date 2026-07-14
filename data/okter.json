@@ -4098,6 +4098,10 @@
       "ref": "https://www.mayoclinicproceedings.org/article/S0025-6196(11)61303-7/abstract + https://theconversation.com/japanese-walking-the-benefits-of-this-fitness-trend-257302",
       "notat": "Original: 5 runder rask/rolig gange ute (~70 % VO2max i rask fase). Her: marsj på stedet, 3 runder og toppfart dempet til Z2–Z3; 3/3-klokken er beholdt eksakt."
     },
+    "krever": [
+      "Intervallprinsippet",
+      "Høye kneløft"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -4157,6 +4161,11 @@
       "ref": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2849965/ + https://www.physoc.org/magazine-articles/hit-to-get-fit-metabolic-adaptations-to-low-volume-high-intensity-interval-training/",
       "notat": "Original: 8–12 × 60 s / 75 s på ergometersykkel; her 8 runder med enkle kroppsvektøvelser på stedet. 60/75-klokken er beholdt eksakt; 8 runder valgt for å treffe 20–25 min."
     },
+    "krever": [
+      "Intervallprinsippet",
+      "Høye kneløft",
+      "Jumping jacks"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -4288,6 +4297,9 @@
       "ref": "https://en.wikipedia.org/wiki/Circuit_training + https://www.health.harvard.edu/exercise-and-fitness/hiit-workouts-for-older-adults-a-guide-to-safe-and-effective-high-intensity-interval-training",
       "notat": "Originalen er hard stasjonstrening; her dempet til RPE 4–5 etter dokumentert lavterskel-HIIT-praksis (Harvard Health). 30/30-klokke, 8 stasjoner, 2 runder med 60 s seriepause."
     },
+    "krever": [
+      "Intervallprinsippet"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -4424,6 +4436,11 @@
       "ref": "https://pubmed.ncbi.nlm.nih.gov/8897392/ + https://link.springer.com/article/10.1007/s12576-019-00676-7",
       "notat": "Original: 7–8 × 20/10 på ergometersykkel ved 170 % VO2max – umulig med kroppsvekt; intensitet angis derfor som RPE 8–9 (etablert helkroppspraksis, jf. Tabata 2019-review). 20/10-klokken beholdt eksakt, to blokker."
     },
+    "krever": [
+      "Tabata-protokollen",
+      "Jumping jacks",
+      "Fjellklatrer"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -4534,6 +4551,10 @@
       "ref": "https://journals.physiology.org/doi/full/10.1152/japplphysiol.00334.2012 + https://onlinelibrary.wiley.com/doi/10.1002/ejsc.12163",
       "notat": "Original: løping med sprint i 10-sekundersgiret; her marsj/kneløft på stedet med dempet toppgir (RPE 5, intervall-lett). Tempovekslingen 30-20-10 og 5-minuttersblokkene med 2 min pause er beholdt eksakt."
     },
+    "krever": [
+      "30-20-10-metoden",
+      "Høye kneløft"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -4782,6 +4803,13 @@
       "ref": "https://barbend.com/what-is-emom-training/ + https://www.smartwod.app/post/crossfit-knowledge-what-is-an-emom",
       "notat": "Ikke én enkeltstudie – etablert treningsformat. Reps er valgt så du tjener minst 15 s pause per minutt (mål RPE 7–9); skaler ned til 6/10/24/8 hvis pausen forsvinner."
     },
+    "krever": [
+      "Intervallprinsippet",
+      "Burpees",
+      "Knebøyhopp",
+      "Fjellklatrer",
+      "Utfallshopp"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -7987,6 +8015,506 @@
             "dose": "30 s"
           }
         ]
+      }
+    ]
+  },
+  {
+    "id": "hiit-tabata",
+    "kategori": "hiit",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "Klassisk Tabata",
+    "beskrivelse": "Den originale oppskriften i praksis: fire brutale minutter av 20 sekunder alt-ut og 10 sekunder pause. To Tabata-blokker, to øvelser, én svært effektiv økt.",
+    "varighetMin": 16,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Tabata-protokollen (Tabata et al., 1996)",
+      "type": "protokoll",
+      "ref": "https://pubmed.ncbi.nlm.nih.gov/8897392/ + https://www.acefitness.org/resources/pros/expert-articles/5730/tabata-training/",
+      "notat": "To klassiske Tabata-blokker (20/10 × 8) med hver sin øvelse og pause mellom. Originalen var på ergometersykkel ved svært høy intensitet; her med kroppsvektøvelser. Lettere: bytt hopp mot raske knebøyer."
+    },
+    "krever": [
+      "Tabata-protokollen",
+      "Knebøyhopp",
+      "Fjellklatrer"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig marsj og armsirkler",
+        "min": 4,
+        "parametre": {
+          "tidMin": 4,
+          "sone": "Z1–Z2 · bygg gradvis"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Tabata 1 — knebøyhopp (20/10 × 8)",
+        "min": 4,
+        "parametre": {
+          "runder": 8,
+          "faser": [
+            {
+              "navn": "Arbeid: knebøyhopp — alt du har",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile",
+              "sek": 10,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Tabata 2 — fjellklatrer (20/10 × 8)",
+        "min": 4,
+        "parametre": {
+          "runder": 8,
+          "faser": [
+            {
+              "navn": "Arbeid: fjellklatrer i maks tempo",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile",
+              "sek": 10,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig marsj + pust",
+        "min": 4,
+        "parametre": {
+          "tidMin": 4,
+          "sone": "Z1 · pulsen ned"
+        }
+      }
+    ]
+  },
+  {
+    "id": "hiit-amrap",
+    "kategori": "hiit",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "AMRAP-kvarteret",
+    "beskrivelse": "«As many rounds as possible» på et kort kraftig sirkelsett. Du styrer tempoet selv i tolv minutter — jo flere runder, jo hardere økt. Ærlig og gnistrende.",
+    "varighetMin": 20,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "AMRAP-sirkel (CrossFit-metodikk)",
+      "type": "tradisjon",
+      "ref": "https://www.crossfit.com/essentials/amrap-workouts + https://www.menshealth.com/fitness/a27242151/amrap-workout/",
+      "notat": "As-many-rounds-as-possible av en fast sirkel i et gitt tidsvindu. Bygg opp tempo trygt; noter antall runder og prøv å slå det neste gang. Skaler ved å redusere reps eller droppe hopp."
+    },
+    "krever": [
+      "Intervallprinsippet",
+      "Burpees",
+      "Knebøyhopp",
+      "Jumping jacks"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig marsj og lette kneløft",
+        "min": 4,
+        "parametre": {
+          "tidMin": 4,
+          "sone": "Z1–Z2 · bygg gradvis"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "AMRAP 12 min — flest mulig runder",
+        "min": 12,
+        "parametre": {
+          "runder": 4,
+          "faser": [
+            {
+              "navn": "5 burpees",
+              "sek": 45,
+              "type": "arbeid"
+            },
+            {
+              "navn": "10 knebøyhopp",
+              "sek": 40,
+              "type": "arbeid"
+            },
+            {
+              "navn": "15 jumping jacks",
+              "sek": 35,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Kort pust ved behov",
+              "sek": 60,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig marsj + pust",
+        "min": 4,
+        "parametre": {
+          "tidMin": 4,
+          "sone": "Z1 · pulsen ned"
+        }
+      }
+    ]
+  },
+  {
+    "id": "hiit-nybegynner",
+    "kategori": "hiit",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "HIIT for nybegynnere",
+    "beskrivelse": "En trygg vei inn i intervalltrening: korte, friske drag med rikelig pause og ingen hopp. Du kjenner vekslingen mellom hardt og hvile uten å bli overveldet.",
+    "varighetMin": 18,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Lavintensiv intervall-intro (ACSM-tilpasset)",
+      "type": "retningslinje",
+      "ref": "https://www.acsm.org/docs/default-source/files-for-resource-library/high-intensity-interval-training.pdf + https://www.nhs.uk/live-well/exercise/",
+      "notat": "Skånsom intro med korte arbeidsdrag (30 s) og lange pauser (60 s), lavterskel-øvelser uten hopp. Øk tempo og korte pausen etter hvert som formen bygger seg."
+    },
+    "krever": [
+      "Intervallprinsippet",
+      "Høye kneløft"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig marsj på stedet",
+        "min": 4,
+        "parametre": {
+          "tidMin": 4,
+          "sone": "Z1 · rolig"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "6 × 30 s friskt / 60 s rolig",
+        "min": 12,
+        "parametre": {
+          "runder": 6,
+          "faser": [
+            {
+              "navn": "Arbeid: høye kneløft i friskt tempo (RPE 6)",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile: rolig marsj",
+              "sek": 60,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig marsj + pust",
+        "min": 2,
+        "parametre": {
+          "tidMin": 2,
+          "sone": "Z1 · pulsen ned"
+        }
+      }
+    ]
+  },
+  {
+    "id": "hiit-30-20-10",
+    "kategori": "hiit",
+    "skill": "hoy",
+    "intensitet": "lett",
+    "navn": "30-20-10 pulsdrag",
+    "beskrivelse": "Det danske forskerkonseptet: hvert minutt går fra rolig til middels til alt-ut på ti sekunder. Selvregulerende og overraskende effektivt på lite volum.",
+    "varighetMin": 22,
+    "utstyr": [],
+    "kilde": {
+      "navn": "10-20-30-konseptet (Gunnarsson & Bangsbo, Københavns Universitet, 2012)",
+      "type": "protokoll",
+      "ref": "https://journals.physiology.org/doi/full/10.1152/japplphysiol.00334.2012 + https://www.trainingpeaks.com/blog/the-10-20-30-training-concept/",
+      "notat": "Tre serier à 5 min (5 × 30/20/10), 2 min rolig mellom seriene. Maks-delen på 10 s styrer intensiteten; resten er behagelig. Kan gjøres gående, løpende eller på stedet."
+    },
+    "krever": [
+      "30-20-10-metoden",
+      "Høye kneløft",
+      "Jumping jacks"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig marsj, gradvis opp",
+        "min": 4,
+        "parametre": {
+          "tidMin": 4,
+          "sone": "Z1–Z2 · bygg gradvis"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "3 serier à 5 × (30/20/10)",
+        "min": 16,
+        "parametre": {
+          "runder": 15,
+          "faser": [
+            {
+              "navn": "30 s rolig marsj (RPE 3)",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "20 s friske jumping jacks (RPE 5)",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "10 s høye kneløft — alt du har (RPE 9)",
+              "sek": 10,
+              "type": "arbeid"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig marsj + pust",
+        "min": 2,
+        "parametre": {
+          "tidMin": 2,
+          "sone": "Z1 · pulsen ned"
+        }
+      }
+    ]
+  },
+  {
+    "id": "hiit-pyramide",
+    "kategori": "hiit",
+    "skill": "medium",
+    "intensitet": "lett",
+    "navn": "HIIT-pyramide",
+    "beskrivelse": "Intervaller som trappes opp og ned: 20-30-40-30-20 sekunder arbeid med lik pause. Pyramiden holder hodet med og lar deg toppe innsatsen på midten.",
+    "varighetMin": 20,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Pyramideintervaller (klassisk intervallstruktur)",
+      "type": "protokoll",
+      "ref": "https://www.trainingpeaks.com/blog/pyramid-intervals/ + https://www.acefitness.org/resources/pros/expert-articles/5730/tabata-training/",
+      "notat": "Arbeidsdragene trappes opp og ned (20-30-40-30-20 s) med like lange pauser. Bytt mellom to øvelser. Skaler ved å bruke skånsomme varianter uten hopp."
+    },
+    "krever": [
+      "Intervallprinsippet",
+      "Jumping jacks",
+      "Utfallshopp"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig marsj og armsirkler",
+        "min": 4,
+        "parametre": {
+          "tidMin": 4,
+          "sone": "Z1–Z2 · bygg gradvis"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Pyramide 20-30-40-30-20 s / lik pause",
+        "min": 13,
+        "parametre": {
+          "runder": 2,
+          "faser": [
+            {
+              "navn": "Jumping jacks 20 s",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile 20 s",
+              "sek": 20,
+              "type": "hvile"
+            },
+            {
+              "navn": "Utfallshopp 30 s",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile 30 s",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Jumping jacks 40 s — pyramidens topp",
+              "sek": 40,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile 40 s",
+              "sek": 40,
+              "type": "hvile"
+            },
+            {
+              "navn": "Utfallshopp 30 s",
+              "sek": 30,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile 30 s",
+              "sek": 30,
+              "type": "hvile"
+            },
+            {
+              "navn": "Jumping jacks 20 s",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile 20 s",
+              "sek": 20,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig marsj + pust",
+        "min": 3,
+        "parametre": {
+          "tidMin": 3,
+          "sone": "Z1 · pulsen ned"
+        }
+      }
+    ]
+  },
+  {
+    "id": "hiit-full",
+    "kategori": "hiit",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "Helkropps-HIIT – alt du har",
+    "beskrivelse": "Den tøffe totalen: alle de eksplosive helkroppsbevegelsene i én hard sirkel. Burpees, hopp og fjellklatrere på rekke — for deg som vil kjenne at det svir.",
+    "varighetMin": 24,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Helkropps-HIIT-sirkel (bodyweight HIIT)",
+      "type": "tradisjon",
+      "ref": "https://www.acefitness.org/resources/everyone/blog/6593/bodyweight-hiit-workout/ + https://www.menshealth.com/fitness/a25404092/bodyweight-hiit-workout/",
+      "notat": "Fire runder av en helkroppssirkel med 40 s arbeid / 20 s hvile per øvelse, 1 min pause mellom rundene. Skaler ned til raske knebøyer og utfall uten hopp, og burpees uten push-up/hopp."
+    },
+    "krever": [
+      "Intervallprinsippet",
+      "Burpees",
+      "Fjellklatrer",
+      "Knebøyhopp",
+      "Utfallshopp"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig marsj, kneløft og armsirkler",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1–Z2 · bygg gradvis"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "4 runder — 40 s arbeid / 20 s hvile",
+        "min": 15,
+        "parametre": {
+          "runder": 4,
+          "faser": [
+            {
+              "navn": "Burpees 40 s",
+              "sek": 40,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile 20 s",
+              "sek": 20,
+              "type": "hvile"
+            },
+            {
+              "navn": "Knebøyhopp 40 s",
+              "sek": 40,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile 20 s",
+              "sek": 20,
+              "type": "hvile"
+            },
+            {
+              "navn": "Fjellklatrer 40 s",
+              "sek": 40,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Hvile 20 s",
+              "sek": 20,
+              "type": "hvile"
+            },
+            {
+              "navn": "Utfallshopp 40 s",
+              "sek": 40,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Pause før neste runde",
+              "sek": 60,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig marsj + pust",
+        "min": 4,
+        "parametre": {
+          "tidMin": 4,
+          "sone": "Z1 · pulsen ned"
+        }
       }
     ]
   }

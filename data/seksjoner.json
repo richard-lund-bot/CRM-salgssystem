@@ -6453,5 +6453,610 @@
         }
       }
     ]
+  },
+  {
+    "id": "hiit-grunnlag",
+    "disiplin": "hiit",
+    "navn": "Slik virker HIIT",
+    "undertittel": "Hva høyintensiv intervalltrening er, hvorfor korte drag gir så stor effekt, og de første bevegelsene.",
+    "farge": "gul",
+    "nivaBand": [
+      1,
+      2
+    ],
+    "enheter": [
+      {
+        "id": "hiit-hva",
+        "navn": "Hva er HIIT?",
+        "intro": "HIIT gir mye på kort tid — men bare hvis du forstår vekslingen mellom hardt og hvile. Vi starter med prinsippet og to enkle pulsdrivere.",
+        "teori": {
+          "id": "hiit-teori-1",
+          "tittel": "Hardt, kort og smart",
+          "undertittel": "Hva høyintensiv intervalltrening er — og hvorfor noen minutter kan gjøre så mye.",
+          "lesetid": 5,
+          "bilde": "hiit-teori-1",
+          "avsnitt": [
+            {
+              "p": "HIIT står for høyintensiv intervalltrening: korte drag med hardt arbeid, avløst av pauser. I stedet for å jogge jevnt i en time, veksler du mellom å ta skikkelig i noen sekunder og å hente deg inn igjen. Det er en av de mest tidseffektive måtene å trene kondisjon på — og dette er den første leksjonen i HIIT-skolen."
+            },
+            {
+              "h": "Vekslingen er alt"
+            },
+            {
+              "p": "Fordi arbeidsdragene er korte, kan du jobbe mye hardere enn du kunne holdt sammenhengende. Nettopp den høye innsatsen er det som løfter kondisjonen (VO2-maks) raskt. Pausen mellom dragene lar deg hente deg nok inn til å gi jern igjen i neste drag."
+            },
+            {
+              "h": "Effekten fortsetter etterpå"
+            },
+            {
+              "p": "Etter en hard HIIT-økt bruker kroppen ekstra energi en god stund mens den henter seg inn — det kalles EPOC, eller «etterforbrenning». Sammen med den sterke pulspåkjenningen under selve økta gjør dette at få, korte minutter gir overraskende stor treningseffekt."
+            },
+            {
+              "h": "Hardt, men trygt"
+            },
+            {
+              "p": "Hardt betyr ikke ukontrollert. Varm alltid opp først, lær bevegelsene i rolig tempo før du setter opp farten, og hold god teknikk selv når du blir sliten. Er du ny eller har helseutfordringer, start med lavintensive intervaller og bygg deg opp. Bedre å ta ett skikkelig drag med god form enn ti slurvete."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva er kjernen i HIIT?",
+              "valg": [
+                "Veksle mellom korte, harde arbeidsdrag og pauser",
+                "Jevn, rolig trening i lang tid",
+                "Bare å tøye"
+              ],
+              "riktig": 0,
+              "forklaring": "HIIT veksler mellom hardt arbeid og hvile — den vekslingen lar deg jobbe hardere enn ellers."
+            },
+            {
+              "sporsmal": "Hvorfor kan du jobbe hardere i et intervall enn sammenhengende?",
+              "valg": [
+                "Fordi draget er kort og du får pause etterpå",
+                "Fordi det er lettere",
+                "Fordi du ikke puster"
+              ],
+              "riktig": 0,
+              "forklaring": "Korte drag med pause mellom gjør at du kan ta i langt hardere enn du kunne holdt i ett strekk."
+            },
+            {
+              "sporsmal": "Hva er EPOC?",
+              "valg": [
+                "Ekstra energiforbruk mens kroppen henter seg inn etter økta",
+                "En pusteøvelse",
+                "Et oppvarmingsprogram"
+              ],
+              "riktig": 0,
+              "forklaring": "EPOC er «etterforbrenningen» — kroppen bruker ekstra energi en stund etter en hard økt."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Gibala et al. – lavvolum HIIT (McMaster University, 2010–2012)",
+              "om": "Viser at små mengder høyintensiv intervalltrening gir store kondisjons- og helsegevinster."
+            },
+            {
+              "kilde": "American College of Sports Medicine – HIIT-retningslinjer",
+              "om": "Anbefaler oppvarming, gradvis progresjon og god teknikk, særlig for nybegynnere."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Intervallprinsippet",
+            "familie": "metode",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "Ta ett hardt arbeidsdrag på 20–40 sekunder der du virkelig tar i, og hvil etterpå. Kjenn hvordan vekslingen fungerer.",
+            "dose": "1 drag + pause",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Hvor hardt skal et HIIT-arbeidsdrag være?",
+              "valg": [
+                "Nær maks — pusten blir tung og praten hakker",
+                "Rolig snakketempo",
+                "Så lett at du kan synge"
+              ],
+              "riktig": 0,
+              "forklaring": "I arbeidsdraget gir du nær maks innsats — det er den høye innsatsen som gir effekten."
+            }
+          },
+          {
+            "ovelse": "Høye kneløft",
+            "familie": "bevegelse",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 30
+            },
+            "blurb": "Løp på stedet med knærne høyt opp mot hoftehøyde i raskt tempo. Bruk armene aktivt.",
+            "dose": "30 sek raskt",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Jumping jacks",
+            "familie": "bevegelse",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 30
+            },
+            "blurb": "Hopp føttene ut til siden mens armene går over hodet, og samle igjen i jevn, rask rytme.",
+            "dose": "30 sek",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Hvordan gjør du jumping jacks lettere?",
+              "valg": [
+                "Step-jacks — sett ett bein ut av gangen uten hopp",
+                "Hopp høyere",
+                "Hold pusten"
+              ],
+              "riktig": 0,
+              "forklaring": "Step-jacks (uten hopp) gir samme bevegelse skånsomt for ledd og knær."
+            }
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 12,
+          "intensitet": 4,
+          "oppvarming": "Marsjer rolig og rull skuldrene i to minutter.",
+          "nedtrapping": "Gå rolig til pulsen faller og pust dypt.",
+          "ovelser": [
+            {
+              "ovelse": "Høye kneløft",
+              "sett": 4,
+              "holdSek": 30,
+              "pauseSek": 30
+            },
+            {
+              "ovelse": "Jumping jacks",
+              "sett": 4,
+              "holdSek": 30,
+              "pauseSek": 30
+            },
+            {
+              "ovelse": "Intervallprinsippet",
+              "sett": 1,
+              "holdSek": 30,
+              "pauseSek": 0
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "hiit-bevegelser",
+    "disiplin": "hiit",
+    "navn": "Bevegelsene",
+    "undertittel": "Verktøykassa: de eksplosive hoppene og helkroppsbevegelsene som gjør HIIT tøft og effektivt.",
+    "farge": "gul",
+    "nivaBand": [
+      2,
+      3
+    ],
+    "enheter": [
+      {
+        "id": "hiit-hopp",
+        "navn": "Hopp og eksplosivitet",
+        "intro": "Hoppene er HIIT-ens motor: knebøyhopp og utfallshopp bygger eksplosiv kraft og løfter pulsen fort. Nøkkelen er å lande mykt.",
+        "teori": {
+          "id": "hiit-teori-2",
+          "tittel": "Hopp med kraft, land med kontroll",
+          "undertittel": "Plyometriske hopp bygger eksplosiv kraft — slik gjør du dem trygt.",
+          "lesetid": 4,
+          "bilde": "hiit-teori-2",
+          "avsnitt": [
+            {
+              "p": "Hoppøvelser (plyometri) trener musklene til å produsere kraft raskt. De løfter pulsen på sekunder og bygger eksplosiv styrke i beina — perfekt for HIIT. Men fordi de belaster ledd og sener, er teknikken ekstra viktig."
+            },
+            {
+              "h": "Landingen er det viktigste"
+            },
+            {
+              "p": "Hemmeligheten bak trygge hopp er en myk landing: land på forfoten og rull ned mot hælen, med bøyde knær som fjærer og demper støtet. Tenk «lydløs landing». Lander du stivbeint eller med knærne innover, øker belastningen unødig."
+            },
+            {
+              "h": "Kvalitet foran kaos"
+            },
+            {
+              "p": "Eksplosive hopp gir mest når hvert hopp er kontrollert. Det er bedre å gjøre ti gode, kraftfulle hopp med myk landing enn tjue slurvete. Blir teknikken dårlig når du er sliten, ta en pause — det er da skader skjer."
+            },
+            {
+              "h": "Alltid en lavere vei"
+            },
+            {
+              "p": "Er hopp for mye for ledda i dag, finnes det alltid en skånsom variant: bytt knebøyhopp med raske, dype knebøyer og utfallshopp med vekslende utfall uten hopp. Du får nesten samme pulseffekt uten belastningen — HIIT skal tilpasses deg."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva er det viktigste for trygge hopp?",
+              "valg": [
+                "En myk landing med bøyde knær som demper",
+                "Å lande stivbeint",
+                "Å hoppe høyest mulig"
+              ],
+              "riktig": 0,
+              "forklaring": "Land mykt på forfoten med bøyde knær som fjærer — «lydløs landing» beskytter ledda."
+            },
+            {
+              "sporsmal": "Hva gjør du hvis hopp blir for mye for knærne?",
+              "valg": [
+                "Bytt til raske knebøyer / utfall uten hopp",
+                "Presser gjennom smerten",
+                "Slutter helt å trene"
+              ],
+              "riktig": 0,
+              "forklaring": "Skånsomme varianter uten hopp gir nesten samme pulseffekt uten belastningen."
+            },
+            {
+              "sporsmal": "Når skjer plyo-skader oftest?",
+              "valg": [
+                "Når teknikken ryker fordi du er sliten",
+                "På det første hoppet",
+                "Under oppvarming"
+              ],
+              "riktig": 0,
+              "forklaring": "Ta en pause når formen ryker av tretthet — det er da landingene blir farlige."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "NSCA – retningslinjer for plyometrisk trening",
+              "om": "Beskriver trygg plyometri: myk landing, kontroll og gradvis progresjon."
+            },
+            {
+              "kilde": "ACSM – HIIT og skadeforebygging",
+              "om": "Anbefaler lavterskel-varianter og god landingsteknikk for å trene hardt trygt."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Knebøyhopp",
+            "familie": "bevegelse",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 12
+            },
+            "blurb": "Senk deg i en knebøy og skyt eksplosivt opp i et hopp. Land mykt med bøyde knær og gå rett ned i neste.",
+            "dose": "12 kontrollerte hopp",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hvordan lander du et knebøyhopp?",
+              "valg": [
+                "Mykt på forfoten med bøyde knær",
+                "Stivbeint på hælene",
+                "Med knærne innover"
+              ],
+              "riktig": 0,
+              "forklaring": "Land mykt med bøyde knær som demper — tenk lydløs landing."
+            }
+          },
+          {
+            "ovelse": "Utfallshopp",
+            "familie": "bevegelse",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 10
+            },
+            "blurb": "Fra et utfall: hopp opp og bytt beina i lufta, land mykt i et nytt utfall. Hold overkroppen høy.",
+            "dose": "10 (5 per side)",
+            "minutter": 4
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 12,
+          "intensitet": 5,
+          "oppvarming": "Gjør noen rolige knebøyer og hoftebro for å bli varm.",
+          "nedtrapping": "Gå rolig og tøy lårene lett.",
+          "ovelser": [
+            {
+              "ovelse": "Knebøyhopp",
+              "sett": 5,
+              "holdSek": 20,
+              "pauseSek": 40
+            },
+            {
+              "ovelse": "Utfallshopp",
+              "sett": 5,
+              "holdSek": 20,
+              "pauseSek": 40
+            }
+          ]
+        }
+      },
+      {
+        "id": "hiit-helkropp",
+        "navn": "Helkropp og gulv",
+        "intro": "De tøffeste HIIT-bevegelsene bruker hele kroppen: burpees og fjellklatrere. Her lærer du teknikken som holder deg trygg når det svir.",
+        "teori": {
+          "id": "hiit-teori-3",
+          "tittel": "Hele kroppen i ett drag",
+          "undertittel": "Burpees og fjellklatrere — maksimal effekt, og hvordan du holder formen når du blir sliten.",
+          "lesetid": 4,
+          "bilde": "hiit-teori-3",
+          "avsnitt": [
+            {
+              "p": "De mest effektive HIIT-bevegelsene bruker hele kroppen på én gang. Burpeen og fjellklatreren driver pulsen i taket og trener både bein, kjerne og overkropp — derfor er de HIIT-ens klassikere. De er også de som lettest mister form når du blir sliten."
+            },
+            {
+              "h": "Burpeen — bit for bit"
+            },
+            {
+              "p": "En burpee er egentlig fire bevegelser i én: ned med hendene, hopp beina bak til planke, hopp inn igjen, og opp i et sprett. Lær hvert steg for seg i rolig tempo først. Hold ryggen stabil i planke-delen — ikke la hoftene henge — og land mykt fra hoppet."
+            },
+            {
+              "h": "Fjellklatrer med rolig kjerne"
+            },
+            {
+              "p": "I fjellklatreren holder du en stødig planke mens beina løper inn og ut. Nøkkelen er å holde hoftene lave og magen spent så baken ikke spretter opp. Start rolig og øk tempoet når du klarer å holde planken stille."
+            },
+            {
+              "h": "Form først, fart etterpå"
+            },
+            {
+              "p": "Med helkroppsbevegelser er det fristende å jage tempo på bekostning av form. Snu det: hold god teknikk, og la farten komme etter hvert. En rolig, ren burpee slår en rask, kollapset en — både for effekt og for ryggen din."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva bør du passe på i planke-delen av en burpee?",
+              "valg": [
+                "Holde ryggen stabil — ikke la hoftene henge",
+                "Runde ryggen mest mulig",
+                "Holde pusten"
+              ],
+              "riktig": 0,
+              "forklaring": "Hold en stabil, rett kropp i planken — hengende hofter belaster korsryggen."
+            },
+            {
+              "sporsmal": "Hva er nøkkelen i fjellklatreren?",
+              "valg": [
+                "Holde hoftene lave og kjernen spent så planken er stille",
+                "Sprette baken høyt",
+                "Låse albuene"
+              ],
+              "riktig": 0,
+              "forklaring": "Hold hoftene lave og magen spent — planken skal være stille mens beina løper."
+            },
+            {
+              "sporsmal": "Hva bør komme først, form eller fart?",
+              "valg": [
+                "Form først — farten kommer etter hvert",
+                "Alltid maks fart",
+                "De henger ikke sammen"
+              ],
+              "riktig": 0,
+              "forklaring": "Prioriter teknikk; la tempoet bygge seg opp når formen sitter, særlig når du blir sliten."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "ACSM – helkropps-HIIT og teknikk",
+              "om": "Understreker god kroppskontroll i sammensatte bevegelser som burpees for å trene trygt."
+            },
+            {
+              "kilde": "Dr. Stuart McGill – ryggstabilitet i planke",
+              "om": "Prinsippet om en stabil, nøytral rygg i planke-baserte bevegelser."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Burpees",
+            "familie": "bevegelse",
+            "niva": 3,
+            "maal": {
+              "type": "reps",
+              "verdi": 10
+            },
+            "blurb": "Hender i gulvet, hopp beina bak til planke, hopp inn igjen og opp i et sprett. Hold ryggen stabil og land mykt.",
+            "dose": "10 kontrollerte",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hvordan gjør du burpees lettere?",
+              "valg": [
+                "Dropp hoppet og push-upen — gå ut og inn rolig",
+                "Hopp høyere",
+                "Gjør dem raskere"
+              ],
+              "riktig": 0,
+              "forklaring": "Uten hopp og push-up, i rolig tempo, får du bevegelsen skånsomt — bygg opp derfra."
+            }
+          },
+          {
+            "ovelse": "Fjellklatrer",
+            "familie": "bevegelse",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 20
+            },
+            "blurb": "I en stødig planke drar du knærne vekselvis raskt inn mot brystet. Hold hoftene lave og magen spent.",
+            "dose": "20 (10 per side)",
+            "minutter": 4
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 14,
+          "intensitet": 5,
+          "oppvarming": "Gjør noen katt–ku og en rolig planke for å bli varm.",
+          "nedtrapping": "Hvil i barnets stilling og pust rolig.",
+          "ovelser": [
+            {
+              "ovelse": "Burpees",
+              "sett": 5,
+              "holdSek": 30,
+              "pauseSek": 40
+            },
+            {
+              "ovelse": "Fjellklatrer",
+              "sett": 5,
+              "holdSek": 30,
+              "pauseSek": 40
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "hiit-protokoller",
+    "disiplin": "hiit",
+    "navn": "Protokollene",
+    "undertittel": "De navngitte oppskriftene: Tabata, 30-20-10 og EMOM — slik strukturerer du en HIIT-økt.",
+    "farge": "gul",
+    "nivaBand": [
+      3,
+      3
+    ],
+    "enheter": [
+      {
+        "id": "hiit-protokoll",
+        "navn": "Tabata, 30-20-10 og EMOM",
+        "intro": "Nå setter vi bevegelsene i system. Lær de klassiske HIIT-oppskriftene, så kan du styre intensiteten selv og bygge dine egne økter.",
+        "teori": {
+          "id": "hiit-teori-4",
+          "tittel": "Kjente oppskrifter for harde minutter",
+          "undertittel": "Tabata, 30-20-10 og EMOM — hvordan de er bygd, og hvordan du doserer dem.",
+          "lesetid": 5,
+          "bilde": "hiit-teori-4",
+          "avsnitt": [
+            {
+              "p": "En HIIT-økt trenger en struktur som styrer når du jobber og når du hviler. Gjennom årene har forskere og trenere laget noen kjente «oppskrifter» — protokoller — som gjør det enkelt å treffe riktig belastning. Kjenner du et par av dem, kan du bygge en god økt hvor som helst med bare en klokke."
+            },
+            {
+              "h": "Tabata: 20/10 × 8"
+            },
+            {
+              "p": "Den mest berømte er Tabata: 20 sekunder maksimalt arbeid, 10 sekunder pause, gjentatt 8 ganger — fire brutale minutter. Den stammer fra en japansk studie fra 1996 på svært hard sykling. Én Tabata-blokk per øvelse er nok; ta full pause før du eventuelt gjør en ny."
+            },
+            {
+              "h": "30-20-10 og EMOM"
+            },
+            {
+              "p": "30-20-10-metoden deler hvert minutt i 30 sekunder rolig, 20 middels og 10 maks — snill å styre og lett å like. EMOM («every minute on the minute») gir deg et fast antall reps å gjøre på starten av hvert minutt; resten av minuttet er pause. Jo raskere du jobber, jo mer hviler du."
+            },
+            {
+              "h": "Doser og bygg opp"
+            },
+            {
+              "p": "Uansett protokoll gjelder samme regel: start med færre runder og en øvelse du mestrer, og bygg opp antall runder, tempo eller vanskeligere bevegelser over tid. Én til tre harde HIIT-økter i uka er rikelig for de fleste — kroppen trenger hviledager for å bli sterkere."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva er Tabata-oppskriften?",
+              "valg": [
+                "20 sek arbeid / 10 sek pause × 8 runder",
+                "1 minutt arbeid / 1 minutt pause × 20",
+                "Rolig trening i en time"
+              ],
+              "riktig": 0,
+              "forklaring": "Tabata er 20 sekunder maks arbeid og 10 sekunder pause, gjentatt 8 ganger — fire minutter."
+            },
+            {
+              "sporsmal": "Hva betyr EMOM?",
+              "valg": [
+                "Fast antall reps på starten av hvert minutt, resten pause",
+                "Å trene hele minuttet uten pause",
+                "En tøyeøvelse"
+              ],
+              "riktig": 0,
+              "forklaring": "EMOM = every minute on the minute: gjør reps-ene, og resten av minuttet er pause."
+            },
+            {
+              "sporsmal": "Hvor mange harde HIIT-økter i uka passer for de fleste?",
+              "valg": [
+                "Én til tre, med hviledager mellom",
+                "Minst én hver dag",
+                "Ingen"
+              ],
+              "riktig": 0,
+              "forklaring": "1–3 harde økter i uka er rikelig — kroppen blir sterkere på hviledagene."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Tabata et al. – 20/10-intervaller (Med. Sci. Sports Exerc., 1996)",
+              "om": "Originalstudien bak Tabata-protokollen: fire minutter svært hard intervalltrening."
+            },
+            {
+              "kilde": "Gunnarsson & Bangsbo – 10-20-30-konseptet (Københavns Universitet, 2012)",
+              "om": "Viser at 30-20-10-strukturen bedrer form og helse på redusert treningsvolum."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Tabata-protokollen",
+            "familie": "metode",
+            "niva": 3,
+            "maal": {
+              "type": "hold",
+              "verdi": 240
+            },
+            "blurb": "Velg én øvelse du mestrer. Jobb alt du har i 20 sekunder, hvil i 10, og gjenta i 8 runder — fire minutter totalt.",
+            "dose": "8 runder 20/10",
+            "minutter": 5,
+            "sjekk": {
+              "sporsmal": "Hvor mange runder er en Tabata?",
+              "valg": [
+                "8 runder (20/10)",
+                "3 runder",
+                "20 runder"
+              ],
+              "riktig": 0,
+              "forklaring": "Åtte runder med 20 sek arbeid og 10 sek pause — til sammen fire minutter."
+            }
+          },
+          {
+            "ovelse": "30-20-10-metoden",
+            "familie": "metode",
+            "niva": 3,
+            "maal": {
+              "type": "hold",
+              "verdi": 300
+            },
+            "blurb": "Del hvert minutt i 30 sek rolig, 20 sek middels og 10 sek maks. Gjenta fem ganger, så en pause.",
+            "dose": "5 × (30/20/10)",
+            "minutter": 5
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 16,
+          "intensitet": 5,
+          "oppvarming": "Marsjer rolig og gjør noen jumping jacks for å bli varm.",
+          "nedtrapping": "Gå rolig til pulsen faller og pust dypt.",
+          "ovelser": [
+            {
+              "ovelse": "Jumping jacks",
+              "sett": 8,
+              "holdSek": 20,
+              "pauseSek": 10
+            },
+            {
+              "ovelse": "Knebøyhopp",
+              "sett": 8,
+              "holdSek": 20,
+              "pauseSek": 10
+            },
+            {
+              "ovelse": "Fjellklatrer",
+              "sett": 4,
+              "holdSek": 30,
+              "pauseSek": 30
+            }
+          ]
+        }
+      }
+    ]
   }
 ]

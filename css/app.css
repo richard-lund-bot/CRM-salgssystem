@@ -2593,6 +2593,7 @@ body.fokusmodus { padding-bottom: 0; }
 .seksjonkort--blaa .seksjonkort__topp { background: linear-gradient(135deg, #3E7CC4, #29508C); }
 .seksjonkort--lilla .seksjonkort__topp { background: linear-gradient(135deg, #8A6BC4, #5E3F92); }
 .seksjonkort--oransje .seksjonkort__topp { background: linear-gradient(135deg, #E8913E, #C4661B); }
+.seksjonkort--gul .seksjonkort__topp { background: linear-gradient(135deg, #E0951C, #A8620A); }
 .seksjonkort__snakk { position: relative; background: #fff; color: var(--tekst); border-radius: 14px; padding: 8px 14px; font-family: var(--font-display); font-weight: 600; font-size: 15px; box-shadow: var(--shadow-xs); }
 .seksjonkort__snakk::after { content: ''; position: absolute; top: 100%; left: 22px; border: 7px solid transparent; border-top-color: #fff; }
 .seksjonkort__panda { position: absolute; right: 12px; bottom: -8px; width: 92px; height: 104px; }
@@ -2634,6 +2635,8 @@ body.fokusmodus { padding-bottom: 0; }
 
 /* Disiplin-kort: oransje variant (Løp). */
 .disiplinkort--oransje { background: linear-gradient(135deg, #E8913E, #C4661B); }
+/* Disiplin-kort: gul/amber variant (HIIT). */
+.disiplinkort--gul { background: linear-gradient(135deg, #E0951C, #A8620A); }
 
 /* Uteksaminerings-node på reisen (coach-panda «enhets-boss»). */
 .reise-grad-wrap { margin: 10px 0 2px; }

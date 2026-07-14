@@ -3221,5 +3221,163 @@
    "Pust"
   ],
   "bilde": "intervalldrag"
+ },
+ {
+  "navn": "Intervallprinsippet",
+  "kort": "Kjernen i HIIT: veksle mellom korte, harde arbeidsdrag og pauser. Slik jobber du hardere enn du kunne holdt sammenhengende.",
+  "steg": [
+   "Velg et arbeidsdrag (f.eks. 20–60 sekunder) der du tar skikkelig i, og en pause etterpå.",
+   "I arbeidet gir du nær maks innsats — pusten skal bli tung og praten hakke opp.",
+   "Bruk pausen til å hente deg litt inn, og gjenta. Det er vekslingen som gir effekten."
+  ],
+  "tips": [
+   "Kroppen forbrenner ekstra en stund etter økta (EPOC) — derfor er HIIT så tidseffektivt."
+  ],
+  "muskler": [
+   "Puls",
+   "Pust"
+  ]
+ },
+ {
+  "navn": "Tabata-protokollen",
+  "kort": "20 sekunder maksimalt arbeid, 10 sekunder pause, 8 runder = 4 knallharde minutter. Den mest kjente HIIT-oppskriften.",
+  "steg": [
+   "Velg én øvelse du kan gjøre trygt i høyt tempo.",
+   "Jobb alt du har i 20 sekunder, hvil i 10 — det er én runde.",
+   "Gjenta i 8 runder totalt. Fire minutter, men de skal svi."
+  ],
+  "tips": [
+   "Originalen (Tabata, 1996) ble gjort på sykkel ved svært høy intensitet — start roligere til formen sitter."
+  ],
+  "muskler": [
+   "Puls",
+   "Pust"
+  ]
+ },
+ {
+  "navn": "30-20-10-metoden",
+  "kort": "Ett minutt delt i 30 sek rolig, 20 sek middels og 10 sek maks — gjentatt. En smart, selvregulerende måte å dosere fart på.",
+  "steg": [
+   "Beveg deg rolig i 30 sekunder, øk til middels i 20, og gi alt de siste 10.",
+   "Det utgjør ett minutt. Gjenta gjerne fem ganger, så en pause.",
+   "Den korte maks-delen løfter intensiteten uten at hele økta blir umulig hard."
+  ],
+  "tips": [
+   "Utviklet ved Københavns Universitet (Gunnarsson & Bangsbo) — bedrer formen på lite treningsvolum."
+  ],
+  "muskler": [
+   "Puls",
+   "Pust"
+  ]
+ },
+ {
+  "navn": "Høye kneløft",
+  "kort": "Løp på stedet med knærne høyt opp mot hoftehøyde i raskt tempo. En enkel, effektiv pulsdriver helt uten utstyr.",
+  "steg": [
+   "Løp på stedet og løft knærne vekselvis opp mot hoftehøyde.",
+   "Land mykt på forfoten og bruk armene aktivt for tempo.",
+   "Hold overkroppen høy og magen lett spent."
+  ],
+  "tips": [
+   "Vil du ha det lettere? Gå med høye kneløft i stedet for å løpe."
+  ],
+  "muskler": [
+   "Legger",
+   "Hofter",
+   "Puls"
+  ],
+  "bilde": "marsj-paa-stedet"
+ },
+ {
+  "navn": "Jumping jacks",
+  "kort": "Sprikhopp: hopp føttene ut til siden mens armene går opp over hodet, og samle igjen. Klassisk helkropps-pulsøvelse.",
+  "steg": [
+   "Hopp føttene ut til siden mens armene løftes ut og opp over hodet.",
+   "Hopp tilbake og senk armene i én myk bevegelse.",
+   "Hold en jevn, rask rytme og land mykt med lett bøyde knær."
+  ],
+  "tips": [
+   "Uten hopp: step-jacks — sett ett bein ut til siden av gangen."
+  ],
+  "muskler": [
+   "Skuldre",
+   "Legger",
+   "Puls"
+  ],
+  "bilde": "jumping-jacks"
+ },
+ {
+  "navn": "Knebøyhopp",
+  "kort": "Eksplosiv knebøy: senk deg ned og hopp kraftfullt opp, land mykt med bøyde knær. Bygger eksplosiv beinkraft og puls.",
+  "steg": [
+   "Senk deg ned i en knebøy med brystet løftet.",
+   "Skyt eksplosivt opp i et hopp fra hele foten.",
+   "Land mykt med bøyde knær og gå rett ned i neste."
+  ],
+  "tips": [
+   "Uten hopp: gjør raske, dype knebøyer i stedet — nesten like effektivt."
+  ],
+  "muskler": [
+   "Lår",
+   "Sete",
+   "Puls"
+  ],
+  "bilde": "kneboy"
+ },
+ {
+  "navn": "Utfallshopp",
+  "kort": "Hopp og bytt bein i lufta fra utfall til utfall. Eksplosiv ettbeins-øvelse som utfordrer puls, kraft og balanse.",
+  "steg": [
+   "Start i et utfall med begge knær bøyd.",
+   "Hopp rett opp og bytt beina i lufta, så motsatt bein er fremme.",
+   "Land mykt i et nytt utfall og fortsett i rytme."
+  ],
+  "tips": [
+   "For mye? Gjør vekslende utfall uten hopp — steg frem og tilbake i rolig tempo."
+  ],
+  "muskler": [
+   "Lår",
+   "Sete",
+   "Puls",
+   "Balanse"
+  ],
+  "bilde": "utfall-bakover"
+ },
+ {
+  "navn": "Burpees",
+  "kort": "HIIT-kongen: fra stående ned med hendene, hopp beina bak til planke, hopp inn igjen og opp i et sprett. Hele kroppen.",
+  "steg": [
+   "Sett hendene i gulvet og hopp (eller gå) beina bak til planke.",
+   "Ta gjerne en push-up, og hopp så beina inn mot hendene igjen.",
+   "Reis deg opp i et hopp med armene over hodet, og gjenta."
+  ],
+  "tips": [
+   "Lettere: dropp hoppet og push-upen — gå ut og inn og reis deg rolig."
+  ],
+  "muskler": [
+   "Bryst",
+   "Lår",
+   "Kjerne",
+   "Puls"
+  ],
+  "bilde": "burpees"
+ },
+ {
+  "navn": "Fjellklatrer",
+  "kort": "Mountain climbers: i planke drar du knærne vekselvis raskt inn mot brystet. Trener kjerne og puls på én gang.",
+  "steg": [
+   "Start i en stødig planke på hendene med rett kropp.",
+   "Dra ett kne raskt inn mot brystet, og bytt bein i et løpende tempo.",
+   "Hold hoftene lave og magen spent — ikke la baken sprette opp."
+  ],
+  "tips": [
+   "Ta det roligere ved å gå knærne inn ett og ett i stedet for å løpe."
+  ],
+  "muskler": [
+   "Kjerne",
+   "Skuldre",
+   "Puls"
+  ],
+  "bilde": "fjellklatrer"
  }
 ]
