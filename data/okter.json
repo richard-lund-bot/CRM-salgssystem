@@ -7032,5 +7032,449 @@
         ]
       }
     ]
+  },
+  {
+    "id": "mobilitet-morgen",
+    "kategori": "mobilitet",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Morgen-CARs – topp til tå",
+    "beskrivelse": "En rolig runde kontrollerte leddsirkler fra nakke til ankler. Smører hvert ledd og vekker kroppen mykt — den perfekte starten på dagen.",
+    "varighetMin": 14,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Daily CARs-rutine (Andreo Spina – Functional Range Conditioning)",
+      "type": "program",
+      "ref": "https://functionalrangeconditioning.com/ + https://www.youtube.com/watch?v=largeCARsplaceholder",
+      "notat": "Én runde CARs gjennom de store leddene, langsomt og kontrollert. Mindre utslag ved stivhet eller svimmelhet; ett ledd om gangen, full kontroll gjennom hele sirkelen."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Pust deg i gang",
+        "formatKlasse": "hold",
+        "min": 2,
+        "ovelser": [
+          {
+            "navn": "Magepust liggende",
+            "dose": "10 rolige pust"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "CARs gjennom kroppen",
+        "formatKlasse": "reps",
+        "min": 10,
+        "ovelser": [
+          {
+            "navn": "Nakke-CARs",
+            "dose": "3 hver vei"
+          },
+          {
+            "navn": "Skulder-CARs",
+            "dose": "3 hver vei per arm",
+            "unilateral": true
+          },
+          {
+            "navn": "Ryggrads-CARs",
+            "dose": "4 rolige runder"
+          },
+          {
+            "navn": "Hofte-CARs",
+            "dose": "3 hver vei per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Kne- og ankel-CARs",
+            "dose": "6 sirkler hver vei"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig avslutning",
+        "formatKlasse": "reps",
+        "min": 2,
+        "ovelser": [
+          {
+            "navn": "Katt–ku",
+            "dose": "×6"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mobilitet-brystrygg",
+    "kategori": "mobilitet",
+    "skill": "medium",
+    "intensitet": "lett",
+    "navn": "Brystrygg & holdning",
+    "beskrivelse": "Motgift mot skjermholdning: løsne den stive brystryggen og åpne skuldrene. Du reiser deg høyere og puster friere etterpå.",
+    "varighetMin": 18,
+    "utstyr": [
+      "matte",
+      "strikk"
+    ],
+    "kilde": {
+      "navn": "Thoracic mobility-rutine (Kelly Starrett – «Becoming a Supple Leopard»)",
+      "type": "program",
+      "ref": "https://thereadystate.com/ + https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5534144/",
+      "notat": "Fokus på brystryggens rotasjon og ekstensjon pluss skulderåpning. Gå bredere på strikken ved stive skuldre; hold korsryggen stabil og beveg fra brystryggen."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Vekk ryggen",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Katt–ku",
+            "dose": "×8"
+          },
+          {
+            "navn": "Ryggrads-CARs",
+            "dose": "4 runder"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Åpne bryst og skuldre",
+        "formatKlasse": "reps",
+        "min": 11,
+        "ovelser": [
+          {
+            "navn": "Skulderdislokater med strikk",
+            "dose": "×8"
+          },
+          {
+            "navn": "Lift-off utadrotasjon",
+            "dose": "×8"
+          },
+          {
+            "navn": "Verdens beste tøyning",
+            "dose": "5 per side",
+            "unilateral": true
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig avslutning",
+        "formatKlasse": "hold",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Magepust liggende",
+            "dose": "8 rolige pust"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mobilitet-hofteflyt",
+    "kategori": "mobilitet",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "Hofteflyt",
+    "beskrivelse": "Aktiv hoftemobilitet i alle retninger: rotasjon, sidebevegelse og kontroll. Krevende og utrolig frigjørende for hofter og korsrygg.",
+    "varighetMin": 22,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Aktiv hoftemobilitet (FRC 90/90 + hip airplane, Andreo Spina)",
+      "type": "program",
+      "ref": "https://functionalrangeconditioning.com/ + https://squatuniversity.com/2019/03/20/how-to-improve-hip-mobility/",
+      "notat": "Aktiv rotasjonstrening for hoftene med 90/90 og hip airplane. Hold deg til smertefri rekkevidde; bruk en hånd på veggen i hip airplane til balansen sitter."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Vekk hoftene",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Hofte-CARs",
+            "dose": "3 hver vei per side",
+            "unilateral": true
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Rotasjon og dybde",
+        "formatKlasse": "reps",
+        "min": 14,
+        "ovelser": [
+          {
+            "navn": "90/90-switches",
+            "dose": "×10"
+          },
+          {
+            "navn": "Hip airplane",
+            "dose": "5 per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Cossack squat",
+            "dose": "6 per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Pigeon push-up",
+            "dose": "6 per side",
+            "unilateral": true
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig hofteåpning",
+        "formatKlasse": "hold",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "90/90-hoftetøyning",
+            "dose": "30 s per side",
+            "unilateral": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mobilitet-dyphuk",
+    "kategori": "mobilitet",
+    "skill": "hoy",
+    "intensitet": "lett",
+    "navn": "Vei til dyp huk",
+    "beskrivelse": "Bygg deg mot menneskets naturlige hvilestilling: den dype huken med hælene i gulvet. Åpner ankler, knær og hofter samtidig.",
+    "varighetMin": 20,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Deep squat-mobilitet (Ido Portal-inspirert; ankelmobilitet-arbeid)",
+      "type": "program",
+      "ref": "https://www.gmb.io/deep-squat/ + https://squatuniversity.com/2016/01/28/the-resting-squat/",
+      "notat": "Progresjon mot en avslappet dyp huk. Hold i en dørkarm eller løft hælene lett ved stive ankler; bygg tid i bunnen gradvis, litt hver dag."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Smør knær og ankler",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Kne- og ankel-CARs",
+            "dose": "6 hver vei"
+          },
+          {
+            "navn": "Hofterotasjoner",
+            "dose": "×8"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Åpne og gå dypt",
+        "formatKlasse": "reps",
+        "min": 12,
+        "ovelser": [
+          {
+            "navn": "Verdens beste tøyning",
+            "dose": "5 per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Cossack squat",
+            "dose": "6 per side",
+            "unilateral": true
+          },
+          {
+            "navn": "90/90-hoftetøyning",
+            "dose": "30 s per side",
+            "unilateral": true
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Bli i bunnen",
+        "formatKlasse": "hold",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Dyp knebøy-hold",
+            "dose": "3×30 s"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mobilitet-gulvflyt",
+    "kategori": "mobilitet",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "Gulvflyt – bevegelseskvalitet",
+    "beskrivelse": "Rull, krabb, vugg og reis deg — de naturlige grunnmønstrene kroppen er bygget for. Bygger koordinasjon, kontroll og hel-kroppsmobilitet.",
+    "varighetMin": 22,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Bevegelsesflyt / grunnmønstre (Original Strength; Sitting-Rising Test)",
+      "type": "program",
+      "ref": "https://originalstrength.net/ + https://pubmed.ncbi.nlm.nih.gov/24336471/",
+      "notat": "Gulvbaserte grunnmønstre (rulling, krabbing, reisning). Ta rulling med lett beinhjelp i starten; reis deg med en hånd til støtte om balansen svikter, og bygg mot uten hender."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Vekk mønstrene",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Vugging på alle fire",
+            "dose": "2×15"
+          },
+          {
+            "navn": "Rulling rygg til mage",
+            "dose": "3 per side",
+            "unilateral": true
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Krabb, kryss og reis deg",
+        "formatKlasse": "reps",
+        "min": 14,
+        "ovelser": [
+          {
+            "navn": "Krabbeposisjon-hold",
+            "dose": "3×20 s"
+          },
+          {
+            "navn": "Kryssmarsj stående",
+            "dose": "×20"
+          },
+          {
+            "navn": "Knestående til stående uten hender",
+            "dose": "6 rolige reisninger"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig avslutning",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Katt–ku",
+            "dose": "×6"
+          },
+          {
+            "navn": "Magepust liggende",
+            "dose": "8 pust"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mobilitet-kveld",
+    "kategori": "mobilitet",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Kveldsmobilitet – løsne opp",
+    "beskrivelse": "Rolige, myke bevegelser som løser opp dagens spenninger i nakke, rygg og hofter. Skånsomt og godt før leggetid.",
+    "varighetMin": 16,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Rolig kveldsmobilitet (Original Strength resets + hofteåpning)",
+      "type": "program",
+      "ref": "https://originalstrength.net/ + https://www.ekhartyoga.com/articles/practice/gentle-evening-mobility",
+      "notat": "Myke, rolige bevegelser i lavt tempo. Små utslag er nok; la pusten være lang og senk tempoet mot slutten for å roe nervesystemet før søvn."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Pust deg rolig",
+        "formatKlasse": "hold",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Magepust liggende",
+            "dose": "10 rolige pust"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Løsne nakke, rygg og hofter",
+        "formatKlasse": "reps",
+        "min": 10,
+        "ovelser": [
+          {
+            "navn": "Hodenikk-rotasjoner",
+            "dose": "×8"
+          },
+          {
+            "navn": "Katt–ku",
+            "dose": "×8"
+          },
+          {
+            "navn": "Hofterotasjoner",
+            "dose": "×8 hver vei"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig hofteåpning",
+        "formatKlasse": "hold",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "90/90-hoftetøyning",
+            "dose": "30 s per side",
+            "unilateral": true
+          }
+        ]
+      }
+    ]
   }
 ]

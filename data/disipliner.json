@@ -44,8 +44,13 @@
     "undertittel": "Bevegelighet og myke ledd for hele kroppen.",
     "ikon": "puls",
     "farge": "blaa",
-    "status": "kommer",
-    "seksjoner": []
+    "status": "aktiv",
+    "seksjoner": [
+      "mobilitet-grunnlag",
+      "mobilitet-rygg",
+      "mobilitet-hofter",
+      "mobilitet-underkropp"
+    ]
   },
   {
     "id": "yoga",

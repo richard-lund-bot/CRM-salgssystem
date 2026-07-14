@@ -338,8 +338,8 @@
   {
     "id": "kroppsvekt-oppvarming",
     "disiplin": "kroppsvekt",
-    "navn": "Oppvarming & mobilitet",
-    "undertittel": "Gjør kroppen varm og leddene klare — den beste starten på enhver økt.",
+    "navn": "Oppvarming",
+    "undertittel": "Gjør kroppen varm og klar før en styrkeøkt — egen bevegelighetstrening bor i Mobilitet.",
     "farge": "teal",
     "nivaBand": [
       1,
@@ -4131,6 +4131,1289 @@
               "sett": 1,
               "holdSek": 180,
               "pauseSek": 0
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "mobilitet-grunnlag",
+    "disiplin": "mobilitet",
+    "navn": "Grunnlag & overkropp",
+    "undertittel": "Hva mobilitet egentlig er — og hvordan du beveger nakke, skuldre og armer med kontroll.",
+    "farge": "blaa",
+    "nivaBand": [
+      1,
+      2
+    ],
+    "enheter": [
+      {
+        "id": "mob-hva",
+        "navn": "Mobilitet er ikke tøying",
+        "intro": "Aller først: hva skiller mobilitet fra tøying? Lær forskjellen, og møt CARs — de kontrollerte leddsirklene som er kjernen i all mobilitetstrening.",
+        "teori": {
+          "id": "mob-teori-1",
+          "tittel": "Mobilitet er styrke i ytterstilling",
+          "undertittel": "Forskjellen på mobilitet, bevegelighet og oppvarming — og hvorfor den er verdt å forstå.",
+          "lesetid": 5,
+          "bilde": "mobilitet-teori-1",
+          "avsnitt": [
+            {
+              "p": "Mange blander sammen tøying og mobilitet, men de er ikke det samme. Bevegelighet (fleksibilitet) er hvor langt et ledd kan bevege seg passivt — hvor langt noen kan dytte deg. Mobilitet er hvor langt du selv kan bevege leddet aktivt, med kontroll og kraft. Mobilitet er rett og slett brukbar bevegelighet."
+            },
+            {
+              "h": "Derfor holder ikke tøying alene"
+            },
+            {
+              "p": "Du kan være tøyelig uten å ha mobilitet: en spagat hjelper lite om du ikke har styrke til å styre beinet der ute på egen hånd. Mobilitetstrening bygger nettopp den styrken i ytterstillingene, slik at du faktisk kan bruke bevegelsen din — og beskytte leddene mot skade."
+            },
+            {
+              "h": "CARs — leddets egen runde"
+            },
+            {
+              "p": "Grunnverktøyet er CARs (Controlled Articular Rotations): store, langsomme, kontrollerte sirkler med ett ledd om gangen, så langt du kommer i alle retninger. Du spenner kroppen lett, beveger bare leddet du jobber med, og eier hver millimeter av sirkelen. CARs holder leddene friske, smurte og under din kontroll."
+            },
+            {
+              "h": "Ledd for ledd"
+            },
+            {
+              "p": "Vi trener kroppen ledd for ledd — nakke, skuldre, ryggrad, hofter, knær og ankler — for hvert ledd har sitt eget behov. Noen ledd (som hofter og brystrygg) trenger mest bevegelighet, andre (som korsrygg og knær) trenger mest stabilitet. Denne enheten starter med pust og nakke; så bygger vi oss nedover kroppen."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva er forskjellen på bevegelighet og mobilitet?",
+              "valg": [
+                "Bevegelighet er passiv rekkevidde; mobilitet er aktiv, kontrollert bruk av den",
+                "De er akkurat det samme",
+                "Mobilitet er bare oppvarming"
+              ],
+              "riktig": 0,
+              "forklaring": "Bevegelighet er hvor langt du kan dyttes; mobilitet er hvor langt du aktivt kan styre leddet selv."
+            },
+            {
+              "sporsmal": "Hva er CARs?",
+              "valg": [
+                "Kontrollerte leddsirkler — store, langsomme rotasjoner av ett ledd",
+                "En pusteteknikk",
+                "Rask tøying før trening"
+              ],
+              "riktig": 0,
+              "forklaring": "CARs er Controlled Articular Rotations: langsomme, kontrollerte sirkler med ett ledd om gangen."
+            },
+            {
+              "sporsmal": "Hvorfor holder ikke passiv tøying alene?",
+              "valg": [
+                "Du mangler styrke til å bruke og styre ytterstillingen",
+                "Tøying er farlig",
+                "Fordi ledd ikke kan bli mer bevegelige"
+              ],
+              "riktig": 0,
+              "forklaring": "Uten aktiv styrke i ytterstillingen kan du ikke bruke bevegeligheten trygt — det er det mobilitet bygger."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Gray Cook & Michael Boyle – «Joint-by-Joint»-modellen",
+              "om": "Rammeverket for at hvert ledd i kroppen har ulikt behov for enten bevegelighet eller stabilitet."
+            },
+            {
+              "kilde": "Andreo Spina – Functional Range Conditioning (CARs)",
+              "om": "Opphavet til CARs som metode: kontrollerte leddrotasjoner for leddhelse og aktiv bevegelseskontroll."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Magepust liggende",
+            "familie": "pust",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 60
+            },
+            "blurb": "Ligg på rygg med en hånd på magen. Pust rolig ned i magen så den hever seg, og la utpusten være lang.",
+            "dose": "10 rolige magepust",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Hvor skal pusten kjennes i magepust?",
+              "valg": [
+                "Ned i magen som hever seg",
+                "Bare høyt i brystet",
+                "I skuldrene"
+              ],
+              "riktig": 0,
+              "forklaring": "Pust ned i magen så den hever seg — det roer nervesystemet og gir en stabil kjerne."
+            }
+          },
+          {
+            "ovelse": "Nakke-CARs",
+            "familie": "cars",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 3
+            },
+            "blurb": "Sitt eller stå høy. Tegn store, langsomme sirkler med hodet — så langt du kommer i hver retning, med full kontroll.",
+            "dose": "3 rolige sirkler hver vei",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Hvordan gjør du en CAR riktig?",
+              "valg": [
+                "Langsomt og kontrollert gjennom hele bevegelsen",
+                "Så fort og langt som mulig",
+                "Med rykk på slutten"
+              ],
+              "riktig": 0,
+              "forklaring": "CARs skal være langsomme og kontrollerte — du eier hele sirkelen, uten rykk."
+            }
+          },
+          {
+            "ovelse": "Hodenikk på alle fire",
+            "familie": "nakke",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 10
+            },
+            "blurb": "På alle fire: nikk hodet rolig opp og ned, og la blikket lede. Vekker nakkens dype kontroll.",
+            "dose": "×10 rolige nikk",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Hodenikk-rotasjoner",
+            "familie": "nakke",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 8
+            },
+            "blurb": "På alle fire: vri hodet rolig fra side til side og la blikket følge med. Myk, kontrollert rotasjon.",
+            "dose": "×8 side til side",
+            "minutter": 3
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 12,
+          "intensitet": 2,
+          "oppvarming": "Ligg på rygg og ta fem rolige magepust.",
+          "nedtrapping": "Bli liggende og pust rolig et øyeblikk.",
+          "ovelser": [
+            {
+              "ovelse": "Magepust liggende",
+              "sett": 1,
+              "holdSek": 60,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Nakke-CARs",
+              "sett": 2,
+              "reps": 3,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Hodenikk på alle fire",
+              "sett": 2,
+              "reps": 10,
+              "pauseSek": 15
+            },
+            {
+              "ovelse": "Hodenikk-rotasjoner",
+              "sett": 2,
+              "reps": 8,
+              "pauseSek": 15
+            }
+          ]
+        }
+      },
+      {
+        "id": "mob-skulder",
+        "navn": "Skuldre og armer",
+        "intro": "Skulderen er kroppens mest bevegelige ledd — og det som lettest stivner. Her tar vi den gjennom hele sitt register.",
+        "teori": {
+          "id": "mob-teori-2",
+          "tittel": "Skuldre som beveger seg fritt",
+          "undertittel": "Hvorfor skulderen trenger aktiv kontroll i hele sitt store bevegelsesregister.",
+          "lesetid": 4,
+          "bilde": "mobilitet-teori-2",
+          "avsnitt": [
+            {
+              "p": "Skulderen (kuleleddet) kan bevege seg i nesten alle retninger — det gjør den fantastisk fleksibel, men også sårbar. En hverdag foran skjerm gir gjerne fremovertrukne, stive skuldre. Målet her er å hente tilbake hele registeret og kontrollen over det."
+            },
+            {
+              "h": "Full sirkel med skulder-CARs"
+            },
+            {
+              "p": "Skulder-CARs tar leddet gjennom hele sin bane: frem, opp, bak og ned i én stor, kontrollert sirkel. Hold resten av kroppen stille og beveg bare armen fra skulderen. Dette kartlegger hvor du er stiv, og bygger kontroll akkurat der."
+            },
+            {
+              "h": "Rotasjon er nøkkelen"
+            },
+            {
+              "p": "Mye skulderhelse ligger i rotasjonen — evnen til å vri overarmen innover og utover. Lift-off-øvelser (å løfte hendene bak ryggen) og skulderdislokater med strikk trener nettopp dette, og motvirker den innadrotere, sammensunkne holdningen."
+            },
+            {
+              "h": "Ikke glem albuer og håndledd"
+            },
+            {
+              "p": "Lengst ute sitter albuer og håndledd, som få trener bevisst. Noen enkle CARs her holder dem sterke og smidige — viktig for alt fra bæring til planke og press. Sterke håndledd er undervurdert mobilitet."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva tar skulder-CARs leddet gjennom?",
+              "valg": [
+                "Hele bevegelsesbanen i én kontrollert sirkel",
+                "Bare en liten del",
+                "Kun rett opp og ned"
+              ],
+              "riktig": 0,
+              "forklaring": "Skulder-CARs fører leddet gjennom hele sin bane — frem, opp, bak og ned med kontroll."
+            },
+            {
+              "sporsmal": "Hva trener lift-off og skulderdislokater særlig?",
+              "valg": [
+                "Rotasjonen i skulderen",
+                "Bare grepstyrke",
+                "Nakken"
+              ],
+              "riktig": 0,
+              "forklaring": "De trener inn- og utadrotasjon — nøkkelen til en frisk, åpen skulder."
+            },
+            {
+              "sporsmal": "Hvorfor bevege bare armen i en skulder-CAR?",
+              "valg": [
+                "For å isolere leddet og eie kontrollen",
+                "For å gå fortest mulig",
+                "Det spiller ingen rolle"
+              ],
+              "riktig": 0,
+              "forklaring": "Hold resten stille og isoler skulderen — da bygger du reell kontroll i leddet."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Andreo Spina – Functional Range Conditioning (skulder-CARs)",
+              "om": "CARs-metodikk anvendt på skulderleddet for å bevare og bygge aktivt bevegelsesregister."
+            },
+            {
+              "kilde": "Kelly Starrett – «Becoming a Supple Leopard»",
+              "om": "Praktisk arbeid med skulderrotasjon og holdning for helse og prestasjon."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Skulder-CARs",
+            "familie": "cars",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 3
+            },
+            "blurb": "Beveg én arm i en stor, langsom sirkel fra skulderen — frem, opp, bak og ned. Hold resten av kroppen stille.",
+            "dose": "3 sirkler hver vei per arm",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Hva skal være i ro under en skulder-CAR?",
+              "valg": [
+                "Resten av kroppen — bare armen beveger seg",
+                "Ingenting, alt beveger seg",
+                "Bare hodet"
+              ],
+              "riktig": 0,
+              "forklaring": "Isoler skulderen: hold kjerne og hofter stille og beveg bare armen fra skulderleddet."
+            }
+          },
+          {
+            "ovelse": "Skulderdislokater med strikk",
+            "familie": "skulder",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 8
+            },
+            "blurb": "Hold en strikk bredt og før den rolig over hodet og ned bak ryggen, så tilbake. Gå bredere om det er trangt.",
+            "dose": "×8 rolige runder",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Lift-off utadrotasjon",
+            "familie": "skulder",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 8
+            },
+            "blurb": "Ligg på magen med armene ut i T eller W, tomlene opp. Løft hendene fra gulvet ved å rotere skuldrene utover.",
+            "dose": "×8 kontrollerte løft",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Lift-off innadrotasjon",
+            "familie": "skulder",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 8
+            },
+            "blurb": "Før hendene bak korsryggen, håndrygg mot ryggen. Løft dem vekk fra ryggen ved å rotere skuldrene.",
+            "dose": "×8 kontrollerte løft",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Albue- og håndledds-CARs",
+            "familie": "cars",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 6
+            },
+            "blurb": "Tegn rolige sirkler med albuene, og deretter med håndleddene — full kontroll i ytterkantene av bevegelsen.",
+            "dose": "6 sirkler hver vei",
+            "minutter": 2
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 14,
+          "intensitet": 3,
+          "oppvarming": "Rull skuldrene og ta noen magepust.",
+          "nedtrapping": "Rist løs i armene og pust rolig.",
+          "ovelser": [
+            {
+              "ovelse": "Skulder-CARs",
+              "sett": 2,
+              "reps": 3,
+              "pauseSek": 20,
+              "perSide": true
+            },
+            {
+              "ovelse": "Skulderdislokater med strikk",
+              "sett": 3,
+              "reps": 8,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Lift-off utadrotasjon",
+              "sett": 3,
+              "reps": 8,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Lift-off innadrotasjon",
+              "sett": 3,
+              "reps": 8,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Albue- og håndledds-CARs",
+              "sett": 2,
+              "reps": 6,
+              "pauseSek": 15
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "mobilitet-rygg",
+    "disiplin": "mobilitet",
+    "navn": "Rygg & kjerne",
+    "undertittel": "En smidig ryggrad og en stabil kjerne — motoren for all trygg bevegelse.",
+    "farge": "blaa",
+    "nivaBand": [
+      2,
+      2
+    ],
+    "enheter": [
+      {
+        "id": "mob-ryggrad",
+        "navn": "Ryggrad og brystrygg",
+        "intro": "En stiv brystrygg stjeler bevegelse fra nakke, skuldre og korsrygg. Vi vekker ryggraden segment for segment.",
+        "teori": {
+          "id": "mob-teori-3",
+          "tittel": "En ryggrad som beveger seg",
+          "undertittel": "Hvorfor brystryggen bør være mobil, og korsryggen stabil.",
+          "lesetid": 4,
+          "bilde": "mobilitet-teori-3",
+          "avsnitt": [
+            {
+              "p": "Ryggraden er ikke én stiv søyle, men mange små ledd som helst skal bevege seg litt hver. Sitter du mye, stivner særlig brystryggen (den øvre delen), og da må nakken og korsryggen ta støyten. Å gi brystryggen tilbake bevegelsen letter presset overalt."
+            },
+            {
+              "h": "Mobil brystrygg, stabil korsrygg"
+            },
+            {
+              "p": "Ifølge ledd-for-ledd-tenkningen bør brystryggen være bevegelig, mens korsryggen bør være stabil. Vi jager altså rotasjon og bøy i brystryggen, men trener korsryggen til å holde seg rolig og støtt. Å tvinge bevegelse ut av en korsrygg som heller vil være stabil, er en vanlig kilde til vondt."
+            },
+            {
+              "h": "Beveg segment for segment"
+            },
+            {
+              "p": "Katt–ku og ryggrads-CARs lærer deg å rulle gjennom ryggraden ett ledd om gangen, i stedet for å bøye alt fra ett sted. Ta det langsomt og kjenn etter hvor bevegelsen «hopper over» stive partier — det er der du har mest å hente."
+            },
+            {
+              "h": "Alle fire er utgangspunktet"
+            },
+            {
+              "p": "Mye av dette gjøres på alle fire, der ryggen er avlastet og du lett kan isolere bevegelsen. Vugging og krabbeposisjon vekker samspillet mellom skuldre, rygg og hofter — grunnmønstrene kroppen er bygget for."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hvilken del av ryggen bør være mest mobil?",
+              "valg": [
+                "Brystryggen (øvre del)",
+                "Korsryggen (nedre del)",
+                "Ingen av dem"
+              ],
+              "riktig": 0,
+              "forklaring": "Brystryggen bør være mobil; korsryggen bør heller være stabil."
+            },
+            {
+              "sporsmal": "Hva skjer om brystryggen er stiv?",
+              "valg": [
+                "Nakke og korsrygg må ta støyten",
+                "Ingenting",
+                "Skuldrene blir sterkere"
+              ],
+              "riktig": 0,
+              "forklaring": "En stiv brystrygg tvinger nabo-leddene til å overkompensere — ofte kilden til vondt."
+            },
+            {
+              "sporsmal": "Hva er poenget med å bevege ryggraden segment for segment?",
+              "valg": [
+                "Å finne og løsne stive partier du ellers hopper over",
+                "Å gå fortest mulig",
+                "Å bøye alt fra ett punkt"
+              ],
+              "riktig": 0,
+              "forklaring": "Ruller du ledd for ledd, finner du de stive partiene i stedet for å bøye alt fra ett sted."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Gray Cook & Michael Boyle – «Joint-by-Joint»-modellen",
+              "om": "Beskriver at brystryggen bør prioritere mobilitet og korsryggen stabilitet."
+            },
+            {
+              "kilde": "Original Strength (Tim Anderson) – rulling, vugging og krabbing",
+              "om": "Grunnmønstre på gulvet som gjenoppbygger samspillet mellom rygg, skuldre og hofter."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Ryggrads-CARs",
+            "familie": "cars",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 4
+            },
+            "blurb": "Rull rolig gjennom ryggraden ett segment om gangen — bøy, rotasjon og strekk med full kontroll.",
+            "dose": "4 rolige runder",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Katt–ku",
+            "familie": "rygg",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 8
+            },
+            "blurb": "På alle fire: rund ryggen mot taket på utpust, senk magen og åpne brystet på innpust. Beveg deg segment for segment.",
+            "dose": "×8 i pustetempo",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Hva er nøkkelen i katt–ku for ryggraden?",
+              "valg": [
+                "Å bevege seg segment for segment",
+                "Å bøye alt fra korsryggen",
+                "Å holde ryggen helt stiv"
+              ],
+              "riktig": 0,
+              "forklaring": "Rull gjennom hvert segment i stedet for å bøye alt fra ett punkt."
+            }
+          },
+          {
+            "ovelse": "Krabbeposisjon-hold",
+            "familie": "rygg",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 20
+            },
+            "blurb": "På hender og tær med knærne like over gulvet og hodet oppe. Hold en stødig, samlet posisjon.",
+            "dose": "2×20 sek",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Vugging på alle fire",
+            "familie": "rygg",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 15
+            },
+            "blurb": "På alle fire: vugg rolig frem og tilbake mot hælene med lang rygg. Vekker hofter og skuldre sammen.",
+            "dose": "2×15 rolige vugg",
+            "minutter": 3
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 14,
+          "intensitet": 3,
+          "oppvarming": "Ta noen rolige katt–ku for å vekke ryggen.",
+          "nedtrapping": "Hvil i barnets stilling og pust rolig.",
+          "ovelser": [
+            {
+              "ovelse": "Ryggrads-CARs",
+              "sett": 2,
+              "reps": 4,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Katt–ku",
+              "sett": 3,
+              "reps": 8,
+              "pauseSek": 15
+            },
+            {
+              "ovelse": "Krabbeposisjon-hold",
+              "sett": 3,
+              "holdSek": 20,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Vugging på alle fire",
+              "sett": 2,
+              "reps": 15,
+              "pauseSek": 15
+            }
+          ]
+        }
+      },
+      {
+        "id": "mob-kjerne",
+        "navn": "Kjernekontroll",
+        "intro": "Mobilitet uten en stabil kjerne er som å skyte fra en kano. Her bygger vi den støtten som lar deg bevege deg trygt.",
+        "teori": {
+          "id": "mob-teori-4",
+          "tittel": "Stabilitet gjør bevegelse trygg",
+          "undertittel": "Hvorfor en sterk, stabil kjerne er forutsetningen for god mobilitet.",
+          "lesetid": 4,
+          "bilde": "mobilitet-teori-4",
+          "avsnitt": [
+            {
+              "p": "Det høres bakvendt ut i en mobilitetsmodul, men stabilitet og mobilitet er to sider av samme sak. Kroppen slipper bare løs bevegelse den føler den kan kontrollere. En sterk, stabil kjerne er tryggheten som lar hoftene og ryggen bevege seg fritt."
+            },
+            {
+              "h": "Kjernen er en sylinder"
+            },
+            {
+              "p": "Tenk på kjernen som en sylinder rundt midten — mage, sider, rygg og bekkenbunn — som holder ryggraden stø mens armer og bein jobber. Den skal spennes med måte og samarbeide med pusten, ikke låses hardt. God kjernekontroll beskytter korsryggen din i alt du gjør."
+            },
+            {
+              "h": "Anti-bevegelse er ekte kjernetrening"
+            },
+            {
+              "p": "De beste kjerneøvelsene handler om å motstå bevegelse, ikke skape den. Fuglehund lærer deg å holde ryggen rolig mens armer og bein strekkes ut; sideplanke motstår at kroppen faller til siden; curl-up spenner magen uten å belaste ryggen. Dette er McGills velkjente «Big 3»."
+            },
+            {
+              "h": "Pust gjennom det"
+            },
+            {
+              "p": "Nøkkelen er å puste rolig selv mens du holder. Klarer du å snakke og puste jevnt i en fuglehund eller sideplanke, har du ekte, brukbar stabilitet — ikke bare et anspent pusteholdt sekund. Rolig kraft er målet."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva slags kjerneøvelser er mest effektive?",
+              "valg": [
+                "De som motstår bevegelse (anti-bevegelse)",
+                "De med flest mageøvelser",
+                "De som bøyer korsryggen mest"
+              ],
+              "riktig": 0,
+              "forklaring": "Ekte kjernestyrke handler om å motstå bevegelse — holde ryggen stø mens lemmene jobber."
+            },
+            {
+              "sporsmal": "Hvorfor er stabilitet viktig for mobilitet?",
+              "valg": [
+                "Kroppen slipper bare løs bevegelse den kan kontrollere",
+                "Det er det ikke",
+                "For å bli mindre bevegelig"
+              ],
+              "riktig": 0,
+              "forklaring": "En stabil kjerne gir tryggheten som lar hofter og rygg bevege seg fritt."
+            },
+            {
+              "sporsmal": "Hva bør du klare mens du holder en fuglehund?",
+              "valg": [
+                "Å puste rolig og jevnt",
+                "Å holde pusten hardt",
+                "Å riste av anstrengelse"
+              ],
+              "riktig": 0,
+              "forklaring": "Rolig pust under holdet viser at du har ekte, brukbar stabilitet."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Dr. Stuart McGill – «Big 3» (curl-up, sideplanke, fuglehund)",
+              "om": "Forskningsbaserte kjerneøvelser som bygger ryggstabilitet uten å belaste korsryggen."
+            },
+            {
+              "kilde": "McGill – «Back Mechanic» / University of Waterloo",
+              "om": "Prinsippet om å bygge ryggstabilitet gjennom anti-bevegelse og god pust."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Fuglehund",
+            "familie": "kjerne",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 10
+            },
+            "blurb": "På alle fire: strekk motsatt arm og bein til én lang linje, hold ryggen helt rolig, og trekk inn igjen med kontroll.",
+            "dose": "5 per side, hold 10 sek",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Hva skal holde seg i ro i fuglehund?",
+              "valg": [
+                "Ryggen og bekkenet",
+                "Alt skal bevege seg",
+                "Bare hodet"
+              ],
+              "riktig": 0,
+              "forklaring": "Hold ryggen og bekkenet helt rolig mens arm og bein strekkes ut — det er selve poenget."
+            }
+          },
+          {
+            "ovelse": "Modifisert curl-up",
+            "familie": "kjerne",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 10
+            },
+            "blurb": "Ligg på rygg med hendene under korsryggen og ett kne bøyd. Løft hodet og skuldrene lett og spenn magen — uten å flate ut ryggen.",
+            "dose": "5-3-1 reps à 10 sek",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Sideplanke",
+            "familie": "kjerne",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 20
+            },
+            "blurb": "Fra siden: stables i én rett linje på underarm og føtter (eller knær), og løft hoftene. Motstå at kroppen synker.",
+            "dose": "3 per side à 20 sek",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Rulling rygg til mage",
+            "familie": "kjerne",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 4
+            },
+            "blurb": "Ligg på rygg og rull rolig over til magen ledet av én arm, uten å sparke fra med beina. Bygger koordinert kjernekontroll.",
+            "dose": "4 per side",
+            "minutter": 3
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 15,
+          "intensitet": 3,
+          "oppvarming": "Ta noen katt–ku og magepust for å vekke kjernen.",
+          "nedtrapping": "Rull rolig sammen og pust ut.",
+          "ovelser": [
+            {
+              "ovelse": "Fuglehund",
+              "sett": 3,
+              "holdSek": 10,
+              "pauseSek": 20,
+              "perSide": true
+            },
+            {
+              "ovelse": "Modifisert curl-up",
+              "sett": 3,
+              "holdSek": 10,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Sideplanke",
+              "sett": 3,
+              "holdSek": 20,
+              "pauseSek": 20,
+              "perSide": true
+            },
+            {
+              "ovelse": "Rulling rygg til mage",
+              "sett": 2,
+              "reps": 4,
+              "pauseSek": 15,
+              "perSide": true
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "mobilitet-hofter",
+    "disiplin": "mobilitet",
+    "navn": "Hofter",
+    "undertittel": "Kroppens kraftsenter: åpne, sterke hofter som beveger seg i alle retninger.",
+    "farge": "blaa",
+    "nivaBand": [
+      2,
+      3
+    ],
+    "enheter": [
+      {
+        "id": "mob-hofte1",
+        "navn": "Hoftene i alle retninger",
+        "intro": "Hofta er kroppens mest sammensatte ledd. Vi tar den gjennom hele registeret — sirkler, rotasjon og kontroll.",
+        "teori": {
+          "id": "mob-teori-5",
+          "tittel": "Hoftene styrer alt",
+          "undertittel": "Hvorfor stive hofter merkes overalt — og hvordan du åpner dem med kontroll.",
+          "lesetid": 4,
+          "bilde": "mobilitet-teori-5",
+          "avsnitt": [
+            {
+              "p": "Hofteleddet er et stort kuleledd som skal bevege seg i alle retninger: bøy, strekk, ut til siden, inn, og rotasjon begge veier. Når hoftene stivner — ofte av mye sitting — merkes det i korsrygg, knær og hele måten du beveger deg på. Frie hofter er kanskje den beste investeringen i mobilitet du kan gjøre."
+            },
+            {
+              "h": "Rotasjon er ofte det som mangler"
+            },
+            {
+              "p": "De fleste kan bøye og strekke hofta, men det er rotasjonen — å vri låret innover og utover — som gjerne er borte. 90/90-posisjonen, der begge knær er bøyd i rett vinkel, er den klassiske måten å trene nettopp inn- og utadrotasjon i hoftene på."
+            },
+            {
+              "h": "CARs kartlegger og bygger"
+            },
+            {
+              "p": "Hofte-CARs fører leddet gjennom hele sin bane, sakte og kontrollert, mens du står støtt på det andre beinet. Det viser deg hvor du er stiv, og bygger aktiv styrke akkurat der ute i ytterkanten — den brukbare mobiliteten."
+            },
+            {
+              "h": "Fra tøyning til kontroll"
+            },
+            {
+              "p": "Hip airplane og 90/90-switches tar deg fra passiv tøyning til aktiv kontroll: du beveger deg inn og ut av ytterstillingen med egen kraft. Det er slik du gjør en stille bevegelighet om til noe du faktisk kan bruke når du løper, løfter og leker."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hvilken hoftebevegelse mangler folk oftest?",
+              "valg": [
+                "Rotasjon — å vri låret inn og ut",
+                "Å bøye hofta",
+                "Å stå stille"
+              ],
+              "riktig": 0,
+              "forklaring": "Bøy og strekk har de fleste; det er rotasjonen som ofte er borte — derfor 90/90-arbeidet."
+            },
+            {
+              "sporsmal": "Hva trener 90/90-posisjonen særlig?",
+              "valg": [
+                "Inn- og utadrotasjon i hoftene",
+                "Bare leggene",
+                "Skuldrene"
+              ],
+              "riktig": 0,
+              "forklaring": "90/90 med begge knær i rett vinkel er den klassiske måten å trene hofterotasjon på."
+            },
+            {
+              "sporsmal": "Hva gjør hofte-CARs for deg?",
+              "valg": [
+                "Kartlegger stivhet og bygger styrke i ytterkanten",
+                "Bare varmer opp pulsen",
+                "Tøyer passivt uten kontroll"
+              ],
+              "riktig": 0,
+              "forklaring": "CARs viser hvor du er stiv og bygger aktiv kontroll der ute i ytterstillingen."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Andreo Spina – Functional Range Conditioning (hofte-CARs, 90/90)",
+              "om": "CARs- og 90/90-metodikk for aktiv hofterotasjon og leddhelse."
+            },
+            {
+              "kilde": "Gray Cook – hofte­mobilitet og bevegelsesscreening",
+              "om": "Viser hvordan hoftemobilitet påvirker korsrygg, knær og bevegelseskvalitet."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Hofte-CARs",
+            "familie": "cars",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 3
+            },
+            "blurb": "Stå støtt på ett bein og før det andre kneet i en stor, langsom sirkel fra hofta — opp, ut, bak og hjem. Hold overkroppen rolig.",
+            "dose": "3 sirkler hver vei per side",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Hva holder du i ro under en hofte-CAR?",
+              "valg": [
+                "Overkroppen og standbeinet",
+                "Hele kroppen svaier",
+                "Bare foten"
+              ],
+              "riktig": 0,
+              "forklaring": "Stå støtt og hold overkroppen rolig — isoler bevegelsen til hofteleddet."
+            }
+          },
+          {
+            "ovelse": "Hofterotasjoner",
+            "familie": "hofte",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 8
+            },
+            "blurb": "Stå eller sitt og roter lårene rolig innover og utover. Kjenn hofteleddet vri seg i begge retninger.",
+            "dose": "×8 hver vei",
+            "minutter": 3
+          },
+          {
+            "ovelse": "90/90-hoftetøyning",
+            "familie": "hofte",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "Sitt med fremre og bakre kne bøyd i 90 grader. Sitt høy og len deg mykt mot det fremre beinet.",
+            "dose": "30 sek per side",
+            "minutter": 3
+          },
+          {
+            "ovelse": "90/90-switches",
+            "familie": "hofte",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 8
+            },
+            "blurb": "Sitt i 90/90 og sving begge knær rolig over til motsatt side, om og om igjen, med kontroll. Aktiv hofterotasjon.",
+            "dose": "×8 rolige bytter",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Hva trener 90/90-switches?",
+              "valg": [
+                "Aktiv rotasjon inn og ut i hoftene",
+                "Bare passiv tøyning",
+                "Grepstyrke"
+              ],
+              "riktig": 0,
+              "forklaring": "Du beveger deg aktivt inn og ut av rotasjonen med egen kontroll — brukbar hoftemobilitet."
+            }
+          },
+          {
+            "ovelse": "Hip airplane",
+            "familie": "hofte",
+            "niva": 3,
+            "maal": {
+              "type": "reps",
+              "verdi": 5
+            },
+            "blurb": "Stå på ett bein i en hoftehengsel og roter bekkenet åpent og lukket over standbeinet, med kontroll. Krevende balanse og kontroll.",
+            "dose": "5 per side",
+            "minutter": 4
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 16,
+          "intensitet": 3,
+          "oppvarming": "Ta noen hofterotasjoner og en runde katt–ku.",
+          "nedtrapping": "Sitt i 90/90 og pust rolig ut.",
+          "ovelser": [
+            {
+              "ovelse": "Hofte-CARs",
+              "sett": 2,
+              "reps": 3,
+              "pauseSek": 20,
+              "perSide": true
+            },
+            {
+              "ovelse": "Hofterotasjoner",
+              "sett": 2,
+              "reps": 8,
+              "pauseSek": 15
+            },
+            {
+              "ovelse": "90/90-hoftetøyning",
+              "sett": 2,
+              "holdSek": 30,
+              "pauseSek": 15,
+              "perSide": true
+            },
+            {
+              "ovelse": "90/90-switches",
+              "sett": 3,
+              "reps": 8,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Hip airplane",
+              "sett": 2,
+              "reps": 5,
+              "pauseSek": 20,
+              "perSide": true
+            }
+          ]
+        }
+      },
+      {
+        "id": "mob-hofte2",
+        "navn": "Dype hofter og bein",
+        "intro": "Nå gjør vi hoftemobiliteten om til dyp, sterk bevegelse: dype knebøy, sidebevegelse og den store helkroppstøyningen.",
+        "teori": {
+          "id": "mob-teori-6",
+          "tittel": "Eie de dype stillingene",
+          "undertittel": "Hvordan dyp knebøy og aktive utfall bygger mobilitet du kan stå og bevege deg i.",
+          "lesetid": 4,
+          "bilde": "mobilitet-teori-6",
+          "avsnitt": [
+            {
+              "p": "Å kunne sitte dypt på huk med hælene i gulvet er en av menneskets naturlige hvilestillinger — men mange har mistet den. Å hente den tilbake åpner hofter, knær og ankler samtidig, og gir deg en sterk, brukbar bunnstilling."
+            },
+            {
+              "h": "Bygg tid i bunnen"
+            },
+            {
+              "p": "Den dype knebøy-holdingen handler om å tilbringe tid nederst: slappe av i hoftene, holde brystet løftet og puste rolig. Litt hver dag, og kroppen venner seg til stillingen igjen. Hold deg gjerne i en dørkarm i starten om balansen er vanskelig."
+            },
+            {
+              "h": "Beveg deg til siden"
+            },
+            {
+              "p": "Cossack squat tar deg fra side til side i en dyp bredstilling og åpner innsiden av lårene og hoftene på en måte rette knebøy ikke gjør. Det bygger både bevegelighet og styrke i ytterstilling — akkurat det mobilitet handler om."
+            },
+            {
+              "h": "Én øvelse for alt"
+            },
+            {
+              "p": "«Verdens beste tøyning» og pigeon push-up kombinerer flere ledd i én flyt: hofteåpning, brystrotasjon og strekk på baksiden, alt med aktiv kontroll. Slike sammensatte bevegelser gir mye mobilitet på kort tid, og minner kroppen om at leddene skal jobbe sammen."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva bygger den dype knebøy-holdingen?",
+              "valg": [
+                "En sterk, brukbar bunnstilling med åpne hofter, knær og ankler",
+                "Bare sterke armer",
+                "Kondisjon"
+              ],
+              "riktig": 0,
+              "forklaring": "Tid i den dype huken åpner hofter, knær og ankler og gir en naturlig hvilestilling tilbake."
+            },
+            {
+              "sporsmal": "Hva åpner cossack squat spesielt?",
+              "valg": [
+                "Innsiden av lårene og hoftene, fra side til side",
+                "Bare skuldrene",
+                "Håndleddene"
+              ],
+              "riktig": 0,
+              "forklaring": "Sidebevegelsen i cossack squat åpner adduktorer og hofter på en måte rette knebøy ikke gjør."
+            },
+            {
+              "sporsmal": "Hva er fordelen med sammensatte øvelser som «verdens beste tøyning»?",
+              "valg": [
+                "De trener flere ledd sammen med aktiv kontroll",
+                "De er enklest mulig",
+                "De trener bare ett ledd"
+              ],
+              "riktig": 0,
+              "forklaring": "Sammensatte bevegelser gir mye mobilitet på kort tid og lærer leddene å samarbeide."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Ido Portal / bevegelseskultur – den dype huken",
+              "om": "Populariserte den dype knebøy-hvilestillingen som daglig mobilitetspraksis."
+            },
+            {
+              "kilde": "Kelly Starrett – «Becoming a Supple Leopard»",
+              "om": "Praktisk arbeid med dype posisjoner, utfall og sammensatte mobilitetsøvelser."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Dyp knebøy-hold",
+            "familie": "bein",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "Sett deg dypt på huk med hælene i gulvet, brystet løftet og albuene mot innsiden av knærne. Pust rolig og slapp av i hoftene.",
+            "dose": "Hold i 30 sek",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Hva er målet i den dype knebøy-holdingen?",
+              "valg": [
+                "Slappe av dypt nede med hælene i gulvet",
+                "Sprette raskt opp og ned",
+                "Stå på tå"
+              ],
+              "riktig": 0,
+              "forklaring": "Bli værende dypt nede, hælene i gulvet, og la hoftene slappe av — bygg tid i bunnen."
+            }
+          },
+          {
+            "ovelse": "Cossack squat",
+            "familie": "bein",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 6
+            },
+            "blurb": "Stå bredt og skift vekten dypt over til ett bøyd bein mens det andre strekkes. Beveg deg rolig fra side til side.",
+            "dose": "6 per side",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Verdens beste tøyning",
+            "familie": "flyt",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 5
+            },
+            "blurb": "Fra et dypt utfall: sett hånden ned, roter overkroppen åpen mot taket, og strekk deg. Åpner hofte, brystrygg og bakside i én bevegelse.",
+            "dose": "5 per side",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Pigeon push-up",
+            "familie": "hofte",
+            "niva": 3,
+            "maal": {
+              "type": "reps",
+              "verdi": 6
+            },
+            "blurb": "I due-stillingen (fremre kne bøyd, bakre bein bak): press overkroppen opp og ned med hendene og åpne hofta aktivt.",
+            "dose": "6 per side",
+            "minutter": 3
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 16,
+          "intensitet": 4,
+          "oppvarming": "Ta noen hofterotasjoner og en verdens beste tøyning per side.",
+          "nedtrapping": "Sitt i dyp huk og pust rolig.",
+          "ovelser": [
+            {
+              "ovelse": "Dyp knebøy-hold",
+              "sett": 3,
+              "holdSek": 30,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Cossack squat",
+              "sett": 3,
+              "reps": 6,
+              "pauseSek": 20,
+              "perSide": true
+            },
+            {
+              "ovelse": "Verdens beste tøyning",
+              "sett": 2,
+              "reps": 5,
+              "pauseSek": 15,
+              "perSide": true
+            },
+            {
+              "ovelse": "Pigeon push-up",
+              "sett": 2,
+              "reps": 6,
+              "pauseSek": 20,
+              "perSide": true
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "mobilitet-underkropp",
+    "disiplin": "mobilitet",
+    "navn": "Underkropp & reisning",
+    "undertittel": "Ankler, knær og evnen til å komme deg ned på gulvet og opp igjen med letthet.",
+    "farge": "blaa",
+    "nivaBand": [
+      3,
+      3
+    ],
+    "enheter": [
+      {
+        "id": "mob-underkropp-1",
+        "navn": "Knær, ankler og reisning",
+        "intro": "Lengst nede sitter ankler og knær — og evnen til å reise seg fra gulvet uten hender er et ekte mål på hel-kroppsmobilitet.",
+        "teori": {
+          "id": "mob-teori-7",
+          "tittel": "Fra gulvet og opp",
+          "undertittel": "Hvorfor ankelmobilitet og det å reise seg uten hender sier mest om bevegeligheten din.",
+          "lesetid": 4,
+          "bilde": "mobilitet-teori-7",
+          "avsnitt": [
+            {
+              "p": "Ankelen er et lite ledd med stor betydning. Stive ankler stjeler dybde fra knebøyen, presser knærne innover og gjør balansen dårligere. Litt bevisst ankelarbeid betaler seg i alt du gjør stående."
+            },
+            {
+              "h": "Knær trenger både bevegelse og trygghet"
+            },
+            {
+              "p": "Kneet er i hovedsak et hengselledd som bøyer og strekker, og som ellers vil være stabilt. Kne- og ankel-CARs holder disse leddene smurte og friske gjennom deres naturlige bane, uten å tvinge rotasjon der den ikke hører hjemme."
+            },
+            {
+              "h": "Å reise seg er mobilitet i praksis"
+            },
+            {
+              "p": "Å komme seg ned på gulvet og opp igjen uten å bruke hendene er en av de mest praktiske ferdighetene som finnes — forskning knytter det til og med til hvor lenge folk lever godt. Det krever hofte-, kne- og ankelmobilitet, balanse og styrke, alt på én gang."
+            },
+            {
+              "h": "Kryssmønstre binder kroppen sammen"
+            },
+            {
+              "p": "Kryssmarsj — hånd mot motsatt kne — vekker samspillet mellom over- og underkropp på tvers av kroppen. Slike kryssmønstre er hvordan vi går, løper og beveger oss naturlig, og de er en fin måte å runde av en helkroppsmobilitet på."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hvorfor er ankelmobilitet viktig?",
+              "valg": [
+                "Stive ankler stjeler dybde og presser knærne innover",
+                "Ankler betyr ingenting",
+                "Bare for svømming"
+              ],
+              "riktig": 0,
+              "forklaring": "God ankelmobilitet gir dypere knebøy, tryggere knær og bedre balanse."
+            },
+            {
+              "sporsmal": "Hva sier det å reise seg uten hender noe om?",
+              "valg": [
+                "Hel-kroppsmobilitet, balanse og styrke samlet",
+                "Bare armstyrke",
+                "Kondisjon"
+              ],
+              "riktig": 0,
+              "forklaring": "Å komme opp fra gulvet uten hender krever hofte-, kne- og ankelmobilitet, balanse og styrke på én gang."
+            },
+            {
+              "sporsmal": "Hva vekker kryssmarsj?",
+              "valg": [
+                "Samspillet mellom over- og underkropp på tvers",
+                "Bare leggene",
+                "Nakken"
+              ],
+              "riktig": 0,
+              "forklaring": "Kryssmønstre kobler over- og underkropp — grunnlaget for å gå og løpe naturlig."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Brito et al. – «Sitting-Rising Test» (Eur. J. Prev. Cardiol., 2014)",
+              "om": "Studie som knytter evnen til å reise seg fra gulvet uten støtte til bevegelseshelse og levetid."
+            },
+            {
+              "kilde": "Original Strength (Tim Anderson) – kryssmønstre",
+              "om": "Kryssbevegelser som gjenoppbygger koordinasjonen mellom over- og underkropp."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Kne- og ankel-CARs",
+            "familie": "cars",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 6
+            },
+            "blurb": "Tegn rolige, kontrollerte sirkler med ankelen, og bøy/strekk kneet gjennom hele banen. Full kontroll i ytterkantene.",
+            "dose": "6 sirkler hver vei",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Kryssmarsj stående",
+            "familie": "flyt",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 20
+            },
+            "blurb": "Stå og før hånden mot motsatt, løftet kne — vekselvis, i rolig takt. Kryssmønster for hele kroppen.",
+            "dose": "×20 rolige kryss",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Knestående til stående uten hender",
+            "familie": "flyt",
+            "niva": 3,
+            "maal": {
+              "type": "reps",
+              "verdi": 6
+            },
+            "blurb": "Fra knestående: reis deg opp til stående og ned igjen uten å bruke hendene. Ren hofte-, kne- og balansekontroll.",
+            "dose": "6 rolige reisninger",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hva krever det å reise seg uten hender?",
+              "valg": [
+                "Hofte-, kne- og ankelmobilitet, balanse og styrke",
+                "Bare sterke armer",
+                "Ingenting spesielt"
+              ],
+              "riktig": 0,
+              "forklaring": "Å reise seg uten hender samler hele kroppens mobilitet, balanse og styrke i én bevegelse."
+            }
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 14,
+          "intensitet": 3,
+          "oppvarming": "Ta noen ankel-CARs og en dyp knebøy-hold.",
+          "nedtrapping": "Rist løs i beina og pust rolig.",
+          "ovelser": [
+            {
+              "ovelse": "Kne- og ankel-CARs",
+              "sett": 3,
+              "reps": 6,
+              "pauseSek": 15
+            },
+            {
+              "ovelse": "Kryssmarsj stående",
+              "sett": 3,
+              "reps": 20,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Knestående til stående uten hender",
+              "sett": 3,
+              "reps": 6,
+              "pauseSek": 30
             }
           ]
         }
