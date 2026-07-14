@@ -11,11 +11,13 @@ import { hentProfil, lagreProfil, hentLogg, leggTilLogg } from './store.js';
 import { registrerBevegelse } from './niva.js';
 import {
   BEVEGELSER, BEVEGELSE_NAVN, SPORTER,
-  beregnXp, erComeback, bevegelsesMomentum,
+  beregnXp, erComeback, bevegelsesMomentum, beregnStreak,
 } from './bevegelse.js';
 import { merkerNå, nyeMerker } from './merker.js';
 import { tallOpp, lagKonfetti } from './animasjon.js';
 import { holdVaaken, slippVaaken } from './vaakenlaas.js';
+import { laasteOktIder, nyeOpplaste } from './opplasing.js';
+import { streakEtter } from './feiring.js';
 
 let aktivTimer = null;
 let vedSynlig = null; // oppdaterer klokka umiddelbart når appen våkner
@@ -57,6 +59,8 @@ export function registrerOgLogg({ bevegelse, varighetMin, intensitet = 3, tittel
   const nå = Date.now();
   const comeback = erComeback(logg, nå);
   const merkerFør = merkerNå();
+  const førStreak = beregnStreak(logg, nå);
+  const førLåste = kilde === 'laer' ? laasteOktIder() : null; // øyeblikksbilde før teknikk læres
   const { profil: ny, resultat } = registrerBevegelse(profil, { bevegelse, varighetMin, intensitet, comeback }, nå);
   lagreProfil(ny);
   leggTilLogg({
@@ -72,6 +76,12 @@ export function registrerOgLogg({ bevegelse, varighetMin, intensitet = 3, tittel
     ...ekstra,
   });
   resultat.nyeMerker = nyeMerker(merkerFør, merkerNå());
+  // Streak-økning: kun dagens FØRSTE bevegelse løfter tallet (ellers 0). Mater
+  // «Jeg er dedikert»-feiringen. Nye opplåste bibliotekøkter (kun ved læring)
+  // mater «Låst opp!»-pling. Begge avledet, ingenting nytt lagres.
+  const etterStreak = beregnStreak(hentLogg(), nå);
+  resultat.streakØkte = etterStreak > førStreak ? etterStreak : 0;
+  resultat.nyeOpplaste = førLåste ? nyeOpplaste(førLåste) : [];
   return resultat;
 }
 
@@ -393,4 +403,7 @@ export function visBevegelseFerdig(mount, resultat, { bevegelse, varighetMin, ti
   );
   tallOpp(xpTall, resultat.xp, { format: (n) => `+${n} XP` });
   if (volumTall) tallOpp(volumTall, løft.volum, { ms: 1100, format: (n) => `${n.toLocaleString('nb-NO')} kg` });
+  // Første bevegelse på dagen som løftet streaken → «Jeg er dedikert» over skjermen.
+  // streakEtter self-gater (dagens flagg), så trygt å kalle her uansett.
+  streakEtter(resultat);
 }

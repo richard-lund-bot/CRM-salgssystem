@@ -7,7 +7,7 @@
   "scripts": {
     "merge": "node scripts/merge-parts.mjs",
     "validate": "node scripts/validate.mjs",
-    "test": "npm run test:bevegelse && npm run test:merker && npm run test:ovelser && npm run test:sync && npm run test:strava && npm run test:styrke",
+    "test": "npm run test:bevegelse && npm run test:merker && npm run test:ovelser && npm run test:sync && npm run test:strava && npm run test:styrke && npm run test:feiring",
     "test:bevegelse": "node scripts/smoke-bevegelse.mjs",
     "test:merker": "node scripts/smoke-merker.mjs",
     "test:sync": "node scripts/smoke-sync.mjs",
@@ -16,6 +16,7 @@
     "installer-hooks": "node scripts/installer-hooks.mjs",
     "prepare": "node scripts/installer-hooks.mjs",
     "test:ovelser": "node scripts/smoke-ovelser.mjs",
-    "test:styrke": "node scripts/smoke-styrke.mjs"
+    "test:styrke": "node scripts/smoke-styrke.mjs",
+    "test:feiring": "node scripts/smoke-feiring.mjs"
   }
 }

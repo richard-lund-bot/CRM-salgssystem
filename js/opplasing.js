@@ -72,3 +72,33 @@ export function oktLast(okt) {
 export function oktSperret(okt) {
   return oktLast(okt).laast && !erAdmin();
 }
+
+// --- Opplåsnings-diff (for pling-feiringen ved læring) ---------------------
+// Injisert øktkilde (settes fra app.js med hentOkter) — samme DI-mønster som
+// settBib, for å slippe en sirkulær import mot bibliotek-okter.js.
+let _okterFn = null;
+export function settOkterKilde(fn) { _okterFn = fn; }
+function alleOkter() {
+  try { return _okterFn ? (_okterFn() || []) : []; } catch { return []; }
+}
+
+/** Id-ene til alle bibliotekøkter som er EKTE låst nå (uavhengig av admin-bypass).
+ *  Ta et slikt øyeblikksbilde FØR en teknikk læres for å kunne diffe etterpå. */
+export function laasteOktIder() {
+  const ut = new Set();
+  for (const o of alleOkter()) if (o?.id && oktLast(o).laast) ut.add(o.id);
+  return ut;
+}
+
+/** Økter som gikk fra låst → åpen siden `førSett` (fra laasteOktIder).
+ *  Returnerer [{ id, navn }] — grunnlaget for «Låst opp!»-pling i feiringen.
+ *  Bruker den ekte låsen, ikke oktSperret, så opplåsingen feires også for
+ *  admin-brukere (som ellers ser alt åpent). */
+export function nyeOpplaste(førSett) {
+  if (!førSett || !førSett.size) return [];
+  const ut = [];
+  for (const o of alleOkter()) {
+    if (o?.id && førSett.has(o.id) && !oktLast(o).laast) ut.push({ id: o.id, navn: o.navn || o.id });
+  }
+  return ut;
+}

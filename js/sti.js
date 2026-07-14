@@ -18,6 +18,8 @@ import { registrerOgLogg } from './beveg.js';
 import { beregnXp } from './bevegelse.js';
 import { lagKonfetti } from './animasjon.js';
 import { vibrer } from './haptikk.js';
+import { plingSekvens } from './lyd.js';
+import { kisteKort, streakEtter } from './feiring.js';
 
 // Mova-maskot: den ekte push-up-pandaen — illustrerte poser i icons/brand/panda.
 // Poser: idle, wave, flex, cheer, pushup-up, pushup-down. Brukes som guide, på
@@ -1147,22 +1149,18 @@ function startLeksjon(sti, ledd) {
 
   function tegnFeiring(res) {
     settFramdrift(steg.length - 1);
-    vibrer('feiring');
     tom(kropp); tom(bunn);
     lukkX.style.visibility = 'hidden';
-    kropp.append(
-      el('div', { class: 'leksjon-feiring' },
-        el('div', { class: 'leksjon-feiring__ikon' }, ikon('sjekk', 'ikon')),
-        el('h1', { class: 'leksjon-feiring__tittel' }, 'Teknikk lært!'),
-        el('p', { class: 'leksjon-feiring__under' }, navn),
-        el('div', { class: 'leksjon-feiring__xp' }, ikon('lyn', 'ikon'), ` +${res.xp || 0} XP`),
-        ...((res.nyeMerker || []).length
-          ? [el('div', { class: 'leksjon-feiring__merke' }, ikon('medalje', 'ikon'), ' Nytt merke: ' + res.nyeMerker.map((m) => m.navn).join(', '))]
-          : []),
-      ),
-    );
-    bunn.append(primaer('Fortsett', () => { lukk(); reTegnReise(); }));
-    try { overlay.append(lagKonfetti()); } catch { /* valgfri feiring */ }
+    // Claim-kiste: heiende panda, XP-avdekking og «Låst opp!»-pling.
+    kropp.append(kisteKort({
+      xp: res.xp || 0,
+      tittel: 'Teknikk lært!',
+      under: navn,
+      merker: res.nyeMerker || [],
+      opplaste: res.nyeOpplaste || [],
+    }));
+    // «Fortsett» → ev. streak-feiring («Jeg er dedikert»), så tilbake til stien.
+    bunn.append(primaer('Fortsett', async () => { await streakEtter(res); lukk(); reTegnReise(); }));
   }
 }
 
@@ -1344,22 +1342,18 @@ function startTeori(seksjon, enhet) {
 
   function tegnFeiring(res) {
     settFramdrift(steg.length - 1);
-    vibrer('feiring');
     tom(kropp); tom(bunn);
     lukkX.style.visibility = 'hidden';
-    kropp.append(
-      el('div', { class: 'leksjon-feiring' },
-        el('div', { class: 'leksjon-feiring__ikon' }, ikon('bok', 'ikon')),
-        el('h1', { class: 'leksjon-feiring__tittel' }, 'Teori fullført!'),
-        el('p', { class: 'leksjon-feiring__under' }, t.tittel),
-        el('div', { class: 'leksjon-feiring__xp' }, ikon('lyn', 'ikon'), ` +${res.xp || 0} XP`),
-        ...((res.nyeMerker || []).length
-          ? [el('div', { class: 'leksjon-feiring__merke' }, ikon('medalje', 'ikon'), ' Nytt merke: ' + res.nyeMerker.map((m) => m.navn).join(', '))]
-          : []),
-      ),
-    );
-    bunn.append(primaer('Fortsett', () => { lukk(); reTegnReise(); }));
-    try { overlay.append(lagKonfetti()); } catch { /* valgfri feiring */ }
+    kropp.append(kisteKort({
+      xp: res.xp || 0,
+      tittel: 'Teori fullført!',
+      under: t.tittel,
+      merker: res.nyeMerker || [],
+      opplaste: res.nyeOpplaste || [],
+      panda: false,
+      ikonNavn: 'bok',
+    }));
+    bunn.append(primaer('Fortsett', async () => { await streakEtter(res); lukk(); reTegnReise(); }));
   }
 }
 
@@ -1593,11 +1587,17 @@ function startUteksaminering(seksjon, enhet, startLegendarisk = false) {
       ...((res.nyeMerker || []).length
         ? [el('div', { class: 'leksjon-feiring__merke' }, ikon('medalje', 'ikon'), ' Nytt merke: ' + res.nyeMerker.map((m) => m.navn).join(', '))]
         : []),
+      ...((res.nyeOpplaste || []).length
+        ? res.nyeOpplaste.map((o) => el('div', { class: 'leksjon-feiring__merke leksjon-feiring__merke--opplast' },
+          ikon('lasopp', 'ikon'), ' Låst opp: ' + o.navn))
+        : []),
     );
     if (!bestatt && !legendarisk) seier.append(planleggBlokk());
     kropp.append(seier);
-    bunn.append(leksjonPrimaer('Fortsett', lukk));
+    // «Fortsett» → ev. streak-feiring («Jeg er dedikert»), så lukk.
+    bunn.append(leksjonPrimaer('Fortsett', async () => { await streakEtter(res); lukk(); }));
     try { overlay.append(lagKonfetti()); } catch { /* valgfri feiring */ }
+    if ((res.nyeOpplaste || []).length) { try { plingSekvens(res.nyeOpplaste.length); } catch { /* valgfri */ } }
   }
 
   // «Planlegg neste forsøk»: en enkel dag-velger (default om 2 dager) som legger

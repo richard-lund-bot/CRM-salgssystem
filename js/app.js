@@ -24,10 +24,12 @@ import { visMerkerSkjerm } from './merker.js';
 import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
 import { lagFaneside, fanesideMedTittel, settNavger, settUlestSjekk, dagsfase } from './banner.js';
 import { nivaFraTotalXp } from './niva.js';
-import { dagerMedAktivitet, okterHref } from './bevegelse.js';
+import { dagerMedAktivitet, okterHref, beregnStreak } from './bevegelse.js';
 import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN, KATEGORIER } from './bibliotek-okter.js';
-import { settBib as settBibOpp } from './opplasing.js';
+import { settBib as settBibOpp, settOkterKilde } from './opplasing.js';
 import { fyllInn } from './animasjon.js';
+import { settLydAv } from './lyd.js';
+import { settHaptikkAv } from './haptikk.js';
 import { regionScores, anbefalingFraRegioner, regionAndelForOkt, REGION_NAVN } from './kroppskart.js';
 import { prefMult, prefNiva, PREF_NIVAER } from './preferanser.js';
 import * as sync from './sync.js';
@@ -172,7 +174,6 @@ function fane(tittel, under, ...innhold) {
 // samler dagens budskap: planlagt økt, positiv kvittering, eller «Vi
 // anbefaler»-boksen fra anbefalingsmotoren; streaken vises som kompakt flamme.
 // ===========================================================================
-const DAG = 86400000;
 
 function isoDato(d) {
   const y = d.getFullYear();
@@ -557,18 +558,8 @@ function bevegelsesGrid() {
   return el('div', { class: 'movgrid' }, ...HJEM_FLISER.map((f) => flis(...f)), overrask);
 }
 
-// Streak: sammenhengende dager med bevegelse. Dagens økt kan fortsatt komme,
-// så en aktiv gårsdag holder streaken i live til dagen er omme.
-function beregnStreak(logg) {
-  const aktivSett = new Set(logg.map((o) => (o.dato || '').slice(0, 10)));
-  const idag = new Date();
-  idag.setHours(0, 0, 0, 0);
-  let t = idag.getTime();
-  if (!aktivSett.has(isoDato(new Date(t)))) t -= DAG;
-  let streak = 0;
-  while (aktivSett.has(isoDato(new Date(t)))) { streak++; t -= DAG; }
-  return streak;
-}
+// Streak (sammenhengende dager med bevegelse) bor nå i js/bevegelse.js —
+// beregnStreak deles med feiringslaget (streak-økning → «Jeg er dedikert»).
 
 function velkommenKort() {
   return el('div', { class: 'kort kort--info' },
@@ -749,6 +740,45 @@ function visInnstillinger() {
           el('span', { class: 'temaknapp__navn' }, t.navn),
           el('span', { class: 'temaknapp__status' }, valgtTema === t.id ? ikon('sjekk') : null),
         )),
+      ),
+    ),
+    el('div', { class: 'kort' },
+      el('h2', {}, 'Lyd og vibrasjon'),
+      el('p', { class: 'dempet', style: 'margin-top:-4px' },
+        'Små pling og vibrasjoner i feiringene og øktspilleren.'),
+      el('div', { class: 'prefliste' },
+        el('div', { class: 'prefrad' },
+          el('div', { class: 'prefrad__hode' },
+            el('span', { class: 'prefrad__ikon' }, ikon('bjelle')),
+            el('span', { class: 'prefrad__navn' }, 'Lyd'),
+          ),
+          el('div', { class: 'chiprad prefrad__valg' },
+            chip('På', {
+              aktiv: profil.innstillinger?.lyd !== false,
+              onClick: () => { settLydAv(false); lagre((p) => { p.innstillinger = p.innstillinger || {}; p.innstillinger.lyd = true; }); },
+            }),
+            chip('Av', {
+              aktiv: profil.innstillinger?.lyd === false,
+              onClick: () => { settLydAv(true); lagre((p) => { p.innstillinger = p.innstillinger || {}; p.innstillinger.lyd = false; }); },
+            }),
+          ),
+        ),
+        el('div', { class: 'prefrad' },
+          el('div', { class: 'prefrad__hode' },
+            el('span', { class: 'prefrad__ikon' }, ikon('puls')),
+            el('span', { class: 'prefrad__navn' }, 'Vibrasjon'),
+          ),
+          el('div', { class: 'chiprad prefrad__valg' },
+            chip('På', {
+              aktiv: profil.innstillinger?.haptikk !== false,
+              onClick: () => { settHaptikkAv(false); lagre((p) => { p.innstillinger = p.innstillinger || {}; p.innstillinger.haptikk = true; }); },
+            }),
+            chip('Av', {
+              aktiv: profil.innstillinger?.haptikk === false,
+              onClick: () => { settHaptikkAv(true); lagre((p) => { p.innstillinger = p.innstillinger || {}; p.innstillinger.haptikk = false; }); },
+            }),
+          ),
+        ),
       ),
     ),
     el('div', { class: 'kort' },
@@ -987,9 +1017,14 @@ async function start() {
   settBibOvelse(bib);
   settBibSti(bib);
   settBibOpp(bib);
+  settOkterKilde(hentOkter); // opplåsnings-diff (feiring.js) trenger øktlista
   settNavger(navger); // pull-to-refresh (banner.js) tegner siden på nytt
   settUlestSjekk(harUlesteVarsler); // uleste-prikk på bjella (banner.js)
   bruksTema(hentProfil()?.innstillinger?.tema);
+  // Lyd + haptikk: begge på som standard, styres fra Innstillinger.
+  const lydHapt = hentProfil()?.innstillinger || {};
+  settLydAv(lydHapt.lyd === false);
+  settHaptikkAv(lydHapt.haptikk === false);
   // Navigasjon håndterer scroll selv (navger → gjenopprettScroll): nye skjermer
   // starter på toppen, mens en fane man kommer tilbake til gjenoppretter posisjon.
   window.addEventListener('hashchange', navger);

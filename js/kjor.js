@@ -15,6 +15,7 @@ import { lagRing } from './animasjon.js';
 import { holdVaaken, slippVaaken } from './vaakenlaas.js';
 import { infoKnapp, ovelseInfo, ovelseBilde, visOvelseArk } from './ovelse.js';
 import { anbefaling, sisteSett, oppsummerOkt, loggførStyrkeokt } from './styrke.js';
+import { pling } from './lyd.js';
 
 let gjeldendeOkt = null;
 let aktivInterval = null;
@@ -36,21 +37,7 @@ if (typeof document !== 'undefined') {
 }
 
 // Kort pling ved fasebytte — hjelper når mobilen ligger på gulvet.
-function pling(frekv = 880, lengde = 0.12) {
-  try {
-    const Ctx = window.AudioContext || window.webkitAudioContext;
-    if (!Ctx) return;
-    const ac = pling._ac || (pling._ac = new Ctx());
-    const o = ac.createOscillator();
-    const g = ac.createGain();
-    o.frequency.value = frekv;
-    o.connect(g); g.connect(ac.destination);
-    g.gain.setValueAtTime(0.001, ac.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.25, ac.currentTime + 0.01);
-    g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + lengde);
-    o.start(); o.stop(ac.currentTime + lengde);
-  } catch { /* stille fallback */ }
-}
+// Selve lyden bor nå i js/lyd.js (delt med feiringene, felles av/på-bryter).
 
 // ===========================================================================
 // Felles skjerm-skall (egen header, ikke tab-bar-styrt)

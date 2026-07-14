@@ -2709,3 +2709,75 @@ body.fokusmodus { padding-bottom: 0; }
 @media (prefers-reduced-motion: no-preference) {
   .reise-grad--legendarisk .reise-grad__krone { animation: stjerne-tindre 2.6s ease-in-out infinite; }
 }
+
+/* ===========================================================================
+   M33 — Feiringslaget (js/feiring.js): claim-kiste, opplåsnings-linjer og
+   streak-«Jeg er dedikert». Kista bor inne i leksjonsskjermen (.leksjon__kropp);
+   streak-feiringen er et eget fullskjerm-overlegg. Tonet ned ved reduced-motion.
+   =========================================================================== */
+
+/* --- Claim-kiste-kortet (avløser den enkle .leksjon-feiring) --- */
+.kiste-kort { position: relative; text-align: center; padding-top: 3vh; }
+.kiste-kort__panda { width: 130px; height: 118px; margin: 0 auto 2px; filter: drop-shadow(0 8px 16px rgba(1,63,64,0.24)); animation: kiste-panda 0.5s var(--ease-standard) both; }
+.kiste-kort__toppikon { width: 82px; height: 82px; margin: 0 auto 8px; border-radius: 50%; background: var(--aksent-svak); display: grid; place-items: center; }
+.kiste-kort__toppikon .ikon { width: 40px; height: 40px; color: var(--aksent-mork); stroke-width: 2.5; }
+.kiste-kort__tittel { margin: 8px 0 0; font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--teal-900); }
+.kiste-kort__under { margin: 6px auto 0; max-width: 26ch; font-size: 15px; color: var(--tekst-2); }
+.kiste-kort__xp { display: inline-flex; align-items: center; justify-content: center; margin-top: 16px; padding: 10px 20px; border-radius: 999px; background: #FFF3D6; color: #8A6100; font-family: var(--font-display); font-size: 20px; font-weight: 800; }
+.kiste-kort__linjer { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 14px; }
+.kiste-kort__linje { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; font-size: 14px; font-weight: 600; opacity: 0; transform: translateY(8px); transition: opacity 0.32s var(--ease-standard), transform 0.32s var(--ease-standard); }
+.kiste-kort__linje--inn { opacity: 1; transform: none; }
+.kiste-kort__linje .ikon { width: 18px; height: 18px; }
+.kiste-kort__linje--merke { background: var(--aksent-svak); color: var(--aksent-mork); }
+.kiste-kort__linje--opplast { background: #FFF3D6; color: #8A6100; }
+.kiste-kort__linje--opplast .ikon { color: #E0983A; }
+
+/* Selve kista (inline SVG). Lokket løftes og stråler/glød tennes ved .kiste--apen. */
+.kiste { display: block; width: 124px; margin: 4px auto 2px; }
+.kiste__svg { width: 100%; height: auto; overflow: visible; }
+.kiste__glo { fill: #FCE9A8; opacity: 0; transform-box: fill-box; transform-origin: center; }
+.kiste__straaler { opacity: 0; transform-box: fill-box; transform-origin: 36px 30px; }
+.kiste__straaler path { stroke: #F5C542; stroke-width: 3; stroke-linecap: round; fill: none; }
+.kiste__lokk { transform-box: fill-box; transform-origin: 50% 100%; transition: transform 0.5s var(--ease-standard); }
+.kiste--apen .kiste__lokk { transform: translateY(-30%) rotate(-6deg); }
+.kiste--apen .kiste__glo { animation: kiste-glo 0.9s ease-out both; }
+.kiste--apen .kiste__straaler { animation: kiste-straaler 0.7s ease-out both; }
+.kiste--apen .kiste__kropp { animation: kiste-sprett 0.5s var(--ease-standard); }
+
+@keyframes kiste-panda { from { transform: translateY(10px) scale(0.9); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes kiste-glo { 0% { opacity: 0; transform: scale(0.5); } 45% { opacity: 0.9; } 100% { opacity: 0.5; transform: scale(1.05); } }
+@keyframes kiste-straaler { 0% { opacity: 0; transform: scale(0.4); } 45% { opacity: 1; } 100% { opacity: 0.85; transform: scale(1); } }
+@keyframes kiste-sprett { 0% { transform: scale(1, 1); } 30% { transform: scale(1.06, 0.95); } 60% { transform: scale(0.98, 1.03); } 100% { transform: scale(1, 1); } }
+
+/* Opplåsnings-linje i uteksaminerings-oppsummeringen (varm gulltone) */
+.leksjon-feiring__merke--opplast { color: #8A6100; }
+.leksjon-feiring__merke--opplast .ikon { color: #E0983A; }
+
+/* --- Streak-feiring: fullskjerm «Jeg er dedikert» --- */
+.streakfeiring { position: fixed; inset: 0; z-index: 3500; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center; padding: 28px 24px calc(28px + env(safe-area-inset-bottom, 0px)); background: var(--bg); opacity: 0; transform: scale(1.03); transition: opacity 0.34s ease, transform 0.34s var(--ease-standard); }
+.streakfeiring--pa { opacity: 1; transform: none; }
+.streakfeiring--ut { opacity: 0; }
+.streakfeiring__glo { position: absolute; inset: 0; background: radial-gradient(circle at 50% 38%, rgba(255,180,110,0.55) 0%, rgba(255,138,91,0.14) 34%, transparent 60%); pointer-events: none; }
+.streakfeiring__flamme { position: relative; width: 128px; height: 128px; display: grid; place-items: center; }
+.streakfeiring__flamme .ikon { width: 92px; height: 92px; color: var(--coral-500); fill: var(--coral-400); filter: drop-shadow(0 8px 20px rgba(255,111,97,0.4)); animation: streak-flamme 1.6s ease-in-out infinite; }
+.streakfeiring__teller { position: relative; display: flex; align-items: baseline; gap: 8px; }
+.streakfeiring__tall { font-family: var(--font-display); font-size: 66px; font-weight: 800; line-height: 1; color: var(--coral-700); }
+.streakfeiring__enhet { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--tekst-2); }
+.streakfeiring__tittel { position: relative; margin: 6px 0 0; font-family: var(--font-display); font-size: 26px; font-weight: 800; color: var(--teal-900); }
+.streakfeiring__under { position: relative; margin: 8px auto 0; max-width: 26ch; font-size: 15px; color: var(--tekst-2); }
+.streakfeiring__bunn { position: relative; margin-top: 26px; width: 100%; max-width: 420px; }
+.streakfeiring__knapp { width: 100%; padding: 15px 20px; border: none; border-radius: var(--radius-pill); background: var(--coral-500); color: #fff; font-family: var(--font-display); font-size: 17px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 18px rgba(255,111,97,0.35); transition: transform 0.12s var(--ease-standard); }
+.streakfeiring__knapp:active { transform: scale(0.975); background: var(--coral-700); }
+
+@keyframes streak-flamme { 0%, 100% { transform: scale(1) translateY(0); } 50% { transform: scale(1.08) translateY(-3px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .kiste-kort__panda { animation: none; }
+  .kiste__lokk { transition: none; }
+  .kiste--apen .kiste__glo, .kiste--apen .kiste__straaler, .kiste--apen .kiste__kropp { animation: none; }
+  .kiste--apen .kiste__glo { opacity: 0.5; }
+  .kiste--apen .kiste__straaler { opacity: 0.85; }
+  .kiste-kort__linje { transition: none; opacity: 1; transform: none; }
+  .streakfeiring { transition: none; transform: none; }
+  .streakfeiring__flamme .ikon { animation: none; }
+}

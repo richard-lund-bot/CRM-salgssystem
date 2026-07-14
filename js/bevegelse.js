@@ -105,6 +105,35 @@ export function dagerMedAktivitet(logg, nå = Date.now(), dager = 7) {
   return min;
 }
 
+// Lokal ISO-dato (YYYY-MM-DD) etter enhetens tidssone — streaken teller
+// brukerens egne døgn, ikke UTC-døgn.
+function isoLokal(ts) {
+  const d = new Date(ts);
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const dg = String(d.getDate()).padStart(2, '0');
+  return `${d.getFullYear()}-${m}-${dg}`;
+}
+
+/**
+ * Dags-streak: antall sammenhengende dager med bevegelse fram til i dag.
+ * Avledet av loggen ved lesetid — ingenting lagres, så ingenting kan «mistes».
+ * Nådefrist (spec: aldri skam): dagens økt kan fortsatt komme, så en aktiv
+ * gårsdag holder streaken i live til dagen er omme. Brukes til flammen på
+ * Min dag og til å oppdage streak-økning ved logging (feiring.js).
+ */
+export function beregnStreak(logg, nå = Date.now()) {
+  const aktive = new Set();
+  for (const o of logg) {
+    const t = Date.parse(o.dato);
+    if (Number.isFinite(t)) aktive.add(isoLokal(t));
+  }
+  let t = dagsStart(nå);
+  if (!aktive.has(isoLokal(t))) t -= DAG; // ingen økt i dag ennå → mål mot i går
+  let streak = 0;
+  while (aktive.has(isoLokal(t))) { streak++; t -= DAG; }
+  return streak;
+}
+
 /**
  * Momentum (§9) — rytme, ikke straff. Avledet av loggen ved lesetid.
  * Tilstander: ny (aldri beveget), klar (pause — «Ready when you are»),
