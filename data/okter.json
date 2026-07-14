@@ -6514,5 +6514,523 @@
         }
       }
     ]
+  },
+  {
+    "id": "yoga-morgen",
+    "kategori": "yoga",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Morgenyoga – våkne mykt",
+    "beskrivelse": "Rolig morgenflyt som vekker rygg, hofter og pust uten å skynde deg. Mykner kroppen og setter en god tone for dagen — perfekt før frokost.",
+    "varighetMin": 18,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Morgen-vinyasa / halv solhilsen (Krishnamacharya-linjen)",
+      "type": "tradisjon",
+      "ref": "https://www.tummee.com/yoga-sequences/morning-yoga + https://www.ekhartyoga.com/articles/practice/a-short-morning-yoga-sequence",
+      "notat": "Rolig oppvåkningssekvens med katt–ku, halv solhilsen og myk avslutning. Bøy knærne fritt i foroverbøy; ta færre runder ved behov. Én bevegelse per pust."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Vekk ryggen",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Katt–ku",
+            "dose": "×8"
+          },
+          {
+            "navn": "Nedovervendt hund",
+            "dose": "5 pust"
+          }
+        ]
+      },
+      {
+        "kind": "sekvens",
+        "rolle": "hoved",
+        "formatNavn": "Halv solhilsen",
+        "min": 10,
+        "ovelser": [
+          {
+            "navn": "Halv solhilsen",
+            "beskrivelse": "Rolige runder, én bevegelse per pust.",
+            "posisjoner": [
+              "Fjellstilling",
+              "Armer opp",
+              "Stående foroverbøy",
+              "Halvveis løft",
+              "Nedovervendt hund",
+              "Gå-hopp frem",
+              "Halvveis løft",
+              "Stående foroverbøy",
+              "Armer opp",
+              "Fjellstilling"
+            ]
+          }
+        ],
+        "parametre": {
+          "runder": 6
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Myk avslutning",
+        "formatKlasse": "hold",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Stående sidebøy",
+            "dose": "3 pust per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Rolig pust",
+            "dose": "10 pust"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "yoga-solhilsen-a",
+    "kategori": "yoga",
+    "skill": "medium",
+    "intensitet": "lett",
+    "navn": "Klassisk solhilsen A",
+    "beskrivelse": "Yogaens mest kjente flyt: seks runder Surya Namaskar A der pust og bevegelse smelter sammen. Bygger varme, styrke og en rolig, jevn rytme.",
+    "varighetMin": 22,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Surya Namaskara A (K. Pattabhi Jois, Ashtanga-tradisjonen)",
+      "type": "tradisjon",
+      "ref": "https://www.ashtangayoga.info/ashtanga-yoga/surya-namaskara-a-sun-salutation/ + https://practicingashtanga.com/surya-namaskara-a/",
+      "notat": "Tradisjonelle runder Sol A, én bevegelse per pust. Chaturanga på knær og kobra i stedet for opp-hund ved behov. Tyngre: flere runder; lettere: hvil i ned-hund mellom rundene."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Oppvarming",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Katt–ku",
+            "dose": "×8"
+          },
+          {
+            "navn": "Nedovervendt hund",
+            "dose": "5 pust"
+          }
+        ]
+      },
+      {
+        "kind": "sekvens",
+        "rolle": "hoved",
+        "formatNavn": "Solhilsen A",
+        "min": 14,
+        "ovelser": [
+          {
+            "navn": "Solhilsen A",
+            "beskrivelse": "Seks runder, én bevegelse per pust.",
+            "posisjoner": [
+              "Fjellstilling",
+              "Armer opp",
+              "Stående foroverbøy",
+              "Halvveis løft",
+              "Planke",
+              "Chaturanga",
+              "Oppovervendt hund",
+              "Nedovervendt hund",
+              "Gå-hopp frem",
+              "Halvveis løft",
+              "Stående foroverbøy",
+              "Armer opp",
+              "Fjellstilling"
+            ]
+          }
+        ],
+        "parametre": {
+          "runder": 6
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Nedtrapping",
+        "formatKlasse": "hold",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Barnets stilling",
+            "dose": "5 pust"
+          },
+          {
+            "navn": "Savasana",
+            "dose": "2 min"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "yoga-krigerflyt",
+    "kategori": "yoga",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "Krigerflyt",
+    "beskrivelse": "Kraftfull stående flyt: solhilsener bygger varme, så sterke kriger-stillinger som holder den. Du kjenner både styrke i beina og ro i pusten etterpå.",
+    "varighetMin": 26,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Stående vinyasa-flyt (Virabhadrasana-sekvens, Iyengar/Ashtanga-tradisjonen)",
+      "type": "tradisjon",
+      "ref": "https://www.yogajournal.com/practice/beginners/standing-poses/ + https://www.ekhartyoga.com/classes/styles/vinyasa-flow",
+      "notat": "Solhilsen A som oppvarming, deretter en stående kriger-blokk, 4 runder (2 per side), 5 pust per stilling. Kort ned steget om kneet vaker; kortere hold ved slitasje."
+    },
+    "blokker": [
+      {
+        "kind": "sekvens",
+        "rolle": "oppvarming",
+        "formatNavn": "Solhilsen A – rolig",
+        "min": 8,
+        "ovelser": [
+          {
+            "navn": "Solhilsen A",
+            "beskrivelse": "Rolige runder for å bli varm.",
+            "posisjoner": [
+              "Fjellstilling",
+              "Armer opp",
+              "Stående foroverbøy",
+              "Halvveis løft",
+              "Planke",
+              "Chaturanga",
+              "Oppovervendt hund",
+              "Nedovervendt hund",
+              "Gå-hopp frem",
+              "Halvveis løft",
+              "Stående foroverbøy",
+              "Armer opp",
+              "Fjellstilling"
+            ]
+          }
+        ],
+        "parametre": {
+          "runder": 3
+        }
+      },
+      {
+        "kind": "sekvens",
+        "rolle": "hoved",
+        "formatNavn": "Kriger-flyt",
+        "min": 13,
+        "ovelser": [
+          {
+            "navn": "Stående kriger-flyt",
+            "beskrivelse": "Fire runder, bytt side hver runde. 5 pust per stilling (3 i fredfull kriger).",
+            "posisjoner": [
+              "Kriger 1",
+              "Kriger 2",
+              "Fredfull kriger",
+              "Utvidet sidevinkel",
+              "Triangel"
+            ]
+          }
+        ],
+        "parametre": {
+          "runder": 4
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Nedtrapping",
+        "formatKlasse": "hold",
+        "min": 5,
+        "ovelser": [
+          {
+            "navn": "Stående foroverbøy",
+            "dose": "5 pust"
+          },
+          {
+            "navn": "Liggende vridning",
+            "dose": "3 pust per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Savasana",
+            "dose": "2 min"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "yoga-balansekjerne",
+    "kategori": "yoga",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "Balanse & kjerne",
+    "beskrivelse": "For deg som vil utfordre balansen: stol, figur-4, sideplanke og kråke-forberedelse bygger stødighet og kjernekraft. Krever fokus og et rolig blikk.",
+    "varighetMin": 24,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Balanse- og armbalanse-yoga (Iyengar-alignment; drishti fra Ashtanga)",
+      "type": "tradisjon",
+      "ref": "https://www.yogajournal.com/poses/types/balancing/ + https://www.ekhartyoga.com/articles/practice/arm-balances-for-beginners",
+      "notat": "Solhilsen som oppvarming, deretter balanse- og kjernestillinger med korte hold og full pause. Tren nær en vegg ved behov; senk hoftene i sideplanke om linjen ryker."
+    },
+    "blokker": [
+      {
+        "kind": "sekvens",
+        "rolle": "oppvarming",
+        "formatNavn": "Solhilsen A – varm opp",
+        "min": 8,
+        "ovelser": [
+          {
+            "navn": "Solhilsen A",
+            "beskrivelse": "Rolige runder for å bli varm.",
+            "posisjoner": [
+              "Fjellstilling",
+              "Armer opp",
+              "Stående foroverbøy",
+              "Halvveis løft",
+              "Planke",
+              "Chaturanga",
+              "Oppovervendt hund",
+              "Nedovervendt hund",
+              "Gå-hopp frem",
+              "Halvveis løft",
+              "Stående foroverbøy",
+              "Armer opp",
+              "Fjellstilling"
+            ]
+          }
+        ],
+        "parametre": {
+          "runder": 3
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Balanse og kjerne",
+        "formatKlasse": "hold",
+        "min": 12,
+        "ovelser": [
+          {
+            "navn": "Stol (utkatasana)",
+            "dose": "5 pust"
+          },
+          {
+            "navn": "Figur-4",
+            "dose": "5 pust per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Sideplanke",
+            "dose": "3 pust per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Kråke-forberedelse",
+            "dose": "3 forsøk"
+          },
+          {
+            "navn": "Planke",
+            "dose": "5 pust"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Nedtrapping",
+        "formatKlasse": "hold",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Barnets stilling",
+            "dose": "5 pust"
+          },
+          {
+            "navn": "Savasana",
+            "dose": "2 min"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "yoga-yin-kveld",
+    "kategori": "yoga",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Yin kveldsyoga – rygg og hofter",
+    "beskrivelse": "Lange, rolige hold som slipper spenning i rygg og hofter etter en lang dag. Pusten gjør jobben, ikke musklene — nydelig som forberedelse til søvn.",
+    "varighetMin": 28,
+    "utstyr": [
+      "matte",
+      "pute"
+    ],
+    "kilde": {
+      "navn": "Yin yoga – kveldsserie (Paul Grilley / Bernie Clark)",
+      "type": "tradisjon",
+      "ref": "https://yinyoga.com/yinsights/three-beginning-flows/ + https://www.ekhartyoga.com/articles/practice/a-yin-yoga-sequence-for-the-evening",
+      "notat": "2–3 min hold med 30–60 sek hvile mellom. Bruk pute i svanen og under hoftene; aldri skarp smerte — finn 60–70 % av maks og bli der. Kortere hold (90 sek) for nybegynnere."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Yin-hold – rygg og hofter (hvil 30–60 s mellom)",
+        "formatKlasse": "hold",
+        "min": 22,
+        "ovelser": [
+          {
+            "navn": "Sadelen",
+            "dose": "2 min"
+          },
+          {
+            "navn": "Sommerfuglen",
+            "dose": "3 min"
+          },
+          {
+            "navn": "Svanen",
+            "dose": "3 min per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Dragen",
+            "dose": "2 min per side",
+            "unilateral": true
+          }
+        ],
+        "format": "yin",
+        "parametre": {
+          "tidMin": 22
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Twist og hvile",
+        "formatKlasse": "hold",
+        "min": 6,
+        "ovelser": [
+          {
+            "navn": "Liggende vridning",
+            "dose": "2 min per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Savasana",
+            "dose": "3 min"
+          }
+        ],
+        "format": "yin",
+        "parametre": {
+          "tidMin": 6
+        }
+      }
+    ]
+  },
+  {
+    "id": "yoga-restorativ",
+    "kategori": "yoga",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Kveldsavspenning",
+    "beskrivelse": "Mild, gjenoppbyggende yoga som roer nervesystemet helt ned. Rolige stillinger og dyp pust løser opp dagen og gjør deg klar for søvn.",
+    "varighetMin": 24,
+    "utstyr": [
+      "matte",
+      "pute",
+      "teppe"
+    ],
+    "kilde": {
+      "navn": "Restorativ yoga / avspenning (B.K.S. Iyengar-tradisjonen; Judith Lasater)",
+      "type": "tradisjon",
+      "ref": "https://www.yogajournal.com/practice/restorative-yoga/ + https://www.ekhartyoga.com/articles/practice/restorative-yoga-for-deep-relaxation",
+      "notat": "Rolige, støttede stillinger med lange hold og dyp pust. Bruk puter og tepper for full støtte. Stopp ved ubehag; forleng savasana så lenge du vil."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Pust deg rolig",
+        "formatKlasse": "hold",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Rolig pust",
+            "dose": "10 pust"
+          },
+          {
+            "navn": "Katt–ku",
+            "dose": "×6"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Rolige, støttede hold",
+        "formatKlasse": "hold",
+        "min": 16,
+        "ovelser": [
+          {
+            "navn": "Barnets stilling",
+            "dose": "2 min"
+          },
+          {
+            "navn": "Sfinksen",
+            "dose": "1 min"
+          },
+          {
+            "navn": "Liggende vridning",
+            "dose": "2 min per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Larven",
+            "dose": "2 min"
+          },
+          {
+            "navn": "Sommerfuglen",
+            "dose": "2 min"
+          }
+        ],
+        "format": "yin",
+        "parametre": {
+          "tidMin": 16
+        }
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Dyp hvile",
+        "formatKlasse": "hold",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Savasana",
+            "dose": "4 min"
+          }
+        ]
+      }
+    ]
   }
 ]

@@ -53,7 +53,13 @@
     "undertittel": "Flyt, pust og ro — matte-basert.",
     "ikon": "hjerte",
     "farge": "lilla",
-    "status": "kommer",
-    "seksjoner": []
+    "status": "aktiv",
+    "seksjoner": [
+      "yoga-grunnlag",
+      "yoga-solhilsen",
+      "yoga-staaende",
+      "yoga-balanse",
+      "yoga-hvile"
+    ]
   }
 ]

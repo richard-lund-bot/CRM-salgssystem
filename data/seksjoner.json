@@ -2368,5 +2368,1773 @@
         }
       }
     ]
+  },
+  {
+    "id": "yoga-grunnlag",
+    "disiplin": "yoga",
+    "navn": "Grunnlag & pust",
+    "undertittel": "Start her: pusten, roen og den myke oppvarmingen som bærer all yoga.",
+    "farge": "lilla",
+    "nivaBand": [
+      1,
+      2
+    ],
+    "enheter": [
+      {
+        "id": "yoga-pust",
+        "navn": "Pust og nærvær",
+        "intro": "Yoga begynner med pusten. Lær å puste rolig og dypt, sitt godt, og møt kroppen der den er i dag.",
+        "teori": {
+          "id": "yoga-teori-1",
+          "tittel": "Pusten er hele hemmeligheten",
+          "undertittel": "Hva yoga egentlig er — og hvorfor den rolige pusten forandrer både kropp og hode.",
+          "lesetid": 4,
+          "bilde": "yoga-teori-pust",
+          "avsnitt": [
+            {
+              "p": "Yoga er langt mer enn å tøye. Ordet betyr «å forene», og kjernen er å knytte pust, kropp og oppmerksomhet sammen. Dette er den første leksjonen i yogaskolen, og vi begynner med selve motoren: pusten."
+            },
+            {
+              "h": "Derfor puster vi bevisst"
+            },
+            {
+              "p": "Når du puster langsomt og dypt — særlig med en lang utpust — skrur du på kroppens «hvile og fordøy»-system (det parasympatiske nervesystemet). Pulsen synker, skuldrene faller ned, og hodet roer seg. Rolig pust er den enkleste og kraftigste avspenningsteknikken vi har, og den er alltid med deg."
+            },
+            {
+              "h": "Pust som tar med bevegelsen"
+            },
+            {
+              "p": "I yoga leder pusten bevegelsen: du strekker deg gjerne på innpust og bøyer deg eller synker ned på utpust. Denne rytmen gjør praksisen meditativ — du slutter å haste og begynner å kjenne etter. En jevn, rolig nesepust gjennom hele økta er målet."
+            },
+            {
+              "h": "Møt kroppen der den er"
+            },
+            {
+              "p": "Yoga er ikke en konkurranse. Noen dager er du stiv, andre dager myk — begge deler er greit. Du søker et mildt drag og en god følelse, aldri skarp smerte. God holdning når du sitter, og et rolig nærvær, er fundamentet resten av yogaen bygger på."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva betyr ordet yoga?",
+              "valg": [
+                "Å forene — pust, kropp og oppmerksomhet",
+                "Å svette mye",
+                "Å tøye så langt som mulig"
+              ],
+              "riktig": 0,
+              "forklaring": "Yoga betyr «å forene». Kjernen er å knytte pust, kropp og bevissthet sammen."
+            },
+            {
+              "sporsmal": "Hva gjør rolig, dyp pust med kroppen?",
+              "valg": [
+                "Aktiverer «hvile og fordøy» og senker pulsen",
+                "Øker stresset",
+                "Ingenting"
+              ],
+              "riktig": 0,
+              "forklaring": "Langsom pust med lang utpust vipper nervesystemet mot ro — pulsen og spenningen faller."
+            },
+            {
+              "sporsmal": "Hvordan bør en yogastilling kjennes?",
+              "valg": [
+                "Et mildt drag og en god følelse",
+                "Skarp, stikkende smerte",
+                "Helt uten fornemmelse"
+              ],
+              "riktig": 0,
+              "forklaring": "Søk et mildt drag, aldri skarp smerte. Yoga handler om å kjenne etter, ikke å presse."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Zaccaro et al. – «How Breath-Control Can Change Your Life» (Front. Hum. Neurosci., 2018)",
+              "om": "Oversikt som viser at langsom pust (~6 pust i minuttet) øker parasympatisk aktivitet og gir mer ro."
+            },
+            {
+              "kilde": "Harvard Health – «Yoga for a healthy mind and body» (Harvard Medical School)",
+              "om": "Oppsummerer hvordan yoga og bevisst pust senker stress, blodtrykk og bedrer velvære."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Rolig pust",
+            "familie": "pust",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 60
+            },
+            "blurb": "Sitt eller ligg godt. Pust rolig inn gjennom nesa, og la utpusten være litt lengre enn innpusten.",
+            "dose": "10 rolige pust",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Hvilken del av pusten roer deg mest ned?",
+              "valg": [
+                "En lang, rolig utpust",
+                "Å holde pusten lenge",
+                "Rask, kort pust"
+              ],
+              "riktig": 0,
+              "forklaring": "Den forlengede utpusten bremser pulsen og signaliserer ro til kroppen."
+            }
+          },
+          {
+            "ovelse": "Sittende fjellstilling",
+            "familie": "sittende",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 60
+            },
+            "blurb": "Sitt høy og stødig med rett rygg, senkede skuldre og kronen strukket mot taket.",
+            "dose": "Sitt høy i 10 pust",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Sittende katt–ku",
+            "familie": "sittende",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 6
+            },
+            "blurb": "Rund ryggen på utpust og åpne brystet på innpust — la pusten lede bevegelsen.",
+            "dose": "6 rolige runder",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Nakkebevegelser side til side",
+            "familie": "sittende",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 5
+            },
+            "blurb": "Før øret mot skulderen, én side om gangen, og la nakken løsne rolig.",
+            "dose": "5 per side",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Skulderruller",
+            "familie": "sittende",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 8
+            },
+            "blurb": "Rull skuldrene opp mot ørene og bakover i en myk bue, og slipp spenning i nakke og øvre rygg.",
+            "dose": "8 hver vei",
+            "minutter": 2
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 12,
+          "intensitet": 2,
+          "oppvarming": "Sitt godt og ta fem rolige pust.",
+          "nedtrapping": "Bli sittende i stillhet et øyeblikk til slutt.",
+          "ovelser": [
+            {
+              "ovelse": "Sittende fjellstilling",
+              "sett": 1,
+              "holdSek": 60,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Sittende katt–ku",
+              "sett": 2,
+              "reps": 6,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Nakkebevegelser side til side",
+              "sett": 2,
+              "holdSek": 30,
+              "pauseSek": 15,
+              "perSide": true
+            },
+            {
+              "ovelse": "Skulderruller",
+              "sett": 2,
+              "reps": 8,
+              "pauseSek": 15
+            },
+            {
+              "ovelse": "Rolig pust",
+              "sett": 1,
+              "holdSek": 120,
+              "pauseSek": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "yoga-oppmyk",
+        "navn": "Vekk kroppen",
+        "intro": "Før du flyter, må kroppen bli varm. Myke, rolige bevegelser smører ledd og rygg og gjør deg klar.",
+        "teori": {
+          "id": "yoga-teori-2",
+          "tittel": "Smør ledda før du flyter",
+          "undertittel": "Hvorfor en rolig oppmykning gjør yogaen tryggere, dypere og mer behagelig.",
+          "lesetid": 3,
+          "bilde": "yoga-teori-oppmyk",
+          "avsnitt": [
+            {
+              "p": "Å gå rett inn i dype stillinger med kald kropp er som å bøye en kald gummistrikk — det gir lite og kan svi. Noen minutter med rolige, rytmiske bevegelser først gjør hele forskjellen."
+            },
+            {
+              "h": "Bevegelse smører leddene"
+            },
+            {
+              "p": "Myke bevegelser som katt–ku og sirkler får leddene til å skille ut leddvæske, som smører og nærer brusken. Ryggen, hoftene og anklene blir mer villige, og bevegelsesutslaget ditt øker trygt — uten å tvinge noe."
+            },
+            {
+              "h": "Dynamisk før statisk"
+            },
+            {
+              "p": "I oppvarmingen beveger vi oss (dynamisk mobilitet) i stedet for å holde lenge. Det varmer musklene, vekker nervesystemet og forbereder kroppen på både flyt og hold senere. De lange, stille holdene sparer vi til kroppen er varm."
+            },
+            {
+              "h": "Følg pusten"
+            },
+            {
+              "p": "Selv i oppvarmingen leder pusten. La bevegelsene være rolige og jevne, og bruk anledningen til å legge merke til hvor du er stiv i dag. Da kan du tilpasse resten av økta til kroppen du faktisk har."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hvorfor varme opp før dype stillinger?",
+              "valg": [
+                "Varme muskler og smurte ledd gir mer trygt",
+                "For å bli sliten først",
+                "Det trengs aldri"
+              ],
+              "riktig": 0,
+              "forklaring": "En kald kropp gir lite og kan overbelastes. Oppvarming øker bevegelsen trygt."
+            },
+            {
+              "sporsmal": "Hva slags bevegelser passer i oppvarmingen?",
+              "valg": [
+                "Rolige, dynamiske bevegelser",
+                "Lange, stille hold",
+                "Maksimale tøyninger med en gang"
+              ],
+              "riktig": 0,
+              "forklaring": "Dynamisk mobilitet varmer og smører; de lange holdene tar vi når kroppen er varm."
+            },
+            {
+              "sporsmal": "Hva skiller leddene ut når du beveger dem mykt?",
+              "valg": [
+                "Leddvæske som smører brusken",
+                "Melkesyre",
+                "Ingenting"
+              ],
+              "riktig": 0,
+              "forklaring": "Rolig bevegelse pumper leddvæske som smører og nærer brusken."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "American College of Sports Medicine – anbefalinger om oppvarming",
+              "om": "Råder til dynamisk oppvarming før aktivitet for å øke bevegelighet og redusere skaderisiko."
+            },
+            {
+              "kilde": "Behm & Chaouachi – oversikt om oppvarming og tøying (Eur. J. Appl. Physiol., 2011)",
+              "om": "Viser at dynamisk bevegelse før trening forbereder kropp og nervesystem bedre enn lange statiske tøyninger."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Katt–ku",
+            "familie": "oppvarming",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 8
+            },
+            "blurb": "På alle fire: rund ryggen mot taket på utpust, senk magen og åpne brystet på innpust.",
+            "dose": "8 runder i pustetempo",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Når runder du ryggen i katt–ku?",
+              "valg": [
+                "På utpust",
+                "På innpust",
+                "Uten pust"
+              ],
+              "riktig": 0,
+              "forklaring": "Rund ryggen på utpust (katt) og åpne brystet på innpust (ku)."
+            }
+          },
+          {
+            "ovelse": "Ankelsirkler",
+            "familie": "oppvarming",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 5
+            },
+            "blurb": "Løft en fot og tegn rolige, store sirkler med ankelen begge veier.",
+            "dose": "5 hver vei per fot",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Marsj på stedet",
+            "familie": "oppvarming",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 20
+            },
+            "blurb": "Løft knærne vekselvis i rolig gangtempo og sving armene med — bli lett varm.",
+            "dose": "20 rolige steg",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Sittende sidebøy",
+            "familie": "sittende",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "Sitt høy, løft én arm over hodet og len deg mykt til siden. Kjenn at hele sida åpner seg.",
+            "dose": "30 sek per side",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Sittende twist",
+            "familie": "sittende",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "Sitt høy, vri overkroppen rolig til én side på utpust, og bruk hendene lett som støtte.",
+            "dose": "30 sek per side",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Hva gjør du på utpust i en vridning?",
+              "valg": [
+                "Vrir litt dypere",
+                "Slipper vridningen helt",
+                "Holder pusten"
+              ],
+              "riktig": 0,
+              "forklaring": "Bruk utpusten til å synke litt dypere inn i vridningen — mykt, aldri rykkete."
+            }
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 14,
+          "intensitet": 3,
+          "oppvarming": "Ta noen rolige pust og rull skuldrene.",
+          "nedtrapping": "Sitt stille og pust rolig til slutt.",
+          "ovelser": [
+            {
+              "ovelse": "Katt–ku",
+              "sett": 2,
+              "reps": 8,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Ankelsirkler",
+              "sett": 2,
+              "reps": 5,
+              "pauseSek": 15
+            },
+            {
+              "ovelse": "Marsj på stedet",
+              "sett": 2,
+              "reps": 20,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Sittende sidebøy",
+              "sett": 2,
+              "holdSek": 30,
+              "pauseSek": 15,
+              "perSide": true
+            },
+            {
+              "ovelse": "Sittende twist",
+              "sett": 2,
+              "holdSek": 30,
+              "pauseSek": 15,
+              "perSide": true
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "yoga-solhilsen",
+    "disiplin": "yoga",
+    "navn": "Solhilsen",
+    "undertittel": "Lær solhilsen steg for steg — yogaens klassiske flyt mellom pust og bevegelse.",
+    "farge": "lilla",
+    "nivaBand": [
+      2,
+      3
+    ],
+    "enheter": [
+      {
+        "id": "yoga-sol-bygg",
+        "navn": "Byggeklossene i solhilsen",
+        "intro": "Solhilsen er ryggraden i mye yoga. Vi bygger den bit for bit, med de stående stillingene først.",
+        "teori": {
+          "id": "yoga-teori-3",
+          "tittel": "Solhilsen: én bevegelse per pust",
+          "undertittel": "Hva solhilsen er, hvor den kommer fra, og hvorfor den binder hele praksisen sammen.",
+          "lesetid": 4,
+          "bilde": "yoga-teori-solhilsen",
+          "avsnitt": [
+            {
+              "p": "Solhilsen (Surya Namaskar) er en flytende serie av stillinger som tradisjonelt hilser den oppgående sola. Den varmer hele kroppen, bygger styrke og bevegelighet, og lærer deg selve grunnprinsippet i vinyasa-yoga: én bevegelse per pust."
+            },
+            {
+              "h": "Pust og bevegelse i takt"
+            },
+            {
+              "p": "Kjernen er koblingen: du strekker armene opp på innpust, folder deg forover på utpust, og fortsetter slik gjennom serien. Når pusten styrer tempoet, blir flyten meditativ — kroppen beveger seg, men hodet blir stille."
+            },
+            {
+              "h": "Vi bygger den trinnvis"
+            },
+            {
+              "p": "I denne enheten lærer du den stående halvdelen: fjellstilling, armer opp, foroverbøy, halvveis løft og nedovervendt hund. Dette er «halv solhilsen» pluss hunden — en trygg og komplett flyt i seg selv, og grunnmuren for den fulle serien."
+            },
+            {
+              "h": "Bøy knærne fritt"
+            },
+            {
+              "p": "I foroverbøyen skal du gjerne bøye knærne så mye du trenger — det beskytter korsryggen og lar deg holde ryggen lang. Yoga tilpasser seg deg, ikke omvendt. Lær formen og pusterytmen nå, så bygger vi videre neste gang."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva er grunnprinsippet i solhilsen?",
+              "valg": [
+                "Én bevegelse per pust",
+                "Hold hver stilling i fem minutter",
+                "Bevegelse uten pust"
+              ],
+              "riktig": 0,
+              "forklaring": "Solhilsen kobler én bevegelse til hver inn- eller utpust — det gjør flyten meditativ."
+            },
+            {
+              "sporsmal": "Når strekker du armene opp i solhilsen?",
+              "valg": [
+                "På innpust",
+                "På utpust",
+                "Mens du holder pusten"
+              ],
+              "riktig": 0,
+              "forklaring": "Du strekker deg opp på innpust og folder deg ned på utpust — pusten leder."
+            },
+            {
+              "sporsmal": "Hva bør du gjøre med knærne i foroverbøyen?",
+              "valg": [
+                "Bøye dem så mye du trenger for lang rygg",
+                "Alltid holde dem helt strake",
+                "Låse dem bakover"
+              ],
+              "riktig": 0,
+              "forklaring": "Bøy knærne fritt for å beskytte korsryggen og holde ryggen lang."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Surya Namaskar-tradisjonen (Krishnamacharya-linjen; Pattabhi Jois, Ashtanga)",
+              "om": "Den klassiske solhilsen-serien slik den læres i moderne vinyasa- og Ashtanga-yoga."
+            },
+            {
+              "kilde": "Bhavanani et al. – fysiologiske effekter av Surya Namaskar (Int. J. Yoga, 2011)",
+              "om": "Dokumenterer at solhilsen gir både kondisjons- og styrkeeffekt og virker som en helkroppsøvelse."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Fjellstilling",
+            "familie": "staaende",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "Stå høy med føttene samlet, vekten jevnt fordelt, skuldrene ned og kronen mot taket.",
+            "dose": "Hold i 5 pust",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Hva kjennetegner en god fjellstilling?",
+              "valg": [
+                "Høy, jevn og rolig med vekten godt fordelt",
+                "Sammensunket med bøyd rygg",
+                "Vekten bare på tærne"
+              ],
+              "riktig": 0,
+              "forklaring": "Fjellstilling er stående grunnstilling: høy, stabil og jevnt fordelt vekt."
+            }
+          },
+          {
+            "ovelse": "Armer opp",
+            "familie": "staaende",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 20
+            },
+            "blurb": "På innpust: strekk armene opp over hodet, løft brystet og se lett oppover mot hendene.",
+            "dose": "Strekk opp i 3 pust",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Stående foroverbøy",
+            "familie": "staaende",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "På utpust: fold deg forover fra hoftene med lang rygg, bøy knærne fritt og la hodet henge tungt.",
+            "dose": "Hold i 5 pust",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Halvveis løft",
+            "familie": "staaende",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 20
+            },
+            "blurb": "På innpust: løft overkroppen halvveis til en lang, flat rygg med hendene på leggene eller gulvet.",
+            "dose": "Hold i 3 pust",
+            "minutter": 2,
+            "sjekk": {
+              "sporsmal": "Hva er målet i halvveis løft?",
+              "valg": [
+                "En lang, flat rygg",
+                "Å runde ryggen mest mulig",
+                "Å sette seg ned"
+              ],
+              "riktig": 0,
+              "forklaring": "Løft til en flat, lang rygg — det forbereder ryggen på resten av flyten."
+            }
+          },
+          {
+            "ovelse": "Nedovervendt hund",
+            "familie": "flyt",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "Skyv hoftene opp og bak til en omvendt V. Press gulvet fra deg med lange armer og lang rygg.",
+            "dose": "Hold i 5 pust",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hva er viktigst i nedovervendt hund?",
+              "valg": [
+                "Lang rygg — bøy gjerne knærne",
+                "Strake bein og rund rygg",
+                "Hælene må nå gulvet"
+              ],
+              "riktig": 0,
+              "forklaring": "Prioriter lang rygg; bøy knærne fritt. Hælene trenger ikke nå gulvet."
+            }
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 16,
+          "intensitet": 3,
+          "oppvarming": "Rull skuldrene og ta noen rolige pust i fjellstilling.",
+          "nedtrapping": "Stå rolig i fjellstilling og senk pusten.",
+          "ovelser": [
+            {
+              "ovelse": "Fjellstilling",
+              "sett": 2,
+              "holdSek": 30,
+              "pauseSek": 15
+            },
+            {
+              "ovelse": "Armer opp",
+              "sett": 3,
+              "holdSek": 20,
+              "pauseSek": 15
+            },
+            {
+              "ovelse": "Stående foroverbøy",
+              "sett": 3,
+              "holdSek": 30,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Halvveis løft",
+              "sett": 3,
+              "holdSek": 20,
+              "pauseSek": 15
+            },
+            {
+              "ovelse": "Nedovervendt hund",
+              "sett": 3,
+              "holdSek": 30,
+              "pauseSek": 20
+            }
+          ]
+        }
+      },
+      {
+        "id": "yoga-sol-flyt",
+        "navn": "Full solhilsen-flyt",
+        "intro": "Nå legger vi til gulvdelen: planke, chaturanga og oppovervendt hund — og syr sammen hele solhilsen A.",
+        "teori": {
+          "id": "yoga-teori-4",
+          "tittel": "Chaturanga — den trygge veien ned",
+          "undertittel": "Gulvdelen av solhilsen, og hvordan du senker deg med kontroll i stedet for å rase ned.",
+          "lesetid": 4,
+          "bilde": "yoga-teori-flyt",
+          "avsnitt": [
+            {
+              "p": "Nå kobler vi på gulvdelen som gjør halv solhilsen til full solhilsen A: planke, den kontrollerte senkingen chaturanga, og oppovervendt hund. Dette er delen som bygger ekte overkroppsstyrke."
+            },
+            {
+              "h": "Chaturanga med kontroll"
+            },
+            {
+              "p": "Chaturanga er en halvveis nedsenking der du holder albuene inntil kroppen og kroppen i én rett linje. Det er egentlig en langsom, kontrollert pushup. Er du fersk, senker du knærne til gulvet først — det er ikke juks, men den smarte progresjonen som bygger styrken trygt."
+            },
+            {
+              "h": "Åpne brystet i opp-hund"
+            },
+            {
+              "p": "Fra chaturanga ruller du frem til oppovervendt hund: brystet løftes, skuldrene trekkes ned og bak, og lårene løftes fra gulvet. Kjennes det for mye i korsryggen, bytter du til en mild kobra med lårene i gulvet. Så skyver du tilbake til nedovervendt hund og henter pusten."
+            },
+            {
+              "h": "Sy det sammen"
+            },
+            {
+              "p": "Full solhilsen A flyter slik: fjell → armer opp → foroverbøy → halvveis løft → planke → chaturanga → opp-hund → ned-hund → gå eller hopp frem → halvveis løft → foroverbøy → armer opp → fjell. Én bevegelse per pust. Ta det rolig, og bygg opp antall runder etter hvert."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hvordan gjør du chaturanga tryggere som nybegynner?",
+              "valg": [
+                "Senk knærne til gulvet først",
+                "Sprik med albuene ut",
+                "Hold pusten og fall ned"
+              ],
+              "riktig": 0,
+              "forklaring": "Knær i gulvet er den smarte progresjonen — den bygger styrken uten å overbelaste skuldrene."
+            },
+            {
+              "sporsmal": "Hva gjør du hvis opp-hund kjennes for mye i korsryggen?",
+              "valg": [
+                "Bytt til en mild kobra med lårene i gulvet",
+                "Press hardere",
+                "Hopp over pusten"
+              ],
+              "riktig": 0,
+              "forklaring": "En mild kobra med lårene i gulvet gir en tryggere bakoverbøy for korsryggen."
+            },
+            {
+              "sporsmal": "Hva er chaturanga egentlig?",
+              "valg": [
+                "En langsom, kontrollert pushup",
+                "Et hopp",
+                "En hvilestilling"
+              ],
+              "riktig": 0,
+              "forklaring": "Chaturanga er en kontrollert nedsenking — en rett kropp som senkes med albuene inntil sida."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Surya Namaskara A (K. Pattabhi Jois, Ashtanga-tradisjonen)",
+              "om": "Den tradisjonelle fulle solhilsen A med vinyasa mellom stillingene."
+            },
+            {
+              "kilde": "Yoga-anatomi (Ray Long / Bernie Clark)",
+              "om": "Forklarer trygg skulder- og ryggmekanikk i chaturanga og oppovervendt hund."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Planke",
+            "familie": "flyt",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "Rett linje fra hode til hæl, hendene under skuldrene. Stram mage og lår, ikke la hoftene henge.",
+            "dose": "Hold i 5 pust",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Chaturanga",
+            "familie": "flyt",
+            "niva": 3,
+            "maal": {
+              "type": "hold",
+              "verdi": 15
+            },
+            "blurb": "Fra planke: senk deg halvveis med albuene inntil kroppen, rett linje hele veien. Knær i gulvet om nødvendig.",
+            "dose": "3 kontrollerte senkinger",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hvor skal albuene være i chaturanga?",
+              "valg": [
+                "Inntil kroppen",
+                "Langt ut til sidene",
+                "Bak ryggen"
+              ],
+              "riktig": 0,
+              "forklaring": "Hold albuene inntil sida og kroppen i én linje — det skåner skuldrene."
+            }
+          },
+          {
+            "ovelse": "Oppovervendt hund",
+            "familie": "flyt",
+            "niva": 3,
+            "maal": {
+              "type": "hold",
+              "verdi": 20
+            },
+            "blurb": "Rull frem: løft brystet, trekk skuldrene ned og bak, og løft lårene fra gulvet. Mild kobra om det er mer behagelig.",
+            "dose": "Hold i 3 pust",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Gå-hopp frem",
+            "familie": "flyt",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 3
+            },
+            "blurb": "Fra nedovervendt hund: gå eller hopp føttene frem mellom hendene til foroverbøy.",
+            "dose": "3 rolige overganger",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Foroverbøy over lårene",
+            "familie": "flyt",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 20
+            },
+            "blurb": "Fold deg over lårene med bøyde knær og lang rygg, og la overkroppen hvile tungt.",
+            "dose": "Hold i 3 pust",
+            "minutter": 2
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 18,
+          "intensitet": 4,
+          "oppvarming": "Ta to rolige runder halv solhilsen for å bli varm.",
+          "nedtrapping": "Hvil i barnets stilling og pust rolig.",
+          "ovelser": [
+            {
+              "ovelse": "Planke",
+              "sett": 3,
+              "holdSek": 30,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Chaturanga",
+              "sett": 3,
+              "holdSek": 15,
+              "pauseSek": 30
+            },
+            {
+              "ovelse": "Oppovervendt hund",
+              "sett": 3,
+              "holdSek": 20,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Nedovervendt hund",
+              "sett": 3,
+              "holdSek": 30,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Gå-hopp frem",
+              "sett": 3,
+              "reps": 3,
+              "pauseSek": 20
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "yoga-staaende",
+    "disiplin": "yoga",
+    "navn": "Stående & krigere",
+    "undertittel": "Kraft og jording: kriger-stillingene og de åpne stående posisjonene.",
+    "farge": "lilla",
+    "nivaBand": [
+      2,
+      3
+    ],
+    "enheter": [
+      {
+        "id": "yoga-krigere",
+        "navn": "Krigerne",
+        "intro": "De stående kriger-stillingene bygger styrke i bein og kjerne, og en rolig, jordet styrke i hodet.",
+        "teori": {
+          "id": "yoga-teori-5",
+          "tittel": "Stå som en kriger",
+          "undertittel": "Hvorfor de stående stillingene er yogaens styrkeskole — og hvordan du står trygt i dem.",
+          "lesetid": 4,
+          "bilde": "yoga-teori-krigere",
+          "avsnitt": [
+            {
+              "p": "Kriger-stillingene (Virabhadrasana) og de andre stående posisjonene er yogaens styrkeskole. De bygger kraft i lår, sete og kjerne, forbedrer balansen, og gir en følelse av å stå stødig og jordet — både i kroppen og i hodet."
+            },
+            {
+              "h": "Bygg fra bakken opp"
+            },
+            {
+              "p": "En god stående stilling starter i føttene: press hele fotsålen ned og kjenn at du står stabilt. Derfra bygger du oppover — sterke bein, løftet bryst, lange armer. Det fremre kneet skal peke i samme retning som tærne og aldri falle innover."
+            },
+            {
+              "h": "Beskytt kneet"
+            },
+            {
+              "p": "Den vanligste feilen er å la det bøyde kneet skyte forbi ankelen eller vippe innover. Hold kneet rett over ankelen og pekende mot andre tå. Kort ned steget om du ikke får det til — kortere og trygt slår langt og vaklete."
+            },
+            {
+              "h": "Styrke møter ro"
+            },
+            {
+              "p": "Selv om stillingene er sterke, holder du pusten rolig og ansiktet mykt. Der ligger yogaens egenart: å finne ro midt i anstrengelsen. Kjenn kraften i beina, men slipp unødig spenning i skuldre og kjeve."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hvor starter en god stående stilling?",
+              "valg": [
+                "I føttene — press fotsålen ned",
+                "I skuldrene",
+                "I ansiktet"
+              ],
+              "riktig": 0,
+              "forklaring": "Stabiliteten bygges fra bakken opp: sterke, forankrede føtter først."
+            },
+            {
+              "sporsmal": "Hvor bør det bøyde fremre kneet peke?",
+              "valg": [
+                "Rett over ankelen, mot andre tå",
+                "Innover mot storetåa",
+                "Forbi tærne"
+              ],
+              "riktig": 0,
+              "forklaring": "Hold kneet over ankelen og pekende mot andre tå — det beskytter kneet."
+            },
+            {
+              "sporsmal": "Hva er yogaens egenart i en sterk stilling?",
+              "valg": [
+                "Rolig pust og mykt ansikt midt i anstrengelsen",
+                "Å holde pusten",
+                "Å spenne alt maksimalt"
+              ],
+              "riktig": 0,
+              "forklaring": "Å finne ro i innsatsen — rolig pust og et mykt ansikt selv når beina jobber."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "B.K.S. Iyengar – «Light on Yoga»",
+              "om": "Referanseverket for presis oppstilling (alignment) i de stående yogastillingene."
+            },
+            {
+              "kilde": "Yoga og styrke/balanse (Cramer et al., systematiske oversikter)",
+              "om": "Viser at yoga bedrer styrke, balanse og funksjon, blant annet gjennom stående stillinger."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Stol (utkatasana)",
+            "familie": "staaende",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "Bøy knærne og senk hoftene som mot en usynlig stol, vekten i hælene og brystet løftet.",
+            "dose": "Hold i 5 pust",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Kriger 1",
+            "familie": "staaende",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "Langt steg bakover, bakre fot litt utvinklet, fremre kne bøyd og hoftene fremover. Armene mot taket.",
+            "dose": "5 pust per side",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hvor peker hoftene i kriger 1?",
+              "valg": [
+                "Fremover",
+                "Rett ut til siden",
+                "Bakover"
+              ],
+              "riktig": 0,
+              "forklaring": "I kriger 1 vender hoftene fremover, mot det fremre beinet."
+            }
+          },
+          {
+            "ovelse": "Kriger 2",
+            "familie": "staaende",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "Bredt steg, fremre kne bøyd over ankelen, hoftene åpne til siden. Armene strukket hver sin vei, blikket over fremre hånd.",
+            "dose": "5 pust per side",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hva skal du passe på med fremre kne i kriger 2?",
+              "valg": [
+                "At det er over ankelen, ikke faller innover",
+                "At det går langt forbi tærne",
+                "At det er helt strakt"
+              ],
+              "riktig": 0,
+              "forklaring": "Hold kneet over ankelen og pekende mot tærne — aldri innover."
+            }
+          },
+          {
+            "ovelse": "Fredfull kriger",
+            "familie": "staaende",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 20
+            },
+            "blurb": "Fra kriger 2: snu fremre håndflate opp, løft armen mot taket og len deg mykt bakover i en sidebue.",
+            "dose": "3 pust per side",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Stående sidebøy",
+            "familie": "staaende",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 20
+            },
+            "blurb": "Stå høy, løft én arm over hodet og len deg til siden. Kjenn at hele sida forlenges.",
+            "dose": "3 pust per side",
+            "minutter": 3
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 18,
+          "intensitet": 4,
+          "oppvarming": "Ta to runder halv solhilsen og noen kneløft.",
+          "nedtrapping": "Fold deg forover og hvil i barnets stilling.",
+          "ovelser": [
+            {
+              "ovelse": "Stol (utkatasana)",
+              "sett": 3,
+              "holdSek": 30,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Kriger 1",
+              "sett": 2,
+              "holdSek": 30,
+              "pauseSek": 20,
+              "perSide": true
+            },
+            {
+              "ovelse": "Kriger 2",
+              "sett": 2,
+              "holdSek": 30,
+              "pauseSek": 20,
+              "perSide": true
+            },
+            {
+              "ovelse": "Fredfull kriger",
+              "sett": 2,
+              "holdSek": 20,
+              "pauseSek": 15,
+              "perSide": true
+            },
+            {
+              "ovelse": "Stående sidebøy",
+              "sett": 2,
+              "holdSek": 20,
+              "pauseSek": 15,
+              "perSide": true
+            }
+          ]
+        }
+      },
+      {
+        "id": "yoga-apne",
+        "navn": "Åpne og forleng",
+        "intro": "De lange, åpne stillingene — triangel og utvidet sidevinkel — strekker sidekroppen og åpner hoftene.",
+        "teori": {
+          "id": "yoga-teori-6",
+          "tittel": "Lengde før dybde",
+          "undertittel": "Slik åpner du sidekroppen trygt i triangel og sidevinkel uten å synke sammen.",
+          "lesetid": 3,
+          "bilde": "yoga-teori-apne",
+          "avsnitt": [
+            {
+              "p": "Triangel og utvidet sidevinkel er lange, elegante stillinger som åpner sidekroppen, hoftene og brystet. De ser enkle ut, men krever at du prioriterer lengde fremfor å nå langt ned."
+            },
+            {
+              "h": "Len deg ut, ikke ned"
+            },
+            {
+              "p": "I triangel er fristelsen å strekke hånda mot gulvet og synke sammen. I stedet forlenger du overkroppen ut over det fremre beinet, med en lang rygg og åpent bryst. Hånda kan hvile på leggen eller en kloss — hvor langt ned du når, spiller ingen rolle."
+            },
+            {
+              "h": "Sterke bein bærer"
+            },
+            {
+              "p": "Lengden i overkroppen er bare mulig fordi beina jobber. Hold begge bein aktive og press føttene ned i gulvet. Da får ryggsøylen frihet til å forlenge seg, og du unngår å belaste korsryggen."
+            },
+            {
+              "h": "Pust inn i sida"
+            },
+            {
+              "p": "Når stillingen kjennes lang og åpen, retter du pusten mot den øvre sida av brystkassen og kjenner den utvide seg. Slik blir de stående åpningene like mye pust og romfølelse som styrke."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva bør du prioritere i triangel?",
+              "valg": [
+                "Lengde i overkroppen framfor å nå langt ned",
+                "Å presse hånda helt til gulvet",
+                "Å runde ryggen"
+              ],
+              "riktig": 0,
+              "forklaring": "Len deg langt UT, ikke ned. Lengde og åpent bryst er viktigere enn hvor hånda lander."
+            },
+            {
+              "sporsmal": "Hvorfor holde beina sterke i sidevinkel og triangel?",
+              "valg": [
+                "De bærer og gir ryggen frihet til å forlenge seg",
+                "For å hvile ryggen helt",
+                "De skal være passive"
+              ],
+              "riktig": 0,
+              "forklaring": "Aktive bein bærer stillingen og lar ryggsøylen forlenge seg trygt."
+            },
+            {
+              "sporsmal": "Hvor kan hånda hvile i triangel?",
+              "valg": [
+                "På leggen eller en kloss",
+                "Bare på gulvet",
+                "Bak ryggen"
+              ],
+              "riktig": 0,
+              "forklaring": "Hånda kan hvile på leggen eller en kloss — dybden er uviktig, lengden teller."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "B.K.S. Iyengar – «Light on Yoga»",
+              "om": "Detaljert oppstilling for Trikonasana (triangel) og Parsvakonasana (sidevinkel)."
+            },
+            {
+              "kilde": "Yoga Journal – pose-guide for triangel og utvidet sidevinkel",
+              "om": "Praktiske råd om å forlenge sidekroppen og bruke props for trygg åpning."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Triangel",
+            "familie": "staaende",
+            "niva": 3,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "Bredt steg, strake bein. Len overkroppen langt ut over fremre bein og senk hånda til leggen; øvre arm mot taket.",
+            "dose": "5 pust per side",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hva er den vanligste feilen i triangel?",
+              "valg": [
+                "Å synke ned i stedet for å forlenge ut",
+                "For sterke bein",
+                "For lang rygg"
+              ],
+              "riktig": 0,
+              "forklaring": "Ikke synk sammen mot gulvet — forleng overkroppen ut med lang rygg og åpent bryst."
+            }
+          },
+          {
+            "ovelse": "Utvidet sidevinkel",
+            "familie": "staaende",
+            "niva": 3,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "Fra kriger 2: legg underarmen på fremre lår eller hånda utenfor foten, og strekk øvre arm i en lang linje fra hæl til fingertupp.",
+            "dose": "5 pust per side",
+            "minutter": 4
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 14,
+          "intensitet": 4,
+          "oppvarming": "Ta en runde kriger 2 på hver side for å bli varm.",
+          "nedtrapping": "Stå i foroverbøy og la ryggen løsne.",
+          "ovelser": [
+            {
+              "ovelse": "Triangel",
+              "sett": 2,
+              "holdSek": 40,
+              "pauseSek": 20,
+              "perSide": true
+            },
+            {
+              "ovelse": "Utvidet sidevinkel",
+              "sett": 2,
+              "holdSek": 40,
+              "pauseSek": 20,
+              "perSide": true
+            },
+            {
+              "ovelse": "Stående foroverbøy",
+              "sett": 2,
+              "holdSek": 30,
+              "pauseSek": 15
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "yoga-balanse",
+    "disiplin": "yoga",
+    "navn": "Balanse & kjerne",
+    "undertittel": "Fokus, stødighet og kjernekraft — de stillingene som utfordrer balansen.",
+    "farge": "lilla",
+    "nivaBand": [
+      3,
+      3
+    ],
+    "enheter": [
+      {
+        "id": "yoga-balanse-1",
+        "navn": "Finn balansen",
+        "intro": "Balanse er en ferdighet du kan trene. Med et rolig blikk og en sterk kjerne blir du overraskende stødig.",
+        "teori": {
+          "id": "yoga-teori-7",
+          "tittel": "Balanse er en ferdighet",
+          "undertittel": "Hvordan blikk, pust og kjerne gjør deg stødig — og hvorfor det er verdt å trene.",
+          "lesetid": 4,
+          "bilde": "yoga-teori-balanse",
+          "avsnitt": [
+            {
+              "p": "Balansestillinger ser magiske ut, men balanse er ikke et talent du enten har eller ikke har — det er en ferdighet nervesystemet ditt lærer med øving. Og gevinsten er stor: bedre balanse betyr sterkere kjerne, tryggere hverdag og færre fall livet ut."
+            },
+            {
+              "h": "Fest blikket"
+            },
+            {
+              "p": "Det enkleste balansetrikset er drishti — et fast blikkpunkt. Velg et punkt på gulvet eller veggen som ikke beveger seg, og hvil øynene der. Et rolig blikk gir en rolig kropp; et flakkende blikk gjør deg ustø."
+            },
+            {
+              "h": "Kjernen holder deg oppe"
+            },
+            {
+              "p": "En stødig balanse kommer innenfra. Når du spenner magen lett og holder kroppen i én samlet linje, har du en stabil søyle å balansere rundt. I stillinger som sideplanke og kråke-forberedelse er det kjernen — ikke bare armene — som gjør jobben."
+            },
+            {
+              "h": "Vakling er en del av det"
+            },
+            {
+              "p": "Du kommer til å vakle og falle ut, og det er helt greit — det er faktisk slik balansen bygges. Pust rolig, smil litt, og finn veien tilbake. Tren nær en vegg om du vil ha en trygg støtte, og bygg deg opp gradvis."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva er drishti?",
+              "valg": [
+                "Et fast blikkpunkt som hjelper balansen",
+                "En pusteteknikk",
+                "En hviledag"
+              ],
+              "riktig": 0,
+              "forklaring": "Drishti er et fast blikkpunkt. Et rolig, festet blikk gir en rolig, stødig kropp."
+            },
+            {
+              "sporsmal": "Hva gir mest stabilitet i balansestillinger?",
+              "valg": [
+                "En aktiv kjerne og samlet kroppslinje",
+                "Bare sterke armer",
+                "Å holde pusten"
+              ],
+              "riktig": 0,
+              "forklaring": "Kjernen er den stabile søylen du balanserer rundt — spenn magen lett."
+            },
+            {
+              "sporsmal": "Hva bør du tenke om å vakle og falle ut?",
+              "valg": [
+                "Det er en normal del av å bygge balanse",
+                "Det betyr at du aldri lærer det",
+                "At du bør slutte"
+              ],
+              "riktig": 0,
+              "forklaring": "Vakling er hvordan balansen trenes. Pust rolig og finn veien tilbake."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Youkhana et al. – yoga og fall/balanse hos eldre (Age and Ageing, 2016)",
+              "om": "Systematisk oversikt som viser at yoga bedrer balanse og reduserer fallrisiko."
+            },
+            {
+              "kilde": "Ashtanga-tradisjonen – drishti (blikkpunkt)",
+              "om": "Beskriver bruken av et fast blikkpunkt for konsentrasjon og stabilitet i stillingene."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Figur-4",
+            "familie": "balanse",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "Stå på ett bein (eller sittende), legg motsatt ankel over kneet og senk hoftene lett som mot en stol.",
+            "dose": "5 pust per side",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Hva hjelper deg å holde balansen stående?",
+              "valg": [
+                "Et fast blikkpunkt og aktiv kjerne",
+                "Å se deg rundt",
+                "Å holde pusten"
+              ],
+              "riktig": 0,
+              "forklaring": "Fest blikket på ett punkt og spenn kjernen lett — da står du stødig."
+            }
+          },
+          {
+            "ovelse": "Sideplanke",
+            "familie": "balanse",
+            "niva": 3,
+            "maal": {
+              "type": "hold",
+              "verdi": 20
+            },
+            "blurb": "Fra planke: rull over på én hånd og ytterkanten av foten, stable kroppen i én linje og løft øvre arm mot taket.",
+            "dose": "3 pust per side",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hva bærer sideplanken?",
+              "valg": [
+                "En sterk, samlet kjerne",
+                "Bare håndleddet",
+                "Skuldrene alene"
+              ],
+              "riktig": 0,
+              "forklaring": "Kjernen holder kroppen i én rett, løftet linje — senk hoftene bare hvis linjen ryker."
+            }
+          },
+          {
+            "ovelse": "Kråke-forberedelse",
+            "familie": "balanse",
+            "niva": 3,
+            "maal": {
+              "type": "hold",
+              "verdi": 15
+            },
+            "blurb": "Huk deg ned, plasser hendene i gulvet, sett knærne mot overarmene og flytt vekten rolig frem på tå.",
+            "dose": "3 forsøk med vekt frem",
+            "minutter": 4
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 15,
+          "intensitet": 4,
+          "oppvarming": "Ta noen runder katt–ku og en planke for å vekke kjernen.",
+          "nedtrapping": "Hvil i barnets stilling og rist ut håndleddene.",
+          "ovelser": [
+            {
+              "ovelse": "Figur-4",
+              "sett": 2,
+              "holdSek": 30,
+              "pauseSek": 15,
+              "perSide": true
+            },
+            {
+              "ovelse": "Sideplanke",
+              "sett": 3,
+              "holdSek": 20,
+              "pauseSek": 30,
+              "perSide": true
+            },
+            {
+              "ovelse": "Kråke-forberedelse",
+              "sett": 4,
+              "holdSek": 15,
+              "pauseSek": 30
+            },
+            {
+              "ovelse": "Planke",
+              "sett": 2,
+              "holdSek": 30,
+              "pauseSek": 20
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "yoga-hvile",
+    "disiplin": "yoga",
+    "navn": "Ro & gjenoppbygging",
+    "undertittel": "Lange, myke hold og dyp hvile — yin-yogaen som roer nervesystemet.",
+    "farge": "lilla",
+    "nivaBand": [
+      1,
+      3
+    ],
+    "enheter": [
+      {
+        "id": "yoga-myk-hvile",
+        "navn": "Myk hvile",
+        "intro": "Rolige stillinger og lange hold som slipper spenning i rygg og hofter — og lærer deg å hvile ordentlig.",
+        "teori": {
+          "id": "yoga-teori-8",
+          "tittel": "Kunsten å hvile",
+          "undertittel": "Hvorfor de rolige stillingene og savasana er like viktige som de sterke.",
+          "lesetid": 4,
+          "bilde": "yoga-teori-hvile",
+          "avsnitt": [
+            {
+              "p": "Vi lever i høygir. Derfor er de rolige, gjenoppbyggende delene av yoga ikke «bortkastet tid» — de er ofte den viktigste treningen for et stresset nervesystem. Her lærer du å slippe taket."
+            },
+            {
+              "h": "Slipp muskelen, la pusten jobbe"
+            },
+            {
+              "p": "I de myke holdene lar du musklene gi etter i stedet for å presse. Du finner en behagelig kant og blir der mens pusten gjør jobben. Et par minutter i en rolig stilling, med lang utpust, skrur nervesystemet over i hvilemodus."
+            },
+            {
+              "h": "Vridninger og myke bøyer"
+            },
+            {
+              "p": "Rolige vridninger som liggende vridning, milde bakoverbøyer som sfinksen, og hofteåpnere som sommerfuglen løsner opp der hverdagen setter seg. Ta det forsiktig og pust rolig — dette er utstrekk og hvile, ikke ny anstrengelse."
+            },
+            {
+              "h": "Savasana er ikke valgfritt"
+            },
+            {
+              "p": "Til slutt kommer savasana — å ligge helt stille på ryggen. Det er her kroppen tar opp i seg alt arbeidet og synker helt til ro. Bli der i noen minutter, la pusten være naturlig, og reis deg langsomt. Aldri hopp over hvilen."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva gjør du med musklene i de myke holdene?",
+              "valg": [
+                "Lar dem gi etter mens pusten jobber",
+                "Spenner dem maksimalt",
+                "Rykker deg dypere"
+              ],
+              "riktig": 0,
+              "forklaring": "Slipp musklene og la pusten gjøre jobben — finn en behagelig kant og bli der."
+            },
+            {
+              "sporsmal": "Hvorfor er savasana viktig?",
+              "valg": [
+                "Kroppen tar opp arbeidet og synker helt til ro",
+                "For å tøye maksimalt",
+                "For å øke pulsen"
+              ],
+              "riktig": 0,
+              "forklaring": "Savasana lar nervesystemet fordøye økta og synke til dyp ro — hopp den aldri over."
+            },
+            {
+              "sporsmal": "Hvordan bør de rolige stillingene kjennes?",
+              "valg": [
+                "Mildt utstrekk og hvile, aldri skarp smerte",
+                "Hardt og anstrengende",
+                "Helt uten fornemmelse"
+              ],
+              "riktig": 0,
+              "forklaring": "Dette er hvile og mildt utstrekk — ta det forsiktig og pust rolig."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Benson – «The Relaxation Response» (Harvard)",
+              "om": "Beskriver hvordan rolig pust og hvile utløser en målbar avslappingsrespons i kroppen."
+            },
+            {
+              "kilde": "Bernie Clark – «The Complete Guide to Yin Yoga»",
+              "om": "Grunnbok om de rolige, lange holdene og hvordan de virker på kropp og nervesystem."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Barnets stilling",
+            "familie": "gulv",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 60
+            },
+            "blurb": "Sitt tilbake på hælene med knærne fra hverandre, strekk armene frem og senk brystet mot gulvet.",
+            "dose": "Hvil i 8 pust",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Liggende vridning",
+            "familie": "gulv",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 60
+            },
+            "blurb": "Ligg på rygg, før begge knær til én side og strekk armene ut. La blikket gå motsatt vei.",
+            "dose": "1 min per side",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Hvordan tar du en rolig vridning?",
+              "valg": [
+                "Slipp knærne til siden og pust rolig",
+                "Rykk deg rundt fort",
+                "Hold pusten"
+              ],
+              "riktig": 0,
+              "forklaring": "Slipp knærne mykt til siden og la tyngdekraften og pusten gjøre jobben."
+            }
+          },
+          {
+            "ovelse": "Sfinksen",
+            "familie": "gulv",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 45
+            },
+            "blurb": "Ligg på magen, sett underarmene i gulvet under skuldrene og løft brystet til en mild, behagelig bakoverbøy.",
+            "dose": "Hold i 8 pust",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Sommerfuglen",
+            "familie": "gulv",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 90
+            },
+            "blurb": "Sitt med fotsålene sammen og knærne ut til sidene. Len deg mykt forover med rund rygg og slipp hoftene.",
+            "dose": "Hold i 2 min",
+            "minutter": 4
+          },
+          {
+            "ovelse": "Larven",
+            "familie": "gulv",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 90
+            },
+            "blurb": "Sitt med bena strakt frem og fold deg mykt forover med rund rygg. La alt henge tungt og pust dypt.",
+            "dose": "Hold i 2 min",
+            "minutter": 4
+          },
+          {
+            "ovelse": "Savasana",
+            "familie": "gulv",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 120
+            },
+            "blurb": "Ligg helt stille på ryggen med armer og bein avslappet. La pusten være naturlig og kroppen tung.",
+            "dose": "Hvil i 3 min",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hva gjør du i savasana?",
+              "valg": [
+                "Ligger helt stille og lar kroppen synke til ro",
+                "Tøyer aktivt",
+                "Reiser deg raskt"
+              ],
+              "riktig": 0,
+              "forklaring": "Ligg helt stille, la pusten være naturlig og kroppen tung — og reis deg langsomt etterpå."
+            }
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 18,
+          "intensitet": 1,
+          "oppvarming": "Ligg på rygg og ta ti rolige pust.",
+          "nedtrapping": "Bli liggende i savasana og reis deg sakte.",
+          "ovelser": [
+            {
+              "ovelse": "Barnets stilling",
+              "sett": 1,
+              "holdSek": 90,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Liggende vridning",
+              "sett": 1,
+              "holdSek": 60,
+              "pauseSek": 15,
+              "perSide": true
+            },
+            {
+              "ovelse": "Sfinksen",
+              "sett": 2,
+              "holdSek": 45,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Sommerfuglen",
+              "sett": 1,
+              "holdSek": 120,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Savasana",
+              "sett": 1,
+              "holdSek": 180,
+              "pauseSek": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "yoga-dyp-yin",
+        "navn": "Dyp yin",
+        "intro": "De lengste, dypeste holdene i yin-yoga — der du gir slipp helt og lar tid og tyngdekraft gjøre jobben.",
+        "teori": {
+          "id": "yoga-teori-9",
+          "tittel": "Yin: tid, tyngde og tålmodighet",
+          "undertittel": "Hvordan lange, rolige hold når dypt inn i bindevev, ledd og ro.",
+          "lesetid": 4,
+          "bilde": "yoga-teori-yin",
+          "avsnitt": [
+            {
+              "p": "Yin-yoga er det stille motstykket til den flytende «yang»-yogaen. I stedet for å bevege deg og bruke musklene, synker du inn i en stilling og blir der lenge — gjerne to til fem minutter. Det er en dyp, meditativ praksis."
+            },
+            {
+              "h": "Mykt vev tar tid"
+            },
+            {
+              "p": "De lange holdene retter seg mot bindevevet — leddbånd, sener og fascia — som ikke svarer på raske bevegelser, men gir gradvis etter under vedvarende, mildt drag over tid. Derfor holder vi lenge og rolig, i stedet for å presse hardt en kort stund."
+            },
+            {
+              "h": "Slapp av i muskelen"
+            },
+            {
+              "p": "Nøkkelen i yin er å slippe muskelspenningen så tyngdekraften kan gjøre jobben. Finn omtrent 60–70 % av ditt maksimale drag — aldri skarp smerte — og bli der uten å endre på deg. Bruk gjerne puter og tepper som støtte så du kan gi helt slipp."
+            },
+            {
+              "h": "Møt stillheten"
+            },
+            {
+              "p": "De lange holdene utfordrer også hodet: å bli værende stille når tankene vil videre. Bruk pusten som anker, kjenn på fornemmelsene uten å dømme dem, og la deg synke. Yin trener både vevet og evnen til å hvile i det ubevegelige."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva retter de lange yin-holdene seg mot?",
+              "valg": [
+                "Bindevev som leddbånd, sener og fascia",
+                "Bare de store musklene",
+                "Bare pulsen"
+              ],
+              "riktig": 0,
+              "forklaring": "Yin påvirker bindevevet, som gir etter under langvarig, mildt drag — ikke raske bevegelser."
+            },
+            {
+              "sporsmal": "Hvor sterkt bør et yin-hold være?",
+              "valg": [
+                "Rundt 60–70 % av maks, aldri skarp smerte",
+                "Så hardt som mulig",
+                "Uten noen fornemmelse"
+              ],
+              "riktig": 0,
+              "forklaring": "Finn en mild kant (~60–70 %), slapp av i muskelen og bli der — aldri skarp smerte."
+            },
+            {
+              "sporsmal": "Hva er typisk holdetid i yin?",
+              "valg": [
+                "To til fem minutter",
+                "Fem sekunder",
+                "Under ett pust"
+              ],
+              "riktig": 0,
+              "forklaring": "Yin-hold varer gjerne 2–5 minutter, slik at bindevevet rekker å gi etter."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Paul Grilley – «Yin Yoga: Principles and Practice»",
+              "om": "Grunnleggeren av moderne yin-yoga forklarer hvordan lange hold påvirker bindevev og ledd."
+            },
+            {
+              "kilde": "Bernie Clark – «The Complete Guide to Yin Yoga»",
+              "om": "Utdyper prinsippene om tid, mild belastning og bruk av props i yin-praksisen."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Sadelen",
+            "familie": "gulv",
+            "niva": 3,
+            "maal": {
+              "type": "hold",
+              "verdi": 120
+            },
+            "blurb": "Sitt mellom hælene og len deg forsiktig bakover på hendene eller albuene. Legg gjerne en pute langs ryggen som støtte.",
+            "dose": "Hold i 2 min",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hva er lurt i dype yin-stillinger som sadelen?",
+              "valg": [
+                "Bruke puter og tepper som støtte",
+                "Presse hardt og fort",
+                "Holde pusten"
+              ],
+              "riktig": 0,
+              "forklaring": "Props lar deg gi helt slipp og synke trygt inn i holdet."
+            }
+          },
+          {
+            "ovelse": "Selen",
+            "familie": "gulv",
+            "niva": 3,
+            "maal": {
+              "type": "hold",
+              "verdi": 90
+            },
+            "blurb": "Ligg på magen og press overkroppen opp på strake armer til en dyp, men behagelig bakoverbøy. Slipp setet mykt.",
+            "dose": "Hold i 1–2 min",
+            "minutter": 4
+          },
+          {
+            "ovelse": "Sneglen",
+            "familie": "gulv",
+            "niva": 3,
+            "maal": {
+              "type": "hold",
+              "verdi": 90
+            },
+            "blurb": "Fra rygg: rull bena over hodet mot gulvet bak deg, med god støtte under skuldrene. Gå forsiktig ut ved ubehag.",
+            "dose": "Hold i 1–2 min",
+            "minutter": 5
+          },
+          {
+            "ovelse": "Svanen",
+            "familie": "gulv",
+            "niva": 3,
+            "maal": {
+              "type": "hold",
+              "verdi": 120
+            },
+            "blurb": "Fra alle fire: før ett kne frem mot samme hånd og strekk det andre beinet bakover. Senk hoftene og len deg forover.",
+            "dose": "2 min per side",
+            "minutter": 5
+          },
+          {
+            "ovelse": "Dragen",
+            "familie": "gulv",
+            "niva": 3,
+            "maal": {
+              "type": "hold",
+              "verdi": 120
+            },
+            "blurb": "Dypt utfall med bakre kne i gulvet. Senk hoftene fremover og ned, og la fremre hofte åpne seg.",
+            "dose": "2 min per side",
+            "minutter": 5
+          },
+          {
+            "ovelse": "Frosken",
+            "familie": "gulv",
+            "niva": 3,
+            "maal": {
+              "type": "hold",
+              "verdi": 90
+            },
+            "blurb": "Fra alle fire: skli knærne bredt ut til sidene med anklene i linje med knærne, og senk hoftene rolig.",
+            "dose": "Hold i 1–2 min",
+            "minutter": 4
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 22,
+          "intensitet": 1,
+          "oppvarming": "Start i barnets stilling og ta ti dype pust.",
+          "nedtrapping": "Avslutt i savasana og la hele kroppen synke.",
+          "ovelser": [
+            {
+              "ovelse": "Svanen",
+              "sett": 1,
+              "holdSek": 120,
+              "pauseSek": 30,
+              "perSide": true
+            },
+            {
+              "ovelse": "Dragen",
+              "sett": 1,
+              "holdSek": 120,
+              "pauseSek": 30,
+              "perSide": true
+            },
+            {
+              "ovelse": "Sommerfuglen",
+              "sett": 1,
+              "holdSek": 150,
+              "pauseSek": 30
+            },
+            {
+              "ovelse": "Sadelen",
+              "sett": 1,
+              "holdSek": 120,
+              "pauseSek": 30
+            },
+            {
+              "ovelse": "Savasana",
+              "sett": 1,
+              "holdSek": 180,
+              "pauseSek": 0
+            }
+          ]
+        }
+      }
+    ]
   }
 ]
