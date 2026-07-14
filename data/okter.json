@@ -2918,15 +2918,15 @@
         "min": 14,
         "ovelser": [
           {
-            "navn": "Armhevinger mot vegg",
+            "navn": "Vegg-pushup",
             "dose": "3×8"
           },
           {
-            "navn": "Sitt-til-stå fra stol (3 s ned)",
+            "navn": "Stol-knebøy",
             "dose": "3×6"
           },
           {
-            "navn": "Knebøy med stolstøtte",
+            "navn": "Stol-knebøy",
             "dose": "2×8"
           },
           {
@@ -2947,7 +2947,7 @@
         "min": 3,
         "ovelser": [
           {
-            "navn": "Rolig gange",
+            "navn": "Marsj på stedet",
             "dose": "60 s"
           },
           {
@@ -3046,7 +3046,7 @@
         "min": 3,
         "ovelser": [
           {
-            "navn": "Rolig gange",
+            "navn": "Marsj på stedet",
             "dose": "60 s"
           },
           {
@@ -3101,7 +3101,7 @@
             "dose": "×8"
           },
           {
-            "navn": "Rolige armhevinger på kne",
+            "navn": "Kne-pushup",
             "dose": "×5"
           }
         ]
@@ -3127,7 +3127,7 @@
         "min": 4,
         "ovelser": [
           {
-            "navn": "Utfall (3 s ned)",
+            "navn": "Utfall bak",
             "dose": "2×6 per side",
             "unilateral": true
           },
@@ -3194,7 +3194,7 @@
             "dose": "60 s"
           },
           {
-            "navn": "Rolige knebøy",
+            "navn": "Air squat",
             "dose": "×10"
           },
           {
@@ -3206,7 +3206,7 @@
             "dose": "×20"
           },
           {
-            "navn": "Utfall",
+            "navn": "Utfall bak",
             "dose": "×5 per side",
             "unilateral": true
           }
@@ -3271,7 +3271,7 @@
               "type": "hvile"
             },
             {
-              "navn": "Knebøy",
+              "navn": "Air squat",
               "sek": 30,
               "type": "arbeid"
             },
@@ -3351,7 +3351,7 @@
         "min": 4,
         "ovelser": [
           {
-            "navn": "Rolig gange",
+            "navn": "Marsj på stedet",
             "dose": "60 s"
           },
           {
@@ -3406,7 +3406,7 @@
             "dose": "×8"
           },
           {
-            "navn": "Skulderåpner mot vegg",
+            "navn": "Armsirkler",
             "dose": "60 s"
           },
           {
@@ -3511,7 +3511,7 @@
             "dose": "60 s"
           },
           {
-            "navn": "Knebøy",
+            "navn": "Air squat",
             "dose": "×10"
           },
           {
@@ -3523,7 +3523,7 @@
             "dose": "20 s"
           },
           {
-            "navn": "Utfall",
+            "navn": "Utfall bak",
             "dose": "×5 per side",
             "unilateral": true
           },
@@ -3572,7 +3572,7 @@
         "min": 4,
         "ovelser": [
           {
-            "navn": "Rolig gange",
+            "navn": "Marsj på stedet",
             "dose": "60 s"
           },
           {
@@ -3580,12 +3580,12 @@
             "dose": "60 s"
           },
           {
-            "navn": "Due / hoftetøy",
+            "navn": "Figur-4",
             "dose": "30 s per side",
             "unilateral": true
           },
           {
-            "navn": "Skuldertøy",
+            "navn": "Åpen bok",
             "dose": "30 s per side",
             "unilateral": true
           }
@@ -5096,6 +5096,584 @@
             }
           ]
         }
+      }
+    ]
+  },
+  {
+    "id": "kroppsvekt-grunnmur",
+    "kategori": "kroppsvekt",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Grunnmur – hele kroppen",
+    "beskrivelse": "En rolig helkroppsøkt som bygger grunnmuren: én øvelse fra hvert mønster – press, knebøy, hoftehengsel og kjerne. Perfekt for å bygge vanen og kjenne at kroppen blir sterkere.",
+    "varighetMin": 20,
+    "utstyr": [
+      "matte",
+      "stol"
+    ],
+    "kilde": {
+      "navn": "NHS – Strength and flexibility exercises",
+      "type": "retningslinje",
+      "ref": "https://www.nhs.uk/live-well/exercise/strength-and-flexibility-exercises/",
+      "notat": "Balansert helkroppsøkt satt sammen fra de fire grunnmønstrene i Lær-løypa."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Kom i gang",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Marsj på stedet",
+            "dose": "60 s"
+          },
+          {
+            "navn": "Armsirkler",
+            "dose": "10 hver vei"
+          },
+          {
+            "navn": "Hofterotasjoner",
+            "dose": "10 hver vei"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Sett × reps · rolig tempo, 60 s pause",
+        "formatKlasse": "reps",
+        "min": 13,
+        "ovelser": [
+          {
+            "navn": "Vegg-pushup",
+            "dose": "3×10"
+          },
+          {
+            "navn": "Stol-knebøy",
+            "dose": "3×10"
+          },
+          {
+            "navn": "Glute bridge",
+            "dose": "3×12"
+          },
+          {
+            "navn": "Planke",
+            "dose": "3×20 s"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig avslutning",
+        "formatKlasse": "hold",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Lårtøyning",
+            "dose": "20 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Brysttøyning",
+            "dose": "20 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Rolig pust",
+            "dose": "1 min"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "kroppsvekt-bein-sete",
+    "kategori": "kroppsvekt",
+    "skill": "lav",
+    "intensitet": "intens",
+    "navn": "Bein, sete & bakside",
+    "beskrivelse": "Underkroppen får kjørt seg: knebøy, utfall og hoftehengsler bygger sterke bein og et vått sete – helt uten vekter. Kort pause og god teknikk gir både styrke og puls.",
+    "varighetMin": 22,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "ACSM – Resistance Training for Health",
+      "type": "retningslinje",
+      "ref": "https://www.acsm.org/education-resources/trending-topics-resources/physical-activity-guidelines",
+      "notat": "Underkroppsfokusert kroppsvektøkt bygd på progresjonene i Lær-løypa."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Kom i gang",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Marsj på stedet",
+            "dose": "60 s"
+          },
+          {
+            "navn": "Hofterotasjoner",
+            "dose": "10 hver vei"
+          },
+          {
+            "navn": "Ankelsirkler",
+            "dose": "10 per fot",
+            "unilateral": true
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Sett × reps · 45–60 s pause",
+        "formatKlasse": "reps",
+        "min": 14,
+        "ovelser": [
+          {
+            "navn": "Air squat",
+            "dose": "3×15"
+          },
+          {
+            "navn": "Utfall bak",
+            "dose": "3×8 per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Ettbens glute bridge",
+            "dose": "3×8 per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Tåhev",
+            "dose": "3×15"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Tøy ut baksiden",
+        "formatKlasse": "hold",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Hamstringtøyning",
+            "dose": "25 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Figur-4",
+            "dose": "25 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Leggtøy",
+            "dose": "20 s per side",
+            "unilateral": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "kroppsvekt-overkropp",
+    "kategori": "kroppsvekt",
+    "skill": "medium",
+    "intensitet": "lett",
+    "navn": "Overkropp: press & drag",
+    "beskrivelse": "Bygg en sterk og balansert overkropp med press og drag i par. Rolig tempo og full kontroll gjør at du kommer sterkere tilbake neste gang.",
+    "varighetMin": 22,
+    "utstyr": [
+      "matte",
+      "stang"
+    ],
+    "kilde": {
+      "navn": "Dan John – «Push, Pull, Hinge, Squat» balanseprinsipp",
+      "type": "tradisjon",
+      "ref": "https://www.t-nation.com/training/four-basic-human-movements/",
+      "notat": "Press og drag balansert i par, med grepene lært i Lær-løypa."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Varm opp skuldrene",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Armsirkler",
+            "dose": "10 hver vei"
+          },
+          {
+            "navn": "Scapula-armhevinger",
+            "dose": "8 reps"
+          },
+          {
+            "navn": "Håndleddssirkler",
+            "dose": "10 hver vei"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Press og drag · 60 s pause",
+        "formatKlasse": "reps",
+        "min": 14,
+        "ovelser": [
+          {
+            "navn": "Skrå pushup (sofa/benk)",
+            "dose": "3×10"
+          },
+          {
+            "navn": "Ringrow",
+            "dose": "3×8"
+          },
+          {
+            "navn": "Kne-pushup",
+            "dose": "2×10"
+          },
+          {
+            "navn": "Ringrow høy vinkel",
+            "dose": "2×10"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Åpne brystet",
+        "formatKlasse": "hold",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Brysttøyning",
+            "dose": "25 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Åpen bok",
+            "dose": "6 per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Rolig pust",
+            "dose": "1 min"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "kroppsvekt-kjerne",
+    "kategori": "kroppsvekt",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "Kjerne & kontroll",
+    "beskrivelse": "En stram og fokusert kjerneøkt bygd på anti-bevegelse: hold ryggen stø mens armer og bein jobber. Kvalitet på hvert hold slår antall hver gang.",
+    "varighetMin": 20,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Stuart McGill – «Big Three» kjerneøvelser",
+      "type": "protokoll",
+      "ref": "https://www.backfitpro.com/",
+      "notat": "Anti-bevegelse og ryggvennlige hold, som lært i «Sterk kjerne»-enheten."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Vekk kjernen",
+        "formatKlasse": "reps",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Marsj på stedet",
+            "dose": "60 s"
+          },
+          {
+            "navn": "Katt–ku",
+            "dose": "8 reps"
+          },
+          {
+            "navn": "Scapula-armhevinger",
+            "dose": "8 reps"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Kjernesirkel · 2–3 runder, kort pause",
+        "formatKlasse": "reps",
+        "min": 13,
+        "ovelser": [
+          {
+            "navn": "Planke",
+            "dose": "3×30 s"
+          },
+          {
+            "navn": "Sideplanke",
+            "dose": "3×20 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Hollow tuck",
+            "dose": "3×20 s"
+          },
+          {
+            "navn": "Fuglehund",
+            "dose": "3×8 per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Dead bug",
+            "dose": "3×10 per side",
+            "unilateral": true
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Løsne ryggen",
+        "formatKlasse": "hold",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Barnets stilling",
+            "dose": "30 s"
+          },
+          {
+            "navn": "Kobra",
+            "dose": "20 s"
+          },
+          {
+            "navn": "Rolig pust",
+            "dose": "1 min"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "kroppsvekt-full-kropp",
+    "kategori": "kroppsvekt",
+    "skill": "hoy",
+    "intensitet": "lett",
+    "navn": "Sterk & smidig – full kropp",
+    "beskrivelse": "En komplett økt for den viderekomne: full styrke, kjerne og de første ferdighetene i ett. Rolig tempo, høy kvalitet – kontroll gjennom hele bevegelsen.",
+    "varighetMin": 26,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Gymnastic strength-tradisjonen (GMB / Nerd Fitness)",
+      "type": "tradisjon",
+      "ref": "https://gmb.io/bodyweight-exercises/",
+      "notat": "Full styrke, kjerne og ferdigheter satt sammen fra «Videre kroppsvekt»-seksjonen."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Full oppvarming",
+        "formatKlasse": "reps",
+        "min": 5,
+        "ovelser": [
+          {
+            "navn": "Rolige jumping jacks",
+            "dose": "20 reps"
+          },
+          {
+            "navn": "Armsirkler",
+            "dose": "10 hver vei"
+          },
+          {
+            "navn": "Hofterotasjoner",
+            "dose": "10 hver vei"
+          },
+          {
+            "navn": "Håndleddssirkler",
+            "dose": "10 hver vei"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Styrke · 75 s pause",
+        "formatKlasse": "reps",
+        "min": 15,
+        "ovelser": [
+          {
+            "navn": "Armhevinger",
+            "dose": "3×8"
+          },
+          {
+            "navn": "Goblet squat",
+            "dose": "3×12"
+          },
+          {
+            "navn": "Hip thrust (sofa)",
+            "dose": "3×12"
+          },
+          {
+            "navn": "Cossack squat",
+            "dose": "2×6 per side",
+            "unilateral": true
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Kjerne & ferdighet · rolig",
+        "formatKlasse": "hold",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Hollow hold",
+            "dose": "3×20 s"
+          },
+          {
+            "navn": "Vegg-planke",
+            "dose": "3×20 s"
+          },
+          {
+            "navn": "Skulderklapp i planke",
+            "dose": "2×6 per side",
+            "unilateral": true
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig avslutning",
+        "formatKlasse": "hold",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Lårtøyning",
+            "dose": "20 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Barnets stilling",
+            "dose": "30 s"
+          },
+          {
+            "navn": "Rolig pust",
+            "dose": "1 min"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "kroppsvekt-mobil-myk",
+    "kategori": "kroppsvekt",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Mobil & myk",
+    "beskrivelse": "En snill økt for stive dager: mobiliser leddene, vekk kroppen forsiktig og tøy godt ut. Perfekt som aktiv hvile eller mykstart på en treningsuke.",
+    "varighetMin": 18,
+    "utstyr": [
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Functional Range Conditioning – CARs & mobilitet",
+      "type": "tradisjon",
+      "ref": "https://functionalanatomyseminars.com/",
+      "notat": "Aktiv mobilitet og rolig tøyning, som lært i oppvarmings- og tøyningsseksjonene."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Mobiliser leddene",
+        "formatKlasse": "reps",
+        "min": 6,
+        "ovelser": [
+          {
+            "navn": "Hofterotasjoner",
+            "dose": "10 hver vei"
+          },
+          {
+            "navn": "Ankelsirkler",
+            "dose": "10 per fot",
+            "unilateral": true
+          },
+          {
+            "navn": "Håndleddssirkler",
+            "dose": "10 hver vei"
+          },
+          {
+            "navn": "Katt–ku",
+            "dose": "8 reps"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Rolig bevegelse",
+        "formatKlasse": "reps",
+        "min": 6,
+        "ovelser": [
+          {
+            "navn": "Hoftehengsler uten vekt",
+            "dose": "2×10"
+          },
+          {
+            "navn": "Dyp knebøy-hold",
+            "dose": "3×30 s"
+          },
+          {
+            "navn": "Åpen bok",
+            "dose": "8 per side",
+            "unilateral": true
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Tøy godt ut",
+        "formatKlasse": "hold",
+        "min": 6,
+        "ovelser": [
+          {
+            "navn": "Hamstringtøyning",
+            "dose": "30 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Figur-4",
+            "dose": "30 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Brysttøyning",
+            "dose": "25 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Rolig pust",
+            "dose": "1 min"
+          }
+        ]
       }
     ]
   }

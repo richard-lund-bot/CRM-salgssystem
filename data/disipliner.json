@@ -6,7 +6,7 @@
     "ikon": "vekt",
     "farge": "teal",
     "status": "aktiv",
-    "seksjoner": ["kroppsvekt-nybegynner"],
+    "seksjoner": ["kroppsvekt-nybegynner", "kroppsvekt-oppvarming", "kroppsvekt-viderekommen", "kroppsvekt-toying"],
     "kapsteiner": ["push-opp"]
   },
   {

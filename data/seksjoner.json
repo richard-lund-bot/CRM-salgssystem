@@ -334,5 +334,1295 @@
         }
       }
     ]
+  },
+  {
+    "id": "kroppsvekt-oppvarming",
+    "disiplin": "kroppsvekt",
+    "navn": "Oppvarming & mobilitet",
+    "undertittel": "Gjør kroppen varm og leddene klare — den beste starten på enhver økt.",
+    "farge": "teal",
+    "nivaBand": [
+      1,
+      1
+    ],
+    "enheter": [
+      {
+        "id": "oppv-blivarm",
+        "navn": "Bli varm",
+        "intro": "I denne enheten lærer du fem enkle bevegelser som gjør kroppen varm og klar på få minutter.",
+        "teori": {
+          "id": "kv-teori-op1",
+          "tittel": "Derfor varmer vi opp",
+          "undertittel": "Hvorfor noen minutter i starten gjør resten av økten både bedre og tryggere.",
+          "lesetid": 4,
+          "bilde": "mobilitet",
+          "avsnitt": [
+            {
+              "p": "Oppvarming er ikke bortkastet tid — det er en investering i økten. Med bare noen minutter i lavt tempo forbereder du kroppen på å jobbe, og du kommer inn i treningen med mer kontroll og overskudd."
+            },
+            {
+              "h": "Hva skjer i kroppen?"
+            },
+            {
+              "p": "Når du beveger deg rolig, stiger kroppstemperaturen og blodet strømmer raskere ut til musklene. Varme muskler er mer elastiske og tåler mer, og leddene får smurt bevegelsesbanene sine. Resultatet er at kroppen føles smidigere for hvert minutt."
+            },
+            {
+              "h": "Nervesystemet våkner"
+            },
+            {
+              "p": "Oppvarming handler ikke bare om muskler. Den vekker også nervesystemet, slik at signalene mellom hjerne og muskler går raskere. Det gir deg bedre koordinasjon, balanse og teknikk når du starter selve øvelsene."
+            },
+            {
+              "h": "Dynamisk framfor statisk"
+            },
+            {
+              "p": "Rett før trening er bevegelse bedre enn å stå stille og tøye lenge. Rolige, dynamiske øvelser holder deg varm og aktiv, mens lange statiske tøyninger passer bedre etter økten. Hold tempoet lett — du skal bli varm, ikke sliten."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva er hovedmålet med oppvarming før trening?",
+              "valg": [
+                "Å bli sliten før økten",
+                "Å øke temperaturen og forberede kropp og nervesystem",
+                "Å tøye musklene så lenge som mulig"
+              ],
+              "riktig": 1,
+              "forklaring": "Oppvarming øker kroppstemperatur og blodgjennomstrømning og vekker nervesystemet, slik at du er klar til å trene trygt og godt."
+            },
+            {
+              "sporsmal": "Hvilken type oppvarming passer best rett før kroppsvekttrening?",
+              "valg": [
+                "Lange, statiske tøyninger",
+                "Rolige, dynamiske bevegelser",
+                "Full hvile"
+              ],
+              "riktig": 1,
+              "forklaring": "Dynamiske bevegelser holder deg varm og aktiv. Lange statiske tøyninger sparer du heller til etter økten."
+            },
+            {
+              "sporsmal": "Hvorfor blir musklene mindre stive når du varmer opp?",
+              "valg": [
+                "Fordi temperaturen og blodgjennomstrømningen øker",
+                "Fordi du drikker mer vann",
+                "Fordi du puster saktere"
+              ],
+              "riktig": 0,
+              "forklaring": "Varmere muskler med god blodtilførsel blir mer elastiske og beveger seg lettere gjennom hele bevegelsesbanen."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "American College of Sports Medicine (ACSM) – ACSM's Guidelines for Exercise Testing and Prescription",
+              "om": "Anbefaler 5–10 minutter lett til moderat oppvarming før trening for å øke kroppstemperatur og blodgjennomstrømning og forberede kroppen på belastning."
+            },
+            {
+              "kilde": "Fradkin, Gabbe & Cameron (2006) – «Does warming up prevent injury in sport?», Journal of Science and Medicine in Sport",
+              "om": "Gjennomgang av kontrollerte studier som finner at oppvarming kan redusere risikoen for skader under aktivitet."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Marsj på stedet",
+            "familie": "oppvarming",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "Løft knærne annenhver gang i rolig takt og la armene svinge naturlig med. Kjenn at pusten og pulsen så vidt begynner å stige.",
+            "dose": "30 sek",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Lett jogg på stedet",
+            "familie": "oppvarming",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "Småjogg lett på tærne med avslappede skuldre. Hold det behagelig — du skal kunne prate mens du gjør det.",
+            "dose": "30 sek",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Armsirkler",
+            "familie": "oppvarming",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 10
+            },
+            "blurb": "Strekk armene ut til siden og lag rolige, store sirkler forover og bakover. Kjenn at skuldrene løsner litt for hver runde.",
+            "dose": "10 hver vei",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Skulderruller",
+            "familie": "oppvarming",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 10
+            },
+            "blurb": "Rull skuldrene opp mot ørene og bakover i en myk bue. La spenningen i nakke og øvre rygg slippe taket.",
+            "dose": "10 hver vei",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Rolige jumping jacks",
+            "familie": "oppvarming",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 20
+            },
+            "blurb": "Hopp lett ut med bena mens armene går opp over hodet, og samle deg rolig igjen. Hold tempoet moderat så hele kroppen rekker å bli varm.",
+            "dose": "20 reps",
+            "minutter": 2
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 14,
+          "intensitet": 3,
+          "oppvarming": "Rull skuldre og hofter og pust rolig i ett minutt.",
+          "nedtrapping": "Rist løs og pust rolig ut.",
+          "ovelser": [
+            {
+              "ovelse": "Marsj på stedet",
+              "sett": 3,
+              "holdSek": 30,
+              "pauseSek": 45
+            },
+            {
+              "ovelse": "Lett jogg på stedet",
+              "sett": 3,
+              "holdSek": 30,
+              "pauseSek": 45
+            },
+            {
+              "ovelse": "Armsirkler",
+              "sett": 3,
+              "reps": 10,
+              "pauseSek": 45
+            },
+            {
+              "ovelse": "Skulderruller",
+              "sett": 3,
+              "reps": 10,
+              "pauseSek": 45
+            },
+            {
+              "ovelse": "Rolige jumping jacks",
+              "sett": 3,
+              "reps": 20,
+              "pauseSek": 45
+            }
+          ]
+        }
+      },
+      {
+        "id": "oppv-mobil",
+        "navn": "Mobil og klar",
+        "intro": "Her lærer du å mobilisere leddene du skal bruke, så du beveger deg friere og tryggere i øvelsene.",
+        "teori": {
+          "id": "kv-teori-op2",
+          "tittel": "Mobilitet — bevegelse du styrer selv",
+          "undertittel": "Forskjellen på aktiv mobilitet og passiv tøying — og hvorfor leddene fortjener en oppvarming.",
+          "lesetid": 4,
+          "bilde": "mobilitet",
+          "avsnitt": [
+            {
+              "p": "Mobilitet er evnen til å bevege et ledd gjennom hele banen med god kontroll. Det handler ikke om å tøye så langt som mulig, men om å eie bevegelsen du faktisk skal bruke i treningen."
+            },
+            {
+              "h": "Hva er mobilitet?"
+            },
+            {
+              "p": "I mobilitetstrening beveger du leddet aktivt, sakte og kontrollert gjennom hele bevegelsesbanen — for eksempel når du roterer hoften eller ankelen i en jevn sirkel. Du styrer bevegelsen selv med dine egne muskler, og både leddet og musklene rundt blir varme og klare."
+            },
+            {
+              "h": "Mobilitet vs. tøying"
+            },
+            {
+              "p": "Passiv tøying betyr at du holder en strekk i ro over tid. Det kan ha sin plass, men rett før trening er aktiv mobilitet et bedre valg: du beholder styrke og spenst samtidig som du blir smidigere. Bevegelse forbereder kroppen bedre enn stillstand."
+            },
+            {
+              "h": "Varm opp leddene du skal bruke"
+            },
+            {
+              "p": "Tenk gjennom hvilke ledd økten belaster, og gi dem litt oppmerksomhet først. Skal du gjøre armhevinger, mobiliser skuldre og håndledd; skal du gjøre knebøy og utfall, mobiliser hofter og ankler. Da møter du øvelsene med ledd som allerede er varme og klare."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva kjennetegner mobilitetstrening?",
+              "valg": [
+                "Aktiv, kontrollert bevegelse gjennom leddets bane",
+                "Passiv tøying der du holder lenge i ro",
+                "Å sitte helt stille"
+              ],
+              "riktig": 0,
+              "forklaring": "Mobilitet er aktiv, kontrollert bevegelse gjennom hele leddets bane — du styrer den selv med egne muskler."
+            },
+            {
+              "sporsmal": "Hvorfor er aktiv mobilitet et godt valg før trening?",
+              "valg": [
+                "Fordi den gjør musklene svakere",
+                "Fordi du varmer opp og styrer bevegelsen selv",
+                "Fordi den erstatter selve treningen"
+              ],
+              "riktig": 1,
+              "forklaring": "Aktiv mobilitet varmer opp leddene og lar deg beholde styrke og kontroll, i motsetning til lange passive tøyninger rett før økten."
+            },
+            {
+              "sporsmal": "Hvilke ledd bør du prioritere å mobilisere før kroppsvekttrening?",
+              "valg": [
+                "Bare nakken",
+                "Leddene du skal belaste, som hofter, skuldre og rygg",
+                "Ingen — hopp rett i gang"
+              ],
+              "riktig": 1,
+              "forklaring": "Mobiliser leddene økten faktisk belaster, så de er varme og klare for bevegelsene som kommer."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Behm & Chaouachi (2011) – «A review of the acute effects of static and dynamic stretching on performance», European Journal of Applied Physiology",
+              "om": "Viser at dynamisk bevegelse før trening bevarer styrke og kraft bedre enn lange statiske tøyninger."
+            },
+            {
+              "kilde": "Functional Range Conditioning (FRC) – Controlled Articular Rotations (CARs), Dr. Andreo Spina",
+              "om": "Metode for aktiv mobilitet der du fører leddene kontrollert gjennom hele bevegelsesbanen for å vedlikeholde og forbedre bevegelighet."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Hofterotasjoner",
+            "familie": "mobilitet",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 10
+            },
+            "blurb": "Stå støtt, løft ett kne og før det rolig ut til siden og rundt, som om du tegner en sirkel med kneet. Kjenn at hofteleddet beveger seg fritt i hele banen.",
+            "dose": "10 hver vei",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Ankelsirkler",
+            "familie": "mobilitet",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 10
+            },
+            "blurb": "Løft én fot fra gulvet og tegn rolige sirkler med tåa, begge veier. Kjenn at ankelen blir smidig før du belaster den.",
+            "dose": "10 per fot",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Håndleddssirkler",
+            "familie": "mobilitet",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 10
+            },
+            "blurb": "Flett fingrene eller la hendene henge løst, og roter håndleddene rundt begge veier. Perfekt før øvelser der du støtter deg på hendene.",
+            "dose": "10 hver vei",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Scapula-armhevinger",
+            "familie": "mobilitet",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 8
+            },
+            "blurb": "Start i armhevingsposisjon med strake armer, la brystet synke rolig mellom skulderbladene og skyv så øvre rygg opp igjen. Bevegelsen er liten — kjenn at skulderbladene glir sammen og fra hverandre.",
+            "dose": "8 reps",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Katt–ku",
+            "familie": "mobilitet",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 8
+            },
+            "blurb": "På alle fire runder du ryggen opp mot taket og senker den så rolig ned mens du løfter blikket. Følg pusten og kjenn at hele ryggraden beveger seg ledd for ledd.",
+            "dose": "8 reps",
+            "minutter": 2
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 14,
+          "intensitet": 3,
+          "oppvarming": "Rull skuldre og hofter og pust rolig i ett minutt.",
+          "nedtrapping": "Rist løs og pust rolig ut.",
+          "ovelser": [
+            {
+              "ovelse": "Hofterotasjoner",
+              "sett": 3,
+              "reps": 10,
+              "pauseSek": 45
+            },
+            {
+              "ovelse": "Ankelsirkler",
+              "sett": 3,
+              "reps": 10,
+              "pauseSek": 45,
+              "perSide": true
+            },
+            {
+              "ovelse": "Håndleddssirkler",
+              "sett": 3,
+              "reps": 10,
+              "pauseSek": 45
+            },
+            {
+              "ovelse": "Scapula-armhevinger",
+              "sett": 3,
+              "reps": 8,
+              "pauseSek": 45
+            },
+            {
+              "ovelse": "Katt–ku",
+              "sett": 3,
+              "reps": 8,
+              "pauseSek": 45
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "kroppsvekt-viderekommen",
+    "disiplin": "kroppsvekt",
+    "navn": "Videre kroppsvekt",
+    "undertittel": "Tøffere styrke, sterkere kjerne og de første ferdighetene — uten utstyr.",
+    "farge": "teal",
+    "nivaBand": [
+      2,
+      3
+    ],
+    "enheter": [
+      {
+        "id": "vid-fullstyrke",
+        "navn": "Full styrke",
+        "intro": "Grunnstammen sitter — nå gjør vi øvelsene tøffere uten en eneste vekt.",
+        "teori": {
+          "id": "kv-teori-vi1",
+          "tittel": "Fra grunnleggende til full styrke",
+          "undertittel": "Slik øker du belastningen med vektstang, tempo og bevegelsesutslag — helt uten jern.",
+          "lesetid": 4,
+          "bilde": "progressiv",
+          "avsnitt": [
+            {
+              "p": "Når de grunnleggende versjonene føles trygge, trenger du ikke flere kilo for å bli sterkere. Du kan gjøre de samme mønstrene hardere ved å endre hvordan kroppen din bærer vekten, hvor sakte du beveger deg, og hvor langt du går i hvert ledd. Det er progressiv overbelastning — bare med din egen kropp som redskap."
+            },
+            {
+              "h": "Vektstang uten vekter"
+            },
+            {
+              "p": "Kroppen din er én lang vektstang. Flytter du hendene lavere eller løfter føttene i armhevinger, må armene bære en større del av kroppsvekten din. Samme mønster, tyngre motstand. Små justeringer i hvor du plasserer deg, avgjør hvor hardt øvelsen føles."
+            },
+            {
+              "h": "Tempo som motstand"
+            },
+            {
+              "p": "Sakte er tungt. Bruker du tre-fire sekunder på veien ned og stopper et øyeblikk på det tyngste punktet, øker du tiden muskelen er under spenning. Da jobber du hardere på færre repetisjoner, og du får samtidig bedre kontroll over hele bevegelsen."
+            },
+            {
+              "h": "Fullt utslag i ankler og hofter"
+            },
+            {
+              "p": "Full styrke betyr styrke i hele bevegelsesbanen. Cossack squat og dypt knebøy-hold åpner ankler og hofter under belastning, tåhev tar deg gjennom hele hevet, og hoftehengsler lærer deg å laste baksiden trygt. Jo lenger du eier bevegelsen, jo sterkere blir du der det teller."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hvordan gjør du armhevinger tyngre uten å legge på vekt?",
+              "valg": [
+                "Gjøre dem så fort som mulig",
+                "Heve føttene så armene bærer mer av kroppsvekten",
+                "Holde pusten gjennom hele settet"
+              ],
+              "riktig": 1,
+              "forklaring": "Løfter du føttene, forskyver du mer av kroppsvekten til overkroppen. Samme øvelse, større motstand — det er vektstang-prinsippet i praksis."
+            },
+            {
+              "sporsmal": "Hva gjør et roligere tempo på vei ned?",
+              "valg": [
+                "Reduserer tiden muskelen jobber",
+                "Øker tiden under spenning og dermed belastningen",
+                "Har ingen betydning for styrken"
+              ],
+              "riktig": 1,
+              "forklaring": "Saktere bevegelse gir mer tid under spenning. Muskelen jobber hardere og lenger, selv om du gjør færre repetisjoner."
+            },
+            {
+              "sporsmal": "Hvorfor øve på dypt knebøy-hold og Cossack squat?",
+              "valg": [
+                "For å bygge styrke i fullt bevegelsesutslag i ankel og hofte",
+                "Fordi dybde ikke har noe å si",
+                "For å slippe å bruke bena"
+              ],
+              "riktig": 0,
+              "forklaring": "Styrke i ytterstillingene gjør deg robust i hele bevegelsesbanen — ikke bare der det er lett."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "American College of Sports Medicine – «Progression Models in Resistance Training for Healthy Adults» (Position Stand, 2009)",
+              "om": "Retningslinjer for hvordan man trygt og systematisk øker belastningen over tid, også gjennom variabler som tempo og bevegelsesutslag."
+            },
+            {
+              "kilde": "Brad Schoenfeld – «Science and Development of Muscle Hypertrophy» (2016)",
+              "om": "Forklarer mekanisk spenning og tid under spenning som drivere for at muskler blir sterkere og vokser."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Armhevinger",
+            "familie": "push-h",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 8
+            },
+            "blurb": "Kroppen som én rett strek fra hode til hæl, stram i magen, og senk deg rolig og kontrollert. Blir det for lett, hever du føttene så armene får mer å bære på.",
+            "dose": "8 reps",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Cossack squat",
+            "familie": "kneboy",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 6
+            },
+            "blurb": "Skyv vekten fra side til side i en dyp utfallsstilling som åpner hofter og ankler. Gå bare så dypt du klarer å styre — dybden kommer gradvis.",
+            "dose": "6 per side",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Tåhev",
+            "familie": "legger",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 15
+            },
+            "blurb": "Press deg helt opp på tå, hold et lite øyeblikk på toppen, og senk sakte ned. Fullt utslag i hvert løft gir sterke, seige legger.",
+            "dose": "15 reps",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Dyp knebøy-hold",
+            "familie": "mobilitet",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "Sett deg ned i den dypeste knebøyen din og bli der mens du puster rolig. Det bygger tillit og styrke i ankler og hofter over tid.",
+            "dose": "30 sek",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Hoftehengsler uten vekt",
+            "familie": "hengsel",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 12
+            },
+            "blurb": "Skyv hoftene bakover med flat rygg og kjenn at baksiden av lårene tar imot. Dette er mønsteret som gjør ryggen din trygg når du senere løfter tungt.",
+            "dose": "12 reps",
+            "minutter": 3
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 14,
+          "intensitet": 3,
+          "oppvarming": "Rull skuldre og hofter og pust rolig i ett minutt.",
+          "nedtrapping": "Rist løs og pust rolig ut.",
+          "ovelser": [
+            {
+              "ovelse": "Armhevinger",
+              "sett": 3,
+              "reps": 8,
+              "pauseSek": 45
+            },
+            {
+              "ovelse": "Cossack squat",
+              "sett": 3,
+              "reps": 6,
+              "pauseSek": 45,
+              "perSide": true
+            },
+            {
+              "ovelse": "Tåhev",
+              "sett": 3,
+              "reps": 15,
+              "pauseSek": 45
+            },
+            {
+              "ovelse": "Dyp knebøy-hold",
+              "sett": 3,
+              "holdSek": 30,
+              "pauseSek": 45
+            },
+            {
+              "ovelse": "Hoftehengsler uten vekt",
+              "sett": 3,
+              "reps": 12,
+              "pauseSek": 45
+            }
+          ]
+        }
+      },
+      {
+        "id": "vid-kjerne",
+        "navn": "Sterk kjerne",
+        "intro": "En sterk kjerne handler ikke om å bøye ryggen — men om å holde den stø.",
+        "teori": {
+          "id": "kv-teori-vi2",
+          "tittel": "Hva kjernen egentlig gjør",
+          "undertittel": "Anti-bevegelse, gode hold og ryggvennlig trening etter McGills prinsipper.",
+          "lesetid": 4,
+          "bilde": "kv-teori-2",
+          "avsnitt": [
+            {
+              "p": "De fleste tror kjernetrening handler om magebøy og repetisjoner. Men kjernens viktigste jobb er faktisk å stå imot bevegelse — å holde ryggraden stø mens armer og bein jobber rundt den. En sterk kjerne er en stabil kjerne, ikke en som bøyer seg mest mulig."
+            },
+            {
+              "h": "Anti-bevegelse — kjernens egentlige jobb"
+            },
+            {
+              "p": "Kjenn etter hva hver øvelse motstår. Sideplanken hindrer at hoften synker mot gulvet, fuglehunden stopper kroppen fra å vri seg, og hollow hold holder ryggen fra å svaie. Du lærer kjernen å låse fast og stabilisere — nettopp det den gjør når du løfter, løper og bærer i hverdagen."
+            },
+            {
+              "h": "Kvalitet framfor tid"
+            },
+            {
+              "p": "Et godt hold slår et langt, slurvete et. Trekk ribbeina lett ned, stram rundt hele midjen og pust rolig gjennom. Tjue sekunder med god spenning gir mer enn et minutt der formen faller sammen. Det er kvaliteten på holdet som teller."
+            },
+            {
+              "h": "Ryggvennlig kjernetrening"
+            },
+            {
+              "p": "Ryggforskeren Stuart McGill viste at gjentatt magebøy kan slite på ryggen, og at de beste kjerneøvelsene sparer ryggraden mens de bygger styrke. Den modifiserte curl-up-en holder korsryggen i en trygg, nøytral stilling i stedet for å krølle den om og om igjen. Bygg styrke — uten å betale med ryggen."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva er kjernens viktigste oppgave?",
+              "valg": [
+                "Å bøye ryggen så mye som mulig",
+                "Å motstå bevegelse og holde ryggraden stabil",
+                "Å puste for deg"
+              ],
+              "riktig": 1,
+              "forklaring": "Kjernen jobber først og fremst med å stabilisere — å stå imot at ryggraden bøyer, svaier eller vrir seg mens resten av kroppen beveger seg."
+            },
+            {
+              "sporsmal": "Hva motstår sideplanken i hovedsak?",
+              "valg": [
+                "At ryggraden bøyer seg til siden",
+                "At du faller bakover",
+                "Ingenting spesielt"
+              ],
+              "riktig": 0,
+              "forklaring": "Sideplanken hindrer at hoften synker og ryggen bøyer sidelengs — den trener kjernen i anti-sidebøy."
+            },
+            {
+              "sporsmal": "Hva kjennetegner McGills tilnærming til kjernetrening?",
+              "valg": [
+                "Mange repetisjoner med maks ryggbøy",
+                "Korte, gode hold som sparer ryggraden",
+                "Trene helt til det gjør vondt"
+              ],
+              "riktig": 1,
+              "forklaring": "McGill anbefaler solide, kontrollerte hold som bygger stabilitet uten den gjentatte bøyen som kan belaste ryggen."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Stuart McGill – «Low Back Disorders: Evidence-Based Prevention and Rehabilitation» (2. utgave, 2007)",
+              "om": "Grunnlaget for de «tre store» kjerneøvelsene — sideplanke, fuglehund og curl-up — og hvorfor de sparer ryggraden."
+            },
+            {
+              "kilde": "Stuart McGill – «Core Training: Evidence Translating to Better Performance and Injury Prevention» (Strength and Conditioning Journal, 2010)",
+              "om": "Oppsummerer hvorfor stabilitet og anti-bevegelse gir bedre prestasjon og færre ryggplager enn tradisjonell magebøy."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Sideplanke",
+            "familie": "core-lat",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 20
+            },
+            "blurb": "Løft hoften og hold kroppen som en rett strek fra siden, med ribbeina lett ned. Kjenn at sidene av magen jobber for å hindre at hoften synker.",
+            "dose": "20 sek per side",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Hollow hold",
+            "familie": "core-antiekst",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 20
+            },
+            "blurb": "Press korsryggen mot gulvet, trekk ribbeina ned og hold én rolig, samlet posisjon. Svaier ryggen, bøyer du knærne litt mer til du finner kontrollen igjen.",
+            "dose": "20 sek",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Rolige hollow rocks",
+            "familie": "core-antiekst",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 10
+            },
+            "blurb": "Gyng smått og sakte mens du beholder hollow-formen hele veien. Det er kontrollen, ikke fart eller sving, som gjør øvelsen effektiv.",
+            "dose": "10 reps",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Fuglehund",
+            "familie": "core-antirot",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 8
+            },
+            "blurb": "Strekk motsatt arm og bein rolig ut mens du holder hoftene helt i ro. Målet er å stå imot at kroppen vrir seg — sakte og stødig vinner.",
+            "dose": "8 per side",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Modifisert curl-up",
+            "familie": "core-flex",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 8
+            },
+            "blurb": "Legg hendene under korsryggen, ha ett kne bøyd, og løft hode og skuldre bare noen få centimeter. Ryggen holdes nøytral, ikke krøllet — akkurat som McGill anbefaler.",
+            "dose": "8 reps",
+            "minutter": 2
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 14,
+          "intensitet": 3,
+          "oppvarming": "Rull skuldre og hofter og pust rolig i ett minutt.",
+          "nedtrapping": "Rist løs og pust rolig ut.",
+          "ovelser": [
+            {
+              "ovelse": "Sideplanke",
+              "sett": 3,
+              "holdSek": 20,
+              "pauseSek": 45,
+              "perSide": true
+            },
+            {
+              "ovelse": "Hollow hold",
+              "sett": 3,
+              "holdSek": 20,
+              "pauseSek": 45
+            },
+            {
+              "ovelse": "Rolige hollow rocks",
+              "sett": 3,
+              "reps": 10,
+              "pauseSek": 45
+            },
+            {
+              "ovelse": "Fuglehund",
+              "sett": 3,
+              "reps": 8,
+              "pauseSek": 45,
+              "perSide": true
+            },
+            {
+              "ovelse": "Modifisert curl-up",
+              "sett": 3,
+              "reps": 8,
+              "pauseSek": 45
+            }
+          ]
+        }
+      },
+      {
+        "id": "vid-ferdighet",
+        "navn": "Ferdigheter",
+        "intro": "Ferdigheter bygges med tålmodighet — her øver vi kontroll framfor antall.",
+        "teori": {
+          "id": "kv-teori-vi3",
+          "tittel": "Ferdigheter tar tid",
+          "undertittel": "Balanse, håndledd og skuldre — og hvorfor gode repetisjoner slår mange slitne.",
+          "lesetid": 4,
+          "bilde": "kv-teori-3",
+          "avsnitt": [
+            {
+              "p": "Øvelser som håndstående mot vegg og kråke handler like mye om balanse og kontroll som om ren styrke. Derfor lønner det seg å behandle dem som ferdigheter du øver på, ikke som en økt du skal bli utslitt av. Tenk trening av teknikk — rolig, hyppig og med hodet med."
+            },
+            {
+              "h": "Forbered håndledd og skuldre"
+            },
+            {
+              "p": "Når hendene blir det nye fotfestet, må håndledd og skuldre få tid til å venne seg til jobben. Rull og tøy håndleddene, kjenn deg varm i skuldrene, og øk belastningen litt etter litt. Krabbeposisjon og vegg-planke er milde måter å laste dem trygt på før du går videre."
+            },
+            {
+              "h": "Balanse er noe du øver opp"
+            },
+            {
+              "p": "Balanse er ikke noe du enten har eller ikke har — det er en ferdighet hjernen finpusser hver gang du øver. Korte, hyppige økter med gode repetisjoner lærer nervesystemet raskere enn én lang, sliten runde. Litt hver dag slår mye én gang i uka."
+            },
+            {
+              "h": "Tålmodighet framfor tall"
+            },
+            {
+              "p": "Her er kontroll viktigere enn antall. Det er bedre å klappe skulderen fem ganger uten at hoften vipper, enn å jage tjue slurvete. Stol på at framgangen kommer når hver repetisjon er ren og bevisst — jag kvalitet, ikke tall."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva er den beste måten å øve på ferdigheter som kråke og håndstående?",
+              "valg": [
+                "Mange slitne repetisjoner på én lang økt",
+                "Korte, hyppige økter med gode repetisjoner",
+                "Hoppe rett til den vanskeligste varianten"
+              ],
+              "riktig": 1,
+              "forklaring": "Ferdigheter læres av nervesystemet. Hyppig, uthvilt øving med god kvalitet gir raskere framgang enn å slite seg ut på én økt."
+            },
+            {
+              "sporsmal": "Hva bør du gjøre før du jobber med håndstående og kråke?",
+              "valg": [
+                "Varme opp håndledd og skuldre",
+                "Droppe oppvarming for å spare tid",
+                "Bare trene bena"
+              ],
+              "riktig": 0,
+              "forklaring": "Når hendene bærer vekten, trenger håndledd og skuldre å bli varme og gradvis vant til belastningen for å holde seg friske."
+            },
+            {
+              "sporsmal": "Hva slags egenskap er balanse?",
+              "valg": [
+                "Noe du enten har eller ikke har",
+                "En ferdighet som blir bedre med øving",
+                "Kun et spørsmål om styrke"
+              ],
+              "riktig": 1,
+              "forklaring": "Balanse finpusses hver gang du øver. Med jevn, bevisst trening blir nervesystemet stadig flinkere til å styre kroppen."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Richard A. Schmidt & Timothy D. Lee – «Motor Control and Learning: A Behavioral Emphasis» (5. utgave, 2011)",
+              "om": "Standardverk om motorisk læring, som viser hvorfor fordelt, hyppig øving og gode repetisjoner bygger ferdigheter best."
+            },
+            {
+              "kilde": "Richard A. Magill & David Anderson – «Motor Learning and Control: Concepts and Applications» (2017)",
+              "om": "Forklarer hvordan balanse og koordinasjon er ferdigheter som forbedres gjennom bevisst øving, tilbakemelding og tålmodighet."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Vegg-planke",
+            "familie": "skill",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 20
+            },
+            "blurb": "Sett føttene mot veggen og gå deg gradvis nærmere vertikalt mens du holder kroppen stram. Det bygger trygghet og skulderstyrke opp-ned, ett lite steg om gangen.",
+            "dose": "20 sek",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Oppspark mot vegg",
+            "familie": "skill",
+            "niva": 3,
+            "maal": {
+              "type": "reps",
+              "verdi": 5
+            },
+            "blurb": "Spark rolig opp med ett bein i føringen til hælene møter veggen, og la skuldrene bære vekten. Øv til oppsparket blir kontrollert i stedet for kastet.",
+            "dose": "5 reps",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Kråke-forberedelse",
+            "familie": "skill",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 10
+            },
+            "blurb": "Sett hendene godt i gulvet, hvil knærne mot overarmene og len vekten sakte framover til tærne blir lette. Ikke stress med å lette helt — balansepunktet kommer med øving.",
+            "dose": "10 sek",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Krabbeposisjon-hold",
+            "familie": "core-antiekst",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 15
+            },
+            "blurb": "Løft hoften opp så kroppen danner et bord, og kjenn at brystet og skuldrene åpner seg. En vennlig måte å varme opp håndledd og skuldre på før tyngre ferdigheter.",
+            "dose": "15 sek",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Skulderklapp i planke",
+            "familie": "core-antirot",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 6
+            },
+            "blurb": "Stå stødig i planke og klapp motsatt skulder uten at hoften vipper fra side til side. Her er ro og kontroll poenget — det trener kjernen til å motstå rotasjon.",
+            "dose": "6 per side",
+            "minutter": 3
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 14,
+          "intensitet": 3,
+          "oppvarming": "Rull skuldre og hofter og pust rolig i ett minutt.",
+          "nedtrapping": "Rist løs og pust rolig ut.",
+          "ovelser": [
+            {
+              "ovelse": "Vegg-planke",
+              "sett": 3,
+              "holdSek": 20,
+              "pauseSek": 45
+            },
+            {
+              "ovelse": "Oppspark mot vegg",
+              "sett": 3,
+              "reps": 5,
+              "pauseSek": 45
+            },
+            {
+              "ovelse": "Kråke-forberedelse",
+              "sett": 3,
+              "holdSek": 10,
+              "pauseSek": 45
+            },
+            {
+              "ovelse": "Krabbeposisjon-hold",
+              "sett": 3,
+              "holdSek": 15,
+              "pauseSek": 45
+            },
+            {
+              "ovelse": "Skulderklapp i planke",
+              "sett": 3,
+              "reps": 6,
+              "pauseSek": 45,
+              "perSide": true
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "kroppsvekt-toying",
+    "disiplin": "kroppsvekt",
+    "navn": "Nedtrapping & tøying",
+    "undertittel": "Land økta mykt — tøy ut, åpne opp og pust deg ned i ro.",
+    "farge": "teal",
+    "nivaBand": [
+      1,
+      1
+    ],
+    "enheter": [
+      {
+        "id": "toy-underkropp",
+        "navn": "Tøy underkroppen",
+        "intro": "Rund av økta med rolige tøyninger som gir beina bevegelighet og roen tilbake.",
+        "teori": {
+          "id": "kv-teori-to1",
+          "tittel": "Slik lander du økta i beina",
+          "undertittel": "Statisk tøying og pust som en myk avslutning etter trening",
+          "lesetid": 4,
+          "bilde": "yin",
+          "avsnitt": [
+            {
+              "p": "Når du er ferdig med den tunge jobben, er kroppen fortsatt i høygir. En rolig nedtrapping med noen tøyninger hjelper deg å skru ned tempoet, kjenne etter i musklene og avslutte økta med god følelse. Beina bærer deg gjennom det meste, så de fortjener litt ekstra omsorg på slutten."
+            },
+            {
+              "h": "Når statisk tøying hjelper"
+            },
+            {
+              "p": "Statisk tøying – der du holder en posisjon i ro – gir mest når musklene allerede er varme, altså etter økta. Da kan du gradvis bygge bevegelighet over tid. Husk at tøying ikke er en magisk kur mot stølhet dagen etter; du tøyer for bevegelighet og velvære, ikke for å slette all muskelsårhet."
+            },
+            {
+              "h": "Pust deg dypere inn i tøyet"
+            },
+            {
+              "p": "Pusten er verktøyet ditt i en tøyning. Finn posisjonen, ta et rolig innpust, og slipp deg litt lenger inn for hver utpust. Hold hver tøyning i rundt 20–30 sekunder og la musklene få tid til å gi etter – ikke rykk eller sprett."
+            },
+            {
+              "h": "Ubehag – ikke smerte"
+            },
+            {
+              "p": "En god tøyning kjennes som et mildt, behagelig drag i muskelen. Skarp, stikkende eller lynende smerte er kroppens stoppskilt – da har du gått for langt. Trekk deg litt tilbake til det kjennes trygt, og pust videre."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Når gir statisk tøying vanligvis mest?",
+              "valg": [
+                "Etter økta, når musklene er varme",
+                "Rett før et maksløft",
+                "Bare når du allerede er skadet"
+              ],
+              "riktig": 0,
+              "forklaring": "Varme muskler gir lettere etter, så statisk tøying passer best som avslutning på økta."
+            },
+            {
+              "sporsmal": "Hvor lenge bør du holde en rolig tøyning?",
+              "valg": [
+                "1–2 sekunder",
+                "20–30 sekunder",
+                "Minst 5 minutter i strekk"
+              ],
+              "riktig": 1,
+              "forklaring": "Rundt 20–30 sekunder gir muskelen tid til å slippe seg til uten at det blir ubehagelig lenge."
+            },
+            {
+              "sporsmal": "Hva bør en god tøyning kjennes som?",
+              "valg": [
+                "Skarp, stikkende smerte",
+                "Ingenting i det hele tatt",
+                "Et mildt, behagelig drag"
+              ],
+              "riktig": 2,
+              "forklaring": "Sikt mot et mildt drag. Skarp smerte betyr at du bør trekke deg litt tilbake."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Garber et al. – ACSM Position Stand (Medicine & Science in Sports & Exercise, 2011)",
+              "om": "American College of Sports Medicine sine treningsanbefalinger. Råder til å holde tøyninger i 10–30 sekunder, 2–3 ganger i uka, for å bedre bevegelighet."
+            },
+            {
+              "kilde": "Herbert, de Noronha & Kamper – Cochrane-oversikt (2011)",
+              "om": "Systematisk gjennomgang som viser at tøying før eller etter trening har liten effekt på muskelsårhet – tøy for bevegelighet og velvære, ikke for å unngå stølhet."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Leggtøy",
+            "familie": "toying",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 20
+            },
+            "blurb": "Stå med hendene mot en vegg og ett bein langt bak med strakt kne og hælen plantet i gulvet. Kjenn draget bak i leggen, og hold rolig mens du puster jevnt.",
+            "dose": "20 sek per side",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Lårtøyning",
+            "familie": "toying",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 20
+            },
+            "blurb": "Stå støtt, bøy ett kne og grip ankelen bak deg. Trekk hælen forsiktig mot setet til du kjenner det foran på låret – hold hoftene lett fremskjøvet og pust rolig.",
+            "dose": "20 sek per side",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Hamstringtøyning",
+            "familie": "toying",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 20
+            },
+            "blurb": "Sett den ene hælen frem med strakt kne og len overkroppen forover fra hoftene med rett rygg. Kjenn draget bak på låret, og slipp deg litt dypere for hver utpust.",
+            "dose": "20 sek per side",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Figur-4",
+            "familie": "toying",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 20
+            },
+            "blurb": "Ligg på rygg og legg den ene ankelen over motsatt lår så beina former en firer. Trekk det bakre låret rolig mot deg til du kjenner det i sete og hofte, og pust dypt.",
+            "dose": "20 sek per side",
+            "minutter": 2
+          },
+          {
+            "ovelse": "90/90-hoftetøyning",
+            "familie": "toying",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 20
+            },
+            "blurb": "Sitt på gulvet med fremre og bakre kne bøyd i 90 grader. Sitt høy i ryggen og len deg forsiktig mot det fremre beinet til du kjenner tøyet dypt i hofta.",
+            "dose": "20 sek per side",
+            "minutter": 2
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 14,
+          "intensitet": 3,
+          "oppvarming": "Rull skuldre og hofter og pust rolig i ett minutt.",
+          "nedtrapping": "Rist løs og pust rolig ut.",
+          "ovelser": [
+            {
+              "ovelse": "Leggtøy",
+              "sett": 3,
+              "holdSek": 20,
+              "pauseSek": 45,
+              "perSide": true
+            },
+            {
+              "ovelse": "Lårtøyning",
+              "sett": 3,
+              "holdSek": 20,
+              "pauseSek": 45,
+              "perSide": true
+            },
+            {
+              "ovelse": "Hamstringtøyning",
+              "sett": 3,
+              "holdSek": 20,
+              "pauseSek": 45,
+              "perSide": true
+            },
+            {
+              "ovelse": "Figur-4",
+              "sett": 3,
+              "holdSek": 20,
+              "pauseSek": 45,
+              "perSide": true
+            },
+            {
+              "ovelse": "90/90-hoftetøyning",
+              "sett": 3,
+              "holdSek": 20,
+              "pauseSek": 45,
+              "perSide": true
+            }
+          ]
+        }
+      },
+      {
+        "id": "toy-pust",
+        "navn": "Åpne opp & pust",
+        "intro": "Åpne opp brystet, løsne ryggen og pust deg ned i hvilemodus etter pressejobben.",
+        "teori": {
+          "id": "kv-teori-to2",
+          "tittel": "Åpne brystet og senk skuldrene ned",
+          "undertittel": "Myke bevegelser og rolig pust som lander økta i ro",
+          "lesetid": 4,
+          "bilde": "restitusjon",
+          "avsnitt": [
+            {
+              "p": "Etter push-ups, dips og annen pressejobb har brystet og skuldrene stått på hardt – ofte i en lukket, fremoverlutet stilling. Nå er det tid for å gjøre det motsatte: åpne opp, strekke ut og hente pusten rolig ned. Slik forteller du kroppen at den kan skifte fra jobb til hvile."
+            },
+            {
+              "h": "Motvirk pressebevegelsene"
+            },
+            {
+              "p": "Skånsomme åpninger av bryst og øvre rygg balanserer alt presset du nettopp gjorde. Milde bakoverbøyer som kobra og rotasjoner som åpen bok løsner opp der du har vært spent. Ta det forsiktig – dette er utstrekk og pust, ikke ny trening."
+            },
+            {
+              "h": "Rolig pust skrur ned gasspedalen"
+            },
+            {
+              "p": "Langsom pust – rundt seks pust i minuttet – aktiverer det parasympatiske nervesystemet, kroppens «hvile og fordøy»-modus. En lang, rolig utpust senker pulsen og roer sinnet. Det er den forlengede utpusten, ikke innpusten, som gjør mest av jobben."
+            },
+            {
+              "h": "Land økta rolig"
+            },
+            {
+              "p": "Bruk de siste minuttene på å bare puste. Noen få runder med rolig, dyp pust hjelper kroppen å gå fra treningsmodus til restitusjon, så du forlater økta senket i skuldrene og klar i hodet."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hvilket system aktiverer langsom pust?",
+              "valg": [
+                "Det sympatiske («kamp eller flukt»)",
+                "Det parasympatiske («hvile og fordøy»)",
+                "Ingen av delene"
+              ],
+              "riktig": 1,
+              "forklaring": "Rolig pust vipper balansen mot det parasympatiske systemet, som senker puls og spenning."
+            },
+            {
+              "sporsmal": "Hvilken del av pusten roer deg ned mest?",
+              "valg": [
+                "En lang, rolig utpust",
+                "Å holde pusten så lenge som mulig",
+                "Rask, kort hyperventilering"
+              ],
+              "riktig": 0,
+              "forklaring": "Den forlengede utpusten er det som bremser pulsen og signaliserer ro til kroppen."
+            },
+            {
+              "sporsmal": "Hvorfor åpne brystet etter pressebevegelser?",
+              "valg": [
+                "For å motvirke den fremoverlutede posisjonen",
+                "For å øke pulsen igjen",
+                "For å varme opp til neste sett"
+              ],
+              "riktig": 0,
+              "forklaring": "Pressejobb lukker brystet fremover; å åpne opp gir balanse og en god følelse i øvre rygg."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Zaccaro et al. – «How Breath-Control Can Change Your Life» (Frontiers in Human Neuroscience, 2018)",
+              "om": "Systematisk oversikt over langsom pust (~6 pust i minuttet), som viser økt parasympatisk aktivitet, høyere HRV og roligere sinnstilstand."
+            },
+            {
+              "kilde": "Balban et al. – Cell Reports Medicine (2023)",
+              "om": "Kontrollert studie fra Stanford: fem minutter daglig «cyclic sighing» med lang utpust senket pustefrekvensen og bedret humøret mer enn vanlig meditasjon."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Brysttøyning",
+            "familie": "toying",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 20
+            },
+            "blurb": "Legg underarmen mot en dørkarm eller vegg med albuen i skulderhøyde, og vri kroppen sakte bort. Kjenn åpningen foran i brystet og skulderen, og hold mens du puster rolig.",
+            "dose": "20 sek per side",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Åpen bok",
+            "familie": "mobilitet",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 6
+            },
+            "blurb": "Ligg på siden med knærne bøyd og armene samlet rett foran deg. Før den øverste armen i en stor bue ut og bakover mens blikket følger hånda, og pust ut når brystet åpner seg mot gulvet.",
+            "dose": "6 per side",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Barnets stilling",
+            "familie": "toying",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "Sitt tilbake på hælene med knærne fra hverandre og strekk armene langt frem på gulvet. Slipp brystet ned mot lårene, senk skuldrene, og pust dypt inn i ryggen.",
+            "dose": "30 sek",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Kobra",
+            "familie": "mobilitet",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 20
+            },
+            "blurb": "Ligg på magen med hendene under skuldrene og press overkroppen forsiktig opp mens hoftene blir liggende. Løft bare så høyt at det kjennes godt i ryggen, og ta lange, myke pust.",
+            "dose": "20 sek",
+            "minutter": 2
+          },
+          {
+            "ovelse": "Rolig pust",
+            "familie": "pust",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 60
+            },
+            "blurb": "Sitt eller ligg behagelig, pust inn gjennom nesa i fire tellinger og ut i seks. La utpusten være lang og myk, og kjenn kroppen synke litt mer for hver runde.",
+            "dose": "1 min",
+            "minutter": 2
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 14,
+          "intensitet": 3,
+          "oppvarming": "Rull skuldre og hofter og pust rolig i ett minutt.",
+          "nedtrapping": "Rist løs og pust rolig ut.",
+          "ovelser": [
+            {
+              "ovelse": "Brysttøyning",
+              "sett": 3,
+              "holdSek": 20,
+              "pauseSek": 45,
+              "perSide": true
+            },
+            {
+              "ovelse": "Åpen bok",
+              "sett": 3,
+              "reps": 6,
+              "pauseSek": 45,
+              "perSide": true
+            },
+            {
+              "ovelse": "Barnets stilling",
+              "sett": 3,
+              "holdSek": 30,
+              "pauseSek": 45
+            },
+            {
+              "ovelse": "Kobra",
+              "sett": 3,
+              "holdSek": 20,
+              "pauseSek": 45
+            },
+            {
+              "ovelse": "Rolig pust",
+              "sett": 3,
+              "holdSek": 60,
+              "pauseSek": 45
+            }
+          ]
+        }
+      }
+    ]
   }
 ]

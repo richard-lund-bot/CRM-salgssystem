@@ -1,9 +1,10 @@
 // Validering av øktbiblioteket data/okter.json (node, null avhengigheter).
 // Kjør fra repo-rot: node scripts/valider-okter.mjs
-// Sjekker: gyldig JSON, nøyaktig 60 økter (én per kategori×skill×intensitet),
-// id-mønster, enum-verdier, felt- og blokkvalidering per kind, at summen av
-// blokk-minutter ligger innenfor ±20 % av varighetMin (warn), at ev.
-// ovelseId/sekvensId resolverer, og avspillingssanity per kategori.
+// Sjekker: gyldig JSON, minst 60 økter med hver kategori×skill×intensitet-celle
+// dekket (én eller flere per celle), unike id-er med kategori-prefiks,
+// enum-verdier, felt- og blokkvalidering per kind, at summen av blokk-minutter
+// ligger innenfor ±20 % av varighetMin (warn), at ev. ovelseId/sekvensId
+// resolverer, og avspillingssanity per kategori.
 // Exit 0 = grønt. Exit 1 = feil (alt skrives til stdout uansett).
 import { readFileSync } from 'node:fs';
 
@@ -59,17 +60,21 @@ const sekvensIder = new Set(sequences.map((s) => s.id));
 
 // --- Antall og celledekning ---
 if (!Array.isArray(okter)) { console.error('okter.json er ikke en array'); process.exit(1); }
-if (okter.length !== 60) err(`Forventet 60 økter, fant ${okter.length}`);
+// Minst 60 økter, og hver kategori×skill×intensitet-celle må ha minst én
+// (så filtrene alltid har dekning). Én celle kan nå ha flere økter.
+if (okter.length < 60) err(`Forventet minst 60 økter, fant ${okter.length}`);
 
-const sett = new Set();
-for (const k of KATEGORIER) for (const s of SKILLS) for (const i of INTENSITETER) sett.add(`${k}-${s}-${i}`);
+const celleTeller = new Map();
 const funnet = new Set();
 for (const o of okter) {
   if (funnet.has(o.id)) err(`Duplikat økt-id: ${o.id}`);
   funnet.add(o.id);
+  const celle = `${o.kategori}-${o.skill}-${o.intensitet}`;
+  celleTeller.set(celle, (celleTeller.get(celle) || 0) + 1);
 }
-for (const id of sett) if (!funnet.has(id)) err(`Mangler celle: ${id}`);
-for (const id of funnet) if (!sett.has(id)) err(`Ukjent økt-id (matcher ingen celle): ${id}`);
+for (const k of KATEGORIER) for (const s of SKILLS) for (const i of INTENSITETER) {
+  if (!celleTeller.get(`${k}-${s}-${i}`)) err(`Mangler celle: ${k}-${s}-${i}`);
+}
 
 // --- Per-økt-validering ---
 const erTall = (v) => typeof v === 'number' && Number.isFinite(v);
@@ -78,7 +83,7 @@ const erHeltall = (v) => Number.isInteger(v);
 for (const o of okter) {
   const at = `økt ${o.id || '(uten id)'}`;
 
-  if (o.id !== `${o.kategori}-${o.skill}-${o.intensitet}`) err(`${at}: id matcher ikke kategori/skill/intensitet`);
+  if (typeof o.id !== 'string' || !o.id.startsWith(`${o.kategori}-`)) err(`${at}: id må starte med "${o.kategori}-"`);
   if (!KATEGORIER.includes(o.kategori)) err(`${at}: ukjent kategori "${o.kategori}"`);
   if (!SKILLS.includes(o.skill)) err(`${at}: ukjent skill "${o.skill}"`);
   if (!INTENSITETER.includes(o.intensitet)) err(`${at}: ukjent intensitet "${o.intensitet}"`);
