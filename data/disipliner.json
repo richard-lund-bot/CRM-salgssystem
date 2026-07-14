@@ -6,8 +6,15 @@
     "ikon": "vekt",
     "farge": "teal",
     "status": "aktiv",
-    "seksjoner": ["kroppsvekt-nybegynner", "kroppsvekt-oppvarming", "kroppsvekt-viderekommen", "kroppsvekt-toying"],
-    "kapsteiner": ["push-opp"]
+    "seksjoner": [
+      "kroppsvekt-nybegynner",
+      "kroppsvekt-oppvarming",
+      "kroppsvekt-viderekommen",
+      "kroppsvekt-toying"
+    ],
+    "kapsteiner": [
+      "push-opp"
+    ]
   },
   {
     "id": "frivekt",
@@ -24,8 +31,12 @@
     "undertittel": "Fra gåtur til 5 km — steg for steg.",
     "ikon": "loper",
     "farge": "oransje",
-    "status": "kommer",
-    "seksjoner": []
+    "status": "aktiv",
+    "seksjoner": [
+      "loping-gaaskole",
+      "loping-loepeskole",
+      "loping-fart"
+    ]
   },
   {
     "id": "mobilitet",

@@ -2592,6 +2592,7 @@ body.fokusmodus { padding-bottom: 0; }
 .seksjonkort--koral .seksjonkort__topp { background: linear-gradient(135deg, #E8734E, #C8452A); }
 .seksjonkort--blaa .seksjonkort__topp { background: linear-gradient(135deg, #3E7CC4, #29508C); }
 .seksjonkort--lilla .seksjonkort__topp { background: linear-gradient(135deg, #8A6BC4, #5E3F92); }
+.seksjonkort--oransje .seksjonkort__topp { background: linear-gradient(135deg, #E8913E, #C4661B); }
 .seksjonkort__snakk { position: relative; background: #fff; color: var(--tekst); border-radius: 14px; padding: 8px 14px; font-family: var(--font-display); font-weight: 600; font-size: 15px; box-shadow: var(--shadow-xs); }
 .seksjonkort__snakk::after { content: ''; position: absolute; top: 100%; left: 22px; border: 7px solid transparent; border-top-color: #fff; }
 .seksjonkort__panda { position: absolute; right: 12px; bottom: -8px; width: 92px; height: 104px; }

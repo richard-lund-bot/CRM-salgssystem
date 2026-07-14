@@ -41,7 +41,7 @@ const OVELSER_FORMATER = {
 const GUIDEDE = new Set(['styrke', 'kroppsvekt', 'yoga', 'toying', 'mobilitet']);
 const TIMERE = new Set(['gatur', 'lop', 'sykkel', 'hiit']);
 
-let okter, exercises, sequences;
+let okter, exercises, sequences, ovelsesinfo;
 try {
   okter = read('okter.json');
 } catch (e) {
@@ -51,12 +51,27 @@ try {
 try {
   exercises = read('exercises.json');
   sequences = read('sequences.json');
+  ovelsesinfo = read('ovelsesinfo.json');
 } catch (e) {
   console.error('KUNNE IKKE LESE referansefil:', e.message);
   process.exit(1);
 }
 const ovelseIder = new Set(exercises.map((e) => e.id));
 const sekvensIder = new Set(sequences.map((s) => s.id));
+
+// Oppslag for `krever` (kondisjonsøktenes ferdighets-/tempolås) — samme
+// normalisering som js/ovelse.js og smoke-ovelser.mjs. Hver krever-verdi må
+// treffe en ovelsesinfo-oppføring så den kan læres i Lær og låse opp økta.
+const grovN = (n) => String(n).toLowerCase().replace(/[–—]/g, '-').replace(/\s+/g, ' ').trim();
+const finN = (n) => {
+  let s = grovN(n).replace(/\(.*?\)/g, '');
+  s = s.split(',')[0].split(':')[0].split('·')[0];
+  s = s.replace(/[^a-z0-9æøå\- ]/g, ' ');
+  return s.replace(/\s+/g, ' ').trim();
+};
+const kreverOppslag = new Set();
+for (const e of ovelsesinfo) for (const n of [e.navn, ...(e.alias || [])]) { kreverOppslag.add(grovN(n)); kreverOppslag.add(finN(n)); }
+const kreverFinnes = (n) => kreverOppslag.has(grovN(n)) || kreverOppslag.has(finN(n));
 
 // --- Antall og celledekning ---
 if (!Array.isArray(okter)) { console.error('okter.json er ikke en array'); process.exit(1); }
@@ -100,6 +115,17 @@ for (const o of okter) {
     if (!o.kilde.navn) err(`${at}: kilde mangler navn`);
     if (!KILDETYPER.has(o.kilde.type)) err(`${at}: ukjent kildetype "${o.kilde?.type}"`);
     if (!o.kilde.ref) err(`${at}: kilde mangler ref`);
+  }
+
+  // krever (ferdighets-/tempolås for kondisjonsøkter). Valgfri på guidede
+  // kategorier (de gates via ovelser/sekvens), men gåtur/løp må ha den for å
+  // kunne låses opp — ellers står de evig åpne uten Lær-progresjon.
+  if (o.krever !== undefined) {
+    if (!Array.isArray(o.krever)) err(`${at}: krever må være en liste`);
+    else for (const k of o.krever) if (!kreverFinnes(k)) err(`${at}: krever "${k}" finnes ikke i ovelsesinfo.json`);
+  }
+  if ((o.kategori === 'gatur' || o.kategori === 'lop') && (!Array.isArray(o.krever) || o.krever.length === 0)) {
+    err(`${at}: gåtur/løp må ha minst én krever-ferdighet (låses opp i Lær)`);
   }
 
   // blokker

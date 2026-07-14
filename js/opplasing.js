@@ -37,7 +37,11 @@ export function laerteOvelseNokler() {
   return sett;
 }
 
-/** Alle øvelsesnavn i en økt, på tvers av blokker (inkl. sekvensposisjoner). */
+/** Alle øvelsesnavn i en økt, på tvers av blokker (inkl. sekvensposisjoner).
+ *  Kondisjonsøkter (gåtur/løp) har ingen diskrete øvelser — de gates i stedet
+ *  på `krever`: navnene på ferdighetene/tempo­sonene økta bygger på (rolig gåing,
+ *  terskeltempo, løpeteknikk …). De læres som teknikk-leksjoner i Lær akkurat som
+ *  styrkeøvelser, så matchingen går gjennom samme kanoniske nøkkel. */
 export function oktOvelseNavn(okt) {
   const navn = [];
   for (const b of okt?.blokker || []) {
@@ -46,6 +50,7 @@ export function oktOvelseNavn(okt) {
       else if (ov.navn) navn.push(ov.navn);
     }
   }
+  for (const k of okt?.krever || []) if (k) navn.push(k);
   return navn;
 }
 

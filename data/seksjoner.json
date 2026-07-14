@@ -1624,5 +1624,749 @@
         }
       }
     ]
+  },
+  {
+    "id": "loping-gaaskole",
+    "disiplin": "loping",
+    "navn": "Gåskole",
+    "undertittel": "Kom i gang: teknikk, pust og de rolige turene som bygger grunnmuren.",
+    "farge": "oransje",
+    "nivaBand": [
+      1,
+      2
+    ],
+    "enheter": [
+      {
+        "id": "gaa-grunnmur",
+        "navn": "Grunnmur i gange",
+        "intro": "Alt starter med å gå. Lær god gangteknikk, finn den rolige sona og bruk pusten som fartsmåler — fundamentet alt annet bygger på.",
+        "teori": {
+          "id": "lop-teori-1",
+          "tittel": "Hjertet blir sterkere av hvert skritt",
+          "undertittel": "Hva kondisjonstrening gjør med kroppen — og hvorfor gange er den perfekte starten.",
+          "lesetid": 4,
+          "bilde": "lop-teori-1",
+          "avsnitt": [
+            {
+              "p": "Kondisjonstrening — eller kardiovaskulær trening — er all bevegelse som får hjertet og lungene til å jobbe jevnt over tid. Gåturer, jogging, sykling og svømming er alt sammen kondisjon. Dette er den første leksjonen i løpeskolen, og vi begynner der alle trygt kan begynne: med å gå."
+            },
+            {
+              "h": "Hva skjer i kroppen"
+            },
+            {
+              "p": "Når du beveger deg, trenger musklene mer oksygen. Hjertet svarer med å slå raskere og kraftigere, og over tid blir det en sterkere pumpe: hvilepulsen synker, blodårene blir mer elastiske, og musklene bygger flere små «kraftverk» (mitokondrier). Resultatet er at du orker mer — og at risikoen for hjerte- og karsykdom, diabetes og tidlig død faller markant."
+            },
+            {
+              "h": "Hvorfor gange er en fullverdig start"
+            },
+            {
+              "p": "Rask gange gir mange av de samme gevinstene som løping, men med langt mindre belastning på ledd og sener. Verdens helseorganisasjon anbefaler minst 150 minutter moderat aktivitet i uka — og en rask gåtur teller fullt ut. For en fersk mosjonist er gange ofte den klokeste starten: du bygger vane, grunnform og sterke sener før du eventuelt begynner å løpe."
+            },
+            {
+              "h": "Litt er mye"
+            },
+            {
+              "p": "Den største helsegevinsten kommer når du går fra å sitte stille til å bevege deg litt. Du trenger verken fart eller lange økter i starten — en rolig tur hver dag er nok til å sette forandringen i gang. I denne enheten lærer du å gå godt, finne det rolige tempoet og lese innsatsen på pusten."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva er kondisjonstrening?",
+              "valg": [
+                "All bevegelse som får hjerte og lunger til å jobbe jevnt over tid",
+                "Bare hard løping",
+                "Kun styrkeøvelser"
+              ],
+              "riktig": 0,
+              "forklaring": "Kondisjon er alt fra gåturer til løping og sykling — bevegelse som utfordrer hjerte og lunger over tid."
+            },
+            {
+              "sporsmal": "Hva skjer med hjertet av jevn kondisjonstrening?",
+              "valg": [
+                "Hvilepulsen synker og hjertet blir en sterkere pumpe",
+                "Det blir svakere",
+                "Ingenting"
+              ],
+              "riktig": 0,
+              "forklaring": "Trening gjør hjertet til en sterkere og mer effektiv pumpe, og hvilepulsen synker."
+            },
+            {
+              "sporsmal": "Hvorfor er gange en god start for ferske mosjonister?",
+              "valg": [
+                "Full kondisjonsgevinst med langt mindre belastning på ledd og sener",
+                "Fordi det ikke virker",
+                "Fordi det er tyngre enn løping"
+              ],
+              "riktig": 0,
+              "forklaring": "Rask gange gir mye av løpingens gevinst med mindre skaderisiko — perfekt for å bygge grunnform trygt."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Verdens helseorganisasjon (WHO) – retningslinjer for fysisk aktivitet (2020)",
+              "om": "Anbefaler minst 150–300 min moderat aktivitet i uka; rask gange teller fullt ut, og litt er langt bedre enn ingenting."
+            },
+            {
+              "kilde": "Lee & Buchner – «The Importance of Walking to Public Health» (Med. Sci. Sports Exerc., 2008)",
+              "om": "Oppsummerer hvordan regelmessig gange senker risiko for hjerte- og karsykdom og tidlig død."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Gåteknikk",
+            "familie": "gaaing",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 20
+            },
+            "blurb": "Stå høy, se frem og rull foten fra hæl til tå. La armene svinge avslappet i takt med stegene.",
+            "dose": "20 rolige steg med fokus på teknikk",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Hvordan bør foten treffe bakken i god gange?",
+              "valg": [
+                "Rulle fra hæl til tå",
+                "Slås flatt ned",
+                "Bare på tå"
+              ],
+              "riktig": 0,
+              "forklaring": "Sett hælen først og rull mykt av gjennom hele foten til frasparket i tærne."
+            }
+          },
+          {
+            "ovelse": "Rolig gåing",
+            "familie": "gaaing",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 180
+            },
+            "blurb": "Gå i et tempo der pusten er helt ledig og du kan snakke uanstrengt. Dette er grunnfarten din.",
+            "dose": "Gå rolig i 3 minutter",
+            "minutter": 4
+          },
+          {
+            "ovelse": "Pustestyrt tempo",
+            "familie": "pacing",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 120
+            },
+            "blurb": "Test pusten mens du går: klarer du hele setninger, er du i rolig sone. Bruk pusten som fartsmåler.",
+            "dose": "Gå og sjekk snakketempoet i 2 minutter",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Du klarer bare å si enkeltord om gangen. Hvilken sone er du i?",
+              "valg": [
+                "Hardt",
+                "Rolig",
+                "Helt i ro"
+              ],
+              "riktig": 0,
+              "forklaring": "Enkeltord = hardt. Hele setninger = rolig. Korte fraser = moderat."
+            }
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 15,
+          "intensitet": 2,
+          "oppvarming": "Rull skuldre og ankler, og gå rolig i ett minutt.",
+          "nedtrapping": "Sakn av tempoet og rist løs i beina.",
+          "ovelser": [
+            {
+              "ovelse": "Gåteknikk",
+              "sett": 2,
+              "holdSek": 60,
+              "pauseSek": 30
+            },
+            {
+              "ovelse": "Rolig gåing",
+              "sett": 1,
+              "holdSek": 300,
+              "pauseSek": 60
+            },
+            {
+              "ovelse": "Pustestyrt tempo",
+              "sett": 2,
+              "holdSek": 120,
+              "pauseSek": 30
+            }
+          ]
+        }
+      },
+      {
+        "id": "gaa-tempo",
+        "navn": "Skru opp tempoet",
+        "intro": "Nå som teknikken sitter, finner vi de raskere sonene: den friske gangen der pusten tar seg opp, og motbakkene som gjør beina sterke.",
+        "teori": {
+          "id": "lop-teori-2",
+          "tittel": "Rolig, rask og hardt — treningssonene",
+          "undertittel": "Hvorfor du trenger både lette og harde økter, og hvordan du kjenner forskjellen.",
+          "lesetid": 4,
+          "bilde": "lop-teori-2",
+          "avsnitt": [
+            {
+              "p": "Ikke all trening skal kjennes lik. Kroppen bygges best når du varierer mellom rolige økter som legger grunnmuren, og hardere økter som løfter taket. For å styre dette deler vi innsatsen inn i soner."
+            },
+            {
+              "h": "De tre sonene du trenger"
+            },
+            {
+              "p": "Enkelt sagt har du tre soner. Rolig (sone 1–2) er snakketempo — du kan prate i hele setninger, og her legger du grunnmuren. Moderat til rask (sone 3) er «komfortabelt hardt» — pusten tar seg opp og praten går i korte fraser. Hardt (sone 4–5) er tungt — du får bare fram enkeltord. Hver sone har sin jobb, og de fleste turene dine bør være rolige."
+            },
+            {
+              "h": "Snakketesten – ditt enkleste verktøy"
+            },
+            {
+              "p": "Du trenger ingen pulsklokke for å treffe riktig sone. Snakketesten forteller alt: kan du synge, er det for lett til å være en treningsøkt; kan du snakke i hele setninger, er du rolig; klarer du bare korte fraser, er du i den friske sona; og hakker praten helt opp, er det hardt. La pusten være fartsmåleren din."
+            },
+            {
+              "h": "Motbakker gjør deg sterk"
+            },
+            {
+              "p": "Å gå oppover er styrketrening for kondisjonen. Motbakken løfter pulsen uten at du trenger å gå fort, og den bygger kraft i sete og legger. Len deg litt frem fra anklene, kort ned stegene og la bakken gjøre jobben. De rolige nedturene blir de naturlige pausene."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hvor bør de fleste treningsturene dine ligge?",
+              "valg": [
+                "I den rolige sona",
+                "Alltid i hardt",
+                "Alltid i moderat"
+              ],
+              "riktig": 0,
+              "forklaring": "Grunnmuren bygges i rolig sone — de fleste øktene bør være lette, med noen få harde innimellom."
+            },
+            {
+              "sporsmal": "Du klarer bare korte fraser når du går. Hvilken sone er du i?",
+              "valg": [
+                "Moderat/rask sone",
+                "Rolig sone",
+                "Hvile"
+              ],
+              "riktig": 0,
+              "forklaring": "Korte fraser = moderat til rask sone (sone 3). Hele setninger ville vært rolig."
+            },
+            {
+              "sporsmal": "Hva er en fordel med motbakkegange?",
+              "valg": [
+                "Høyere puls og sterkere bein uten å gå fort",
+                "Mindre effekt enn flat mark",
+                "Bare bra for armene"
+              ],
+              "riktig": 0,
+              "forklaring": "Bakken løfter intensiteten og bygger kraft i sete og legger — skånsomt fordi du ikke trenger fart."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Seiler – «What is Best Practice for Training Intensity Distribution?» (Int. J. Sports Physiol. Perform., 2010)",
+              "om": "Viser at utholdenhetsutøvere trener mest i lav sone og bare en mindre andel hardt — en polarisert fordeling."
+            },
+            {
+              "kilde": "Foster et al. – validering av snakketesten (ACE / Univ. of Wisconsin–La Crosse)",
+              "om": "Dokumenterer at evnen til å snakke henger tett sammen med treningsintensitet og ventilasjonsterskler."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Rask gåing",
+            "familie": "gaaing",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 180
+            },
+            "blurb": "Øk tempoet til pusten blir tydelig tyngre. Bøy albuene og pump armene aktivt for å dra farten opp.",
+            "dose": "Gå raskt i 3 minutter",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hva hjelper deg å holde et raskt gangtempo?",
+              "valg": [
+                "Aktive armer med bøyde albuer",
+                "Å se ned i bakken",
+                "Lange, dorske steg"
+              ],
+              "riktig": 0,
+              "forklaring": "Pump armene med rundt 90° bøyde albuer og ta korte, kraftige steg — armene drar tempoet opp."
+            }
+          },
+          {
+            "ovelse": "Motbakkegåing",
+            "familie": "gaaing",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 120
+            },
+            "blurb": "Finn en bakke. Len deg svakt frem fra anklene, kort ned stegene og skyv fra med hele foten.",
+            "dose": "Gå 2 minutter i motbakke",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hvordan går du mest effektivt oppover?",
+              "valg": [
+                "Len deg litt frem fra anklene og kort ned stegene",
+                "Knekk i hofta og se ned",
+                "Ta lange byks"
+              ],
+              "riktig": 0,
+              "forklaring": "Len hele kroppen svakt fremover fra anklene og ta korte, hyppige steg oppover."
+            }
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 18,
+          "intensitet": 4,
+          "oppvarming": "Gå rolig i to minutter og løsne i hofter og ankler.",
+          "nedtrapping": "Gå rolig til pusten er tilbake, og tøy leggene lett.",
+          "ovelser": [
+            {
+              "ovelse": "Rask gåing",
+              "sett": 4,
+              "holdSek": 120,
+              "pauseSek": 60
+            },
+            {
+              "ovelse": "Motbakkegåing",
+              "sett": 3,
+              "holdSek": 90,
+              "pauseSek": 60
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "loping-loepeskole",
+    "disiplin": "loping",
+    "navn": "Løpeskole",
+    "undertittel": "Slik løper du lett og skadefritt — teknikk og de første joggeturene.",
+    "farge": "oransje",
+    "nivaBand": [
+      2,
+      3
+    ],
+    "enheter": [
+      {
+        "id": "loep-lett",
+        "navn": "Lær å løpe lett",
+        "intro": "Løping er å falle fremover og ta imot. Lær den lette, avslappede teknikken, og bruk gå-løp-metoden til å bygge deg trygt opp.",
+        "teori": {
+          "id": "lop-teori-3",
+          "tittel": "Løp lett — teknikk som holder deg skadefri",
+          "undertittel": "Stegfrekvens, holdning og fotisett som gjør løpingen lettere og tryggere.",
+          "lesetid": 5,
+          "bilde": "lop-teori-3",
+          "avsnitt": [
+            {
+              "p": "Mange tror man må være «en løpetype» for å løpe. Sannheten er at god løpeteknikk kan læres, og at små justeringer gjør løpingen både lettere og tryggere. Nøkkelen er å løpe avslappet og la kroppen gjøre det den er bygget for."
+            },
+            {
+              "h": "Høy og avslappet holdning"
+            },
+            {
+              "p": "Løp høy, med blikket frem og en liten foroverlening som starter fra anklene — ikke fra hofta. Slipp spenning i skuldre, hender og kjeve. En stiv overkropp koster energi; en avslappet kropp løper lettere."
+            },
+            {
+              "h": "Stegfrekvens og landing"
+            },
+            {
+              "p": "De fleste løper lettere med en litt raskere, kortere steg — sikt mot rundt 170–180 steg i minuttet. Da lander foten under kroppen i stedet for langt foran, og bremsingen og støtet i hvert steg blir mindre. Tenk «lette, lydløse steg», så er du på god vei."
+            },
+            {
+              "h": "Start med å veksle"
+            },
+            {
+              "p": "Du trenger ikke løpe langt fra dag én. Gå-løp-metoden — korte joggedrag med gåpauser mellom — er den tryggeste starten som finnes. Kroppen tåler mye mer belastning når den får korte pauser, og du bygger deg opp uke for uke uten å bli skadet."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva er en god stegfrekvens for lett løping?",
+              "valg": [
+                "Rundt 170–180 steg i minuttet",
+                "Så lange steg som mulig",
+                "Under 100 steg i minuttet"
+              ],
+              "riktig": 0,
+              "forklaring": "En litt raskere, kortere steg (~170–180/min) gir landing under kroppen og mindre belastning."
+            },
+            {
+              "sporsmal": "Hvor bør foten lande?",
+              "valg": [
+                "Under kroppen",
+                "Langt foran kroppen",
+                "Bare på hælen langt frem"
+              ],
+              "riktig": 0,
+              "forklaring": "La foten lande under hoftene — lander den langt foran, bremser du og øker støtet."
+            },
+            {
+              "sporsmal": "Hvorfor er gå-løp-metoden en trygg start?",
+              "valg": [
+                "Korte pauser lar kroppen tåle mer belastning",
+                "Fordi den er slitsom",
+                "Fordi man aldri jogger"
+              ],
+              "riktig": 0,
+              "forklaring": "Vekslingen mellom jogg og gange sprer belastningen, så sener og muskler bygges opp uten overbelastning."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Daniels – «Daniels' Running Formula» (2013)",
+              "om": "Klassisk løpelære; anbefaler høy stegfrekvens (~180) og avslappet teknikk for bedre løpsøkonomi."
+            },
+            {
+              "kilde": "NHS / Couch to 5K (Josh Clark, 1996)",
+              "om": "Gå-løp-program som har fått millioner nybegynnere trygt i gang med løping gjennom gradvis opptrapping."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Løpeteknikk",
+            "familie": "loping",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 60
+            },
+            "blurb": "Jogg høyt og avslappet med korte, raske steg. La foten lande under deg, ikke langt foran.",
+            "dose": "Jogg 1 minutt med fokus på lette steg",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hva kjennetegner lett løpeteknikk?",
+              "valg": [
+                "Høy holdning, raske korte steg, avslappede skuldre",
+                "Lange steg og stive armer",
+                "Å se ned og lande på stive bein"
+              ],
+              "riktig": 0,
+              "forklaring": "Løp høy og avslappet med rask stegfrekvens — tenk «lette, lydløse steg»."
+            }
+          },
+          {
+            "ovelse": "Gå-løp-metoden",
+            "familie": "loping",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 300
+            },
+            "blurb": "Veksle mellom å jogge rolig ett minutt og gå til du er uthvilt. Hold joggedragene helt rolige.",
+            "dose": "Veksle jogg og gange i 5 minutter",
+            "minutter": 6,
+            "sjekk": {
+              "sporsmal": "Hvor hardt bør joggedragene være i gå-løp-metoden?",
+              "valg": [
+                "Så rolige at gåpausen nesten føles unødvendig",
+                "Full spurt hver gang",
+                "Så hardt du kan holde"
+              ],
+              "riktig": 0,
+              "forklaring": "Hold dragene rolige — da er tempoet riktig, og du orker å gjenta dem trygt."
+            }
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 22,
+          "intensitet": 3,
+          "oppvarming": "Gå raskt i tre minutter og gjør noen rolige kneløft.",
+          "nedtrapping": "Gå rolig til pusten er tilbake, og tøy legger og lår.",
+          "ovelser": [
+            {
+              "ovelse": "Gå-løp-metoden",
+              "sett": 6,
+              "holdSek": 60,
+              "pauseSek": 90
+            },
+            {
+              "ovelse": "Løpeteknikk",
+              "sett": 2,
+              "holdSek": 60,
+              "pauseSek": 60
+            }
+          ]
+        }
+      },
+      {
+        "id": "loep-rolig",
+        "navn": "Rolige joggeturer",
+        "intro": "Hemmeligheten bak all god utholdenhet: den rolige joggen. Lær hvorfor det lønner seg å løpe saktere enn du tror.",
+        "teori": {
+          "id": "lop-teori-4",
+          "tittel": "Den magiske rolige joggen",
+          "undertittel": "Hvorfor de beste løper mest i rolig tempo — og hvordan sone 2 bygger motoren din.",
+          "lesetid": 4,
+          "bilde": "lop-teori-4",
+          "avsnitt": [
+            {
+              "p": "Det høres bakvendt ut, men veien til å bli en raskere og sterkere løper går gjennom å løpe rolig. De aller fleste øktene til både mosjonister og verdenseliten er lette — så lette at de kan prate hele veien."
+            },
+            {
+              "h": "80/20-regelen"
+            },
+            {
+              "p": "Forskning på utholdenhetsutøvere viser et tydelig mønster: rundt 80 % av treningen er rolig, og bare rundt 20 % er hard. Denne «polariserte» fordelingen bygger en stor aerob motor uten å tømme kroppen. Gjør du alle øktene middels harde, blir du sliten uten å bli særlig bedre."
+            },
+            {
+              "h": "Hva rolig jogg bygger"
+            },
+            {
+              "p": "I rolig sone 2 trener du opp kroppens evne til å bruke oksygen og fett som drivstoff: hjertet pumper mer per slag, du får flere små blodårer og mitokondrier, og senene venner seg til belastningen. Dette er den tålmodige jobben som gjør at du orker mer over tid — og som gjør de harde øktene mulige."
+            },
+            {
+              "h": "Hold igjen"
+            },
+            {
+              "p": "Den vanligste feilen er å løpe de rolige turene for fort. Bruk snakketesten strengt: klarer du ikke å føre en samtale i hele setninger, går du for fort. Senk tempoet — ja, gå gjerne i motbakkene. Rolig skal være ordentlig rolig."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hvordan fordeler utholdenhetsutøvere treningen sin?",
+              "valg": [
+                "Rundt 80 % rolig og 20 % hardt",
+                "Alt middels hardt",
+                "Mest hardt"
+              ],
+              "riktig": 0,
+              "forklaring": "Den polariserte 80/20-fordelingen — mye rolig, litt hardt — bygger form best."
+            },
+            {
+              "sporsmal": "Hva bygger du i rolig sone 2?",
+              "valg": [
+                "Aerob motor: hjerte, blodårer og mitokondrier",
+                "Bare toppfart",
+                "Ingenting nyttig"
+              ],
+              "riktig": 0,
+              "forklaring": "Rolig jogg utvikler kroppens evne til å bruke oksygen effektivt — grunnmuren i utholdenhet."
+            },
+            {
+              "sporsmal": "Hva er den vanligste feilen på rolige turer?",
+              "valg": [
+                "Å løpe dem for fort",
+                "Å løpe dem for sakte",
+                "Å gå for lite"
+              ],
+              "riktig": 0,
+              "forklaring": "De fleste løper roligturene for hardt. Bruk snakketesten strengt og hold igjen."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Seiler & Tønnessen – «Intervals, Thresholds, and Long Slow Distance» (sportsci.org, 2009)",
+              "om": "Beskriver den polariserte modellen der storparten av treningen er lavintensiv."
+            },
+            {
+              "kilde": "Stephen Seiler – forskning på polarisert trening (2010)",
+              "om": "Viser at en fordeling på rundt 80/20 mellom lav og høy intensitet gir best utholdenhetsutvikling."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Rolig jogg",
+            "familie": "loping",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 300
+            },
+            "blurb": "Jogg i et tempo der du kan føre en samtale i hele setninger. Kjennes nesten for lett — det er poenget.",
+            "dose": "Jogg rolig i 5 minutter i snakketempo",
+            "minutter": 7,
+            "sjekk": {
+              "sporsmal": "Hvor fort skal en rolig jogg være?",
+              "valg": [
+                "Så rolig at du kan snakke i hele setninger",
+                "Så hardt du klarer",
+                "Alltid full fart i motbakke"
+              ],
+              "riktig": 0,
+              "forklaring": "Rolig jogg = snakketempo hele veien. Går ikke praten, senk farten eller gå i bakkene."
+            }
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 20,
+          "intensitet": 3,
+          "oppvarming": "Gå raskt i to minutter og jogg deg gradvis i gang.",
+          "nedtrapping": "Jogg svært rolig eller gå til pusten er helt tilbake.",
+          "ovelser": [
+            {
+              "ovelse": "Rolig jogg",
+              "sett": 2,
+              "holdSek": 420,
+              "pauseSek": 120
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "loping-fart",
+    "disiplin": "loping",
+    "navn": "Fart og intervaller",
+    "undertittel": "Terskel, drag og intervaller — slik blir du raskere, trygt.",
+    "farge": "oransje",
+    "nivaBand": [
+      3,
+      3
+    ],
+    "enheter": [
+      {
+        "id": "fart-hardt",
+        "navn": "Hardt, men smart",
+        "intro": "De harde øktene som løfter taket: den kontrollerte terskelen du kan holde lenge, og de korte, kvasse dragene. Doser dem med vett.",
+        "teori": {
+          "id": "lop-teori-5",
+          "tittel": "Fart bygges på tålmodighet",
+          "undertittel": "Terskel og intervaller — hva de gjør, og hvorfor de bare er en liten del av treningen.",
+          "lesetid": 5,
+          "bilde": "lop-teori-5",
+          "avsnitt": [
+            {
+              "p": "Når grunnmuren av rolige turer er på plass, er det de harde øktene som løfter taket for hvor fort og lenge du kan løpe. Men hardt betyr ikke ukontrollert — de beste harde øktene er nettopp veldig kontrollerte."
+            },
+            {
+              "h": "Terskel: koselig hardt"
+            },
+            {
+              "p": "Terskeltempo er farten du så vidt klarer å holde lenge — «komfortabelt hardt», der du får fram noen ord, men ikke hele setninger. Trener du her, flytter du grensa for hvor lenge kroppen tåler å holde fart før den stivner. Terskeldrag på 3–6 minutter med korte pauser er en bærebjelke i seriøs løpetrening."
+            },
+            {
+              "h": "Intervaller: korte, kvasse drag"
+            },
+            {
+              "p": "Intervaller er korte drag i hardt tempo (sone 4–5) med pauser mellom, slik at du får samlet mer tid på høy intensitet enn du kunne i ett strekk. De løfter makskapasiteten (VO2-maks) raskt. Fordi de er så krevende, holder det med én til to slike økter i uka."
+            },
+            {
+              "h": "Doser hardt med vett"
+            },
+            {
+              "p": "Harde økter virker bare hvis du er uthvilt nok til å gjennomføre dem godt — og hvis du lar kroppen restituere etterpå. Legg alltid en grundig oppvarming foran, hold igjen på de første dragene, og la de rolige turene fylle resten av uka. Kvalitet foran kvantitet: stopp mens dragene fortsatt holder tempoet."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva er terskeltempo?",
+              "valg": [
+                "Komfortabelt hardt — så vidt til å holde lenge",
+                "Full spurt",
+                "Rolig snakketempo"
+              ],
+              "riktig": 0,
+              "forklaring": "Terskel er «koselig hardt»: du får fram noen ord, og du kan holde det ganske lenge."
+            },
+            {
+              "sporsmal": "Hvorfor tar man pauser i en intervalløkt?",
+              "valg": [
+                "For å samle mer tid på høy intensitet enn i ett strekk",
+                "For å gjøre det lettere totalt",
+                "Pauser er unødvendige"
+              ],
+              "riktig": 0,
+              "forklaring": "Pausene lar deg gjenta harde drag med god kvalitet, så total tid i høy sone blir større."
+            },
+            {
+              "sporsmal": "Hvor mange harde økter trengs vanligvis i uka?",
+              "valg": [
+                "Én til to",
+                "Fem til seks",
+                "Ingen"
+              ],
+              "riktig": 0,
+              "forklaring": "Harde økter er krevende — én til to i uka er nok, resten bør være rolig."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Helgerud, Hoff m.fl. – 4×4-intervaller (Med. Sci. Sports Exerc., 2007; CERG/NTNU)",
+              "om": "Viser at harde 4-minutters intervaller løfter maksimalt oksygenopptak effektivt."
+            },
+            {
+              "kilde": "Seiler – polarisert trening (2010)",
+              "om": "Underbygger at harde økter bør utgjøre en liten andel av totalen, med mye rolig trening rundt."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Terskeltempo",
+            "familie": "loping",
+            "niva": 3,
+            "maal": {
+              "type": "hold",
+              "verdi": 180
+            },
+            "blurb": "Finn tempoet som er komfortabelt hardt — noen ord, ikke hele setninger. Hold det jevnt uten å sprekke.",
+            "dose": "Løp 3 minutter i jevnt terskeltempo",
+            "minutter": 5,
+            "sjekk": {
+              "sporsmal": "Hvordan kjennes riktig terskeltempo?",
+              "valg": [
+                "Komfortabelt hardt — noen ord om gangen",
+                "Full spurt fra start",
+                "Så rolig at du kan synge"
+              ],
+              "riktig": 0,
+              "forklaring": "Terskel er jevnt «koselig hardt». Starter du for hardt, faller tempoet — legg deg litt under og hold."
+            }
+          },
+          {
+            "ovelse": "Intervalldrag",
+            "familie": "loping",
+            "niva": 3,
+            "maal": {
+              "type": "hold",
+              "verdi": 30
+            },
+            "blurb": "Varm godt opp. Løp et kort, hardt drag i jevnt tempo — ikke alt ut de første sekundene — og ta full pause.",
+            "dose": "Løp et hardt 30-sekunders drag, så pause",
+            "minutter": 5,
+            "sjekk": {
+              "sporsmal": "Hva er lurt før du gjør harde intervaller?",
+              "valg": [
+                "Varme godt opp først",
+                "Hoppe rett på uten oppvarming",
+                "Være helt utslitt"
+              ],
+              "riktig": 0,
+              "forklaring": "Hard innsats krever varm kropp — grundig oppvarming reduserer skaderisiko og gir bedre drag."
+            }
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 24,
+          "intensitet": 5,
+          "oppvarming": "Jogg rolig i fem minutter og gjør noen stigningsløp.",
+          "nedtrapping": "Jogg svært rolig til pusten er tilbake.",
+          "ovelser": [
+            {
+              "ovelse": "Terskeltempo",
+              "sett": 3,
+              "holdSek": 180,
+              "pauseSek": 60
+            },
+            {
+              "ovelse": "Intervalldrag",
+              "sett": 4,
+              "holdSek": 30,
+              "pauseSek": 90
+            }
+          ]
+        }
+      }
+    ]
   }
 ]

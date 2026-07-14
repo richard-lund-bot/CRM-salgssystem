@@ -14,6 +14,10 @@
       "ref": "https://www.helsedirektoratet.no/faglige-rad/fysisk-aktivitet-i-forebygging-og-behandling/voksne-og-eldre/voksne-rad-anbefaling-fysisk-aktivitet-150-300-minutter-per-uke + https://www.who.int/news-room/fact-sheets/detail/physical-activity",
       "notat": "Ukesanbefalingen (150 min moderat aktivitet) operasjonalisert som én daglig 30-min moderat økt; eksplisitt oppvarmings- og nedtrappingsfase lagt til for timerformatet."
     },
+    "krever": [
+      "Gåteknikk",
+      "Rolig gåing"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -62,6 +66,10 @@
       "ref": "https://www.goodmorningamerica.com/gma/story/tiktok-famous-12-30-treadmill-workout-82600185 + https://www.today.com/health/diet-fitness/12-3-30-workout-rcna155871",
       "notat": "Oversatt fra tredemølle (12 % stigning / 3 mph) til utendørs jevn motbakke; arbeidsfasen kortet fra 30 til 20 min og rammet inn med oppvarming/nedtrapping. Bakken styrer intensiteten — ingen pacing-ferdighet kreves."
     },
+    "krever": [
+      "Gåteknikk",
+      "Motbakkegåing"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -110,6 +118,10 @@
       "ref": "https://www.acefitness.org/certifiednewsarticle/888/ace-sponsored-research-validating-the-talk-test-as-a-measure-of-exercise-intensity/ + https://e-jer.org/upload/jer-19-3-163.pdf",
       "notat": "Talk-testen er en intensitetsmetode, ikke en ferdig økt; her strukturert som 3×8 min soneholding med 2 min pusterom — intervallene gir naturlige sjekkpunkter for å kalibrere snakketempoet."
     },
+    "krever": [
+      "Rask gåing",
+      "Pustestyrt tempo"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -169,6 +181,11 @@
       "ref": "https://www.mayoclinicproceedings.org/article/S0025-6196(11)61303-7/abstract + https://www.mayoclinicproceedings.org/article/S0025-6196(19)30473-2/pdf",
       "notat": "Kjerneprotokollen (5×3/3) er uendret fra studien; 5 min oppvarming og nedtrapping lagt til (studien angir kun intervalldelen). 70 %/40 % av VO2peak oversatt til RPE/sone-følelse siden appen ikke måler VO2."
     },
+    "krever": [
+      "Rask gåing",
+      "Rolig gåing",
+      "Pustestyrt tempo"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -230,6 +247,10 @@
       "ref": "https://www.inwa-nordicwalking.com/nordicwalking + https://britishnordicwalking.org.uk/pages/the-inwa-10-step-method",
       "notat": "INWAs 10-stegs pensum (normalt instruktørledet over flere økter) komprimert til de tre første grunnstegene (holdning, drag, plant) i én selvgått timerøkt; de dynamiske stegene utelatt for å holde intensiteten lett. Skill er høy pga. teknikk-koordinasjon, ikke kondisjon."
     },
+    "krever": [
+      "Gåteknikk",
+      "Rolig gåing"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -290,6 +311,11 @@
       "ref": "https://www.goruck.com/blogs/news-stories/ruck-march-standards + https://health.clevelandclinic.org/what-is-rucking",
       "notat": "Militær kontinuerlig langmarsj (2–3 t) kortet til 4×4 min tempointervaller med pauser for timerformat og sivil målgruppe; last redusert fra militære ~16 kg til ~10 % av kroppsvekt (GORUCK/Cleveland Clinic-anbefaling for nybegynnere)."
     },
+    "krever": [
+      "Rask gåing",
+      "Motbakkegåing",
+      "Rolig gåing"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -349,6 +375,11 @@
       "ref": "https://www.nhs.uk/better-health/get-active/get-running-with-couch-to-5k/couch-to-5k-running-plan/ + https://c25k.com/c25k_plan/",
       "notat": "Uke 1-økten brukt uendret (5 min gange, 8×[60 s jogg + 90 s gange], 5 min gange — identisk hos NHS og c25k.com). Fase-tekstene er omskrevet til norsk; ingen proprietær coaching-tekst gjenbrukt."
     },
+    "krever": [
+      "Gå-løp-metoden",
+      "Løpeteknikk",
+      "Rolig gåing"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -408,6 +439,12 @@
       "ref": "https://journals.physiology.org/doi/full/10.1152/japplphysiol.00334.2012 + https://onlinelibrary.wiley.com/doi/10.1002/ejsc.12163",
       "notat": "Studien brukte 3–4 blokker à 5 min; 3 valgt for ~30 min totalt. De tre seriene og 2-min-pausene ligger som faser i én hovedblokk for sømløs avspilling. Lav skill: pipetonen styrer alt, spurten er «alt ut» uten soneholding. RPE topper på 9."
     },
+    "krever": [
+      "Rolig jogg",
+      "Terskeltempo",
+      "Intervalldrag",
+      "Løpeteknikk"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -537,6 +574,10 @@
       "ref": "https://sportsci.org/2009/ss.htm + https://www.acefitness.org/certifiednewsarticle/888/ace-sponsored-research-validating-the-talk-test-as-a-measure-of-exercise-intensity/",
       "notat": "Kontinuerlig økt rammet inn som tre timerfaser (opptrapping/hoveddel/nedtrapping). Medium skill: krever å holde én sone på følelse med snakketesten som verktøy, men ingen intervallpacing. RPE 3–4."
     },
+    "krever": [
+      "Rolig jogg",
+      "Pustestyrt tempo"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -585,6 +626,11 @@
       "ref": "https://www.mindovermatterendurance.com/coaches-classroom/2024/12/11/the-mona-fartlek-interval-set-for-performance-improvement + https://www.runbkrun.com/2016/09/27/mona-fartlek-one-of-my-favourite-sessions-for-some-serious-pain-box-time/",
       "notat": "Original 20-min-struktur beholdt eksakt; 5 min oppvarming lagt til, og rolig nedjogging bakt inn som siste fase i 15/15-blokken for å holde økten spillbar i fem blokker. «Hardt» og «flyt» styres på følelse uten eksakte fartskrav. RPE 7–9."
     },
+    "krever": [
+      "Rolig jogg",
+      "Terskeltempo",
+      "Intervalldrag"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -732,6 +778,11 @@
       "ref": "https://philmaffetone.com/180-formula/ + https://marathonhandbook.com/maf-method-maffetone-method/",
       "notat": "Maffetones anbefalte 12–15 min opptrapping komprimert til 10 min for app-format. Høy skill tross lett intensitet: krever pulsmåler og aktiv tilbakeholdenhet for å holde pulsen under taket (180 − alder), særlig i motbakker. RPE 2–4."
     },
+    "krever": [
+      "Rolig jogg",
+      "Pustestyrt tempo",
+      "Løpeteknikk"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -780,6 +831,11 @@
       "ref": "https://pubmed.ncbi.nlm.nih.gov/17414804/ + https://www.ntnu.edu/cerg/advice",
       "notat": "CERGs offisielle oppsett (10 min oppvarming, 4×4 min på 85–95 % av makspuls, 3 min aktive pauser, 5 min ned) brukt uendret. Høy skill: krever jevn pacing gjennom hele 4-minuttersdraget — ikke start for hardt. RPE 8."
     },
+    "krever": [
+      "Rolig jogg",
+      "Intervalldrag",
+      "Terskeltempo"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -5674,6 +5730,788 @@
             "dose": "1 min"
           }
         ]
+      }
+    ]
+  },
+  {
+    "id": "gatur-lang",
+    "kategori": "gatur",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Den lange rolige turen",
+    "beskrivelse": "Grunnmuren i all kondisjon: én lang, rolig tur i sone 1 der du kan prate hele veien. Tiden på beina teller mer enn tempoet — bygg utholdenhet time for time.",
+    "varighetMin": 45,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Lavintensiv utholdenhetstrening / LISS (Seiler, 2010; Helsedirektoratet 2022)",
+      "type": "retningslinje",
+      "ref": "https://sportsci.org/2009/ss.htm + https://www.helsedirektoratet.no/faglige-rad/fysisk-aktivitet-i-forebygging-og-behandling",
+      "notat": "Lang, kontinuerlig lavintensiv gange delt i tre timerfaser. Effekten kommer av varigheten i lav sone, ikke av tempo; snakketesten holder intensiteten nede."
+    },
+    "krever": [
+      "Rolig gåing",
+      "Gåteknikk"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig gange — finn rytmen",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · veldig lett"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Lang, jevn tur i snakketempo",
+        "min": 35,
+        "parametre": {
+          "tidMin": 35,
+          "sone": "Z1–Z2 · prat hele veien"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig gange — la pusten roe seg",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · veldig lett"
+        }
+      }
+    ]
+  },
+  {
+    "id": "gatur-etter-mat",
+    "kategori": "gatur",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Gåtur etter maten",
+    "beskrivelse": "En kort, rolig tur rett etter et måltid. Forskning viser at bare et kvarters gange etter mat demper blodsukkertoppen — den enkleste vanen med stor helsegevinst.",
+    "varighetMin": 20,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Gange etter måltid og blodsukker (Buffey et al., Sports Medicine 2022)",
+      "type": "protokoll",
+      "ref": "https://pubmed.ncbi.nlm.nih.gov/35211872/ + https://link.springer.com/article/10.1007/s40279-022-01649-4",
+      "notat": "Metaanalysens funn (lett gange etter mat senker glukoserespons, mest ved opptil ~15 min) operasjonalisert som én rolig 15-min tur rammet av kort oppvarming/nedtrapping."
+    },
+    "krever": [
+      "Rolig gåing"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig start rett fra døra",
+        "min": 3,
+        "parametre": {
+          "tidMin": 3,
+          "sone": "Z1 · veldig lett"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Lett, jevn gange",
+        "min": 15,
+        "parametre": {
+          "tidMin": 15,
+          "sone": "Z1 · lett og avslappet"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Sakn av de siste minuttene",
+        "min": 2,
+        "parametre": {
+          "tidMin": 2,
+          "sone": "Z1 · veldig lett"
+        }
+      }
+    ]
+  },
+  {
+    "id": "gatur-trapp",
+    "kategori": "gatur",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "Trappeintervaller",
+    "beskrivelse": "Finn en lang trapp eller bratt bakke og gjør den om til et treningsapparat. Opp i friskt tempo, rolig ned som pause — enkelt, tøft og knallhardt for både bein og kondis.",
+    "varighetMin": 31,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Kort intens trappegang (Allison et al., McMaster University, 2017)",
+      "type": "protokoll",
+      "ref": "https://pubmed.ncbi.nlm.nih.gov/28009784/ + https://journals.lww.com/acsm-msse/fulltext/2017/02000/brief_intense_stair_climbing_improves.25.aspx",
+      "notat": "McMasters «stair snacks» (korte, intense trappedrag) tilpasset gange: 6×(1 min opp / 2,5 min rolig ned) rammet av oppvarming og nedtrapping. Intensiteten styres på følelse (RPE 7–8)."
+    },
+    "krever": [
+      "Rask gåing",
+      "Motbakkegåing",
+      "Rolig gåing"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig gange bort til trappa",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · lett"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "6× opp i friskt tempo / rolig ned",
+        "min": 21,
+        "parametre": {
+          "runder": 6,
+          "faser": [
+            {
+              "navn": "Rask gange opp trappa — aktive armer, korte steg",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig gange ned — hent pusten",
+              "sek": 150,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig gange på flat mark",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · veldig lett"
+        }
+      }
+    ]
+  },
+  {
+    "id": "gatur-pyramide",
+    "kategori": "gatur",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "Pyramidegange",
+    "beskrivelse": "Intervallgange som trappes opp og ned igjen: 1-2-3-2-1 minutter i friskt tempo med rolige pauser mellom. Pyramiden holder hodet med og bygger fart uten at det blir monotont.",
+    "varighetMin": 26,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Pyramideintervaller (klassisk intervallstruktur; jf. Billat, 2001)",
+      "type": "protokoll",
+      "ref": "https://pubmed.ncbi.nlm.nih.gov/11144996/ + https://www.trainingpeaks.com/blog/pyramid-intervals/",
+      "notat": "Klassisk pyramideøkt (1-2-3-2-1 min arbeid med rolige pauser mellom) tilpasset gange. Intensiteten holdes i rask-gange-sona (RPE 6–7) og styres på følelse."
+    },
+    "krever": [
+      "Rask gåing",
+      "Rolig gåing",
+      "Pustestyrt tempo"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig gange",
+        "min": 6,
+        "parametre": {
+          "tidMin": 6,
+          "sone": "Z1 · lett"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Pyramide 1-2-3-2-1 min rask / lik pause",
+        "min": 15,
+        "parametre": {
+          "runder": 1,
+          "faser": [
+            {
+              "navn": "Rask gange 1 min",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig gange 1 min",
+              "sek": 60,
+              "type": "hvile"
+            },
+            {
+              "navn": "Rask gange 2 min",
+              "sek": 120,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig gange 2 min",
+              "sek": 120,
+              "type": "hvile"
+            },
+            {
+              "navn": "Rask gange 3 min — pyramidens topp",
+              "sek": 180,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig gange 2 min",
+              "sek": 120,
+              "type": "hvile"
+            },
+            {
+              "navn": "Rask gange 2 min",
+              "sek": 120,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig gange 1 min",
+              "sek": 60,
+              "type": "hvile"
+            },
+            {
+              "navn": "Rask gange 1 min",
+              "sek": 60,
+              "type": "arbeid"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig gange",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · veldig lett"
+        }
+      }
+    ]
+  },
+  {
+    "id": "gatur-skogsbad",
+    "kategori": "gatur",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Skogsbad (shinrin-yoku)",
+    "beskrivelse": "Rolig, sanselig gange i skog eller park — det japanerne kaller skogsbad. Gå sakte, pust dypt og legg merke til lyder, lys og lukt. Dokumentert dempende for stress og puls.",
+    "varighetMin": 30,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Shinrin-yoku / skogsbad (Park et al., 2010; Hansen et al., 2017)",
+      "type": "tradisjon",
+      "ref": "https://pubmed.ncbi.nlm.nih.gov/19568835/ + https://www.mdpi.com/1660-4601/14/8/851",
+      "notat": "Japansk skogsbad-praksis (langsom, oppmerksom naturgange) rammet som én rolig 30-min tur. Helseeffektene (lavere puls og kortisol) kommer av det lave tempoet og natureksponeringen, ikke av intensitet."
+    },
+    "krever": [
+      "Rolig gåing",
+      "Pustestyrt tempo"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig gange inn i naturen",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · veldig lett"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Langsom, oppmerksom gange — stopp gjerne opp",
+        "min": 20,
+        "parametre": {
+          "tidMin": 20,
+          "sone": "Z1 · svært lett og sanselig"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Stå stille, pust dypt og kjenn etter",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Ro · dype pust"
+        }
+      }
+    ]
+  },
+  {
+    "id": "gatur-motbakke",
+    "kategori": "gatur",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "Motbakkedrag",
+    "beskrivelse": "Finn en jevn, bratt bakke og gå den hardt oppover om og om igjen. Motbakken bygger kraft i sete og legger og løfter kondisen — de rolige nedturene er hele hvilen du får.",
+    "varighetMin": 34,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Motbakkeintervaller (klassisk bakketrening; jf. Barnes & Kilding, 2015)",
+      "type": "protokoll",
+      "ref": "https://pubmed.ncbi.nlm.nih.gov/25355115/ + https://www.runnersworld.com/training/a20791339/hill-training/",
+      "notat": "Bakkeintervaller tilpasset rask gange: 5×(2 min hardt opp / rolig ned). Motbakken styrer intensiteten og skåner leddene sammenlignet med flat spurt; RPE 8 i draget."
+    },
+    "krever": [
+      "Motbakkegåing",
+      "Rask gåing",
+      "Rolig gåing"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig gange bort til bakken",
+        "min": 6,
+        "parametre": {
+          "tidMin": 6,
+          "sone": "Z1–Z2 · lett"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "5× hardt opp / rolig ned",
+        "min": 23,
+        "parametre": {
+          "runder": 5,
+          "faser": [
+            {
+              "navn": "Hard motbakkegange — press tempoet oppover",
+              "sek": 120,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig gange ned — full pause",
+              "sek": 150,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig gange på flat mark",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · veldig lett"
+        }
+      }
+    ]
+  },
+  {
+    "id": "lop-progressiv",
+    "kategori": "lop",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "Progressivt løp (negative splits)",
+    "beskrivelse": "Start rolig og skru opp farten bit for bit, så du løper raskest til slutt. Den beste vanen en løper kan lære — du ender sterk i stedet for å sprekke, og lærer å dosere kreftene.",
+    "varighetMin": 32,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Progressivt løp / negative splits (pacing-forskning; Foster et al.)",
+      "type": "protokoll",
+      "ref": "https://pubmed.ncbi.nlm.nih.gov/12183514/ + https://www.trainingpeaks.com/blog/the-art-of-the-negative-split/",
+      "notat": "Progressiv struktur (rolig → moderat → terskel) delt i tre like faser. Pacing styres på snakketest siden appen ikke måler fart; siste fase i terskelsona (RPE 7)."
+    },
+    "krever": [
+      "Rolig jogg",
+      "Terskeltempo",
+      "Pustestyrt tempo"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig jogg",
+        "min": 6,
+        "parametre": {
+          "tidMin": 6,
+          "sone": "Z1–Z2 · snakketempo"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "1. tredjedel — rolig sone 2",
+        "min": 8,
+        "parametre": {
+          "tidMin": 8,
+          "sone": "Z2 · hele setninger"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "2. tredjedel — moderat, tyngre pust",
+        "min": 8,
+        "parametre": {
+          "tidMin": 8,
+          "sone": "Z3 · korte fraser"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "3. tredjedel — terskel, koselig hardt",
+        "min": 6,
+        "parametre": {
+          "tidMin": 6,
+          "sone": "Z3–Z4 · enkeltord"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig nedjogging",
+        "min": 4,
+        "parametre": {
+          "tidMin": 4,
+          "sone": "Z1 · helt rolig"
+        }
+      }
+    ]
+  },
+  {
+    "id": "lop-strides",
+    "kategori": "lop",
+    "skill": "medium",
+    "intensitet": "lett",
+    "navn": "Rolig jogg med stigningsløp",
+    "beskrivelse": "En rolig joggetur med noen korte stigningsløp til slutt, der du øker farten mykt opp mot nesten spurt. Gjør steget kvikkere og teknikken lettere — uten å slite deg ut.",
+    "varighetMin": 30,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Stigningsløp (strides) i utholdenhetstrening (Daniels' Running Formula, 2013)",
+      "type": "tradisjon",
+      "ref": "https://www.runnersworld.com/training/a20812473/how-to-do-strides/ + https://www.trainingpeaks.com/blog/what-are-strides/",
+      "notat": "Klassiske strides (6×~20 s gradvis akselerasjon med full gåpause) lagt etter et rolig grunnløp. Dragene er tekniske, ikke maksimale, med full restitusjon mellom hver."
+    },
+    "krever": [
+      "Rolig jogg",
+      "Løpeteknikk",
+      "Intervalldrag"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig jogg",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1–Z2 · snakketempo"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Jevn rolig jogg",
+        "min": 15,
+        "parametre": {
+          "tidMin": 15,
+          "sone": "Z2 · hele setninger"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "6× stigningsløp 20 s / 40 s gange",
+        "min": 6,
+        "parametre": {
+          "runder": 6,
+          "faser": [
+            {
+              "navn": "Stigningsløp — øk mykt opp mot rask, lett fart",
+              "sek": 20,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gå eller stå — full pause",
+              "sek": 40,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig nedjogging eller gange",
+        "min": 4,
+        "parametre": {
+          "tidMin": 4,
+          "sone": "Z1 · helt rolig"
+        }
+      }
+    ]
+  },
+  {
+    "id": "lop-terskel",
+    "kategori": "lop",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "Terskeltrening 4×5 min",
+    "beskrivelse": "Fire kontrollerte drag i «koselig hardt» terskeltempo med korte pauser. Terskeløkta flytter grensa for hvor lenge du orker å holde fart — en hjørnestein i all seriøs løpetrening.",
+    "varighetMin": 39,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Terskelintervaller (Seiler polarisert modell, 2010; norsk terskeltradisjon)",
+      "type": "protokoll",
+      "ref": "https://sportsci.org/2009/ss.htm + https://www.trainingpeaks.com/blog/the-science-of-the-norwegian-model-of-lactate-threshold-training/",
+      "notat": "Klassiske terskeldrag (4×5 min ved terskel, 1 min pause) rammet av oppvarming og nedtrapping. Tempo styres på snakketest (enkeltord, ikke maks); RPE 6–7."
+    },
+    "krever": [
+      "Terskeltempo",
+      "Rolig jogg"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig jogg, gradvis opp",
+        "min": 10,
+        "parametre": {
+          "tidMin": 10,
+          "sone": "Z1–Z2 · opp mot terskel"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "4×5 min terskel / 1 min rolig",
+        "min": 24,
+        "parametre": {
+          "runder": 4,
+          "faser": [
+            {
+              "navn": "Terskeltempo — komfortabelt hardt og jevnt",
+              "sek": 300,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig jogg — kort pause",
+              "sek": 60,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig nedjogging",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · helt rolig"
+        }
+      }
+    ]
+  },
+  {
+    "id": "lop-lang",
+    "kategori": "lop",
+    "skill": "medium",
+    "intensitet": "lett",
+    "navn": "Langtur i rolig tempo",
+    "beskrivelse": "Ukas lengste løp, holdt bevisst rolig i sone 2 hele veien. Langturen bygger utholdenhet, sterkere hjerte og et hode som tåler å være lenge på beina. Tempoet skal føles nesten for lett.",
+    "varighetMin": 45,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Langkjøring / long slow distance (Seiler & Tønnessen, 2009)",
+      "type": "retningslinje",
+      "ref": "https://sportsci.org/2009/ss.htm + https://www.trainingpeaks.com/blog/the-long-run-why-and-how/",
+      "notat": "Klassisk langtur holdt i lav sone (Z1–Z2) hele veien. Kontinuerlig løp delt i tre timerfaser; snakketesten holder tempoet nede. RPE 3–4."
+    },
+    "krever": [
+      "Rolig jogg",
+      "Pustestyrt tempo"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig jogg fra start",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · veldig lett"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Lang, jevn jogg i snakketempo",
+        "min": 35,
+        "parametre": {
+          "tidMin": 35,
+          "sone": "Z2 · hele setninger hele veien"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig nedjogging eller gange",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · helt rolig"
+        }
+      }
+    ]
+  },
+  {
+    "id": "lop-gaa-jogg",
+    "kategori": "lop",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Gå-jogg opptrapping (C25K uke 3)",
+    "beskrivelse": "Neste steg fra de første joggeturene: lengre joggedrag og kortere gåpauser. Du bygger videre på gå-løp-metoden mot å kunne jogge sammenhengende — trygt og gradvis.",
+    "varighetMin": 28,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Couch to 5K, uke 3 (Josh Clark, 1996; NHS Better Health)",
+      "type": "program",
+      "ref": "https://www.nhs.uk/better-health/get-active/get-running-with-couch-to-5k/couch-to-5k-running-plan/ + https://c25k.com/c25k_plan/",
+      "notat": "Uke 3-strukturen (2 runder à 90 s jogg + 90 s gange + 3 min jogg + 3 min gange) brukt uendret fra NHS/c25k; fase-tekster omskrevet til norsk, ingen proprietær coaching-tekst gjenbrukt."
+    },
+    "krever": [
+      "Gå-løp-metoden",
+      "Rolig jogg",
+      "Rolig gåing"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rask gange",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Rask gange · varm opp beina"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "2× (90 s jogg / 90 s gå / 3 min jogg / 3 min gå)",
+        "min": 18,
+        "parametre": {
+          "runder": 2,
+          "faser": [
+            {
+              "navn": "Lett jogg",
+              "sek": 90,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig gange",
+              "sek": 90,
+              "type": "hvile"
+            },
+            {
+              "navn": "Lett jogg",
+              "sek": 180,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig gange",
+              "sek": 180,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig gange — pust ned",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Rolig gange · pust ned"
+        }
+      }
+    ]
+  },
+  {
+    "id": "lop-bakke",
+    "kategori": "lop",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "Bakkedrag (hill sprints)",
+    "beskrivelse": "Korte, kraftige spurter opp en bratt bakke med full gåpause ned. Bakkespurter bygger eksplosiv styrke og bedre løpsteknikk med minimal skaderisiko — bakken bremser deg naturlig.",
+    "varighetMin": 30,
+    "utstyr": [],
+    "kilde": {
+      "navn": "Bakkespurter / hill sprints (jf. Barnes & Kilding om løpsøkonomi, 2015)",
+      "type": "protokoll",
+      "ref": "https://pubmed.ncbi.nlm.nih.gov/25355115/ + https://www.runnersworld.com/training/a20841513/the-benefits-of-hill-sprints/",
+      "notat": "Korte, nær maksimale bakkespurter (8×~15 s med full gåpause ned) etter grundig oppvarming. Bakken begrenser fart og støt, så det gir styrke og teknikk med lav skaderisiko. RPE 9 i draget."
+    },
+    "krever": [
+      "Intervalldrag",
+      "Løpeteknikk",
+      "Rolig jogg"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig jogg og noen stigningsløp",
+        "min": 10,
+        "parametre": {
+          "tidMin": 10,
+          "sone": "Z1–Z2 · god og varm"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "8× 15 s bakkespurt / gå rolig ned",
+        "min": 14,
+        "parametre": {
+          "runder": 8,
+          "faser": [
+            {
+              "navn": "Bakkespurt — kraftfullt opp med høye knær",
+              "sek": 15,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Gå rolig ned til start — full pause",
+              "sek": 90,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig nedjogging",
+        "min": 6,
+        "parametre": {
+          "tidMin": 6,
+          "sone": "Z1 · helt rolig"
+        }
       }
     ]
   }

@@ -3038,5 +3038,188 @@
    "Balanse"
   ],
   "bilde": "utfall-bak"
+ },
+ {
+  "navn": "Pustestyrt tempo",
+  "kort": "Styr innsatsen med pusten: snakketesten viser om du er i rolig, moderat eller hard sone — helt uten pulsklokke.",
+  "steg": [
+   "Kjenn på pusten mens du beveger deg: kan du snakke i hele setninger, er du i rolig sone.",
+   "Går praten bare i korte fraser, ligger du i moderat sone. Klarer du kun enkeltord, er det hardt.",
+   "Juster tempoet opp eller ned til pusten passer sonen økta ber om."
+  ],
+  "tips": [
+   "RPE 1–10 er samme idé: 3–4 er rolig, 5–7 moderat, 8–9 hardt."
+  ],
+  "muskler": [
+   "Pust",
+   "Puls"
+  ],
+  "bilde": "pustestyrt-tempo"
+ },
+ {
+  "navn": "Gåteknikk",
+  "kort": "God gange: reis deg høy, rull foten fra hæl til tå og la armene svinge avslappet i takt med stegene.",
+  "steg": [
+   "Stå høy med blikket frem og skuldrene senket og avslappet.",
+   "Sett ned hælen først og rull mykt av gjennom hele foten til tåfrasparket.",
+   "La armene svinge naturlig fra skulderen — motsatt arm til motsatt bein."
+  ],
+  "tips": [
+   "Korte, hyppige steg bærer bedre enn lange, dragende steg."
+  ],
+  "muskler": [
+   "Legger",
+   "Hofter",
+   "Kjerne"
+  ],
+  "bilde": "gaateknikk"
+ },
+ {
+  "navn": "Rolig gåing",
+  "kort": "Gange i behagelig sone 1 der du kan prate og synge. Grunnturen som bygger utholdenhet og henter deg inn igjen.",
+  "steg": [
+   "Gå i et tempo der pusten er helt ledig og du kan snakke uanstrengt.",
+   "Hold skuldrene løse og pusten jevn — dette skal kjennes lett.",
+   "Bruk rolig gåing som grunntur, oppvarming og pause mellom hardere drag."
+  ],
+  "tips": [
+   "Kjennes det «for lett»? Da er du akkurat riktig i sone 1."
+  ],
+  "muskler": [
+   "Puls",
+   "Legger"
+  ],
+  "bilde": "rolig-gange"
+ },
+ {
+  "navn": "Rask gåing",
+  "kort": "Rask, målrettet gange i sone 2–3: pust merkbart tyngre, aktive armer og lange, kraftige steg — men du holder det gående.",
+  "steg": [
+   "Øk tempoet til pusten blir tydelig tyngre, men du fortsatt får ut korte setninger.",
+   "Bøy albuene rundt 90° og pump armene aktivt for å dra tempoet opp.",
+   "Ta lengre, kraftigere fraspark og hold overkroppen høy."
+  ],
+  "tips": [
+   "Sikt mot rundt 100–120 steg i minuttet for god rask gange."
+  ],
+  "muskler": [
+   "Legger",
+   "Sete",
+   "Hofter",
+   "Puls"
+  ],
+  "bilde": "rask-gaaing"
+ },
+ {
+  "navn": "Motbakkegåing",
+  "kort": "Gå oppover trygt og sterkt: len deg litt frem fra anklene, kort ned stegene og la baken og leggene gjøre jobben.",
+  "steg": [
+   "Len hele kroppen svakt fremover fra anklene — ikke knekk i hofta.",
+   "Kort ned stegene og øk tråkkfrekvensen i stedet for å ta lange steg.",
+   "Skyv fra med hele foten og bruk armene aktivt oppover."
+  ],
+  "tips": [
+   "Bakken styrer intensiteten — hold jevn pust og senk tempoet ved behov."
+  ],
+  "muskler": [
+   "Sete",
+   "Lår",
+   "Legger",
+   "Puls"
+  ],
+  "bilde": "motbakkegaaing"
+ },
+ {
+  "navn": "Løpeteknikk",
+  "kort": "Løp lett og skadefritt: høy holdning, rask og lett stegfrekvens, og la foten lande under kroppen — ikke langt foran.",
+  "steg": [
+   "Løp høy og avslappet med blikket frem; len deg svakt frem fra anklene.",
+   "Ta korte, raske steg — sikt mot rundt 170–180 steg i minuttet.",
+   "La foten lande under hoftene, ikke langt foran, og hold skuldre og hender løse."
+  ],
+  "tips": [
+   "Tenk «lette, lydløse steg» — mindre bremsing gir mindre belastning."
+  ],
+  "muskler": [
+   "Legger",
+   "Lår",
+   "Kjerne",
+   "Puls"
+  ],
+  "bilde": "loepeteknikk"
+ },
+ {
+  "navn": "Gå-løp-metoden",
+  "kort": "Veksle mellom korte joggedrag og gåpauser. Den tryggeste starten på løping — kroppen tåler mer når du deler det opp.",
+  "steg": [
+   "Varm opp med noen minutter rask gange.",
+   "Jogg rolig et bestemt intervall (f.eks. ett minutt), og gå så til du er uthvilt.",
+   "Gjenta vekslingen, og øk joggetiden litt fra uke til uke."
+  ],
+  "tips": [
+   "Hold joggedragene så rolige at gåpausen nesten føles unødvendig — da er tempoet riktig."
+  ],
+  "muskler": [
+   "Legger",
+   "Lår",
+   "Puls"
+  ],
+  "bilde": "gaa-loep-metoden"
+ },
+ {
+  "navn": "Rolig jogg",
+  "kort": "Rolig jogg i sone 2 med snakketempo hele veien. Kjennes nesten for lett, men det er her utholdenhetsmotoren bygges.",
+  "steg": [
+   "Jogg i et tempo der du kan føre en samtale i hele setninger.",
+   "Hold stegene lette og pusten jevn — dropp tempojaget.",
+   "Gå heller ned i fart enn å sprenge sona; rolig skal være rolig."
+  ],
+  "tips": [
+   "De fleste øktene dine bør ligge her — omtrent 80 % rolig, 20 % hardt."
+  ],
+  "muskler": [
+   "Legger",
+   "Lår",
+   "Puls"
+  ],
+  "bilde": "rolig-jogg"
+ },
+ {
+  "navn": "Terskeltempo",
+  "kort": "«Koselig hardt» tempo i sone 3–4 du kan holde ganske lenge: tung pust, korte fraser — grensa der kroppen tåler mest fart.",
+  "steg": [
+   "Finn tempoet som er komfortabelt hardt — du får ut noen ord, ikke hele setninger.",
+   "Hold det jevnt gjennom hele draget uten å tippe over i full innsats.",
+   "Del gjerne opp i intervaller med korte pauser for å holde riktig sone."
+  ],
+  "tips": [
+   "Starter du for hardt, faller tempoet — legg deg heller litt under og hold jevnt."
+  ],
+  "muskler": [
+   "Legger",
+   "Lår",
+   "Puls",
+   "Pust"
+  ],
+  "bilde": "terskeltempo"
+ },
+ {
+  "navn": "Intervalldrag",
+  "kort": "Korte, harde drag i sone 4–5 med pauser mellom: her løftes toppfart og kondis raskest — men doser hardt med vett.",
+  "steg": [
+   "Varm godt opp før første drag — hard innsats krever varm kropp.",
+   "Løp draget hardt og jevnt etter oppskriften, ikke alt ut de første sekundene.",
+   "Ta den anviste pausen (rolig jogg eller gange) så du er klar til neste drag."
+  ],
+  "tips": [
+   "Kvalitet foran kvantitet: stopp mens dragene fortsatt holder tempoet."
+  ],
+  "muskler": [
+   "Legger",
+   "Lår",
+   "Puls",
+   "Pust"
+  ],
+  "bilde": "intervalldrag"
  }
 ]
