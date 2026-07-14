@@ -6,6 +6,7 @@
 import { el, tom, chip, ikon } from './ui.js';
 import { MODALITET_NAVN } from './library.js';
 import { hentProfil, hentPlan, leggTilPlan, fjernPlan } from './store.js';
+import { varsle } from './toast.js';
 import { hentOkter, oktMedId, KATEGORIER, KATEGORI_NAVN, visLastArk } from './bibliotek-okter.js';
 import { oktSperret } from './opplasing.js';
 
@@ -71,8 +72,12 @@ export function visKalenderSkjerm(mount) {
   }
 
   function lagre() {
+    const antallNye = nye.length;
     for (const id of slettede) fjernPlan(id);
     for (const n of nye) leggTilPlan({ dato: n.dato, oktId: n.oktId });
+    if (antallNye || slettede.size) {
+      varsle(antallNye ? `${antallNye} økt${antallNye > 1 ? 'er' : ''} lagt i planen` : 'Planen er oppdatert', { ikon: 'kalender' });
+    }
     location.hash = '#/hjem';
   }
 

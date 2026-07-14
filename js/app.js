@@ -27,7 +27,7 @@ import { nivaFraTotalXp } from './niva.js';
 import { dagerMedAktivitet, okterHref, beregnStreak } from './bevegelse.js';
 import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN, KATEGORIER } from './bibliotek-okter.js';
 import { settBib as settBibOpp, settOkterKilde } from './opplasing.js';
-import { fyllInn } from './animasjon.js';
+import { fyllInn, tallOpp, stagger, REDUSERT } from './animasjon.js';
 import { settLydAv } from './lyd.js';
 import { settHaptikkAv } from './haptikk.js';
 import { regionScores, anbefalingFraRegioner, regionAndelForOkt, REGION_NAVN } from './kroppskart.js';
@@ -35,6 +35,7 @@ import { prefMult, prefNiva, PREF_NIVAER } from './preferanser.js';
 import * as sync from './sync.js';
 import { krediterNye, stravaKort } from './strava.js';
 import { byggVarsler, merkVarslerSett, varselKort, harUlesteVarsler } from './varsler.js';
+import { varsle } from './toast.js';
 
 const app = document.getElementById('app');
 let bib = null;
@@ -119,6 +120,16 @@ function gjenopprettScroll(hash) {
   if (y > 0) { requestAnimationFrame(sett); setTimeout(sett, 120); }
 }
 
+// Retning for skjermovergangen: en liten hash-stabel avgjør fram vs. tilbake,
+// så View Transition-en glir riktig vei (fram = inn fra høyre, tilbake = venstre).
+let ruteStabel = [];
+function navRetning(nyHash) {
+  if (ruteStabel[ruteStabel.length - 2] === nyHash) { ruteStabel.pop(); return 'tilbake'; }
+  ruteStabel.push(nyHash);
+  if (ruteStabel.length > 30) ruteStabel.shift();
+  return 'fram';
+}
+
 // Gamle #/ny?m=STY-lenker (og bokmerker) sendes til riktig bibliotekkategori.
 function omdirigerGammelNyLenke() {
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
@@ -139,10 +150,22 @@ function navger() {
   document.body.classList.toggle('fokusmodus', FOKUS.has(rute));
   document.body.classList.remove('fane-laast'); // settes på nytt av fanesidene
   if (rute !== 'kjor' && rute !== 'hurtig') slippVaaken(); // timer-skjermene eier låsen
-  (ruter[rute] || visHjem)();
-  oppdaterNav(rute);
-  oppdaterFaneMinne(rute);
-  if (byttet) gjenopprettScroll(location.hash);
+
+  const tegn = () => {
+    (ruter[rute] || visHjem)();
+    oppdaterNav(rute);
+    oppdaterFaneMinne(rute);
+    if (byttet) gjenopprettScroll(location.hash);
+  };
+  // Skjermovergang via View Transitions API der den finnes (iOS 18+/Chrome);
+  // ellers umiddelbart bytte (dagens oppførsel). Hoppes over ved redusert bevegelse.
+  if (byttet && typeof document.startViewTransition === 'function' && !REDUSERT()) {
+    document.documentElement.dataset.vt = navRetning(location.hash);
+    const vt = document.startViewTransition(tegn);
+    vt.finished.finally(() => { delete document.documentElement.dataset.vt; });
+  } else {
+    tegn();
+  }
   forrigeHash = location.hash;
 }
 
@@ -151,6 +174,7 @@ function oppdaterNav(rute) {
   document.querySelectorAll('.tabbar__knapp').forEach((b) => {
     b.classList.toggle('tabbar__knapp--aktiv', b.dataset.rute === tabRute);
   });
+  flyttTabIndikator();
 }
 
 function skjerm(tittel, ...innhold) {
@@ -408,7 +432,7 @@ function heroAnbefalBoks(logg, profil) {
   const prikker = okter.map((_, i) => el('button', {
     class: 'hjemhero__prikk' + (i === 0 ? ' hjemhero__prikk--aktiv' : ''),
     type: 'button', 'aria-label': `Vis anbefaling ${i + 1}`,
-    onclick: () => karusell.scrollTo({ left: i * karusell.clientWidth, behavior: 'smooth' }),
+    onclick: () => karusell.scrollTo({ left: i * karusell.clientWidth, behavior: REDUSERT() ? 'auto' : 'smooth' }),
   }, String(i + 1)));
   karusell.addEventListener('scroll', () => {
     const i = Math.round(karusell.scrollLeft / karusell.clientWidth);
@@ -483,11 +507,16 @@ function statKortRad(profil, logg, glass = false) {
   const xpBar = el('div', { class: 'xpbar__fyll' });
   fyllInn(xpBar, 'width', `${info.pct}%`);
 
-  return el('div', { class: 'statkort-rad' + (glass ? ' statkort-rad--glass' : '') },
+  // Tallene teller opp (i takt med at barene fyller) — dashbordet «våkner».
+  const minTall = el('span', { class: 'statkort__tall' }, '0');
+  const aktiveTall = el('span', { class: 'statkort__tall' }, '0');
+  const xpTall = el('span', { class: 'statkort__tall statkort__tall--xp' }, '0');
+
+  const rad = el('div', { class: 'statkort-rad' + (glass ? ' statkort-rad--glass' : '') },
     el('div', { class: 'statkort' },
       el('span', { class: 'statkort__label' }, 'Minutter i dag'),
       el('div', { class: 'statkort__midt' },
-        el('span', { class: 'statkort__tall' }, String(minutter)),
+        minTall,
         el('span', { class: 'statkort__ikon' }, ikon('klokke')),
       ),
       el('span', { class: 'statkort__sub' }, `/${maal} min`),
@@ -496,7 +525,7 @@ function statKortRad(profil, logg, glass = false) {
     el('div', { class: 'statkort' },
       el('span', { class: 'statkort__label' }, 'Aktive dager'),
       el('div', { class: 'statkort__midt' },
-        el('span', { class: 'statkort__tall' }, String(aktive)),
+        aktiveTall,
         el('span', { class: 'statkort__ikon' }, ikon('kalender')),
       ),
       el('span', { class: 'statkort__sub' }, '/7 dager'),
@@ -508,12 +537,16 @@ function statKortRad(profil, logg, glass = false) {
       el('span', { class: 'statkort__label' }, `Nivå ${info.niva}`),
       el('div', { class: 'statkort__midt' },
         el('span', { class: 'stathex' }, 'M'),
-        el('span', { class: 'statkort__tall statkort__tall--xp' }, String(info.igjen)),
+        xpTall,
       ),
       el('span', { class: 'statkort__sub' }, 'XP til neste nivå'),
       el('div', { class: 'xpbar statkort__bar' }, xpBar),
     ),
   );
+  tallOpp(minTall, minutter, { ms: 600 });
+  tallOpp(aktiveTall, aktive, { ms: 500 });
+  tallOpp(xpTall, info.igjen, { ms: 700 });
+  return rad;
 }
 
 // «Velg bevegelse» — fargede fliser rett på underlaget. Starter med profilens
@@ -555,7 +588,9 @@ function bevegelsesGrid() {
       location.hash = o ? `#/okter?start=${o.id}` : '#/okter';
     },
   }, ...flisInnhold('terning', 'Overrask meg'));
-  return el('div', { class: 'movgrid' }, ...HJEM_FLISER.map((f) => flis(...f)), overrask);
+  const grid = el('div', { class: 'movgrid' }, ...HJEM_FLISER.map((f) => flis(...f)), overrask);
+  stagger(grid, { trinn: 45 }); // fliser spretter inn (hopper over under VT/redusert)
+  return grid;
 }
 
 // Streak (sammenhengende dager med bevegelse) bor nå i js/bevegelse.js —
@@ -826,7 +861,7 @@ function skyKort() {
       el('div', { class: 'knapprad' },
         el('button', {
           class: 'knapp', type: 'button',
-          onclick: async (ev) => { ev.target.textContent = 'Synker…'; await sync.synk(); visInnstillinger(); },
+          onclick: async (ev) => { ev.target.textContent = 'Synker…'; await sync.synk(); varsle('Synkronisert'); visInnstillinger(); },
         }, 'Synk nå'),
       ),
     );
@@ -949,12 +984,24 @@ function byggTabbar() {
   }, el('span', { class: 'tabbar__ikon' }, ikon(ikonNavn)), el('span', { class: 'tabbar__tekst' }, tekst));
 
   document.body.append(el('nav', { class: 'tabbar' },
+    el('span', { class: 'tabbar__indikator', 'aria-hidden': 'true' }),
     tab('hjem', 'hjem', 'I dag'),
     tab('beveg', 'loper', 'Trening'),
     tab('merker', 'person', 'Profil', ' tabbar__knapp--stor'),
     tab('aktivitet', 'puls', 'Aktivitet'),
     tab('laer', 'bok', 'Lær'),
   ));
+}
+
+// Glir den lille indikatoren under den aktive fanen (sammenheng mellom faner).
+function flyttTabIndikator() {
+  const nav = document.querySelector('.tabbar');
+  const ind = nav?.querySelector('.tabbar__indikator');
+  const aktiv = nav?.querySelector('.tabbar__knapp--aktiv');
+  if (!ind) return;
+  if (!aktiv) { ind.style.opacity = '0'; return; }
+  ind.style.opacity = '1';
+  ind.style.transform = `translateX(${aktiv.offsetLeft + aktiv.offsetWidth / 2}px) translateX(-50%)`;
 }
 
 // Anvender valgt app-tema (M6). Kalles ved oppstart og når temaet endres.

@@ -10,6 +10,7 @@ import { lagArtikkelStripe } from './laer.js';
 import { hentProfil } from './store.js';
 import { erSkjult } from './preferanser.js';
 import { erAdmin, oktLast } from './opplasing.js';
+import { REDUSERT } from './animasjon.js';
 
 // Kategori → artikkel-tag, så biblioteket kan vise relaterte læringsartikler.
 const KAT_ARTIKKELTAG = {
@@ -261,7 +262,7 @@ export function visOkterSkjerm(mount) {
     const idag = isoIdag();
     if (iso < idag) location.hash = `#/loggfor?d=${iso}`;
     else if (iso > idag) location.hash = `#/kalender?d=${iso}`;
-    else document.querySelector('.bibbolk')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    else document.querySelector('.bibbolk')?.scrollIntoView({ behavior: REDUSERT() ? 'auto' : 'smooth', block: 'start' });
   }
 
   // Frostet, rund filterknapp — ligger på linje med sidetittelen, ikke i

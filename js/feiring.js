@@ -11,7 +11,7 @@
 // haptikk.js, lyd.js) og respekterer prefers-reduced-motion (via tallOpp/
 // lagKonfetti + CSS-media). Ingen DOM-fri logikk her — rene skjermbyggere.
 import { el, ikon } from './ui.js';
-import { tallOpp, lagKonfetti } from './animasjon.js';
+import { tallOpp, lagKonfetti, lagGnist } from './animasjon.js';
 import { vibrer } from './haptikk.js';
 import { pling } from './lyd.js';
 
@@ -99,7 +99,7 @@ export function kisteKort({ xp = 0, tittel = 'Fullført!', under = '', merker = 
       }
     });
     if (opplaste.length) setTimeout(() => vibrer('riktig'), 340);
-    try { kort.append(lagKonfetti()); } catch { /* valgfri feiring */ }
+    try { kort.append(lagGnist(12), lagKonfetti(24, { sprut: true })); } catch { /* valgfri feiring */ }
   }
   // Auto-spill etter to frames (CSS-inngangen rekker å feste seg først).
   requestAnimationFrame(() => requestAnimationFrame(spillAv));
@@ -156,7 +156,7 @@ export function streakFeiring(streak) {
     };
     knapp.addEventListener('click', lukk);
     document.body.append(overlay);
-    try { overlay.append(lagKonfetti()); } catch { /* valgfri feiring */ }
+    try { overlay.append(lagGnist(14), lagKonfetti(26, { sprut: true })); } catch { /* valgfri feiring */ }
     requestAnimationFrame(() => {
       overlay.classList.add('streakfeiring--pa');
       pling(660, 0.14);

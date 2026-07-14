@@ -444,6 +444,7 @@ export function visKjoreSkjerm(mount) {
   );
 
   // --- oppdatering ---
+  let tegnetEnGang = false;
   function tegnSteg() {
     const g = gj();
     tom(naBilde); naBilde.append(stegBilde(g));
@@ -513,6 +514,10 @@ export function visKjoreSkjerm(mount) {
       )));
     }
     blokkTeller.textContent = `Blokk ${bIdx + 1} av ${okt.blokker.length}`;
+    // Slide NÅ-kortet inn ved steg-/fasebytte (ikke på første tegning) —
+    // øktrytmen føles ikke lenger som et hardt innholdshopp.
+    if (tegnetEnGang) { naKort.classList.remove('kjor2-na--inn'); void naKort.offsetWidth; naKort.classList.add('kjor2-na--inn'); }
+    tegnetEnGang = true;
   }
 
   function oppdaterPause() {
@@ -546,7 +551,10 @@ export function visKjoreSkjerm(mount) {
     naRingSett(rem / (g.sek || 1));
     const teller = spiller && !!nesteSteg() && rem >= 1 && rem <= 5;
     naKort.classList.toggle('kjor2-na--teller', teller);
-    if (teller && rem !== sisteTikk) { sisteTikk = rem; pling(700, 0.05); }
+    if (teller && rem !== sisteTikk) {
+      sisteTikk = rem; pling(700, 0.05);
+      naRingTall.classList.remove('kjor2-tall--pop'); void naRingTall.offsetWidth; naRingTall.classList.add('kjor2-tall--pop');
+    }
     if (rem > 5) sisteTikk = null;
   }
 

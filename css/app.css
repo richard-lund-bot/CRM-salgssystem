@@ -52,11 +52,17 @@
   --shadow-card: 0 6px 24px rgba(17, 38, 77, 0.06);
   --shadow-action: 0 8px 20px rgba(0, 131, 130, 0.24);
 
-  /* Bevegelse — rolig momentum, aldri intens */
-  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-spring: cubic-bezier(0.34, 1.4, 0.5, 1);
-  --dur-fast: 140ms; --dur-normal: 220ms; --dur-slow: 380ms;
+  /* Bevegelse — energisk og leken (Duolingo-ish); egen rolig tier for wellness/pust.
+     Easinger hentet fra animation-principles (joy-delight/css-native), delt overalt. */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);          /* nøytrale UI-transisjoner */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);              /* inn-glidning */
+  --ease-pop: cubic-bezier(0.175, 0.885, 0.32, 1.275);    /* snappy reveal (back) */
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);       /* leken overshoot */
+  --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55); /* stor feiring, sparsomt */
+  --ease-inout: cubic-bezier(0.42, 0, 0.58, 1);           /* rolig/wellness/pust */
+  --ease-spring: var(--ease-bounce);                      /* alias (bakoverkompatibelt) */
+  --dur-instant: 90ms; --dur-fast: 140ms; --dur-normal: 220ms; --dur-slow: 380ms; --dur-celebrate: 900ms;
+  --press: 0.95; --lift: -2px;                            /* felles trykk-primitiv */
 
   /* ==== Aksentvariabler (temaene overstyrer kun disse) ==== */
   --aksent: var(--teal-600);        /* primærhandling */
@@ -259,7 +265,7 @@ body {
   text-align: center;
   transition: transform var(--dur-fast) var(--ease-standard), background var(--dur-fast) var(--ease-standard), opacity var(--dur-fast) ease;
 }
-.knapp:active { transform: scale(0.975); background: var(--aksent-mork); }
+.knapp:active { transform: scale(var(--press)); background: var(--aksent-mork); }
 .knapp--sekundaer {
   background: var(--bg-kort);
   color: var(--tekst);
@@ -529,7 +535,10 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
   font-family: var(--font-display); font-weight: 700; font-size: 15px;
   text-decoration: none; box-shadow: var(--shadow-xs);
 }
-.streakflamme .ikon { width: 16px; height: 16px; color: var(--coral-500); }
+.streakflamme .ikon { width: 16px; height: 16px; color: var(--coral-500); transform-origin: 50% 90%; }
+/* Frisk streak har litt liv: en rolig ember-flimring (aldri på «i fare»-varianten) */
+.streakflamme:not(.streakflamme--fare) .ikon { animation: flamme-liv 2.6s ease-in-out infinite; }
+@keyframes flamme-liv { 0%, 100% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.07) rotate(-3deg); } }
 .streakflamme__tall { line-height: 1; }
 .hjemhero--natt .streakflamme {
   background: rgba(255, 255, 255, 0.9); box-shadow: 0 4px 14px rgba(17, 38, 77, 0.35);
@@ -689,6 +698,12 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 .tabbar__knapp--aktiv .tabbar__ikon { animation: tab-hopp 0.35s var(--ease-spring); }
 @keyframes tab-hopp { 0% { transform: scale(0.86); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
 .tabbar__knapp--synker .tabbar__ikon { animation: synkpuls 1s ease-in-out infinite; }
+/* Sammenhengende indikator som glir mellom faner (js/app.js flyttTabIndikator) */
+.tabbar__indikator {
+  position: absolute; top: 0; left: 0; width: 30px; height: 3px;
+  border-radius: 0 0 999px 999px; background: var(--aksent); opacity: 0;
+  transition: transform 0.42s var(--ease-bounce), opacity 0.2s ease; pointer-events: none;
+}
 @keyframes synkpuls { 50% { opacity: 0.4; } }
 
 /* Fokusmodus: skjul tab-bar under onboarding/review/kjøring */
@@ -1021,6 +1036,12 @@ body.fokusmodus { padding-bottom: 0; }
 .kjor2-na--teller { box-shadow: 0 0 0 2px var(--aksent-kant) inset, var(--shadow-md); }
 .kjor2-na--teller .kjor2-ring__tall { color: var(--aksent); }
 .kjor2-na--pause { opacity: 0.92; }
+/* Steg-/fasebytte: NÅ-kortet glir inn (energisk øktrytme) */
+.kjor2-na--inn { animation: kjor-steg-inn 0.32s var(--ease-out); }
+@keyframes kjor-steg-inn { from { opacity: 0.35; transform: translateX(16px); } to { opacity: 1; transform: none; } }
+/* Nedtellingstall spretter (squash-stretch) hvert nye sekund i innspurten */
+.kjor2-tall--pop { animation: kjor-tall-pop 0.42s var(--ease-bounce); }
+@keyframes kjor-tall-pop { 0% { transform: scale(1.34); } 55% { transform: scale(0.9); } 100% { transform: scale(1); } }
 
 /* Sett-innmating (styrke): vekt + reps + fullfør */
 .kjor2-sett { margin-top: 14px; display: flex; flex-direction: column; gap: 12px; }
@@ -1242,10 +1263,17 @@ body.fokusmodus { padding-bottom: 0; }
   background: radial-gradient(circle at 50% 0%, var(--aksent-svak), transparent 60%);
   pointer-events: none;
 }
+/* Ett skinn-sveip over kortet (peak-belønning skal glitre) */
+.levelup::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(115deg, transparent 32%, rgba(255, 255, 255, 0.5) 48%, transparent 64%);
+  transform: translateX(-120%); animation: levelup-sveip 1.4s var(--ease-out) 0.2s both;
+}
+@keyframes levelup-sveip { to { transform: translateX(120%); } }
 .levelup__niva {
   font-family: var(--font-display); font-size: 2.6rem; font-weight: 600;
   letter-spacing: -0.01em; color: var(--aksent); margin: 4px 0 12px;
-  animation: pop 0.35s ease-out both;
+  animation: pop 0.5s var(--ease-elastic) both;
 }
 @keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
@@ -1277,20 +1305,30 @@ body.fokusmodus { padding-bottom: 0; }
 .bar__fyll { transition: height 0.6s var(--ease-out); }
 .niva__p { transition: background-color 0.25s ease, transform 0.25s ease; }
 
-/* Trykk-feedback — rolig nedskalering, aldri sprett */
+/* Trykk-feedback — felles energisk squash (--press), jevn på trykk og slipp */
 .listerad, .modrad, .temaknapp, .ob-kort, .okt__topp,
 .chip, .tabbar__knapp, .knapp, .ikonknapp, .movflis, .oppmuntring,
 .modrad--knapp, .hjemuke__dag {
-  transition: transform var(--dur-fast) var(--ease-standard), opacity var(--dur-fast) ease, background-color 0.18s ease, border-color 0.18s ease;
+  transition: transform var(--dur-fast) var(--ease-bounce), opacity var(--dur-fast) ease,
+    background-color 0.18s ease, border-color 0.18s ease, box-shadow var(--dur-fast) var(--ease-standard);
 }
 .listerad:active, .modrad:active, .temaknapp:active,
 .ob-kort:active, .okt__topp:active, .chip:active,
 .ikonknapp:active, .movflis:active, .oppmuntring:active,
 .modrad--knapp:active, .hjemuke__dag:active {
-  transform: scale(0.97);
+  transform: scale(var(--press));
 }
 .tabbar__knapp:active .tabbar__ikon { transform: scale(0.9); }
 .tabbar__ikon { transition: transform var(--dur-fast) ease; }
+
+/* Base-transisjon på trykk-elementer som tidligere snappet (manglet transition)
+   — gir jevn nedskalering/slipp. :active-verdiene deres beholdes. */
+.leksjon-primaer, .stikort, .disiplinkort, .seksjonkort, .artkort, .artfav,
+.auth-primaer, .auth-provider, .reise-topp__tilbake, .reise-boss__scene,
+.kamp__push, .uteks__just-knapp, .uteks-legendarisk-knapp, .reise-popover__start,
+.streakfeiring__knapp {
+  transition: transform var(--dur-fast) var(--ease-bounce), box-shadow var(--dur-fast) var(--ease-standard), background-color 0.18s ease;
+}
 
 /* Fremdriftsring for timer-skjermer (js/animasjon.js) */
 .ringfremgang__spor { fill: none; stroke: var(--ink-100); }
@@ -1312,8 +1350,49 @@ body.fokusmodus { padding-bottom: 0; }
   0% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
   100% { opacity: 0; transform: translate(var(--konf-dx, 0px), 220px) rotate(var(--konf-rot, 220deg)); }
 }
+/* Konfetti-sprut: kast oppover først, så fall (bue-bane — joy-delight) */
+.konfetti--sprut .konfetti__brikke { animation-name: konfetti-sprut; animation-timing-function: cubic-bezier(0.2, 0.6, 0.35, 1); }
+@keyframes konfetti-sprut {
+  0% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+  32% { opacity: 1; transform: translate(calc(var(--konf-dx, 0px) * 0.4), calc(-1 * var(--konf-opp, 60px))) rotate(calc(var(--konf-rot, 220deg) * 0.4)); }
+  100% { opacity: 0; transform: translate(var(--konf-dx, 0px), 200px) rotate(var(--konf-rot, 220deg)); }
+}
+
+/* Gnist-burst (js/animasjon.js lagGnist) — radierende stjerner, secondary action */
+.gnist { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+.gnist__stj {
+  position: absolute; width: 9px; height: 9px; border-radius: 50%;
+  background: radial-gradient(circle, #FFE59A 0%, #F5C542 55%, rgba(245,197,66,0) 72%);
+  opacity: 0; animation: gnist-ut var(--g-ms, 600ms) var(--ease-out) var(--g-forsinkelse, 0ms) both;
+}
+@keyframes gnist-ut {
+  0% { opacity: 0; transform: rotate(var(--g-vinkel, 0deg)) translateY(0) scale(0.35); }
+  35% { opacity: 1; }
+  100% { opacity: 0; transform: rotate(var(--g-vinkel, 0deg)) translateY(calc(-1 * var(--g-avstand, 60px))) scale(1); }
+}
 
 .heat__c { animation: fadeInn 0.4s ease both; }
+
+/* Skjermoverganger — View Transitions API (subtil skli+fade, <100px). data-vt
+   settes i js/app.js navger(); redusert bevegelse hopper over VT i JS. Tab-baren
+   pinnes med eget navn så den ikke glir med sidebyttet. */
+.tabbar { view-transition-name: tabbar; }
+::view-transition-group(tabbar) { animation: none; }
+html[data-vt] .innhold > * { animation: none !important; } /* unngå dobbel inn-fade */
+::view-transition-old(root) { animation: vt-ut 220ms var(--ease-standard) both; }
+::view-transition-new(root) { animation: vt-inn 300ms var(--ease-out) both; }
+html[data-vt="tilbake"]::view-transition-old(root) { animation: vt-ut-t 220ms var(--ease-standard) both; }
+html[data-vt="tilbake"]::view-transition-new(root) { animation: vt-inn-t 300ms var(--ease-out) both; }
+@keyframes vt-inn { from { opacity: 0; transform: translateX(26px); } to { opacity: 1; transform: none; } }
+@keyframes vt-ut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(-20px); } }
+@keyframes vt-inn-t { from { opacity: 0; transform: translateX(-26px); } to { opacity: 1; transform: none; } }
+@keyframes vt-ut-t { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(20px); } }
+
+/* Splash-settle: merkevaren «puster inn» ved oppstart; «Laster…» pulserer mykt */
+.splash__bilde { animation: splash-inn 900ms var(--ease-out) both; }
+@keyframes splash-inn { from { transform: scale(1.06); opacity: 0.5; } to { transform: scale(1); opacity: 1; } }
+.laster { animation: laster-puls 1.4s ease-in-out infinite; }
+@keyframes laster-puls { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
 /* Respekter redusert bevegelse */
 @media (prefers-reduced-motion: reduce) {
@@ -1352,10 +1431,21 @@ body.fokusmodus { padding-bottom: 0; }
 .hurtig { gap: 14px; }
 .hurtig__ikon { color: var(--aksent); }
 .hurtig__ikon .ikon { width: 40px; height: 40px; }
+.hurtig__tid { position: relative; display: grid; place-items: center; margin: 4px 0; min-height: 132px; }
+.hurtig__pust {
+  position: absolute; width: 190px; height: 190px; border-radius: 50%;
+  background: radial-gradient(circle, var(--aksent-svak) 0%, rgba(11,166,159,0) 68%);
+  opacity: 0.45; transform: scale(0.9); pointer-events: none;
+}
+/* Rolig pust bare mens timeren går (wellness-tier, --ease-inout) */
+.hurtig__tid--gaar .hurtig__pust { animation: pust-rolig 4.2s var(--ease-inout) infinite; }
+@keyframes pust-rolig { 0%, 100% { transform: scale(0.9); opacity: 0.4; } 50% { transform: scale(1.08); opacity: 0.68; } }
 .hurtig__klokke {
-  font-family: var(--font-display); font-size: 64px; font-variant-numeric: tabular-nums;
+  position: relative; font-family: var(--font-display); font-size: 64px; font-variant-numeric: tabular-nums;
   color: var(--tekst);
 }
+.hurtig__klokke--tikk { animation: klokke-tikk-rolig 0.5s var(--ease-out); }
+@keyframes klokke-tikk-rolig { 0% { transform: scale(1.03); } 100% { transform: scale(1); } }
 .loggfelt__inn--stor { font-size: 22px; padding: 10px 14px; width: 120px; }
 
 /* --- Fullført: «Du beveget deg. Det teller.» --- */
@@ -1510,6 +1600,14 @@ body.fokusmodus { padding-bottom: 0; }
   background: var(--bg-kort-2); color: var(--ink-300);
   border: 1.5px dashed var(--kant-sterk); box-shadow: none;
 }
+/* Nettopp opptjent merke: spretter inn og gløder en stund */
+.merke--ny { animation: merke-ny-pop 0.6s var(--ease-elastic) both; }
+.merke--ny .merke__sirkel { animation: merke-ny-glo 1.8s ease-in-out infinite; }
+@keyframes merke-ny-pop { 0% { transform: scale(0.55); opacity: 0; } 60% { transform: scale(1.08); } 100% { transform: scale(1); opacity: 1; } }
+@keyframes merke-ny-glo {
+  0%, 100% { box-shadow: var(--shadow-sm), 0 0 10px 1px rgba(11, 166, 159, 0.3); }
+  50% { box-shadow: var(--shadow-sm), 0 0 18px 4px rgba(11, 166, 159, 0.55); }
+}
 .merke__navn { font-size: 12.5px; font-weight: 600; line-height: 1.15; }
 .merke--laast .merke__navn { color: var(--tekst-2); }
 .merke__sub { font-size: 10.5px; color: var(--dempet); line-height: 1.3; }
@@ -1541,6 +1639,12 @@ body.fokusmodus { padding-bottom: 0; }
   position: absolute; top: 5px; right: 5px;
   width: 9px; height: 9px; border-radius: 50%;
   background: var(--coral-500); border: 2px solid var(--bg-kort, #fff);
+  animation: varselprikk-puls 2s ease-in-out infinite;
+}
+/* Uleste-prikken puster litt så den fanger blikket (aldri masete) */
+@keyframes varselprikk-puls {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 111, 97, 0.5); }
+  50% { box-shadow: 0 0 0 5px rgba(255, 111, 97, 0); }
 }
 
 /* ==========================================================================
@@ -2293,8 +2397,11 @@ body.fokusmodus { padding-bottom: 0; }
 .leksjon-valg-liste { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
 .leksjon-valg { text-align: left; padding: 16px; border: 2px solid var(--kant); border-radius: 14px; background: var(--bg-kort); font-family: inherit; font-size: 15.5px; color: var(--tekst); cursor: pointer; transition: border-color 0.12s, background 0.12s; }
 .leksjon-valg--valgt { border-color: var(--aksent); background: var(--aksent-svak); }
-.leksjon-valg--riktig { border-color: #2FA84F; background: #E7F6EC; color: #1C6B34; }
-.leksjon-valg--feil { border-color: var(--coral-500); background: var(--coral-100); color: var(--fare); }
+.leksjon-valg--riktig { border-color: #2FA84F; background: #E7F6EC; color: #1C6B34; animation: valg-riktig 0.5s var(--ease-bounce); }
+.leksjon-valg--feil { border-color: var(--coral-500); background: var(--coral-100); color: var(--fare); animation: valg-feil 0.32s ease-in-out; }
+/* Riktig: en liten seiers-pop. Feil: mild, vennlig risting (aldri skam) */
+@keyframes valg-riktig { 0% { transform: scale(1); } 45% { transform: scale(1.035); } 100% { transform: scale(1); } }
+@keyframes valg-feil { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 .leksjon-feedback { margin-top: 14px; padding: 12px 14px; border-radius: 12px; font-size: 14px; line-height: 1.5; }
 .leksjon-feedback--riktig { background: #E7F6EC; color: #1C6B34; }
 .leksjon-feedback--feil { background: var(--coral-100); color: var(--fare); }
@@ -2738,8 +2845,8 @@ body.fokusmodus { padding-bottom: 0; }
 .kiste__glo { fill: #FCE9A8; opacity: 0; transform-box: fill-box; transform-origin: center; }
 .kiste__straaler { opacity: 0; transform-box: fill-box; transform-origin: 36px 30px; }
 .kiste__straaler path { stroke: #F5C542; stroke-width: 3; stroke-linecap: round; fill: none; }
-.kiste__lokk { transform-box: fill-box; transform-origin: 50% 100%; transition: transform 0.5s var(--ease-standard); }
-.kiste--apen .kiste__lokk { transform: translateY(-30%) rotate(-6deg); }
+.kiste__lokk { transform-box: fill-box; transform-origin: 50% 100%; transition: transform 0.6s var(--ease-elastic); }
+.kiste--apen .kiste__lokk { transform: translateY(-32%) rotate(-7deg); }
 .kiste--apen .kiste__glo { animation: kiste-glo 0.9s ease-out both; }
 .kiste--apen .kiste__straaler { animation: kiste-straaler 0.7s ease-out both; }
 .kiste--apen .kiste__kropp { animation: kiste-sprett 0.5s var(--ease-standard); }
@@ -2754,7 +2861,7 @@ body.fokusmodus { padding-bottom: 0; }
 .leksjon-feiring__merke--opplast .ikon { color: #E0983A; }
 
 /* --- Streak-feiring: fullskjerm «Jeg er dedikert» --- */
-.streakfeiring { position: fixed; inset: 0; z-index: 3500; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center; padding: 28px 24px calc(28px + env(safe-area-inset-bottom, 0px)); background: var(--bg); opacity: 0; transform: scale(1.03); transition: opacity 0.34s ease, transform 0.34s var(--ease-standard); }
+.streakfeiring { position: fixed; inset: 0; z-index: 3500; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center; padding: 28px 24px calc(28px + env(safe-area-inset-bottom, 0px)); background: var(--bg); opacity: 0; transform: scale(1.06); transition: opacity 0.34s ease, transform 0.44s var(--ease-bounce); }
 .streakfeiring--pa { opacity: 1; transform: none; }
 .streakfeiring--ut { opacity: 0; }
 .streakfeiring__glo { position: absolute; inset: 0; background: radial-gradient(circle at 50% 38%, rgba(255,180,110,0.55) 0%, rgba(255,138,91,0.14) 34%, transparent 60%); pointer-events: none; }
@@ -2780,4 +2887,58 @@ body.fokusmodus { padding-bottom: 0; }
   .kiste-kort__linje { transition: none; opacity: 1; transform: none; }
   .streakfeiring { transition: none; transform: none; }
   .streakfeiring__flamme .ikon { animation: none; }
+}
+
+/* ==========================================================================
+   M33 — Toast-lag (js/toast.js): lette bekreftelser nederst, squash-in.
+   ========================================================================== */
+.toastlag {
+  position: fixed; left: 0; right: 0; bottom: calc(env(safe-area-inset-bottom, 0px) + 76px);
+  z-index: 4000; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 0 16px; pointer-events: none;
+}
+.toast {
+  pointer-events: auto; display: inline-flex; align-items: center; gap: 9px; max-width: 92%;
+  padding: 11px 17px; border-radius: var(--radius-pill); background: var(--ink-900); color: #fff;
+  font-family: var(--font-display); font-weight: 600; font-size: 14px; box-shadow: var(--shadow-md);
+  opacity: 0; transform: translateY(16px) scale(0.9);
+  transition: transform 0.34s var(--ease-bounce), opacity 0.24s ease;
+}
+.toast--inn { opacity: 1; transform: none; }
+.toast--ut { opacity: 0; transform: translateY(8px) scale(0.96); }
+.toast__ikon { display: inline-flex; }
+.toast__ikon .ikon { width: 18px; height: 18px; }
+.toast--ok .toast__ikon .ikon { color: #8FE3B0; }
+.toast--fare .toast__ikon .ikon { color: var(--coral-400); }
+@media (prefers-reduced-motion: reduce) {
+  .toast { transition: opacity 0.2s ease; transform: none; }
+  .toast--inn { transform: none; }
+  .toast--ut { transform: none; }
+}
+
+/* ==========================================================================
+   Reduced-motion — konsolidert backstop (M33). Fyller tidligere hull og dekker
+   de nye animasjonene. Kun opacity/farge-endringer overlever; ingen overshoot,
+   ingen looper, ingen store forflytninger (motion-sickness-prinsippet).
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  /* Tidligere uguardede looper */
+  .pullspinn--aktiv .pullspinn__ring,
+  .tabbar__knapp--synker .tabbar__ikon,
+  .kamp__seier-stjerner .stjernerad__stj--pa .ikon,
+  /* Nye looper */
+  .streakflamme:not(.streakflamme--fare) .ikon,
+  .hurtig__tid--gaar .hurtig__pust, .varselprikk,
+  .merke--ny .merke__sirkel, .laster, .gnist__stj { animation: none !important; }
+  /* Nye engangs-animasjoner → sluttilstand uten bevegelse */
+  .splash__bilde, .levelup::after, .leksjon-valg--riktig, .leksjon-valg--feil,
+  .merke--ny, .kjor2-na--inn, .kjor2-tall--pop, .hurtig__klokke--tikk { animation: none !important; }
+  .splash__bilde { transform: none; opacity: 1; }
+  /* Slidende indikator → hopp uten glidning */
+  .tabbar__indikator { transition: opacity 0.2s ease; }
+  /* Trykk-elementene som fikk squash → funksjonell, men uten transform */
+  .leksjon-primaer:active, .stikort:active, .disiplinkort:active, .seksjonkort:active,
+  .artkort:active, .artfav:active, .auth-primaer:active, .auth-provider:active,
+  .reise-topp__tilbake:active, .reise-boss__scene:active, .kamp__push:active,
+  .knapp:active { transform: none; }
 }

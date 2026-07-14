@@ -109,12 +109,21 @@ export function visHurtigSkjerm(mount) {
   const sekunder = () => Math.floor((akkumMs + (kjorer() ? Date.now() - startTs : 0)) / 1000);
 
   const klokke = el('div', { class: 'hurtig__klokke' }, '00:00');
+  // Rolig «pust» bak klokka (wellness-tier — bevisst rolig, ikke punchy).
+  const tidBlokk = el('div', { class: 'hurtig__tid' + (kjorer() ? ' hurtig__tid--gaar' : '') },
+    el('span', { class: 'hurtig__pust', 'aria-hidden': 'true' }), klokke);
   const startKnapp = el('button', { class: 'knapp knapp--stor', type: 'button' }, kjorer() ? 'Pause' : (akkumMs ? 'Fortsett' : 'Start'));
   const ferdigKnapp = el('button', { class: 'knapp knapp--sekundaer', type: 'button' }, 'Ferdig');
 
+  let sisteSek = -1;
   function visTid() {
     const s = sekunder();
     klokke.textContent = `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+    tidBlokk.classList.toggle('hurtig__tid--gaar', kjorer());
+    if (s !== sisteSek) { // lite rolig pust-pop per sekund
+      sisteSek = s;
+      klokke.classList.remove('hurtig__klokke--tikk'); void klokke.offsetWidth; klokke.classList.add('hurtig__klokke--tikk');
+    }
   }
 
   function lagre() {
@@ -172,7 +181,7 @@ export function visHurtigSkjerm(mount) {
     el('main', { class: 'innhold innhold--kjor' },
       el('div', { class: 'flate flate--midt hurtig' },
         el('span', { class: 'hurtig__ikon' }, ikon(BEVEGELSER[bevegelse].ikon)),
-        klokke,
+        tidBlokk,
         maal && el('p', { class: 'dempet' }, `Du kan snu når du vil. ${maal} min er målet, ikke kravet.`),
         el('div', { class: 'flate__knapper' }, startKnapp, ferdigKnapp),
         el('p', { class: 'dempet' }, 'Tida teller videre selv om skjermen slukker.'),

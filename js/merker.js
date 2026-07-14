@@ -10,7 +10,7 @@ import { loggBevegelse, NIVATYPE_NAVN } from './bevegelse.js';
 import { oktMedId } from './bibliotek-okter.js';
 import { regionScores, lagKroppskart } from './kroppskart.js';
 import { fanesideMedTittel } from './banner.js';
-import { fyllInn, lagRing } from './animasjon.js';
+import { fyllInn, lagRing, REDUSERT } from './animasjon.js';
 
 const DAG = 86400000;
 
@@ -413,7 +413,9 @@ export function visMerkerSkjerm(mount) {
   function merkeKort(m) {
     const laast = !m.oppnadd;
     const fremdrift = laast && m.maal > 1 && m.verdi > 0;
-    return el('div', { class: 'merke' + (laast ? ' merke--laast' : '') },
+    // Nettopp opptjent (siste 10 min) → avdekkes med pop + glød når man kommer hit.
+    const ny = !laast && m.dato && (Date.now() - Date.parse(m.dato)) < 10 * 60000;
+    return el('div', { class: 'merke' + (laast ? ' merke--laast' : '') + (ny ? ' merke--ny' : '') },
       el('span', { class: 'merke__sirkel' + (laast ? '' : ` movflis--${m.farge}`) },
         ikon(laast ? 'las' : m.ikon)),
       el('span', { class: 'merke__navn' }, m.navn),
@@ -465,6 +467,6 @@ export function visMerkerSkjerm(mount) {
   // Kommer man fra «restitusjonsbehov»-lenka på Min dag, scroll widgeten inn.
   if (vis === 'restitusjon') {
     requestAnimationFrame(() =>
-      mount.querySelector('.restitusjonskort')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+      mount.querySelector('.restitusjonskort')?.scrollIntoView({ behavior: REDUSERT() ? 'auto' : 'smooth', block: 'start' }));
   }
 }
