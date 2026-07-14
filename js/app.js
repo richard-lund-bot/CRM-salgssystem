@@ -987,7 +987,7 @@ function byggTabbar() {
     el('span', { class: 'tabbar__indikator', 'aria-hidden': 'true' }),
     tab('hjem', 'hjem', 'I dag'),
     tab('beveg', 'loper', 'Trening'),
-    tab('merker', 'person', 'Profil', ' tabbar__knapp--stor'),
+    tab('merker', 'person', 'Profil'),
     tab('aktivitet', 'puls', 'Aktivitet'),
     tab('laer', 'bok', 'Lær'),
   ));

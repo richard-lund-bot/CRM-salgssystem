@@ -14,10 +14,10 @@ import {
   beregnXp, erComeback, bevegelsesMomentum, beregnStreak,
 } from './bevegelse.js';
 import { merkerNå, nyeMerker } from './merker.js';
-import { tallOpp, lagKonfetti } from './animasjon.js';
+import { tallOpp } from './animasjon.js';
 import { holdVaaken, slippVaaken } from './vaakenlaas.js';
 import { laasteOktIder, nyeOpplaste } from './opplasing.js';
-import { streakEtter } from './feiring.js';
+import { streakEtter, kisteKort } from './feiring.js';
 
 let aktivTimer = null;
 let vedSynlig = null; // oppdaterer klokka umiddelbart når appen våkner
@@ -354,25 +354,25 @@ export function visLoggforSkjerm(mount) {
 export function visBevegelseFerdig(mount, resultat, { bevegelse, varighetMin, tittel = null, delvis = false, styrke = null } = {}) {
   const logg = hentLogg();
   const mom = bevegelsesMomentum(logg);
-  const xpTall = el('div', { class: 'xp-stor' }, '+0');
   const nye = resultat.nyeMerker || [];
   const løft = styrke && styrke.volum > 0 ? styrke : null;
-  const feires = resultat.globalOpp || nye.length > 0 || !!løft;
   const volumTall = løft && el('div', { class: 'loft__tall' }, '0 kg');
+  const aktivitet = tittel || BEVEGELSE_NAVN[bevegelse] || 'Bevegelse';
 
   tom(mount);
   mount.append(
     el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, 'Du beveget deg.')),
     el('main', { class: 'innhold' },
-      el('div', { class: 'kort hero ferdighero' },
-        feires && lagKonfetti(),
-        el('span', { class: 'ferdighero__disk movflis--teal' }, ikon('sjekk')),
-        el('p', { class: 'ferdighero__teller' }, 'Det teller.'),
-        delvis && el('p', { class: 'dempet' }, 'En mindre bevegelse flytter deg også fremover.'),
-        el('p', { class: 'hero__eyebrow' }, `${tittel || BEVEGELSE_NAVN[bevegelse] || 'Bevegelse'} · ${varighetMin} min`),
-        xpTall,
-        resultat.comeback && el('p', { class: 'ferdighero__comeback' }, 'Velkommen tilbake — dobbel XP.'),
-      ),
+      // Claim-XP-kiste — samme heiende feiring som i Lær (åpner seg selv, teller
+      // opp XP, avdekker nye merker og evt. opplåste økter).
+      kisteKort({
+        xp: resultat.xp,
+        tittel: delvis ? 'Det teller!' : 'Godt jobba!',
+        under: `${aktivitet} · ${varighetMin} min`,
+        merker: nye,
+        opplaste: resultat.nyeOpplaste || [],
+      }),
+      resultat.comeback && el('p', { class: 'ferdighero__comeback', style: 'text-align:center' }, 'Velkommen tilbake — dobbel XP.'),
       løft && el('div', { class: 'kort loft' },
         el('p', { class: 'hero__eyebrow' }, 'Løftet i dag'),
         volumTall,
@@ -388,18 +388,6 @@ export function visBevegelseFerdig(mount, resultat, { bevegelse, varighetMin, ti
         el('div', { class: 'levelup__niva' }, `Nivå ${resultat.globalOpp}`),
         el('p', { class: 'dempet' }, 'Nivået ditt bor på profilikonet — feiringen bor i merkene.'),
       ),
-      nye.length > 0 && el('div', { class: 'kort' },
-        el('h2', {}, nye.length === 1 ? 'Nytt merke!' : 'Nye merker!'),
-        el('div', { class: 'nymerker' },
-          ...nye.map((m) => el('div', { class: 'nymerke' },
-            el('span', { class: `nymerke__sirkel movflis--${m.farge}` }, ikon(m.ikon)),
-            el('span', { class: 'nymerke__meta' },
-              el('span', { class: 'nymerke__navn' }, m.navn),
-              el('span', { class: 'nymerke__tekst' }, m.tekst),
-            ),
-          )),
-        ),
-      ),
       el('div', { class: 'kort kort--info' },
         el('p', { class: 'oppmuntring__tittel' }, mom.tekst),
         el('p', { class: 'dempet' }, mom.undertekst),
@@ -410,9 +398,8 @@ export function visBevegelseFerdig(mount, resultat, { bevegelse, varighetMin, ti
       ),
     ),
   );
-  tallOpp(xpTall, resultat.xp, { format: (n) => `+${n} XP` });
   if (volumTall) tallOpp(volumTall, løft.volum, { ms: 1100, format: (n) => `${n.toLocaleString('nb-NO')} kg` });
-  // Første bevegelse på dagen som løftet streaken → «Jeg er dedikert» over skjermen.
-  // streakEtter self-gater (dagens flagg), så trygt å kalle her uansett.
+  // Første bevegelse på dagen som løftet streaken → «Jeg er dedikert» over skjermen
+  // (spilles etter at kista er avdekket). streakEtter self-gater på dagens flagg.
   streakEtter(resultat);
 }

@@ -1931,17 +1931,6 @@ html[data-vt="tilbake"]::view-transition-new(root) { animation: vt-inn-t 300ms v
 
 /* Profil-fanen (midten) — litt større, hevet sirkel. Grå når uvalgt,
    fargelagt teal når valgt (eller på en meny-underside). */
-.tabbar__knapp--stor { color: var(--dempet); }
-.tabbar__knapp--stor .tabbar__ikon {
-  width: 48px; height: 48px; margin-top: -20px; border-radius: 50%;
-  background: var(--bg-kort-2); color: var(--dempet); box-shadow: var(--shadow-sm);
-  border: 3px solid var(--bg-kort);
-}
-.tabbar__knapp--stor .tabbar__ikon .ikon { width: 24px; height: 24px; }
-.tabbar__knapp--stor.tabbar__knapp--aktiv { color: var(--aksent); }
-.tabbar__knapp--stor.tabbar__knapp--aktiv .tabbar__ikon {
-  background: var(--aksent); color: #fff; box-shadow: var(--shadow-action);
-}
 
 /* ============================================================
    Lær — kompendium av læringsartikler (M18)
