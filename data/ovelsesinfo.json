@@ -3379,5 +3379,120 @@
    "Puls"
   ],
   "bilde": "fjellklatrer"
+ },
+ {
+  "navn": "Sonestyrt sykling",
+  "kort": "Styr innsatsen etter soner (Z1–Z5) fra puls eller watt. FTP-en din setter grensene — grunnlaget for all smart sykkeltrening.",
+  "steg": [
+   "Del innsatsen i soner: Z1–Z2 er rolig, Z3–Z4 er hardt men jevnt, Z5 er maks.",
+   "Har du wattmåler, settes sonene fra FTP (terskelwatt); ellers styrer du på puls og følelse.",
+   "Legg de fleste turene i lave soner og de få harde i toppen — en polarisert fordeling."
+  ],
+  "tips": [
+   "Ingen måler? Snakketesten funker: rolig = prat fritt, hardt = korte fraser, maks = enkeltord."
+  ],
+  "muskler": [
+   "Puls",
+   "Lår"
+  ]
+ },
+ {
+  "navn": "Rolig grunntur",
+  "kort": "Jevn, behagelig sykling i sone 1–2 der du kan prate. Grunnmuren i all utholdenhet — her bygges den store aerobe motoren.",
+  "steg": [
+   "Hold et jevnt, behagelig tempo der pusten er ledig og du kan snakke.",
+   "Sikt på en rund, jevn tråkkfrekvens rundt 85–95 rpm.",
+   "Bruk turen til å bygge volum — tiden i sadelen teller mer enn farten."
+  ],
+  "tips": [
+   "Kjennes det «for lett»? Da er du riktig i sone 2 — de fleste sykler grunnturene for hardt."
+  ],
+  "muskler": [
+   "Lår",
+   "Puls"
+  ]
+ },
+ {
+  "navn": "Restitusjonstråkk",
+  "kort": "Svært lett tråkk (soft-pedal) som holder beina i bevegelse uten belastning. Aktiv hvile mellom drag og på rolige dager.",
+  "steg": [
+   "Tråkk helt lett i sone 1 med lav motstand — beina skal nesten ikke kjenne det.",
+   "Bruk det som aktiv pause mellom harde intervaller for å hente deg inn.",
+   "En hel restitusjonsøkt skal føles for lett — poenget er å flytte blod, ikke å trene."
+  ],
+  "tips": [
+   "Frister det å ta i? La være — restitusjon virker bare når den er ordentlig lett."
+  ],
+  "muskler": [
+   "Puls",
+   "Lår"
+  ]
+ },
+ {
+  "navn": "Tråkkfrekvens",
+  "kort": "Kadens: hvor mange runder du tråkker per minutt (rpm). Rund, jevn tråkkteknikk og riktig kadens sparer beina og gir fart.",
+  "steg": [
+   "Tråkk rundt og jevnt — tenk å «skrape gjørme av skoen» nederst i tråkket.",
+   "Finn en behagelig grunnkadens rundt 85–95 rpm på flat mark.",
+   "Øv spin-ups: øk kadensen mykt til 110–120+ rpm i lett gir uten å sprette i sadelen."
+  ],
+  "tips": [
+   "Spretter du i sadelen ved høy kadens? Senk litt og bygg jevnheten opp gradvis."
+  ],
+  "muskler": [
+   "Lår",
+   "Legger",
+   "Puls"
+  ]
+ },
+ {
+  "navn": "Motbakketråkk",
+  "kort": "Sykling oppover eller i tungt gir med lavere kadens og mer kraft. Veksle sittende og stående for å fordele belastningen.",
+  "steg": [
+   "I motbakke: velg et gir som lar deg holde jevn kraft uten å stampe helt.",
+   "Sitt og tråkk med rolig, kraftfull kadens (60–75 rpm) og stø overkropp.",
+   "Reis deg når det blir bratt eller beina trenger avveksling — vugg sykkelen lett."
+  ],
+  "tips": [
+   "Stående tråkk gir mer kraft, men koster mer — bruk det i doser."
+  ],
+  "muskler": [
+   "Lår",
+   "Sete",
+   "Puls"
+  ]
+ },
+ {
+  "navn": "Terskelsykling",
+  "kort": "«Komfortabelt hardt» tempo rundt terskel (sweet spot / Z3–Z4) du kan holde lenge. Flytter grensa for hvor lenge du orker fart.",
+  "steg": [
+   "Finn tempoet som er hardt, men jevnt — rundt 88–95 % av terskel (FTP).",
+   "Hold belastningen stabil gjennom hele draget, ikke rykkete.",
+   "Del gjerne opp i blokker på 8–20 minutter med korte pauser."
+  ],
+  "tips": [
+   "Sweet spot (rett under terskel) gir mye effekt for slitasjen — bærebjelken i mange planer."
+  ],
+  "muskler": [
+   "Lår",
+   "Puls"
+  ]
+ },
+ {
+  "navn": "VO2-intervaller",
+  "kort": "Korte, harde drag i sone 5 (3–5 min, eller 30/15) som løfter det maksimale oksygenopptaket raskest. Doser hardt med vett.",
+  "steg": [
+   "Varm godt opp, så kjør harde drag der pusten går maks — 3–5 min eller korte 30/15-drag.",
+   "Hold jevn, høy belastning gjennom draget i stedet for å tømme deg på starten.",
+   "Ta den anviste pausen (lett tråkk) så du klarer å holde kvaliteten i neste drag."
+  ],
+  "tips": [
+   "Én til to slike økter i uka er nok — de er svært krevende og trenger restitusjon."
+  ],
+  "muskler": [
+   "Lår",
+   "Puls",
+   "Pust"
+  ]
  }
 ]

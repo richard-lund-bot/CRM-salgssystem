@@ -2537,6 +2537,10 @@
       "ref": "https://pubmed.ncbi.nlm.nih.gov/16430681/ + https://roadmancycling.com/blog/stephen-seiler-80-20-polarised-training-cyclists",
       "notat": "Originalstudien fulgte langrennsløpere; Seiler har selv generalisert modellen til sykkel. Enklere: kort Z2-blokken til 15 min. Tøffere: forleng Z2 til 35 min — aldri hardere, bare lenger."
     },
+    "krever": [
+      "Sonestyrt sykling",
+      "Rolig grunntur"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -2587,6 +2591,11 @@
       "ref": "https://deliberateperformance.ca/wp-content/uploads/2011/01/effects-of-moderate-intensity-endurance-and-high-intensity-intermittent-training-on-anaerobic-capacity-and-e280a2vo2max.pdf + https://link.springer.com/article/10.1007/s12576-019-00676-7",
       "notat": "Original 8×20/10 på sykkelergometer beholdt; oppvarming/nedspinning etter lab-praksis fra 1996-studien. Nybegynner: 6 runder og veldig hardt i stedet for all-out. Erfaren: to sett med 5 min rolig mellom."
     },
+    "krever": [
+      "Sonestyrt sykling",
+      "VO2-intervaller",
+      "Tråkkfrekvens"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -2648,6 +2657,10 @@
       "ref": "https://www.trainingpeaks.com/blog/power-training-levels/ + https://roadmancycling.com/blog/ftp-training-zones-cycling-complete-guide",
       "notat": "L2 (56–75 % FTP) styrt på følelse/RPE i stedet for wattmåler. Enklere: 3×6 min i nedre Z2. Tøffere: 3×10 min i øvre Z2 (73–75 % FTP) — fortsatt snakketempo."
     },
+    "krever": [
+      "Sonestyrt sykling",
+      "Rolig grunntur"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -2709,6 +2722,10 @@
       "ref": "https://pubmed.ncbi.nlm.nih.gov/17414804/ + https://norwegianscitechnews.com/2024/05/4x4-interval-training-popular-and-controversial/",
       "notat": "2007-studien var løpsbasert; 4×4 er anbefalt på sykkel av NTNU-miljøet selv og pulsstyringen er identisk. Enklere: 3×4 min ved 85–90 % makspuls. Tøffere: 93–95 % av makspuls og aktive pauser i Z2."
     },
+    "krever": [
+      "Sonestyrt sykling",
+      "VO2-intervaller"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -2770,6 +2787,10 @@
       "ref": "https://www.trainingpeaks.com/blog/3-high-cadence-cycling-workouts-base-training/ + https://trainright.com/science-of-cycling-cadence-training/",
       "notat": "Stopp spin-up-økningen om du hopper i setet. Enklere: 4 spin-ups og tak på 105 rpm. Tøffere: 8 spin-ups, eller ettbeinstråkk 2×(1 min per bein) på rulle."
     },
+    "krever": [
+      "Tråkkfrekvens",
+      "Rolig grunntur"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -2852,6 +2873,10 @@
       "ref": "https://onlinelibrary.wiley.com/doi/10.1111/sms.13627 + https://www.trainingpeaks.com/blog/ronnestad-30-15-intervals/",
       "notat": "Redusert fra 3×13 til 2×13 drag for å holde 38 min. Enklere: 2×10 drag og RPE 8. Original/tøffere: full studieprotokoll 3×13 (ca. 50 min) for erfarne."
     },
+    "krever": [
+      "Sonestyrt sykling",
+      "VO2-intervaller"
+    ],
     "blokker": [
       {
         "kind": "kondisjon",
@@ -8514,6 +8539,390 @@
         "parametre": {
           "tidMin": 4,
           "sone": "Z1 · pulsen ned"
+        }
+      }
+    ]
+  },
+  {
+    "id": "sykkel-lang",
+    "kategori": "sykkel",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Lang grunntur i sone 2",
+    "beskrivelse": "Ryggraden i all sykkeltrening: én lang, jevn tur i sone 2 der du kan prate hele veien. Tiden i sadelen bygger den store aerobe motoren.",
+    "varighetMin": 45,
+    "utstyr": [
+      "sykkel"
+    ],
+    "kilde": {
+      "navn": "Langkjøring / sone 2-base (Seiler; Allen & Coggan)",
+      "type": "retningslinje",
+      "ref": "https://sportsci.org/2009/ss.htm + https://www.trainerroad.com/blog/zone-2-training-for-endurance/",
+      "notat": "Kontinuerlig sone 2 delt i tre timerfaser. Hold en rund kadens (85–95 rpm) og snakketempo hele veien; tiden teller mer enn farten."
+    },
+    "krever": [
+      "Sonestyrt sykling",
+      "Rolig grunntur"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig tråkk, gradvis opp",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 → Z2 · trapp rolig opp"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Jevn sone 2 — snakketempo",
+        "min": 35,
+        "parametre": {
+          "tidMin": 35,
+          "sone": "Z2 · rund kadens 85–95 rpm, prat hele veien"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig nedspinning",
+        "min": 5,
+        "parametre": {
+          "tidMin": 5,
+          "sone": "Z1 · pust ned"
+        }
+      }
+    ]
+  },
+  {
+    "id": "sykkel-restitusjon",
+    "kategori": "sykkel",
+    "skill": "lav",
+    "intensitet": "lett",
+    "navn": "Restitusjonstur",
+    "beskrivelse": "Aktiv hvile på sykkelen: svært lett tråkk som flytter blod og løsner beina uten å belaste. Perfekt dagen etter en hard økt.",
+    "varighetMin": 25,
+    "utstyr": [
+      "sykkel"
+    ],
+    "kilde": {
+      "navn": "Aktiv restitusjon / recovery spin",
+      "type": "retningslinje",
+      "ref": "https://www.trainerroad.com/blog/active-recovery/ + https://www.bicycling.com/training/a20031104/recovery-rides/",
+      "notat": "Hele økta i sone 1 med lav motstand og lett kadens. Skal føles for lett — poenget er å flytte blod, ikke å trene. Stopp om beina blir tunge."
+    },
+    "krever": [
+      "Restitusjonstråkk"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig start",
+        "min": 3,
+        "parametre": {
+          "tidMin": 3,
+          "sone": "Z1 · svært lett"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "Lett soft-pedal",
+        "min": 20,
+        "parametre": {
+          "tidMin": 20,
+          "sone": "Z1 · lav motstand, beina nesten uten belastning"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig avslutning",
+        "min": 2,
+        "parametre": {
+          "tidMin": 2,
+          "sone": "Z1 · pust rolig"
+        }
+      }
+    ]
+  },
+  {
+    "id": "sykkel-sweetspot",
+    "kategori": "sykkel",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "Sweet spot-blokker 3×8",
+    "beskrivelse": "Mye effekt for slitasjen: tre blokker like under terskel. Sweet spot bygger terskelform effektivt uten å knuse deg — bærebjelken i mange planer.",
+    "varighetMin": 42,
+    "utstyr": [
+      "sykkel"
+    ],
+    "kilde": {
+      "navn": "Sweet Spot Training (Frank Overton / FasCat)",
+      "type": "program",
+      "ref": "https://fascatcoaching.com/tips/what-is-sweet-spot-training/ + https://www.trainerroad.com/blog/sweet-spot-training/",
+      "notat": "Tre blokker på 8 min ved 88–94 % av FTP med rolig pause mellom. Hold jevn belastning og rund kadens; bygg til lengre blokker over tid."
+    },
+    "krever": [
+      "Sonestyrt sykling",
+      "Terskelsykling"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig tråkk + et par spin-ups",
+        "min": 8,
+        "parametre": {
+          "tidMin": 8,
+          "sone": "Z1–Z2 · bli varm"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "3×8 min sweet spot / 4 min rolig",
+        "min": 30,
+        "parametre": {
+          "runder": 3,
+          "faser": [
+            {
+              "navn": "Sweet spot @ 88–94 % FTP, kadens 85–95",
+              "sek": 480,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig tråkk Z1",
+              "sek": 240,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig nedspinning",
+        "min": 4,
+        "parametre": {
+          "tidMin": 4,
+          "sone": "Z1 · pust ned"
+        }
+      }
+    ]
+  },
+  {
+    "id": "sykkel-terskel",
+    "kategori": "sykkel",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "Terskeløkt 4×6",
+    "beskrivelse": "Kontrollert «koselig hardt» rundt terskel. Fire drag som flytter grensa for hvor lenge du orker å holde fart — hjørnesteinen i seriøs sykkeltrening.",
+    "varighetMin": 40,
+    "utstyr": [
+      "sykkel"
+    ],
+    "kilde": {
+      "navn": "Terskelintervaller (Allen & Coggan; norsk terskeltradisjon)",
+      "type": "program",
+      "ref": "https://www.trainingpeaks.com/blog/threshold-training-for-cyclists/ + https://www.trainerroad.com/blog/threshold-intervals/",
+      "notat": "Fire terskeldrag på 6 min ved 95–100 % av FTP med 3 min rolig mellom. Hold jevn belastning gjennom hele draget — ikke start for hardt."
+    },
+    "krever": [
+      "Sonestyrt sykling",
+      "Terskelsykling"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Gradvis oppvarming + spin-ups",
+        "min": 10,
+        "parametre": {
+          "tidMin": 10,
+          "sone": "Z1–Z2 · opp mot terskel"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "4×6 min terskel / 3 min rolig",
+        "min": 26,
+        "parametre": {
+          "runder": 4,
+          "faser": [
+            {
+              "navn": "Terskel @ 95–100 % FTP — jevnt og komfortabelt hardt",
+              "sek": 360,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig tråkk Z1",
+              "sek": 180,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig nedspinning",
+        "min": 4,
+        "parametre": {
+          "tidMin": 4,
+          "sone": "Z1 · pust ned"
+        }
+      }
+    ]
+  },
+  {
+    "id": "sykkel-motbakke",
+    "kategori": "sykkel",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "Motbakkeintervaller",
+    "beskrivelse": "Kraft og form i én: tunge drag i motbakke eller stort gir med lav kadens. Bygger tråkkraft og terskel, og lærer beina å dra tungt.",
+    "varighetMin": 36,
+    "utstyr": [
+      "sykkel"
+    ],
+    "kilde": {
+      "navn": "Motbakke-/kraftintervaller (low-cadence force intervals)",
+      "type": "program",
+      "ref": "https://www.trainerroad.com/blog/low-cadence-drills-for-cyclists/ + https://www.bicycling.com/training/a20026149/hill-repeats/",
+      "notat": "Fem drag på 4 min i motbakke eller tungt gir ved lav kadens (60–70 rpm), terskelbelastning, med rolig nedtråkk mellom. Reis deg i doser når det blir bratt."
+    },
+    "krever": [
+      "Sonestyrt sykling",
+      "Motbakketråkk",
+      "Terskelsykling"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Rolig tråkk, gradvis opp",
+        "min": 8,
+        "parametre": {
+          "tidMin": 8,
+          "sone": "Z1–Z2 · bli varm"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "5×4 min motbakke / 3 min rolig",
+        "min": 24,
+        "parametre": {
+          "runder": 5,
+          "faser": [
+            {
+              "navn": "Tungt gir / motbakke @ terskel, kadens 60–70",
+              "sek": 240,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig tråkk ned Z1",
+              "sek": 180,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig nedspinning",
+        "min": 4,
+        "parametre": {
+          "tidMin": 4,
+          "sone": "Z1 · pust ned"
+        }
+      }
+    ]
+  },
+  {
+    "id": "sykkel-overunder",
+    "kategori": "sykkel",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "Over-under-intervaller",
+    "beskrivelse": "Terskeltrening med et hint av VO2: du veksler mellom like under og like over terskel uten pause. Lærer kroppen å håndtere melkesyre under fart.",
+    "varighetMin": 38,
+    "utstyr": [
+      "sykkel"
+    ],
+    "kilde": {
+      "navn": "Over-under-intervaller (klassisk terskelprotokoll)",
+      "type": "program",
+      "ref": "https://www.trainerroad.com/blog/over-unders/ + https://www.trainingpeaks.com/blog/over-under-intervals/",
+      "notat": "Tre blokker der du veksler 2 min «under» (~90 % FTP) og 1 min «over» (~105 % FTP) uten pause, med rolig tråkk mellom blokkene. Krever god pacing."
+    },
+    "krever": [
+      "Sonestyrt sykling",
+      "Terskelsykling",
+      "VO2-intervaller"
+    ],
+    "blokker": [
+      {
+        "kind": "kondisjon",
+        "rolle": "oppvarming",
+        "formatNavn": "Gradvis oppvarming + spin-ups",
+        "min": 10,
+        "parametre": {
+          "tidMin": 10,
+          "sone": "Z1–Z2 · opp mot terskel"
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "hoved",
+        "formatNavn": "3× over-under-blokk / 4 min rolig",
+        "min": 24,
+        "parametre": {
+          "runder": 3,
+          "faser": [
+            {
+              "navn": "Under: ~90 % FTP",
+              "sek": 120,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Over: ~105 % FTP",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Under: ~90 % FTP",
+              "sek": 120,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Over: ~105 % FTP",
+              "sek": 60,
+              "type": "arbeid"
+            },
+            {
+              "navn": "Rolig tråkk Z1",
+              "sek": 240,
+              "type": "hvile"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "kondisjon",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig nedspinning",
+        "min": 4,
+        "parametre": {
+          "tidMin": 4,
+          "sone": "Z1 · pust ned"
         }
       }
     ]

@@ -124,8 +124,8 @@ for (const o of okter) {
     if (!Array.isArray(o.krever)) err(`${at}: krever må være en liste`);
     else for (const k of o.krever) if (!kreverFinnes(k)) err(`${at}: krever "${k}" finnes ikke i ovelsesinfo.json`);
   }
-  if ((o.kategori === 'gatur' || o.kategori === 'lop' || o.kategori === 'hiit') && (!Array.isArray(o.krever) || o.krever.length === 0)) {
-    err(`${at}: gåtur/løp/HIIT må ha minst én krever-ferdighet (låses opp i Lær)`);
+  if (['gatur', 'lop', 'hiit', 'sykkel'].includes(o.kategori) && (!Array.isArray(o.krever) || o.krever.length === 0)) {
+    err(`${at}: gåtur/løp/HIIT/sykkel må ha minst én krever-ferdighet (låses opp i Lær)`);
   }
 
   // blokker

@@ -85,5 +85,18 @@
       "hiit-bevegelser",
       "hiit-protokoller"
     ]
+  },
+  {
+    "id": "sykkel",
+    "navn": "Sykkel",
+    "undertittel": "Ute eller på rulle — soner, kadens og intervaller.",
+    "ikon": "sykkel",
+    "farge": "lime",
+    "status": "aktiv",
+    "seksjoner": [
+      "sykkel-grunnlag",
+      "sykkel-teknikk",
+      "sykkel-intervaller"
+    ]
   }
 ]

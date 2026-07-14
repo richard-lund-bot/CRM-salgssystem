@@ -7058,5 +7058,485 @@
         }
       }
     ]
+  },
+  {
+    "id": "sykkel-grunnlag",
+    "disiplin": "sykkel",
+    "navn": "Grunnlag & soner",
+    "undertittel": "Slik trener du med sykkelen: intensitetssonene, den rolige grunnturen og aktiv hvile.",
+    "farge": "lime",
+    "nivaBand": [
+      1,
+      2
+    ],
+    "enheter": [
+      {
+        "id": "sykkel-soner",
+        "navn": "Sykling etter soner",
+        "intro": "God sykkeltrening handler om å styre innsatsen. Lær sonene, den rolige grunnturen som bygger motoren, og hvordan du henter deg inn.",
+        "teori": {
+          "id": "sykkel-teori-1",
+          "tittel": "Tren med hodet, ikke bare beina",
+          "undertittel": "Intensitetssonene, FTP og hvorfor de fleste turene bør være rolige.",
+          "lesetid": 5,
+          "bilde": "puls",
+          "avsnitt": [
+            {
+              "p": "Sykling er en av de snilleste og mest effektive kondisjonsformene som finnes — leddvennlig, og lett å dosere helt presist. Men skal du bli bedre, må du styre innsatsen. Nøkkelen er intensitetssoner. Dette er den første leksjonen i sykkelskolen."
+            },
+            {
+              "h": "Fem soner"
+            },
+            {
+              "p": "Vi deler innsatsen i soner fra Z1 til Z5. Z1–Z2 er rolig utholdenhet der du kan prate; Z3–Z4 er «komfortabelt hardt» rundt terskelen; Z5 er kortvarig maks. Hver sone har sin jobb, og en god sykkelplan bruker dem bevisst i stedet for å tråkke like hardt hver gang."
+            },
+            {
+              "h": "FTP setter grensene"
+            },
+            {
+              "p": "Har du wattmåler, regnes sonene ut fra FTP — den høyeste jevne effekten (watt) du klarer å holde i omtrent en time. Uten måler styrer du like godt på puls og følelse. Poenget er det samme: å vite når du er rolig, når du er på terskel, og når du gir alt."
+            },
+            {
+              "h": "Mest rolig, litt hardt"
+            },
+            {
+              "p": "Forskning på utholdenhetsutøvere viser en tydelig, «polarisert» fordeling: rundt 80 % av tiden er rolig, og bare en liten del er hard. Den rolige grunnturen bygger den store aerobe motoren, og gjør at de få harde øktene faktisk virker. Den vanligste feilen er å sykle grunnturene for hardt."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva er FTP?",
+              "valg": [
+                "Den høyeste jevne effekten du klarer å holde i ca. en time",
+                "Toppfarten din",
+                "En type sykkel"
+              ],
+              "riktig": 0,
+              "forklaring": "FTP (functional threshold power) er terskeleffekten — grunnlaget sonene regnes ut fra."
+            },
+            {
+              "sporsmal": "Hvordan bør treningen fordeles?",
+              "valg": [
+                "Mest rolig (~80 %), litt hardt",
+                "Alt på terskel",
+                "Alt maks"
+              ],
+              "riktig": 0,
+              "forklaring": "Den polariserte fordelingen — mye rolig, litt hardt — bygger form best."
+            },
+            {
+              "sporsmal": "Hva er den vanligste feilen på grunnturer?",
+              "valg": [
+                "Å sykle dem for hardt",
+                "Å sykle dem for lett",
+                "Å sitte for stille"
+              ],
+              "riktig": 0,
+              "forklaring": "De fleste tråkker roligturene for hardt. Hold igjen — grunnturen skal være behagelig."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Allen & Coggan – «Training and Racing with a Power Meter»",
+              "om": "Standardverket om wattbasert trening: FTP, intensitetssoner og strukturerte økter."
+            },
+            {
+              "kilde": "Seiler – polarisert treningsfordeling (2010)",
+              "om": "Viser at utholdenhetsutøvere trener mest i lav sone og bare en liten andel hardt."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Sonestyrt sykling",
+            "familie": "metode",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 60
+            },
+            "blurb": "Kjenn forskjellen på sonene: prat fritt i rolig sone, korte fraser når det er hardt, enkeltord på maks.",
+            "dose": "Test sonene i noen minutter",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hvordan kjenner du at du er i rolig sone?",
+              "valg": [
+                "Du kan prate i hele setninger",
+                "Du får bare fram enkeltord",
+                "Du kan ikke puste"
+              ],
+              "riktig": 0,
+              "forklaring": "Rolig sone = du kan snakke fritt. Blir praten hakkete, er du på vei opp i sonene."
+            }
+          },
+          {
+            "ovelse": "Rolig grunntur",
+            "familie": "utholdenhet",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 600
+            },
+            "blurb": "Sykle jevnt og behagelig i sone 2 der du kan prate, med en rund kadens rundt 85–95 rpm.",
+            "dose": "Sykle rolig 10 minutter",
+            "minutter": 5,
+            "sjekk": {
+              "sporsmal": "Hvor hardt er en rolig grunntur?",
+              "valg": [
+                "Så lett at du kan føre en samtale",
+                "Så hardt du klarer",
+                "Full sprint"
+              ],
+              "riktig": 0,
+              "forklaring": "Grunnturen er snakketempo i sone 2 — kjennes nesten for lett, og det er poenget."
+            }
+          },
+          {
+            "ovelse": "Restitusjonstråkk",
+            "familie": "utholdenhet",
+            "niva": 1,
+            "maal": {
+              "type": "hold",
+              "verdi": 300
+            },
+            "blurb": "Tråkk helt lett i sone 1 med lav motstand — aktiv hvile som flytter blod uten å belaste beina.",
+            "dose": "Soft-pedal rolig 5 minutter",
+            "minutter": 4
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 20,
+          "intensitet": 2,
+          "oppvarming": "Tråkk rolig i fem minutter og øk gradvis.",
+          "nedtrapping": "Spinn ned rolig og pust dypt.",
+          "ovelser": [
+            {
+              "ovelse": "Rolig grunntur",
+              "sett": 1,
+              "holdSek": 900,
+              "pauseSek": 60
+            },
+            {
+              "ovelse": "Restitusjonstråkk",
+              "sett": 1,
+              "holdSek": 300,
+              "pauseSek": 0
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "sykkel-teknikk",
+    "disiplin": "sykkel",
+    "navn": "Teknikk & kadens",
+    "undertittel": "Et rundt, effektivt tråkk: riktig kadens, spin-ups og kraften i motbakke.",
+    "farge": "lime",
+    "nivaBand": [
+      2,
+      3
+    ],
+    "enheter": [
+      {
+        "id": "sykkel-kadens",
+        "navn": "Tråkk og kadens",
+        "intro": "Hvordan du tråkker betyr like mye som hvor hardt. Lær et rundt tråkk, finn riktig kadens, og temm motbakkene.",
+        "teori": {
+          "id": "sykkel-teori-2",
+          "tittel": "Rundt, jevnt og effektivt",
+          "undertittel": "Hva kadens er, hvorfor et rundt tråkk lønner seg, og hvordan du sykler i motbakke.",
+          "lesetid": 4,
+          "avsnitt": [
+            {
+              "p": "To ryttere kan holde samme fart på helt ulike måter. Forskjellen ligger i tråkket: hvor jevnt og rundt du tråkker, og hvilken kadens (tråkkfrekvens) du velger. God teknikk sparer beina og gir mer fart for kreftene."
+            },
+            {
+              "h": "Hva er kadens?"
+            },
+            {
+              "p": "Kadens er hvor mange runder du tråkker per minutt (rpm). De fleste sykler mest effektivt rundt 85–95 rpm på flat mark. Lavere kadens i tungt gir belaster musklene mer; høyere kadens flytter belastningen mot pust og hjerte. Å kunne veksle er en ferdighet i seg selv."
+            },
+            {
+              "h": "Tråkk rundt"
+            },
+            {
+              "p": "Sikt på et jevnt, rundt tråkk hele veien rundt sirkelen — ikke bare stampe nedover. Et bilde som hjelper: tenk at du «skraper gjørme av skoen» nederst i tråkket. Spin-ups, der du gradvis øker kadensen til 110–120+ rpm i lett gir uten å sprette i sadelen, bygger nettopp denne jevnheten."
+            },
+            {
+              "h": "Motbakke: kraft og posisjon"
+            },
+            {
+              "p": "I motbakke faller kadensen og kraften øker. Velg et gir som lar deg holde jevn kraft uten å stampe helt, og sitt rolig med stø overkropp. Reis deg når det blir bratt eller beina trenger avveksling — stående tråkk gir mer kraft, men koster mer, så bruk det i doser."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva er en effektiv grunnkadens på flat mark for de fleste?",
+              "valg": [
+                "Rundt 85–95 rpm",
+                "Under 40 rpm",
+                "Over 150 rpm"
+              ],
+              "riktig": 0,
+              "forklaring": "De fleste sykler mest effektivt rundt 85–95 rpm; lavere belaster musklene mer, høyere pust/hjerte."
+            },
+            {
+              "sporsmal": "Hva øver du med spin-ups?",
+              "valg": [
+                "Et rundt, jevnt tråkk ved høy kadens",
+                "Maksimal styrke",
+                "Å bremse"
+              ],
+              "riktig": 0,
+              "forklaring": "Spin-ups bygger et jevnt, rundt tråkk ved høy kadens uten å sprette i sadelen."
+            },
+            {
+              "sporsmal": "Når bør du reise deg i motbakke?",
+              "valg": [
+                "Når det blir bratt eller beina trenger avveksling",
+                "Aldri",
+                "Hele tiden"
+              ],
+              "riktig": 0,
+              "forklaring": "Stående tråkk gir mer kraft men koster mer — bruk det i doser, ikke konstant."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Allen & Coggan – «Training and Racing with a Power Meter» (kadens)",
+              "om": "Beskriver kadensens rolle og hvordan tråkkfrekvens påvirker belastning og effektivitet."
+            },
+            {
+              "kilde": "USA Cycling / trenerlitteratur – tråkkteknikk og spin-ups",
+              "om": "Praktiske drills for et rundt tråkk og trygg høykadens-teknikk."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Tråkkfrekvens",
+            "familie": "teknikk",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 6
+            },
+            "blurb": "Finn grunnkadensen din rundt 85–95 rpm, og øv spin-ups: øk mykt til 110–120+ rpm i lett gir uten å sprette.",
+            "dose": "6 spin-ups à 30 sek",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hva er tegn på for høy kadens for kontrollen din?",
+              "valg": [
+                "Du spretter i sadelen",
+                "Du sitter helt rolig",
+                "Du puster lett"
+              ],
+              "riktig": 0,
+              "forklaring": "Spretter du i sadelen, er kadensen høyere enn kontrollen din — senk litt og bygg opp."
+            }
+          },
+          {
+            "ovelse": "Motbakketråkk",
+            "familie": "teknikk",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 300
+            },
+            "blurb": "Sykle i tungt gir / motbakke med rolig, kraftfull kadens (60–75 rpm), og reis deg i doser når det blir bratt.",
+            "dose": "5 min motbakke/tungt gir",
+            "minutter": 5
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 22,
+          "intensitet": 3,
+          "oppvarming": "Tråkk rolig og gjør et par spin-ups for å bli varm.",
+          "nedtrapping": "Spinn ned rolig i lett gir.",
+          "ovelser": [
+            {
+              "ovelse": "Tråkkfrekvens",
+              "sett": 6,
+              "holdSek": 30,
+              "pauseSek": 90
+            },
+            {
+              "ovelse": "Motbakketråkk",
+              "sett": 3,
+              "holdSek": 240,
+              "pauseSek": 120
+            },
+            {
+              "ovelse": "Rolig grunntur",
+              "sett": 1,
+              "holdSek": 300,
+              "pauseSek": 0
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "sykkel-intervaller",
+    "disiplin": "sykkel",
+    "navn": "Intervaller",
+    "undertittel": "Fart og form: terskel, sweet spot og de harde VO2-dragene som løfter taket.",
+    "farge": "lime",
+    "nivaBand": [
+      3,
+      3
+    ],
+    "enheter": [
+      {
+        "id": "sykkel-intervaller-1",
+        "navn": "Terskel og VO2",
+        "intro": "De harde øktene som gjør deg raskere: den kontrollerte terskelen du kan holde lenge, og de brutale VO2-dragene. Doser dem med vett.",
+        "teori": {
+          "id": "sykkel-teori-3",
+          "tittel": "Der farten bygges",
+          "undertittel": "Terskel og sweet spot, VO2-intervaller, og hvorfor de bare er en liten del av treningen.",
+          "lesetid": 5,
+          "avsnitt": [
+            {
+              "p": "Når grunnmuren av rolige turer er på plass, er det de harde øktene som løfter taket for hvor fort og lenge du kan sykle. Men hardt betyr kontrollert: de beste intervalløktene er nettopp veldig styrte."
+            },
+            {
+              "h": "Terskel og sweet spot"
+            },
+            {
+              "p": "Terskeltempo er farten du så vidt klarer å holde lenge — «komfortabelt hardt», rundt din FTP. «Sweet spot» ligger like under (88–95 % av FTP) og gir mye treningseffekt for relativt lite slitasje. Terskel- og sweet-spot-blokker på 8–20 minutter er bærebjelken i mange sykkelplaner."
+            },
+            {
+              "h": "VO2-intervaller"
+            },
+            {
+              "p": "VO2-intervaller er korte, harde drag i sone 5 — for eksempel 4×4 minutter, eller korte 30/15-drag der du veksler 30 sekunder hardt og 15 sekunder lett. De løfter det maksimale oksygenopptaket (VO2-maks) raskt, men er svært krevende, så det holder med én til to slike økter i uka."
+            },
+            {
+              "h": "Doser hardt med vett"
+            },
+            {
+              "p": "Harde intervaller virker bare hvis du er uthvilt nok til å gjennomføre dem godt, og lar kroppen restituere etterpå. Legg alltid en grundig oppvarming foran, hold jevn belastning gjennom hvert drag i stedet for å tømme deg på starten, og la de rolige turene fylle resten av uka."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva er «sweet spot»?",
+              "valg": [
+                "Like under terskel (88–95 % FTP) — mye effekt for slitasjen",
+                "Full sprint",
+                "Rolig grunntur"
+              ],
+              "riktig": 0,
+              "forklaring": "Sweet spot ligger rett under terskel og gir mye treningseffekt for relativt lite slitasje."
+            },
+            {
+              "sporsmal": "Hva er et 30/15-drag?",
+              "valg": [
+                "30 sek hardt, 15 sek lett, gjentatt",
+                "30 minutter hardt",
+                "30 sekunder pause"
+              ],
+              "riktig": 0,
+              "forklaring": "30/15 er korte VO2-mikrointervaller: 30 sek hardt og 15 sek lett, gjentatt mange ganger."
+            },
+            {
+              "sporsmal": "Hvor mange harde VO2-økter i uka passer?",
+              "valg": [
+                "Én til to",
+                "Fem til seks",
+                "Ingen"
+              ],
+              "riktig": 0,
+              "forklaring": "VO2-intervaller er svært krevende — én til to i uka er nok, resten bør være rolig."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Rønnestad et al. – 30/15-mikrointervaller",
+              "om": "Forskning som viser at korte 30/15-VO2-intervaller løfter kondisjonen effektivt."
+            },
+            {
+              "kilde": "Helgerud, Hoff m.fl. – 4×4-intervaller (CERG/NTNU, 2007)",
+              "om": "Viser at harde 4-minutters intervaller løfter maksimalt oksygenopptak."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Terskelsykling",
+            "familie": "intervall",
+            "niva": 3,
+            "maal": {
+              "type": "hold",
+              "verdi": 480
+            },
+            "blurb": "Sykle jevnt og «komfortabelt hardt» rundt 88–95 % av terskel. Hold belastningen stabil gjennom hele draget.",
+            "dose": "8 min i sweet spot",
+            "minutter": 5,
+            "sjekk": {
+              "sporsmal": "Hvordan kjennes riktig terskeltempo?",
+              "valg": [
+                "Komfortabelt hardt og jevnt — noen ord om gangen",
+                "Full sprint fra start",
+                "Rolig snakketempo"
+              ],
+              "riktig": 0,
+              "forklaring": "Terskel er jevnt «koselig hardt». Starter du for hardt, faller farten — legg deg litt under og hold."
+            }
+          },
+          {
+            "ovelse": "VO2-intervaller",
+            "familie": "intervall",
+            "niva": 3,
+            "maal": {
+              "type": "hold",
+              "verdi": 240
+            },
+            "blurb": "Etter god oppvarming: kjør harde drag i sone 5 (f.eks. 4 min, eller 30/15) med jevn, høy belastning, og ta full pause.",
+            "dose": "Et hardt 4-min drag",
+            "minutter": 5,
+            "sjekk": {
+              "sporsmal": "Hva er lurt før harde VO2-intervaller?",
+              "valg": [
+                "Varme godt opp først",
+                "Hoppe rett på",
+                "Være helt utslitt"
+              ],
+              "riktig": 0,
+              "forklaring": "Hard innsats krever varm kropp — grundig oppvarming gir bedre og tryggere drag."
+            }
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 24,
+          "intensitet": 5,
+          "oppvarming": "Tråkk rolig i ti minutter med et par spin-ups.",
+          "nedtrapping": "Spinn ned rolig i fem minutter.",
+          "ovelser": [
+            {
+              "ovelse": "Terskelsykling",
+              "sett": 2,
+              "holdSek": 480,
+              "pauseSek": 120
+            },
+            {
+              "ovelse": "VO2-intervaller",
+              "sett": 4,
+              "holdSek": 240,
+              "pauseSek": 180
+            },
+            {
+              "ovelse": "Restitusjonstråkk",
+              "sett": 1,
+              "holdSek": 300,
+              "pauseSek": 0
+            }
+          ]
+        }
+      }
+    ]
   }
 ]
