@@ -17,13 +17,19 @@
     ]
   },
   {
-    "id": "frivekt",
-    "navn": "Frivekt",
-    "undertittel": "Gym — manualer, stang og kettlebells.",
+    "id": "styrke",
+    "navn": "Styrke",
+    "undertittel": "Frie vekter — manualer, kettlebells og stang. Bygg ekte styrke.",
     "ikon": "vekt",
     "farge": "koral",
-    "status": "kommer",
-    "seksjoner": []
+    "status": "aktiv",
+    "seksjoner": [
+      "styrke-grunnlag",
+      "styrke-kneboy",
+      "styrke-hengsel",
+      "styrke-press",
+      "styrke-kraft"
+    ]
   },
   {
     "id": "loping",

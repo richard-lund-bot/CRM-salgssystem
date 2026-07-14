@@ -5419,5 +5419,1039 @@
         }
       }
     ]
+  },
+  {
+    "id": "styrke-grunnlag",
+    "disiplin": "styrke",
+    "navn": "Grunnlag",
+    "undertittel": "Hva styrketrening er, hvordan den virker, og prinsippet som får deg til å vokse.",
+    "farge": "koral",
+    "nivaBand": [
+      1,
+      2
+    ],
+    "enheter": [
+      {
+        "id": "styrke-hva",
+        "navn": "Slik bygger du styrke",
+        "intro": "Aller først: hva skjer i kroppen når du løfter, og hvorfor er frie vekter en så god måte å bli sterk på? Vi starter med å mobilisere for løft.",
+        "teori": {
+          "id": "styrke-teori-1",
+          "tittel": "Styrke bygges på fem bevegelser",
+          "undertittel": "Hva styrketrening gjør med kroppen — og hvorfor frie vekter gir mest igjen.",
+          "lesetid": 5,
+          "bilde": "styrke-teori-1",
+          "avsnitt": [
+            {
+              "p": "Styrketrening gjør deg ikke bare sterkere. Den bygger muskler, gjør beina tettere, holder stoffskiftet oppe og beskytter deg mot skade og alderdommens forfall. Voksne bør trene styrke minst to dager i uka — det er en av de mest verdifulle tingene du kan gjøre for helsa. Dette er den første leksjonen i styrkeskolen."
+            },
+            {
+              "h": "To ting blir sterkere"
+            },
+            {
+              "p": "Når du løfter, skjer to tilpasninger. Først lærer nervesystemet å bruke musklene du allerede har mer effektivt — derfor blir du raskt sterkere de første ukene uten å bli særlig større. Deretter bygger musklene seg opp og vokser. Begge deler kommer av å utfordre kroppen litt mer over tid."
+            },
+            {
+              "h": "Derfor frie vekter"
+            },
+            {
+              "p": "Manualer, kettlebells og stang lar deg bevege deg fritt gjennom hele bevegelsesbanen, og tvinger kroppen til å stabilisere selv. Det bygger styrke du kan bruke i hverdagen og idretten, ikke bare i én maskin. Til gjengjeld krever de teknikk — som du lærer her, steg for steg."
+            },
+            {
+              "h": "Fem grunnbevegelser"
+            },
+            {
+              "p": "Nesten all styrke bygges gjennom fem mønstre: knebøy (bøye i beina), hoftehengsel (bøye i hofta), press (skyve fra deg), trekk (dra mot deg) og bæring (holde og gå). Behersker du disse, dekker du hele kroppen. Vi tar ett mønster om gangen — men først mobiliserer vi kroppen for å løfte."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva er de to tilpasningene som gjør deg sterkere?",
+              "valg": [
+                "Nervesystemet blir mer effektivt, og musklene vokser",
+                "Bare at du går ned i vekt",
+                "Bare at du blir mer bevegelig"
+              ],
+              "riktig": 0,
+              "forklaring": "Først blir nervestyringen bedre (rask styrkeøkning), så vokser musklene."
+            },
+            {
+              "sporsmal": "Hvorfor frie vekter framfor bare maskiner?",
+              "valg": [
+                "Full bevegelsesbane og kroppen må stabilisere selv",
+                "Fordi de er tyngre å bære",
+                "Fordi maskiner ikke virker"
+              ],
+              "riktig": 0,
+              "forklaring": "Frie vekter gir full bane og trener stabiliseringen — brukbar styrke for hverdag og idrett."
+            },
+            {
+              "sporsmal": "Hvilke er de fem grunnbevegelsene?",
+              "valg": [
+                "Knebøy, hengsel, press, trekk og bæring",
+                "Bare knebøy og markløft",
+                "Løping, hopp, kast, svøm og gå"
+              ],
+              "riktig": 0,
+              "forklaring": "Knebøy, hoftehengsel, press, trekk og bæring dekker til sammen hele kroppen."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "American College of Sports Medicine – posisjonsuttalelse om styrketrening (2009)",
+              "om": "Anbefaler styrketrening minst to dager i uka og beskriver de grunnleggende prinsippene for friske voksne."
+            },
+            {
+              "kilde": "Mark Rippetoe – «Starting Strength»",
+              "om": "Standardverk om hvorfor sammensatte frivektsøvelser bygger styrke effektivt, og hvordan teknikken læres."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Kettlebell-halo",
+            "familie": "oppvarming",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 5
+            },
+            "blurb": "Hold en lett kettlebell eller manual og før den i rolige sirkler rundt hodet. Varmer opp skuldre og øvre rygg.",
+            "dose": "5 hver vei",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Skulderrotasjoner med tom stang",
+            "familie": "oppvarming",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 8
+            },
+            "blurb": "Hold en tom stang eller kost bredt og før den over hodet og bak, så tilbake. Åpner skuldrene for press.",
+            "dose": "×8 rolige runder",
+            "minutter": 3
+          },
+          {
+            "ovelse": "Hoftehengsler uten vekt",
+            "familie": "oppvarming",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 10
+            },
+            "blurb": "Skyv hoftene bakover med rett rygg og lett bøyde knær, og reis deg ved å klemme baken. Grunnmønsteret for alle hengsler.",
+            "dose": "×10 kontrollerte",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Hva er nøkkelen i en hoftehengsel?",
+              "valg": [
+                "Skyv hoftene bakover med rett rygg",
+                "Bøy mest i knærne",
+                "Rund ryggen"
+              ],
+              "riktig": 0,
+              "forklaring": "Hengselen kommer fra hofta som skyves bakover — ryggen holdes rett, ikke rundet."
+            }
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 10,
+          "intensitet": 2,
+          "oppvarming": "Gå rolig på stedet og rull skuldrene et minutt.",
+          "nedtrapping": "Rist løs og pust rolig.",
+          "ovelser": [
+            {
+              "ovelse": "Kettlebell-halo",
+              "sett": 2,
+              "reps": 5,
+              "pauseSek": 20,
+              "perSide": true
+            },
+            {
+              "ovelse": "Skulderrotasjoner med tom stang",
+              "sett": 2,
+              "reps": 8,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "Hoftehengsler uten vekt",
+              "sett": 3,
+              "reps": 10,
+              "pauseSek": 20
+            }
+          ]
+        }
+      },
+      {
+        "id": "styrke-overbelastning",
+        "navn": "Progressiv overbelastning",
+        "intro": "Hele hemmeligheten bak framgang i ett ord: overbelastning. Lær hvordan du styrer vekt, sett, reps og innsats — og hvordan du løfter trygt.",
+        "teori": {
+          "id": "styrke-teori-2",
+          "tittel": "Litt mer, litt etter litt",
+          "undertittel": "Progressiv overbelastning, sett og reps, hvor hardt du skal ta i, og trygg teknikk.",
+          "lesetid": 5,
+          "bilde": "styrke-teori-2",
+          "avsnitt": [
+            {
+              "p": "Det finnes ett prinsipp all styrkeframgang hviler på: progressiv overbelastning. Kroppen tilpasser seg det du krever av den, så for å bli sterkere må du gradvis kreve litt mer — litt tyngre vekt, én rep til, eller ett sett til — over uker og måneder. Gjør du det samme hver gang, står du stille."
+            },
+            {
+              "h": "Sett, reps og vekt"
+            },
+            {
+              "p": "Et «sett» er en serie repetisjoner du gjør uten pause. For å bygge styrke og muskler jobber de fleste godt i området 5–12 reps per sett, 2–4 sett per øvelse, med noen minutters pause mellom de tunge settene. Velg en vekt som gjør de siste repsene ordentlig utfordrende, men som du klarer med god teknikk."
+            },
+            {
+              "h": "Hvor hardt? RIR"
+            },
+            {
+              "p": "«Reps i reserve» (RIR) forteller hvor mange reps du hadde igjen da du stoppet. RIR 2 betyr at du kunne tatt to til. For de fleste og for trygg trening alene bør du legge deg på RIR 1–3 — nær grensa, men ikke til utmattelse hver gang. Da bygger du styrke uten unødig risiko."
+            },
+            {
+              "h": "Spenn og pust — løft trygt"
+            },
+            {
+              "p": "God teknikk starter med å spenne kjernen som om noen skulle dytte deg i magen, og holde ryggen i en nøytral, sterk posisjon. Pust ut i det tyngste punktet. Start alltid lettere enn du tror, øk gradvis, og stopp et sett hvis teknikken ryker. Trygg, kontrollert løfting slår tunge, slurvete løft hver gang."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva er progressiv overbelastning?",
+              "valg": [
+                "Å gradvis kreve litt mer av kroppen over tid",
+                "Å løfte det samme hver gang",
+                "Å alltid trene til utmattelse"
+              ],
+              "riktig": 0,
+              "forklaring": "Kroppen tilpasser seg det du krever — øk vekt, reps eller sett litt etter litt for å bli sterkere."
+            },
+            {
+              "sporsmal": "Hva betyr RIR 2?",
+              "valg": [
+                "Du hadde to reps igjen da du stoppet",
+                "Du tok to sett",
+                "Du hvilte i to minutter"
+              ],
+              "riktig": 0,
+              "forklaring": "RIR = reps i reserve. RIR 2 betyr to reps igjen på tanken — nær grensa, men ikke helt utmattet."
+            },
+            {
+              "sporsmal": "Hva er det viktigste for en trygg rygg under løft?",
+              "valg": [
+                "Spenn kjernen og hold ryggen nøytral og sterk",
+                "Rund ryggen for å nå lenger",
+                "Hold pusten hele settet"
+              ],
+              "riktig": 0,
+              "forklaring": "Spenn kjernen som mot et dytt og hold ryggen nøytral — det beskytter deg når det blir tungt."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Schoenfeld et al. – volum og progresjon for styrke og muskelvekst (J. Strength Cond. Res.)",
+              "om": "Forskning på hvordan sett, reps og gradvis økt belastning driver styrke- og muskeltilvekst."
+            },
+            {
+              "kilde": "Dr. Stuart McGill – kjernespenning og trygg løfteteknikk",
+              "om": "Beskriver bracing (kjernespenning) og nøytral rygg som grunnlaget for skadefri løfting."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Hoftebro",
+            "familie": "oppvarming",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 12
+            },
+            "blurb": "Ligg på rygg med bøyde knær, press hoftene opp og klem baken hardt på toppen. Vekker setet før du løfter.",
+            "dose": "×12 med klem på toppen",
+            "minutter": 3
+          },
+          {
+            "ovelse": "«Prying» goblet-knebøy",
+            "familie": "oppvarming",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 8
+            },
+            "blurb": "Hold en manual mot brystet, sett deg dypt ned og bruk albuene til å presse knærne rolig ut. Åpner hoftene for knebøy.",
+            "dose": "×8 dype, rolige",
+            "minutter": 3,
+            "sjekk": {
+              "sporsmal": "Hva er poenget med «prying» goblet-knebøy?",
+              "valg": [
+                "Å åpne hoftene og øve dyp knebøy-posisjon",
+                "Å løfte tyngst mulig",
+                "Å trene armene"
+              ],
+              "riktig": 0,
+              "forklaring": "Det åpner hoftene og lar deg venne deg til den dype bunnstillingen før du legger på vekt."
+            }
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 10,
+          "intensitet": 2,
+          "oppvarming": "Gjør noen hoftehengsler og armsirkler.",
+          "nedtrapping": "Rist løs i beina og pust rolig.",
+          "ovelser": [
+            {
+              "ovelse": "Hoftebro",
+              "sett": 3,
+              "reps": 12,
+              "pauseSek": 20
+            },
+            {
+              "ovelse": "«Prying» goblet-knebøy",
+              "sett": 3,
+              "reps": 8,
+              "pauseSek": 20
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "styrke-kneboy",
+    "disiplin": "styrke",
+    "navn": "Knebøy & bein",
+    "undertittel": "Kroppens største muskler: lær knebøy og utfall med frie vekter.",
+    "farge": "koral",
+    "nivaBand": [
+      2,
+      3
+    ],
+    "enheter": [
+      {
+        "id": "styrke-kneboy-1",
+        "navn": "Knebøymønsteret",
+        "intro": "Knebøyen er kongen av beinøvelser. Vi bygger den fra goblet-knebøy til stang, og legger til utfall for styrke på ett bein.",
+        "teori": {
+          "id": "styrke-teori-3",
+          "tittel": "Knebøy: sett deg ned med stil",
+          "undertittel": "Knebøymønsteret, dybde, knær og hvordan du bygger fra manual til stang.",
+          "lesetid": 4,
+          "bilde": "styrke-teori-3",
+          "avsnitt": [
+            {
+              "p": "Knebøyen trener lår, sete og kjerne på én gang og er en av de mest verdifulle øvelsene som finnes. Mønsteret er enkelt: senk hoftene ned og litt bak som mot en stol, hold brystet løftet, og reis deg ved å presse gjennom hele foten."
+            },
+            {
+              "h": "Start med goblet"
+            },
+            {
+              "p": "Goblet-knebøyen — der du holder én manual eller kettlebell mot brystet — er den perfekte starten. Vekten foran hjelper deg å holde deg oppreist og gå dypt med god form. Når goblet-knebøyen kjennes lett og trygg, kan du gå videre til stang på ryggen for å laste tyngre."
+            },
+            {
+              "h": "Knær og dybde"
+            },
+            {
+              "p": "La knærne følge tærne og skyve lett utover — de skal ikke falle innover. Gå så dypt du klarer med rett rygg og hælene i gulvet; for de fleste er lår parallelt med gulvet eller litt under et fint mål. Har du stive ankler, hjelper det å løfte hælene lett eller jobbe med mobilitet."
+            },
+            {
+              "h": "Utfall for balanse og styrke"
+            },
+            {
+              "p": "Utfall trener ett bein om gangen og bygger balanse, styrke og symmetri som knebøyen ikke treffer like godt. Utfall bakover er ofte snillest mot knærne. Hold overkroppen høy og senk det bakre kneet mykt mot gulvet."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hvorfor starte med goblet-knebøy?",
+              "valg": [
+                "Vekten foran hjelper deg holde deg oppreist og gå dypt trygt",
+                "Fordi den er tyngst",
+                "Fordi den trener armene"
+              ],
+              "riktig": 0,
+              "forklaring": "Goblet-vekten balanserer deg og lærer god, dyp knebøyform før du går til stang."
+            },
+            {
+              "sporsmal": "Hva bør knærne gjøre i en knebøy?",
+              "valg": [
+                "Følge tærne og skyve lett utover",
+                "Falle innover",
+                "Låses helt strake"
+              ],
+              "riktig": 0,
+              "forklaring": "La knærne spore over tærne og skyve lett ut — aldri kollapse innover."
+            },
+            {
+              "sporsmal": "Hva er en fordel med utfall?",
+              "valg": [
+                "Trener ett bein av gangen for balanse og symmetri",
+                "Krever ingen balanse",
+                "Trener bare kjernen"
+              ],
+              "riktig": 0,
+              "forklaring": "Ettbeinsarbeid som utfall bygger balanse og retter opp side-til-side-forskjeller."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Dan John – goblet squat som grunnøvelse",
+              "om": "Populariserte goblet-knebøyen som den tryggeste inngangen til å lære knebøymønsteret."
+            },
+            {
+              "kilde": "Mark Rippetoe – «Starting Strength» (knebøy med stang)",
+              "om": "Detaljert teknikk for knebøy med stang: dybde, kneføring og nøytral rygg."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Goblet-knebøy",
+            "familie": "kneboy",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 10
+            },
+            "blurb": "Hold en manual mot brystet, sett deg dypt ned mellom hoftene med brystet løftet, og reis deg gjennom hele foten.",
+            "dose": "3×10 rolige",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hvor holder du vekten i en goblet-knebøy?",
+              "valg": [
+                "Mot brystet",
+                "Over hodet",
+                "Bak ryggen"
+              ],
+              "riktig": 0,
+              "forklaring": "Hold manualen/kettlebellen mot brystet — det balanserer deg og hjelper deg dypt ned."
+            }
+          },
+          {
+            "ovelse": "Knebøy med stang",
+            "familie": "kneboy",
+            "niva": 3,
+            "maal": {
+              "type": "reps",
+              "verdi": 8
+            },
+            "blurb": "Med stang hvilende på øvre rygg: spenn kjernen, sett deg ned og bak med brystet opp, og press opp gjennom hælene.",
+            "dose": "3×8 med kontroll",
+            "minutter": 5,
+            "sjekk": {
+              "sporsmal": "Hvor hviler stanga i en vanlig knebøy?",
+              "valg": [
+                "På øvre rygg / skuldrene",
+                "På nakken",
+                "I hendene foran"
+              ],
+              "riktig": 0,
+              "forklaring": "Stanga ligger stødig på øvre rygg (trapezius), ikke på nakkevirvlene."
+            }
+          },
+          {
+            "ovelse": "Utfall med manualer",
+            "familie": "kneboy",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 10
+            },
+            "blurb": "Med en manual i hver hånd: steg frem, senk bakre kne mot gulvet, og press deg tilbake. Hold overkroppen høy.",
+            "dose": "3×10 per side",
+            "minutter": 4
+          },
+          {
+            "ovelse": "Utfall bakover med manualer",
+            "familie": "kneboy",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 10
+            },
+            "blurb": "Steg bakover og senk det bakre kneet mykt mot gulvet, reis deg gjennom det fremre beinet. Skånsomt for knærne.",
+            "dose": "3×10 per side",
+            "minutter": 4
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 18,
+          "intensitet": 4,
+          "oppvarming": "Gjør «prying» goblet-knebøy og hoftebro for å bli varm.",
+          "nedtrapping": "Tøy lår og hoftebøyere lett.",
+          "ovelser": [
+            {
+              "ovelse": "Goblet-knebøy",
+              "sett": 3,
+              "reps": 10,
+              "pauseSek": 90
+            },
+            {
+              "ovelse": "Knebøy med stang",
+              "sett": 3,
+              "reps": 8,
+              "pauseSek": 120
+            },
+            {
+              "ovelse": "Utfall bakover med manualer",
+              "sett": 3,
+              "reps": 10,
+              "pauseSek": 60,
+              "perSide": true
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "styrke-hengsel",
+    "disiplin": "styrke",
+    "navn": "Hengsel & trekk",
+    "undertittel": "Bakkjeden og ryggen: markløft, rumensk markløft og roing med frie vekter.",
+    "farge": "koral",
+    "nivaBand": [
+      2,
+      3
+    ],
+    "enheter": [
+      {
+        "id": "styrke-hengsel-1",
+        "navn": "Hoftehengsel og trekk",
+        "intro": "Markløftet og roøvelsene bygger en sterk rygg og bakside. Alt starter med en god hoftehengsel — bevegelsen som beskytter ryggen din.",
+        "teori": {
+          "id": "styrke-teori-4",
+          "tittel": "Løft fra hoftene, ikke ryggen",
+          "undertittel": "Hoftehengsel, markløft og roing — slik bygger du en sterk, trygg bakside.",
+          "lesetid": 5,
+          "bilde": "styrke-teori-4",
+          "avsnitt": [
+            {
+              "p": "Hoftehengselen er kanskje den viktigste bevegelsen å lære: å bøye seg og løfte ved å skyve hoftene bakover og fram, i stedet for å runde ryggen. Den beskytter korsryggen i alt fra markløft til å plukke opp noe fra gulvet i hverdagen."
+            },
+            {
+              "h": "Rumensk markløft først"
+            },
+            {
+              "p": "Rumensk markløft (RDL) med manualer er den beste måten å lære hengselen på. Med lett bøyde knær skyver du hoftene bakover og senker vektene langs beina med rett rygg, til du kjenner det strekke i baklårene — så drar du hoftene fram igjen. Ryggen holdes lang og nøytral hele veien."
+            },
+            {
+              "h": "Markløft med stang"
+            },
+            {
+              "p": "Markløftet fra gulvet med stang er en av de sterkeste helkroppsøvelsene. Still deg med stanga over midtfoten, grip den, spenn kjernen, løft brystet og press gulvet fra deg mens du drar hoftene inn. Stanga skal gli tett langs beina. Start lett og bygg teknikken før vekta."
+            },
+            {
+              "h": "Trekk for balanse"
+            },
+            {
+              "p": "Press-øvelser trenger en motvekt: roing. Enarms manualroing (med støtte på en benk) og stående foroverbøyd roing bygger øvre rygg og bakre skuldre, forbedrer holdningen og balanserer alt brystpresset. Dra albuen bakover og klem skulderbladene sammen."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hva er kjernen i en hoftehengsel?",
+              "valg": [
+                "Skyve hoftene bakover og fram med rett rygg",
+                "Bøye mest i knærne",
+                "Runde ryggen for å nå ned"
+              ],
+              "riktig": 0,
+              "forklaring": "Hengselen kommer fra hofta — rett, nøytral rygg beskytter korsryggen."
+            },
+            {
+              "sporsmal": "Hvorfor lære rumensk markløft før markløft med stang?",
+              "valg": [
+                "Den lærer deg hengselen trygt med lettere last",
+                "Den er tyngre",
+                "Den trener armene"
+              ],
+              "riktig": 0,
+              "forklaring": "RDL med manualer er den enkleste veien inn i hengselmønsteret før du laster stang fra gulvet."
+            },
+            {
+              "sporsmal": "Hva balanserer roing i et program?",
+              "valg": [
+                "Alt brystpresset — bygger øvre rygg og holdning",
+                "Beina",
+                "Kondisjonen"
+              ],
+              "riktig": 0,
+              "forklaring": "Trekk/roing motvirker pressets fremovertrekk og bygger en sterk, oppreist holdning."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Mark Rippetoe – «Starting Strength» (markløft)",
+              "om": "Grundig gjennomgang av markløftets oppstilling og trygg utførelse fra gulvet."
+            },
+            {
+              "kilde": "Michael Boyle / Dan John – hoftehengsel og RDL",
+              "om": "Praktisk metodikk for å lære hoftehengselen med rumensk markløft før tung markløft."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Rumensk markløft med manualer",
+            "familie": "hengsel",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 10
+            },
+            "blurb": "Lett bøyde knær: skyv hoftene bakover og senk manualene langs beina med rett rygg til du kjenner strekk i baklårene, og dra hoftene fram.",
+            "dose": "3×10 kontrollerte",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hvor skal du kjenne en rumensk markløft?",
+              "valg": [
+                "Strekk i baklårene",
+                "Smerte i korsryggen",
+                "Bare i armene"
+              ],
+              "riktig": 0,
+              "forklaring": "Du skal kjenne det strekke i baklårene (hamstrings) — ikke i korsryggen. Hold ryggen rett."
+            }
+          },
+          {
+            "ovelse": "Markløft med stang",
+            "familie": "hengsel",
+            "niva": 3,
+            "maal": {
+              "type": "reps",
+              "verdi": 6
+            },
+            "blurb": "Stang over midtfoten: grip, spenn kjernen, løft brystet og press gulvet vekk mens hoftene drar inn. Stanga glir tett langs beina.",
+            "dose": "3×6 med god form",
+            "minutter": 5,
+            "sjekk": {
+              "sporsmal": "Hvor skal stanga være før du løfter fra gulvet?",
+              "valg": [
+                "Over midtfoten, tett inntil leggen",
+                "Langt foran tærne",
+                "Inntil tærne"
+              ],
+              "riktig": 0,
+              "forklaring": "Start med stanga over midtfoten og tett inntil — da går løftet i en effektiv, trygg linje."
+            }
+          },
+          {
+            "ovelse": "Enarms manualroing",
+            "familie": "trekk",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 10
+            },
+            "blurb": "Støtt deg på en benk med én hånd, la manualen henge, og dra albuen bakover og opp mens du klemmer skulderbladet.",
+            "dose": "3×10 per side",
+            "minutter": 4
+          },
+          {
+            "ovelse": "Stående foroverbøyd manualroing",
+            "familie": "trekk",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 10
+            },
+            "blurb": "Hengsle frem med rett rygg, la manualene henge, og ro dem opp mot hoftene ved å klemme skulderbladene sammen.",
+            "dose": "3×10 rolige",
+            "minutter": 4
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 20,
+          "intensitet": 4,
+          "oppvarming": "Gjør hoftehengsler uten vekt og katt–ku.",
+          "nedtrapping": "Tøy baklår og rygg lett.",
+          "ovelser": [
+            {
+              "ovelse": "Rumensk markløft med manualer",
+              "sett": 3,
+              "reps": 10,
+              "pauseSek": 90
+            },
+            {
+              "ovelse": "Markløft med stang",
+              "sett": 3,
+              "reps": 6,
+              "pauseSek": 120
+            },
+            {
+              "ovelse": "Enarms manualroing",
+              "sett": 3,
+              "reps": 10,
+              "pauseSek": 60,
+              "perSide": true
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "styrke-press",
+    "disiplin": "styrke",
+    "navn": "Press & armer",
+    "undertittel": "Skyv fra deg: benkpress, skulderpress og armer med manualer og stang.",
+    "farge": "koral",
+    "nivaBand": [
+      2,
+      3
+    ],
+    "enheter": [
+      {
+        "id": "styrke-press-1",
+        "navn": "Press over og fra brystet",
+        "intro": "Pressøvelsene bygger bryst, skuldre og armer. Vi lærer benkpress og skulderpress med både manualer og stang.",
+        "teori": {
+          "id": "styrke-teori-5",
+          "tittel": "Press med stramme skuldre",
+          "undertittel": "Benkpress, skulderpress og curl — trygt press bygget på stabile skuldre.",
+          "lesetid": 4,
+          "bilde": "styrke-teori-5",
+          "avsnitt": [
+            {
+              "p": "Pressbevegelsene — å skyve en vekt vekk fra kroppen — bygger bryst, skuldre og triceps. De to store er benkpress (press fra brystet, liggende) og skulderpress (press over hodet, stående). Begge finnes med manualer og stang, og begge krever stabile, samlede skuldre."
+            },
+            {
+              "h": "Manualer før stang"
+            },
+            {
+              "p": "Manualbenkpress er en fin start: hver arm jobber for seg, bevegelsesbanen er fri, og det er lett å slippe vektene trygt om det blir for tungt. Når teknikken sitter, gir stang deg mulighet til å laste tyngre. Bruk alltid sikkerhetsarmer eller en makker når du benker tungt med stang."
+            },
+            {
+              "h": "Sett skuldrene"
+            },
+            {
+              "p": "Nøkkelen til trygt press er å «sette» skuldrene: trekk skulderbladene lett sammen og ned mot hoftene, og hold dem der. Det gir en stabil plattform å presse fra og beskytter skulderleddet. Senk vekten med kontroll og press opp uten å låse albuene hardt."
+            },
+            {
+              "h": "Armene på slutten"
+            },
+            {
+              "p": "De store pressøvelsene trener allerede armene godt, men en isolert bicepscurl på slutten bygger ekstra armstyrke og balanserer triceps-arbeidet fra pressene. Hold albuene inntil sida og løft med kontroll — ingen sving fra ryggen."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hvorfor starte med manualbenkpress?",
+              "valg": [
+                "Fri bane, hver arm for seg, og trygt å slippe",
+                "Fordi den er tyngst",
+                "Fordi den trener beina"
+              ],
+              "riktig": 0,
+              "forklaring": "Manualer gir fri bevegelse og er trygge å legge fra seg — en god vei inn før stang."
+            },
+            {
+              "sporsmal": "Hva betyr det å «sette» skuldrene i press?",
+              "valg": [
+                "Trekke skulderbladene sammen og ned for en stabil plattform",
+                "Løfte skuldrene mot ørene",
+                "Slappe helt av i skuldrene"
+              ],
+              "riktig": 0,
+              "forklaring": "Sett skuldrene (sammen og ned) for en stødig, trygg plattform å presse fra."
+            },
+            {
+              "sporsmal": "Hvordan gjør du en ren bicepscurl?",
+              "valg": [
+                "Albuene inntil sida, løft med kontroll uten sving",
+                "Sving vekten opp fra ryggen",
+                "Bruk hele kroppen til å kaste den opp"
+              ],
+              "riktig": 0,
+              "forklaring": "Hold albuene inntil og curl med kontroll — svinger du fra ryggen, jukser du og risikerer skade."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "American College of Sports Medicine – retningslinjer for motstandstrening",
+              "om": "Rammer for trygg pressteknikk og balansert program mellom press og trekk."
+            },
+            {
+              "kilde": "Mark Rippetoe – «Starting Strength» (benkpress og press)",
+              "om": "Teknikk for benkpress og stående press med stang, inkludert skulderoppsett og sikkerhet."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Manualbenkpress",
+            "familie": "press",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 10
+            },
+            "blurb": "Ligg på en benk med en manual i hver hånd. Sett skuldrene, senk vektene til brysthøyde og press opp uten å låse albuene hardt.",
+            "dose": "3×10 med kontroll",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hva gjør du med skuldrene i benkpress?",
+              "valg": [
+                "Setter dem sammen og ned for en stabil plattform",
+                "Løfter dem opp mot ørene",
+                "Lar dem rulle fremover"
+              ],
+              "riktig": 0,
+              "forklaring": "Sett skulderbladene sammen og ned — det gir en trygg, sterk plattform å presse fra."
+            }
+          },
+          {
+            "ovelse": "Benkpress med stang",
+            "familie": "press",
+            "niva": 3,
+            "maal": {
+              "type": "reps",
+              "verdi": 8
+            },
+            "blurb": "På benk med stang: sett skuldrene, senk stanga til brystet med kontroll og press opp. Bruk sikkerhetsarmer eller makker.",
+            "dose": "3×8 trygt",
+            "minutter": 5
+          },
+          {
+            "ovelse": "Stående skulderpress med manualer",
+            "familie": "press",
+            "niva": 2,
+            "maal": {
+              "type": "reps",
+              "verdi": 10
+            },
+            "blurb": "Stå høy med spent kjerne, manualene i skulderhøyde, og press dem rett opp over hodet uten å svaie i ryggen.",
+            "dose": "3×10 rolige",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hva hindrer at du svaier i ryggen under skulderpress?",
+              "valg": [
+                "En spent kjerne og høy holdning",
+                "Å lene deg langt bakover",
+                "Å holde pusten"
+              ],
+              "riktig": 0,
+              "forklaring": "Spenn kjernen og stå høy — da presser du fra en stabil søyle uten å belaste korsryggen."
+            }
+          },
+          {
+            "ovelse": "Bicepscurl med manualer",
+            "familie": "arm",
+            "niva": 1,
+            "maal": {
+              "type": "reps",
+              "verdi": 12
+            },
+            "blurb": "Stå høy med albuene inntil sida og curl manualene opp med kontroll, uten å svinge fra ryggen. Senk rolig.",
+            "dose": "3×12 rene reps",
+            "minutter": 3
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 20,
+          "intensitet": 4,
+          "oppvarming": "Gjør kettlebell-halo og skulderrotasjoner med tom stang.",
+          "nedtrapping": "Tøy bryst og skuldre lett.",
+          "ovelser": [
+            {
+              "ovelse": "Manualbenkpress",
+              "sett": 3,
+              "reps": 10,
+              "pauseSek": 90
+            },
+            {
+              "ovelse": "Stående skulderpress med manualer",
+              "sett": 3,
+              "reps": 10,
+              "pauseSek": 75
+            },
+            {
+              "ovelse": "Bicepscurl med manualer",
+              "sett": 3,
+              "reps": 12,
+              "pauseSek": 45
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "styrke-kraft",
+    "disiplin": "styrke",
+    "navn": "Kraft & bæring",
+    "undertittel": "Eksplosiv hofte, sterk grep og hel-kroppskontroll: kettlebell, bæring og tyrkisk oppreisning.",
+    "farge": "koral",
+    "nivaBand": [
+      3,
+      3
+    ],
+    "enheter": [
+      {
+        "id": "styrke-kraft-1",
+        "navn": "Eksplosivitet, bæring og helkropp",
+        "intro": "De mest komplette øvelsene til slutt: kettlebellsvinget for eksplosiv kraft, bæring for grep og kjerne, og tyrkisk oppreisning for full kontroll.",
+        "teori": {
+          "id": "styrke-teori-6",
+          "tittel": "Kraft, grep og full kontroll",
+          "undertittel": "Kettlebellsving, bæring og tyrkisk oppreisning — de mest komplette frivektsøvelsene.",
+          "lesetid": 5,
+          "bilde": "styrke-teori-6",
+          "avsnitt": [
+            {
+              "p": "Til slutt bygger vi kraft og hel-kroppskontroll: evnen til å produsere fart, holde tungt og styre kroppen gjennom sammensatte bevegelser. Dette er styrke som virkelig overføres til idrett og hverdag."
+            },
+            {
+              "h": "Svinget er en eksplosiv hengsel"
+            },
+            {
+              "p": "Kettlebellsvinget er en kraftfull hoftehengsel: du «hugger» hoftene bakover og skyter dem eksplosivt fram, så kettlebellen svever opp av seg selv. Kraften kommer fra hoftene, ikke armene — armene bare henger med. Det bygger eksplosiv styrke i baksida og en robust kjerne."
+            },
+            {
+              "h": "Bæring er undervurdert"
+            },
+            {
+              "p": "Gårdsbæring — å gå med tunge manualer eller kettlebells i hendene — er en av de enkleste og mest effektive øvelsene som finnes. Den bygger grep, kjernestabilitet, skuldre og en sterk holdning, alt mens du bare går. Stå høy, stram kjernen og gå kontrollert."
+            },
+            {
+              "h": "Tyrkisk oppreisning — kronen"
+            },
+            {
+              "p": "Tyrkisk oppreisning er en langsom, sammensatt reise fra liggende til stående med en vekt i strak arm over hodet. Den trener stabilitet, mobilitet og kontroll i hele kroppen på én gang. Lær den først uten vekt, deretter med en lett kettlebell, ett rolig steg om gangen."
+            }
+          ],
+          "sporsmal": [
+            {
+              "sporsmal": "Hvor kommer kraften i et kettlebellsving fra?",
+              "valg": [
+                "Fra hoftene som skytes eksplosivt fram",
+                "Fra armene som løfter",
+                "Fra skuldrene alene"
+              ],
+              "riktig": 0,
+              "forklaring": "Svinget drives av en eksplosiv hoftehengsel — armene bare henger med."
+            },
+            {
+              "sporsmal": "Hva bygger gårdsbæring?",
+              "valg": [
+                "Grep, kjerne, skuldre og holdning",
+                "Bare underarmene",
+                "Bare kondisjon"
+              ],
+              "riktig": 0,
+              "forklaring": "Å gå med tung last bygger grep, kjernestabilitet, skuldre og en sterk, oppreist holdning."
+            },
+            {
+              "sporsmal": "Hvordan bør du lære tyrkisk oppreisning?",
+              "valg": [
+                "Først uten vekt, så med lett kettlebell, steg for steg",
+                "Tyngst mulig med en gang",
+                "Så fort som mulig"
+              ],
+              "riktig": 0,
+              "forklaring": "Den er sammensatt — lær hvert steg uten vekt først, så legg på en lett kettlebell."
+            }
+          ],
+          "kilder": [
+            {
+              "kilde": "Pavel Tsatsouline / StrongFirst – kettlebellsving og tyrkisk oppreisning",
+              "om": "Referansemetodikk for hardstyle-sving og get-up: kraft fra hoftene og trygg progresjon."
+            },
+            {
+              "kilde": "Dan John – bæringer («loaded carries»)",
+              "om": "Populariserte gårdsbæring som en enkel, svært effektiv øvelse for grep, kjerne og holdning."
+            }
+          ]
+        },
+        "steg": [
+          {
+            "ovelse": "Ettarms kettlebellsving",
+            "familie": "kraft",
+            "niva": 3,
+            "maal": {
+              "type": "reps",
+              "verdi": 12
+            },
+            "blurb": "Hugg hoftene bakover og skyt dem eksplosivt fram så kettlebellen svever opp til brysthøyde. Kraften er i hoftene, ikke armen.",
+            "dose": "3×12 per side",
+            "minutter": 4,
+            "sjekk": {
+              "sporsmal": "Hva driver kettlebellsvinget?",
+              "valg": [
+                "En eksplosiv hoftehengsel",
+                "Å løfte med armen",
+                "Å bøye knærne dypt"
+              ],
+              "riktig": 0,
+              "forklaring": "Hoftene hugges bakover og skytes fram — det kaster kettlebellen opp. Armen bare styrer."
+            }
+          },
+          {
+            "ovelse": "Gårdsbæring med manualer",
+            "familie": "baering",
+            "niva": 2,
+            "maal": {
+              "type": "hold",
+              "verdi": 40
+            },
+            "blurb": "Hold en tung manual i hver hånd, stå høy med spent kjerne, og gå kontrollert. Grep, kjerne og holdning på én gang.",
+            "dose": "3×40 sek gange",
+            "minutter": 4
+          },
+          {
+            "ovelse": "Tyrkisk oppreisning",
+            "familie": "helkropp",
+            "niva": 3,
+            "maal": {
+              "type": "reps",
+              "verdi": 3
+            },
+            "blurb": "Reis deg fra liggende til stående med en vekt i strak arm over hodet, ett kontrollert steg om gangen — og ned igjen. Lær uten vekt først.",
+            "dose": "3 per side, rolig",
+            "minutter": 5,
+            "sjekk": {
+              "sporsmal": "Hva kjennetegner tyrkisk oppreisning?",
+              "valg": [
+                "En langsom, sammensatt reise fra liggende til stående med vekt over hodet",
+                "Et raskt hopp",
+                "En ren armøvelse"
+              ],
+              "riktig": 0,
+              "forklaring": "Det er en kontrollert helkroppsreise fra gulv til stående med vekten i strak arm — stabilitet og kontroll."
+            }
+          }
+        ],
+        "uteksaminering": {
+          "varighetMin": 18,
+          "intensitet": 4,
+          "oppvarming": "Gjør hoftehengsler og noen lette svingimitasjoner uten vekt.",
+          "nedtrapping": "Gå rolig og rist løs i grepet.",
+          "ovelser": [
+            {
+              "ovelse": "Ettarms kettlebellsving",
+              "sett": 3,
+              "reps": 12,
+              "pauseSek": 60,
+              "perSide": true
+            },
+            {
+              "ovelse": "Gårdsbæring med manualer",
+              "sett": 3,
+              "holdSek": 40,
+              "pauseSek": 60
+            },
+            {
+              "ovelse": "Tyrkisk oppreisning",
+              "sett": 3,
+              "reps": 3,
+              "pauseSek": 60,
+              "perSide": true
+            }
+          ]
+        }
+      }
+    ]
   }
 ]

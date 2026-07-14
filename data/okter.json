@@ -7476,5 +7476,518 @@
         ]
       }
     ]
+  },
+  {
+    "id": "styrke-fullbody-a",
+    "kategori": "styrke",
+    "skill": "medium",
+    "intensitet": "lett",
+    "navn": "Helkropp A – de store løftene",
+    "beskrivelse": "Klassisk helkroppsøkt rundt de tre store: knebøy, benkpress og roing. Treffer hele kroppen i én økt — grunnstammen i et enkelt, effektivt styrkeprogram.",
+    "varighetMin": 32,
+    "utstyr": [
+      "manualer",
+      "stang",
+      "benk",
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Full-body A (StrongLifts / Starting Strength-mal)",
+      "type": "program",
+      "ref": "https://stronglifts.com/5x5/ + https://startingstrength.com/get-started/programs",
+      "notat": "Helkropp med knebøy, press og trekk. Reps satt konservativt (RIR 2–3) for lett-intensitet; bytt stang mot manualer ved behov, og bruk sikkerhetsarmer i benkpress."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Mobiliser for løft",
+        "formatKlasse": "reps",
+        "min": 5,
+        "ovelser": [
+          {
+            "navn": "Kettlebell-halo",
+            "dose": "5 hver vei"
+          },
+          {
+            "navn": "«Prying» goblet-knebøy",
+            "dose": "×8"
+          },
+          {
+            "navn": "Hoftebro",
+            "dose": "×12"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Sett × reps · RIR 2–3",
+        "formatKlasse": "reps",
+        "min": 24,
+        "ovelser": [
+          {
+            "navn": "Goblet-knebøy",
+            "dose": "3×10, pause 90 s"
+          },
+          {
+            "navn": "Manualbenkpress",
+            "dose": "3×10, pause 90 s"
+          },
+          {
+            "navn": "Enarms manualroing",
+            "dose": "3×10 per side, pause 60 s",
+            "unilateral": true
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig tøying",
+        "formatKlasse": "hold",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Lårtøyning",
+            "dose": "30 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Brysttøyning",
+            "dose": "30 s"
+          },
+          {
+            "navn": "Rolig pust",
+            "dose": "1 min"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "styrke-fullbody-b",
+    "kategori": "styrke",
+    "skill": "medium",
+    "intensitet": "intens",
+    "navn": "Helkropp B – markløft og press",
+    "beskrivelse": "Motstykket til Helkropp A: markløft, skulderpress over hodet og rumensk markløft. Bytt mellom A og B gjennom uka for et komplett program.",
+    "varighetMin": 34,
+    "utstyr": [
+      "manualer",
+      "stang",
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Full-body B (StrongLifts / Starting Strength-mal)",
+      "type": "program",
+      "ref": "https://stronglifts.com/5x5/ + https://startingstrength.com/get-started/programs",
+      "notat": "Helkropp med markløft, press over hodet og hengsel. Start markløft lett og bygg teknikk før vekt; RIR 1–2 på siste sett. Bruk stang eller manualer etter tilgang."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Mobiliser for løft",
+        "formatKlasse": "reps",
+        "min": 5,
+        "ovelser": [
+          {
+            "navn": "Hoftehengsler uten vekt",
+            "dose": "×10"
+          },
+          {
+            "navn": "Skulderrotasjoner med tom stang",
+            "dose": "×8"
+          },
+          {
+            "navn": "Hoftebro",
+            "dose": "×12"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Sett × reps · RIR 1–2",
+        "formatKlasse": "reps",
+        "min": 26,
+        "ovelser": [
+          {
+            "navn": "Markløft med stang",
+            "dose": "3×6, pause 120 s"
+          },
+          {
+            "navn": "Stående skulderpress med manualer",
+            "dose": "3×10, pause 90 s"
+          },
+          {
+            "navn": "Rumensk markløft med manualer",
+            "dose": "3×10, pause 90 s"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig tøying",
+        "formatKlasse": "hold",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Hamstringtøyning",
+            "dose": "30 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Hoftebøyertøyning",
+            "dose": "30 s per side",
+            "unilateral": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "styrke-push",
+    "kategori": "styrke",
+    "skill": "hoy",
+    "intensitet": "lett",
+    "navn": "Pushdag – press og bryst",
+    "beskrivelse": "Ren pressøkt for bryst, skuldre og armer. Benkpress og skulderpress som hovedretter, med curl til dessert — bygg overkroppens skyvekraft.",
+    "varighetMin": 30,
+    "utstyr": [
+      "manualer",
+      "stang",
+      "benk"
+    ],
+    "kilde": {
+      "navn": "Push-dag (push/pull/legs-splitt)",
+      "type": "program",
+      "ref": "https://www.muscleandstrength.com/workouts/6-day-push-pull-legs-workout + https://stronglifts.com/push-pull-legs/",
+      "notat": "Pressfokusert dag i en push/pull/legs-splitt. Sett skuldrene og bruk sikkerhetsarmer/makker i benkpress; hold curl streng uten sving. RIR 2–3."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Mobiliser for løft",
+        "formatKlasse": "reps",
+        "min": 5,
+        "ovelser": [
+          {
+            "navn": "Kettlebell-halo",
+            "dose": "5 hver vei"
+          },
+          {
+            "navn": "Skulderrotasjoner med tom stang",
+            "dose": "×8"
+          },
+          {
+            "navn": "Armsirkler",
+            "dose": "×10"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Sett × reps · RIR 2–3",
+        "formatKlasse": "reps",
+        "min": 23,
+        "ovelser": [
+          {
+            "navn": "Benkpress med stang",
+            "dose": "3×8, pause 120 s"
+          },
+          {
+            "navn": "Stående skulderpress med manualer",
+            "dose": "3×10, pause 90 s"
+          },
+          {
+            "navn": "Manualbenkpress",
+            "dose": "3×10, pause 75 s"
+          },
+          {
+            "navn": "Bicepscurl med manualer",
+            "dose": "3×12, pause 45 s"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig tøying",
+        "formatKlasse": "hold",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Brysttøyning",
+            "dose": "30 s"
+          },
+          {
+            "navn": "Underarmstøyning",
+            "dose": "30 s"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "styrke-pull",
+    "kategori": "styrke",
+    "skill": "medium",
+    "intensitet": "lett",
+    "navn": "Pulldag – rygg og bakside",
+    "beskrivelse": "Trekkøkt for en sterk rygg og bakside. Markløft, roing og rumensk markløft bygger holdning, gripestyrke og hele den bakre kjeden.",
+    "varighetMin": 30,
+    "utstyr": [
+      "manualer",
+      "stang",
+      "benk",
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Pull-dag (push/pull/legs-splitt)",
+      "type": "program",
+      "ref": "https://www.muscleandstrength.com/workouts/6-day-push-pull-legs-workout + https://stronglifts.com/push-pull-legs/",
+      "notat": "Trekkfokusert dag i en push/pull/legs-splitt. Hold ryggen nøytral i alle trekk og hengsler; klem skulderbladene i roingen. RIR 2–3."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Mobiliser for løft",
+        "formatKlasse": "reps",
+        "min": 5,
+        "ovelser": [
+          {
+            "navn": "Hoftehengsler uten vekt",
+            "dose": "×10"
+          },
+          {
+            "navn": "Katt–ku",
+            "dose": "×8"
+          },
+          {
+            "navn": "Hoftebro",
+            "dose": "×12"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Sett × reps · RIR 2–3",
+        "formatKlasse": "reps",
+        "min": 24,
+        "ovelser": [
+          {
+            "navn": "Markløft med stang",
+            "dose": "3×8, pause 120 s"
+          },
+          {
+            "navn": "Stående foroverbøyd manualroing",
+            "dose": "3×10, pause 75 s"
+          },
+          {
+            "navn": "Enarms manualroing",
+            "dose": "3×10 per side, pause 60 s",
+            "unilateral": true
+          },
+          {
+            "navn": "Rumensk markløft med manualer",
+            "dose": "3×10, pause 90 s"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig tøying",
+        "formatKlasse": "hold",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Hamstringtøyning",
+            "dose": "30 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Skulderruller",
+            "dose": "10 hver vei"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "styrke-kettlebell",
+    "kategori": "styrke",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "Kettlebell-komplekset",
+    "beskrivelse": "Én kettlebell, hele kroppen. Sving, goblet-knebøy, tyrkisk oppreisning og bæring i et flytende kompleks som bygger kraft, kondisjon og kontroll.",
+    "varighetMin": 28,
+    "utstyr": [
+      "kettlebell",
+      "matte"
+    ],
+    "kilde": {
+      "navn": "Kettlebell-kompleks (Pavel Tsatsouline / StrongFirst)",
+      "type": "program",
+      "ref": "https://www.strongfirst.com/simple-sinister/ + https://www.artofmanliness.com/health-fitness/fitness/kettlebell-workout/",
+      "notat": "Helkropps-kettlebelløkt med sving og get-up som ryggrad. Kraften i svinget er i hoftene; lær tyrkisk oppreisning lett først. Hvil etter behov mellom rundene. RIR 2."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Mobiliser for løft",
+        "formatKlasse": "reps",
+        "min": 5,
+        "ovelser": [
+          {
+            "navn": "Kettlebell-halo",
+            "dose": "5 hver vei"
+          },
+          {
+            "navn": "Hoftehengsler uten vekt",
+            "dose": "×10"
+          },
+          {
+            "navn": "«Prying» goblet-knebøy",
+            "dose": "×8"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "Kraft og kontroll",
+        "formatKlasse": "reps",
+        "min": 21,
+        "ovelser": [
+          {
+            "navn": "Ettarms kettlebellsving",
+            "dose": "5×10 per side, pause 60 s",
+            "unilateral": true
+          },
+          {
+            "navn": "Goblet-knebøy",
+            "dose": "3×12, pause 60 s"
+          },
+          {
+            "navn": "Tyrkisk oppreisning",
+            "dose": "3 per side, rolig",
+            "unilateral": true
+          },
+          {
+            "navn": "Gårdsbæring med manualer",
+            "dose": "3×40 s, pause 60 s"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig tøying",
+        "formatKlasse": "hold",
+        "min": 3,
+        "ovelser": [
+          {
+            "navn": "Hoftebøyertøyning",
+            "dose": "30 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Rolig pust",
+            "dose": "1 min"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "styrke-5x5",
+    "kategori": "styrke",
+    "skill": "hoy",
+    "intensitet": "intens",
+    "navn": "Sterk 5×5",
+    "beskrivelse": "Den tidløse styrkeoppskriften: fem sett à fem reps på de store stangløftene. Tungt, enkelt og ekstremt effektivt for ren styrke — legg på litt vekt hver uke.",
+    "varighetMin": 38,
+    "utstyr": [
+      "stang",
+      "benk",
+      "matte"
+    ],
+    "kilde": {
+      "navn": "5×5-styrkeprogram (Bill Starr / StrongLifts 5×5)",
+      "type": "program",
+      "ref": "https://stronglifts.com/5x5/ + https://en.wikipedia.org/wiki/Bill_Starr",
+      "notat": "Klassisk 5×5 på de store stangløftene. Øk vekta litt når alle settene lykkes; RIR 1–2. Bruk rack og sikkerhetsarmer, og start lettere enn du tror for å bygge teknikk."
+    },
+    "blokker": [
+      {
+        "kind": "ovelser",
+        "rolle": "oppvarming",
+        "formatNavn": "Mobiliser for løft",
+        "formatKlasse": "reps",
+        "min": 6,
+        "ovelser": [
+          {
+            "navn": "Skulderrotasjoner med tom stang",
+            "dose": "×8"
+          },
+          {
+            "navn": "«Prying» goblet-knebøy",
+            "dose": "×8"
+          },
+          {
+            "navn": "Hoftehengsler uten vekt",
+            "dose": "×10"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "hoved",
+        "formatNavn": "5×5 · RIR 1–2, øk vekt gradvis",
+        "formatKlasse": "reps",
+        "min": 28,
+        "ovelser": [
+          {
+            "navn": "Knebøy med stang",
+            "dose": "5×5, pause 150 s"
+          },
+          {
+            "navn": "Benkpress med stang",
+            "dose": "5×5, pause 150 s"
+          },
+          {
+            "navn": "Markløft med stang",
+            "dose": "1×5, pause 180 s"
+          }
+        ]
+      },
+      {
+        "kind": "ovelser",
+        "rolle": "nedtrapping",
+        "formatNavn": "Rolig tøying",
+        "formatKlasse": "hold",
+        "min": 4,
+        "ovelser": [
+          {
+            "navn": "Lårtøyning",
+            "dose": "30 s per side",
+            "unilateral": true
+          },
+          {
+            "navn": "Brysttøyning",
+            "dose": "30 s"
+          }
+        ]
+      }
+    ]
   }
 ]
