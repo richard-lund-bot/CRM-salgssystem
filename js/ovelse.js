@@ -53,6 +53,13 @@ export function ovelseInfo(navn) {
   return _oppslag.get(grovNokkel(navn)) || _oppslag.get(finNokkel(navn)) || null;
 }
 
+/** Kanonisk nøkkel for et øvelsesnavn — samme identitet for varianter/alias.
+ *  Brukes for å matche øvelser på tvers av Lær og øktbiblioteket (opplåsing). */
+export function ovelseKanon(navn) {
+  const info = ovelseInfo(navn);
+  return info ? grovNokkel(info.navn) : finNokkel(navn);
+}
+
 // Fallback: metadata fra øvelsesoppslaget (exercises.json) på navnetreff.
 function bibOppslag(navn) {
   if (!_bib) return null;

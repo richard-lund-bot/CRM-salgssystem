@@ -6,7 +6,8 @@
 import { el, tom, chip, ikon } from './ui.js';
 import { MODALITET_NAVN } from './library.js';
 import { hentProfil, hentPlan, leggTilPlan, fjernPlan } from './store.js';
-import { hentOkter, oktMedId, KATEGORIER, KATEGORI_NAVN } from './bibliotek-okter.js';
+import { hentOkter, oktMedId, KATEGORIER, KATEGORI_NAVN, visLastArk } from './bibliotek-okter.js';
+import { oktSperret } from './opplasing.js';
 
 let _bib = null;
 export function settBib(bib) { _bib = bib; }
@@ -99,17 +100,22 @@ export function visKalenderSkjerm(mount) {
         })),
       ),
       el('div', { class: 'kalform__okter' },
-        ...okter.map((o) => el('button', {
-          class: 'kalform__okt', type: 'button',
-          onclick: () => {
-            nye.push({ tempId: `ny-${++tempTeller}`, dato: iso, oktId: o.id });
-            apenDato = null;
-            tegn();
+        ...okter.map((o) => {
+          const sperret = oktSperret(o);
+          return el('button', {
+            class: 'kalform__okt' + (sperret ? ' kalform__okt--laast' : ''), type: 'button',
+            onclick: () => {
+              if (sperret) { visLastArk(o); return; }
+              nye.push({ tempId: `ny-${++tempTeller}`, dato: iso, oktId: o.id });
+              apenDato = null;
+              tegn();
+            },
           },
-        },
-          el('span', { class: 'kalform__oktnavn' }, o.navn),
-          el('span', { class: 'kalform__okttid' }, `${o.varighetMin} min`),
-        )),
+            sperret ? el('span', { class: 'kalform__laas', 'aria-hidden': 'true' }, ikon('las', 'ikon ikon--liten')) : null,
+            el('span', { class: 'kalform__oktnavn' }, o.navn),
+            el('span', { class: 'kalform__okttid' }, `${o.varighetMin} min`),
+          );
+        }),
       ),
       el('div', { class: 'knapprad' },
         el('button', { class: 'knapp knapp--sekundaer knapp--liten', type: 'button', onclick: () => { apenDato = null; tegn(); } }, 'Avbryt'),

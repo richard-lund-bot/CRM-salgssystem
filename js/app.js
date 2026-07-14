@@ -26,6 +26,7 @@ import { lagFaneside, fanesideMedTittel, settNavger, settUlestSjekk, dagsfase } 
 import { nivaFraTotalXp } from './niva.js';
 import { dagerMedAktivitet, okterHref } from './bevegelse.js';
 import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN, KATEGORIER } from './bibliotek-okter.js';
+import { settBib as settBibOpp } from './opplasing.js';
 import { fyllInn } from './animasjon.js';
 import { regionScores, anbefalingFraRegioner, regionAndelForOkt, REGION_NAVN } from './kroppskart.js';
 import { prefMult, prefNiva, PREF_NIVAER } from './preferanser.js';
@@ -550,7 +551,7 @@ function bevegelsesGrid() {
     class: 'movflis movflis--indigo', type: 'button',
     onclick: () => {
       const o = tilfeldigOkt();
-      if (o) location.hash = `#/okter?start=${o.id}`;
+      location.hash = o ? `#/okter?start=${o.id}` : '#/okter';
     },
   }, ...flisInnhold('terning', 'Overrask meg'));
   return el('div', { class: 'movgrid' }, ...HJEM_FLISER.map((f) => flis(...f)), overrask);
@@ -985,6 +986,7 @@ async function start() {
   settBibKal(bib);
   settBibOvelse(bib);
   settBibSti(bib);
+  settBibOpp(bib);
   settNavger(navger); // pull-to-refresh (banner.js) tegner siden på nytt
   settUlestSjekk(harUlesteVarsler); // uleste-prikk på bjella (banner.js)
   bruksTema(hentProfil()?.innstillinger?.tema);

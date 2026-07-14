@@ -1721,6 +1721,36 @@ body.fokusmodus { padding-bottom: 0; }
 }
 .bibkort:active .bibkort__start { background: rgba(255, 255, 255, 0.85); }
 
+/* Låst bibliotekøkt: grå med hengelås — låses opp ved å lære alle øvelsene i Lær. */
+.bibkort.bibkort--laast { background: linear-gradient(150deg, #8b95a0, #5f6a75); box-shadow: none; }
+.bibkort--laast .bibkort__bak { opacity: 0.1; }
+/* Mer spesifikk enn «.bibkort > :not(.bibkort__bak)» så absolutt-plassering vinner. */
+.bibkort > .bibkort__las {
+  position: absolute; top: 10px; right: 10px; z-index: 2;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22); display: grid; place-items: center;
+}
+.bibkort__las .ikon { width: 16px; height: 16px; color: #fff; }
+.bibkort__start--laast {
+  background: rgba(255, 255, 255, 0.20); color: #fff;
+  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+}
+.bibkort__start--laast .ikon { width: 13px; height: 13px; }
+
+/* Låst-ark (bunnark): framdrift + liste over det som gjenstår å lære. */
+.last-fremdrift { margin: 14px 0 6px; }
+.last-fremdrift__spor { height: 8px; border-radius: 999px; background: var(--bg-kort-2); overflow: hidden; }
+.last-fremdrift__fyll { height: 100%; background: var(--teal-500); border-radius: 999px; transition: width 0.3s; }
+.last-fremdrift__tall { display: block; margin-top: 6px; font-size: 12.5px; color: var(--dempet); }
+.last-liste { margin: 8px 0 16px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.last-liste li { display: flex; align-items: center; gap: 8px; font-size: 14.5px; color: var(--tekst); }
+.last-liste li .ikon { width: 14px; height: 14px; color: var(--dempet); flex: 0 0 auto; }
+
+/* Låst økt i planleggeren (kalender). */
+.kalform__okt--laast { opacity: 0.55; }
+.kalform__laas { display: inline-flex; margin-right: 6px; vertical-align: middle; }
+.kalform__laas .ikon { width: 14px; height: 14px; color: var(--dempet); }
+
 .bibfilter h2 { margin-bottom: 8px; }
 .bibfilter h2 + .chiprad { margin-bottom: 14px; }
 .bibfilter h2:last-of-type + .chiprad { margin-bottom: 0; }

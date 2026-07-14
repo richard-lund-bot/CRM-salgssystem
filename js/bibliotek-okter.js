@@ -9,6 +9,7 @@ import { lagFaneside } from './banner.js';
 import { lagArtikkelStripe } from './laer.js';
 import { hentProfil } from './store.js';
 import { erSkjult } from './preferanser.js';
+import { erAdmin, oktLast } from './opplasing.js';
 
 // Kategori → artikkel-tag, så biblioteket kan vise relaterte læringsartikler.
 const KAT_ARTIKKELTAG = {
@@ -86,18 +87,59 @@ export function tilSpillerOkt(o, planId = null) {
   };
 }
 
+/** Åpner en økt: låst + ikke-admin → vis låst-ark; ellers start (review). */
+export function aapneOkt(o, l = oktLast(o)) {
+  if (l.laast && !erAdmin()) { visLastArk(o, l); return; }
+  settØkt(tilSpillerOkt(o));
+  location.hash = '#/review';
+}
+
 /** Starter en bibliotekøkt: sett som gjeldende og gå til review. */
 export function startOkt(oktId, planId = null) {
   const o = oktMedId(oktId);
   if (!o) { location.hash = '#/okter'; return; }
+  const l = oktLast(o);
+  if (l.laast && !erAdmin()) { location.hash = '#/okter'; setTimeout(() => visLastArk(o, l), 30); return; }
   settØkt(tilSpillerOkt(o, planId));
   location.hash = '#/review';
 }
 
-/** Tilfeldig økt («Overrask meg») — holder seg til enkel/middels skill. */
+/** Tilfeldig økt («Overrask meg») — enkel/middels skill. Uten admin foreslås
+ *  bare opplåste økter (null hvis ingen ennå). */
 export function tilfeldigOkt() {
-  const kandidater = hentOkter().filter((o) => o.skill !== 'hoy');
+  let kandidater = hentOkter().filter((o) => o.skill !== 'hoy');
+  if (!erAdmin()) kandidater = kandidater.filter((o) => !oktLast(o).laast);
   return kandidater[Math.floor(Math.random() * kandidater.length)] || null;
+}
+
+// Bunnark for en låst økt: forklarer at alle øvelsene må læres i Lær først,
+// lister det som mangler, og lenker til Lær. Gjenbruker .ark-stilene.
+export function visLastArk(o, l = oktLast(o)) {
+  document.querySelector('.ark')?.remove();
+  const lukk = () => { ark.classList.add('ark--lukker'); setTimeout(() => ark.remove(), 220); };
+  const panel = el('div', { class: 'ark__panel', role: 'dialog', 'aria-label': `Lås opp ${o.navn}` },
+    el('i', { class: 'ark__grip', 'aria-hidden': 'true' }),
+    el('div', { class: 'ark__hode' },
+      el('h2', { class: 'ark__tittel' }, ikon('las', 'ikon ikon--liten'), ' Låst økt'),
+      el('button', { class: 'ikonknapp', type: 'button', 'aria-label': 'Lukk', onclick: () => lukk() }, ikon('kryss')),
+    ),
+    el('div', { class: 'ark__innhold' },
+      el('p', { class: 'ovelsekort' }, `«${o.navn}» låses opp når du har lært alle øvelsene i den i Lær.`),
+      el('div', { class: 'last-fremdrift' },
+        el('div', { class: 'last-fremdrift__spor' },
+          el('div', { class: 'last-fremdrift__fyll', style: `width:${l.totalt ? Math.round((l.laerte / l.totalt) * 100) : 0}%` })),
+        el('span', { class: 'last-fremdrift__tall' }, `${l.laerte} av ${l.totalt} øvelser lært`),
+      ),
+      l.mangler.length ? el('h3', { class: 'ovelse__h' }, 'Gjenstår å lære i Lær') : null,
+      l.mangler.length ? el('ul', { class: 'last-liste' }, ...l.mangler.slice(0, 12).map((n) => el('li', {}, ikon('las', 'ikon ikon--liten'), ' ', n))) : null,
+      l.mangler.length > 12 ? el('p', { class: 'dempet' }, `+ ${l.mangler.length - 12} øvelser til`) : null,
+      el('a', { class: 'knapp knapp--stor', href: '#/laer', onclick: () => lukk() }, 'Gå til Lær'),
+    ),
+  );
+  const ark = el('div', { class: 'ark' }, panel);
+  ark.addEventListener('click', (ev) => { if (ev.target === ark) lukk(); });
+  document.body.append(ark);
+  requestAnimationFrame(() => ark.classList.add('ark--apen'));
 }
 
 // ===========================================================================
@@ -143,10 +185,14 @@ export function visOkterSkjerm(mount) {
 
   function bibKort(o, farge) {
     const ikonNavn = KATEGORIER.find((k) => k.id === o.kategori)?.ikon || 'stjerne';
+    const l = oktLast(o);
+    const laast = l.laast;
     return el('button', {
-      class: `bibkort movflis--${farge}`, type: 'button',
-      onclick: () => { settØkt(tilSpillerOkt(o)); location.hash = '#/review'; },
+      class: `bibkort movflis--${farge}` + (laast ? ' bibkort--laast' : ''), type: 'button',
+      'aria-label': laast ? `${o.navn} — låst, ${l.laerte} av ${l.totalt} øvelser lært` : o.navn,
+      onclick: () => aapneOkt(o, l),
     },
+      laast ? el('span', { class: 'bibkort__las', 'aria-hidden': 'true' }, ikon('las')) : null,
       el('span', { class: 'bibkort__bak' }, ikon(ikonNavn)),
       el('span', { class: 'bibkort__ikon' }, ikon(ikonNavn)),
       el('span', { class: 'bibkort__navn' }, o.navn),
@@ -160,7 +206,9 @@ export function visOkterSkjerm(mount) {
         el('span', { class: 'bibkort__pille' + (o.intensitet === 'lett' ? ' bibkort__pille--aktiv' : '') }, 'Rolig'),
         el('span', { class: 'bibkort__pille' + (o.intensitet === 'intens' ? ' bibkort__pille--aktiv' : '') }, 'Intens'),
       ),
-      el('span', { class: 'bibkort__start' }, 'Start'),
+      laast
+        ? el('span', { class: 'bibkort__start bibkort__start--laast' }, ikon('las', 'ikon ikon--liten'), ` ${l.laerte}/${l.totalt} lært`)
+        : el('span', { class: 'bibkort__start' }, 'Start'),
     );
   }
 
