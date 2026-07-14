@@ -890,6 +890,8 @@ let _aktivWrap = null;
 function lukkPopover() {
   const kort = _apenPopover; const wrap = _aktivWrap;
   _apenPopover = null; _aktivWrap = null;
+  // Fjern «trykk utenfor for å lukke»-lytteren (idempotent — samme referanse).
+  document.removeEventListener('click', lukkPopover);
   if (kort) { kort.classList.add('reise-popover--ut'); setTimeout(() => kort.remove(), 380); }
   wrap?.classList.remove('reise-node--aktiv');
 }
@@ -941,6 +943,10 @@ function apneNodePopover(sti, ledd, tilstand, wrap, { stille = false } = {}) {
   wrap.classList.add('reise-node--aktiv');
   _apenPopover = kort;
   _aktivWrap = wrap;
+  // Trykk hvor som helst utenfor lukker popoveren. Node- og popover-knappene
+  // kaller stopPropagation() på click, så denne bobble-lytteren fanger bare
+  // trykk på tomt område — ikke selve åpne-klikket eller taps inni kortet.
+  document.addEventListener('click', lukkPopover);
   requestAnimationFrame(() => kort.classList.add('reise-popover--inn'));
 }
 

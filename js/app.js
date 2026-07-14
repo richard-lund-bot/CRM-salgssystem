@@ -77,6 +77,45 @@ const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovels
 // Medlemssidene (auth). Uinnloggede sendes hit; innloggede slippes forbi.
 const AUTH_RUTER = new Set(['logg-inn', 'bli-medlem']);
 
+// --- Per-fane navigasjonsminne -------------------------------------------
+// Hver bunnfane husker hvor den var (full hash + scroll), så et fanebytte og
+// tilbake ikke nullstiller til fane-roten (som i vanlige apper).
+const FANER = ['hjem', 'beveg', 'merker', 'aktivitet', 'laer'];
+// Under-rute → eier-fane. Samme kart som lyser opp riktig fane i oppdaterNav.
+// meny/innstillinger er bevisst utelatt (eget tannhjul-signal), så de lyser
+// ingen fane og huskes ikke som fane-mål.
+const FANE_AV_RUTE = {
+  bibliotek: 'merker', om: 'merker', varsler: 'merker', plan: 'merker',
+  styrke: 'merker', kalender: 'merker', reise: 'merker', tilpass: 'merker',
+  historikk: 'aktivitet', ny: 'beveg', okter: 'beveg',
+  artikkel: 'laer', sti: 'laer', disiplin: 'laer', seksjon: 'laer',
+};
+const faneForRute = (rute) => FANE_AV_RUTE[rute] || rute;
+const faneMinne = { hjem: '#/hjem', beveg: '#/beveg', merker: '#/merker', aktivitet: '#/aktivitet', laer: '#/laer' };
+const scrollMinne = new Map();
+let forrigeHash = '';
+// Fanesidene scroller et indre .hjem-scroll; reise-/vanlige skjermer scroller vinduet.
+const aktivScroller = () => document.querySelector('.hjem-scroll') || document.scrollingElement || document.documentElement;
+
+// Husk hvor fanen var, og speil minnet inn i fane-lenkene så et trykk går rett
+// dit du var. Bare skjermer som beholder bunnbaren huskes (ikke fokus-flow).
+function oppdaterFaneMinne(rute) {
+  const fane = faneForRute(rute);
+  if (FANER.includes(fane) && !FOKUS.has(rute)) faneMinne[fane] = location.hash;
+  document.querySelectorAll('.tabbar__knapp').forEach((a) => {
+    if (faneMinne[a.dataset.rute]) a.href = faneMinne[a.dataset.rute];
+  });
+}
+
+// Gjenopprett scroll for en hash (default topp). Re-apply etter layout og litt
+// senere for skjermer som fyller innhold async (f.eks. seksjon henter JSON).
+function gjenopprettScroll(hash) {
+  const y = scrollMinne.get(hash) || 0;
+  const sett = () => { const s = aktivScroller(); if (s) s.scrollTop = y; };
+  sett();
+  if (y > 0) { requestAnimationFrame(sett); setTimeout(sett, 120); }
+}
+
 // Gamle #/ny?m=STY-lenker (og bokmerker) sendes til riktig bibliotekkategori.
 function omdirigerGammelNyLenke() {
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
@@ -90,22 +129,22 @@ function navger() {
   // auth-side → slippes videre inn i appen.
   if (!sync.erInnlogget() && !AUTH_RUTER.has(rute)) { location.hash = '#/logg-inn'; return; }
   if (sync.erInnlogget() && AUTH_RUTER.has(rute)) { location.hash = '#/hjem'; return; }
+  // Ekte navigasjon (hash endret) lagrer/gjenoppretter scroll; programmatiske
+  // redraws (samme hash, f.eks. etter synk) rører den ikke.
+  const byttet = location.hash !== forrigeHash;
+  if (byttet && forrigeHash) scrollMinne.set(forrigeHash, aktivScroller().scrollTop);
   document.body.classList.toggle('fokusmodus', FOKUS.has(rute));
   document.body.classList.remove('fane-laast'); // settes på nytt av fanesidene
   if (rute !== 'kjor' && rute !== 'hurtig') slippVaaken(); // timer-skjermene eier låsen
   (ruter[rute] || visHjem)();
   oppdaterNav(rute);
+  oppdaterFaneMinne(rute);
+  if (byttet) gjenopprettScroll(location.hash);
+  forrigeHash = location.hash;
 }
 
 function oppdaterNav(rute) {
-  const tabRute = ({
-    // Meny-huben og innstillinger har eget signal (aktivt tannhjul), så de skal
-    // ikke lyse opp Profil-fanen. Resten av «meny-sidene» lyser fortsatt Profil.
-    bibliotek: 'merker', om: 'merker', varsler: 'merker',
-    plan: 'merker', styrke: 'merker', kalender: 'merker', reise: 'merker', tilpass: 'merker',
-    historikk: 'aktivitet', ny: 'beveg', okter: 'beveg',
-    artikkel: 'laer', sti: 'laer', disiplin: 'laer', seksjon: 'laer',
-  })[rute] || rute;
+  const tabRute = faneForRute(rute);
   document.querySelectorAll('.tabbar__knapp').forEach((b) => {
     b.classList.toggle('tabbar__knapp--aktiv', b.dataset.rute === tabRute);
   });
@@ -949,9 +988,8 @@ async function start() {
   settNavger(navger); // pull-to-refresh (banner.js) tegner siden på nytt
   settUlestSjekk(harUlesteVarsler); // uleste-prikk på bjella (banner.js)
   bruksTema(hentProfil()?.innstillinger?.tema);
-  // Fanebytte starter alltid på toppen av siden (programmatiske redraws,
-  // f.eks. etter synk, beholder scrollposisjonen).
-  window.addEventListener('hashchange', () => window.scrollTo(0, 0));
+  // Navigasjon håndterer scroll selv (navger → gjenopprettScroll): nye skjermer
+  // starter på toppen, mens en fane man kommer tilbake til gjenoppretter posisjon.
   window.addEventListener('hashchange', navger);
 
   // Skysync: fang ev. magic-link-retur, og på en ny enhet som nettopp logget
