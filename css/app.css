@@ -686,9 +686,9 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
   display: flex; align-items: center; justify-content: space-around;
   gap: 2px; padding: 6px 8px;
   border: none; border-radius: 999px;
-  background: color-mix(in srgb, var(--c-glass) 14%, transparent);
-  -webkit-backdrop-filter: blur(11px) saturate(160%);
-  backdrop-filter: blur(11px) saturate(160%);
+  background: color-mix(in srgb, var(--c-light) 40%, transparent);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  backdrop-filter: blur(12px) saturate(150%);
   box-shadow:
     inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 10%), transparent),
     inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 90%), transparent),
@@ -707,6 +707,24 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .tabbar { background: color-mix(in srgb, var(--bg-kort) 92%, transparent); }
 }
+/* «Speil»-kant à la Instagram: skarp lys ytre rim (sterkest på de buede endene)
+   + en svak andre-kant litt inn, som antyder glassrefraksjonen. iOS gjør ikke
+   backdrop-forvrengning, så kanten males med lys/skygge i stedet. */
+.tabbar::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit;
+  pointer-events: none; z-index: 0;
+  box-shadow:
+    inset 0 1.5px 1px -0.5px rgba(255, 255, 255, 0.95),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5),
+    inset 3px 0 3px -2px rgba(255, 255, 255, 0.9),
+    inset -3px 0 3px -2px rgba(255, 255, 255, 0.9),
+    inset 0 -2px 2px -1px rgba(0, 0, 0, 0.06);
+}
+.tabbar::before {
+  content: ''; position: absolute; inset: 3px; border-radius: 999px;
+  pointer-events: none; z-index: 0;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.32);
+}
 /* Scroll ned → litt mindre; scroll opp → tilbake til full størrelse. */
 .tabbar--kompakt { transform: scale(0.88); }
 .tabbar__knapp {
@@ -716,18 +734,23 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
   -webkit-tap-highlight-color: transparent;
   transition: color var(--dur-fast) var(--ease-standard);
 }
-.tabbar__knapp--aktiv { color: var(--aksent); }
+.tabbar__knapp--aktiv { color: #141414; }
 .tabbar__ikon { line-height: 1; display: grid; place-items: center; }
-.tabbar__ikon .ikon { width: 25px; height: 25px; stroke-width: 2; transition: stroke-width var(--dur-fast) ease; }
-.tabbar__knapp--aktiv .tabbar__ikon .ikon { stroke-width: 2.5; }
+.tabbar__ikon .ikon { width: 25px; height: 25px; stroke-width: 2; }
+/* Aktiv fane: bytt til det fylte, svarte ikonet (linje-varianten skjules). */
+.tabikon--fyll { display: none; }
+.tabbar__knapp--aktiv .tabikon--linje { display: none; }
+.tabbar__knapp--aktiv .tabikon--fyll { display: block; }
+/* Aktivitet (puls) er ren strek uten fyll-variant → aktiv = kraftigere svart strek. */
+.tabbar__knapp--aktiv .tabikon--linje:only-child { display: block; stroke-width: 2.7; }
 .tabbar__knapp--aktiv .tabbar__ikon { animation: tab-hopp 0.35s var(--ease-spring); }
 @keyframes tab-hopp { 0% { transform: scale(0.86); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
 .tabbar__knapp--synker .tabbar__ikon { animation: synkpuls 1s ease-in-out infinite; }
 /* Glidende glass-linse bak aktiv fane (posisjon settes i flyttTabIndikator). */
 .tabbar__linse {
   position: absolute; top: 5px; bottom: 5px; left: 0;
-  width: 54px; border-radius: 999px;
-  background: color-mix(in srgb, var(--c-glass) 36%, transparent);
+  width: 64px; border-radius: 999px;
+  background: color-mix(in srgb, var(--c-glass) 50%, transparent);
   box-shadow:
     inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 10%), transparent),
     inset 2px 1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 90%), transparent),

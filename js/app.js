@@ -985,18 +985,22 @@ function visOm() {
 function byggTabbar() {
   if (document.querySelector('.tabbar')) return;
   // Flytende liquid-glass-bar à la Instagram: kun ikoner (etiketten blir aria-
-  // label for skjermlesere), og en glidende glass-linse bak den aktive fanen.
-  const tab = (rute, ikonNavn, tekst, ekstra = '') => el('a', {
-    class: 'tabbar__knapp' + ekstra, href: `#/${rute}`, 'data-rute': rute, 'aria-label': tekst,
-  }, el('span', { class: 'tabbar__ikon' }, ikon(ikonNavn)));
+  // label for skjermlesere), en glidende glass-linse bak aktiv fane, og aktiv
+  // fane får det fylte, svarte ikonet (linje-varianten byttes via CSS).
+  const tab = (rute, ikonNavn, fyllNavn, tekst) => el('a', {
+    class: 'tabbar__knapp', href: `#/${rute}`, 'data-rute': rute, 'aria-label': tekst,
+  }, el('span', { class: 'tabbar__ikon' },
+    ikon(ikonNavn, 'ikon tabikon--linje'),
+    fyllNavn ? ikon(fyllNavn, 'ikon tabikon--fyll') : null,
+  ));
 
   document.body.append(el('nav', { class: 'tabbar', 'aria-label': 'Hovedmeny' },
     el('span', { class: 'tabbar__linse', 'aria-hidden': 'true' }),
-    tab('hjem', 'hjem', 'I dag'),
-    tab('beveg', 'loper', 'Trening'),
-    tab('merker', 'person', 'Profil'),
-    tab('aktivitet', 'puls', 'Aktivitet'),
-    tab('laer', 'bok', 'Lær'),
+    tab('hjem', 'hjem', 'hjemfyll', 'I dag'),
+    tab('beveg', 'loper', 'loperfyll', 'Trening'),
+    tab('merker', 'person', 'personfyll', 'Profil'),
+    tab('aktivitet', 'puls', null, 'Aktivitet'),
+    tab('laer', 'bok', 'bokfyll', 'Lær'),
   ));
   settOppTabKrymp();
 }
