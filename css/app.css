@@ -2240,8 +2240,13 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 
 /* Kompakt, klebrig reise-header (Duolingo-aktig «unit»-kort). Erstatter den
    store intro-heroen, og er målet for «kortet flyr til toppen»-animasjonen. */
-.reise-topp { position: sticky; top: 0; z-index: 8; padding: calc(env(safe-area-inset-top) + 8px) 12px 6px; background: var(--bg); }
-.reise-topp__kort { position: relative; overflow: hidden; padding: 11px 14px 12px; border-radius: 20px; background: linear-gradient(150deg, var(--teal-700) 0%, var(--teal-900) 100%); color: #fff; box-shadow: 0 10px 26px rgba(1,63,64,0.26); }
+/* Sticky topp: solid bak selve kortet, men falmer til gjennomsiktig mot bunnen
+   så den ikke legger en hard grå «plate» over innholdet når man scroller —
+   kortet skal virke svevende. */
+.reise-topp { position: sticky; top: 0; z-index: 8; padding: calc(env(safe-area-inset-top) + 8px) 12px 12px; background: linear-gradient(var(--bg) 60%, transparent); }
+/* Lettere, lagdelt skygge (tett kontaktskygge + myk ambient) → kortet løftes og
+   flyter i stedet for å kaste en tung, grå slagskygge. */
+.reise-topp__kort { position: relative; overflow: hidden; padding: 11px 14px 12px; border-radius: 20px; background: linear-gradient(150deg, var(--teal-700) 0%, var(--teal-900) 100%); color: #fff; box-shadow: 0 3px 8px rgba(1,63,64,0.10), 0 14px 30px rgba(1,63,64,0.15); }
 .reise-topp__rad { display: flex; align-items: center; gap: 11px; }
 .reise-topp__tilbake { flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%; border: none; background: rgba(255,255,255,0.16); color: #fff; font-size: 1.25rem; line-height: 1; cursor: pointer; display: grid; place-items: center; }
 .reise-topp__tilbake:active { transform: scale(0.92); }

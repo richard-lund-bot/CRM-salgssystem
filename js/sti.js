@@ -16,7 +16,7 @@ import { settSeksjonsstruktur } from './merker.js';
 import { ovelseInfo, ovelseBilde, visOvelseArk, ovelseKanon } from './ovelse.js';
 import { registrerOgLogg } from './beveg.js';
 import { beregnXp } from './bevegelse.js';
-import { lagKonfetti } from './animasjon.js';
+import { lagKonfetti, REDUSERT } from './animasjon.js';
 import { vibrer } from './haptikk.js';
 import { plingSekvens } from './lyd.js';
 import { kisteKort, streakEtter } from './feiring.js';
@@ -619,16 +619,51 @@ export function visSeksjonSkjerm(mount) {
   }
 }
 
-// Scroll til og åpne popoveren for et bestemt steg (øvelse-node) på seksjonsreisen.
-// Kalt fra en dyplenke: scroller noden til midten, og åpner popoveren litt etter
-// så seksjonens egen scroll-lytter (som lukker popovere ved scroll) har roet seg.
+// Scroll til og åpne popoveren for et bestemt steg (øvelse-node) på seksjonsreisen,
+// fra en dyplenke. For å unngå flicker («laster inn og ut») koordineres tre ting:
+//  1) _hoppSteg demper seksjonens auto-åpning av gjeldende node mens vi jobber,
+//  2) vi venter til inngangs-View-Transitionen er ferdig før vi scroller (ellers
+//     hopper skjermen når overgangen avsluttes), og
+//  3) popoveren åpnes ÉN gang, først når scrollen har stanset (scroll-lytteren
+//     lukker popovere under scroll).
 function aapneStegNode(container, ovelseNode) {
-  setTimeout(() => {
+  _hoppSteg = ovelseNode;
+  const scroller = document.scrollingElement || document.documentElement;
+
+  const aapneNaar = (wrap) => {
+    // Vent til scrollposisjonen er stabil (glid ferdig), så åpne én gang.
+    let sist = NaN; let stabil = 0;
+    const sjekk = () => {
+      if (!wrap.isConnected) { _hoppSteg = null; return; }
+      const y = scroller.scrollTop;
+      stabil = Math.abs(y - sist) < 1 ? stabil + 1 : 0;
+      sist = y;
+      if (stabil >= 3) {
+        _hoppSteg = null;
+        if (_aktivWrap !== wrap) apneNodePopover(wrap._sti, wrap._ledd, wrap._tilstand, wrap);
+        return;
+      }
+      setTimeout(sjekk, 50);
+    };
+    setTimeout(sjekk, 60);
+  };
+
+  const kjor = () => {
     const wrap = [...container.querySelectorAll('.reise-node')].find((w) => w._ledd?.ovelse === ovelseNode);
-    if (!wrap) return;
-    wrap.scrollIntoView({ behavior: 'auto', block: 'center' });
-    setTimeout(() => { if (wrap.isConnected) apneNodePopover(wrap._sti, wrap._ledd, wrap._tilstand, wrap); }, 280);
-  }, 360);
+    if (!wrap) { _hoppSteg = null; return; }
+    wrap.scrollIntoView({ behavior: REDUSERT() ? 'auto' : 'smooth', block: 'center' });
+    aapneNaar(wrap);
+  };
+
+  // Vent til inngangs-overgangen (data-vt fjernes av navger) er ferdig. Faller
+  // trygt gjennom om ingen VT kjører (redusert bevegelse / eldre nettlesere).
+  let forsok = 0;
+  const vent = () => {
+    if (!document.documentElement.dataset.vt || forsok > 30) { kjor(); return; }
+    forsok += 1;
+    setTimeout(vent, 40);
+  };
+  setTimeout(vent, 40);
 }
 
 // Uteksaminerings-node på reisen: coach-pandaen som «enhets-boss». Låst til alle
@@ -935,7 +970,7 @@ function settOppSkrymping(container) {
   };
   // Vis den gjeldende STARTen én gang (ved innlasting) om noden er i synsfeltet.
   const visForste = () => {
-    if (_aktivWrap || !gj || !gj.isConnected || !gj._ledd) return;
+    if (_hoppSteg || _aktivWrap || !gj || !gj.isConnected || !gj._ledd) return;
     const h = window.innerHeight;
     const r = gj.getBoundingClientRect();
     if (!r.height) return;
@@ -961,6 +996,9 @@ function settOppSkrymping(container) {
 // --- Node-popover (trykk på node → kort med START + XP) -------------------
 let _apenPopover = null;
 let _aktivWrap = null;
+// Satt mens en dyplenke (aapneStegNode) jobber, så seksjonens auto-åpning av
+// den gjeldende noden ikke konkurrerer og gir «åpne → lukk → åpne»-flicker.
+let _hoppSteg = null;
 
 function lukkPopover() {
   const kort = _apenPopover; const wrap = _aktivWrap;
