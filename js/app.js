@@ -160,7 +160,14 @@ function navger() {
   // Skjermovergang via View Transitions API der den finnes (iOS 18+/Chrome);
   // ellers umiddelbart bytte (dagens oppførsel). Hoppes over ved redusert bevegelse.
   if (byttet && typeof document.startViewTransition === 'function' && !REDUSERT()) {
-    document.documentElement.dataset.vt = navRetning(location.hash);
+    // Modulbytte (fane ↔ fane) = rolig krysstoning uten sideveis bevegelse, så
+    // header og statuslinje ikke skyves horisontalt og blottlegger bakgrunnen.
+    // Dyp-navigasjon (inn/ut av detaljskjermer) beholder retnings-skliet.
+    const forrigeRute = ((forrigeHash || '').replace('#/', '') || 'hjem').split('?')[0];
+    const modulbytte = FANER.includes(faneForRute(rute)) && FANER.includes(faneForRute(forrigeRute))
+      && faneForRute(rute) !== faneForRute(forrigeRute) && !FOKUS.has(rute) && !FOKUS.has(forrigeRute);
+    const retning = navRetning(location.hash); // vedlikehold ruteStabelen uansett
+    document.documentElement.dataset.vt = modulbytte ? 'modul' : retning;
     const vt = document.startViewTransition(tegn);
     vt.finished.finally(() => { delete document.documentElement.dataset.vt; });
   } else {

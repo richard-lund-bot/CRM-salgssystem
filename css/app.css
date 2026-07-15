@@ -1387,6 +1387,13 @@ html[data-vt="tilbake"]::view-transition-new(root) { animation: vt-inn-t 300ms v
 @keyframes vt-ut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(-20px); } }
 @keyframes vt-inn-t { from { opacity: 0; transform: translateX(-26px); } to { opacity: 1; transform: none; } }
 @keyframes vt-ut-t { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(20px); } }
+/* Modulbytte (fane ↔ fane): rolig krysstoning uten sideveis bevegelse — ingen
+   horisontal skyv av header/statuslinje, så bakgrunnen blir aldri blottlagt.
+   En hårfin skala gir liv uten å flytte kantene (unngår grå kant/gap). */
+html[data-vt="modul"]::view-transition-old(root) { animation: vt-modul-ut 190ms var(--ease-standard) both; }
+html[data-vt="modul"]::view-transition-new(root) { animation: vt-modul-inn 260ms var(--ease-out) both; }
+@keyframes vt-modul-ut { from { opacity: 1; transform: none; } to { opacity: 0; transform: scale(1.006); } }
+@keyframes vt-modul-inn { from { opacity: 0; transform: scale(0.994); } to { opacity: 1; transform: none; } }
 
 /* Splash-settle: merkevaren «puster inn» ved oppstart; «Laster…» pulserer mykt */
 .splash__bilde { animation: splash-inn 900ms var(--ease-out) both; }
