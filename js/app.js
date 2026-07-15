@@ -19,13 +19,13 @@ import { lastOvelsesinfo, settBib as settBibOvelse, visOvelseSkjerm, ovelseInfo 
 import { alleØvelser, tonnasje, muskelVolum, lagLinjegraf } from './styrke.js';
 import { lastArtikler, visLaerSkjerm, visArtikkelSkjerm } from './laer.js';
 import { visLoggInnSkjerm, visRegistrerSkjerm, settEtterInnlogget } from './medlem.js';
-import { lastStier, lastKjeder, lastDisipliner, lastSeksjoner, settBib as settBibSti, visStiSkjerm, visDisiplinSkjerm, visSeksjonSkjerm } from './sti.js';
+import { lastStier, lastKjeder, lastDisipliner, lastSeksjoner, settBib as settBibSti, visStiSkjerm, visDisiplinSkjerm, visSeksjonSkjerm, laerLenke } from './sti.js';
 import { visMerkerSkjerm } from './merker.js';
 import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
 import { lagFaneside, fanesideMedTittel, settNavger, settUlestSjekk, dagsfase } from './banner.js';
 import { nivaFraTotalXp } from './niva.js';
 import { dagerMedAktivitet, okterHref, beregnStreak } from './bevegelse.js';
-import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN, KATEGORIER } from './bibliotek-okter.js';
+import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN, KATEGORIER, settLaerLenke } from './bibliotek-okter.js';
 import { settBib as settBibOpp, settOkterKilde, erAdminEpost, adminModusPaa, settAdminModus } from './opplasing.js';
 import { fyllInn, tallOpp, stagger, REDUSERT } from './animasjon.js';
 import { settLydAv } from './lyd.js';
@@ -1096,6 +1096,7 @@ async function start() {
   settBibSti(bib);
   settBibOpp(bib);
   settOkterKilde(hentOkter); // opplåsnings-diff (feiring.js) trenger øktlista
+  settLaerLenke(laerLenke);  // «Låst økt»-arket dyplenker øvelser rett til Lær
   settNavger(navger); // pull-to-refresh (banner.js) tegner siden på nytt
   settUlestSjekk(harUlesteVarsler); // uleste-prikk på bjella (banner.js)
   bruksTema(hentProfil()?.innstillinger?.tema);

@@ -21,6 +21,13 @@ const KAT_ARTIKKELTAG = {
 
 let _okter = null;
 
+// Dyplenke-oppslag fra Lær (sti.js) injiseres ved oppstart — bibliotek-okter
+// kan ikke importere sti.js direkte (sti → merker → bibliotek-okter er alt en
+// kjede, og en retur-import ville lukke sirkelen). Gir øvelsesnavn → href rett
+// til øvelsens enhet/steg i Lær, eller null når øvelsen ikke læres diskret der.
+let _laerLenke = null;
+export function settLaerLenke(fn) { _laerLenke = fn; }
+
 /** Laster biblioteket (kalles ved oppstart, cache i minne + SW). */
 export async function lastOkter() {
   if (_okter) return _okter;
@@ -118,6 +125,22 @@ export function tilfeldigOkt() {
 export function visLastArk(o, l = oktLast(o)) {
   document.querySelector('.ark')?.remove();
   const lukk = () => { ark.classList.add('ark--lukker'); setTimeout(() => ark.remove(), 220); };
+  // Hver øvelse man mangler blir et hurtigtrykk rett til sitt steg i Lær når vi
+  // vet hvor den læres; ellers en flat, ikke-klikkbar rad (samme som før).
+  const mangelRad = (n) => {
+    const href = _laerLenke?.(n);
+    if (!href) {
+      return el('div', { class: 'last-rad last-rad--flat' },
+        ikon('las', 'ikon ikon--liten'), el('span', { class: 'last-rad__navn' }, n));
+    }
+    return el('a', {
+      class: 'last-rad', href, 'aria-label': `Lær «${n}» i Lær`, onclick: () => lukk(),
+    },
+      ikon('las', 'ikon ikon--liten'),
+      el('span', { class: 'last-rad__navn' }, n),
+      el('span', { class: 'last-rad__chevron' }, ikon('chevron')),
+    );
+  };
   const panel = el('div', { class: 'ark__panel', role: 'dialog', 'aria-label': `Lås opp ${o.navn}` },
     el('i', { class: 'ark__grip', 'aria-hidden': 'true' }),
     el('div', { class: 'ark__hode' },
@@ -132,7 +155,7 @@ export function visLastArk(o, l = oktLast(o)) {
         el('span', { class: 'last-fremdrift__tall' }, `${l.laerte} av ${l.totalt} øvelser lært`),
       ),
       l.mangler.length ? el('h3', { class: 'ovelse__h' }, 'Gjenstår å lære i Lær') : null,
-      l.mangler.length ? el('ul', { class: 'last-liste' }, ...l.mangler.slice(0, 12).map((n) => el('li', {}, ikon('las', 'ikon ikon--liten'), ' ', n))) : null,
+      l.mangler.length ? el('div', { class: 'last-liste' }, ...l.mangler.slice(0, 12).map(mangelRad)) : null,
       l.mangler.length > 12 ? el('p', { class: 'dempet' }, `+ ${l.mangler.length - 12} øvelser til`) : null,
       el('a', { class: 'knapp knapp--stor', href: '#/laer', onclick: () => lukk() }, 'Gå til Lær'),
     ),

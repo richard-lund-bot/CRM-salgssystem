@@ -13,7 +13,7 @@
 import { el, tom, ikon } from './ui.js';
 import { hentLogg, hentPlan, leggTilPlan, fjernPlan } from './store.js';
 import { settSeksjonsstruktur } from './merker.js';
-import { ovelseInfo, ovelseBilde, visOvelseArk } from './ovelse.js';
+import { ovelseInfo, ovelseBilde, visOvelseArk, ovelseKanon } from './ovelse.js';
 import { registrerOgLogg } from './beveg.js';
 import { beregnXp } from './bevegelse.js';
 import { lagKonfetti } from './animasjon.js';
@@ -95,6 +95,40 @@ function finnSti(id) { return (_stier || []).find((s) => s.id === id) || null; }
 function finnKjede(id) { return (_kjeder || []).find((k) => k.id === id) || null; }
 function finnDisiplin(id) { return (_disipliner || []).find((d) => d.id === id) || null; }
 function finnSeksjon(id) { return (_seksjoner || []).find((s) => s.id === id) || null; }
+
+// Omvendt Lær-oppslag: kanonisk øvelsesnavn → hvor øvelsen læres (seksjon +
+// enhet + steg). Bygges én gang fra seksjonene. Samme kanoniske nøkkel som
+// opplåsingen (opplasing.js) matcher på, så øktbiblioteket og Lær deler
+// identitet — en øvelse man mangler kan derfor dyplenkes rett til sitt steg.
+let _laerIndeks = null;
+function byggLaerIndeks() {
+  const indeks = new Map();
+  for (const seksjon of (_seksjoner || [])) {
+    for (const enhet of (seksjon.enheter || [])) {
+      for (const st of (enhet.steg || [])) {
+        const navn = _bib?.ovelse(st.ovelse)?.navn || st.ovelse;
+        const kanon = ovelseKanon(navn);
+        if (kanon && !indeks.has(kanon)) {
+          indeks.set(kanon, { seksjonId: seksjon.id, enhetId: enhet.id, ovelseNode: st.ovelse, navn });
+        }
+      }
+    }
+  }
+  return indeks;
+}
+
+/** Hvor en øvelse (ved navn) læres i Lær: { seksjonId, enhetId, ovelseNode, navn } — eller null. */
+export function laerPlassering(navn) {
+  if (!navn) return null;
+  if (!_laerIndeks) _laerIndeks = byggLaerIndeks();
+  return _laerIndeks.get(ovelseKanon(navn)) || null;
+}
+
+/** Dyplenke rett til øvelsens enhet/steg i Lær — href-streng, eller null om ukjent. */
+export function laerLenke(navn) {
+  const p = laerPlassering(navn);
+  return p ? `#/seksjon?id=${encodeURIComponent(p.seksjonId)}&steg=${encodeURIComponent(p.ovelseNode)}` : null;
+}
 
 // Re-tegn den aktive reisen (enkelt-sti eller seksjon) etter en leksjon.
 function reTegnReise() {
@@ -574,6 +608,27 @@ export function visSeksjonSkjerm(mount) {
     const alt = målEnhet && enhetStjerner(seksjon.id, målEnhet.id) >= BOSS_MAKS_STJERNER;
     if (målEnhet && målEnhet.uteksaminering && !alt) setTimeout(() => startUteksaminering(seksjon, målEnhet), 320);
   }
+
+  // Dyplenke fra øktbibliotekets «Låst økt»-ark: #/seksjon?id=…&steg=<ovelse>
+  // scroller til øvelsens node og åpner popoveren, så man lander rett på steget
+  // man mangler i Lær. Strip param først så en re-tegning ikke gjenåpner den.
+  const stegParam = new URLSearchParams(location.hash.split('?')[1] || '').get('steg');
+  if (stegParam && !uteksParam) {
+    try { history.replaceState(null, '', `#/seksjon?id=${encodeURIComponent(seksjon.id)}`); } catch { /* ok */ }
+    aapneStegNode(mount, stegParam);
+  }
+}
+
+// Scroll til og åpne popoveren for et bestemt steg (øvelse-node) på seksjonsreisen.
+// Kalt fra en dyplenke: scroller noden til midten, og åpner popoveren litt etter
+// så seksjonens egen scroll-lytter (som lukker popovere ved scroll) har roet seg.
+function aapneStegNode(container, ovelseNode) {
+  setTimeout(() => {
+    const wrap = [...container.querySelectorAll('.reise-node')].find((w) => w._ledd?.ovelse === ovelseNode);
+    if (!wrap) return;
+    wrap.scrollIntoView({ behavior: 'auto', block: 'center' });
+    setTimeout(() => { if (wrap.isConnected) apneNodePopover(wrap._sti, wrap._ledd, wrap._tilstand, wrap); }, 280);
+  }, 360);
 }
 
 // Uteksaminerings-node på reisen: coach-pandaen som «enhets-boss». Låst til alle
