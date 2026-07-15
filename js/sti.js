@@ -521,6 +521,13 @@ export function visSeksjonSkjerm(mount) {
     const { stjerner, gradert } = gradInfo[ei];
     const enhetTilgj = forrigeGradert; // låst opp når forrige enhet er uteksaminert
     const alleTekniskLaert = enhet.steg.every((st) => mestret.has(st.ovelse));
+    // Teori-port: en åpen enhet med uleste/ubeståtte teori holder øvelsene dempet
+    // og inerte til teorien er bestått. `avslor` = teorien ble nettopp bestått →
+    // øvelsene avsløres i en kaskade denne ene gangen.
+    const teoriKlar = !enhet.teori || teoriFullfort(seksjon.id, enhet.teori.id);
+    const teoriGate = enhetTilgj && !!enhet.teori && !teoriKlar;
+    const avslor = teoriKlar && !!_teoriAvslor && _teoriAvslor.seksjon === seksjon.id && _teoriAvslor.enhet === enhet.id;
+    if (avslor) _avslorAktiv = true;
 
     reise.append(el('div', { class: 'enhet-header' + (gradert ? ' enhet-header--ferdig' : '') + (enhetTilgj ? '' : ' enhet-header--laast') },
       el('span', { class: 'enhet-header__merke' }, `Enhet ${ei + 1}`),
@@ -531,30 +538,44 @@ export function visSeksjonSkjerm(mount) {
       stjerneRad(stjerner, 'enhet-header__stjerner'),
     ));
 
-    // Teori-kort (kompendium): les-først-leksjon øverst i enheten. Tilgjengelig
-    // så snart enheten er låst opp — den gater ikke teknikk-stegene.
-    if (enhet.teori) reise.append(teoriKort(seksjon, enhet, enhetTilgj));
+    // Teori-kort (les-først-leksjon øverst i enheten). Når enheten er åpen men
+    // teorien ikke bestått, fremheves kortet som porten som låser opp øvelsene.
+    if (enhet.teori) reise.append(teoriKort(seksjon, enhet, enhetTilgj, teoriGate));
+
+    let avslorNr = 0; // teller bare de nodene som faktisk avsløres (for kaskaden)
+    const merkAvslor = (node) => {
+      if (!avslor) return node;
+      node.classList.add('reise-node--avslor');
+      node.style.setProperty('--avslor-forsinkelse', `${180 + avslorNr * 90}ms`);
+      avslorNr += 1;
+      return node;
+    };
 
     enhet.steg.forEach((st, si) => {
       const laert = mestret.has(st.ovelse);
       let tilstand;
       if (!enhetTilgj) tilstand = 'laast';
+      else if (teoriGate) tilstand = laert ? 'mestret' : 'laast'; // gate: ingen gjeldende ennå
       else if (laert) tilstand = 'mestret';
       else {
         const forrigeLaert = si === 0 || mestret.has(enhet.steg[si - 1].ovelse);
         if (forrigeLaert && !gjeldendeFunnet) { tilstand = 'gjeldende'; gjeldendeFunnet = true; }
         else tilstand = 'laast';
       }
-      reise.append(reiseNode(syntSti, { l: st, i: idx, tilstand }));
+      const node = reiseNode(syntSti, { l: st, i: idx, tilstand });
+      if (teoriGate) node.classList.add('reise-node--teoriveil');
+      reise.append(merkAvslor(node));
       idx += 1;
     });
 
     // Uteksaminerings-node (coach-panda) til slutt i enheten.
     let gradTilstand;
     if (gradert) gradTilstand = 'mestret';
-    else if (enhetTilgj && alleTekniskLaert && !gjeldendeFunnet) { gradTilstand = 'gjeldende'; gjeldendeFunnet = true; }
+    else if (enhetTilgj && !teoriGate && alleTekniskLaert && !gjeldendeFunnet) { gradTilstand = 'gjeldende'; gjeldendeFunnet = true; }
     else gradTilstand = 'laast';
-    reise.append(reiseGradNode(seksjon, enhet, gradTilstand, stjerner, idx, gradInfo[ei].legendarisk));
+    const gradNode = reiseGradNode(seksjon, enhet, gradTilstand, stjerner, idx, gradInfo[ei].legendarisk);
+    if (teoriGate) gradNode.classList.add('reise-node--teoriveil');
+    reise.append(merkAvslor(gradNode));
     idx += 1;
     forrigeGradert = gradert;
   });
@@ -571,6 +592,13 @@ export function visSeksjonSkjerm(mount) {
     ),
   );
   settOppSkrymping(mount);
+
+  // Kaskade-avsløringen er nå tegnet (om noen): konsumer flagget så den ikke
+  // spilles på nytt, og slipp auto-åpnings-sperren når animasjonen er ferdig.
+  if (_teoriAvslor) {
+    _teoriAvslor = null;
+    setTimeout(() => { _avslorAktiv = false; }, 180 + 12 * 90 + 700);
+  }
 
   // Feiring: første gang en enhet er uteksaminert (3★) eller hele seksjonen er
   // ferdig. Seksjons-feiringen vinner (vises alene) når begge skjer samtidig;
@@ -651,6 +679,15 @@ function aapneStegNode(container, ovelseNode) {
   const kjor = () => {
     const wrap = [...container.querySelectorAll('.reise-node')].find((w) => w._ledd?.ovelse === ovelseNode);
     if (!wrap) { _hoppSteg = null; return; }
+    // Teori-gatet steg: noden er inert bak sløret. Scroll til teori-porten (CTA)
+    // i stedet, og ikke åpne popover på en node man uansett ikke kan starte —
+    // brukeren må bestå teorien først.
+    if (wrap.classList.contains('reise-node--teoriveil')) {
+      const gate = container.querySelector('.teori-kort--gate') || wrap;
+      gate.scrollIntoView({ behavior: REDUSERT() ? 'auto' : 'smooth', block: 'center' });
+      _hoppSteg = null;
+      return;
+    }
     wrap.scrollIntoView({ behavior: REDUSERT() ? 'auto' : 'smooth', block: 'center' });
     aapneNaar(wrap);
   };
@@ -970,7 +1007,7 @@ function settOppSkrymping(container) {
   };
   // Vis den gjeldende STARTen én gang (ved innlasting) om noden er i synsfeltet.
   const visForste = () => {
-    if (_hoppSteg || _aktivWrap || !gj || !gj.isConnected || !gj._ledd) return;
+    if (_hoppSteg || _avslorAktiv || _aktivWrap || !gj || !gj.isConnected || !gj._ledd) return;
     const h = window.innerHeight;
     const r = gj.getBoundingClientRect();
     if (!r.height) return;
@@ -999,6 +1036,12 @@ let _aktivWrap = null;
 // Satt mens en dyplenke (aapneStegNode) jobber, så seksjonens auto-åpning av
 // den gjeldende noden ikke konkurrerer og gir «åpne → lukk → åpne»-flicker.
 let _hoppSteg = null;
+// { seksjon, enhet } for en enhet der teorien nettopp ble bestått — utløser
+// kaskade-avsløringen av øvelsene ved neste re-tegning (settes én gang).
+let _teoriAvslor = null;
+// Sant mens avsløringsanimasjonen spiller, så auto-åpningen ikke fyrer på en
+// node som fortsatt er usynlig (animerer inn).
+let _avslorAktiv = false;
 
 function lukkPopover() {
   const kort = _apenPopover; const wrap = _aktivWrap;
@@ -1272,17 +1315,17 @@ function teoriFullfort(seksjonId, teoriId) {
 }
 
 // «Les først»-kort øverst i enheten (bok-ikon, tittel, lesetid + antall spørsmål).
-function teoriKort(seksjon, enhet, tilgjengelig) {
+function teoriKort(seksjon, enhet, tilgjengelig, gate = false) {
   const t = enhet.teori;
   const ferdig = teoriFullfort(seksjon.id, t.id);
   const n = (t.sporsmal || []).length;
   const kort = el('button', {
-    class: 'teori-kort' + (ferdig ? ' teori-kort--ferdig' : '') + (tilgjengelig ? '' : ' teori-kort--laast'),
+    class: 'teori-kort' + (ferdig ? ' teori-kort--ferdig' : '') + (tilgjengelig ? '' : ' teori-kort--laast') + (gate ? ' teori-kort--gate' : ''),
     type: 'button', 'aria-label': `Teori: ${t.tittel}`,
   },
     el('span', { class: 'teori-kort__ikon' }, ikon(ferdig ? 'sjekk' : (tilgjengelig ? 'bok' : 'las'))),
     el('div', { class: 'teori-kort__tekst' },
-      el('span', { class: 'teori-kort__merke' }, ferdig ? 'Teori · fullført' : 'Teori · les først'),
+      el('span', { class: 'teori-kort__merke' }, ferdig ? 'Teori · fullført' : (gate ? 'Teori · lås opp øvelsene' : 'Teori · les først')),
       el('span', { class: 'teori-kort__tittel' }, t.tittel),
       el('span', { class: 'teori-kort__meta' }, `${t.lesetid || 4} min lesing · ${n} spørsmål`),
     ),
@@ -1393,25 +1436,37 @@ function startTeori(seksjon, enhet) {
       el('div', { class: 'leksjon-valg-liste' }, ...valgKnapper),
       feedback,
     );
+    // «Bestått» krever alle riktige: et galt svar må prøves på nytt (fasiten
+    // avsløres ikke), så man kommer bare til fullfor() ved å svare rett på alt.
     const knapp = primaer('Sjekk', () => {
       if (valgt == null) return;
       if (!besvart) {
         besvart = true;
         const riktig = valgt === q.riktig;
         vibrer(riktig ? 'riktig' : 'feil');
-        valgKnapper.forEach((k, j) => {
-          k.disabled = true;
-          if (j === q.riktig) k.classList.add('leksjon-valg--riktig');
-          else if (j === valgt) k.classList.add('leksjon-valg--feil');
-        });
-        feedback.hidden = false;
-        feedback.className = 'leksjon-feedback ' + (riktig ? 'leksjon-feedback--riktig' : 'leksjon-feedback--feil');
-        feedback.textContent = (riktig ? 'Riktig! ' : 'Nesten — ') + q.forklaring;
-        knapp.settTekst(sisteSp ? 'Fullfør' : 'Neste spørsmål');
-      } else if (sisteSp) {
-        fullfor();
+        if (riktig) {
+          valgKnapper.forEach((k, j) => { k.disabled = true; if (j === q.riktig) k.classList.add('leksjon-valg--riktig'); });
+          feedback.hidden = false;
+          feedback.className = 'leksjon-feedback leksjon-feedback--riktig';
+          feedback.textContent = 'Riktig! ' + q.forklaring;
+          knapp.settTekst(sisteSp ? 'Fullfør' : 'Neste spørsmål');
+          knapp._riktig = true;
+        } else {
+          valgKnapper.forEach((k, j) => { if (j === valgt) k.classList.add('leksjon-valg--feil'); });
+          feedback.hidden = false;
+          feedback.className = 'leksjon-feedback leksjon-feedback--feil';
+          feedback.textContent = 'Ikke helt — prøv igjen.';
+          knapp.settTekst('Prøv igjen');
+          knapp._riktig = false;
+        }
+      } else if (knapp._riktig) {
+        if (sisteSp) fullfor(); else { idx++; tegn(); }
       } else {
-        idx++; tegn();
+        // Galt svar bekreftet → nullstill for et nytt forsøk på samme spørsmål.
+        besvart = false; valgt = null;
+        valgKnapper.forEach((k) => k.classList.remove('leksjon-valg--valgt', 'leksjon-valg--feil'));
+        feedback.hidden = true; feedback.textContent = '';
+        knapp.settTekst('Sjekk'); knapp.settAv(true);
       }
     }, { av: true });
     bunn.append(knapp);
@@ -1446,7 +1501,12 @@ function startTeori(seksjon, enhet) {
       panda: false,
       ikonNavn: 'bok',
     }));
-    bunn.append(primaer('Fortsett', async () => { await streakEtter(res); lukk(); reTegnReise(); }));
+    bunn.append(primaer('Fortsett', async () => {
+      await streakEtter(res);
+      _teoriAvslor = { seksjon: seksjon.id, enhet: enhet.id }; // utløser kaskade-avsløringen
+      lukk();
+      reTegnReise();
+    }));
   }
 }
 

@@ -2749,6 +2749,36 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .teori-kort--laast { opacity: 0.55; cursor: default; }
 .teori-kort--laast .teori-kort__ikon { background: var(--bg-kort-2); color: var(--dempet); }
 
+/* Teori-port: når enheten er åpen men teorien ikke bestått, fremheves teori-
+   kortet som porten som låser opp øvelsene — pulserende aksent-ring. */
+.teori-kort--gate { border-color: var(--aksent); box-shadow: var(--shadow-sm); animation: teori-gate-puls 2.2s ease-in-out infinite; }
+.teori-kort--gate .teori-kort__ikon { background: var(--aksent); color: #fff; }
+.teori-kort--gate .teori-kort__merke { color: var(--aksent-mork); }
+.teori-kort--gate .teori-kort__pil { color: var(--aksent); }
+@keyframes teori-gate-puls {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(11,166,159,0), var(--shadow-sm); }
+  50% { box-shadow: 0 0 0 4px rgba(11,166,159,0.16), 0 10px 22px rgba(1,63,64,0.12); }
+}
+
+/* Teori-slør: øvelsene ligger synlige, men dempet og inerte til teorien er
+   bestått. Ingen puls/interaksjon — teori-kortet er den eneste veien videre. */
+.reise-node--teoriveil { opacity: 0.34; filter: saturate(0.75); pointer-events: none; }
+.reise-node--teoriveil .reise-node__puls, .reise-node--teoriveil .reise-grad__puls { display: none; animation: none; }
+
+/* Kaskade-avsløring: når teorien nettopp ble bestått, «bølger» øvelsene inn én
+   etter én. Overstyrer den vanlige inngangs-poppen for disse nodene. */
+.reise-node--avslor .reise-node__knapp,
+.reise-node--avslor .reise-grad { animation: teori-avslor 0.55s var(--ease-standard) backwards; animation-delay: var(--avslor-forsinkelse, 0ms); }
+@keyframes teori-avslor {
+  0% { opacity: 0; transform: translateY(16px) scale(0.7); }
+  60% { opacity: 1; transform: translateY(-2px) scale(1.06); }
+  100% { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .teori-kort--gate { animation: none; }
+  .reise-node--avslor .reise-node__knapp, .reise-node--avslor .reise-grad { animation: none; }
+}
+
 /* Disiplin-kort: oransje variant (Løp). */
 .disiplinkort--oransje { background: linear-gradient(135deg, #E8913E, #C4661B); }
 /* Disiplin-kort: gul/amber variant (HIIT). */
