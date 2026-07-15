@@ -984,24 +984,58 @@ function visOm() {
 // Profil står i midten, litt større enn de andre. ---
 function byggTabbar() {
   if (document.querySelector('.tabbar')) return;
+  // Flytende liquid-glass-bar à la Instagram: kun ikoner (etiketten blir aria-
+  // label for skjermlesere), og en glidende glass-linse bak den aktive fanen.
   const tab = (rute, ikonNavn, tekst, ekstra = '') => el('a', {
-    class: 'tabbar__knapp' + ekstra, href: `#/${rute}`, 'data-rute': rute,
-  }, el('span', { class: 'tabbar__ikon' }, ikon(ikonNavn)), el('span', { class: 'tabbar__tekst' }, tekst));
+    class: 'tabbar__knapp' + ekstra, href: `#/${rute}`, 'data-rute': rute, 'aria-label': tekst,
+  }, el('span', { class: 'tabbar__ikon' }, ikon(ikonNavn)));
 
-  document.body.append(el('nav', { class: 'tabbar' },
-    el('span', { class: 'tabbar__indikator', 'aria-hidden': 'true' }),
+  document.body.append(el('nav', { class: 'tabbar', 'aria-label': 'Hovedmeny' },
+    el('span', { class: 'tabbar__linse', 'aria-hidden': 'true' }),
     tab('hjem', 'hjem', 'I dag'),
     tab('beveg', 'loper', 'Trening'),
     tab('merker', 'person', 'Profil'),
     tab('aktivitet', 'puls', 'Aktivitet'),
     tab('laer', 'bok', 'Lær'),
   ));
+  settOppTabKrymp();
 }
 
-// Glir den lille indikatoren under den aktive fanen (sammenheng mellom faner).
+// Instagram-aktig: baren krymper litt når man scroller nedover og vokser tilbake
+// når man scroller oppover (eller er nær toppen). Lytter i fangst-fasen så både
+// dokument-scroll og fanesidenes egne scrollflater fanges. Idempotent.
+let _tabKrympSatt = false;
+function settOppTabKrymp() {
+  if (_tabKrympSatt) return;
+  const bar = document.querySelector('.tabbar');
+  if (!bar) return;
+  _tabKrympSatt = true;
+  let sisteY = 0;
+  let venter = false;
+  const lesY = (t) => {
+    const s = (t && t !== document && typeof t.scrollTop === 'number') ? t : (document.scrollingElement || document.documentElement);
+    return s.scrollTop || 0;
+  };
+  const paa = (ev) => {
+    if (venter) return;
+    venter = true;
+    const y = lesY(ev.target);
+    requestAnimationFrame(() => {
+      venter = false;
+      const dy = y - sisteY;
+      if (y < 32) bar.classList.remove('tabbar--kompakt');       // nær toppen → full
+      else if (dy > 3) bar.classList.add('tabbar--kompakt');     // ned → litt mindre
+      else if (dy < -3) bar.classList.remove('tabbar--kompakt'); // opp → større
+      sisteY = y;
+    });
+  };
+  window.addEventListener('scroll', paa, { passive: true, capture: true });
+}
+
+// Glir glass-linsen bak den aktive fanen (sammenheng mellom faner).
 function flyttTabIndikator() {
   const nav = document.querySelector('.tabbar');
-  const ind = nav?.querySelector('.tabbar__indikator');
+  const ind = nav?.querySelector('.tabbar__linse');
   const aktiv = nav?.querySelector('.tabbar__knapp--aktiv');
   if (!ind) return;
   if (!aktiv) { ind.style.opacity = '0'; return; }
