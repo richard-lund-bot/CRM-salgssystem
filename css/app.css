@@ -672,29 +672,39 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
    vokser tilbake ved scroll opp (js/app.js settOppTabKrymp).
    ========================================================================== */
 .tabbar {
+  /* Glass-oppskriften (bakgrunn, kant-refleks-skygger, linse) er portet rett
+     fra fooontic sin «Liquid Glass Switcher». Selve forvrengnings-refraksjonen
+     (backdrop url-filter) er utelatt — den er laget for penens eksakte mål og
+     støttes uansett ikke i iOS Safari; frost + kant-refleksene bærer looken. */
+  --c-glass: #bbbbbc; --c-light: #fff; --c-dark: #000;
+  --reflex-l: 1; --reflex-d: 1;
   position: fixed;
   left: 50%; bottom: calc(env(safe-area-inset-bottom) + 10px);
   translate: -50% 0;
   width: min(400px, calc(100% - 26px));
   display: flex; align-items: center; justify-content: space-around;
-  gap: 2px; padding: 7px 8px;
+  gap: 2px; padding: 6px 8px;
   border: none; border-radius: 999px;
-  background: color-mix(in srgb, var(--bg-kort) 60%, transparent);
-  -webkit-backdrop-filter: blur(18px) saturate(180%);
-  backdrop-filter: blur(18px) saturate(180%);
+  background: color-mix(in srgb, var(--c-glass) 14%, transparent);
+  -webkit-backdrop-filter: blur(11px) saturate(160%);
+  backdrop-filter: blur(11px) saturate(160%);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
-    inset 1.5px 2.5px 0 -2px rgba(255, 255, 255, 0.65),
-    inset -2px -2px 0 -2px rgba(255, 255, 255, 0.45),
-    inset -2px -8px 4px -8px rgba(0, 0, 0, 0.22),
-    0 2px 8px rgba(17, 38, 77, 0.10),
-    0 12px 28px rgba(17, 38, 77, 0.14);
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 10%), transparent),
+    inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 90%), transparent),
+    inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 80%), transparent),
+    inset -3px -8px 1px -6px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 60%), transparent),
+    inset -0.3px -1px 4px 0px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 12%), transparent),
+    inset -1.5px 2.5px 0px -2px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 20%), transparent),
+    inset 0px 3px 4px -2px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 20%), transparent),
+    inset 2px -6.5px 1px -4px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 10%), transparent),
+    0px 1px 5px 0px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 10%), transparent),
+    0px 6px 16px 0px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 8%), transparent);
   z-index: 20;
   transform: scale(1); transform-origin: bottom center;
   transition: transform 0.36s var(--ease-standard), box-shadow 0.3s ease;
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .tabbar { background: color-mix(in srgb, var(--bg-kort) 94%, transparent); }
+  .tabbar { background: color-mix(in srgb, var(--bg-kort) 92%, transparent); }
 }
 /* Scroll ned → litt mindre; scroll opp → tilbake til full størrelse. */
 .tabbar--kompakt { transform: scale(0.88); }
@@ -714,15 +724,17 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 .tabbar__knapp--synker .tabbar__ikon { animation: synkpuls 1s ease-in-out infinite; }
 /* Glidende glass-linse bak aktiv fane (posisjon settes i flyttTabIndikator). */
 .tabbar__linse {
-  position: absolute; top: 6px; bottom: 6px; left: 0;
-  width: 52px; border-radius: 999px;
-  background: color-mix(in srgb, var(--bg-kort) 55%, transparent);
+  position: absolute; top: 5px; bottom: 5px; left: 0;
+  width: 54px; border-radius: 999px;
+  background: color-mix(in srgb, var(--c-glass) 36%, transparent);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.16),
-    inset 1.5px 1px 0 -1px rgba(255, 255, 255, 0.7),
-    inset -1.5px -1px 0 -1px rgba(255, 255, 255, 0.5),
-    inset -1px -5px 2px -5px rgba(0, 0, 0, 0.2),
-    0 2px 6px rgba(17, 38, 77, 0.1);
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 10%), transparent),
+    inset 2px 1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 90%), transparent),
+    inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 80%), transparent),
+    inset -2px -6px 1px -5px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 60%), transparent),
+    inset -1px 2px 3px -1px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 20%), transparent),
+    inset 0px -4px 1px -2px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 10%), transparent),
+    0px 3px 6px 0px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 8%), transparent);
   opacity: 0; z-index: 0; pointer-events: none;
   transition: transform 0.42s var(--ease-bounce), opacity 0.2s ease;
 }
@@ -1584,46 +1596,48 @@ body.fokusmodus { padding-bottom: 0; }
 .bryterrad { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
 .bryterrad .prefrad__hode { margin-bottom: 0; flex: 1 1 auto; min-width: 0; }
 
-/* Væske-bryter (liquid toggle) — appens standard av/på-kontroll. Pilla fyller
-   grå → grønn, og en hvit dråpe glir med fjæring og strekker seg som væske
-   (metaball via #bryter-goo). Overshoot fra fjæra klippes til en myk «splat»
-   mot enden. Fjær-kurven er hentet fra kilde-penen. */
+/* Væske-bryter (liquid toggle) — tro mot Jhey Tompkins' pen: bred pille
+   (~2,3:1) som fyller grått → livlig grønn, med en stor hvit stadion-dråpe
+   (~53 % av bredden) som glir med fjæring og strekker seg som væske (metaball
+   via #bryter-goo) før den samler seg igjen. Fargene og fjær-kurven er hentet
+   rett fra penen. */
 .bryter {
-  --w: 58px; --h: 32px; --pad: 4px;
-  --av: hsl(218, 9%, 80%);
-  --pa: hsl(146, 72%, 43%);
+  --w: 64px; --h: 28px; --pad: 3px;
+  --kule: 34px;                    /* bred stadion-dråpe, ~53 % av bredden */
+  --av: hsl(218, 9%, 81%);
+  --pa: hsl(144, 100%, 43%);
   --dur: 0.5s;
   --fjaer: linear(0 0%, 0.6091 3.69%, 1.0259 7.24%, 1.1733 9.05%, 1.283 10.92%, 1.3562 12.87%, 1.3948 14.95%, 1.4014 16.03%, 1.3999 17.16%, 1.3731 19.64%, 1.3202 22.27%, 1.1394 29.39%, 1.0582 33.17%, 0.9943 37.45%, 0.9734 39.64%, 0.9593 41.92%, 0.9505 45.08%, 0.9517 48.7%, 0.9924 63.02%, 1.0046 71.2%, 1.0061 78.24%, 1 100%);
   appearance: none; -webkit-appearance: none;
   position: relative; flex: 0 0 auto;
   width: var(--w); height: var(--h);
   border: 0; margin: 0; padding: 0; background: none;
-  border-radius: 100px; cursor: pointer;
+  border-radius: 999px; cursor: pointer;
   -webkit-tap-highlight-color: transparent; outline-offset: 3px;
 }
 .bryter__spor {
   position: absolute; inset: 0; border-radius: inherit;
-  background: var(--av); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.16);
+  background: var(--av); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.14);
   transition: background var(--dur) ease;
 }
 .bryter--på .bryter__spor { background: var(--pa); }
 .bryter__goo {
   position: absolute; inset: 0; border-radius: inherit; overflow: hidden;
-  filter: url(#bryter-goo) drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.22));
+  filter: url(#bryter-goo) drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.16));
 }
 .bryter__draape {
-  position: absolute; top: 50%; left: var(--pad);
-  width: calc(var(--h) - 2 * var(--pad)); height: calc(var(--h) - 2 * var(--pad));
-  border-radius: 50%; background: #fff; translate: 0 -50%;
+  position: absolute; top: var(--pad); left: var(--pad);
+  width: var(--kule); height: calc(var(--h) - 2 * var(--pad));
+  border-radius: 999px; background: #fff;
   transition: translate var(--dur) var(--fjaer);
 }
-.bryter--på .bryter__draape { translate: calc(var(--w) - var(--h)) -50%; }
-/* Dråpe B følger etter A litt saktere (uten forsinkelse), så de holder seg
-   overlappende og danner én avlang væske-dråpe under goo-filteret midt i
-   skliet — som strekker seg og trekker seg sammen til en sirkel igjen. */
+.bryter--på .bryter__draape { translate: calc(var(--w) - 2 * var(--pad) - var(--kule)); }
+/* Dråpe B følger etter A litt saktere, så de holder seg overlappende og danner
+   én avlang væske-dråpe under goo-filteret midt i skliet — strekker seg og
+   samler seg igjen til stadion-formen. */
 .bryter__draape--b { transition: translate calc(var(--dur) * 1.32) cubic-bezier(0.34, 0, 0.2, 1); }
 .bryter:focus-visible { outline: 3px solid color-mix(in srgb, var(--pa) 55%, transparent); }
-.bryter:active .bryter__draape { height: calc((var(--h) - 2 * var(--pad)) * 0.9); }
+.bryter:active .bryter__draape { width: calc(var(--kule) * 1.08); }
 @media (prefers-reduced-motion: reduce) {
   .bryter__draape { transition-duration: 0.001s; transition-delay: 0s; }
   .bryter__spor { transition-duration: 0.001s; }
