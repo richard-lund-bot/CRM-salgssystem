@@ -692,15 +692,9 @@ function aapneStegNode(container, ovelseNode) {
     aapneNaar(wrap);
   };
 
-  // Vent til inngangs-overgangen (data-vt fjernes av navger) er ferdig. Faller
-  // trygt gjennom om ingen VT kjører (redusert bevegelse / eldre nettlesere).
-  let forsok = 0;
-  const vent = () => {
-    if (!document.documentElement.dataset.vt || forsok > 30) { kjor(); return; }
-    forsok += 1;
-    setTimeout(vent, 40);
-  };
-  setTimeout(vent, 40);
+  // La skjermen bli tegnet ferdig én tick før vi scroller/åpner (sidebyttet er
+  // umiddelbart, så det holder med en kort forsinkelse).
+  setTimeout(kjor, 60);
 }
 
 // Uteksaminerings-node på reisen: coach-pandaen som «enhets-boss». Låst til alle

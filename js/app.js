@@ -27,7 +27,7 @@ import { nivaFraTotalXp } from './niva.js';
 import { dagerMedAktivitet, okterHref, beregnStreak } from './bevegelse.js';
 import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN, KATEGORIER, settLaerLenke } from './bibliotek-okter.js';
 import { settBib as settBibOpp, settOkterKilde, erAdminEpost, adminModusPaa, settAdminModus } from './opplasing.js';
-import { fyllInn, tallOpp, stagger, REDUSERT } from './animasjon.js';
+import { fyllInn, tallOpp, REDUSERT } from './animasjon.js';
 import { settLydAv } from './lyd.js';
 import { settHaptikkAv } from './haptikk.js';
 import { regionScores, anbefalingFraRegioner, regionAndelForOkt, REGION_NAVN } from './kroppskart.js';
@@ -120,16 +120,6 @@ function gjenopprettScroll(hash) {
   if (y > 0) { requestAnimationFrame(sett); setTimeout(sett, 120); }
 }
 
-// Retning for skjermovergangen: en liten hash-stabel avgjør fram vs. tilbake,
-// så View Transition-en glir riktig vei (fram = inn fra høyre, tilbake = venstre).
-let ruteStabel = [];
-function navRetning(nyHash) {
-  if (ruteStabel[ruteStabel.length - 2] === nyHash) { ruteStabel.pop(); return 'tilbake'; }
-  ruteStabel.push(nyHash);
-  if (ruteStabel.length > 30) ruteStabel.shift();
-  return 'fram';
-}
-
 // Gamle #/ny?m=STY-lenker (og bokmerker) sendes til riktig bibliotekkategori.
 function omdirigerGammelNyLenke() {
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
@@ -157,22 +147,11 @@ function navger() {
     oppdaterFaneMinne(rute);
     if (byttet) gjenopprettScroll(location.hash);
   };
-  // Skjermovergang via View Transitions API der den finnes (iOS 18+/Chrome);
-  // ellers umiddelbart bytte (dagens oppførsel). Hoppes over ved redusert bevegelse.
-  if (byttet && typeof document.startViewTransition === 'function' && !REDUSERT()) {
-    // Modulbytte (fane ↔ fane) = rolig krysstoning uten sideveis bevegelse, så
-    // header og statuslinje ikke skyves horisontalt og blottlegger bakgrunnen.
-    // Dyp-navigasjon (inn/ut av detaljskjermer) beholder retnings-skliet.
-    const forrigeRute = ((forrigeHash || '').replace('#/', '') || 'hjem').split('?')[0];
-    const modulbytte = FANER.includes(faneForRute(rute)) && FANER.includes(faneForRute(forrigeRute))
-      && faneForRute(rute) !== faneForRute(forrigeRute) && !FOKUS.has(rute) && !FOKUS.has(forrigeRute);
-    const retning = navRetning(location.hash); // vedlikehold ruteStabelen uansett
-    document.documentElement.dataset.vt = modulbytte ? 'modul' : retning;
-    const vt = document.startViewTransition(tegn);
-    vt.finished.finally(() => { delete document.documentElement.dataset.vt; });
-  } else {
-    tegn();
-  }
+  // Sidebytte skal være umiddelbart — ingen skjermanimasjon på innholdet.
+  // Det eneste som beveger seg ved navigasjon er slideren i tab-baren nederst,
+  // som glir til aktiv fane via sin egen CSS-transisjon (oppdaterNav →
+  // flyttTabIndikator inne i tegn()).
+  tegn();
   forrigeHash = location.hash;
 }
 
@@ -596,8 +575,7 @@ function bevegelsesGrid() {
     },
   }, ...flisInnhold('terning', 'Overrask meg'));
   const grid = el('div', { class: 'movgrid' }, ...HJEM_FLISER.map((f) => flis(...f)), overrask);
-  stagger(grid, { trinn: 45 }); // fliser spretter inn (hopper over under VT/redusert)
-  return grid;
+  return grid; // fliser vises umiddelbart — ingen inngangsanimasjon ved sidebytte
 }
 
 // Streak (sammenhengende dager med bevegelse) bor nå i js/bevegelse.js —
@@ -1111,9 +1089,6 @@ async function start() {
   const lydHapt = hentProfil()?.innstillinger || {};
   settLydAv(lydHapt.lyd === false);
   settHaptikkAv(lydHapt.haptikk === false);
-  // Der View Transitions finnes, eier VT-en skjerm-inngangen — skru av den gamle
-  // .innhold>*-fadeInn permanent (ellers re-trigges den når data-vt fjernes → flicker).
-  if (typeof document.startViewTransition === 'function') document.documentElement.classList.add('har-vt');
   // Navigasjon håndterer scroll selv (navger → gjenopprettScroll): nye skjermer
   // starter på toppen, mens en fane man kommer tilbake til gjenoppretter posisjon.
   window.addEventListener('hashchange', navger);

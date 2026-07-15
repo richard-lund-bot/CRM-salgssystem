@@ -449,7 +449,6 @@ body.fane-laast .hjembanner { position: fixed; top: 0; left: 0; right: 0; }
 .hjemhero {
   position: relative;
   padding: 0 18px 4px;
-  animation: fadeInn 0.5s var(--ease-out) both;
 }
 /* Innholdet under heroen skal male over bildekanten som kan ble inn i det */
 body.fane-laast .innhold { position: relative; z-index: 1; }
@@ -1289,17 +1288,9 @@ body.fokusmodus { padding-bottom: 0; }
    Animasjonsverktøykasse (M9) — myke toninger, rolige easinger
    ========================================================================== */
 @keyframes fadeInn { from { opacity: 0; } to { opacity: 1; } }
-.innhold > * { animation: fadeInn 0.5s var(--ease-out) both; }
-.innhold > *:nth-child(1) { animation-delay: 0ms; }
-.innhold > *:nth-child(2) { animation-delay: 45ms; }
-.innhold > *:nth-child(3) { animation-delay: 90ms; }
-.innhold > *:nth-child(4) { animation-delay: 135ms; }
-.innhold > *:nth-child(5) { animation-delay: 180ms; }
-.innhold > *:nth-child(6) { animation-delay: 225ms; }
-.innhold > *:nth-child(7) { animation-delay: 270ms; }
-.innhold > *:nth-child(8) { animation-delay: 315ms; }
-.innhold > *:nth-child(9) { animation-delay: 360ms; }
-.innhold > *:nth-child(n+10) { animation-delay: 400ms; }
+/* Sidebytte er umiddelbart: innholdet toner ikke inn ved navigasjon (kun
+   slideren i tab-baren beveger seg). Bevisste, hendelsesdrevne animasjoner
+   (feiring, Lær-kaskaden osv.) ligger på egne klasser og påvirkes ikke. */
 
 .xpbar__fyll { transition: width 0.7s var(--ease-out); }
 .bar__fyll { transition: height 0.6s var(--ease-out); }
@@ -1373,27 +1364,9 @@ body.fokusmodus { padding-bottom: 0; }
 
 .heat__c { animation: fadeInn 0.4s ease both; }
 
-/* Skjermoverganger — View Transitions API (subtil skli+fade, <100px). data-vt
-   settes i js/app.js navger(); redusert bevegelse hopper over VT i JS. Tab-baren
-   pinnes med eget navn så den ikke glir med sidebyttet. */
-.tabbar { view-transition-name: tabbar; }
-::view-transition-group(tabbar) { animation: none; }
-html.har-vt .innhold > * { animation: none; } /* VT eier inngangen — ingen fadeInn-replay når data-vt fjernes */
-::view-transition-old(root) { animation: vt-ut 220ms var(--ease-standard) both; }
-::view-transition-new(root) { animation: vt-inn 300ms var(--ease-out) both; }
-html[data-vt="tilbake"]::view-transition-old(root) { animation: vt-ut-t 220ms var(--ease-standard) both; }
-html[data-vt="tilbake"]::view-transition-new(root) { animation: vt-inn-t 300ms var(--ease-out) both; }
-@keyframes vt-inn { from { opacity: 0; transform: translateX(26px); } to { opacity: 1; transform: none; } }
-@keyframes vt-ut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(-20px); } }
-@keyframes vt-inn-t { from { opacity: 0; transform: translateX(-26px); } to { opacity: 1; transform: none; } }
-@keyframes vt-ut-t { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(20px); } }
-/* Modulbytte (fane ↔ fane): rolig krysstoning uten sideveis bevegelse — ingen
-   horisontal skyv av header/statuslinje, så bakgrunnen blir aldri blottlagt.
-   En hårfin skala gir liv uten å flytte kantene (unngår grå kant/gap). */
-html[data-vt="modul"]::view-transition-old(root) { animation: vt-modul-ut 190ms var(--ease-standard) both; }
-html[data-vt="modul"]::view-transition-new(root) { animation: vt-modul-inn 260ms var(--ease-out) both; }
-@keyframes vt-modul-ut { from { opacity: 1; transform: none; } to { opacity: 0; transform: scale(1.006); } }
-@keyframes vt-modul-inn { from { opacity: 0; transform: scale(0.994); } to { opacity: 1; transform: none; } }
+/* Sidebytte er umiddelbart (ingen View Transition) — innholdet skiftes på
+   flekken. Det eneste som animerer ved navigasjon er slideren i tab-baren
+   (.tabbar__indikator), som glir til aktiv fane via sin egen transisjon. */
 
 /* Splash-settle: merkevaren «puster inn» ved oppstart; «Laster…» pulserer mykt */
 .splash__bilde { animation: splash-inn 900ms var(--ease-out) both; }
