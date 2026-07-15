@@ -213,7 +213,16 @@ export function lagFaneside(mount, { hoyre = null, dagAksjon = null } = {}) {
   );
   document.body.classList.add('fane-laast');
   tom(mount);
-  mount.append(lagBanner({ hoyre, dagAksjon }), scroll, lagPullOppdatering(scroll));
+  const banner = lagBanner({ hoyre, dagAksjon });
+  // Myk overgang under det faste banneret: en dagsfase-farget «scrim» rett under
+  // bannerkanten. Innhold toner mykt bort idet det scroller opp under banneret,
+  // i stedet for å bli hardt klippet mot kanten (så det ikke ser rart ut i
+  // bevegelse). Samme himmelfarge som scrollflatens topp → ingen synlig skjøt.
+  banner.append(el('div', {
+    class: 'banner-fade', 'aria-hidden': 'true',
+    style: `background:linear-gradient(to bottom, ${HIMMELFARGE[fase]}, transparent)`,
+  }));
+  mount.append(banner, scroll, lagPullOppdatering(scroll));
   return scroll;
 }
 

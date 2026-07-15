@@ -335,6 +335,10 @@ body {
   box-shadow: var(--shadow-md);
   padding: calc(env(safe-area-inset-top) + 10px) 12px 14px;
 }
+/* Myk overgang rett under det faste banneret: innhold toner bort idet det
+   scroller opp under kanten, i stedet for et hardt klipp. Fargen settes inline
+   (dagsfasens himmelfarge) så den smelter sømløst med scrollflatens topp. */
+.banner-fade { position: absolute; top: 100%; left: 0; right: 0; height: 30px; z-index: 1; pointer-events: none; }
 .hjembanner__rad { display: flex; align-items: center; gap: 2px; position: relative; min-height: 44px; padding: 0 4px; }
 .hjembanner__logo { position: absolute; left: 50%; transform: translateX(-50%); }
 .hjembanner__hoyre { margin-left: auto; }
