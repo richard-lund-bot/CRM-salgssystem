@@ -1561,6 +1561,55 @@ body.fokusmodus { padding-bottom: 0; }
 .prefrad__valg { display: flex; flex-wrap: wrap; gap: 6px; overflow: visible; }
 .prefrad__valg .chip { padding: 7px 12px; font-size: 12.5px; }
 
+/* Av/på-rad: etikett til venstre, væske-bryter til høyre. */
+.bryterrad { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.bryterrad .prefrad__hode { margin-bottom: 0; flex: 1 1 auto; min-width: 0; }
+
+/* Væske-bryter (liquid toggle) — appens standard av/på-kontroll. Pilla fyller
+   grå → grønn, og en hvit dråpe glir med fjæring og strekker seg som væske
+   (metaball via #bryter-goo). Overshoot fra fjæra klippes til en myk «splat»
+   mot enden. Fjær-kurven er hentet fra kilde-penen. */
+.bryter {
+  --w: 58px; --h: 32px; --pad: 4px;
+  --av: hsl(218, 9%, 80%);
+  --pa: hsl(146, 72%, 43%);
+  --dur: 0.5s;
+  --fjaer: linear(0 0%, 0.6091 3.69%, 1.0259 7.24%, 1.1733 9.05%, 1.283 10.92%, 1.3562 12.87%, 1.3948 14.95%, 1.4014 16.03%, 1.3999 17.16%, 1.3731 19.64%, 1.3202 22.27%, 1.1394 29.39%, 1.0582 33.17%, 0.9943 37.45%, 0.9734 39.64%, 0.9593 41.92%, 0.9505 45.08%, 0.9517 48.7%, 0.9924 63.02%, 1.0046 71.2%, 1.0061 78.24%, 1 100%);
+  appearance: none; -webkit-appearance: none;
+  position: relative; flex: 0 0 auto;
+  width: var(--w); height: var(--h);
+  border: 0; margin: 0; padding: 0; background: none;
+  border-radius: 100px; cursor: pointer;
+  -webkit-tap-highlight-color: transparent; outline-offset: 3px;
+}
+.bryter__spor {
+  position: absolute; inset: 0; border-radius: inherit;
+  background: var(--av); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.16);
+  transition: background var(--dur) ease;
+}
+.bryter--på .bryter__spor { background: var(--pa); }
+.bryter__goo {
+  position: absolute; inset: 0; border-radius: inherit; overflow: hidden;
+  filter: url(#bryter-goo) drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.22));
+}
+.bryter__draape {
+  position: absolute; top: 50%; left: var(--pad);
+  width: calc(var(--h) - 2 * var(--pad)); height: calc(var(--h) - 2 * var(--pad));
+  border-radius: 50%; background: #fff; translate: 0 -50%;
+  transition: translate var(--dur) var(--fjaer);
+}
+.bryter--på .bryter__draape { translate: calc(var(--w) - var(--h)) -50%; }
+/* Dråpe B følger etter A litt saktere (uten forsinkelse), så de holder seg
+   overlappende og danner én avlang væske-dråpe under goo-filteret midt i
+   skliet — som strekker seg og trekker seg sammen til en sirkel igjen. */
+.bryter__draape--b { transition: translate calc(var(--dur) * 1.32) cubic-bezier(0.34, 0, 0.2, 1); }
+.bryter:focus-visible { outline: 3px solid color-mix(in srgb, var(--pa) 55%, transparent); }
+.bryter:active .bryter__draape { height: calc((var(--h) - 2 * var(--pad)) * 0.9); }
+@media (prefers-reduced-motion: reduce) {
+  .bryter__draape { transition-duration: 0.001s; transition-delay: 0s; }
+  .bryter__spor { transition-duration: 0.001s; }
+}
+
 @media (prefers-reduced-motion: reduce) { .kroppskart__region { transition-duration: 0.01ms; } }
 
 .merkebolk {

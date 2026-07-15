@@ -8,7 +8,7 @@ import {
   hentProfil, harProfil, lagreProfil, hentLogg, nullstillAlt,
   planForDato,
 } from './store.js';
-import { el, tom, chip, ikon } from './ui.js';
+import { el, tom, chip, ikon, bryter } from './ui.js';
 import { APP_VERSION } from './config.js';
 import { kjorOnboarding } from './onboarding.js';
 import { visReviewSkjerm, visKjoreSkjerm } from './kjor.js';
@@ -704,6 +704,13 @@ function visInnstillinger() {
     lagreProfil(p);
     visInnstillinger();
   }
+  // Som lagre(), men uten å tegne skjermen på nytt — brukt av væske-bryterne så
+  // de får animere vekslingen i stedet for å bli bygget om i endelig tilstand.
+  function lagreStille(muter) {
+    const p = hentProfil();
+    muter(p);
+    lagreProfil(p);
+  }
 
   const valgtTema = profil.innstillinger?.tema || 'standard';
 
@@ -767,37 +774,25 @@ function visInnstillinger() {
       el('p', { class: 'dempet', style: 'margin-top:-4px' },
         'Små pling og vibrasjoner i feiringene og øktspilleren.'),
       el('div', { class: 'prefliste' },
-        el('div', { class: 'prefrad' },
+        el('div', { class: 'prefrad bryterrad' },
           el('div', { class: 'prefrad__hode' },
             el('span', { class: 'prefrad__ikon' }, ikon('bjelle')),
             el('span', { class: 'prefrad__navn' }, 'Lyd'),
           ),
-          el('div', { class: 'chiprad prefrad__valg' },
-            chip('På', {
-              aktiv: profil.innstillinger?.lyd !== false,
-              onClick: () => { settLydAv(false); lagre((p) => { p.innstillinger = p.innstillinger || {}; p.innstillinger.lyd = true; }); },
-            }),
-            chip('Av', {
-              aktiv: profil.innstillinger?.lyd === false,
-              onClick: () => { settLydAv(true); lagre((p) => { p.innstillinger = p.innstillinger || {}; p.innstillinger.lyd = false; }); },
-            }),
-          ),
+          bryter({
+            på: profil.innstillinger?.lyd !== false, etikett: 'Lyd',
+            onEndre: (på) => { settLydAv(!på); lagreStille((p) => { p.innstillinger = p.innstillinger || {}; p.innstillinger.lyd = på; }); },
+          }),
         ),
-        el('div', { class: 'prefrad' },
+        el('div', { class: 'prefrad bryterrad' },
           el('div', { class: 'prefrad__hode' },
             el('span', { class: 'prefrad__ikon' }, ikon('puls')),
             el('span', { class: 'prefrad__navn' }, 'Vibrasjon'),
           ),
-          el('div', { class: 'chiprad prefrad__valg' },
-            chip('På', {
-              aktiv: profil.innstillinger?.haptikk !== false,
-              onClick: () => { settHaptikkAv(false); lagre((p) => { p.innstillinger = p.innstillinger || {}; p.innstillinger.haptikk = true; }); },
-            }),
-            chip('Av', {
-              aktiv: profil.innstillinger?.haptikk === false,
-              onClick: () => { settHaptikkAv(true); lagre((p) => { p.innstillinger = p.innstillinger || {}; p.innstillinger.haptikk = false; }); },
-            }),
-          ),
+          bryter({
+            på: profil.innstillinger?.haptikk !== false, etikett: 'Vibrasjon',
+            onEndre: (på) => { settHaptikkAv(!på); lagreStille((p) => { p.innstillinger = p.innstillinger || {}; p.innstillinger.haptikk = på; }); },
+          }),
         ),
       ),
     ),
@@ -846,21 +841,15 @@ function adminKort() {
     el('p', { class: 'dempet', style: 'margin-top:-4px' },
       'Med admin på kan du åpne låste økter for testing. Skru av for å se appen slik et vanlig medlem opplever den — da forblir låste økter låst.'),
     el('div', { class: 'prefliste' },
-      el('div', { class: 'prefrad' },
+      el('div', { class: 'prefrad bryterrad' },
         el('div', { class: 'prefrad__hode' },
           el('span', { class: 'prefrad__ikon' }, ikon(paa ? 'lasopp' : 'las')),
           el('span', { class: 'prefrad__navn' }, 'Admin-modus'),
         ),
-        el('div', { class: 'chiprad prefrad__valg' },
-          chip('På', {
-            aktiv: paa,
-            onClick: () => { settAdminModus(true); varsle('Admin-modus på'); visInnstillinger(); },
-          }),
-          chip('Av', {
-            aktiv: !paa,
-            onClick: () => { settAdminModus(false); varsle('Ser appen som et vanlig medlem'); visInnstillinger(); },
-          }),
-        ),
+        bryter({
+          på: paa, etikett: 'Admin-modus',
+          onEndre: (på) => { settAdminModus(på); varsle(på ? 'Admin-modus på' : 'Ser appen som et vanlig medlem'); },
+        }),
       ),
     ),
   );

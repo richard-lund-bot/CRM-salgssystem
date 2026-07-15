@@ -28,6 +28,52 @@ export function chip(tekst, { aktiv = false, onClick } = {}) {
   return el('button', { class: 'chip' + (aktiv ? ' chip--aktiv' : ''), type: 'button', onclick: onClick }, tekst);
 }
 
+// --- Væske-bryter (liquid toggle) ------------------------------------------
+// Standard av/på-bryter i appen: en «liquid toggle» i stil med Jhey Tompkins'
+// pen — pilla fyller fra grått → grønt, og en hvit dråpe glir med fjæring og
+// strekker seg som væske via et SVG-goo-filter. Ren CSS/SVG + litt JS, ingen
+// eksterne avhengigheter (appen er offline-first).
+let _gooLagt = false;
+function sikreGooFilter() {
+  if (_gooLagt || typeof document === 'undefined') return;
+  _gooLagt = true;
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('aria-hidden', 'true');
+  svg.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden';
+  // Blur → alfa-terskel (metaball) → legg skarp kilde oppå. Samme oppskrift
+  // som goo-penen, tunet for en liten bryter.
+  svg.innerHTML = '<defs><filter id="bryter-goo" color-interpolation-filters="sRGB">'
+    + '<feGaussianBlur in="SourceGraphic" stdDeviation="6" result="b"/>'
+    + '<feColorMatrix in="b" type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 18 -7" result="g"/>'
+    + '<feComposite in="SourceGraphic" in2="g" operator="atop"/>'
+    + '</filter></defs>';
+  document.body.append(svg);
+}
+
+/** Væske-bryter (av/på). `onEndre(ny)` kalles ved veksling; `etikett` gir aria-label. */
+export function bryter({ på = false, etikett = '', onEndre } = {}) {
+  sikreGooFilter();
+  const knapp = el('button', {
+    class: 'bryter' + (på ? ' bryter--på' : ''),
+    type: 'button', role: 'switch', 'aria-checked': på ? 'true' : 'false',
+    'aria-label': etikett || undefined,
+  },
+    el('span', { class: 'bryter__spor', 'aria-hidden': 'true' }),
+    el('span', { class: 'bryter__goo', 'aria-hidden': 'true' },
+      el('i', { class: 'bryter__draape bryter__draape--a' }),
+      el('i', { class: 'bryter__draape bryter__draape--b' }),
+    ),
+  );
+  knapp.addEventListener('click', () => {
+    const ny = knapp.getAttribute('aria-checked') !== 'true';
+    knapp.classList.toggle('bryter--på', ny);
+    knapp.setAttribute('aria-checked', ny ? 'true' : 'false');
+    onEndre?.(ny);
+  });
+  return knapp;
+}
+
 // --- Linjeikoner (inline SVG, 24×24, arver farge via currentColor) ---------
 // Mova-ikonstil: Lucide-baserte linjeikoner — 2px strek, runde ender/hjørner
 // (designsystemets Icon-komponent bruker Lucide; her er path-data innebygd
