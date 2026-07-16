@@ -3331,18 +3331,46 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .gapbrikke--feil { border-color: var(--coral-500); background: var(--coral-100); color: var(--fare); opacity: 0.6; text-decoration: line-through; animation: valg-feil 0.32s ease-in-out; }
 .gapbrikke--brukt { border-color: #2FA84F; background: #E7F6EC; color: #1C6B34; }
 
-/* Koble begrepene (trykk venstre → høyre); parfargene deles med memory */
-.par { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.par__kol { display: flex; flex-direction: column; gap: 8px; }
-.parknapp {
-  min-height: 52px; padding: 10px; border: 2px solid var(--kant);
-  border-radius: var(--radius-md); background: var(--bg-kort);
-  font-family: inherit; font-size: 13.5px; line-height: 1.35; color: var(--tekst); cursor: pointer;
-  transition: border-color 0.12s, background 0.12s;
+/* Koble begrepene (referansedesignet): fargede pille-begreper med
+   koblingsprikk på kanten, nøytrale betydningsbokser og buede parlinjer
+   tegnet i SVG mellom prikkene */
+.par { position: relative; display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); column-gap: 30px; }
+.par__linjer { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.par__linjer path { fill: none; stroke-width: 2.5; stroke-linecap: round; }
+.par__kol { display: flex; flex-direction: column; justify-content: space-between; gap: 10px; min-width: 0; }
+.parbegrep, .parmening {
+  position: relative; font-family: inherit; color: #fff; cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
 }
-.parknapp--valgt { border-color: var(--aksent); background: var(--aksent-svak); }
-.parknapp--feil { border-color: var(--coral-500); background: var(--coral-100); animation: valg-feil 0.32s ease-in-out; }
-.parknapp--laast { cursor: default; color: #fff; font-weight: 600; }
+.parbegrep {
+  padding: 12px 10px; border-radius: var(--radius-pill);
+  border: 2px solid var(--parfarge); background: rgba(10, 14, 22, 0.35);
+  font-size: 13.5px; font-weight: 700; text-align: center;
+}
+.parbegrep--valgt {
+  background: color-mix(in srgb, var(--parfarge) 24%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--parfarge) 30%, transparent);
+}
+.parbegrep--koblet { background: color-mix(in srgb, var(--parfarge) 22%, transparent); cursor: default; }
+.parmening {
+  padding: 11px 12px 11px 15px; border-radius: var(--radius-lg);
+  border: 2px solid rgba(255, 255, 255, 0.25); background: rgba(255, 255, 255, 0.07);
+  font-size: 12.5px; font-weight: 500; line-height: 1.4; text-align: left;
+}
+.parmening--valgt { border-color: #fff; background: rgba(255, 255, 255, 0.16); }
+.parmening--koblet { border-color: var(--parfarge); background: color-mix(in srgb, var(--parfarge) 16%, transparent); cursor: default; }
+.parprikk {
+  position: absolute; top: 50%; width: 10px; height: 10px;
+  transform: translateY(-50%); border-radius: 50%;
+  border: 2px solid var(--parfarge, rgba(255, 255, 255, 0.55));
+  background: rgba(12, 16, 23, 0.9);
+  pointer-events: none;
+}
+.parprikk--hoyre { right: -16px; }
+.parprikk--venstre { left: -16px; border-color: rgba(255, 255, 255, 0.4); }
+.parbegrep--koblet .parprikk { background: var(--parfarge); }
+.parmening--koblet .parprikk { background: var(--parfarge); border-color: var(--parfarge); }
+.parfeil { animation: valg-feil 0.32s ease-in-out; border-color: var(--coral-500) !important; }
 
 /* Riktig rekkefølge */
 .rekkeliste { display: flex; flex-direction: column; gap: 8px; }
@@ -3372,12 +3400,12 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .memkort--apen .memkort__frem, .memkort--funnet .memkort__frem { opacity: 1; }
 .memkort--apen { border-color: var(--aksent); background: var(--aksent-svak); }
 .memkort--funnet { color: #fff; cursor: default; }
-/* Parfargene (delt med Koble begrepene) — må stå etter basisreglene over,
-   ellers taper de kaskaden mot .parknapp/.memkort sin hvite bakgrunn. */
-.parknapp--par1, .memkort--par1 { background: var(--teal-600); border-color: var(--teal-600); }
-.parknapp--par2, .memkort--par2 { background: var(--navy-600); border-color: var(--navy-600); }
-.parknapp--par3, .memkort--par3 { background: var(--coral-700); border-color: var(--coral-700); }
-.parknapp--par4, .memkort--par4 { background: var(--varm-600); border-color: var(--varm-600); }
+/* Parfargene i memory — må stå etter basisreglene over, ellers taper de
+   kaskaden mot .memkort sin hvite bakgrunn. */
+.memkort--par1 { background: var(--teal-600); border-color: var(--teal-600); }
+.memkort--par2 { background: var(--navy-600); border-color: var(--navy-600); }
+.memkort--par3 { background: var(--coral-700); border-color: var(--coral-700); }
+.memkort--par4 { background: var(--varm-600); border-color: var(--varm-600); }
 
 /* Tilbakemelding: fasit + forklaring + kilde (forklaringen er belønningen) */
 .spillsvar { margin-top: 12px; padding: 12px; border-radius: var(--radius-md); background: #E7F6EC; }
@@ -3400,7 +3428,7 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .spill--mork .spill__type { color: var(--teal-300); }
 .spill--mork .spill__prompt, .spill--mork .gap__setning { color: #fff; }
 .spill--mork .spill__hint, .spill--mork .memory__trekk { color: rgba(255, 255, 255, 0.68); }
-.spill--mork .spillvalg, .spill--mork .gapbrikke, .spill--mork .parknapp,
+.spill--mork .spillvalg, .spill--mork .gapbrikke,
 .spill--mork .rekkerad, .spill--mork .memkort {
   background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.26); color: #fff;
 }
@@ -3408,8 +3436,6 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .spill--mork .spillvalg--feil, .spill--mork .gapbrikke--feil { background: var(--coral-100); border-color: var(--coral-500); color: var(--fare); }
 .spill--mork .gap__hull { border-bottom-color: var(--teal-300); color: rgba(255, 255, 255, 0.7); }
 .spill--mork .gap__hull--riktig { color: #9FE8B8; border-bottom-color: #2FA84F; }
-.spill--mork .parknapp--valgt { border-color: var(--teal-300); background: rgba(126, 208, 203, 0.28); }
-.spill--mork .parknapp--feil { background: rgba(255, 111, 97, 0.3); border-color: var(--coral-400); }
 .spill--mork .rekkerad--riktig { background: rgba(47, 168, 79, 0.3); border-color: #2FA84F; }
 .spill--mork .rekkerad--feil { background: rgba(255, 111, 97, 0.22); border-color: var(--coral-400); }
 .spill--mork .rekkerad__nr { background: rgba(255, 255, 255, 0.16); color: #fff; }
@@ -3418,10 +3444,10 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .spill--mork .memkort__bak { color: rgba(255, 255, 255, 0.55); }
 .spill--mork .memkort--apen { border-color: var(--teal-300); background: rgba(126, 208, 203, 0.25); }
 /* Parfargene (solide) vinner også i mørk modus */
-.spill--mork .parknapp--par1, .spill--mork .memkort--par1 { background: var(--teal-600); border-color: var(--teal-600); }
-.spill--mork .parknapp--par2, .spill--mork .memkort--par2 { background: var(--navy-600); border-color: var(--navy-600); }
-.spill--mork .parknapp--par3, .spill--mork .memkort--par3 { background: var(--coral-700); border-color: var(--coral-700); }
-.spill--mork .parknapp--par4, .spill--mork .memkort--par4 { background: var(--varm-600); border-color: var(--varm-600); }
+.spill--mork .memkort--par1 { background: var(--teal-600); border-color: var(--teal-600); }
+.spill--mork .memkort--par2 { background: var(--navy-600); border-color: var(--navy-600); }
+.spill--mork .memkort--par3 { background: var(--coral-700); border-color: var(--coral-700); }
+.spill--mork .memkort--par4 { background: var(--varm-600); border-color: var(--varm-600); }
 
 /* Skyvepaneler — Instagram-språket: varsler som full side fra høyre
    (sveip bort eller pil for å lukke), kommentarer som halvside over. */
@@ -3481,7 +3507,7 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .feed__vaktpost { height: 1px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .spillvalg--riktig, .spillvalg--feil, .gapbrikke--feil, .parknapp--feil,
+  .spillvalg--riktig, .spillvalg--feil, .gapbrikke--feil, .parfeil,
   .spillsvar--inn, .spillsvar__xp { animation: none !important; }
   .memkort__bak, .memkort__frem { transition: none; }
   .skyvepanel, .kommpanel, .kommbak, .rail__knapp { transition: none; }

@@ -249,69 +249,134 @@ function spillFyllHullet(post, { øvelse = false } = {}) {
 }
 
 // ==========================================================================
-// Modul 02 — Koble begrepene: tre begreper til venstre, tre betydninger i
-// stokket rekkefølge til høyre. Trykk-for-å-koble (mobilvennlig alternativ
-// til dra): riktig kobling låses med parfarge, feil blinker og teller bom.
+// Modul 02 — Koble begrepene (referansedesignet): fargede pille-begreper til
+// venstre med koblingsprikk på kanten, nøytrale betydningsbokser til høyre —
+// og en buet, farget linje som tegnes mellom prikkene når paret kobles.
+// Trykk-for-å-koble i valgfri rekkefølge (begrep eller betydning først);
+// riktig kobling låses i begrepets farge, feil rister og teller bom.
 // ==========================================================================
+const PAR_FARGER = ['#A78BFA', '#5EB2F7', '#FBA53C', '#F472B6'];
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
 function spillKoblePar(post, { øvelse = false } = {}) {
   const g = post.spill;
   const modul = spillSkall(post);
   const par = g.options; // [{left, right}]
   const høyreStokket = stokkUlik(par.map((p) => p.right), post.id);
+  const fargeFor = (vTekst) => PAR_FARGER[par.findIndex((p) => p.left === vTekst) % PAR_FARGER.length];
 
-  let valgtVenstre = null;
+  let valgt = null; // { side: 'v'|'h', tekst, knapp, prikk }
   let bommer = 0;
   let funnet = 0;
+  const koblinger = []; // { fra, til, farge } — for retegning ved resize
 
-  const venstreKnapper = new Map();
+  const linjer = document.createElementNS(SVG_NS, 'svg');
+  linjer.setAttribute('class', 'par__linjer');
+  linjer.setAttribute('aria-hidden', 'true');
+  const boks = el('div', { class: 'par' }, linjer);
 
-  function sjekkPar(vTekst, hTekst, vKnapp, hKnapp) {
-    const fasit = par.find((p) => p.left === vTekst)?.right === hTekst;
+  function prikkSenter(prikk) {
+    const a = prikk.getBoundingClientRect();
+    const r = boks.getBoundingClientRect();
+    return [a.left + a.width / 2 - r.left, a.top + a.height / 2 - r.top];
+  }
+
+  // Buet kabel mellom to prikker; ved animer «tegnes» den inn via dashoffset.
+  function tegnLinje(fra, til, farge, animer) {
+    const [x1, y1] = prikkSenter(fra);
+    const [x2, y2] = prikkSenter(til);
+    const dx = Math.max(20, (x2 - x1) / 2);
+    const p = document.createElementNS(SVG_NS, 'path');
+    p.setAttribute('d', `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`);
+    p.setAttribute('stroke', farge);
+    linjer.append(p);
+    if (animer && !REDUSERT()) {
+      const L = p.getTotalLength();
+      p.style.strokeDasharray = String(L);
+      p.style.strokeDashoffset = String(L);
+      requestAnimationFrame(() => {
+        p.style.transition = 'stroke-dashoffset 0.4s var(--ease-out)';
+        p.style.strokeDashoffset = '0';
+      });
+    }
+  }
+
+  function tegnAlleLinjer() {
+    tom(linjer);
+    for (const k of koblinger) tegnLinje(k.fra, k.til, k.farge, false);
+  }
+  // Kortbredden kan endre seg (rotasjon o.l.) — linjene følger prikkene.
+  if (typeof ResizeObserver !== 'undefined') new ResizeObserver(tegnAlleLinjer).observe(boks);
+
+  function sjekkPar(v, h) {
+    const fasit = par.find((p) => p.left === v.tekst)?.right === h.tekst;
     if (fasit) {
-      const nr = (funnet % 4) + 1;
       funnet++;
-      for (const k of [vKnapp, hKnapp]) {
-        k.classList.remove('parknapp--valgt');
-        k.classList.add('parknapp--laast', `parknapp--par${nr}`);
-        k.disabled = true;
+      const farge = fargeFor(v.tekst);
+      h.knapp.style.setProperty('--parfarge', farge);
+      for (const x of [v, h]) {
+        x.knapp.classList.remove('parbegrep--valgt', 'parmening--valgt');
+        x.knapp.classList.add(x === v ? 'parbegrep--koblet' : 'parmening--koblet');
+        x.knapp.disabled = true;
       }
+      koblinger.push({ fra: v.prikk, til: h.prikk, farge });
+      tegnLinje(v.prikk, h.prikk, farge, true);
       vibrer('lett');
       if (funnet === par.length) fullfor(post, modul, bommer === 0, { øvelse });
     } else {
       bommer++;
       vibrer('feil');
-      for (const k of [vKnapp, hKnapp]) {
-        k.classList.add('parknapp--feil');
-        setTimeout(() => k.classList.remove('parknapp--feil', 'parknapp--valgt'), 450);
+      for (const x of [v, h]) {
+        x.knapp.classList.add('parfeil');
+        setTimeout(() => x.knapp.classList.remove('parfeil', 'parbegrep--valgt', 'parmening--valgt'), 450);
       }
     }
-    valgtVenstre = null;
+    valgt = null;
   }
 
-  const venstreKol = el('div', { class: 'par__kol' }, ...par.map((p) => {
-    const k = el('button', { class: 'parknapp', type: 'button' }, p.left);
-    k.addEventListener('click', () => {
-      if (k.disabled) return;
-      for (const [, vk] of venstreKnapper) vk.classList.remove('parknapp--valgt');
-      valgtVenstre = { tekst: p.left, knapp: k };
-      k.classList.add('parknapp--valgt');
-    });
-    venstreKnapper.set(p.left, k);
+  // Valgfri rekkefølge: trykk på samme side bytter valget; en fra hver side
+  // sjekker paret. Valgt-markøren følger sidens eget uttrykk.
+  function velg(side, tekst, knapp, prikk) {
+    if (knapp.disabled) return;
+    const meg = { side, tekst, knapp, prikk };
+    const valgtKlasse = side === 'v' ? 'parbegrep--valgt' : 'parmening--valgt';
+    if (valgt && valgt.side === side) {
+      valgt.knapp.classList.remove('parbegrep--valgt', 'parmening--valgt');
+      if (valgt.knapp === knapp) { valgt = null; return; } // samme knapp → avvelg
+      valgt = meg;
+      knapp.classList.add(valgtKlasse);
+      return;
+    }
+    if (!valgt) {
+      valgt = meg;
+      knapp.classList.add(valgtKlasse);
+      return;
+    }
+    sjekkPar(side === 'v' ? meg : valgt, side === 'h' ? meg : valgt);
+  }
+
+  const venstreKol = el('div', { class: 'par__kol' }, ...par.map((p, i) => {
+    const prikk = el('span', { class: 'parprikk parprikk--hoyre' });
+    const k = el('button', {
+      class: 'parbegrep', type: 'button', style: `--parfarge:${PAR_FARGER[i % PAR_FARGER.length]}`,
+      onclick: (ev) => velg('v', p.left, ev.currentTarget, prikk),
+    }, p.left, prikk);
     return k;
   }));
 
   const høyreKol = el('div', { class: 'par__kol' }, ...høyreStokket.map((tekst) => {
-    const k = el('button', { class: 'parknapp', type: 'button' }, tekst);
-    k.addEventListener('click', () => {
-      if (k.disabled || !valgtVenstre) return;
-      sjekkPar(valgtVenstre.tekst, tekst, valgtVenstre.knapp, k);
-    });
+    const prikk = el('span', { class: 'parprikk parprikk--venstre' });
+    const k = el('button', {
+      class: 'parmening', type: 'button',
+      onclick: (ev) => velg('h', tekst, ev.currentTarget, prikk),
+    }, tekst, prikk);
     return k;
   }));
 
+  boks.append(venstreKol, høyreKol);
   modul.append(
-    el('p', { class: 'spill__hint' }, 'Velg et begrep til venstre, så betydningen til høyre.'),
-    el('div', { class: 'par' }, venstreKol, høyreKol),
+    el('p', { class: 'spill__hint' }, 'Koble hvert begrep til betydningen sin.'),
+    boks,
   );
   return modul;
 }
