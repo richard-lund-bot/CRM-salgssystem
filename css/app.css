@@ -747,14 +747,15 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 .tabbar__knapp {
   position: relative; z-index: 1;
   flex: 1 1 0; display: grid; place-items: center;
-  padding: 10px 0; text-decoration: none; color: var(--dempet);
+  /* Alle ikoner i samme nesten-svarte mørkegrå — aktiv fane skilles kun ved
+     at ikonet er fylt (linje → fyll), ikke ved farge. */
+  padding: 10px 0; text-decoration: none; color: #1d1d1f;
   -webkit-tap-highlight-color: transparent;
   transition: color var(--dur-fast) var(--ease-standard);
 }
-.tabbar__knapp--aktiv { color: #141414; }
 .tabbar__ikon { line-height: 1; display: grid; place-items: center; }
 .tabbar__ikon .ikon { width: 25px; height: 25px; stroke-width: 2; }
-/* Aktiv fane: bytt til det fylte, svarte ikonet (linje-varianten skjules). */
+/* Aktiv fane: bytt til det fylte ikonet (linje-varianten skjules). */
 .tabikon--fyll { display: none; }
 .tabbar__knapp--aktiv .tabikon--linje { display: none; }
 .tabbar__knapp--aktiv .tabikon--fyll { display: block; }
