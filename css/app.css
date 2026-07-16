@@ -819,10 +819,17 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
    et hint vertikalt — væske-aktig — som om den gir etter for pillen som
    glir inn mot enden. Kun ytterfanene: der er det pillen ellers ville truffet
    kanten. Klassene settes i flyttTabIndikator og ryddes på animationend. */
-.tabbar--strekk-hoyre, .tabbar--strekk-venstre { animation: bar-strekk 0.42s var(--ease-standard); }
+.tabbar--strekk-hoyre, .tabbar--strekk-venstre { animation: bar-strekk 0.65s linear; }
 .tabbar--strekk-hoyre { transform-origin: left center; }
 .tabbar--strekk-venstre { transform-origin: right center; }
-@keyframes bar-strekk { 0%, 100% { scale: 1 1; } 60% { scale: 1.05 0.965; } }
+/* Toppen ved 62% ≈ 0,40s = idet pillen lander (glidingen er 0,42s, men er
+   innenfor 1px av målet ved ~0,40s). Ease-in opp: bulingen bygger seg mens
+   pillen nærmer seg enden — ikke før. Myk retur etterpå. */
+@keyframes bar-strekk {
+  0% { scale: 1 1; animation-timing-function: cubic-bezier(0.55, 0, 0.8, 0.4); }
+  62% { scale: 1.05 0.965; animation-timing-function: cubic-bezier(0.25, 0.6, 0.45, 1); }
+  100% { scale: 1 1; }
+}
 @keyframes synkpuls { 50% { opacity: 0.4; } }
 @media (prefers-reduced-motion: reduce) {
   .tabbar--trykk .tabbar__flash, .tabbar--trykk .tabbar__trykkpunkt,
