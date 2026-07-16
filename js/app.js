@@ -1082,9 +1082,10 @@ function byggTabbar() {
 }
 
 // Trykk på fanen man ALLEREDE står i → tilbakestill fanen til førstesiden
-// (rot) og tegn den på nytt (refresh), som i vanlige apper. Et trykk på en
-// annen fane beholder per-fane-minnet (går dit man var). Vi lytter i fangst-
-// fasen så vi rekker å avbryte hash-navigasjonen før den skjer.
+// (rot), scroll til topp, spill reload-animasjonen (samme spinner som pull-to-
+// refresh på Min dag) og last innholdet på nytt. Et trykk på en ANNEN fane
+// beholder per-fane-minnet (går dit man var). Vi lytter i fangst-fasen så vi
+// rekker å avbryte hash-navigasjonen før den skjer.
 function settOppReTapp(nav) {
   nav.addEventListener('click', (ev) => {
     const knapp = ev.target.closest('.tabbar__knapp');
@@ -1093,22 +1094,53 @@ function settOppReTapp(nav) {
     const naaRute = (location.hash.replace('#/', '') || 'hjem').split('?')[0];
     if (faneForRute(naaRute) !== tab) return; // annen fane → vanlig navigasjon
     ev.preventDefault();
-    tilbakestillFane(tab);
+    refreshFane(tab);
   }, true);
 }
 
-// Nullstiller en fanes minne til roten, går dit og tvinger en fersk tegning
-// (også når man alt står på roten, der hash ikke endrer seg).
-function tilbakestillFane(tab) {
+// Spinner-overlegg à la pull-to-refresh: glir inn øverst, spinner mens
+// innholdet lastes på nytt, og fjernes etterpå. Ligger på <body> så en
+// re-tegning av #app ikke rører den. `reload` kalles midtveis (mens den
+// spinner) og gjør den ferske tegningen.
+function spillReload(reload) {
+  const spinn = el('div', { class: 'pullspinn pullspinn--aktiv reloadspinn', 'aria-hidden': 'true' },
+    el('i', { class: 'pullspinn__ring' }));
+  spinn.style.top = 'calc(env(safe-area-inset-top) + 22px)';
+  document.body.append(spinn);
+  // Glir ned til hvileposisjon (top-transisjonen ligger i .pullspinn--aktiv).
+  requestAnimationFrame(() => { spinn.style.top = 'calc(env(safe-area-inset-top) + 72px)'; });
+  const ferdig = () => {
+    spinn.classList.remove('pullspinn--aktiv');
+    spinn.addEventListener('transitionend', () => spinn.remove(), { once: true });
+    setTimeout(() => spinn.remove(), 400);
+  };
+  if (REDUSERT()) { reload(); setTimeout(ferdig, 200); return; }
+  // La spinneren snurre et øyeblikk, last på nytt, og fade den ut litt etter.
+  setTimeout(() => { reload(); setTimeout(ferdig, 260); }, 620);
+}
+
+// Nullstiller fanen til roten, scroller til topp og spiller reload-animasjonen
+// med en fersk tegning. Virker både når man står dypt inne (går til rot først)
+// og når man alt står på roten (samme hash → tegn på nytt manuelt).
+function refreshFane(tab) {
   const rot = `#/${tab}`;
   faneMinne[tab] = rot;
   scrollMinne.set(rot, 0);
-  if (location.hash === rot) {
-    navger(); // samme hash → tegn på nytt manuelt (refresh)
+  const kjør = () => {
     const s = aktivScroller();
-    if (s) s.scrollTop = 0;
+    if (s) s.scrollTo({ top: 0, behavior: REDUSERT() ? 'auto' : 'smooth' });
+    spillReload(() => {
+      navger(); // fersk tegning (feeden re-rangeres, dashbord re-leses)
+      const s2 = aktivScroller();
+      if (s2) s2.scrollTop = 0;
+    });
+  };
+  if (location.hash === rot) {
+    kjør();
   } else {
-    location.hash = rot; // ulik hash → hashchange → navger tegner roten på topp
+    // Dypt inne → gå til rot; når roten er tegnet, spill reload over den.
+    window.addEventListener('hashchange', () => requestAnimationFrame(kjør), { once: true });
+    location.hash = rot;
   }
 }
 
