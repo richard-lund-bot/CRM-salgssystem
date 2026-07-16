@@ -20,7 +20,7 @@ import { byggVarsler, varselKort, merkVarslerSett, harUlesteVarsler, tidSiden } 
 import { gjeldendeSprak } from './i18n.js';
 import {
   rangerPoster, lagDwellSporer, registrerInteraksjon, interesser,
-  harValgtInteresser, settInteresser,
+  harValgtInteresser, settInteresser, kategoriRangScore, storyErSett,
 } from './feed-rang.js';
 
 const LS_FEED = 'trening.feed'; // per-innlegg-tilstand (spilt/likt/lagret/komm)
@@ -740,21 +740,30 @@ const SLIDE_MS = 6000;
 
 function byggStories(posts) {
   const sortert = posts.slice().sort((a, b) => (Date.parse(b.opprettet || 0) || 0) - (Date.parse(a.opprettet || 0) || 0));
-  const stories = [{ id: 'story-nytt', navn: 'Nytt nå', slides: sortert.slice(0, 5), aksentStart: '#0BA69F', aksentSlutt: '#FF6F61' }];
+  const nytt = { id: 'story-nytt', navn: 'Nytt nå', slides: sortert.slice(0, 5), aksentStart: '#0BA69F', aksentSlutt: '#FF6F61' };
   const perDomene = new Map();
   for (const p of sortert) {
-    if (!perDomene.has(p.kategori)) perDomene.set(p.kategori, []);
-    const l = perDomene.get(p.kategori);
-    if (l.length < 4) l.push(p);
+    if (!perDomene.has(p.katId)) perDomene.set(p.katId, { navn: p.kategori, slides: [] });
+    const d = perDomene.get(p.katId);
+    if (d.slides.length < 4) d.slides.push(p);
   }
-  for (const [domene, slides] of perDomene) {
-    const g = posterFor(slides[0].posterId);
-    stories.push({
-      id: `story-${domene}`, navn: domene, slides,
+  // Domene-storyene rangeres etter interesse + affinitet + tid-på-døgnet, med
+  // usette først (som Instagram: det du ikke har sett kommer fremst). «Nytt nå»
+  // står alltid først.
+  const domener = [...perDomene.entries()].map(([katId, d]) => {
+    const g = posterFor(d.slides[0].posterId);
+    return {
+      id: `story-${katId}`, katId, navn: d.navn, slides: d.slides,
       aksentStart: g?.aksentStart || '#0BA69F', aksentSlutt: g?.aksentSlutt || '#4FA9F5',
-    });
-  }
-  return stories;
+    };
+  });
+  domener.sort((a, b) => {
+    const settA = storyErSett(a.id) ? 1 : 0;
+    const settB = storyErSett(b.id) ? 1 : 0;
+    if (settA !== settB) return settA - settB; // usette først
+    return kategoriRangScore(b.katId) - kategoriRangScore(a.katId); // så etter interesse/affinitet/tid
+  });
+  return [nytt, ...domener];
 }
 
 function lagStoryRad(posts, vert, påSeIFeed) {

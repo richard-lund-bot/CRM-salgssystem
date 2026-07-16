@@ -21,14 +21,39 @@ const LS_FEED = 'trening.feed'; // spilt/likt/lagret (delt med feed.js)
 const VEKT = { dwellPerSek: 0.15, spilt: 3, likt: 2, lagret: 2.5, kommentar: 2.5, delt: 3, story: 1 };
 const DWELL_TAK_SEK = 20; // maks dwell-bidrag per innlegg (unngå at ett kort dominerer)
 
+// Tid på døgnet: fire bøtter. Engasjement bokføres BÅDE globalt og per bøtte,
+// så rangeringen kan løfte det brukeren pleier å engasjere seg i akkurat nå
+// (f.eks. lette fakta om morgenen, dypere stoff om kvelden) — helt datadrevet.
+const TIDSBOTTER = ['morgen', 'dag', 'kveld', 'natt'];
+export function tidsbotte(t = new Date()) {
+  const h = t.getHours();
+  if (h >= 5 && h < 11) return 'morgen';
+  if (h >= 11 && h < 17) return 'dag';
+  if (h >= 17 && h < 23) return 'kveld';
+  return 'natt';
+}
+
 // --- Tilstand ---------------------------------------------------------------
+function tomTid() { return Object.fromEntries(TIDSBOTTER.map((b) => [b, {}])); }
 function les() {
   try {
     const t = JSON.parse(localStorage.getItem(LS_RANG) || '{}');
-    return { kat: t.kat || {}, sett: t.sett || {}, dwellPost: t.dwellPost || {} };
+    return {
+      kat: t.kat || {}, sett: t.sett || {}, dwellPost: t.dwellPost || {},
+      katTid: { ...tomTid(), ...(t.katTid || {}) },
+    };
   } catch {
-    return { kat: {}, sett: {}, dwellPost: {} };
+    return { kat: {}, sett: {}, dwellPost: {}, katTid: tomTid() };
   }
+}
+
+// Legg en affinitetsverdi til en kategori — bokføres globalt og i gjeldende
+// tidsbøtte samtidig.
+function bumpKat(t, katId, verdi) {
+  t.kat[katId] = (t.kat[katId] || 0) + verdi;
+  const b = tidsbotte();
+  t.katTid[b] = t.katTid[b] || {};
+  t.katTid[b][katId] = (t.katTid[b][katId] || 0) + verdi;
 }
 function skriv(t) { try { localStorage.setItem(LS_RANG, JSON.stringify(t)); } catch { /* valgfri */ } }
 function feedState() {
@@ -59,7 +84,7 @@ export function registrerVisning(post, ms) {
   const tillegg = nyTotal - brukt;
   if (tillegg > 0) {
     t.dwellPost[post.id] = nyTotal;
-    t.kat[post.katId] = (t.kat[post.katId] || 0) + (tillegg / 1000) * VEKT.dwellPerSek;
+    bumpKat(t, post.katId, (tillegg / 1000) * VEKT.dwellPerSek);
   }
   // Sett-terskel: ~2 sekunder synlig regnes som «sett».
   if (nyTotal >= 2000 && !t.sett[post.id]) t.sett[post.id] = Date.now();
@@ -70,7 +95,7 @@ export function registrerVisning(post, ms) {
 export function registrerInteraksjon(post, type) {
   if (!post?.katId || !VEKT[type]) return;
   const t = les();
-  t.kat[post.katId] = (t.kat[post.katId] || 0) + VEKT[type];
+  bumpKat(t, post.katId, VEKT[type]);
   if (!t.sett[post.id]) t.sett[post.id] = Date.now();
   skriv(t);
 }
@@ -99,12 +124,14 @@ export function rangerPoster(posts, fro = 1) {
   const t = les();
   const fs = feedState();
   const aff = normaliserAffinitet(t.kat);
+  const tidAff = normaliserAffinitet(t.katTid[tidsbotte()] || {}); // affinitet akkurat nå
   const valgte = interesser() || [];
   const nyeste = Math.max(...posts.map((p) => p.rekkefolge || 0), 1);
 
   const skår = (p) => {
     const interesse = valgte.includes(p.katId) ? 1 : 0;
     const affinitet = aff[p.katId] || 0;
+    const tid = tidAff[p.katId] || 0; // pleier du dette på denne tida av døgnet?
     const spilt = fs.spilt && fs.spilt[p.id] ? 1 : 0;
     const sett = t.sett[p.id] ? 1 : 0;
     const ferskhet = (p.rekkefolge || 0) / nyeste; // nyere litt høyere
@@ -112,6 +139,7 @@ export function rangerPoster(posts, fro = 1) {
     return (
       3.0 * interesse
       + 2.0 * affinitet
+      + 1.0 * tid     // tid-på-døgnet-affinitet (moderat nudge)
       + 0.4 * ferskhet
       + 0.6 * utforsk
       - 4.0 * spilt   // spilt → helt bakerst
@@ -121,6 +149,22 @@ export function rangerPoster(posts, fro = 1) {
 
   const scoret = posts.map((p) => ({ p, s: skår(p) })).sort((a, b) => b.s - a.s);
   return spreDiversitet(scoret.map((x) => x.p));
+}
+
+// Score for en kategori (til story-rekkefølgen): interesse + affinitet +
+// tid-på-døgnet. Brukes til å sortere domene-storyene etter hva brukeren bryr
+// seg om akkurat nå. «Nytt nå» og sett/usett håndteres i feed.js.
+export function kategoriRangScore(katId) {
+  const t = les();
+  const aff = normaliserAffinitet(t.kat)[katId] || 0;
+  const tid = normaliserAffinitet(t.katTid[tidsbotte()] || {})[katId] || 0;
+  const interesse = (interesser() || []).includes(katId) ? 1 : 0;
+  return 3.0 * interesse + 2.0 * aff + 1.0 * tid;
+}
+
+/** Om en story er sett (fra feed-tilstanden) — brukt til å legge sette bakerst. */
+export function storyErSett(storyId) {
+  return !!(feedState().story && feedState().story[storyId]);
 }
 
 // Diversitets-spredning: grådig utvelging som unngår at samme kategori kommer
