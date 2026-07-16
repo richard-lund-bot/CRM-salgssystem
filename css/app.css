@@ -3250,6 +3250,46 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
   font-family: inherit; font-size: 13px; font-weight: 700; padding: 10px 16px;
 }
 
+/* «Interesser»-inngangen i For deg-menyen */
+.feeddrop__rad--handling { color: var(--aksent); font-weight: 700; }
+.feeddrop__rad--handling .ikon { color: var(--aksent); vertical-align: -3px; }
+
+/* Interessekort — «Hva vil du lære om?» (ark over feeden) */
+.intkort__bak {
+  position: fixed; inset: 0; z-index: 44; background: rgba(17, 38, 77, 0);
+  transition: background 0.3s ease;
+}
+.intkort__bak--apen { background: rgba(17, 38, 77, 0.4); }
+.intkort {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
+  display: flex; justify-content: center;
+  transform: translateY(100%); transition: transform 0.34s var(--ease-out);
+}
+.intkort--apen { transform: translateY(0); }
+.intkort__panel {
+  width: 100%; max-width: 520px;
+  background: var(--bg-kort); border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+  box-shadow: 0 -12px 40px rgba(17, 38, 77, 0.2);
+  padding: 22px 18px calc(env(safe-area-inset-bottom) + 20px);
+}
+.intkort__eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--aksent); }
+.intkort__tittel { margin: 4px 0 6px; font-family: var(--font-display); font-weight: 600; font-size: 23px; }
+.intkort__under { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: var(--tekst-2); }
+.intkort__grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.intchip {
+  padding: 10px 16px; border-radius: var(--radius-pill); border: 2px solid var(--kant-sterk);
+  background: var(--bg-kort); font-family: inherit; font-size: 14px; font-weight: 600;
+  color: var(--tekst); cursor: pointer; transition: background 0.12s, border-color 0.12s;
+}
+.intchip--valgt { background: var(--aksent); border-color: var(--aksent); color: #fff; }
+.intkort__lagre { width: 100%; }
+.intkort__lagre:disabled { opacity: 0.5; }
+.intkort__hopp {
+  display: block; width: 100%; margin-top: 10px; padding: 10px; border: none; background: none;
+  font-family: inherit; font-size: 14px; color: var(--dempet); text-decoration: underline; cursor: pointer;
+}
+@media (prefers-reduced-motion: reduce) { .intkort, .intkort__bak { transition: none; } }
+
 /* Innleggskortet: 100 % av skjermbredden, avrundede hjørner; det hvite
    mellomrommet er den eneste deleren mellom innlegg */
 .feedliste { display: flex; flex-direction: column; gap: 14px; }

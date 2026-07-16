@@ -1,0 +1,186 @@
+[
+  {
+    "id": "push-opp",
+    "tittel": "The push-up journey",
+    "undertittel": "From wall push-ups to the one-arm — step by step.",
+    "ikon": "vekt",
+    "kjede": "push-h",
+    "bevegelse": "bodyweight",
+    "intro": "The push-up is the foundational upper-body exercise — chest, shoulders, triceps and a steady core, with no equipment at all. This path takes you from the very easiest variation and builds strength step by step. Move on when a step feels clean and controlled — there's no rush.",
+    "boss": {
+      "tittel": "The push-up panda",
+      "etterNode": "push-up",
+      "laasHint": "Master the standard push-up on the path to challenge the panda.",
+      "innbydelse": "Three rounds of push-ups against the panda. Beat all three and become the push-up master.",
+      "nivaer": [
+        {
+          "navn": "Warm-up",
+          "reps": 8,
+          "tekst": "Match the panda with 8 easy push-ups. The knee variation counts just as much."
+        },
+        {
+          "navn": "Challenge",
+          "reps": 12,
+          "tekst": "The panda picks up the pace — 12 push-ups with clean form."
+        },
+        {
+          "navn": "The Master Test",
+          "reps": 15,
+          "tekst": "Everything you have left: 15 controlled push-ups. Beat the panda!"
+        }
+      ]
+    },
+    "trinn": {
+      "vegg-pushup": {
+        "blurb": "Pressing while standing against a wall. Safe and easy on the joints — perfect for learning direction and tension in the body.",
+        "dose": "10 reps",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "What is the main point of pressing against a wall?",
+          "valg": [
+            "It makes the exercise harder",
+            "It lowers the load so you can learn the technique safely",
+            "It trains the legs"
+          ],
+          "riktig": 1,
+          "forklaring": "The more upright you stand, the easier the press becomes — perfect for learning the movement."
+        }
+      },
+      "skra-pushup-sofa-benk": {
+        "blurb": "Hands on a sofa or bench. The higher the surface, the easier — lower the height as you get stronger.",
+        "dose": "8 reps",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "How do you make an incline push-up easier?",
+          "valg": [
+            "Place your hands higher up",
+            "Place your hands lower",
+            "Raise your feet"
+          ],
+          "riktig": 0,
+          "forklaring": "The higher the surface your hands rest on, the less weight you carry."
+        }
+      },
+      "kne-pushup": {
+        "blurb": "On your knees instead of your toes. It halves the load but teaches you the right path down to the floor.",
+        "dose": "8 reps",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "What should hold a straight line in a knee push-up?",
+          "valg": [
+            "From the knees to the head",
+            "From the heels to the head",
+            "Just the lower back"
+          ],
+          "riktig": 0,
+          "forklaring": "Keep your body straight from knees to head — don't let your hips sag."
+        }
+      },
+      "push-up": {
+        "blurb": "The standard: a straight body from head to heel, elbows slightly in, down until the chest almost touches the floor.",
+        "dose": "5 reps",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "Where should the elbows point in a push-up?",
+          "valg": [
+            "Straight out to the sides (90°)",
+            "Slightly in toward the body (~45°)",
+            "Straight back"
+          ],
+          "riktig": 1,
+          "forklaring": "Keeping the elbows slightly in toward the body spares the shoulders and gives more power."
+        }
+      },
+      "diamant-smal-push-up": {
+        "blurb": "Hands close together under the chest. It shifts more of the work to the triceps and inner chest.",
+        "dose": "5 reps",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "What does a diamond/close push-up train extra?",
+          "valg": [
+            "The back",
+            "The triceps and inner chest",
+            "The legs"
+          ],
+          "riktig": 1,
+          "forklaring": "A close hand position shifts more of the work to the triceps."
+        }
+      },
+      "dekline-push-up": {
+        "blurb": "Feet raised on an elevated surface. The angle puts more load on the upper chest and shoulders.",
+        "dose": "5 reps",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "What do raised feet do in a decline push-up?",
+          "valg": [
+            "Puts more load on the upper chest and shoulders",
+            "Makes it easier",
+            "Trains the legs"
+          ],
+          "riktig": 0,
+          "forklaring": "The angle shifts the load toward the upper chest and shoulders."
+        }
+      },
+      "ring-push-up": {
+        "blurb": "Push-ups on rings or straps. The unstable grip forces control through the entire shoulder girdle.",
+        "dose": "5 reps",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "Why is a push-up on rings harder?",
+          "valg": [
+            "The rings are heavier",
+            "The unstable grip demands more control",
+            "You have to jump"
+          ],
+          "riktig": 1,
+          "forklaring": "The rings wobble, so your shoulders and core have to work hard to keep you steady."
+        }
+      },
+      "archer-push-up": {
+        "blurb": "The weight shifts onto one arm while the other extends out to the side. A big step toward the one-arm.",
+        "dose": "3 reps per side",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "What happens to the arms in an archer push-up?",
+          "valg": [
+            "Both press equally",
+            "One carries most of the load while the other extends out",
+            "You use only one arm"
+          ],
+          "riktig": 1,
+          "forklaring": "The weight shifts onto one arm — a step on the way to the one-arm."
+        }
+      },
+      "pseudo-planche-push-up": {
+        "blurb": "Hands by the hips and the body leaning forward. It builds the forward-leaning strength needed further on.",
+        "dose": "5 reps",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "Where are the hands in a pseudo-planche push-up?",
+          "valg": [
+            "By the hips, body leaning forward",
+            "Overhead",
+            "Behind the back"
+          ],
+          "riktig": 0,
+          "forklaring": "Hands by the hips and the body leaning forward build the forward-leaning strength."
+        }
+      },
+      "ettarms-progresjon": {
+        "blurb": "The goal: one arm, full control. Built gradually with a wider foot stance and less support each session.",
+        "dose": "3 reps per side",
+        "minutter": 3,
+        "sjekk": {
+          "sporsmal": "How do you build the one-arm push-up safely?",
+          "valg": [
+            "Jump straight in",
+            "Gradually: a wider foot stance and less support",
+            "Only with weights"
+          ],
+          "riktig": 1,
+          "forklaring": "Build gradually with wider feet and less support each session."
+        }
+      }
+    }
+  }
+]

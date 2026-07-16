@@ -1,0 +1,102 @@
+[
+  {
+    "id": "kroppsvekt",
+    "navn": "Bodyweight",
+    "undertittel": "At home, minimal equipment — build strength from the ground up.",
+    "ikon": "vekt",
+    "farge": "teal",
+    "status": "aktiv",
+    "seksjoner": [
+      "kroppsvekt-nybegynner",
+      "kroppsvekt-oppvarming",
+      "kroppsvekt-viderekommen",
+      "kroppsvekt-toying"
+    ],
+    "kapsteiner": [
+      "push-opp"
+    ]
+  },
+  {
+    "id": "styrke",
+    "navn": "Strength",
+    "undertittel": "Free weights — dumbbells, kettlebells and the barbell. Build real strength.",
+    "ikon": "vekt",
+    "farge": "koral",
+    "status": "aktiv",
+    "seksjoner": [
+      "styrke-grunnlag",
+      "styrke-kneboy",
+      "styrke-hengsel",
+      "styrke-press",
+      "styrke-kraft"
+    ]
+  },
+  {
+    "id": "loping",
+    "navn": "Running",
+    "undertittel": "From a walk to 5 km — step by step.",
+    "ikon": "loper",
+    "farge": "oransje",
+    "status": "aktiv",
+    "seksjoner": [
+      "loping-gaaskole",
+      "loping-loepeskole",
+      "loping-fart"
+    ]
+  },
+  {
+    "id": "mobilitet",
+    "navn": "Mobility",
+    "undertittel": "Mobility and supple joints for the whole body.",
+    "ikon": "puls",
+    "farge": "blaa",
+    "status": "aktiv",
+    "seksjoner": [
+      "mobilitet-grunnlag",
+      "mobilitet-rygg",
+      "mobilitet-hofter",
+      "mobilitet-underkropp"
+    ]
+  },
+  {
+    "id": "yoga",
+    "navn": "Yoga",
+    "undertittel": "Flow, breath and calm — mat-based.",
+    "ikon": "hjerte",
+    "farge": "lilla",
+    "status": "aktiv",
+    "seksjoner": [
+      "yoga-grunnlag",
+      "yoga-solhilsen",
+      "yoga-staaende",
+      "yoga-balanse",
+      "yoga-hvile"
+    ]
+  },
+  {
+    "id": "hiit",
+    "navn": "HIIT",
+    "undertittel": "Short, hard intervals — maximum effect in minimal time.",
+    "ikon": "lyn",
+    "farge": "gul",
+    "status": "aktiv",
+    "seksjoner": [
+      "hiit-grunnlag",
+      "hiit-bevegelser",
+      "hiit-protokoller"
+    ]
+  },
+  {
+    "id": "sykkel",
+    "navn": "Cycling",
+    "undertittel": "Outdoors or on the trainer — zones, cadence and intervals.",
+    "ikon": "sykkel",
+    "farge": "lime",
+    "status": "aktiv",
+    "seksjoner": [
+      "sykkel-grunnlag",
+      "sykkel-teknikk",
+      "sykkel-intervaller"
+    ]
+  }
+]

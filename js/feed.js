@@ -18,6 +18,10 @@ import { vibrer } from './haptikk.js';
 import { REDUSERT } from './animasjon.js';
 import { byggVarsler, varselKort, merkVarslerSett, harUlesteVarsler, tidSiden } from './varsler.js';
 import { gjeldendeSprak } from './i18n.js';
+import {
+  rangerPoster, lagDwellSporer, registrerInteraksjon, interesser,
+  harValgtInteresser, settInteresser,
+} from './feed-rang.js';
 
 const LS_FEED = 'trening.feed'; // per-innlegg-tilstand (spilt/likt/lagret/komm)
 const BATCH = 5; // innlegg per innlastingsrunde (uendelig scroll)
@@ -102,6 +106,7 @@ function giXp(post, perfekt) {
   const res = perfekt ? 'perfekt' : 'delvis';
   const xp = perfekt ? post.xp : Math.max(10, Math.round(post.xp / 10) * 5);
   endreTilstand((s) => { s.spilt[post.id] = { res, xp, ts: Date.now() }; });
+  registrerInteraksjon(post, 'spilt'); // sterkest engasjementssignal for rangeringen
 
   const profil = hentProfil();
   if (profil) {
@@ -840,6 +845,7 @@ function åpneStory(stories, startIdx, vert, { påSett = null, påSeIFeed = null
     const post = story.slides[slideIdx];
     const guide = posterFor(post.posterId) || { navn: 'Aha', aksentStart: story.aksentStart, aksentSlutt: story.aksentSlutt };
     const ts = Date.parse(post.opprettet || '') || Date.now();
+    registrerInteraksjon(post, 'story'); // story-visning teller mot kategori-affinitet
 
     flate.style.background = `linear-gradient(170deg, ${guide.aksentStart}, ${guide.aksentSlutt})`;
     tom(flate);
@@ -946,11 +952,12 @@ function aksjonsRail(post, vert) {
     endreTilstand((s) => { if (ny) s.likt[post.id] = 1; else delete s.likt[post.id]; });
     lik.knapp.classList.toggle('rail__knapp--paa', ny);
     lik.tallEl.textContent = formaterTall((post.seed?.likes || 0) + (ny ? 1 : 0));
-    if (ny) vibrer('lett');
+    if (ny) { vibrer('lett'); registrerInteraksjon(post, 'likt'); }
   }, !!t.likt[post.id]);
 
   const kommTall = () => formaterTall((post.seed?.comments || 0) + (lesTilstand().komm[post.id] || []).length);
   const komm = railKnapp('snakke', kommTall(), 'Kommentarer', () => {
+    registrerInteraksjon(post, 'kommentar');
     åpneKommentarer(post, vert, () => { komm.tallEl.textContent = kommTall(); });
   });
 
@@ -959,10 +966,10 @@ function aksjonsRail(post, vert) {
     endreTilstand((s) => { if (ny) s.lagret[post.id] = 1; else delete s.lagret[post.id]; });
     lagre.knapp.classList.toggle('rail__knapp--paa', ny);
     lagre.tallEl.textContent = formaterTall((post.seed?.saves || 0) + (ny ? 1 : 0));
-    if (ny) varsle('Lagret — finn det igjen under «Lagret» i For deg-menyen');
+    if (ny) { varsle('Lagret — finn det igjen under «Lagret» i For deg-menyen'); registrerInteraksjon(post, 'lagret'); }
   }, !!t.lagret[post.id]);
 
-  const del = railKnapp('dele', formaterTall(post.seed?.shares || 0), 'Del', () => delInnlegg(post));
+  const del = railKnapp('dele', formaterTall(post.seed?.shares || 0), 'Del', () => { registrerInteraksjon(post, 'delt'); delInnlegg(post); });
 
   return el('div', { class: 'rail' }, lik.rot, komm.rot, lagre.rot, del.rot);
 }
@@ -976,7 +983,7 @@ function feedKort(post, vert) {
     spilt ? spiltOppsummering(post, spilt) : byggSpill(post));
 
   return el('article', {
-    class: 'fkort',
+    class: 'fkort', 'data-id': post.id, 'data-kat': post.katId || '',
     style: `background:linear-gradient(165deg, ${poster.aksentStart}, ${poster.aksentSlutt})`,
   },
     el('div', { class: 'fkort__hode' },
@@ -1029,9 +1036,23 @@ export function visFeedSkjerm(mount) {
   mount.append(scroll);
 }
 
+// Øktfrø for utforsknings-jitteren: stabilt mens man scroller, varierer mellom
+// besøk (Math.random er tilgjengelig i nettleseren; endres ikke under scroll).
+let _feedFro = 1;
+function nyttFeedFro() { _feedFro = Math.floor(Math.random() * 1e9) + 1; return _feedFro; }
+
 function byggFeed(mount, scroll, data) {
-  const posts = data.posts.slice().sort((a, b) => a.rekkefolge - b.rekkefolge);
+  const posts = data.posts.slice();
   const kategorier = [...new Set(posts.map((p) => p.kategori))];
+  // Kategori-id → visningsnavn (for interessekortet på gjeldende språk).
+  const katNavn = new Map(posts.map((p) => [p.katId, p.kategori]));
+  const fro = nyttFeedFro();
+
+  // Dwell-sporing: måler visningstid per kort → affinitet per kategori.
+  // Én sporer per feed-bygging; stoppes når feeden bygges om (språk/refresh).
+  if (mount.__dwell) mount.__dwell.stopp();
+  const dwell = lagDwellSporer();
+  mount.__dwell = dwell;
 
   // --- Topplinje: kalender · «For deg» med dropdown · bjelle ----------------
   let filter = 'alle';
@@ -1065,6 +1086,7 @@ function byggFeed(mount, scroll, data) {
       el('div', { class: 'feeddrop__strek' }),
       ...kategorier.map((k) => rad(k, k)),
     );
+    drop.__leggInteresseknapp?.(); // «Interesser»-inngang nederst
   }
   tegnDropdown();
   document.addEventListener('click', (ev) => {
@@ -1098,7 +1120,11 @@ function byggFeed(mount, scroll, data) {
   function leggBatch() {
     const neste = synlige.slice(vist, vist + BATCH);
     vist += neste.length;
-    for (const p of neste) liste.append(feedKort(p, mount));
+    for (const p of neste) {
+      const kort = feedKort(p, mount);
+      dwell.følg(kort, p); // mål visningstid → affinitet
+      liste.append(kort);
+    }
     vaktpost.style.display = vist < synlige.length ? '' : 'none';
     if (!synlige.length) {
       liste.append(el('div', { class: 'kort tomstyrke' },
@@ -1115,11 +1141,17 @@ function byggFeed(mount, scroll, data) {
     tom(liste);
     vist = 0;
     const t = lesTilstand();
-    synlige = posts.filter((p) => {
+    const utvalg = posts.filter((p) => {
       if (filter === 'alle') return true;
       if (filter === 'lagret') return !!t.lagret[p.id];
       return p.kategori === filter;
     });
+    // «For deg» rangeres personlig (interesser + affinitet + variasjon, minst
+    // av det man alt har sett/spilt). Kategori-/Lagret-filter beholder
+    // redaksjonell rekkefølge så man finner igjen det man leter etter.
+    synlige = filter === 'alle'
+      ? rangerPoster(utvalg, fro)
+      : utvalg.sort((a, b) => a.rekkefolge - b.rekkefolge);
     leggBatch();
   }
 
@@ -1131,7 +1163,77 @@ function byggFeed(mount, scroll, data) {
   // Story-raden: «Spill i feeden» fra en slide hopper til domenets filter.
   const storyRad = lagStoryRad(posts, mount, (post) => velgFilter(post.kategori, post.kategori));
 
+  // «Rediger interesser» nederst i For deg-menyen — påvirker rangeringen.
+  drop.__leggInteresseknapp = () => drop.append(
+    el('div', { class: 'feeddrop__strek' }),
+    el('button', {
+      class: 'feeddrop__rad feeddrop__rad--handling', type: 'button',
+      onclick: () => { drop.hidden = true; visInteressekort(mount, katNavn, () => tegnListe()); },
+    }, el('span', {}, ikon('stjerne', 'ikon ikon--liten'), ' Interesser'), null),
+  );
+  tegnDropdown(); // nå med «Interesser»-inngangen
+
   tegnListe();
   // Topplinja ligger i scrollflaten — den scrolles forbi som resten.
   scroll.append(topp, storyRad, liste, vaktpost);
+
+  // Første besøk uten valgte interesser → be brukeren melde inn (kan hoppes over).
+  if (!harValgtInteresser()) visInteressekort(mount, katNavn, () => tegnListe(), true);
+}
+
+// ==========================================================================
+// Interessekort — «Hva vil du lære om?»: kategori-chips (flervalg) som
+// deklarerer interesser ved første besøk. Sterkeste signal i rangeringen.
+// Kan redigeres senere fra For deg-menyen. Vises som et ark over feeden.
+// ==========================================================================
+function visInteressekort(vert, katNavn, påLagret, forstegang = false) {
+  const valgt = new Set(interesser() || []);
+  const chips = new Map();
+
+  function tegnChip(katId, navn) {
+    const c = el('button', {
+      class: 'intchip' + (valgt.has(katId) ? ' intchip--valgt' : ''), type: 'button',
+      onclick: () => {
+        if (valgt.has(katId)) valgt.delete(katId); else valgt.add(katId);
+        c.classList.toggle('intchip--valgt', valgt.has(katId));
+        lagreKnapp.disabled = valgt.size === 0;
+      },
+    }, navn);
+    chips.set(katId, c);
+    return c;
+  }
+
+  const rutenett = el('div', { class: 'intkort__grid' },
+    ...[...katNavn.entries()].map(([id, navn]) => tegnChip(id, navn)));
+
+  const lagreKnapp = el('button', {
+    class: 'knapp intkort__lagre', type: 'button', disabled: valgt.size === 0,
+    onclick: () => { settInteresser([...valgt]); lukk(); påLagret?.(); },
+  }, 'Lagre interesser');
+
+  const ark = el('div', { class: 'intkort', role: 'dialog', 'aria-label': 'Velg interesser' },
+    el('div', { class: 'intkort__panel' },
+      el('span', { class: 'intkort__eyebrow' }, 'For deg'),
+      el('h2', { class: 'intkort__tittel' }, 'Hva vil du lære om?'),
+      el('p', { class: 'intkort__under' }, 'Velg det du er nysgjerrig på, så løftes det i feeden. Du kan endre når som helst.'),
+      rutenett,
+      lagreKnapp,
+      el('button', {
+        class: 'intkort__hopp', type: 'button',
+        onclick: () => { if (forstegang) settInteresser([]); lukk(); påLagret?.(); },
+      }, forstegang ? 'Hopp over — vis meg litt av alt' : 'Avbryt'),
+    ),
+  );
+  const bakteppe = el('div', { class: 'intkort__bak' });
+  function lukk() {
+    ark.classList.remove('intkort--apen'); bakteppe.classList.remove('intkort__bak--apen');
+    const fjern = () => { ark.remove(); bakteppe.remove(); };
+    if (REDUSERT()) fjern(); else { ark.addEventListener('transitionend', fjern, { once: true }); setTimeout(fjern, 500); }
+  }
+  bakteppe.addEventListener('click', () => { if (!forstegang) lukk(); });
+  vert.append(bakteppe, ark);
+  if (REDUSERT()) { ark.classList.add('intkort--apen'); bakteppe.classList.add('intkort__bak--apen'); }
+  else requestAnimationFrame(() => requestAnimationFrame(() => {
+    ark.classList.add('intkort--apen'); bakteppe.classList.add('intkort__bak--apen');
+  }));
 }

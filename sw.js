@@ -35,6 +35,7 @@ const SKALL = [
   './js/styrke.js',
   './js/laer.js',
   './js/feed.js',
+  './js/feed-rang.js',
   './js/i18n.js',
   './js/sti.js',
   './js/haptikk.js',
