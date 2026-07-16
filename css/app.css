@@ -794,8 +794,7 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
    så den bremser inn mot enden uten å noensinne stikke ut. */
 .tabbar__linse--rett { transition-timing-function: var(--ease-standard), ease; }
 /* (3) Trykk-effekt (klassen tabbar--trykk settes i settOppTabTrykk):
-   hele baren lysner et blunk som en screen-blanding, og en overmettet,
-   uskarp sirkel pulserer rundt selve trykkpunktet (posisjon via left/top). */
+   hele baren lysner et blunk som en screen-blanding. */
 .tabbar__flash {
   position: absolute; inset: 0; border-radius: inherit;
   pointer-events: none; z-index: 3;
@@ -805,17 +804,6 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 }
 .tabbar--trykk .tabbar__flash { animation: bar-flash 0.4s ease-out; }
 @keyframes bar-flash { 0% { opacity: 0.3; } 100% { opacity: 0; } }
-.tabbar__trykkpunkt {
-  position: absolute; left: 0; top: 0;
-  width: 72px; height: 72px; border-radius: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none; z-index: 2;
-  -webkit-backdrop-filter: blur(5px) saturate(280%);
-  backdrop-filter: blur(5px) saturate(280%);
-  opacity: 0;
-}
-.tabbar--trykk .tabbar__trykkpunkt { animation: trykk-puls 0.5s ease-out; }
-@keyframes trykk-puls { 0% { opacity: 1; } 100% { opacity: 0; } }
 /* Trykk-puls: hele baren vokser et hakk og faller straks tilbake.
    Bruker scale-egenskapen så den komponerer med transform (kompakt-krympen). */
 .tabbar--puls { animation: bar-puls 0.3s var(--ease-standard); }
@@ -841,7 +829,7 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 }
 @keyframes synkpuls { 50% { opacity: 0.4; } }
 @media (prefers-reduced-motion: reduce) {
-  .tabbar--trykk .tabbar__flash, .tabbar--trykk .tabbar__trykkpunkt,
+  .tabbar--trykk .tabbar__flash,
   .tabbar--puls, .tabbar--strekk-hoyre, .tabbar--strekk-venstre { animation: none; }
 }
 

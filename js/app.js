@@ -1072,7 +1072,6 @@ function byggTabbar() {
     tab('merker', 'person', 'personfyll', 'Profil'),
     tab('beveg', 'vekt', null, 'Treningsbibliotek'),
     tab('laer', 'bok', 'bokfyll', 'Lær'),
-    el('span', { class: 'tabbar__trykkpunkt', 'aria-hidden': 'true' }),
     el('span', { class: 'tabbar__flash', 'aria-hidden': 'true' }),
   );
   document.body.append(nav);
@@ -1144,15 +1143,11 @@ function refreshFane(tab) {
   }
 }
 
-// Trykk-effekt: ved pointerdown lysner hele baren (screen-flash) og en
-// overmettet, uskarp sirkel legges akkurat der fingeren traff. Klassen
-// fjernes/legges på igjen med tvungen reflow så effekten kan re-trigges raskt.
+// Trykk-effekt: ved pointerdown lysner hele baren (screen-flash) og pulser
+// et hakk. Klassen fjernes/legges på igjen med tvungen reflow så effekten kan
+// re-trigges raskt. (Trykk-sirkelen på fingerpunktet er fjernet.)
 function settOppTabTrykk(nav) {
-  const punkt = nav.querySelector('.tabbar__trykkpunkt');
-  nav.addEventListener('pointerdown', (ev) => {
-    const r = nav.getBoundingClientRect();
-    punkt.style.left = `${ev.clientX - r.left}px`;
-    punkt.style.top = `${ev.clientY - r.top}px`;
+  nav.addEventListener('pointerdown', () => {
     // Berøring vekker baren umiddelbart — veksten starter allerede på
     // pointerdown, før navigasjonen, så den er godt i gang når linsen glir.
     vekkTabbar(nav);
