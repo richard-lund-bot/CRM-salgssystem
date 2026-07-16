@@ -86,10 +86,11 @@ const AUTH_RUTER = new Set(['logg-inn', 'bli-medlem']);
 // tilbake ikke nullstiller til fane-roten (som i vanlige apper).
 const FANER = ['hjem', 'beveg', 'merker', 'aktivitet', 'laer'];
 // Under-rute → eier-fane. Samme kart som lyser opp riktig fane i oppdaterNav.
-// meny/innstillinger er bevisst utelatt (eget tannhjul-signal), så de lyser
-// ingen fane og huskes ikke som fane-mål.
+// meny/innstillinger/varsler er bevisst utelatt: de er egne sider (nås fra
+// tannhjulet/bjella, ikke inne i en fane), så de lyser ingen fane og huskes
+// aldri som fane-mål — ellers ville f.eks. Profil-fanen «låst» seg til Varsler.
 const FANE_AV_RUTE = {
-  bibliotek: 'merker', om: 'merker', varsler: 'merker', plan: 'merker',
+  bibliotek: 'merker', om: 'merker', plan: 'merker',
   styrke: 'merker', kalender: 'merker', reise: 'merker', tilpass: 'merker',
   historikk: 'aktivitet', ny: 'beveg', okter: 'beveg',
   artikkel: 'laer', sti: 'laer', disiplin: 'laer', seksjon: 'laer',
