@@ -696,15 +696,15 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
   --reflex-l: 1; --reflex-d: 1;
   position: fixed;
   /* Sitter lavt, tett over hjem-indikatoren som på Instagram. */
-  left: 50%; bottom: max(4px, calc(env(safe-area-inset-bottom) - 6px));
+  left: 50%; bottom: max(1px, calc(env(safe-area-inset-bottom) - 9px));
   translate: -50% 0;
   width: min(360px, calc(100% - 44px));
   display: flex; align-items: center; justify-content: space-around;
   gap: 2px; padding: 9px 8px;
   border: none; border-radius: 999px;
   background: color-mix(in srgb, var(--c-light) 40%, transparent);
-  -webkit-backdrop-filter: blur(12px) saturate(150%);
-  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(8px) saturate(150%);
+  backdrop-filter: blur(8px) saturate(150%);
   box-shadow:
     inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 10%), transparent),
     inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 90%), transparent),
@@ -786,7 +786,6 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 .tabbar__linse {
   position: absolute; top: 5px; bottom: 5px; left: 0;
   width: 78px; border-radius: 999px;
-  overflow: hidden; /* holder lys-sveipet innenfor pillen */
   background-color: color-mix(in srgb, var(--c-glass) 50%, transparent);
   /* (2) Sterkere spekulær-glans på linsen: lys topp, mørkere bunn → glassaktig. */
   background-image: linear-gradient(155deg,
@@ -804,29 +803,32 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
   opacity: 0; z-index: 0; pointer-events: none;
   transition: transform 0.42s var(--ease-bounce), opacity 0.2s ease;
 }
-/* (3) Lys-sveip / refraksjonsskimmer: en diagonal glansstripe som feier over
-   linsen hver gang den glir til en ny fane (klassen settes i flyttTabIndikator). */
-.tabbar__linse::after {
-  content: ''; position: absolute; inset: 0; border-radius: inherit;
-  pointer-events: none;
-  background: linear-gradient(105deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.55) 48%,
-    rgba(255, 255, 255, 0.75) 50%,
-    rgba(255, 255, 255, 0.55) 52%,
-    transparent 70%);
-  transform: translateX(-130%);
+/* (3) Trykk-effekt (klassen tabbar--trykk settes i settOppTabTrykk):
+   hele baren lysner et blunk som en screen-blanding, og en overmettet,
+   uskarp sirkel pulserer rundt selve trykkpunktet (posisjon via left/top). */
+.tabbar__flash {
+  position: absolute; inset: 0; border-radius: inherit;
+  pointer-events: none; z-index: 3;
+  background: #fff;
+  mix-blend-mode: screen;
   opacity: 0;
 }
-.tabbar__linse--sveip::after { animation: linse-sveip 0.6s var(--ease-standard); }
-@keyframes linse-sveip {
-  0% { transform: translateX(-130%); opacity: 0; }
-  22% { opacity: 1; }
-  100% { transform: translateX(130%); opacity: 0; }
+.tabbar--trykk .tabbar__flash { animation: bar-flash 0.4s ease-out; }
+@keyframes bar-flash { 0% { opacity: 0.3; } 100% { opacity: 0; } }
+.tabbar__trykkpunkt {
+  position: absolute; left: 0; top: 0;
+  width: 72px; height: 72px; border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none; z-index: 2;
+  -webkit-backdrop-filter: blur(5px) saturate(280%);
+  backdrop-filter: blur(5px) saturate(280%);
+  opacity: 0;
 }
+.tabbar--trykk .tabbar__trykkpunkt { animation: trykk-puls 0.5s ease-out; }
+@keyframes trykk-puls { 0% { opacity: 1; } 100% { opacity: 0; } }
 @keyframes synkpuls { 50% { opacity: 0.4; } }
 @media (prefers-reduced-motion: reduce) {
-  .tabbar__linse--sveip::after { animation: none; }
+  .tabbar--trykk .tabbar__flash, .tabbar--trykk .tabbar__trykkpunkt { animation: none; }
 }
 
 /* Fokusmodus: skjul tab-bar under onboarding/review/kjøring */

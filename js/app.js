@@ -1032,7 +1032,7 @@ function byggTabbar() {
     fyllNavn ? ikon(fyllNavn, 'ikon tabikon--fyll') : null,
   ));
 
-  document.body.append(el('nav', { class: 'tabbar', 'aria-label': 'Hovedmeny' },
+  const nav = el('nav', { class: 'tabbar', 'aria-label': 'Hovedmeny' },
     el('span', { class: 'tabbar__refraksjon', 'aria-hidden': 'true' }),
     el('span', { class: 'tabbar__linse', 'aria-hidden': 'true' }),
     tab('hjem', 'hjem', 'hjemfyll', 'I dag'),
@@ -1040,8 +1040,27 @@ function byggTabbar() {
     tab('merker', 'person', 'personfyll', 'Profil'),
     tab('aktivitet', 'puls', null, 'Aktivitet'),
     tab('laer', 'bok', 'bokfyll', 'Lær'),
-  ));
+    el('span', { class: 'tabbar__trykkpunkt', 'aria-hidden': 'true' }),
+    el('span', { class: 'tabbar__flash', 'aria-hidden': 'true' }),
+  );
+  document.body.append(nav);
+  settOppTabTrykk(nav);
   settOppTabKrymp();
+}
+
+// Trykk-effekt: ved pointerdown lysner hele baren (screen-flash) og en
+// overmettet, uskarp sirkel legges akkurat der fingeren traff. Klassen
+// fjernes/legges på igjen med tvungen reflow så effekten kan re-trigges raskt.
+function settOppTabTrykk(nav) {
+  const punkt = nav.querySelector('.tabbar__trykkpunkt');
+  nav.addEventListener('pointerdown', (ev) => {
+    const r = nav.getBoundingClientRect();
+    punkt.style.left = `${ev.clientX - r.left}px`;
+    punkt.style.top = `${ev.clientY - r.top}px`;
+    nav.classList.remove('tabbar--trykk');
+    void nav.offsetWidth;
+    nav.classList.add('tabbar--trykk');
+  });
 }
 
 // Instagram-aktig: baren krymper litt når man scroller nedover og vokser tilbake
@@ -1083,16 +1102,7 @@ function flyttTabIndikator() {
   if (!ind) return;
   if (!aktiv) { ind.style.opacity = '0'; return; }
   ind.style.opacity = '1';
-  const x = aktiv.offsetLeft + aktiv.offsetWidth / 2;
-  const nyPos = `translateX(${x}px) translateX(-50%)`;
-  // Lys-sveip kun når linsen faktisk glir til en ny fane (ikke ved re-render på
-  // samme fane). Restart animasjonen ved å fjerne/tvinge reflow/legge på klassen.
-  if (ind.style.transform && ind.style.transform !== nyPos) {
-    ind.classList.remove('tabbar__linse--sveip');
-    void ind.offsetWidth;
-    ind.classList.add('tabbar__linse--sveip');
-  }
-  ind.style.transform = nyPos;
+  ind.style.transform = `translateX(${aktiv.offsetLeft + aktiv.offsetWidth / 2}px) translateX(-50%)`;
 }
 
 // Anvender valgt app-tema (M6). Kalles ved oppstart og når temaet endres.
