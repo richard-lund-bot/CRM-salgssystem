@@ -3,7 +3,7 @@
 //   - navigasjon/HTML: network-first med cache-fallback (fersk UI når nett finnes)
 //   - data/JS/CSS/ikoner: cache-first (raskt, fungerer offline)
 // Bump CACHE_VERSION for å rulle ut ny cache.
-const CACHE_VERSION = 'mova-m39-2.98.0';
+const CACHE_VERSION = 'mova-m43-3.2.2';
 const SKALL = [
   './',
   './index.html',
@@ -84,8 +84,8 @@ const SKALL = [
 ];
 
 // Engelske datavarianter (data/*.en.json) — precaches best-effort (se install).
+// feed.json (engelsk feed) ligger allerede i SKALL og er derfor ikke med her.
 const EN_DATA = [
-  './data/feed.json', // engelsk feed (norsk = feed.nb.json, alt cachet i SKALL)
   './data/okter.en.json', './data/exercises.en.json', './data/equipment.en.json',
   './data/ovelsesinfo.en.json', './data/artikler.en.json', './data/stier.en.json',
   './data/disipliner.en.json', './data/seksjoner.en.json',
