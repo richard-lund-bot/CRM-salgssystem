@@ -83,7 +83,7 @@
   --fare: var(--coral-700);
   --radius: var(--radius-lg);
   --skygge: var(--shadow-sm);
-  --tabbar-h: 68px; /* klaring for den flytende glass-baren */
+  --tabbar-h: 74px; /* klaring for den flytende glass-baren */
   font-size: 16px;
 }
 
@@ -680,11 +680,11 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
   --reflex-l: 1; --reflex-d: 1;
   position: fixed;
   /* Sitter lavt, tett over hjem-indikatoren som på Instagram. */
-  left: 50%; bottom: max(8px, calc(env(safe-area-inset-bottom) - 2px));
+  left: 50%; bottom: max(4px, calc(env(safe-area-inset-bottom) - 6px));
   translate: -50% 0;
-  width: min(400px, calc(100% - 26px));
+  width: min(360px, calc(100% - 44px));
   display: flex; align-items: center; justify-content: space-around;
-  gap: 2px; padding: 6px 8px;
+  gap: 2px; padding: 9px 8px;
   border: none; border-radius: 999px;
   background: color-mix(in srgb, var(--c-light) 40%, transparent);
   -webkit-backdrop-filter: blur(12px) saturate(150%);
@@ -769,7 +769,7 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 /* Glidende glass-linse bak aktiv fane (posisjon settes i flyttTabIndikator). */
 .tabbar__linse {
   position: absolute; top: 5px; bottom: 5px; left: 0;
-  width: 64px; border-radius: 999px;
+  width: 78px; border-radius: 999px;
   overflow: hidden; /* holder lys-sveipet innenfor pillen */
   background-color: color-mix(in srgb, var(--c-glass) 50%, transparent);
   /* (2) Sterkere spekulær-glans på linsen: lys topp, mørkere bunn → glassaktig. */
