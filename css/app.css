@@ -3169,6 +3169,16 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .feeddrop__rad--valgt { font-weight: 700; color: var(--aksent); }
 .feeddrop__rad--valgt .ikon { color: var(--aksent); }
 .feeddrop__strek { height: 1px; background: var(--kant); margin: 4px 8px; }
+.feeddrop__sprak { padding: 6px 12px 8px; }
+.feeddrop__sprakhode { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--dempet); margin-bottom: 8px; }
+.feeddrop__sprakhode .ikon { color: var(--dempet); }
+.feeddrop__sprakvalg { display: flex; gap: 8px; }
+.feeddrop__sprakchip {
+  flex: 1; border: 1.5px solid var(--kant-sterk); border-radius: var(--radius-pill);
+  background: var(--bg-kort); color: var(--tekst); cursor: pointer;
+  font-family: inherit; font-size: 13.5px; font-weight: 600; padding: 8px 10px;
+}
+.feeddrop__sprakchip--valgt { background: var(--aksent); border-color: var(--aksent); color: #fff; }
 
 /* Story-raden — nyhetsprototypen: gradientringer per domene, grå når sett */
 .storyrad {

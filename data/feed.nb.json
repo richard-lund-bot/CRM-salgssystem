@@ -1,0 +1,5746 @@
+{
+ "schemaVersion": "1.0",
+ "beskrivelse": "Spillbar lærings-feed på norsk (Aha-seed): 100 innlegg med minispill, kilder og fiktive redaksjonelle guider.",
+ "posters": [
+  {
+   "id": "P001",
+   "navn": "Nova",
+   "handle": "@nova.science",
+   "kategori": "Science",
+   "dekker": "Fysikk, energi og overraskende naturlover",
+   "slagord": "La oss gjøre det usynlige synlig.",
+   "bio": "En fiktiv Aha-guide for fysikk og store vitenskapelige idéer.",
+   "aksentStart": "#6D28D9",
+   "aksentSlutt": "#EC4899"
+  },
+  {
+   "id": "P002",
+   "navn": "Luma",
+   "handle": "@luma.lab",
+   "kategori": "Science",
+   "dekker": "Kjemi, materialer og molekyler",
+   "slagord": "Bittesmå partikler. Store konsekvenser.",
+   "bio": "En fiktiv Aha-guide som gjør kjemi til korte visuelle fortellinger.",
+   "aksentStart": "#0EA5E9",
+   "aksentSlutt": "#22C55E"
+  },
+  {
+   "id": "P003",
+   "navn": "Terra",
+   "handle": "@terra.earth",
+   "kategori": "Science",
+   "dekker": "Geologi, klima og jordsystemer",
+   "slagord": "Jorda er alltid i bevegelse.",
+   "bio": "En fiktiv Aha-guide for kreftene som former planeten vår.",
+   "aksentStart": "#15803D",
+   "aksentSlutt": "#F59E0B"
+  },
+  {
+   "id": "P004",
+   "navn": "Orbit",
+   "handle": "@orbit.space",
+   "kategori": "Space",
+   "dekker": "Planeter, måner og banemekanikk",
+   "slagord": "Se opp. Så se nærmere.",
+   "bio": "En fiktiv Aha-guide for planeter, måner og kosmisk bevegelse.",
+   "aksentStart": "#1D4ED8",
+   "aksentSlutt": "#9333EA"
+  },
+  {
+   "id": "P005",
+   "navn": "Sol",
+   "handle": "@sol.cosmos",
+   "kategori": "Space",
+   "dekker": "Stjerner, galakser, sorte hull og eksoplaneter",
+   "slagord": "Universet er merkeligere enn fiksjon.",
+   "bio": "En fiktiv Aha-guide for det dype universet.",
+   "aksentStart": "#F97316",
+   "aksentSlutt": "#EAB308"
+  },
+  {
+   "id": "P006",
+   "navn": "Cleo",
+   "handle": "@cleo.history",
+   "kategori": "History",
+   "dekker": "Ancient Egypt, Greece and Rome",
+   "slagord": "The past was never boring.",
+   "bio": "En fiktiv Aha-guide for ancient egypt, greece and rome.",
+   "aksentStart": "#C2410C",
+   "aksentSlutt": "#FBBF24"
+  },
+  {
+   "id": "P007",
+   "navn": "Saga",
+   "handle": "@saga.north",
+   "kategori": "History",
+   "dekker": "Vikings, medieval Europe and northern history",
+   "slagord": "Every legend has a paper trail.",
+   "bio": "En fiktiv Aha-guide for vikings, medieval europe and northern history.",
+   "aksentStart": "#0F766E",
+   "aksentSlutt": "#60A5FA"
+  },
+  {
+   "id": "P008",
+   "navn": "Chronos",
+   "handle": "@chronos.timeline",
+   "kategori": "History",
+   "dekker": "Revolutions, empires and global turning points",
+   "slagord": "First this happened. Then everything changed.",
+   "bio": "En fiktiv Aha-guide for revolutions, empires and global turning points.",
+   "aksentStart": "#7C3AED",
+   "aksentSlutt": "#EF4444"
+  },
+  {
+   "id": "P009",
+   "navn": "Nia",
+   "handle": "@nia.people",
+   "kategori": "History",
+   "dekker": "Social history, overlooked people and daily life",
+   "slagord": "History happened to real people.",
+   "bio": "En fiktiv Aha-guide for social history, overlooked people and daily life.",
+   "aksentStart": "#DB2777",
+   "aksentSlutt": "#F97316"
+  },
+  {
+   "id": "P010",
+   "navn": "Pixel",
+   "handle": "@pixel.tech",
+   "kategori": "Technology",
+   "dekker": "Internet, software and digital systems",
+   "slagord": "Your screen has a secret life.",
+   "bio": "En fiktiv Aha-guide for internet, software and digital systems.",
+   "aksentStart": "#4F46E5",
+   "aksentSlutt": "#06B6D4"
+  },
+  {
+   "id": "P011",
+   "navn": "Coda",
+   "handle": "@coda.builds",
+   "kategori": "Technology",
+   "dekker": "Engineering, hardware and manufacturing",
+   "slagord": "Take it apart. Understand it. Build it better.",
+   "bio": "En fiktiv Aha-guide for engineering, hardware and manufacturing.",
+   "aksentStart": "#0891B2",
+   "aksentSlutt": "#84CC16"
+  },
+  {
+   "id": "P012",
+   "navn": "Cipher",
+   "handle": "@cipher.secure",
+   "kategori": "Technology",
+   "dekker": "Privacy, encryption and AI literacy",
+   "slagord": "Pause before you trust the screen.",
+   "bio": "En fiktiv Aha-guide for privacy, encryption and ai literacy.",
+   "aksentStart": "#111827",
+   "aksentSlutt": "#8B5CF6"
+  },
+  {
+   "id": "P013",
+   "navn": "Mira",
+   "handle": "@mira.mind",
+   "kategori": "Mind",
+   "dekker": "Memory, sleep and learning",
+   "slagord": "Your brain learns by changing.",
+   "bio": "En fiktiv Aha-guide for memory, sleep and learning.",
+   "aksentStart": "#A855F7",
+   "aksentSlutt": "#EC4899"
+  },
+  {
+   "id": "P014",
+   "navn": "Nudge",
+   "handle": "@nudge.behavior",
+   "kategori": "Mind",
+   "dekker": "Habits, decisions and cognitive biases",
+   "slagord": "Your brain took a shortcut again.",
+   "bio": "En fiktiv Aha-guide for habits, decisions and cognitive biases.",
+   "aksentStart": "#F43F5E",
+   "aksentSlutt": "#F59E0B"
+  },
+  {
+   "id": "P015",
+   "navn": "Echo",
+   "handle": "@echo.psych",
+   "kategori": "Mind",
+   "dekker": "Emotion, stress and social psychology",
+   "slagord": "Notice the pattern before it runs you.",
+   "bio": "En fiktiv Aha-guide for emotion, stress and social psychology.",
+   "aksentStart": "#0EA5E9",
+   "aksentSlutt": "#A855F7"
+  },
+  {
+   "id": "P016",
+   "navn": "Vita",
+   "handle": "@vita.health",
+   "kategori": "Health",
+   "dekker": "Prevention, immunity and public health",
+   "slagord": "Small habits protect big systems.",
+   "bio": "En fiktiv Aha-guide for prevention, immunity and public health.",
+   "aksentStart": "#16A34A",
+   "aksentSlutt": "#14B8A6"
+  },
+  {
+   "id": "P017",
+   "navn": "Pulse",
+   "handle": "@pulse.moves",
+   "kategori": "Health",
+   "dekker": "Exercise, heart, muscle and recovery",
+   "slagord": "Movement changes more than muscles.",
+   "bio": "En fiktiv Aha-guide for exercise, heart, muscle and recovery.",
+   "aksentStart": "#EF4444",
+   "aksentSlutt": "#F97316"
+  },
+  {
+   "id": "P018",
+   "navn": "Savor",
+   "handle": "@savor.food",
+   "kategori": "Health",
+   "dekker": "Nutrition, digestion and food science",
+   "slagord": "Food is chemistry you can taste.",
+   "bio": "En fiktiv Aha-guide for nutrition, digestion and food science.",
+   "aksentStart": "#84CC16",
+   "aksentSlutt": "#F59E0B"
+  },
+  {
+   "id": "P019",
+   "navn": "Flora",
+   "handle": "@flora.green",
+   "kategori": "Nature",
+   "dekker": "Plants, forests and fungi",
+   "slagord": "The quietest systems do huge work.",
+   "bio": "En fiktiv Aha-guide for plants, forests and fungi.",
+   "aksentStart": "#15803D",
+   "aksentSlutt": "#84CC16"
+  },
+  {
+   "id": "P020",
+   "navn": "Reef",
+   "handle": "@reef.ocean",
+   "kategori": "Nature",
+   "dekker": "Ocean life, coral reefs and coasts",
+   "slagord": "The ocean is full of plot twists.",
+   "bio": "En fiktiv Aha-guide for ocean life, coral reefs and coasts.",
+   "aksentStart": "#0284C7",
+   "aksentSlutt": "#14B8A6"
+  },
+  {
+   "id": "P021",
+   "navn": "Wild",
+   "handle": "@wild.behavior",
+   "kategori": "Nature",
+   "dekker": "Animals, migration and ecosystems",
+   "slagord": "Nature already invented that.",
+   "bio": "En fiktiv Aha-guide for animals, migration and ecosystems.",
+   "aksentStart": "#CA8A04",
+   "aksentSlutt": "#EA580C"
+  },
+  {
+   "id": "P022",
+   "navn": "Atlas",
+   "handle": "@atlas.world",
+   "kategori": "World",
+   "dekker": "Geography, climate patterns and places",
+   "slagord": "Every place has a reason.",
+   "bio": "En fiktiv Aha-guide for geography, climate patterns and places.",
+   "aksentStart": "#2563EB",
+   "aksentSlutt": "#10B981"
+  },
+  {
+   "id": "P023",
+   "navn": "Locale",
+   "handle": "@locale.people",
+   "kategori": "World",
+   "dekker": "Languages, cities and human geography",
+   "slagord": "Maps are made of people too.",
+   "bio": "En fiktiv Aha-guide for languages, cities and human geography.",
+   "aksentStart": "#7C3AED",
+   "aksentSlutt": "#06B6D4"
+  },
+  {
+   "id": "P024",
+   "navn": "Civic",
+   "handle": "@civic.society",
+   "kategori": "Society",
+   "dekker": "Institutions, public goods and communities",
+   "slagord": "Society is a system we all touch.",
+   "bio": "En fiktiv Aha-guide for institutions, public goods and communities.",
+   "aksentStart": "#334155",
+   "aksentSlutt": "#0EA5E9"
+  },
+  {
+   "id": "P025",
+   "navn": "Signal",
+   "handle": "@signal.media",
+   "kategori": "Society",
+   "dekker": "Media, misinformation and online behavior",
+   "slagord": "Check the signal, not just the volume.",
+   "bio": "En fiktiv Aha-guide for media, misinformation and online behavior.",
+   "aksentStart": "#DC2626",
+   "aksentSlutt": "#7C3AED"
+  },
+  {
+   "id": "P026",
+   "navn": "Muse",
+   "handle": "@muse.culture",
+   "kategori": "Culture",
+   "dekker": "Art, storytelling and cultural history",
+   "slagord": "Culture leaves clues everywhere.",
+   "bio": "En fiktiv Aha-guide for art, storytelling and cultural history.",
+   "aksentStart": "#BE185D",
+   "aksentSlutt": "#7C3AED"
+  },
+  {
+   "id": "P027",
+   "navn": "Riff",
+   "handle": "@riff.sound",
+   "kategori": "Culture",
+   "dekker": "Music, sound and performance",
+   "slagord": "Hear the history inside the sound.",
+   "bio": "En fiktiv Aha-guide for music, sound and performance.",
+   "aksentStart": "#F97316",
+   "aksentSlutt": "#EC4899"
+  },
+  {
+   "id": "P028",
+   "navn": "Penny",
+   "handle": "@penny.econ",
+   "kategori": "Economics",
+   "dekker": "Money, prices and personal finance concepts",
+   "slagord": "Follow the incentives.",
+   "bio": "En fiktiv Aha-guide for money, prices and personal finance concepts.",
+   "aksentStart": "#059669",
+   "aksentSlutt": "#EAB308"
+  },
+  {
+   "id": "P029",
+   "navn": "Ledger",
+   "handle": "@ledger.systems",
+   "kategori": "Economics",
+   "dekker": "Markets, trade and economic systems",
+   "slagord": "Every choice has a trade-off.",
+   "bio": "En fiktiv Aha-guide for markets, trade and economic systems.",
+   "aksentStart": "#1E3A8A",
+   "aksentSlutt": "#0F766E"
+  },
+  {
+   "id": "P030",
+   "navn": "Tinker",
+   "handle": "@tinker.everyday",
+   "kategori": "Everyday",
+   "dekker": "Everyday physics, appliances and mechanisms",
+   "slagord": "Ordinary things are secretly engineering.",
+   "bio": "En fiktiv Aha-guide for everyday physics, appliances and mechanisms.",
+   "aksentStart": "#EA580C",
+   "aksentSlutt": "#0EA5E9"
+  },
+  {
+   "id": "P031",
+   "navn": "Pippa",
+   "handle": "@pippa.kitchenlab",
+   "kategori": "Everyday",
+   "dekker": "Cooking, coffee and kitchen chemistry",
+   "slagord": "Your kitchen is already a laboratory.",
+   "bio": "En fiktiv Aha-guide for cooking, coffee and kitchen chemistry.",
+   "aksentStart": "#F59E0B",
+   "aksentSlutt": "#EF4444"
+  },
+  {
+   "id": "P032",
+   "navn": "Dash",
+   "handle": "@dash.motion",
+   "kategori": "Everyday",
+   "dekker": "Transport, machines and movement",
+   "slagord": "Motion always makes a trade.",
+   "bio": "En fiktiv Aha-guide for transport, machines and movement.",
+   "aksentStart": "#2563EB",
+   "aksentSlutt": "#F97316"
+  }
+ ],
+ "posts": [
+  {
+   "id": "POST-001",
+   "rekkefolge": 1,
+   "opprettet": "2026-07-01T08:00:00",
+   "posterId": "P003",
+   "kategori": "Vitenskap",
+   "underkategori": "Klima og hav",
+   "serie": "Jorda i bevegelse",
+   "tittel": "Havet lagrer mesteparten av jordas overskuddsvarme",
+   "hook": "Den største varmemagasinet på jorda er ikke atmosfæren.",
+   "sammendrag": "Fordi vann kan lagre enorme mengder varme, tar havet opp det aller meste av overskuddsvarmen som drivhusgassene fanger. Det endrer havnivå, marine hetebølger og økosystemer.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Hvor har mesteparten av overskuddsvarmen fra den globale oppvarmingen tatt veien?",
+    "options": [
+     "Dyphavet og de øvre havlagene",
+     "Månen",
+     "Bare bygninger i byer",
+     "Mest ørkensand"
+    ],
+    "correct_answer": "Dyphavet og de øvre havlagene",
+    "explanation": "Havet er jordas dominerende varmereservoar og har tatt opp mesteparten av overskuddsvarmen.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Climate Change Impacts",
+    "org": "NOAA",
+    "url": "https://www.noaa.gov/education/resource-collections/climate/climate-change-impacts"
+   },
+   "lesMer": {
+    "tittel": "Ocean Currents",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/education/tutorial_currents/"
+   },
+   "tags": [
+    "climate",
+    "ocean",
+    "heat"
+   ],
+   "seed": {
+    "likes": 5787,
+    "comments": 34,
+    "saves": 1105,
+    "shares": 69
+   }
+  },
+  {
+   "id": "POST-002",
+   "rekkefolge": 2,
+   "opprettet": "2026-07-01T14:00:00",
+   "posterId": "P003",
+   "kategori": "Vitenskap",
+   "underkategori": "Geologi",
+   "serie": "Jorda i bevegelse",
+   "tittel": "Kontinentene flytter seg fordi jordskorpa er delt i plater",
+   "hook": "Bakken under deg er i bevegelse — bare veldig sakte.",
+   "sammendrag": "Jordas ytre skall er delt i store plater som beveger seg i forhold til hverandre. Ved grensene deres dannes mange jordskjelv, vulkaner og fjellkjeder.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 30,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Koble hver plategrense til det som vanligvis skjer der.",
+    "options": [
+     {
+      "left": "Divergent",
+      "right": "Plater beveger seg fra hverandre"
+     },
+     {
+      "left": "Konvergent",
+      "right": "Plater beveger seg mot hverandre"
+     },
+     {
+      "left": "Transform",
+      "right": "Plater glir forbi hverandre"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Divergent",
+      "right": "Plater beveger seg fra hverandre"
+     },
+     {
+      "left": "Konvergent",
+      "right": "Plater beveger seg mot hverandre"
+     },
+     {
+      "left": "Transform",
+      "right": "Plater glir forbi hverandre"
+     }
+    ],
+    "explanation": "Ulik bevegelse ved grensene gir ulike geologiske mønstre.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "This Dynamic Earth: The Story of Plate Tectonics",
+    "org": "U.S. Geological Survey",
+    "url": "https://pubs.usgs.gov/gip/dynamic/"
+   },
+   "lesMer": {
+    "tittel": "What Was Pangea?",
+    "org": "U.S. Geological Survey",
+    "url": "https://www.usgs.gov/faqs/what-was-pangea"
+   },
+   "tags": [
+    "geology",
+    "tectonics",
+    "earthquakes"
+   ],
+   "seed": {
+    "likes": 5478,
+    "comments": 227,
+    "saves": 918,
+    "shares": 378
+   }
+  },
+  {
+   "id": "POST-003",
+   "rekkefolge": 3,
+   "opprettet": "2026-07-01T20:00:00",
+   "posterId": "P003",
+   "kategori": "Vitenskap",
+   "underkategori": "Jordsystemer",
+   "serie": "Jorda i bevegelse",
+   "tittel": "Vannets kretsløp drives av sollys og tyngdekraft",
+   "hook": "Regn er bare ett bilde i et globalt gjenvinningsløp.",
+   "sammendrag": "Sollys driver fordampning, mens tyngdekraften fører vannet tilbake gjennom nedbør, elver og grunnvann. Vann er stadig i bevegelse mellom hav, atmosfære, is og land.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Sett en enkel bane i vannets kretsløp i riktig rekkefølge.",
+    "options": [
+     "Sollys gir fordampning",
+     "Vanndamp kondenserer til skyer",
+     "Nedbør faller",
+     "Avrenning og grunnvann fører vannet tilbake"
+    ],
+    "correct_answer": [
+     "Sollys gir fordampning",
+     "Vanndamp kondenserer til skyer",
+     "Nedbør faller",
+     "Avrenning og grunnvann fører vannet tilbake"
+    ],
+    "explanation": "Fordampning, kondensasjon, nedbør og retur danner et kretsløp som gjentar seg.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "The Water Cycle",
+    "org": "NOAA",
+    "url": "https://www.noaa.gov/education/resource-collections/freshwater/water-cycle"
+   },
+   "lesMer": {
+    "tittel": "Hurricanes",
+    "org": "NOAA",
+    "url": "https://www.noaa.gov/education/resource-collections/weather-atmosphere/hurricanes"
+   },
+   "tags": [
+    "water",
+    "weather",
+    "earth systems"
+   ],
+   "seed": {
+    "likes": 588,
+    "comments": 200,
+    "saves": 1247,
+    "shares": 317
+   }
+  },
+  {
+   "id": "POST-004",
+   "rekkefolge": 4,
+   "opprettet": "2026-07-02T02:00:00",
+   "posterId": "P003",
+   "kategori": "Vitenskap",
+   "underkategori": "Vulkaner",
+   "serie": "Jorda i bevegelse",
+   "tittel": "Store vulkanutbrudd kan kjøle ned planeten en stund",
+   "hook": "Vulkaner kan gi klarere solnedganger — og litt lavere temperaturer.",
+   "sammendrag": "Eksplosive utbrudd kan sende svoveldioksid høyt opp i atmosfæren. Der danner det reflekterende partikler som midlertidig demper sollyset og kjøler den nedre atmosfæren.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 25,
+   "xp": 120,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Et stort utbrudd sprøyter svoveldioksid opp i stratosfæren. Hva er den mest sannsynlige kortsiktige klimaeffekten?",
+    "options": [
+     "Midlertidig global nedkjøling",
+     "Permanent tap av tyngdekraft",
+     "Umiddelbar global oppvarming på flere grader"
+    ],
+    "correct_answer": "Midlertidig global nedkjøling",
+    "explanation": "Svovelpartikler i stratosfæren reflekterer noe av solas energi tilbake til verdensrommet.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Volcanoes Can Affect Climate",
+    "org": "U.S. Geological Survey",
+    "url": "https://www.usgs.gov/programs/VHP/volcanoes-can-affect-climate"
+   },
+   "lesMer": {
+    "tittel": "This Dynamic Earth: The Story of Plate Tectonics",
+    "org": "U.S. Geological Survey",
+    "url": "https://pubs.usgs.gov/gip/dynamic/"
+   },
+   "tags": [
+    "volcano",
+    "climate",
+    "aerosols"
+   ],
+   "seed": {
+    "likes": 3275,
+    "comments": 249,
+    "saves": 837,
+    "shares": 110
+   }
+  },
+  {
+   "id": "POST-005",
+   "rekkefolge": 5,
+   "opprettet": "2026-07-02T08:00:00",
+   "posterId": "P020",
+   "kategori": "Vitenskap",
+   "underkategori": "Havbiologi",
+   "serie": "Havets overraskelser",
+   "tittel": "Korallbleking er en stressrespons — ikke at korallen blir til stein",
+   "hook": "Et rev kan miste fargen før det mister livet.",
+   "sammendrag": "Når koraller stresses av uvanlig varmt vann, kan de støte ut algene som gir dem mye av fargen og energien. Langvarig stress kan føre til at korallen dør.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Bleket korall er alltid allerede død.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Bleket korall er sterkt stresset og mer sårbar, men den kan komme seg hvis forholdene bedres raskt nok.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "How Does Climate Change Affect Coral Reefs?",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/facts/coralreef-climate.html"
+   },
+   "lesMer": {
+    "tittel": "Corals Tutorial",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/education/tutorial_corals/"
+   },
+   "tags": [
+    "coral",
+    "warming",
+    "ecosystems"
+   ],
+   "seed": {
+    "likes": 4596,
+    "comments": 275,
+    "saves": 1548,
+    "shares": 284
+   }
+  },
+  {
+   "id": "POST-006",
+   "rekkefolge": 6,
+   "opprettet": "2026-07-02T14:00:00",
+   "posterId": "P002",
+   "kategori": "Vitenskap",
+   "underkategori": "Genetikk",
+   "serie": "Bittesmå partikler",
+   "tittel": "DNA er et kjemisk informasjonssystem",
+   "hook": "Cellene dine leser et molekylært alfabet på fire bokstaver.",
+   "sammendrag": "DNA lagrer biologiske instruksjoner i rekkefølger av fire kjemiske baser. Celler kopierer og bruker deler av instruksjonene til å bygge proteiner og styre aktivitet.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 18,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "DNA lagrer biologisk informasjon i rekkefølgen av kjemiske ____.",
+    "options": [
+     "baser",
+     "bein",
+     "bobler"
+    ],
+    "correct_answer": "baser",
+    "explanation": "Rekkefølgen av DNA-baser bærer den genetiske informasjonen.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "DNA Fact Sheet",
+    "org": "National Human Genome Research Institute",
+    "url": "https://www.genome.gov/about-genomics/fact-sheets/DNA-Fact-Sheet"
+   },
+   "lesMer": {
+    "tittel": "DNA Fact Sheet",
+    "org": "National Human Genome Research Institute",
+    "url": "https://www.genome.gov/about-genomics/fact-sheets/DNA-Fact-Sheet"
+   },
+   "tags": [
+    "DNA",
+    "genes",
+    "cells"
+   ],
+   "seed": {
+    "likes": 2213,
+    "comments": 300,
+    "saves": 240,
+    "shares": 180
+   }
+  },
+  {
+   "id": "POST-007",
+   "rekkefolge": 7,
+   "opprettet": "2026-07-02T20:00:00",
+   "posterId": "P016",
+   "kategori": "Vitenskap",
+   "underkategori": "Medisin",
+   "serie": "Helsemyter",
+   "tittel": "Antibiotika virker ikke mot virusinfeksjoner",
+   "hook": "En kraftig medisin kan likevel være feil verktøy.",
+   "sammendrag": "Antibiotika angriper bakterier eller bakterielle prosesser. Virus bruker vertscellene på en annen måte, så sykdommer som forkjølelse og influensa blir ikke bedre av antibiotika.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Hvilken sykdom er antibiotika vanligvis laget for å behandle?",
+    "options": [
+     "En bakteriell infeksjon",
+     "En forkjølelse forårsaket av virus",
+     "Sesongallergi",
+     "En forstuet ankel"
+    ],
+    "correct_answer": "En bakteriell infeksjon",
+    "explanation": "Antibiotika virker mot bakterier, ikke virus.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "About Antibiotic Use",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/antibiotic-use/about/index.html"
+   },
+   "lesMer": {
+    "tittel": "About Antimicrobial Resistance",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/antimicrobial-resistance/about/index.html"
+   },
+   "tags": [
+    "antibiotics",
+    "bacteria",
+    "viruses"
+   ],
+   "seed": {
+    "likes": 4285,
+    "comments": 193,
+    "saves": 1027,
+    "shares": 173
+   }
+  },
+  {
+   "id": "POST-008",
+   "rekkefolge": 8,
+   "opprettet": "2026-07-03T02:00:00",
+   "posterId": "P001",
+   "kategori": "Vitenskap",
+   "underkategori": "Fysikk",
+   "serie": "Usynlig fysikk",
+   "tittel": "Verdensrommet er stille fordi lyd trenger materie for å bre seg",
+   "hook": "En eksplosjon i rommet kan være sterk uten å være høylytt.",
+   "sammendrag": "Lyd er en mekanisk svingning som brer seg gjennom partikler i gass, væske eller fast stoff. I det nær-tomme verdensrommet er det for få partikler til å bære vanlige lydbølger.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "En eksplosjon like ved i det tomme rommet ville laget en vanlig buldrende lyd du kunne hørt gjennom hjelmen.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Lys kan krysse et vakuum, men vanlige lydbølger trenger et materielt medium.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Sound",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/science/sound-physics"
+   },
+   "lesMer": {
+    "tittel": "Solar System Exploration",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/solar-system/"
+   },
+   "tags": [
+    "sound",
+    "vacuum",
+    "space"
+   ],
+   "seed": {
+    "likes": 3446,
+    "comments": 333,
+    "saves": 339,
+    "shares": 203
+   }
+  },
+  {
+   "id": "POST-009",
+   "rekkefolge": 9,
+   "opprettet": "2026-07-03T08:00:00",
+   "posterId": "P002",
+   "kategori": "Vitenskap",
+   "underkategori": "Biologi",
+   "serie": "Bittesmå partikler",
+   "tittel": "Fotosyntese gjør lysenergi om til lagret kjemisk energi",
+   "hook": "Planter spiser ikke sollys — de bruker det til å bygge drivstoff.",
+   "sammendrag": "Ved hjelp av lys, karbondioksid og vann lager planter og mange mikrober energirike sukkerarter og slipper ut oksygen. Prosessen bærer de fleste næringskjeder.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 30,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Koble hvert innsatsstoff eller produkt i fotosyntesen.",
+    "options": [
+     {
+      "left": "Lys",
+      "right": "Energikilde"
+     },
+     {
+      "left": "Karbondioksid",
+      "right": "Karboninnsats"
+     },
+     {
+      "left": "Oksygen",
+      "right": "Frigjort produkt"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Lys",
+      "right": "Energikilde"
+     },
+     {
+      "left": "Karbondioksid",
+      "right": "Karboninnsats"
+     },
+     {
+      "left": "Oksygen",
+      "right": "Frigjort produkt"
+     }
+    ],
+    "explanation": "Fotosyntesen bruker lys til å omforme materie til sukker og oksygen.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "Photosynthesis",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/science/photosynthesis"
+   },
+   "lesMer": {
+    "tittel": "Forests and the Carbon Cycle",
+    "org": "NASA Earth Observatory",
+    "url": "https://earthobservatory.nasa.gov/features/CarbonCycle/page4.php"
+   },
+   "tags": [
+    "photosynthesis",
+    "plants",
+    "energy"
+   ],
+   "seed": {
+    "likes": 4842,
+    "comments": 210,
+    "saves": 887,
+    "shares": 68
+   }
+  },
+  {
+   "id": "POST-010",
+   "rekkefolge": 10,
+   "opprettet": "2026-07-03T14:00:00",
+   "posterId": "P001",
+   "kategori": "Vitenskap",
+   "underkategori": "Klimafysikk",
+   "serie": "Usynlig fysikk",
+   "tittel": "Drivhuseffekten er naturlig — ekstra drivhusgasser forsterker den",
+   "hook": "Uten drivhuseffekten ville jorda vært langt kaldere.",
+   "sammendrag": "Enkelte gasser tar opp og sender ut igjen infrarød energi, og bidrar til å holde jorda varm. Menneskelige utslipp øker konsentrasjonen og forsterker denne varmefangende effekten.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 18,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "Drivhusgasser tar opp og sender ut igjen utgående ____ energi.",
+    "options": [
+     "infrarød",
+     "lyd",
+     "magnetisk"
+    ],
+    "correct_answer": "infrarød",
+    "explanation": "Jorda avgir varme hovedsakelig som infrarød stråling, som drivhusgasser kan ta opp.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "What Is the Greenhouse Effect?",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/climate-change/faq/what-is-the-greenhouse-effect/"
+   },
+   "lesMer": {
+    "tittel": "Climate Change Impacts",
+    "org": "NOAA",
+    "url": "https://www.noaa.gov/education/resource-collections/climate/climate-change-impacts"
+   },
+   "tags": [
+    "climate",
+    "greenhouse effect",
+    "radiation"
+   ],
+   "seed": {
+    "likes": 851,
+    "comments": 98,
+    "saves": 1579,
+    "shares": 179
+   }
+  },
+  {
+   "id": "POST-011",
+   "rekkefolge": 11,
+   "opprettet": "2026-07-03T20:00:00",
+   "posterId": "P004",
+   "kategori": "Verdensrom",
+   "underkategori": "Månen",
+   "serie": "Måneskolen",
+   "tittel": "Månefaser er skiftende utsyn til den samme solbelyste månen",
+   "hook": "Månen lager ikke en ny skyggeform hver natt.",
+   "sammendrag": "Halve månen er alltid opplyst av sola. Etter hvert som månen går i bane rundt jorda, ser vi ulike deler av den opplyste halvdelen.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 40,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Koble fasen til hvordan den ser ut.",
+    "options": [
+     {
+      "card_a": "Nymåne",
+      "card_b": "Den opplyste siden vender for det meste bort"
+     },
+     {
+      "card_a": "Første kvarter",
+      "card_b": "Halvt opplyst skive"
+     },
+     {
+      "card_a": "Fullmåne",
+      "card_b": "Den nære siden er fullt opplyst"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Nymåne",
+      "card_b": "Den opplyste siden vender for det meste bort"
+     },
+     {
+      "card_a": "Første kvarter",
+      "card_b": "Halvt opplyst skive"
+     },
+     {
+      "card_a": "Fullmåne",
+      "card_b": "Den nære siden er fullt opplyst"
+     }
+    ],
+    "explanation": "Fasene avhenger av geometrien mellom sol, jord og måne.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "Moon Phases",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/moon/moon-phases/"
+   },
+   "lesMer": {
+    "tittel": "Eclipses",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/eclipses/"
+   },
+   "tags": [
+    "moon",
+    "phases",
+    "orbit"
+   ],
+   "seed": {
+    "likes": 4803,
+    "comments": 348,
+    "saves": 87,
+    "shares": 94
+   }
+  },
+  {
+   "id": "POST-012",
+   "rekkefolge": 12,
+   "opprettet": "2026-07-04T02:00:00",
+   "posterId": "P004",
+   "kategori": "Verdensrom",
+   "underkategori": "Månen og jorda",
+   "serie": "Måneskolen",
+   "tittel": "Månen er den viktigste årsaken til tidevannet",
+   "hook": "Havet svarer på tyngdekraft i planetarisk skala.",
+   "sammendrag": "Månens tyngdekraft endrer fordelingen av havvann rundt jorda. Sola bidrar også, og gir sterkere eller svakere tidevann avhengig av hvordan de står i forhold til hverandre.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Hva er hovedårsaken til jordas tidevann?",
+    "options": [
+     "Månens tyngdekraft",
+     "Skyggen fra skyer",
+     "Jordas magnetfelt",
+     "Undersjøiske vulkaner"
+    ],
+    "correct_answer": "Månens tyngdekraft",
+    "explanation": "Månens gravitasjon er den dominerende tidevannspåvirkningen.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Tides",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/moon/tides/"
+   },
+   "lesMer": {
+    "tittel": "Ocean Currents",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/education/tutorial_currents/"
+   },
+   "tags": [
+    "tides",
+    "moon",
+    "gravity"
+   ],
+   "seed": {
+    "likes": 5936,
+    "comments": 348,
+    "saves": 491,
+    "shares": 301
+   }
+  },
+  {
+   "id": "POST-013",
+   "rekkefolge": 13,
+   "opprettet": "2026-07-04T08:00:00",
+   "posterId": "P004",
+   "kategori": "Verdensrom",
+   "underkategori": "Jordas bane",
+   "serie": "Banemekanikk",
+   "tittel": "Årstidene skyldes mest jordas helning — ikke avstanden til sola",
+   "hook": "Den nordlige vinteren skjer mens jorda er nær sitt nærmeste punkt til sola.",
+   "sammendrag": "Jordas akse heller. Gjennom hvert kretsløp endrer helningen vinkelen og lengden på sollyset som når hver halvkule, og skaper årstider.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Sommeren kommer fordi jorda er mye nærmere sola.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Årstidene skyldes først og fremst jordas aksehelning og den skiftende vinkelen på sollyset, ikke den lille årlige endringen i avstand.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "What Causes the Seasons?",
+    "org": "NASA Space Place",
+    "url": "https://spaceplace.nasa.gov/seasons/en/"
+   },
+   "lesMer": {
+    "tittel": "Solar System Exploration",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/solar-system/"
+   },
+   "tags": [
+    "seasons",
+    "earth",
+    "sunlight"
+   ],
+   "seed": {
+    "likes": 3994,
+    "comments": 185,
+    "saves": 83,
+    "shares": 186
+   }
+  },
+  {
+   "id": "POST-014",
+   "rekkefolge": 14,
+   "opprettet": "2026-07-04T14:00:00",
+   "posterId": "P004",
+   "kategori": "Verdensrom",
+   "underkategori": "Formørkelser",
+   "serie": "Måneskolen",
+   "tittel": "Formørkelser krever en presis oppstilling av tre himmellegemer",
+   "hook": "En nymåne gir ikke en solformørkelse hver måned.",
+   "sammendrag": "Månens bane heller i forhold til jordas bane rundt sola. Formørkelser skjer bare når himmellegemene stiller seg opp nær der baneplanene krysser hverandre.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 35,
+   "xp": 120,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Sett en solformørkelses-oppstilling i romlig rekkefølge, fra sola og utover.",
+    "options": [
+     "Sola",
+     "Månen",
+     "Jorda"
+    ],
+    "correct_answer": [
+     "Sola",
+     "Månen",
+     "Jorda"
+    ],
+    "explanation": "Under en solformørkelse passerer månen mellom sola og jorda.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Eclipses",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/eclipses/"
+   },
+   "lesMer": {
+    "tittel": "Moon Phases",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/moon/moon-phases/"
+   },
+   "tags": [
+    "eclipse",
+    "moon",
+    "alignment"
+   ],
+   "seed": {
+    "likes": 811,
+    "comments": 289,
+    "saves": 1436,
+    "shares": 353
+   }
+  },
+  {
+   "id": "POST-015",
+   "rekkefolge": 15,
+   "opprettet": "2026-07-04T20:00:00",
+   "posterId": "P005",
+   "kategori": "Verdensrom",
+   "underkategori": "Stjerner",
+   "serie": "Det dype universet",
+   "tittel": "Stjerner lyser fordi atomkjerner smelter sammen i kjernen",
+   "hook": "En stjerne er en fusjonsreaktor drevet av tyngdekraft.",
+   "sammendrag": "Ekstremt trykk og temperatur i stjernekjerner lar lette atomkjerner smelte sammen til tyngre, og frigjør energi som til slutt slipper ut som lys og varme.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 18,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "Stjerner produserer energi hovedsakelig gjennom kjerne____ i kjernen.",
+    "options": [
+     "fusjon",
+     "frysing",
+     "friksjon"
+    ],
+    "correct_answer": "fusjon",
+    "explanation": "Fusjon omdanner en liten mengde masse til en stor mengde energi.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "Stars",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/universe/stars/"
+   },
+   "lesMer": {
+    "tittel": "Solar System Exploration",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/solar-system/"
+   },
+   "tags": [
+    "stars",
+    "fusion",
+    "energy"
+   ],
+   "seed": {
+    "likes": 4997,
+    "comments": 156,
+    "saves": 833,
+    "shares": 298
+   }
+  },
+  {
+   "id": "POST-016",
+   "rekkefolge": 16,
+   "opprettet": "2026-07-05T02:00:00",
+   "posterId": "P005",
+   "kategori": "Verdensrom",
+   "underkategori": "Eksoplaneter",
+   "serie": "Det dype universet",
+   "tittel": "Et bittelite fall i stjernelys kan avsløre en usett planet",
+   "hook": "Astronomer kan oppdage verdener ved å se en stjerne blunke.",
+   "sammendrag": "Når en eksoplanet passerer foran stjernen sin sett fra oss, blokkerer den en liten del av lyset. Gjentatte fall kan avsløre planetens bane og omtrentlige størrelse.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 25,
+   "xp": 120,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "En stjerne dempes med samme lille mengde med jevne mellomrom. Hva er en sannsynlig forklaring?",
+    "options": [
+     "En planet i bane passerer stjernen gjentatte ganger",
+     "Stjernen beveger seg bak jorda",
+     "Teleskopet har oppdaget lydbølger"
+    ],
+    "correct_answer": "En planet i bane passerer stjernen gjentatte ganger",
+    "explanation": "Regelmessige, gjentakbare fall er signaturen som brukes i transittmetoden.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Exoplanets",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/exoplanets/"
+   },
+   "lesMer": {
+    "tittel": "Stars",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/universe/stars/"
+   },
+   "tags": [
+    "exoplanets",
+    "transit",
+    "astronomy"
+   ],
+   "seed": {
+    "likes": 1336,
+    "comments": 118,
+    "saves": 914,
+    "shares": 265
+   }
+  },
+  {
+   "id": "POST-017",
+   "rekkefolge": 17,
+   "opprettet": "2026-07-05T08:00:00",
+   "posterId": "P005",
+   "kategori": "Verdensrom",
+   "underkategori": "Sorte hull",
+   "serie": "Det dype universet",
+   "tittel": "Et sort hull er ingen kosmisk støvsuger",
+   "hook": "På avstand oppfører tyngdekraften seg som ethvert annet objekt med samme masse.",
+   "sammendrag": "Et sort hulls hendelseshorisont markerer et område som lys ikke slipper ut fra. Objekter blir ikke trukket inn fra ubegrensede avstander; stabile baner er mulige utenfor den.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 15,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Et sort hull suger automatisk inn alt i galaksen sin.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Tyngdekraften avtar med avstand slik som annen tyngdekraft. Objekter kan gå trygt i bane hvis de er langt nok unna.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Black Holes",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/universe/black-holes/"
+   },
+   "lesMer": {
+    "tittel": "Stars",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/universe/stars/"
+   },
+   "tags": [
+    "black holes",
+    "gravity",
+    "event horizon"
+   ],
+   "seed": {
+    "likes": 6245,
+    "comments": 383,
+    "saves": 268,
+    "shares": 77
+   }
+  },
+  {
+   "id": "POST-018",
+   "rekkefolge": 18,
+   "opprettet": "2026-07-05T14:00:00",
+   "posterId": "P005",
+   "kategori": "Verdensrom",
+   "underkategori": "Melkeveien",
+   "serie": "Det dype universet",
+   "tittel": "Solsystemet vårt går i bane rundt sentrum av Melkeveien",
+   "hook": "Ett galaktisk år tar grovt regnet flere hundre millioner jordår.",
+   "sammendrag": "Sola og planetene dens beveger seg rundt sentrum av Melkeveien. NASA anslår at én omdreining tar rundt 230 millioner år.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Hva går hele solsystemet i bane rundt over svært lange tidsrom?",
+    "options": [
+     "Sentrum av Melkeveien",
+     "Månen",
+     "Mars",
+     "En nærliggende komet"
+    ],
+    "correct_answer": "Sentrum av Melkeveien",
+    "explanation": "Sola er én av mange stjerner som går i bane inne i Melkeveien.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Solar System Exploration",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/solar-system/"
+   },
+   "lesMer": {
+    "tittel": "Stars",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/universe/stars/"
+   },
+   "tags": [
+    "Milky Way",
+    "solar system",
+    "galactic orbit"
+   ],
+   "seed": {
+    "likes": 1229,
+    "comments": 119,
+    "saves": 1235,
+    "shares": 45
+   }
+  },
+  {
+   "id": "POST-019",
+   "rekkefolge": 19,
+   "opprettet": "2026-07-05T20:00:00",
+   "posterId": "P006",
+   "kategori": "Historie",
+   "underkategori": "Antikkens Roma",
+   "serie": "Roma i bevegelse",
+   "tittel": "Romerske akvedukter flyttet vann mest med tyngdekraft",
+   "hook": "Ingeniørtrikset var en bitteliten, kontrollert helling nedover.",
+   "sammendrag": "Romerske ingeniører målte opp lange traséer så vann kunne flyte gradvis fra kilder til byer. Broene var bare de mest synlige delene av mye større systemer.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 30,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Koble det romerske vannsystem-begrepet til rollen sin.",
+    "options": [
+     {
+      "left": "Akveduktkanal",
+      "right": "Fører rennende vann"
+     },
+     {
+      "left": "Sedimenteringstank",
+      "right": "Lar avleiringer synke ut"
+     },
+     {
+      "left": "Offentlig fontene",
+      "right": "Fordeler vann i byen"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Akveduktkanal",
+      "right": "Fører rennende vann"
+     },
+     {
+      "left": "Sedimenteringstank",
+      "right": "Lar avleiringer synke ut"
+     },
+     {
+      "left": "Offentlig fontene",
+      "right": "Fordeler vann i byen"
+     }
+    ],
+    "explanation": "Romerske systemer kombinerte nøye helninger, kanaler, tanker og fordelingspunkter.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "Aqueduct",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/technology/aqueduct-engineering"
+   },
+   "lesMer": {
+    "tittel": "Roman Empire",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/place/Roman-Empire"
+   },
+   "tags": [
+    "Rome",
+    "engineering",
+    "aqueducts"
+   ],
+   "seed": {
+    "likes": 5281,
+    "comments": 78,
+    "saves": 1573,
+    "shares": 212
+   }
+  },
+  {
+   "id": "POST-020",
+   "rekkefolge": 20,
+   "opprettet": "2026-07-06T02:00:00",
+   "posterId": "P006",
+   "kategori": "Historie",
+   "underkategori": "Antikkens Roma",
+   "serie": "Roma i bevegelse",
+   "tittel": "Det romerske senatet endret seg dramatisk gjennom århundrene",
+   "hook": "Den samme institusjonen hadde ulik makt under republikk og keiserdømme.",
+   "sammendrag": "Under den romerske republikken var senatet sentralt i elitens politiske beslutninger. Under keiserne forble det viktig, men virket under stadig mer dominerende keisermakt.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 25,
+   "xp": 120,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Roma går fra republikk til keiserstyre. Hva skjer mest sannsynlig med senatet?",
+    "options": [
+     "Det består, men mister politisk uavhengighet",
+     "Det blir et moderne folkevalgt parlament",
+     "Det tar direkte kontroll over alle legioner"
+    ],
+    "correct_answer": "Det består, men mister politisk uavhengighet",
+    "explanation": "Senatet fortsatte, men keisermakten begrenset det i økende grad.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Roman Empire",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/place/Roman-Empire"
+   },
+   "lesMer": {
+    "tittel": "Aqueduct",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/technology/aqueduct-engineering"
+   },
+   "tags": [
+    "Rome",
+    "Senate",
+    "republic"
+   ],
+   "seed": {
+    "likes": 1326,
+    "comments": 180,
+    "saves": 1196,
+    "shares": 216
+   }
+  },
+  {
+   "id": "POST-021",
+   "rekkefolge": 21,
+   "opprettet": "2026-07-06T08:00:00",
+   "posterId": "P008",
+   "kategori": "Historie",
+   "underkategori": "Trykkerirevolusjonen",
+   "serie": "Ideer som sprer seg",
+   "tittel": "Boktrykk med løse typer satte fart på spredningen av tekster",
+   "hook": "Bøker ble lettere å mangfoldiggjøre i en skala skrivere ikke kunne matche.",
+   "sammendrag": "Europeiske trykkpresser med løse metalltyper økte hastigheten og jevnheten i bokproduksjonen dramatisk, senket kostnadene og hjalp idéer å reise.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Sett en forenklet tidlig trykkeprosess i rekkefølge.",
+    "options": [
+     "Sett sammen gjenbrukbare metalltyper",
+     "Sverte de opphøyde typene",
+     "Press papir mot typene",
+     "Gjenta for mange kopier"
+    ],
+    "correct_answer": [
+     "Sett sammen gjenbrukbare metalltyper",
+     "Sverte de opphøyde typene",
+     "Press papir mot typene",
+     "Gjenta for mange kopier"
+    ],
+    "explanation": "Gjenbrukbare typer og en presse gjorde gjentatte kopier mye raskere enn håndkopiering.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Printing Press",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/technology/printing-press"
+   },
+   "lesMer": {
+    "tittel": "Printing and the Book Arts",
+    "org": "Library of Congress",
+    "url": "https://www.loc.gov/collections/"
+   },
+   "tags": [
+    "printing",
+    "books",
+    "technology"
+   ],
+   "seed": {
+    "likes": 528,
+    "comments": 92,
+    "saves": 1497,
+    "shares": 321
+   }
+  },
+  {
+   "id": "POST-022",
+   "rekkefolge": 22,
+   "opprettet": "2026-07-06T14:00:00",
+   "posterId": "P007",
+   "kategori": "Historie",
+   "underkategori": "Middelalderlov",
+   "serie": "Makt og rettigheter",
+   "tittel": "Magna Carta skapte ikke moderne demokrati over natta",
+   "hook": "Den symbolske kraften ble senere større enn den umiddelbare virkningen.",
+   "sammendrag": "Magna Carta begynte som et forlik i 1215 mellom kong Johan og opprørske baroner. Senere generasjoner tolket deler av den som symboler på lovlig styre og grenser for makt.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 15,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Magna Carta ga umiddelbart like demokratiske rettigheter til alle i England.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Den håndterte en middelaldersk politisk krise og beskyttet i hovedsak eliteinteresser, selv om noen klausuler senere fikk bredere konstitusjonell betydning.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Magna Carta",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Magna-Carta"
+   },
+   "lesMer": {
+    "tittel": "Printing Press",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/technology/printing-press"
+   },
+   "tags": [
+    "Magna Carta",
+    "law",
+    "medieval"
+   ],
+   "seed": {
+    "likes": 2882,
+    "comments": 193,
+    "saves": 271,
+    "shares": 161
+   }
+  },
+  {
+   "id": "POST-023",
+   "rekkefolge": 23,
+   "opprettet": "2026-07-06T20:00:00",
+   "posterId": "P008",
+   "kategori": "Historie",
+   "underkategori": "Pandemier",
+   "serie": "Vendepunkter",
+   "tittel": "Handelsnettverk hjalp svartedauden å spre seg mellom regioner",
+   "hook": "De samme rutene som fraktet varer, fraktet også sykdom.",
+   "sammendrag": "Pesten på 1300-tallet spredte seg gjennom sammenkoblede handels- og reisenettverk. Lopper, gnagere og menneskers bevegelse spilte alle en rolle i smitten.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 40,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Koble den historiske faktoren til rollen sin i pestens spredning.",
+    "options": [
+     {
+      "card_a": "Handelsruter",
+      "card_b": "Koblet sammen fjerne havner og byer"
+     },
+     {
+      "card_a": "Lopper",
+      "card_b": "Bar pestbakterier mellom verter"
+     },
+     {
+      "card_a": "Tettbygde byer",
+      "card_b": "Muliggjorde rask lokal smitte"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Handelsruter",
+      "card_b": "Koblet sammen fjerne havner og byer"
+     },
+     {
+      "card_a": "Lopper",
+      "card_b": "Bar pestbakterier mellom verter"
+     },
+     {
+      "card_a": "Tettbygde byer",
+      "card_b": "Muliggjorde rask lokal smitte"
+     }
+    ],
+    "explanation": "Pandemier beveger seg gjennom biologiske og sosiale systemer samtidig.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "Black Death",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/event/Black-Death"
+   },
+   "lesMer": {
+    "tittel": "Silk Road",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Silk-Road-trade-route"
+   },
+   "tags": [
+    "Black Death",
+    "trade",
+    "pandemic"
+   ],
+   "seed": {
+    "likes": 4588,
+    "comments": 157,
+    "saves": 242,
+    "shares": 22
+   }
+  },
+  {
+   "id": "POST-024",
+   "rekkefolge": 24,
+   "opprettet": "2026-07-07T02:00:00",
+   "posterId": "P008",
+   "kategori": "Historie",
+   "underkategori": "Global utveksling",
+   "serie": "Sammenkoblede verdener",
+   "tittel": "Silkeveien var et nettverk — ikke én vei",
+   "hook": "Idéer og teknologi reiste sammen med silke og krydder.",
+   "sammendrag": "Silkeveien knyttet sammen mange land- og sjøruter på tvers av Eurasia. Varer, religioner, kunststiler, teknologi og sykdommer beveget seg gjennom kjeder av handelsmenn og byer.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Hvilken beskrivelse passer best til den historiske Silkeveien?",
+    "options": [
+     "Et skiftende nettverk av ruter på tvers av Eurasia",
+     "Én asfaltert motorvei fra Kina til Roma",
+     "En rute brukt bare til silke",
+     "Ett imperiums private vei"
+    ],
+    "correct_answer": "Et skiftende nettverk av ruter på tvers av Eurasia",
+    "explanation": "Begrepet beskriver sammenkoblede handelsruter, ikke én sammenhengende vei.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Silk Road",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Silk-Road-trade-route"
+   },
+   "lesMer": {
+    "tittel": "Black Death",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/event/Black-Death"
+   },
+   "tags": [
+    "Silk Road",
+    "trade",
+    "exchange"
+   ],
+   "seed": {
+    "likes": 6369,
+    "comments": 242,
+    "saves": 994,
+    "shares": 230
+   }
+  },
+  {
+   "id": "POST-025",
+   "rekkefolge": 25,
+   "opprettet": "2026-07-07T08:00:00",
+   "posterId": "P007",
+   "kategori": "Historie",
+   "underkategori": "Vikinger",
+   "serie": "Nordiske fortellinger",
+   "tittel": "Vikingene var handelsfolk og nybyggere — ikke bare røvere",
+   "hook": "Raidet er bare én del av historien om vikingtiden.",
+   "sammendrag": "Nordiske sjøfarere røvet, handlet, utforsket og bosatte seg over vidstrakte områder. Skipene deres knyttet Skandinavia til Nord-Atlanteren, Europa og elveruter mot øst.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Hver eneste viking var først og fremst en heltids røver.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Vikingtidens samfunn besto av bønder, håndverkere, kjøpmenn, nybyggere og krigere.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Viking",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Viking-people"
+   },
+   "lesMer": {
+    "tittel": "Silk Road",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Silk-Road-trade-route"
+   },
+   "tags": [
+    "Vikings",
+    "trade",
+    "settlement"
+   ],
+   "seed": {
+    "likes": 771,
+    "comments": 12,
+    "saves": 1347,
+    "shares": 295
+   }
+  },
+  {
+   "id": "POST-026",
+   "rekkefolge": 26,
+   "opprettet": "2026-07-07T14:00:00",
+   "posterId": "P009",
+   "kategori": "Historie",
+   "underkategori": "Tidlige byer",
+   "serie": "Hverdagshistorie",
+   "tittel": "Noen av de tidligste byene vokste fram i Mesopotamia",
+   "hook": "Vanning, jordbruk og administrasjon hjalp tette bosetninger å oppstå.",
+   "sammendrag": "Byene i sør-Mesopotamia vokste fram rundt produktivt jordbruk, vannveier, templer, handel og systemer for å organisere arbeid og ressurser.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 18,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "Mange tidlige mesopotamiske byer vokste nær elvene Tigris og ____.",
+    "options": [
+     "Eufrat",
+     "Amazonas",
+     "Themsen"
+    ],
+    "correct_answer": "Eufrat",
+    "explanation": "Elvesystemet Tigris–Eufrat bar jordbruk og byutvikling.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "Mesopotamia",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/place/Mesopotamia-historical-region-Asia"
+   },
+   "lesMer": {
+    "tittel": "Silk Road",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Silk-Road-trade-route"
+   },
+   "tags": [
+    "Mesopotamia",
+    "cities",
+    "irrigation"
+   ],
+   "seed": {
+    "likes": 5375,
+    "comments": 317,
+    "saves": 1450,
+    "shares": 333
+   }
+  },
+  {
+   "id": "POST-027",
+   "rekkefolge": 27,
+   "opprettet": "2026-07-07T20:00:00",
+   "posterId": "P006",
+   "kategori": "Historie",
+   "underkategori": "Det gamle Egypt",
+   "serie": "Liv i oldtiden",
+   "tittel": "Pyramidene ble bygd av organiserte arbeidsstyrker",
+   "hook": "Funn peker mot faglærte lag og forsynte arbeidere — ikke filmversjonen av slavemasser.",
+   "sammendrag": "Arkeologien har avdekket arbeiderboliger, matrester og organiserte lag knyttet til pyramidebyggingen. Arbeidsplikt og faglig spesialisering var sentralt.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 20,
+   "xp": 120,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Hvilke funn har hjulpet historikere å forstå pyramidebyggingen?",
+    "options": [
+     "Arbeiderboliger og lagoversikter",
+     "Moderne videoopptak",
+     "Romerske aviser",
+     "Satellittsendinger"
+    ],
+    "correct_answer": "Arbeiderboliger og lagoversikter",
+    "explanation": "Arkeologiske levninger nær Giza avslører organisert arbeid, forsyning og spesialiserte lag.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Pyramids of Giza",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Pyramids-of-Giza"
+   },
+   "lesMer": {
+    "tittel": "Mesopotamia",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/place/Mesopotamia-historical-region-Asia"
+   },
+   "tags": [
+    "Egypt",
+    "pyramids",
+    "archaeology"
+   ],
+   "seed": {
+    "likes": 374,
+    "comments": 116,
+    "saves": 309,
+    "shares": 324
+   }
+  },
+  {
+   "id": "POST-028",
+   "rekkefolge": 28,
+   "opprettet": "2026-07-08T02:00:00",
+   "posterId": "P006",
+   "kategori": "Historie",
+   "underkategori": "Antikkens Hellas",
+   "serie": "Makt og rettigheter",
+   "tittel": "Det athenske demokratiet omfattet bare en del av befolkningen",
+   "hook": "Direkte demokrati betydde ikke deltakelse for alle.",
+   "sammendrag": "Voksne mannlige borgere kunne delta direkte i Athens politiske institusjoner. Kvinner, slavebundne og fastboende utlendinger var utelukket fra borgerskap.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 15,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Alle som bodde i antikkens Athen kunne stemme i demokratiet.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Politisk deltakelse var begrenset til et mindretall av befolkningen: voksne mannlige borgere.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Athenian Democracy",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/democracy/England"
+   },
+   "lesMer": {
+    "tittel": "Roman Empire",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/place/Roman-Empire"
+   },
+   "tags": [
+    "Athens",
+    "democracy",
+    "citizenship"
+   ],
+   "seed": {
+    "likes": 1957,
+    "comments": 347,
+    "saves": 1305,
+    "shares": 83
+   }
+  },
+  {
+   "id": "POST-029",
+   "rekkefolge": 29,
+   "opprettet": "2026-07-08T08:00:00",
+   "posterId": "P008",
+   "kategori": "Historie",
+   "underkategori": "Den industrielle revolusjon",
+   "serie": "Vendepunkter",
+   "tittel": "Dampkraft løsnet industriens avhengighet av elver",
+   "hook": "Fabrikker kunne flytte nærmere arbeidere, kull og markeder.",
+   "sammendrag": "Tidlige fabrikker var ofte avhengige av vannkraft. Forbedrede dampmaskiner lot maskiner og transport virke flere steder, og satte fart på industrialiseringen.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Fabrikker tar i bruk pålitelige dampmaskiner. Hva blir mer mulig?",
+    "options": [
+     "Å plassere produksjon vekk fra hurtige elver",
+     "Å fjerne behovet for drivstoff",
+     "Å stoppe byvekst",
+     "Å lage hvert produkt for hånd"
+    ],
+    "correct_answer": "Å plassere produksjon vekk fra hurtige elver",
+    "explanation": "Dampkraft ga fabrikker mer frihet i hvor de kunne drive.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Industrial Revolution",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/event/Industrial-Revolution"
+   },
+   "lesMer": {
+    "tittel": "Printing Press",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/technology/printing-press"
+   },
+   "tags": [
+    "Industrial Revolution",
+    "steam",
+    "factories"
+   ],
+   "seed": {
+    "likes": 4435,
+    "comments": 346,
+    "saves": 1414,
+    "shares": 129
+   }
+  },
+  {
+   "id": "POST-030",
+   "rekkefolge": 30,
+   "opprettet": "2026-07-08T14:00:00",
+   "posterId": "P008",
+   "kategori": "Historie",
+   "underkategori": "Atlanterhavsrevolusjonene",
+   "serie": "Frihetskamper",
+   "tittel": "Den haitiske revolusjonen skapte den første uavhengige svarte republikken",
+   "hook": "Slavebundne beseiret slaveriet og kolonistyret gjennom revolusjon.",
+   "sammendrag": "Fra 1791 i Saint-Domingue veltet en sammensatt revolusjon slaveriet og fransk kolonimakt. Haiti erklærte uavhengighet i 1804.",
+   "vanskelighet": "Advanced",
+   "estimertSek": 35,
+   "xp": 160,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Sett fire viktige faser av den haitiske revolusjonen i rekkefølge.",
+    "options": [
+     "Stort slaveopprør begynner i 1791",
+     "Slaveriet avskaffes i kolonien",
+     "Franske styrker prøver å gjenvinne kontrollen",
+     "Haiti erklærer uavhengighet i 1804"
+    ],
+    "correct_answer": [
+     "Stort slaveopprør begynner i 1791",
+     "Slaveriet avskaffes i kolonien",
+     "Franske styrker prøver å gjenvinne kontrollen",
+     "Haiti erklærer uavhengighet i 1804"
+    ],
+    "explanation": "Revolusjonen gikk fra opprør gjennom avskaffelse, fornyet krig og uavhengighet.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Haitian Revolution",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Haitian-Revolution"
+   },
+   "lesMer": {
+    "tittel": "Abolitionism",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/abolitionism-European-and-American-social-movement"
+   },
+   "tags": [
+    "Haiti",
+    "revolution",
+    "slavery"
+   ],
+   "seed": {
+    "likes": 864,
+    "comments": 115,
+    "saves": 69,
+    "shares": 177
+   }
+  },
+  {
+   "id": "POST-031",
+   "rekkefolge": 31,
+   "opprettet": "2026-07-08T20:00:00",
+   "posterId": "P009",
+   "kategori": "Historie",
+   "underkategori": "Slaveriets avskaffelse",
+   "serie": "Frihetskamper",
+   "tittel": "Å avskaffe slavehandelen og å avskaffe slaveriet var ulike prosesser",
+   "hook": "Et lovforbud mot å handle mennesker fridde ikke automatisk dem som allerede var slavebundne.",
+   "sammendrag": "Ulike land forbød slavehandelen og avskaffet slaveriet til ulike tider. Håndhevingen var ujevn, og ulovlig menneskehandel fortsatte etter forbudene.",
+   "vanskelighet": "Advanced",
+   "estimertSek": 30,
+   "xp": 160,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Koble hvert begrep til betydningen sin.",
+    "options": [
+     {
+      "left": "Forbud mot handelen",
+      "right": "Forbud mot å frakte og selge slavebundne"
+     },
+     {
+      "left": "Frigjøring",
+      "right": "Å frigjøre slavebundne ved lov"
+     },
+     {
+      "left": "Håndheving",
+      "right": "Tiltak for å gjøre lover virksomme"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Forbud mot handelen",
+      "right": "Forbud mot å frakte og selge slavebundne"
+     },
+     {
+      "left": "Frigjøring",
+      "right": "Å frigjøre slavebundne ved lov"
+     },
+     {
+      "left": "Håndheving",
+      "right": "Tiltak for å gjøre lover virksomme"
+     }
+    ],
+    "explanation": "Handelsforbud, frigjøring og håndheving var forbundet, men adskilte.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "Abolitionism",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/abolitionism-European-and-American-social-movement"
+   },
+   "lesMer": {
+    "tittel": "Haitian Revolution",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Haitian-Revolution"
+   },
+   "tags": [
+    "abolition",
+    "slavery",
+    "law"
+   ],
+   "seed": {
+    "likes": 1228,
+    "comments": 185,
+    "saves": 1358,
+    "shares": 123
+   }
+  },
+  {
+   "id": "POST-032",
+   "rekkefolge": 32,
+   "opprettet": "2026-07-09T02:00:00",
+   "posterId": "P008",
+   "kategori": "Historie",
+   "underkategori": "Romalderen",
+   "serie": "Vendepunkter",
+   "tittel": "Apollo 11 var en kjede av presist tidsstyrte trinn",
+   "hook": "Månelandingen var ikke ett kjøretøy som fløy rett ned og opp igjen.",
+   "sammendrag": "Ferden brukte en Saturn V-bærerakett, en kommando- og servicemodul og en månemodul. Egne trinn stod for oppskyting, månelanding, møte i bane og retur.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Sett de sentrale trinnene i Apollo 11-ferden i rekkefølge.",
+    "options": [
+     "Oppskyting fra jorda",
+     "Går inn i månebane",
+     "Månemodulen lander",
+     "Astronautene returnerer og lander i havet"
+    ],
+    "correct_answer": [
+     "Oppskyting fra jorda",
+     "Går inn i månebane",
+     "Månemodulen lander",
+     "Astronautene returnerer og lander i havet"
+    ],
+    "explanation": "Apollo 11 gikk gjennom oppskyting, måneoperasjoner, møte i bane og retur til jorda.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Apollo 11 Mission Overview",
+    "org": "NASA",
+    "url": "https://www.nasa.gov/mission/apollo-11/"
+   },
+   "lesMer": {
+    "tittel": "Moon Phases",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/moon/moon-phases/"
+   },
+   "tags": [
+    "Apollo 11",
+    "Moon landing",
+    "space history"
+   ],
+   "seed": {
+    "likes": 1315,
+    "comments": 352,
+    "saves": 458,
+    "shares": 369
+   }
+  },
+  {
+   "id": "POST-033",
+   "rekkefolge": 33,
+   "opprettet": "2026-07-09T08:00:00",
+   "posterId": "P008",
+   "kategori": "Historie",
+   "underkategori": "Den kalde krigen",
+   "serie": "Vendepunkter",
+   "tittel": "Berlinmuren åpnet etter en forvirret kunngjøring",
+   "hook": "En pressekonferanse satte fart på en politisk krise som alt var i gang.",
+   "sammendrag": "Den 9. november 1989 ga en østtysk tjenestemann en uklar uttalelse om nye reiseregler. Folkemengder samlet seg ved grenseovergangene, og vaktene åpnet dem til slutt.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 25,
+   "xp": 120,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "En tjenestemann antyder feilaktig at nye reiseregler gjelder umiddelbart. Hva skjer så?",
+    "options": [
+     "Folkemengder samler seg ved overgangene og presser vaktene til å åpne",
+     "Muren blir høyere over natta",
+     "All reise forbys permanent"
+    ],
+    "correct_answer": "Folkemengder samler seg ved overgangene og presser vaktene til å åpne",
+    "explanation": "Folkepresset ved overgangene bidro til å gjøre kunngjøringen til en historisk åpning.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Berlin Wall",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Berlin-Wall"
+   },
+   "lesMer": {
+    "tittel": "Industrial Revolution",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/event/Industrial-Revolution"
+   },
+   "tags": [
+    "Berlin Wall",
+    "Cold War",
+    "1989"
+   ],
+   "seed": {
+    "likes": 2295,
+    "comments": 386,
+    "saves": 1243,
+    "shares": 62
+   }
+  },
+  {
+   "id": "POST-034",
+   "rekkefolge": 34,
+   "opprettet": "2026-07-09T14:00:00",
+   "posterId": "P010",
+   "kategori": "Teknologi",
+   "underkategori": "Internett",
+   "serie": "Slik virker internett",
+   "tittel": "Internett flytter informasjon i pakker",
+   "hook": "En nettside kommer som mange små biter, ikke ett sammenhengende objekt.",
+   "sammendrag": "Nettverk deler data i pakker som kan reise ulike veier. Enheter setter dem sammen igjen ved målet ved hjelp av adresse- og rekkefølgeinformasjon.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Sett en forenklet pakkereise i rekkefølge.",
+    "options": [
+     "Appen deler data i pakker",
+     "Rutere sender pakkene videre",
+     "Pakkene når målet",
+     "Enheten setter sammen dataene igjen"
+    ],
+    "correct_answer": [
+     "Appen deler data i pakker",
+     "Rutere sender pakkene videre",
+     "Pakkene når målet",
+     "Enheten setter sammen dataene igjen"
+    ],
+    "explanation": "Pakkesvitsjing lar nettverk rute mange brukeres data effektivt.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "What Is a Data Packet?",
+    "org": "Cloudflare Learning Center",
+    "url": "https://www.cloudflare.com/learning/network-layer/what-is-a-packet/"
+   },
+   "lesMer": {
+    "tittel": "The NIST Definition of Cloud Computing",
+    "org": "NIST",
+    "url": "https://csrc.nist.gov/pubs/sp/800/145/final"
+   },
+   "tags": [
+    "internet",
+    "packets",
+    "networks"
+   ],
+   "seed": {
+    "likes": 4931,
+    "comments": 312,
+    "saves": 704,
+    "shares": 277
+   }
+  },
+  {
+   "id": "POST-035",
+   "rekkefolge": 35,
+   "opprettet": "2026-07-09T20:00:00",
+   "posterId": "P012",
+   "kategori": "Teknologi",
+   "underkategori": "Datasikkerhet",
+   "serie": "Stol på skjermen?",
+   "tittel": "Kryptering gjør lesbar informasjon om til beskyttet chiffertekst",
+   "hook": "En melding kan reise gjennom offentlige nett uten å være lesbar for alle.",
+   "sammendrag": "Kryptering bruker algoritmer og nøkler til å omforme klartekst til chiffertekst. Den tiltenkte mottakeren bruker den riktige nøkkelen til å hente ut informasjonen igjen.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 30,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Koble hvert sikkerhetsbegrep til rollen sin.",
+    "options": [
+     {
+      "left": "Klartekst",
+      "right": "Lesbar opprinnelig melding"
+     },
+     {
+      "left": "Chiffertekst",
+      "right": "Kryptert, uleselig form"
+     },
+     {
+      "left": "Nøkkel",
+      "right": "Verdi brukt til å kryptere eller dekryptere"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Klartekst",
+      "right": "Lesbar opprinnelig melding"
+     },
+     {
+      "left": "Chiffertekst",
+      "right": "Kryptert, uleselig form"
+     },
+     {
+      "left": "Nøkkel",
+      "right": "Verdi brukt til å kryptere eller dekryptere"
+     }
+    ],
+    "explanation": "Kryptering skiller det lesbare innholdet fra den beskyttede formen som sendes eller lagres.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "What Is Encryption?",
+    "org": "Cloudflare Learning Center",
+    "url": "https://www.cloudflare.com/learning/ssl/what-is-encryption/"
+   },
+   "lesMer": {
+    "tittel": "Artificial Intelligence",
+    "org": "NIST",
+    "url": "https://www.nist.gov/artificial-intelligence"
+   },
+   "tags": [
+    "encryption",
+    "privacy",
+    "security"
+   ],
+   "seed": {
+    "likes": 4510,
+    "comments": 328,
+    "saves": 504,
+    "shares": 266
+   }
+  },
+  {
+   "id": "POST-036",
+   "rekkefolge": 36,
+   "opprettet": "2026-07-10T02:00:00",
+   "posterId": "P011",
+   "kategori": "Teknologi",
+   "underkategori": "Maskinvare",
+   "serie": "Inni maskinen",
+   "tittel": "Halvledere kan styres til å lede eller motstå strøm",
+   "hook": "Moderne elektronikk er avhengig av materialer som verken er rene ledere eller rene isolatorer.",
+   "sammendrag": "Halvlederes egenskaper kan formes og styres, slik at transistorer kan bryte og forsterke elektriske signaler. Milliarder av transistorer får plass på moderne brikker.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 18,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "En transistor kan virke som en elektronisk ____.",
+    "options": [
+     "bryter",
+     "kun batteriladerkabel",
+     "høyttalerkjegle"
+    ],
+    "correct_answer": "bryter",
+    "explanation": "Transistorer styrer strøm og er de grunnleggende bryterelementene i digitale kretser.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "Semiconductors",
+    "org": "NIST",
+    "url": "https://www.nist.gov/semiconductors"
+   },
+   "lesMer": {
+    "tittel": "Artificial Intelligence",
+    "org": "NIST",
+    "url": "https://www.nist.gov/artificial-intelligence"
+   },
+   "tags": [
+    "semiconductors",
+    "chips",
+    "transistors"
+   ],
+   "seed": {
+    "likes": 3418,
+    "comments": 349,
+    "saves": 1277,
+    "shares": 231
+   }
+  },
+  {
+   "id": "POST-037",
+   "rekkefolge": 37,
+   "opprettet": "2026-07-10T08:00:00",
+   "posterId": "P011",
+   "kategori": "Teknologi",
+   "underkategori": "Navigasjon",
+   "serie": "Usynlig teknologi",
+   "tittel": "GPS trenger relativitetskorreksjoner for å holde seg nøyaktig",
+   "hook": "Einsteins fysikk sitter inni posisjonsprikken på telefonen din.",
+   "sammendrag": "Satellittklokker opplever bevegelse og tyngdekraft annerledes enn klokker på jorda. GPS korrigerer for relativistiske effekter så tidsfeil ikke vokser til store posisjonsfeil.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 15,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "GPS ville vært like nøyaktig uten korreksjoner fra relativitetsteorien.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Relativistiske forskjeller i klokkegang ville hopet seg opp og skapt betydelige posisjonsfeil.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "GPS and Relativity",
+    "org": "NIST",
+    "url": "https://www.nist.gov/pml/time-and-frequency-division/popular-links/time-frequency-z/gps-and-relativity"
+   },
+   "lesMer": {
+    "tittel": "Solar System Exploration",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/solar-system/"
+   },
+   "tags": [
+    "GPS",
+    "relativity",
+    "satellites"
+   ],
+   "seed": {
+    "likes": 650,
+    "comments": 174,
+    "saves": 356,
+    "shares": 252
+   }
+  },
+  {
+   "id": "POST-038",
+   "rekkefolge": 38,
+   "opprettet": "2026-07-10T14:00:00",
+   "posterId": "P010",
+   "kategori": "Teknologi",
+   "underkategori": "Koder",
+   "serie": "Usynlig teknologi",
+   "tittel": "QR-koder kan fortsatt leses etter litt skade",
+   "hook": "Et manglende hjørne av en kode ødelegger kanskje ikke meldingen.",
+   "sammendrag": "QR-koder inneholder feilrettingsdata. Avhengig av rettingsnivå og skademønster kan programvaren rekonstruere manglende informasjon.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "En del av en QR-kode er ripet, men søkemønstrene er fortsatt synlige. Hva kan skje?",
+    "options": [
+     "Den kan fortsatt skannes på grunn av feilretting",
+     "Den blir alltid en annen nettside",
+     "Den begynner å sende Bluetooth"
+    ],
+    "correct_answer": "Den kan fortsatt skannes på grunn av feilretting",
+    "explanation": "QR-koder ble designet med flere nivåer av feilretting.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "History of QR Code",
+    "org": "DENSO WAVE",
+    "url": "https://www.qrcode.com/en/history/"
+   },
+   "lesMer": {
+    "tittel": "Semiconductors",
+    "org": "NIST",
+    "url": "https://www.nist.gov/semiconductors"
+   },
+   "tags": [
+    "QR code",
+    "error correction",
+    "scanning"
+   ],
+   "seed": {
+    "likes": 5240,
+    "comments": 368,
+    "saves": 350,
+    "shares": 101
+   }
+  },
+  {
+   "id": "POST-039",
+   "rekkefolge": 39,
+   "opprettet": "2026-07-10T20:00:00",
+   "posterId": "P012",
+   "kategori": "Teknologi",
+   "underkategori": "Kunstig intelligens",
+   "serie": "Stol på skjermen?",
+   "tittel": "Maskinlæringssystemer lærer statistiske mønstre av eksempler",
+   "hook": "De lagrer ikke menneskelig forståelse slik en person gjør.",
+   "sammendrag": "Maskinlæring tilpasser modeller til data så de kan klassifisere, forutsi eller generere utdata. Ytelsen avhenger av treningsdata, evaluering og hvordan systemet brukes.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Hva lærer en maskinlæringsmodell først og fremst av treningsdataene?",
+    "options": [
+     "Statistiske mønstre som er nyttige for prediksjon",
+     "En menneskelig barndom",
+     "Garantert sannhet",
+     "Et fullstendig moralsystem"
+    ],
+    "correct_answer": "Statistiske mønstre som er nyttige for prediksjon",
+    "explanation": "Modeller optimaliserer matematiske sammenhenger i data; de forstår ikke automatisk sannhet eller kontekst.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Artificial Intelligence",
+    "org": "NIST",
+    "url": "https://www.nist.gov/artificial-intelligence"
+   },
+   "lesMer": {
+    "tittel": "What Is a Data Packet?",
+    "org": "Cloudflare Learning Center",
+    "url": "https://www.cloudflare.com/learning/network-layer/what-is-a-packet/"
+   },
+   "tags": [
+    "AI",
+    "machine learning",
+    "patterns"
+   ],
+   "seed": {
+    "likes": 2049,
+    "comments": 281,
+    "saves": 1524,
+    "shares": 18
+   }
+  },
+  {
+   "id": "POST-040",
+   "rekkefolge": 40,
+   "opprettet": "2026-07-11T02:00:00",
+   "posterId": "P011",
+   "kategori": "Teknologi",
+   "underkategori": "Energilagring",
+   "serie": "Inni maskinen",
+   "tittel": "Et batteri flytter ioner internt og elektroner gjennom en krets",
+   "hook": "Lagret kjemisk energi blir til elektrisk arbeid.",
+   "sammendrag": "Under utlading driver kjemiske reaksjoner elektroner gjennom den ytre kretsen, mens ioner beveger seg gjennom elektrolytten. Lading reverserer prosessen med tilført energi.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 40,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Koble batterikomponenten til rollen sin.",
+    "options": [
+     {
+      "card_a": "Elektroder",
+      "card_b": "Er vert for de elektrokjemiske reaksjonene"
+     },
+     {
+      "card_a": "Elektrolytt",
+      "card_b": "Frakter ioner"
+     },
+     {
+      "card_a": "Ytre krets",
+      "card_b": "Frakter elektroner til enheten"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Elektroder",
+      "card_b": "Er vert for de elektrokjemiske reaksjonene"
+     },
+     {
+      "card_a": "Elektrolytt",
+      "card_b": "Frakter ioner"
+     },
+     {
+      "card_a": "Ytre krets",
+      "card_b": "Frakter elektroner til enheten"
+     }
+    ],
+    "explanation": "Batteridrift skiller ionebevegelsen inni fra elektronstrømmen gjennom kretsen.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "How Does a Lithium-Ion Battery Work?",
+    "org": "U.S. Department of Energy",
+    "url": "https://www.energy.gov/eere/articles/how-does-lithium-ion-battery-work"
+   },
+   "lesMer": {
+    "tittel": "Semiconductors",
+    "org": "NIST",
+    "url": "https://www.nist.gov/semiconductors"
+   },
+   "tags": [
+    "battery",
+    "energy",
+    "chemistry"
+   ],
+   "seed": {
+    "likes": 1339,
+    "comments": 65,
+    "saves": 731,
+    "shares": 61
+   }
+  },
+  {
+   "id": "POST-041",
+   "rekkefolge": 41,
+   "opprettet": "2026-07-11T08:00:00",
+   "posterId": "P010",
+   "kategori": "Teknologi",
+   "underkategori": "Skytjenester",
+   "serie": "Slik virker internett",
+   "tittel": "Skyen er fortsatt noen andres datamaskiner",
+   "hook": "Fjerntjenester føles usynlige fordi infrastrukturen er skjult.",
+   "sammendrag": "Skytjenester gir delte dataressurser over nett ved behov. Programmer og data kjører i fordelte datasentre, ikke bare på brukerens egen enhet.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Skyfiler lagres i en bokstavelig sky på himmelen.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "De lagres og behandles på fysiske servere i datasentre koblet sammen via nettverk.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "The NIST Definition of Cloud Computing",
+    "org": "NIST",
+    "url": "https://csrc.nist.gov/pubs/sp/800/145/final"
+   },
+   "lesMer": {
+    "tittel": "What Is a Data Packet?",
+    "org": "Cloudflare Learning Center",
+    "url": "https://www.cloudflare.com/learning/network-layer/what-is-a-packet/"
+   },
+   "tags": [
+    "cloud",
+    "servers",
+    "data centers"
+   ],
+   "seed": {
+    "likes": 4853,
+    "comments": 291,
+    "saves": 397,
+    "shares": 214
+   }
+  },
+  {
+   "id": "POST-042",
+   "rekkefolge": 42,
+   "opprettet": "2026-07-11T14:00:00",
+   "posterId": "P011",
+   "kategori": "Teknologi",
+   "underkategori": "Produksjon",
+   "serie": "Inni maskinen",
+   "tittel": "3D-printing bygger objekter ett lag om gangen",
+   "hook": "Kompliserte indre former blir mulige fordi objektet vokser gradvis.",
+   "sammendrag": "Additiv produksjon lager deler ved å legge på, herde eller smelte materiale i lag etter lag fra en digital modell. Ulike metoder bruker plast, metall, harpiks og andre materialer.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Sett en typisk additiv produksjonsprosess i rekkefølge.",
+    "options": [
+     "Lag en digital 3D-modell",
+     "Del modellen i lag",
+     "Print lagene",
+     "Etterbehandle og kontrollere delen"
+    ],
+    "correct_answer": [
+     "Lag en digital 3D-modell",
+     "Del modellen i lag",
+     "Print lagene",
+     "Etterbehandle og kontrollere delen"
+    ],
+    "explanation": "Digital geometri gjøres om til maskininstruksjoner før den fysiske byggingen.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Additive Manufacturing",
+    "org": "NIST",
+    "url": "https://www.nist.gov/topics/additive-manufacturing"
+   },
+   "lesMer": {
+    "tittel": "Semiconductors",
+    "org": "NIST",
+    "url": "https://www.nist.gov/semiconductors"
+   },
+   "tags": [
+    "3D printing",
+    "manufacturing",
+    "design"
+   ],
+   "seed": {
+    "likes": 3610,
+    "comments": 153,
+    "saves": 918,
+    "shares": 29
+   }
+  },
+  {
+   "id": "POST-043",
+   "rekkefolge": 43,
+   "opprettet": "2026-07-11T20:00:00",
+   "posterId": "P013",
+   "kategori": "Sinn",
+   "underkategori": "Søvn og læring",
+   "serie": "Læringshjernen din",
+   "tittel": "Søvn hjelper med å stabilisere nylig lært kunnskap",
+   "hook": "Øving betyr mye — men det som skjer etter øvingen betyr også noe.",
+   "sammendrag": "Under søvn omorganiserer og festner hjernen sider av læringen. Søvnmangel kan gjøre oppmerksomhet og hukommelse vanskeligere.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Hvilket utsagn oppsummerer best søvnens rolle i læring?",
+    "options": [
+     "Søvn hjelper med å festne minner",
+     "Søvn lagrer permanent hver detalj",
+     "Drømmer erstatter øving",
+     "Bare hvile på dagtid betyr noe"
+    ],
+    "correct_answer": "Søvn hjelper med å festne minner",
+    "explanation": "Søvn støtter festning av minner og kognitiv yteevne dagen etter.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "The Benefits of Slumber",
+    "org": "NIH News in Health",
+    "url": "https://newsinhealth.nih.gov/2013/04/benefits-slumber"
+   },
+   "lesMer": {
+    "tittel": "Understanding Sleep",
+    "org": "National Institute of Neurological Disorders and Stroke",
+    "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/understanding-sleep"
+   },
+   "tags": [
+    "sleep",
+    "memory",
+    "learning"
+   ],
+   "seed": {
+    "likes": 1284,
+    "comments": 323,
+    "saves": 695,
+    "shares": 184
+   }
+  },
+  {
+   "id": "POST-044",
+   "rekkefolge": 44,
+   "opprettet": "2026-07-12T02:00:00",
+   "posterId": "P014",
+   "kategori": "Sinn",
+   "underkategori": "Oppmerksomhet",
+   "serie": "Mentale snarveier",
+   "tittel": "Multitasking betyr ofte rask veksling mellom oppgaver",
+   "hook": "Hjernen betaler en liten pris hver gang den bytter mål.",
+   "sammendrag": "Når folk veksler mellom krevende oppgaver, må oppmerksomheten stilles om. Disse vekslingskostnadene kan senke ytelsen og øke antallet feil.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Å gjøre to krevende oppgaver samtidig gjør deg alltid raskere.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "For mange kognitive oppgaver deler veksling oppmerksomheten og legger til tid og feil.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Multitasking: Switching Costs",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/research/action/multitask"
+   },
+   "lesMer": {
+    "tittel": "Memory Is More Than a Mental Video Recorder",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/news/podcasts/speaking-of-psychology/memory"
+   },
+   "tags": [
+    "multitasking",
+    "attention",
+    "productivity"
+   ],
+   "seed": {
+    "likes": 3580,
+    "comments": 21,
+    "saves": 1184,
+    "shares": 363
+   }
+  },
+  {
+   "id": "POST-045",
+   "rekkefolge": 45,
+   "opprettet": "2026-07-12T08:00:00",
+   "posterId": "P013",
+   "kategori": "Sinn",
+   "underkategori": "Læringsvitenskap",
+   "serie": "Læringshjernen din",
+   "tittel": "Spredt øving slår som regel én stor skippertak-økt",
+   "hook": "Å glemme litt kan gjøre senere gjenhenting mer nyttig.",
+   "sammendrag": "Å repetere stoff over flere økter gir gjentatte muligheter til å hente det fram, og styrker langtidshukommelsen mer pålitelig enn samlet øving.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "To elever øver like lenge totalt. Én sprer øktene over en uke. Hvem husker sannsynligvis best senere?",
+    "options": [
+     "Eleven som bruker spredte økter",
+     "Eleven som gjør ett langt skippertak",
+     "Ingen av dem kan noensinne huske"
+    ],
+    "correct_answer": "Eleven som bruker spredte økter",
+    "explanation": "Spredning og gjenhentingsøving støtter som regel mer varig hukommelse.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "The Benefits of Slumber",
+    "org": "NIH News in Health",
+    "url": "https://newsinhealth.nih.gov/2013/04/benefits-slumber"
+   },
+   "lesMer": {
+    "tittel": "Memory Is More Than a Mental Video Recorder",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/news/podcasts/speaking-of-psychology/memory"
+   },
+   "tags": [
+    "spacing",
+    "learning",
+    "memory"
+   ],
+   "seed": {
+    "likes": 2280,
+    "comments": 146,
+    "saves": 366,
+    "shares": 339
+   }
+  },
+  {
+   "id": "POST-046",
+   "rekkefolge": 46,
+   "opprettet": "2026-07-12T14:00:00",
+   "posterId": "P014",
+   "kategori": "Sinn",
+   "underkategori": "Kognitive skjevheter",
+   "serie": "Mentale snarveier",
+   "tittel": "Bekreftelsesskjevhet gjør støttende bevis lettere å legge merke til",
+   "hook": "Vi gransker ofte egne oppfatninger som forsvarsadvokater, ikke nøytrale dommere.",
+   "sammendrag": "Folk har en tendens til å søke, tolke og huske informasjon på måter som støtter det de allerede mener. Å bevisst lete etter motbevis kan bedre resonneringen.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 18,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "Bekreftelsesskjevhet får oss til å foretrekke informasjon som ____ det vi allerede tror.",
+    "options": [
+     "støtter",
+     "tilfeldig sletter",
+     "har den lengste overskriften"
+    ],
+    "correct_answer": "støtter",
+    "explanation": "Skjevheten former hvilket bevis vi legger merke til og hvordan vi tolker det.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "Social Influence",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/topics/social-influence"
+   },
+   "lesMer": {
+    "tittel": "Memory Is More Than a Mental Video Recorder",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/news/podcasts/speaking-of-psychology/memory"
+   },
+   "tags": [
+    "bias",
+    "beliefs",
+    "reasoning"
+   ],
+   "seed": {
+    "likes": 4494,
+    "comments": 98,
+    "saves": 764,
+    "shares": 195
+   }
+  },
+  {
+   "id": "POST-047",
+   "rekkefolge": 47,
+   "opprettet": "2026-07-12T20:00:00",
+   "posterId": "P015",
+   "kategori": "Sinn",
+   "underkategori": "Forventninger",
+   "serie": "Sinn og medisin",
+   "tittel": "Placeboeffekter er ekte responser — men ikke bevis for at all behandling virker",
+   "hook": "Forventninger kan endre symptomer uten å kurere hver underliggende sykdom.",
+   "sammendrag": "Placeboresponser kan påvirke smerte, opplevelse og andre utfall gjennom forventning og kontekst. Kontrollerte studier sammenligner behandling med placebo for å skille ut den spesifikke effekten.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 30,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Koble studiebegrepet til betydningen sin.",
+    "options": [
+     {
+      "left": "Placebo",
+      "right": "Inaktivt eller sammenlignende tiltak"
+     },
+     {
+      "left": "Blinding",
+      "right": "Deltakerne vet ikke hvilken gruppe de er i"
+     },
+     {
+      "left": "Behandlingseffekt",
+      "right": "Forskjell som skyldes tiltaket som testes"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Placebo",
+      "right": "Inaktivt eller sammenlignende tiltak"
+     },
+     {
+      "left": "Blinding",
+      "right": "Deltakerne vet ikke hvilken gruppe de er i"
+     },
+     {
+      "left": "Behandlingseffekt",
+      "right": "Forskjell som skyldes tiltaket som testes"
+     }
+    ],
+    "explanation": "Kliniske studier bruker kontroller for å skille forventning, naturlig endring og behandlingseffekt.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "Placebo Effect",
+    "org": "National Center for Complementary and Integrative Health",
+    "url": "https://www.nccih.nih.gov/health/placebo-effect"
+   },
+   "lesMer": {
+    "tittel": "Understanding Sleep",
+    "org": "National Institute of Neurological Disorders and Stroke",
+    "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/understanding-sleep"
+   },
+   "tags": [
+    "placebo",
+    "clinical trials",
+    "expectation"
+   ],
+   "seed": {
+    "likes": 4367,
+    "comments": 417,
+    "saves": 607,
+    "shares": 115
+   }
+  },
+  {
+   "id": "POST-048",
+   "rekkefolge": 48,
+   "opprettet": "2026-07-13T02:00:00",
+   "posterId": "P015",
+   "kategori": "Sinn",
+   "underkategori": "Stress",
+   "serie": "Sinn og kropp",
+   "tittel": "Stressresponsen gjør kroppen klar til handling",
+   "hook": "Nyttig i korte støt, kostbar når den aldri slår seg av.",
+   "sammendrag": "Stress aktiverer koordinerte systemer i hjerne og kropp som øker årvåkenheten og mobiliserer energi. Vedvarende stress kan forstyrre søvn, humør og fysisk helse.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 40,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Koble endringen i stressresponsen til det umiddelbare formålet.",
+    "options": [
+     {
+      "card_a": "Raskere puls",
+      "card_b": "Flytter blod raskt"
+     },
+     {
+      "card_a": "Økt årvåkenhet",
+      "card_b": "Oppdager trusler"
+     },
+     {
+      "card_a": "Frigjort drivstoff",
+      "card_b": "Gir rask energi"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Raskere puls",
+      "card_b": "Flytter blod raskt"
+     },
+     {
+      "card_a": "Økt årvåkenhet",
+      "card_b": "Oppdager trusler"
+     },
+     {
+      "card_a": "Frigjort drivstoff",
+      "card_b": "Gir rask energi"
+     }
+    ],
+    "explanation": "Den akutte stressresponsen prioriterer handling her og nå.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "So Stressed Out Fact Sheet",
+    "org": "National Institute of Mental Health",
+    "url": "https://www.nimh.nih.gov/health/publications/so-stressed-out-fact-sheet"
+   },
+   "lesMer": {
+    "tittel": "Understanding Sleep",
+    "org": "National Institute of Neurological Disorders and Stroke",
+    "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/understanding-sleep"
+   },
+   "tags": [
+    "stress",
+    "fight or flight",
+    "health"
+   ],
+   "seed": {
+    "likes": 4551,
+    "comments": 391,
+    "saves": 676,
+    "shares": 104
+   }
+  },
+  {
+   "id": "POST-049",
+   "rekkefolge": 49,
+   "opprettet": "2026-07-13T08:00:00",
+   "posterId": "P013",
+   "kategori": "Sinn",
+   "underkategori": "Nevroplastisitet",
+   "serie": "Læringshjernen din",
+   "tittel": "Hjernen endrer seg med læring og erfaring",
+   "hook": "Voksne hjerner er ikke faste koblingsskjemaer.",
+   "sammendrag": "Nervekoblinger kan styrkes, svekkes og omorganiseres som svar på øving, skade og erfaring. Plastisitet er mulig gjennom hele livet, men varierer med system og alder.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Den voksne hjernen kan ikke danne nye læringsrelaterte koblinger.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Voksne hjerner er fortsatt plastiske og kan endre seg med erfaring, selv om endringen ikke er ubegrenset.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Understanding Sleep",
+    "org": "National Institute of Neurological Disorders and Stroke",
+    "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/understanding-sleep"
+   },
+   "lesMer": {
+    "tittel": "Memory Is More Than a Mental Video Recorder",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/news/podcasts/speaking-of-psychology/memory"
+   },
+   "tags": [
+    "neuroplasticity",
+    "learning",
+    "brain"
+   ],
+   "seed": {
+    "likes": 3713,
+    "comments": 211,
+    "saves": 1442,
+    "shares": 294
+   }
+  },
+  {
+   "id": "POST-050",
+   "rekkefolge": 50,
+   "opprettet": "2026-07-13T14:00:00",
+   "posterId": "P014",
+   "kategori": "Sinn",
+   "underkategori": "Vaner",
+   "serie": "Mentale snarveier",
+   "tittel": "Vaner blir lettere når et signal gjentatte ganger utløser samme handling",
+   "hook": "Omgivelsene dine kan starte en atferd før bevisst vurdering begynner.",
+   "sammendrag": "Gjentatt atferd i en stabil sammenheng kan bygge signal–respons-koblinger. Å endre signaler, friksjon og belønninger kan gjøre vaner lettere eller vanskeligere å gjenta.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Sett en enkel vaneløkke i rekkefølge.",
+    "options": [
+     "Et signal dukker opp",
+     "Atferden starter",
+     "Et umiddelbart resultat eller en belønning følger",
+     "Koblingen styrkes gjennom gjentakelse"
+    ],
+    "correct_answer": [
+     "Et signal dukker opp",
+     "Atferden starter",
+     "Et umiddelbart resultat eller en belønning følger",
+     "Koblingen styrkes gjennom gjentakelse"
+    ],
+    "explanation": "Gjentatte signal–handling–resultat-sykluser kan gjøre atferd mer automatisk.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Social Influence",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/topics/social-influence"
+   },
+   "lesMer": {
+    "tittel": "Multitasking: Switching Costs",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/research/action/multitask"
+   },
+   "tags": [
+    "habits",
+    "behavior",
+    "cues"
+   ],
+   "seed": {
+    "likes": 1978,
+    "comments": 112,
+    "saves": 1460,
+    "shares": 217
+   }
+  },
+  {
+   "id": "POST-051",
+   "rekkefolge": 51,
+   "opprettet": "2026-07-13T20:00:00",
+   "posterId": "P013",
+   "kategori": "Sinn",
+   "underkategori": "Hukommelse",
+   "serie": "Læringshjernen din",
+   "tittel": "Hukommelse rekonstrueres — den spilles ikke av som en perfekt video",
+   "hook": "Hver gang vi husker, kan hendelsen bygges opp på nytt.",
+   "sammendrag": "Hukommelse kombinerer lagrede detaljer med kontekst, forventninger og senere informasjon. Sikkerhet og nøyaktighet henger bare delvis sammen.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 15,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Et levende, selvsikkert minne er garantert helt nøyaktig.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Minner kan føles levende og ærlige samtidig som de inneholder utelatelser eller forvrengninger.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Memory Is More Than a Mental Video Recorder",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/news/podcasts/speaking-of-psychology/memory"
+   },
+   "lesMer": {
+    "tittel": "The Illusory Truth Effect",
+    "org": "PubMed Central / NIH",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8116821/"
+   },
+   "tags": [
+    "memory",
+    "reconstruction",
+    "confidence"
+   ],
+   "seed": {
+    "likes": 3336,
+    "comments": 349,
+    "saves": 1161,
+    "shares": 55
+   }
+  },
+  {
+   "id": "POST-052",
+   "rekkefolge": 52,
+   "opprettet": "2026-07-14T02:00:00",
+   "posterId": "P016",
+   "kategori": "Helse",
+   "underkategori": "Vaksiner",
+   "serie": "Forsvarssystemer",
+   "tittel": "Vaksiner trener immunforsvarets hukommelse før den ekte infeksjonen",
+   "hook": "Immunforsvaret kan øve uten å møte hele sykdommen.",
+   "sammendrag": "Vaksiner presenterer antigener eller instruksjoner som stimulerer immunresponser. Hukommelsesceller kan så svare raskere og mer effektivt ved senere smitte.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Sett en forenklet vaksinerespons i rekkefølge.",
+    "options": [
+     "Vaksinen presenterer et antigen eller en instruksjon",
+     "Immunceller reagerer",
+     "Hukommelsesceller blir igjen",
+     "Senere smitte utløser en raskere respons"
+    ],
+    "correct_answer": [
+     "Vaksinen presenterer et antigen eller en instruksjon",
+     "Immunceller reagerer",
+     "Hukommelsesceller blir igjen",
+     "Senere smitte utløser en raskere respons"
+    ],
+    "explanation": "Vaksinering forbereder immunforsvarets hukommelse før infeksjon.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Explaining How Vaccines Work",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/vaccines/basics/explaining-how-vaccines-work.html"
+   },
+   "lesMer": {
+    "tittel": "Sleep and Immune Function",
+    "org": "PubMed Central / NIH",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3256323/"
+   },
+   "tags": [
+    "vaccines",
+    "immunity",
+    "memory cells"
+   ],
+   "seed": {
+    "likes": 2728,
+    "comments": 323,
+    "saves": 259,
+    "shares": 301
+   }
+  },
+  {
+   "id": "POST-053",
+   "rekkefolge": 53,
+   "opprettet": "2026-07-14T08:00:00",
+   "posterId": "P016",
+   "kategori": "Helse",
+   "underkategori": "Hygiene",
+   "serie": "Forsvarssystemer",
+   "tittel": "Såpe hjelper med å løsne mikrober og fett fra huden",
+   "hook": "Skrubbingen og skyllingen er en del av kjemien.",
+   "sammendrag": "Såpemolekyler samspiller med vann og fettholdig materiale, og hjelper med å løsne skitt og mikrober så de kan skylles vekk.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 18,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "Håndvask virker best når såpe, friksjon og ____ jobber sammen.",
+    "options": [
+     "skylling",
+     "parfyme",
+     "kald luft"
+    ],
+    "correct_answer": "skylling",
+    "explanation": "Såpe løsner materiale, friksjon hjelper å rive det løs, og vann skyller det vekk.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "About Hand Hygiene",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/clean-hands/about/index.html"
+   },
+   "lesMer": {
+    "tittel": "The Chemistry of Cleaning",
+    "org": "American Chemical Society",
+    "url": "https://www.acs.org/education/resources/highschool/chemmatters/past-issues/archive-2014-2015/cleaning-chemistry.html"
+   },
+   "tags": [
+    "handwashing",
+    "soap",
+    "prevention"
+   ],
+   "seed": {
+    "likes": 503,
+    "comments": 316,
+    "saves": 396,
+    "shares": 167
+   }
+  },
+  {
+   "id": "POST-054",
+   "rekkefolge": 54,
+   "opprettet": "2026-07-14T14:00:00",
+   "posterId": "P017",
+   "kategori": "Helse",
+   "underkategori": "Styrke",
+   "serie": "Beveg deg for helsa",
+   "tittel": "Styrketrening utfordrer muskler og skjelett",
+   "hook": "Styrkearbeid endrer mer enn hvor mye du kan løfte.",
+   "sammendrag": "Progressiv styrketrening stimulerer muskeltilpasning og belaster skjelettet. Den støtter også funksjon, balanse og metabolsk helse.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Hvilken aktivitet er styrketrening?",
+    "options": [
+     "Knebøy mot kroppsvekt eller ekstra belastning",
+     "Å se på et løp",
+     "Å bare tøye en finger",
+     "Å ta en høneblund"
+    ],
+    "correct_answer": "Knebøy mot kroppsvekt eller ekstra belastning",
+    "explanation": "Styrketrening krever at musklene jobber mot en ytre belastning eller kroppsvekten.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Benefits of Physical Activity",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/physical-activity/php/about/index.html"
+   },
+   "lesMer": {
+    "tittel": "Debunking the Myth of Exercise-Induced Immune Suppression",
+    "org": "PubMed Central / NIH",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5911985/"
+   },
+   "tags": [
+    "strength",
+    "muscle",
+    "bone"
+   ],
+   "seed": {
+    "likes": 449,
+    "comments": 254,
+    "saves": 584,
+    "shares": 206
+   }
+  },
+  {
+   "id": "POST-055",
+   "rekkefolge": 55,
+   "opprettet": "2026-07-14T20:00:00",
+   "posterId": "P017",
+   "kategori": "Helse",
+   "underkategori": "Kondisjon",
+   "serie": "Beveg deg for helsa",
+   "tittel": "Regelmessig kondisjonstrening gjør hjertet og blodomløpet mer effektivt",
+   "hook": "Hjertet tilpasser seg gjentatt belastning.",
+   "sammendrag": "Aktiviteter som øker pust og puls trener hjerte- og karsystemet. Gevinstene bygger seg opp med jevnlig aktivitet og krever ikke eliteprestasjoner.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 40,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Koble aktiviteten til hovedbevegelsesmønsteret.",
+    "options": [
+     {
+      "card_a": "Rask gange",
+      "card_b": "Jevnt kondisjonsarbeid"
+     },
+     {
+      "card_a": "Sykling",
+      "card_b": "Gjentatt kondisjonsarbeid for underkroppen"
+     },
+     {
+      "card_a": "Svømming",
+      "card_b": "Kondisjonsarbeid for hele kroppen"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Rask gange",
+      "card_b": "Jevnt kondisjonsarbeid"
+     },
+     {
+      "card_a": "Sykling",
+      "card_b": "Gjentatt kondisjonsarbeid for underkroppen"
+     },
+     {
+      "card_a": "Svømming",
+      "card_b": "Kondisjonsarbeid for hele kroppen"
+     }
+    ],
+    "explanation": "Mange aktiviteter kan bedre kondisjonen når de gjøres jevnlig.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "Benefits of Physical Activity",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/physical-activity/php/about/index.html"
+   },
+   "lesMer": {
+    "tittel": "Debunking the Myth of Exercise-Induced Immune Suppression",
+    "org": "PubMed Central / NIH",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5911985/"
+   },
+   "tags": [
+    "cardio",
+    "heart",
+    "exercise"
+   ],
+   "seed": {
+    "likes": 5779,
+    "comments": 31,
+    "saves": 1477,
+    "shares": 348
+   }
+  },
+  {
+   "id": "POST-056",
+   "rekkefolge": 56,
+   "opprettet": "2026-07-15T02:00:00",
+   "posterId": "P018",
+   "kategori": "Helse",
+   "underkategori": "Fordøyelse",
+   "serie": "Matsystemer",
+   "tittel": "Kostfiber gir næring til både fordøyelse og tarmmikrober",
+   "hook": "Noe mat når tykktarmen nettopp fordi du ikke kan fordøye det helt.",
+   "sammendrag": "Ulike fibre gir volum, holder på vann eller gjæres av tarmmikrober. Fiberrik mat er forbundet med bedre fordøyelses- og hjertehelse.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 18,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "Mange tarmmikrober gjærer visse typer kost____.",
+    "options": [
+     "fiber",
+     "plast",
+     "saltkrystaller"
+    ],
+    "correct_answer": "fiber",
+    "explanation": "Gjærbare fibre kan bli drivstoff for mikrober i tykktarmen.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "Water and Healthier Drinks",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/healthy-weight-growth/water-healthy-drinks/index.html"
+   },
+   "lesMer": {
+    "tittel": "Benefits of Physical Activity",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/physical-activity/php/about/index.html"
+   },
+   "tags": [
+    "fiber",
+    "gut",
+    "nutrition"
+   ],
+   "seed": {
+    "likes": 2274,
+    "comments": 331,
+    "saves": 155,
+    "shares": 195
+   }
+  },
+  {
+   "id": "POST-057",
+   "rekkefolge": 57,
+   "opprettet": "2026-07-15T08:00:00",
+   "posterId": "P018",
+   "kategori": "Helse",
+   "underkategori": "Væskebalanse",
+   "serie": "Matsystemer",
+   "tittel": "Væskebehovet endrer seg med varme, aktivitet, mat og individuell fysiologi",
+   "hook": "Det finnes ikke ett perfekt tall for hver person i hver situasjon.",
+   "sammendrag": "Kroppen mister vann gjennom urin, svette, pust og fordøyelse. Behovet øker med varme, trening, sykdom og andre forhold.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Hver voksen trenger nøyaktig like mye vann hver dag.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Væskebehovet varierer med kroppsstørrelse, klima, aktivitet, kosthold, helse og graviditet eller amming.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Water and Healthier Drinks",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/healthy-weight-growth/water-healthy-drinks/index.html"
+   },
+   "lesMer": {
+    "tittel": "Benefits of Physical Activity",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/physical-activity/php/about/index.html"
+   },
+   "tags": [
+    "hydration",
+    "water",
+    "exercise"
+   ],
+   "seed": {
+    "likes": 2008,
+    "comments": 162,
+    "saves": 1018,
+    "shares": 186
+   }
+  },
+  {
+   "id": "POST-058",
+   "rekkefolge": 58,
+   "opprettet": "2026-07-15T14:00:00",
+   "posterId": "P016",
+   "kategori": "Helse",
+   "underkategori": "Solbeskyttelse",
+   "serie": "Hverdagsforebygging",
+   "tittel": "Bredspektret solkrem beskytter mot både UVA og UVB",
+   "hook": "Solforbrenning er bare ett synlig tegn på UV-skade.",
+   "sammendrag": "UVA- og UVB-stråling bidrar ulikt til hudskade. Bredspektrede produkter skal beskytte mot begge områdene når de brukes riktig.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 30,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Koble hver merking til betydningen sin.",
+    "options": [
+     {
+      "left": "Bredspektret",
+      "right": "Beskyttelse mot UVA og UVB"
+     },
+     {
+      "left": "SPF",
+      "right": "Mål mest rettet mot UVB-solforbrenning"
+     },
+     {
+      "left": "Påsmøring på nytt",
+      "right": "Gjenoppretter dekningen etter tid, vann eller gnisning"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Bredspektret",
+      "right": "Beskyttelse mot UVA og UVB"
+     },
+     {
+      "left": "SPF",
+      "right": "Mål mest rettet mot UVB-solforbrenning"
+     },
+     {
+      "left": "Påsmøring på nytt",
+      "right": "Gjenoppretter dekningen etter tid, vann eller gnisning"
+     }
+    ],
+    "explanation": "God solbeskyttelse avhenger av produkttype, mengde, dekning og gjentatt påsmøring.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "Sunscreen: How to Help Protect Your Skin from the Sun",
+    "org": "U.S. Food and Drug Administration",
+    "url": "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun"
+   },
+   "lesMer": {
+    "tittel": "Benefits of Physical Activity",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/physical-activity/php/about/index.html"
+   },
+   "tags": [
+    "sunscreen",
+    "UV",
+    "skin"
+   ],
+   "seed": {
+    "likes": 6224,
+    "comments": 199,
+    "saves": 310,
+    "shares": 343
+   }
+  },
+  {
+   "id": "POST-059",
+   "rekkefolge": 59,
+   "opprettet": "2026-07-15T20:00:00",
+   "posterId": "P016",
+   "kategori": "Helse",
+   "underkategori": "Søvn og immunforsvar",
+   "serie": "Forsvarssystemer",
+   "tittel": "Søvn og immunforsvar påvirker hverandre",
+   "hook": "Hvile er en del av immunforsvarets driftsmiljø.",
+   "sammendrag": "Søvn støtter koordinert immunaktivitet, og immunsignaler påvirker også søvnen under sykdom. Vedvarende søvnmangel kan endre immunresponser.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 25,
+   "xp": 120,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Noen sover gjentatte ganger for lite før og etter en immunutfordring. Hva er den mest holdbare prediksjonen?",
+    "options": [
+     "Immunresponsen kan være dårligere støttet",
+     "De blir permanent immune mot alle virus",
+     "Søvn har ingen biologisk kobling til immunforsvaret"
+    ],
+    "correct_answer": "Immunresponsen kan være dårligere støttet",
+    "explanation": "Forskning knytter tilstrekkelig søvn til sunnere regulering av immunresponser.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Sleep and Immune Function",
+    "org": "PubMed Central / NIH",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3256323/"
+   },
+   "lesMer": {
+    "tittel": "Understanding Sleep",
+    "org": "National Institute of Neurological Disorders and Stroke",
+    "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/understanding-sleep"
+   },
+   "tags": [
+    "sleep",
+    "immunity",
+    "recovery"
+   ],
+   "seed": {
+    "likes": 5276,
+    "comments": 311,
+    "saves": 538,
+    "shares": 317
+   }
+  },
+  {
+   "id": "POST-060",
+   "rekkefolge": 60,
+   "opprettet": "2026-07-16T02:00:00",
+   "posterId": "P016",
+   "kategori": "Helse",
+   "underkategori": "Antibiotikaresistens",
+   "serie": "Forsvarssystemer",
+   "tittel": "Bakterier — ikke mennesker — blir motstandsdyktige mot antibiotika",
+   "hook": "Resistens er evolusjon som skjer under seleksjonspress.",
+   "sammendrag": "Antibiotika kan drepe følsomme bakterier mens resistente varianter overlever og formerer seg. Resistente infeksjoner kan så spres mellom mennesker, dyr og miljø.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 20,
+   "xp": 120,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Hva blir resistent ved antibiotikaresistens?",
+    "options": [
+     "Bakterier eller andre mikrober",
+     "Pasientens skjelett",
+     "Medisinflasken",
+     "Menneskers hudfarge"
+    ],
+    "correct_answer": "Bakterier eller andre mikrober",
+    "explanation": "Resistens er en egenskap hos mikrober som lar dem overleve medisiner laget for å drepe dem.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "About Antimicrobial Resistance",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/antimicrobial-resistance/about/index.html"
+   },
+   "lesMer": {
+    "tittel": "About Antibiotic Use",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/antibiotic-use/about/index.html"
+   },
+   "tags": [
+    "antibiotic resistance",
+    "evolution",
+    "public health"
+   ],
+   "seed": {
+    "likes": 3211,
+    "comments": 381,
+    "saves": 352,
+    "shares": 277
+   }
+  },
+  {
+   "id": "POST-061",
+   "rekkefolge": 61,
+   "opprettet": "2026-07-16T08:00:00",
+   "posterId": "P020",
+   "kategori": "Natur",
+   "underkategori": "Korallrev",
+   "serie": "Havets overraskelser",
+   "tittel": "Koraller er dyr som bygger levende kalksteinsbyer",
+   "hook": "Et rev kan se ut som en fargerik steinhage, men byggerne er dyr.",
+   "sammendrag": "Hver korallkoloni består av mange små polypper i slekt med maneter og sjøanemoner. Mange revbyggende koraller lager kalkskjeletter som bygger seg opp over generasjoner.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Koraller er undervannsplanter.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Korallpolypper er dyr, selv om mange lever sammen med fotosyntetiske alger.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Corals Tutorial",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/education/tutorial_corals/"
+   },
+   "lesMer": {
+    "tittel": "How Does Climate Change Affect Coral Reefs?",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/facts/coralreef-climate.html"
+   },
+   "tags": [
+    "coral",
+    "animals",
+    "reef"
+   ],
+   "seed": {
+    "likes": 1783,
+    "comments": 217,
+    "saves": 1366,
+    "shares": 259
+   }
+  },
+  {
+   "id": "POST-062",
+   "rekkefolge": 62,
+   "opprettet": "2026-07-16T14:00:00",
+   "posterId": "P021",
+   "kategori": "Natur",
+   "underkategori": "Pollinering",
+   "serie": "Dyreingeniører",
+   "tittel": "Pollinatorer flytter pollen mellom blomster",
+   "hook": "Mange frukter og frø begynner med et dyr som bærer mikroskopiske korn.",
+   "sammendrag": "Bier, fluer, sommerfugler, fugler, flaggermus og andre dyr kan overføre pollen mellom blomsterdeler, og muliggjør befruktning hos mange plantearter.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 40,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Koble pollinatoren til et blomstersignal den kan bruke.",
+    "options": [
+     {
+      "card_a": "Bie",
+      "card_b": "Farge og duft"
+     },
+     {
+      "card_a": "Nattsvermer",
+      "card_b": "Duft om natta"
+     },
+     {
+      "card_a": "Kolibri",
+      "card_b": "Lys, rørformet blomst"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Bie",
+      "card_b": "Farge og duft"
+     },
+     {
+      "card_a": "Nattsvermer",
+      "card_b": "Duft om natta"
+     },
+     {
+      "card_a": "Kolibri",
+      "card_b": "Lys, rørformet blomst"
+     }
+    ],
+    "explanation": "Ulike blomster tiltrekker ulike pollinatorer gjennom form, farge, duft og tidspunkt.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "Pollinator Science",
+    "org": "U.S. Geological Survey",
+    "url": "https://www.usgs.gov/programs/ecosystems/science/pollinators"
+   },
+   "lesMer": {
+    "tittel": "Photosynthesis",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/science/photosynthesis"
+   },
+   "tags": [
+    "pollination",
+    "bees",
+    "flowers"
+   ],
+   "seed": {
+    "likes": 5109,
+    "comments": 264,
+    "saves": 727,
+    "shares": 149
+   }
+  },
+  {
+   "id": "POST-063",
+   "rekkefolge": 63,
+   "opprettet": "2026-07-16T20:00:00",
+   "posterId": "P020",
+   "kategori": "Natur",
+   "underkategori": "Blekksprutdyr",
+   "serie": "Havets overraskelser",
+   "tittel": "En blekksprut har tre hjerter",
+   "hook": "Blodomløpet dens virker annerledes enn vårt.",
+   "sammendrag": "To hjerter pumper blod gjennom gjellene, mens et tredje sender oksygenrikt blod rundt i kroppen. Blekksprutblod bruker kobberholdig hemocyanin og ser blått ut.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 18,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "To av blekksprutens hjerter pumper blod gjennom ____.",
+    "options": [
+     "gjellene",
+     "tentakkeltuppene",
+     "øynene"
+    ],
+    "correct_answer": "gjellene",
+    "explanation": "Gjellehjertene flytter blod gjennom gjellene; kroppshjertet betjener kroppen.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "Octopuses",
+    "org": "Smithsonian Ocean",
+    "url": "https://ocean.si.edu/ocean-life/invertebrates/octopuses"
+   },
+   "lesMer": {
+    "tittel": "Corals Tutorial",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/education/tutorial_corals/"
+   },
+   "tags": [
+    "octopus",
+    "hearts",
+    "ocean"
+   ],
+   "seed": {
+    "likes": 5631,
+    "comments": 138,
+    "saves": 1146,
+    "shares": 230
+   }
+  },
+  {
+   "id": "POST-064",
+   "rekkefolge": 64,
+   "opprettet": "2026-07-17T02:00:00",
+   "posterId": "P019",
+   "kategori": "Natur",
+   "underkategori": "Sopp",
+   "serie": "Stille systemer",
+   "tittel": "Sopp er viktige gjenvinnere i økosystemer",
+   "hook": "Et falt tre blir råstoff for neste generasjon liv.",
+   "sammendrag": "Sopp skiller ut enzymer som bryter ned komplekst organisk materiale utenfor kroppen, og tar så opp næringen. Dette fører karbon og mineraler tilbake til økosystemets kretsløp.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Hva er en viktig økologisk rolle for mange sopper?",
+    "options": [
+     "Å bryte ned dødt organisk materiale",
+     "Å lage sollys",
+     "Å stoppe alle bakterier",
+     "Å lage tidevann"
+    ],
+    "correct_answer": "Å bryte ned dødt organisk materiale",
+    "explanation": "Soppnedbryting hjelper med å resirkulere næring fra dødt materiale.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Fungi and Forest Ecosystems",
+    "org": "U.S. Forest Service",
+    "url": "https://www.fs.usda.gov/research/treesearch"
+   },
+   "lesMer": {
+    "tittel": "Forests and the Carbon Cycle",
+    "org": "NASA Earth Observatory",
+    "url": "https://earthobservatory.nasa.gov/features/CarbonCycle/page4.php"
+   },
+   "tags": [
+    "fungi",
+    "decomposition",
+    "forest"
+   ],
+   "seed": {
+    "likes": 4592,
+    "comments": 75,
+    "saves": 141,
+    "shares": 106
+   }
+  },
+  {
+   "id": "POST-065",
+   "rekkefolge": 65,
+   "opprettet": "2026-07-17T08:00:00",
+   "posterId": "P021",
+   "kategori": "Natur",
+   "underkategori": "Rovdyr og økosystemer",
+   "serie": "Dyreingeniører",
+   "tittel": "Rovdyr kan endre økosystemer uten å spise hvert byttedyr",
+   "hook": "Frykt og bevegelse kan bety noe ved siden av selve jakten.",
+   "sammendrag": "Rovdyr kan endre hvor byttedyr beiter, beveger seg og samler seg. Disse atferdsendringene kan påvirke vegetasjon og andre arter, men ekte økosystemer er komplekse og effektene varierer.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 25,
+   "xp": 120,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Store rovdyr vender tilbake til et økosystem. Hvilken endring er sannsynlig?",
+    "options": [
+     "Byttedyrenes atferd og beitesteder kan endre seg",
+     "Alle byttedyr forsvinner umiddelbart",
+     "Plantene slutter å trenge sollys"
+    ],
+    "correct_answer": "Byttedyrenes atferd og beitesteder kan endre seg",
+    "explanation": "Rovdyr påvirker både antall byttedyr og atferden deres, med effekter som kan spre seg gjennom næringskjeden.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Wolves and the Ecology of Fear",
+    "org": "U.S. National Park Service",
+    "url": "https://www.nps.gov/articles/000/wolves-and-the-ecology-of-fear.htm"
+   },
+   "lesMer": {
+    "tittel": "Pollinator Science",
+    "org": "U.S. Geological Survey",
+    "url": "https://www.usgs.gov/programs/ecosystems/science/pollinators"
+   },
+   "tags": [
+    "wolves",
+    "food webs",
+    "behavior"
+   ],
+   "seed": {
+    "likes": 5886,
+    "comments": 229,
+    "saves": 1136,
+    "shares": 311
+   }
+  },
+  {
+   "id": "POST-066",
+   "rekkefolge": 66,
+   "opprettet": "2026-07-17T14:00:00",
+   "posterId": "P020",
+   "kategori": "Natur",
+   "underkategori": "Kyster",
+   "serie": "Havets overraskelser",
+   "tittel": "Mangroverøtter kan dempe bølgeenergi og fange sedimenter",
+   "hook": "En skog kan fungere som levende kystinfrastruktur.",
+   "sammendrag": "Tette mangroverøtter bremser vann, fanger sedimenter og gir levested. Mangrovebelter kan dempe noe bølge- og stormpåvirkning, selv om beskyttelsen avhenger av stormstyrke og lokale forhold.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 30,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Koble mangrovetrekket til nytten sin.",
+    "options": [
+     {
+      "left": "Tette røtter",
+      "right": "Bremser vann og fanger sedimenter"
+     },
+     {
+      "left": "Oppvekstområde",
+      "right": "Gir ly til yngel"
+     },
+     {
+      "left": "Kystvegetasjon",
+      "right": "Lagrer karbon og stabiliserer strandlinjer"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Tette røtter",
+      "right": "Bremser vann og fanger sedimenter"
+     },
+     {
+      "left": "Oppvekstområde",
+      "right": "Gir ly til yngel"
+     },
+     {
+      "left": "Kystvegetasjon",
+      "right": "Lagrer karbon og stabiliserer strandlinjer"
+     }
+    ],
+    "explanation": "Mangrover kombinerer økologisk levested med fysiske kystfunksjoner.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "Mangroves",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/ecosystems/mangroves/"
+   },
+   "lesMer": {
+    "tittel": "Hurricanes",
+    "org": "NOAA",
+    "url": "https://www.noaa.gov/education/resource-collections/weather-atmosphere/hurricanes"
+   },
+   "tags": [
+    "mangroves",
+    "coasts",
+    "habitat"
+   ],
+   "seed": {
+    "likes": 3797,
+    "comments": 132,
+    "saves": 593,
+    "shares": 270
+   }
+  },
+  {
+   "id": "POST-067",
+   "rekkefolge": 67,
+   "opprettet": "2026-07-17T20:00:00",
+   "posterId": "P021",
+   "kategori": "Natur",
+   "underkategori": "Migrasjon",
+   "serie": "Dyrenes reiser",
+   "tittel": "Hvalvandringer knytter sammen beite- og yngleområder",
+   "hook": "Noen av de største dyrene gjør noen av de lengste sesongreisene.",
+   "sammendrag": "Mange hvalbestander vandrer mellom produktive beiteområder på høye breddegrader og varmere yngle- eller kalvingsområder. Rutene varierer med art og bestand.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 40,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Koble sesongstedet til den vanlige rollen for mange trekkende hvaler.",
+    "options": [
+     {
+      "card_a": "Farvann på høye breddegrader",
+      "card_b": "Intens beiting"
+     },
+     {
+      "card_a": "Varmere farvann",
+      "card_b": "Yngling eller kalving"
+     },
+     {
+      "card_a": "Trekkorridor",
+      "card_b": "Reise mellom sesonghabitater"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Farvann på høye breddegrader",
+      "card_b": "Intens beiting"
+     },
+     {
+      "card_a": "Varmere farvann",
+      "card_b": "Yngling eller kalving"
+     },
+     {
+      "card_a": "Trekkorridor",
+      "card_b": "Reise mellom sesonghabitater"
+     }
+    ],
+    "explanation": "Vandring lar hvaler bruke ulike leveområder til ulike livsfaser.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "Whales",
+    "org": "NOAA Fisheries",
+    "url": "https://www.fisheries.noaa.gov/whales"
+   },
+   "lesMer": {
+    "tittel": "Ocean Currents",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/education/tutorial_currents/"
+   },
+   "tags": [
+    "whales",
+    "migration",
+    "ocean"
+   ],
+   "seed": {
+    "likes": 5641,
+    "comments": 284,
+    "saves": 1464,
+    "shares": 289
+   }
+  },
+  {
+   "id": "POST-068",
+   "rekkefolge": 68,
+   "opprettet": "2026-07-18T02:00:00",
+   "posterId": "P021",
+   "kategori": "Natur",
+   "underkategori": "Fuglenavigasjon",
+   "serie": "Dyrenes reiser",
+   "tittel": "Trekkfugler kombinerer flere navigasjonssignaler",
+   "hook": "Himmelen, landskapet og jordas magnetfelt kan alle bidra.",
+   "sammendrag": "Fugler kan bruke sola, stjernene, landemerker, lukter og magnetisk informasjon. Ulike arter og livsfaser stoler på ulike kombinasjoner.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 15,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Alle trekkfugler navigerer med bare ett innebygd kompass.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Fuglenavigasjon kombinerer ofte flere sansesignaler og lært informasjon.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Bird Migration",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/science/migration-animal/Birds"
+   },
+   "lesMer": {
+    "tittel": "Pollinator Science",
+    "org": "U.S. Geological Survey",
+    "url": "https://www.usgs.gov/programs/ecosystems/science/pollinators"
+   },
+   "tags": [
+    "birds",
+    "migration",
+    "navigation"
+   ],
+   "seed": {
+    "likes": 3618,
+    "comments": 384,
+    "saves": 1145,
+    "shares": 80
+   }
+  },
+  {
+   "id": "POST-069",
+   "rekkefolge": 69,
+   "opprettet": "2026-07-18T08:00:00",
+   "posterId": "P019",
+   "kategori": "Natur",
+   "underkategori": "Skog og klima",
+   "serie": "Stille systemer",
+   "tittel": "Skoger flytter karbon mellom luft, ved og jord",
+   "hook": "En skog er både et levende karbonlager og en aktiv karbonutveksling.",
+   "sammendrag": "Planter tar opp karbondioksid gjennom fotosyntese og lagrer karbon i biomasse. Respirasjon, nedbryting, brann og endret arealbruk fører karbon tilbake til atmosfæren.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 35,
+   "xp": 120,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Sett én forenklet karbonbane i skogen i rekkefølge.",
+    "options": [
+     "Treet tar opp karbondioksid",
+     "Karbon blir plantevev",
+     "Blader eller ved dør",
+     "Nedbryting frigjør noe karbon"
+    ],
+    "correct_answer": [
+     "Treet tar opp karbondioksid",
+     "Karbon blir plantevev",
+     "Blader eller ved dør",
+     "Nedbryting frigjør noe karbon"
+    ],
+    "explanation": "Skogens karbon beveger seg stadig gjennom vekst, død og nedbryting.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Forests and the Carbon Cycle",
+    "org": "NASA Earth Observatory",
+    "url": "https://earthobservatory.nasa.gov/features/CarbonCycle/page4.php"
+   },
+   "lesMer": {
+    "tittel": "Photosynthesis",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/science/photosynthesis"
+   },
+   "tags": [
+    "forests",
+    "carbon",
+    "climate"
+   ],
+   "seed": {
+    "likes": 1427,
+    "comments": 176,
+    "saves": 703,
+    "shares": 55
+   }
+  },
+  {
+   "id": "POST-070",
+   "rekkefolge": 70,
+   "opprettet": "2026-07-18T14:00:00",
+   "posterId": "P020",
+   "kategori": "Natur",
+   "underkategori": "Havskilpadder",
+   "serie": "Havets overraskelser",
+   "tittel": "Redetemperaturen kan påvirke kjønnet til havskilpaddeunger",
+   "hook": "For mange havskilpadder gir varmere sand som regel flere hunner.",
+   "sammendrag": "Havskilpadder har temperaturbestemt kjønn. Sammenhengen varierer mellom arter og redeforhold, og ekstrem varme kan senke overlevelsen.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 25,
+   "xp": 120,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "En hekkestrand blir jevnt varmere. Hvilken tendens kan oppstå i mange havskilpaddebestander?",
+    "options": [
+     "En høyere andel hunnunger",
+     "Alle unger blir pattedyr",
+     "Egg trenger ikke lenger oksygen"
+    ],
+    "correct_answer": "En høyere andel hunnunger",
+    "explanation": "Rugetemperaturen påvirker kjønnsbestemmelsen hos havskilpadder.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Sea Turtles",
+    "org": "NOAA Fisheries",
+    "url": "https://www.fisheries.noaa.gov/sea-turtles"
+   },
+   "lesMer": {
+    "tittel": "Climate Change Impacts",
+    "org": "NOAA",
+    "url": "https://www.noaa.gov/education/resource-collections/climate/climate-change-impacts"
+   },
+   "tags": [
+    "sea turtles",
+    "temperature",
+    "reproduction"
+   ],
+   "seed": {
+    "likes": 3098,
+    "comments": 138,
+    "saves": 372,
+    "shares": 66
+   }
+  },
+  {
+   "id": "POST-071",
+   "rekkefolge": 71,
+   "opprettet": "2026-07-18T20:00:00",
+   "posterId": "P022",
+   "kategori": "Verden",
+   "underkategori": "Tid og lengdegrad",
+   "serie": "Hvorfor steder fungerer",
+   "tittel": "Tidssoner tilnærmer jordas rotasjon",
+   "hook": "Lokal middag flytter seg mens jorda snurrer, men grenser gjør kartet rotete.",
+   "sammendrag": "Jorda roterer én gang i døgnet, så soltiden endrer seg med lengdegrad. Standard tidssoner forenkler koordinering og bøyer seg ofte rundt politiske grenser.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Hvorfor finnes standard tidssoner?",
+    "options": [
+     "For å samordne klokketid på tvers av regioner mens jorda roterer",
+     "Fordi tyngdekraften endrer seg hver time",
+     "For å holde alle steder på lokal middag",
+     "Fordi månen krever det"
+    ],
+    "correct_answer": "For å samordne klokketid på tvers av regioner mens jorda roterer",
+    "explanation": "Tidssoner standardiserer lokal tid i stedet for at hver lengdegrad bruker en egen klokke.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "World Time Scales and Time Zones",
+    "org": "NIST",
+    "url": "https://www.nist.gov/pml/time-and-frequency-division/popular-links/time-frequency-z/time-zones"
+   },
+   "lesMer": {
+    "tittel": "Solar System Exploration",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/solar-system/"
+   },
+   "tags": [
+    "time zones",
+    "longitude",
+    "rotation"
+   ],
+   "seed": {
+    "likes": 284,
+    "comments": 162,
+    "saves": 1289,
+    "shares": 192
+   }
+  },
+  {
+   "id": "POST-072",
+   "rekkefolge": 72,
+   "opprettet": "2026-07-19T02:00:00",
+   "posterId": "P022",
+   "kategori": "Verden",
+   "underkategori": "Klimamønstre",
+   "serie": "Værsystemer",
+   "tittel": "En monsun er et sesongmessig vindskifte — ikke bare kraftig regn",
+   "hook": "Regnet er en følge av en større endring i sirkulasjonen.",
+   "sammendrag": "Monsunsystemer innebærer sesongmessige omslag eller skift i vinder knyttet til varmeforskjeller mellom land og hav. Disse skiftene kan gi tydelige våt- og tørrsesonger.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 18,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "En monsun er i bunn og grunn et sesongmessig skifte i storskala ____.",
+    "options": [
+     "vinder",
+     "fjellhøyde",
+     "kun havets saltholdighet"
+    ],
+    "correct_answer": "vinder",
+    "explanation": "Sesongmessige vindskift frakter fuktighet og bidrar til å organisere nedbøren.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "North American Monsoon",
+    "org": "NOAA",
+    "url": "https://www.climate.gov/news-features/blogs/enso/north-american-monsoon"
+   },
+   "lesMer": {
+    "tittel": "Hurricanes",
+    "org": "NOAA",
+    "url": "https://www.noaa.gov/education/resource-collections/weather-atmosphere/hurricanes"
+   },
+   "tags": [
+    "monsoon",
+    "wind",
+    "rain"
+   ],
+   "seed": {
+    "likes": 2023,
+    "comments": 115,
+    "saves": 1249,
+    "shares": 133
+   }
+  },
+  {
+   "id": "POST-073",
+   "rekkefolge": 73,
+   "opprettet": "2026-07-19T08:00:00",
+   "posterId": "P022",
+   "kategori": "Verden",
+   "underkategori": "Elver",
+   "serie": "Hvorfor steder fungerer",
+   "tittel": "Elvedeltaer dannes der sedimenter hoper seg opp nær elvemunningen",
+   "hook": "En elv kan bygge nytt land når den bremser opp.",
+   "sammendrag": "Når en elv når en innsjø eller et hav, mister strømmen ofte energi og slipper sedimenter. Kanaler deler seg og vandrer over det voksende deltaet.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Sett en forenklet deltabyggingsprosess i rekkefølge.",
+    "options": [
+     "Elva frakter sedimenter",
+     "Strømmen bremser nær kysten",
+     "Sedimentene legger seg",
+     "Kanaler deler seg over nye avleiringer"
+    ],
+    "correct_answer": [
+     "Elva frakter sedimenter",
+     "Strømmen bremser nær kysten",
+     "Sedimentene legger seg",
+     "Kanaler deler seg over nye avleiringer"
+    ],
+    "explanation": "Deltaer vokser når tilførselen av sedimenter overgår det som fjernes av bølger, tidevann og synking.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "River Deltas and Coastal Change",
+    "org": "NASA Earth Observatory",
+    "url": "https://earthobservatory.nasa.gov/"
+   },
+   "lesMer": {
+    "tittel": "Ocean Currents",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/education/tutorial_currents/"
+   },
+   "tags": [
+    "rivers",
+    "deltas",
+    "sediment"
+   ],
+   "seed": {
+    "likes": 826,
+    "comments": 337,
+    "saves": 1095,
+    "shares": 347
+   }
+  },
+  {
+   "id": "POST-074",
+   "rekkefolge": 74,
+   "opprettet": "2026-07-19T14:00:00",
+   "posterId": "P023",
+   "kategori": "Verden",
+   "underkategori": "Byer",
+   "serie": "Folk på kartet",
+   "tittel": "De fleste bor nå i byområder",
+   "hook": "Menneskeheten har blitt stadig mer urban på få generasjoner.",
+   "sammendrag": "Urbanisering gjenspeiler migrasjon, befolkningsvekst og omklassifisering eller utvidelse av bosetninger. Mønsteret varierer sterkt mellom land og regioner.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "En region urbaniseres raskt. Hvilket press øker vanligvis?",
+    "options": [
+     "Etterspørsel etter bolig, transport og tjenester",
+     "Antallet tidssoner",
+     "Lengden på året"
+    ],
+    "correct_answer": "Etterspørsel etter bolig, transport og tjenester",
+    "explanation": "Rask byvekst krever infrastruktur, planlegging og offentlige tjenester.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Urbanization",
+    "org": "Our World in Data",
+    "url": "https://ourworldindata.org/urbanization"
+   },
+   "lesMer": {
+    "tittel": "Why We Conduct the Decennial Census",
+    "org": "U.S. Census Bureau",
+    "url": "https://www.census.gov/programs-surveys/decennial-census/about/why.html"
+   },
+   "tags": [
+    "urbanization",
+    "cities",
+    "population"
+   ],
+   "seed": {
+    "likes": 1735,
+    "comments": 284,
+    "saves": 1397,
+    "shares": 251
+   }
+  },
+  {
+   "id": "POST-075",
+   "rekkefolge": 75,
+   "opprettet": "2026-07-19T20:00:00",
+   "posterId": "P023",
+   "kategori": "Verden",
+   "underkategori": "Språk",
+   "serie": "Folk på kartet",
+   "tittel": "Språkfamilier gjenspeiler felles historisk opphav",
+   "hook": "Engelsk, hindi og norsk er fjerne slektninger.",
+   "sammendrag": "Lingvister sammenligner systematiske mønstre i ordforråd, lyder og grammatikk for å rekonstruere slektskap mellom språk. Lånord alene fastslår ikke opphav.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 40,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Koble språket til den brede familien sin.",
+    "options": [
+     {
+      "card_a": "Norsk",
+      "card_b": "Indoeuropeisk"
+     },
+     {
+      "card_a": "Finsk",
+      "card_b": "Uralsk"
+     },
+     {
+      "card_a": "Arabisk",
+      "card_b": "Afroasiatisk"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Norsk",
+      "card_b": "Indoeuropeisk"
+     },
+     {
+      "card_a": "Finsk",
+      "card_b": "Uralsk"
+     },
+     {
+      "card_a": "Arabisk",
+      "card_b": "Afroasiatisk"
+     }
+    ],
+    "explanation": "Språkfamilier bygger på historisk avstamning, ikke geografisk nærhet alene.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "Language Families",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/language/Classification-of-languages"
+   },
+   "lesMer": {
+    "tittel": "Oral Traditions and Expressions",
+    "org": "UNESCO",
+    "url": "https://ich.unesco.org/en/oral-traditions-and-expressions-00053"
+   },
+   "tags": [
+    "languages",
+    "families",
+    "linguistics"
+   ],
+   "seed": {
+    "likes": 2918,
+    "comments": 13,
+    "saves": 813,
+    "shares": 103
+   }
+  },
+  {
+   "id": "POST-076",
+   "rekkefolge": 76,
+   "opprettet": "2026-07-20T02:00:00",
+   "posterId": "P022",
+   "kategori": "Verden",
+   "underkategori": "Fjell og vær",
+   "serie": "Værsystemer",
+   "tittel": "Fjell kan skape en våt og en tørr side",
+   "hook": "Luft som klatrer opp et fjell kan miste fuktighet før den synker igjen.",
+   "sammendrag": "Fuktig luft kjøles når den stiger, noe som øker kondensasjon og nedbør. Synkende luft på lesiden varmes opp og tørker, og skaper en regnskygge.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 30,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Koble fjellsiden til den typiske tilstanden sin.",
+    "options": [
+     {
+      "left": "Losiden",
+      "right": "Luft stiger og blir ofte fuktigere"
+     },
+     {
+      "left": "Lesiden",
+      "right": "Luft synker og blir ofte tørrere"
+     },
+     {
+      "left": "Toppen",
+      "right": "Lufttrykk og temperatur er lavere"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Losiden",
+      "right": "Luft stiger og blir ofte fuktigere"
+     },
+     {
+      "left": "Lesiden",
+      "right": "Luft synker og blir ofte tørrere"
+     },
+     {
+      "left": "Toppen",
+      "right": "Lufttrykk og temperatur er lavere"
+     }
+    ],
+    "explanation": "Terreng styrer luftstrømmen og endrer temperatur og fuktighet.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "Rain Shadow",
+    "org": "National Weather Service",
+    "url": "https://www.weather.gov/"
+   },
+   "lesMer": {
+    "tittel": "The Water Cycle",
+    "org": "NOAA",
+    "url": "https://www.noaa.gov/education/resource-collections/freshwater/water-cycle"
+   },
+   "tags": [
+    "rain shadow",
+    "mountains",
+    "weather"
+   ],
+   "seed": {
+    "likes": 5870,
+    "comments": 81,
+    "saves": 857,
+    "shares": 356
+   }
+  },
+  {
+   "id": "POST-077",
+   "rekkefolge": 77,
+   "opprettet": "2026-07-20T08:00:00",
+   "posterId": "P022",
+   "kategori": "Verden",
+   "underkategori": "Naturfarer",
+   "serie": "Hvorfor steder fungerer",
+   "tittel": "De fleste jordskjelv klumper seg nær plategrenser",
+   "hook": "Verdenskartet over jordskjelv tegner opp jordas bevegelige plater.",
+   "sammendrag": "Spenninger bygger seg opp der plater støter sammen, skiller lag eller glir forbi hverandre. Når forkastninger glir, frigjøres lagret elastisk energi som seismiske bølger.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Jordskjelv skjer tilfeldig og har ingen sammenheng med plategrenser.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Jordskjelv klumper seg sterkt langs tektoniske plategrenser, selv om det også finnes jordskjelv inne på platene.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Earthquake Hazards Program",
+    "org": "U.S. Geological Survey",
+    "url": "https://www.usgs.gov/programs/earthquake-hazards"
+   },
+   "lesMer": {
+    "tittel": "This Dynamic Earth: The Story of Plate Tectonics",
+    "org": "U.S. Geological Survey",
+    "url": "https://pubs.usgs.gov/gip/dynamic/"
+   },
+   "tags": [
+    "earthquakes",
+    "plates",
+    "hazards"
+   ],
+   "seed": {
+    "likes": 5530,
+    "comments": 201,
+    "saves": 398,
+    "shares": 88
+   }
+  },
+  {
+   "id": "POST-078",
+   "rekkefolge": 78,
+   "opprettet": "2026-07-20T14:00:00",
+   "posterId": "P022",
+   "kategori": "Verden",
+   "underkategori": "Hav og klima",
+   "serie": "Værsystemer",
+   "tittel": "Havstrømmer fordeler varme rundt planeten",
+   "hook": "En strøm kan forme klimaet tusenvis av kilometer unna.",
+   "sammendrag": "Vind, tetthetsforskjeller, jordas rotasjon og bassengformer driver havsirkulasjonen. Strømmer frakter varmt og kaldt vann og påvirker regionalt vær og økosystemer.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 40,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Koble strømegenskapen til effekten sin.",
+    "options": [
+     {
+      "card_a": "Varm strøm",
+      "card_b": "Frakter varme mot kaldere områder"
+     },
+     {
+      "card_a": "Kald strøm",
+      "card_b": "Fører kaldere vann mot lavere breddegrader"
+     },
+     {
+      "card_a": "Oppvelling",
+      "card_b": "Løfter opp næringsrikt dypvann"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Varm strøm",
+      "card_b": "Frakter varme mot kaldere områder"
+     },
+     {
+      "card_a": "Kald strøm",
+      "card_b": "Fører kaldere vann mot lavere breddegrader"
+     },
+     {
+      "card_a": "Oppvelling",
+      "card_b": "Løfter opp næringsrikt dypvann"
+     }
+    ],
+    "explanation": "Havsirkulasjonen flytter både varme og næringsstoffer.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "Ocean Currents",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/education/tutorial_currents/"
+   },
+   "lesMer": {
+    "tittel": "Climate Change Impacts",
+    "org": "NOAA",
+    "url": "https://www.noaa.gov/education/resource-collections/climate/climate-change-impacts"
+   },
+   "tags": [
+    "ocean currents",
+    "climate",
+    "upwelling"
+   ],
+   "seed": {
+    "likes": 893,
+    "comments": 336,
+    "saves": 822,
+    "shares": 69
+   }
+  },
+  {
+   "id": "POST-079",
+   "rekkefolge": 79,
+   "opprettet": "2026-07-20T20:00:00",
+   "posterId": "P024",
+   "kategori": "Samfunn",
+   "underkategori": "Økonomi og institusjoner",
+   "serie": "Felles systemer",
+   "tittel": "Fellesgoder er vanskelige å utestenge folk fra å bruke",
+   "hook": "Gatelys virker også for noen som ikke betalte direkte ved lyktestolpen.",
+   "sammendrag": "Fellesgoder beskrives ofte som ikke-ekskluderbare og ikke-rivaliserende: folk kan ikke lett hindres fra å nyte godt av dem, og én persons bruk reduserer kanskje ikke en annens.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 30,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Koble fellesgode-egenskapen til betydningen sin.",
+    "options": [
+     {
+      "left": "Ikke-ekskluderbar",
+      "right": "Vanskelig å hindre tilgang"
+     },
+     {
+      "left": "Ikke-rivaliserende",
+      "right": "Én persons bruk reduserer ikke vesentlig en annens"
+     },
+     {
+      "left": "Gratispassasjer-problemet",
+      "right": "Å nyte godt uten å bidra"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Ikke-ekskluderbar",
+      "right": "Vanskelig å hindre tilgang"
+     },
+     {
+      "left": "Ikke-rivaliserende",
+      "right": "Én persons bruk reduserer ikke vesentlig en annens"
+     },
+     {
+      "left": "Gratispassasjer-problemet",
+      "right": "Å nyte godt uten å bidra"
+     }
+    ],
+    "explanation": "Disse egenskapene gjør frivillig privat framskaffelse vanskelig i noen tilfeller.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "Public Goods",
+    "org": "International Monetary Fund",
+    "url": "https://www.imf.org/external/pubs/ft/fandd/basics/54-public-goods.htm"
+   },
+   "lesMer": {
+    "tittel": "Tragedy of the Commons",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/science/tragedy-of-the-commons"
+   },
+   "tags": [
+    "public goods",
+    "institutions",
+    "economics"
+   ],
+   "seed": {
+    "likes": 5475,
+    "comments": 126,
+    "saves": 911,
+    "shares": 92
+   }
+  },
+  {
+   "id": "POST-080",
+   "rekkefolge": 80,
+   "opprettet": "2026-07-21T02:00:00",
+   "posterId": "P024",
+   "kategori": "Samfunn",
+   "underkategori": "Shared resources",
+   "serie": "Felles systemer",
+   "tittel": "En felles ressurs kan tømmes selv når hver enkelt handler rasjonelt",
+   "hook": "Gruppen taper når alle følger det samme kortsiktige insentivet.",
+   "sammendrag": "Allmenningens tragedie beskriver situasjoner der enkeltpersoner overforbruker en felles, begrenset ressurs fordi gevinsten er privat mens kostnaden fordeles på gruppen.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Fiskere kan ta ubegrenset med fisk fra én felles innsjø. Hva kan skje uten samordning?",
+    "options": [
+     "Fiskebestanden kan bli tømt",
+     "Innsjøen lager automatisk uendelig med fisk",
+     "Alle fanger alltid mer for alltid"
+    ],
+    "correct_answer": "Fiskebestanden kan bli tømt",
+    "explanation": "Ukoordinert uttak kan overgå ressursens evne til å komme seg.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Tragedy of the Commons",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/science/tragedy-of-the-commons"
+   },
+   "lesMer": {
+    "tittel": "Public Goods",
+    "org": "International Monetary Fund",
+    "url": "https://www.imf.org/external/pubs/ft/fandd/basics/54-public-goods.htm"
+   },
+   "tags": [
+    "commons",
+    "resources",
+    "cooperation"
+   ],
+   "seed": {
+    "likes": 3624,
+    "comments": 128,
+    "saves": 461,
+    "shares": 18
+   }
+  },
+  {
+   "id": "POST-081",
+   "rekkefolge": 81,
+   "opprettet": "2026-07-21T08:00:00",
+   "posterId": "P025",
+   "kategori": "Samfunn",
+   "underkategori": "Feilinformasjon",
+   "serie": "Sjekk signalet",
+   "tittel": "Gjentatte påstander kan føles sannere — selv uten nye bevis",
+   "hook": "Det kjente er ikke det samme som det korrekte.",
+   "sammendrag": "Illusorisk sannhets-effekten oppstår når gjentakelse øker opplevd sannhet. Å sjekke det opprinnelige beviset og kilden er viktig selv når en påstand føles kjent.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "En påstand blir mer nøyaktig bare fordi du har sett den mange ganger.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Gjentakelse kan øke gjenkjennelse og opplevd sannhet uten å bedre nøyaktigheten.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "The Illusory Truth Effect",
+    "org": "PubMed Central / NIH",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8116821/"
+   },
+   "lesMer": {
+    "tittel": "Memory Is More Than a Mental Video Recorder",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/news/podcasts/speaking-of-psychology/memory"
+   },
+   "tags": [
+    "misinformation",
+    "repetition",
+    "media literacy"
+   ],
+   "seed": {
+    "likes": 379,
+    "comments": 192,
+    "saves": 1413,
+    "shares": 273
+   }
+  },
+  {
+   "id": "POST-082",
+   "rekkefolge": 82,
+   "opprettet": "2026-07-21T14:00:00",
+   "posterId": "P024",
+   "kategori": "Samfunn",
+   "underkategori": "Sosial atferd",
+   "serie": "Felles systemer",
+   "tittel": "Folk bruker andres atferd som informasjon om hva som er normalt",
+   "hook": "Et velfylt tipsglass kan endre hva den neste personen gjør.",
+   "sammendrag": "Sosiale normer påvirker valg ved å signalisere hva andre vanligvis gjør eller godtar. Normbudskap kan hjelpe eller slå tilbake avhengig av hvordan de rammes inn.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Hva er en sosial norm?",
+    "options": [
+     "En oppfatning om hva andre gjør eller godtar",
+     "En tyngdelov",
+     "Bare et privat minne",
+     "En type værfront"
+    ],
+    "correct_answer": "En oppfatning om hva andre gjør eller godtar",
+    "explanation": "Normer styrer atferd gjennom opplevde forventninger og vanlig praksis.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Social Influence",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/topics/social-influence"
+   },
+   "lesMer": {
+    "tittel": "The Illusory Truth Effect",
+    "org": "PubMed Central / NIH",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8116821/"
+   },
+   "tags": [
+    "social norms",
+    "behavior",
+    "groups"
+   ],
+   "seed": {
+    "likes": 1476,
+    "comments": 14,
+    "saves": 741,
+    "shares": 308
+   }
+  },
+  {
+   "id": "POST-083",
+   "rekkefolge": 83,
+   "opprettet": "2026-07-21T20:00:00",
+   "posterId": "P025",
+   "kategori": "Samfunn",
+   "underkategori": "Plattformdesign",
+   "serie": "Sjekk signalet",
+   "tittel": "Anbefalingssystemer optimaliserer for valgte signaler",
+   "hook": "Feeden viser det systemet forutsier vil nå målet sitt.",
+   "sammendrag": "Plattformer rangerer innhold ut fra mange signaler som tidligere samhandling, ferskhet og forventet engasjement. Målet designerne velger, former hva som forsterkes.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 18,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "En anbefalingsalgoritme rangerer innhold etter utvalgte data og et optimaliserings____.",
+    "options": [
+     "mål",
+     "værsystem",
+     "moralsk instinkt"
+    ],
+    "correct_answer": "mål",
+    "explanation": "Systemets mål — som forventet engasjement — former anbefalingene sterkt.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "Algorithms in Social Media Platforms",
+    "org": "Pew Research Center",
+    "url": "https://www.pewresearch.org/internet/"
+   },
+   "lesMer": {
+    "tittel": "Artificial Intelligence",
+    "org": "NIST",
+    "url": "https://www.nist.gov/artificial-intelligence"
+   },
+   "tags": [
+    "algorithms",
+    "social media",
+    "engagement"
+   ],
+   "seed": {
+    "likes": 2629,
+    "comments": 279,
+    "saves": 796,
+    "shares": 97
+   }
+  },
+  {
+   "id": "POST-084",
+   "rekkefolge": 84,
+   "opprettet": "2026-07-22T02:00:00",
+   "posterId": "P024",
+   "kategori": "Samfunn",
+   "underkategori": "Befolkningsdata",
+   "serie": "Felles systemer",
+   "tittel": "En folketelling støtter representasjon og offentlig planlegging",
+   "hook": "Å telle folk endrer hvordan ressurser og politiske plasser fordeles.",
+   "sammendrag": "Befolkningstall former valgrepresentasjon, tilskuddsformler, infrastrukturplanlegging og demografisk analyse. God dekning er viktig fordi grupper som utelates, forvrenger beslutninger.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 40,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Koble folketellingsbruken til resultatet sitt.",
+    "options": [
+     {
+      "card_a": "Representasjon",
+      "card_b": "Fordeling av politiske plasser"
+     },
+     {
+      "card_a": "Planlegging",
+      "card_b": "Anslag for skoler, transport og tjenester"
+     },
+     {
+      "card_a": "Forskning",
+      "card_b": "Befolknings- og demografistatistikk"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Representasjon",
+      "card_b": "Fordeling av politiske plasser"
+     },
+     {
+      "card_a": "Planlegging",
+      "card_b": "Anslag for skoler, transport og tjenester"
+     },
+     {
+      "card_a": "Forskning",
+      "card_b": "Befolknings- og demografistatistikk"
+     }
+    ],
+    "explanation": "Folketellingsdata blir infrastruktur for mange offentlige beslutninger.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "Why We Conduct the Decennial Census",
+    "org": "U.S. Census Bureau",
+    "url": "https://www.census.gov/programs-surveys/decennial-census/about/why.html"
+   },
+   "lesMer": {
+    "tittel": "Urbanization",
+    "org": "Our World in Data",
+    "url": "https://ourworldindata.org/urbanization"
+   },
+   "tags": [
+    "census",
+    "population",
+    "planning"
+   ],
+   "seed": {
+    "likes": 1150,
+    "comments": 141,
+    "saves": 1201,
+    "shares": 208
+   }
+  },
+  {
+   "id": "POST-085",
+   "rekkefolge": 85,
+   "opprettet": "2026-07-22T08:00:00",
+   "posterId": "P027",
+   "kategori": "Kultur",
+   "underkategori": "Musikkhistorie",
+   "serie": "Hør historien",
+   "tittel": "Bluesen bidro til å forme rock, jazz og populærmusikk",
+   "hook": "En kort musikalsk form ble et fundament for lyder over hele verden.",
+   "sammendrag": "Bluestradisjoner vokste fram fra afroamerikansk musikkpraksis og historie. Blueshamonier, frasering, rytme og uttrykksteknikker påvirket mange senere sjangre.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 30,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Koble det musikalske elementet til rollen sin.",
+    "options": [
+     {
+      "left": "Rop og svar",
+      "right": "Vekslende musikalske fraser"
+     },
+     {
+      "left": "Blånoter",
+      "right": "Uttrykksfullt endrede tonehøyder"
+     },
+     {
+      "left": "Tolvtakters form",
+      "right": "Vanlig gjentakende harmonisk struktur"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Rop og svar",
+      "right": "Vekslende musikalske fraser"
+     },
+     {
+      "left": "Blånoter",
+      "right": "Uttrykksfullt endrede tonehøyder"
+     },
+     {
+      "left": "Tolvtakters form",
+      "right": "Vanlig gjentakende harmonisk struktur"
+     }
+    ],
+    "explanation": "Bluesen er ikke én fast lyd, men disse elementene ble svært innflytelsesrike.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "The Blues",
+    "org": "Smithsonian Folkways",
+    "url": "https://folkways.si.edu/the-blues"
+   },
+   "lesMer": {
+    "tittel": "Motion Picture",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/art/motion-picture"
+   },
+   "tags": [
+    "blues",
+    "music",
+    "African American history"
+   ],
+   "seed": {
+    "likes": 3135,
+    "comments": 340,
+    "saves": 1555,
+    "shares": 152
+   }
+  },
+  {
+   "id": "POST-086",
+   "rekkefolge": 86,
+   "opprettet": "2026-07-22T14:00:00",
+   "posterId": "P026",
+   "kategori": "Kultur",
+   "underkategori": "Kunsthistorie",
+   "serie": "Slik virker bilder",
+   "tittel": "Linjeperspektiv skaper illusjon av dybde på en flat overflate",
+   "hook": "Parallelle linjer kan se ut til å møtes i et forsvinningspunkt.",
+   "sammendrag": "Renessansekunstnere formaliserte geometriske systemer som avbildet tredimensjonalt rom på todimensjonale flater. Perspektivet forvandlet arkitektur, maleri og visuell fortelling.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 18,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "I linjeperspektiv ser parallelle linjer som fjerner seg ut til å møtes i et ____-punkt.",
+    "options": [
+     "forsvinnings",
+     "kokende",
+     "musikalsk"
+    ],
+    "correct_answer": "forsvinnings",
+    "explanation": "Forsvinningspunktet organiserer den visuelle illusjonen av dybde.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "Renaissance Art and Perspective",
+    "org": "The Metropolitan Museum of Art",
+    "url": "https://www.metmuseum.org/toah/hd/reni/hd_reni.htm"
+   },
+   "lesMer": {
+    "tittel": "Motion Picture",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/art/motion-picture"
+   },
+   "tags": [
+    "Renaissance",
+    "perspective",
+    "art"
+   ],
+   "seed": {
+    "likes": 1057,
+    "comments": 225,
+    "saves": 49,
+    "shares": 167
+   }
+  },
+  {
+   "id": "POST-087",
+   "rekkefolge": 87,
+   "opprettet": "2026-07-22T20:00:00",
+   "posterId": "P026",
+   "kategori": "Kultur",
+   "underkategori": "Muntlig arv",
+   "serie": "Levende kultur",
+   "tittel": "Muntlige tradisjoner er levende praksis, ikke frosne opptak",
+   "hook": "En fortelling kan forbli gjenkjennelig samtidig som den endrer seg fra gang til gang.",
+   "sammendrag": "Muntlige tradisjoner overfører historie, kunnskap, identitet og kunstnerisk uttrykk gjennom framføring. Variasjon er ofte en del av tradisjonen, ikke en feil.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 15,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "En muntlig tradisjon er ekte bare hvis hver forteller gjentar nøyaktig de samme ordene.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Mange muntlige tradisjoner tilpasses i framføringen samtidig som de bevarer temaer, strukturer eller felles mening.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Oral Traditions and Expressions",
+    "org": "UNESCO",
+    "url": "https://ich.unesco.org/en/oral-traditions-and-expressions-00053"
+   },
+   "lesMer": {
+    "tittel": "Language Families",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/language/Classification-of-languages"
+   },
+   "tags": [
+    "oral tradition",
+    "storytelling",
+    "heritage"
+   ],
+   "seed": {
+    "likes": 624,
+    "comments": 43,
+    "saves": 1082,
+    "shares": 41
+   }
+  },
+  {
+   "id": "POST-088",
+   "rekkefolge": 88,
+   "opprettet": "2026-07-23T02:00:00",
+   "posterId": "P026",
+   "kategori": "Kultur",
+   "underkategori": "Mediehistorie",
+   "serie": "Levende kultur",
+   "tittel": "Boktrykk endret hvem som kunne mangfoldiggjøre og spre idéer",
+   "hook": "Mediet endret hastighet, skala og jevnhet.",
+   "sammendrag": "Trykte bøker, pamfletter og aviser lot tekster sirkulere bredere og jevnere. Tilgangen var fortsatt ulik, men kommunikasjonsnettverkene vokste.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Et samfunn får billigere, raskere boktrykk. Hva er et sannsynlig resultat?",
+    "options": [
+     "Raskere spredning av tekster og argumenter",
+     "Talespråk forsvinner",
+     "Hver leser blir enig i den samme idéen"
+    ],
+    "correct_answer": "Raskere spredning av tekster og argumenter",
+    "explanation": "Boktrykk økte skala og hastighet i mangfoldiggjøringen uten å garantere enighet.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Printing and the Book Arts",
+    "org": "Library of Congress",
+    "url": "https://www.loc.gov/collections/"
+   },
+   "lesMer": {
+    "tittel": "Printing Press",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/technology/printing-press"
+   },
+   "tags": [
+    "printing",
+    "media",
+    "ideas"
+   ],
+   "seed": {
+    "likes": 4644,
+    "comments": 156,
+    "saves": 461,
+    "shares": 267
+   }
+  },
+  {
+   "id": "POST-089",
+   "rekkefolge": 89,
+   "opprettet": "2026-07-23T08:00:00",
+   "posterId": "P026",
+   "kategori": "Kultur",
+   "underkategori": "Film",
+   "serie": "Slik virker bilder",
+   "tittel": "Film skaper bevegelse fra en rekke stillbilder",
+   "hook": "Synssystemet ditt binder sammen raskt skiftende bilder.",
+   "sammendrag": "Film tar opp og viser bilde etter bilde raskt nok til at seeren oppfatter sammenhengende bevegelse. Bevegelsesoppfatning er mer sammensatt enn én enkel forklaring om synets treghet.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Sett den grunnleggende film-bevegelsesprosessen i rekkefølge.",
+    "options": [
+     "Kameraet tar opp bilde etter bilde",
+     "Bildene lagres som ruter",
+     "Projektor eller skjerm viser rutene raskt",
+     "Seeren oppfatter sammenhengende bevegelse"
+    ],
+    "correct_answer": [
+     "Kameraet tar opp bilde etter bilde",
+     "Bildene lagres som ruter",
+     "Projektor eller skjerm viser rutene raskt",
+     "Seeren oppfatter sammenhengende bevegelse"
+    ],
+    "explanation": "Levende bilder bygger på raske bildesekvenser og hjernens bevegelsesbehandling.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Motion Picture",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/art/motion-picture"
+   },
+   "lesMer": {
+    "tittel": "Memory Is More Than a Mental Video Recorder",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/news/podcasts/speaking-of-psychology/memory"
+   },
+   "tags": [
+    "film",
+    "frames",
+    "motion perception"
+   ],
+   "seed": {
+    "likes": 2306,
+    "comments": 241,
+    "saves": 1121,
+    "shares": 205
+   }
+  },
+  {
+   "id": "POST-090",
+   "rekkefolge": 90,
+   "opprettet": "2026-07-23T14:00:00",
+   "posterId": "P028",
+   "kategori": "Økonomi",
+   "underkategori": "Priser",
+   "serie": "Penger uten mystikk",
+   "tittel": "Inflasjon reduserer hva en pengeenhet kan kjøpe",
+   "hook": "Tallet på seddelen er det samme, mens kjøpekraften endrer seg.",
+   "sammendrag": "Inflasjon er en vedvarende økning i det generelle prisnivået. Enkeltpriser beveger seg ulikt, men bred inflasjon betyr at penger i snitt kjøper færre varer og tjenester.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Hva gjør bred inflasjon vanligvis med kjøpekraften?",
+    "options": [
+     "Reduserer den",
+     "Garanterer at hver lønn stiger likt",
+     "Gjør alle priser like",
+     "Fjerner knapphet"
+    ],
+    "correct_answer": "Reduserer den",
+    "explanation": "Når det generelle prisnivået stiger, kjøper et fast beløp mindre.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Inflation: Prices on the Rise",
+    "org": "International Monetary Fund",
+    "url": "https://www.imf.org/en/Publications/fandd/issues/Series/Back-to-Basics/Inflation"
+   },
+   "lesMer": {
+    "tittel": "What Are Supply and Demand?",
+    "org": "Federal Reserve Bank of St. Louis",
+    "url": "https://www.stlouisfed.org/open-vault/2020/january/what-is-supply-demand"
+   },
+   "tags": [
+    "inflation",
+    "prices",
+    "purchasing power"
+   ],
+   "seed": {
+    "likes": 3411,
+    "comments": 319,
+    "saves": 160,
+    "shares": 344
+   }
+  },
+  {
+   "id": "POST-091",
+   "rekkefolge": 91,
+   "opprettet": "2026-07-23T20:00:00",
+   "posterId": "P028",
+   "kategori": "Økonomi",
+   "underkategori": "Sparing",
+   "serie": "Penger uten mystikk",
+   "tittel": "Rentesrente gir avkastning på tidligere avkastning",
+   "hook": "Tid kan bli en del av investeringsmotoren.",
+   "sammendrag": "Med rentesrente legges gevinsten til saldoen og kan gi mer gevinst senere. Resultatet avhenger av rente, tid, gebyrer og om avkastningen er positiv.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Sett en enkel årlig rentesrente-syklus i rekkefølge.",
+    "options": [
+     "Start med en saldo",
+     "Få en avkastning",
+     "Legg avkastningen til saldoen",
+     "Neste periodes avkastning bruker den nye saldoen"
+    ],
+    "correct_answer": [
+     "Start med en saldo",
+     "Få en avkastning",
+     "Legg avkastningen til saldoen",
+     "Neste periodes avkastning bruker den nye saldoen"
+    ],
+    "explanation": "Rentesrente gjentar veksten på en saldo som stadig endrer seg.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Compound Interest Calculator and Explanation",
+    "org": "Investor.gov / U.S. SEC",
+    "url": "https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator"
+   },
+   "lesMer": {
+    "tittel": "Diversification",
+    "org": "Investor.gov / U.S. SEC",
+    "url": "https://www.investor.gov/introduction-investing/investing-basics/glossary/diversification"
+   },
+   "tags": [
+    "compound interest",
+    "saving",
+    "time"
+   ],
+   "seed": {
+    "likes": 5595,
+    "comments": 35,
+    "saves": 881,
+    "shares": 264
+   }
+  },
+  {
+   "id": "POST-092",
+   "rekkefolge": 92,
+   "opprettet": "2026-07-24T02:00:00",
+   "posterId": "P029",
+   "kategori": "Økonomi",
+   "underkategori": "Markeder",
+   "serie": "Markedsmekanikk",
+   "tittel": "Priser samordner tilbud og etterspørsel",
+   "hook": "En mangel sender informasjon til kjøpere og selgere.",
+   "sammendrag": "Når etterspørselen stiger i forhold til tilgjengelig tilbud, stiger prisene ofte, noe som oppmuntrer til mer tilbud eller mindre etterspørsel. Ekte markeder har også regler, forhandlingsmakt og forsinkelser.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Etterspørselen etter et produkt stiger raskt mens tilbudet ikke kan øke enda. Hva skjer vanligvis først?",
+    "options": [
+     "Prisen får press oppover",
+     "Produktet blir uendelig",
+     "Etterspørselen blir automatisk null"
+    ],
+    "correct_answer": "Prisen får press oppover",
+    "explanation": "Høyere etterspørsel mot fast kortsiktig tilbud skaper gjerne knapphet og prispress.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "What Are Supply and Demand?",
+    "org": "Federal Reserve Bank of St. Louis",
+    "url": "https://www.stlouisfed.org/open-vault/2020/january/what-is-supply-demand"
+   },
+   "lesMer": {
+    "tittel": "Inflation: Prices on the Rise",
+    "org": "International Monetary Fund",
+    "url": "https://www.imf.org/en/Publications/fandd/issues/Series/Back-to-Basics/Inflation"
+   },
+   "tags": [
+    "supply",
+    "demand",
+    "prices"
+   ],
+   "seed": {
+    "likes": 4978,
+    "comments": 211,
+    "saves": 1045,
+    "shares": 56
+   }
+  },
+  {
+   "id": "POST-093",
+   "rekkefolge": 93,
+   "opprettet": "2026-07-24T08:00:00",
+   "posterId": "P029",
+   "kategori": "Økonomi",
+   "underkategori": "Beslutninger",
+   "serie": "Markedsmekanikk",
+   "tittel": "Alternativkostnad er det beste alternativet du gir avkall på",
+   "hook": "Den reelle kostnaden ved en time er hva den timen ellers kunne ha gjort.",
+   "sammendrag": "Å velge ett alternativ bruker tid, penger eller ressurser som ikke kan brukes andre steder. Alternativkostnad fokuserer på det nest beste alternativet, ikke alle tenkelige.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 18,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "Alternativkostnaden ved et valg er verdien av det beste ____ alternativet.",
+    "options": [
+     "forsakede",
+     "identiske",
+     "umulige"
+    ],
+    "correct_answer": "forsakede",
+    "explanation": "Alternativkostnad måler det mest verdifulle alternativet man ikke valgte.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "Opportunity Cost",
+    "org": "Federal Reserve Education",
+    "url": "https://www.federalreserveeducation.org/about-the-fed/structure-and-functions/monetary-policy"
+   },
+   "lesMer": {
+    "tittel": "What Are Supply and Demand?",
+    "org": "Federal Reserve Bank of St. Louis",
+    "url": "https://www.stlouisfed.org/open-vault/2020/january/what-is-supply-demand"
+   },
+   "tags": [
+    "opportunity cost",
+    "choices",
+    "trade-offs"
+   ],
+   "seed": {
+    "likes": 6148,
+    "comments": 274,
+    "saves": 1217,
+    "shares": 262
+   }
+  },
+  {
+   "id": "POST-094",
+   "rekkefolge": 94,
+   "opprettet": "2026-07-24T14:00:00",
+   "posterId": "P028",
+   "kategori": "Økonomi",
+   "underkategori": "Risiko",
+   "serie": "Penger uten mystikk",
+   "tittel": "Diversifisering sprer eksponeringen på tvers av investeringer",
+   "hook": "Den reduserer konsentrasjonsrisiko — men fjerner ikke all risiko.",
+   "sammendrag": "Å holde ulike aktiva kan dempe virkningen av at én investering går dårlig. Samvariasjon betyr noe, og diversifisering kan ikke garantere gevinst eller hindre tap i hele markedet.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 15,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Diversifisering garanterer at en investeringsportefølje ikke kan tape penger.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Diversifisering kan redusere spesifikk konsentrasjonsrisiko, men brede markedstap og annen risiko består.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Diversification",
+    "org": "Investor.gov / U.S. SEC",
+    "url": "https://www.investor.gov/introduction-investing/investing-basics/glossary/diversification"
+   },
+   "lesMer": {
+    "tittel": "Compound Interest Calculator and Explanation",
+    "org": "Investor.gov / U.S. SEC",
+    "url": "https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator"
+   },
+   "tags": [
+    "diversification",
+    "risk",
+    "investing"
+   ],
+   "seed": {
+    "likes": 4515,
+    "comments": 409,
+    "saves": 342,
+    "shares": 311
+   }
+  },
+  {
+   "id": "POST-095",
+   "rekkefolge": 95,
+   "opprettet": "2026-07-24T20:00:00",
+   "posterId": "P031",
+   "kategori": "Hverdag",
+   "underkategori": "Baking",
+   "serie": "Kjøkkenlaboratoriet",
+   "tittel": "Brød hever fordi gjær lager karbondioksid",
+   "hook": "En deig er en elastisk struktur som fanger gass.",
+   "sammendrag": "Gjær bryter ned sukker og slipper ut karbondioksid. Gluten og andre deigstrukturer fanger boblene, mens stekingen setter den utvidede formen.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Sett hevingen av brød i rekkefølge.",
+    "options": [
+     "Gjæren bruker opp tilgjengelig sukker",
+     "Karbondioksid dannes",
+     "Deigen fanger de voksende boblene",
+     "Varme setter brødstrukturen"
+    ],
+    "correct_answer": [
+     "Gjæren bruker opp tilgjengelig sukker",
+     "Karbondioksid dannes",
+     "Deigen fanger de voksende boblene",
+     "Varme setter brødstrukturen"
+    ],
+    "explanation": "Gjæring lager gass; deigstrukturen fanger den; stekingen fester den endelige formen.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "The Chemistry of Bread",
+    "org": "American Chemical Society",
+    "url": "https://www.acs.org/education/resources/highschool/chemmatters/past-issues/archive-2015-2016/bread-chemistry.html"
+   },
+   "lesMer": {
+    "tittel": "Photosynthesis",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/science/photosynthesis"
+   },
+   "tags": [
+    "bread",
+    "yeast",
+    "fermentation"
+   ],
+   "seed": {
+    "likes": 2944,
+    "comments": 305,
+    "saves": 1555,
+    "shares": 125
+   }
+  },
+  {
+   "id": "POST-096",
+   "rekkefolge": 96,
+   "opprettet": "2026-07-25T02:00:00",
+   "posterId": "P031",
+   "kategori": "Hverdag",
+   "underkategori": "Rengjøringskjemi",
+   "serie": "Kjøkkenlaboratoriet",
+   "tittel": "Såpemolekyler har en vannglad og en fettglad ende",
+   "hook": "Den doble personligheten hjelper fett å blande seg i skyllevannet.",
+   "sammendrag": "Overflateaktive stoffer omslutter fettholdig materiale i strukturer som kan holde seg spredt i vann. Bevegelse og skylling fjerner så den oppslemmede skitten.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 30,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Koble det overflateaktive trekket til rollen sin.",
+    "options": [
+     {
+      "left": "Vannglad ende",
+      "right": "Samspiller med vann"
+     },
+     {
+      "left": "Fettglad ende",
+      "right": "Samspiller med fett"
+     },
+     {
+      "left": "Micelle",
+      "right": "Omslutter fettholdig materiale"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Vannglad ende",
+      "right": "Samspiller med vann"
+     },
+     {
+      "left": "Fettglad ende",
+      "right": "Samspiller med fett"
+     },
+     {
+      "left": "Micelle",
+      "right": "Omslutter fettholdig materiale"
+     }
+    ],
+    "explanation": "Overflateaktive stoffer bygger bro mellom materialer som ellers motstår å blande seg.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "The Chemistry of Cleaning",
+    "org": "American Chemical Society",
+    "url": "https://www.acs.org/education/resources/highschool/chemmatters/past-issues/archive-2014-2015/cleaning-chemistry.html"
+   },
+   "lesMer": {
+    "tittel": "About Hand Hygiene",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/clean-hands/about/index.html"
+   },
+   "tags": [
+    "soap",
+    "surfactants",
+    "cleaning"
+   ],
+   "seed": {
+    "likes": 2112,
+    "comments": 27,
+    "saves": 880,
+    "shares": 265
+   }
+  },
+  {
+   "id": "POST-097",
+   "rekkefolge": 97,
+   "opprettet": "2026-07-25T08:00:00",
+   "posterId": "P030",
+   "kategori": "Hverdag",
+   "underkategori": "Husholdningsapparater",
+   "serie": "Hverdagsteknikk",
+   "tittel": "Et kjøleskap flytter varme ut — det lager ikke kulde",
+   "hook": "De varme spiralene bak kjøleskapet er en del av kjøleprosessen.",
+   "sammendrag": "En kjølesyklus bruker et arbeidsmedium, kompresjon og ekspansjon til å ta opp varme inni skapet og slippe den ut i rommet.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Hvorfor kan baksiden av et kjøleskap i drift føles varm?",
+    "options": [
+     "Det slipper ut varme fjernet fra innsiden pluss kompressorenergi",
+     "Kulde lekker bakover",
+     "Maten lager kjerneenergi",
+     "Lyspæren driver fryseren"
+    ],
+    "correct_answer": "Det slipper ut varme fjernet fra innsiden pluss kompressorenergi",
+    "explanation": "Kjøleskapet er en varmepumpe som flytter energi fra det kalde indre til det varmere rommet.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Refrigerators and Freezers",
+    "org": "U.S. Department of Energy",
+    "url": "https://www.energy.gov/energysaver/refrigerators-and-freezers"
+   },
+   "lesMer": {
+    "tittel": "Microwave Oven Radiation",
+    "org": "U.S. Food and Drug Administration",
+    "url": "https://www.fda.gov/radiation-emitting-products/home-business-and-entertainment-products/microwave-ovens"
+   },
+   "tags": [
+    "refrigerator",
+    "heat pump",
+    "appliances"
+   ],
+   "seed": {
+    "likes": 3477,
+    "comments": 129,
+    "saves": 1391,
+    "shares": 110
+   }
+  },
+  {
+   "id": "POST-098",
+   "rekkefolge": 98,
+   "opprettet": "2026-07-25T14:00:00",
+   "posterId": "P030",
+   "kategori": "Hverdag",
+   "underkategori": "Mikrobølgeovner",
+   "serie": "Hverdagsteknikk",
+   "tittel": "Mikrobølgeovner varmer mat gjennom elektromagnetiske felt",
+   "hook": "Tallerkenen varmer ikke maten ved å bli en bitteliten sol.",
+   "sammendrag": "Mikrobølgeenergi samspiller sterkt med polare molekyler og ioner i maten, og gir molekylær bevegelse og varme. Mønsteret kan bli ujevnt, derfor hjelper hviletid og omrøring.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Mikrobølgeovner gjør mat radioaktiv.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Mikrobølgestråling er ikke-ioniserende og gjør ikke mat radioaktiv.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Microwave Oven Radiation",
+    "org": "U.S. Food and Drug Administration",
+    "url": "https://www.fda.gov/radiation-emitting-products/home-business-and-entertainment-products/microwave-ovens"
+   },
+   "lesMer": {
+    "tittel": "Refrigerators and Freezers",
+    "org": "U.S. Department of Energy",
+    "url": "https://www.energy.gov/energysaver/refrigerators-and-freezers"
+   },
+   "tags": [
+    "microwave",
+    "radiation",
+    "cooking"
+   ],
+   "seed": {
+    "likes": 2460,
+    "comments": 312,
+    "saves": 965,
+    "shares": 302
+   }
+  },
+  {
+   "id": "POST-099",
+   "rekkefolge": 99,
+   "opprettet": "2026-07-25T20:00:00",
+   "posterId": "P032",
+   "kategori": "Hverdag",
+   "underkategori": "Sykler",
+   "serie": "Bevegelsens avveininger",
+   "tittel": "Sykkelgir bytter kraft mot hjulomdreining",
+   "hook": "Et lettere gir lar beina snurre mer for hver hjulomdreining.",
+   "sammendrag": "Utvekslingen bestemmer hvordan pedalomdreiningen omsettes i hjulomdreining. Lave gir reduserer nødvendig pedalkraft i motbakke, men krever flere pedalomdreininger per distanse.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 40,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Koble kjøresituasjonen til det nyttige girvalget.",
+    "options": [
+     {
+      "card_a": "Bratt bakke",
+      "card_b": "Lavere gir"
+     },
+     {
+      "card_a": "Rask flat vei",
+      "card_b": "Høyere gir"
+     },
+     {
+      "card_a": "Start fra stillstand",
+      "card_b": "Relativt lavt gir"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Bratt bakke",
+      "card_b": "Lavere gir"
+     },
+     {
+      "card_a": "Rask flat vei",
+      "card_b": "Høyere gir"
+     },
+     {
+      "card_a": "Start fra stillstand",
+      "card_b": "Relativt lavt gir"
+     }
+    ],
+    "explanation": "Gir lar syklisten bytte mellom tråkkfrekvens, kraft og fart.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "Gears and Mechanical Advantage",
+    "org": "Exploratorium",
+    "url": "https://www.exploratorium.edu/snacks/gears"
+   },
+   "lesMer": {
+    "tittel": "Semiconductors",
+    "org": "NIST",
+    "url": "https://www.nist.gov/semiconductors"
+   },
+   "tags": [
+    "bicycle",
+    "gears",
+    "mechanical advantage"
+   ],
+   "seed": {
+    "likes": 2760,
+    "comments": 196,
+    "saves": 817,
+    "shares": 263
+   }
+  },
+  {
+   "id": "POST-100",
+   "rekkefolge": 100,
+   "opprettet": "2026-07-26T02:00:00",
+   "posterId": "P031",
+   "kategori": "Hverdag",
+   "underkategori": "Kaffe",
+   "serie": "Kjøkkenlaboratoriet",
+   "tittel": "Kaffetrekk er en balanse av tid, temperatur, kvern og vann",
+   "hook": "De samme bønnene kan smake surt, søtt eller bittert avhengig av prosessen.",
+   "sammendrag": "Trekking løser opp mange stoffer i ulik takt. Kvernstørrelse, vanntemperatur, kontakttid og bevegelse påvirker hvor mye og hva slags materiale som havner i koppen.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 25,
+   "xp": 120,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Kaffen smaker skarpt surt og tynt etter et veldig raskt trekk. Hvilken justering er ofte fornuftig?",
+    "options": [
+     "Øk trekket med finere kvern eller lengre kontakttid",
+     "Bruk mye kortere kontakttid",
+     "Fjern alt vannet",
+     "Frys koppen mens du trekker"
+    ],
+    "correct_answer": "Øk trekket med finere kvern eller lengre kontakttid",
+    "explanation": "Et raskt, tynt og surt trekk tyder ofte på undertrekking, selv om smak og utstyr varierer.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Coffee Brewing Research",
+    "org": "Specialty Coffee Association",
+    "url": "https://sca.coffee/research"
+   },
+   "lesMer": {
+    "tittel": "The Chemistry of Bread",
+    "org": "American Chemical Society",
+    "url": "https://www.acs.org/education/resources/highschool/chemmatters/past-issues/archive-2015-2016/bread-chemistry.html"
+   },
+   "tags": [
+    "coffee",
+    "extraction",
+    "brewing"
+   ],
+   "seed": {
+    "likes": 602,
+    "comments": 200,
+    "saves": 309,
+    "shares": 354
+   }
+  }
+ ],
+ "sprak": "nb"
+}
