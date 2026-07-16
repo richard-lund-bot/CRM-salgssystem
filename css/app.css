@@ -783,7 +783,7 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
     inset 0px -4px 1px -2px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 10%), transparent),
     0px 3px 6px 0px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 8%), transparent);
   opacity: 0; z-index: 0; pointer-events: none;
-  transition: transform 0.42s var(--ease-bounce), opacity 0.2s ease;
+  transition: transform 0.25s var(--ease-bounce), opacity 0.2s ease;
 }
 /* Mot ytterfanene ville sprett-easingen svinge pillen forbi målet og utenfor
    kapselen — dit glir den med rett easing i stedet (klasse fra flyttTabIndikator),
@@ -820,15 +820,15 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
    et hint vertikalt — væske-aktig — som om den gir etter for pillen som
    glir inn mot enden. Kun ytterfanene: der er det pillen ellers ville truffet
    kanten. Klassene settes i flyttTabIndikator og ryddes på animationend. */
-.tabbar--strekk-hoyre, .tabbar--strekk-venstre { animation: bar-strekk 0.65s linear; }
+.tabbar--strekk-hoyre, .tabbar--strekk-venstre { animation: bar-strekk 0.4s linear; }
 .tabbar--strekk-hoyre { transform-origin: left center; }
 .tabbar--strekk-venstre { transform-origin: right center; }
-/* Toppen ved 62% ≈ 0,40s = idet pillen lander (glidingen er 0,42s, men er
-   innenfor 1px av målet ved ~0,40s). Ease-in opp: bulingen bygger seg mens
-   pillen nærmer seg enden — ikke før. Myk retur etterpå. */
+/* Toppen ved 60% ≈ 0,24s = idet pillen lander (glidingen er 0,25s og innenfor
+   1px av målet like før slutt). Ease-in opp: bulingen bygger seg mens pillen
+   nærmer seg enden — ikke før. Myk retur etterpå. */
 @keyframes bar-strekk {
   0% { scale: 1 1; animation-timing-function: cubic-bezier(0.55, 0, 0.8, 0.4); }
-  62% { scale: 1.05 0.965; animation-timing-function: cubic-bezier(0.25, 0.6, 0.45, 1); }
+  60% { scale: 1.05 0.965; animation-timing-function: cubic-bezier(0.25, 0.6, 0.45, 1); }
   100% { scale: 1 1; }
 }
 @keyframes synkpuls { 50% { opacity: 0.4; } }
