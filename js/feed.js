@@ -17,48 +17,25 @@ import { pling, plingSekvens } from './lyd.js';
 import { vibrer } from './haptikk.js';
 import { REDUSERT } from './animasjon.js';
 import { byggVarsler, varselKort, merkVarslerSett, harUlesteVarsler, tidSiden } from './varsler.js';
+import { gjeldendeSprak } from './i18n.js';
 
-const LS_FEED = 'trening.feed';
+const LS_FEED = 'trening.feed'; // per-innlegg-tilstand (spilt/likt/lagret/komm)
 const BATCH = 5; // innlegg per innlastingsrunde (uendelig scroll)
 
-// --- Språk ------------------------------------------------------------------
-// Norsk er standard; engelsk er tilgjengelig via språkvelgeren i «For deg».
-// Valget bor i profilens innstillinger (synkes) med lokal fallback, så
-// uinnloggede/nye enheter også får norsk.
-export const SPRAK = [
-  { id: 'nb', navn: 'Norsk', fil: 'data/feed.nb.json' },
-  { id: 'en', navn: 'English', fil: 'data/feed.json' },
-];
-const LS_SPRAK = 'trening.feedSprak';
-
-export function gjeldendeSprak() {
-  const fraProfil = hentProfil()?.innstillinger?.feedSprak;
-  if (fraProfil && SPRAK.some((s) => s.id === fraProfil)) return fraProfil;
-  const lokal = (() => { try { return localStorage.getItem(LS_SPRAK); } catch { return null; } })();
-  return SPRAK.some((s) => s.id === lokal) ? lokal : 'nb';
-}
-
-function settSprak(id) {
-  try { localStorage.setItem(LS_SPRAK, id); } catch { /* valgfri */ }
-  const profil = hentProfil();
-  if (profil) {
-    profil.innstillinger = profil.innstillinger || {};
-    profil.innstillinger.feedSprak = id;
-    lagreProfil(profil);
-  }
-}
-
 // --- Data -------------------------------------------------------------------
+// Feeden følger appens globale språk (Innstillinger): norsk laster
+// data/feed.nb.json, engelsk data/feed.json. Cache per språk.
+const FEEDFIL = { nb: 'data/feed.nb.json', en: 'data/feed.json' };
 const _feedCache = new Map(); // sprak-id → datasett
 let _feed = null; // aktivt datasett (for posterFor m.m.)
 
 /** Laster feeden for gjeldende språk dovent — cache per språk i minne + SW. */
 export function lastFeed(sprak = gjeldendeSprak()) {
-  const def = SPRAK.find((s) => s.id === sprak) || SPRAK[0];
-  if (_feedCache.has(def.id)) { _feed = _feedCache.get(def.id); return Promise.resolve(_feed); }
-  return fetch(def.fil)
+  const id = FEEDFIL[sprak] ? sprak : 'nb';
+  if (_feedCache.has(id)) { _feed = _feedCache.get(id); return Promise.resolve(_feed); }
+  return fetch(FEEDFIL[id])
     .then((res) => { if (!res.ok) throw new Error(`Kunne ikke laste feeden (${res.status})`); return res.json(); })
-    .then((data) => { _feedCache.set(def.id, data); _feed = data; return data; });
+    .then((data) => { _feedCache.set(id, data); _feed = data; return data; });
 }
 
 function posterFor(id) {
@@ -1075,13 +1052,6 @@ function byggFeed(mount, scroll, data) {
     scroll.scrollTop = 0;
   }
 
-  // Bytt språk: lagre valget og tegn hele feeden på nytt med det nye
-  // datasettet (posts, stories og guider byttes samlet).
-  function byttSprak(id) {
-    if (id === gjeldendeSprak()) { drop.hidden = true; return; }
-    settSprak(id);
-    visFeedSkjerm(mount);
-  }
 
   function tegnDropdown() {
     tom(drop);
@@ -1089,22 +1059,11 @@ function byggFeed(mount, scroll, data) {
       class: 'feeddrop__rad' + (filter === id ? ' feeddrop__rad--valgt' : ''), type: 'button',
       onclick: () => velgFilter(id, id === 'alle' ? 'For deg' : navn),
     }, el('span', {}, navn), filter === id && ikon('sjekk', 'ikon ikon--liten'));
-    // Språkvelger nederst: norsk er standard, engelsk tilgjengelig.
-    const naaSprak = gjeldendeSprak();
-    const sprakRad = el('div', { class: 'feeddrop__sprak' },
-      el('span', { class: 'feeddrop__sprakhode' }, ikon('kompass', 'ikon ikon--liten'), 'Språk'),
-      el('div', { class: 'feeddrop__sprakvalg' }, ...SPRAK.map((s) => el('button', {
-        class: 'feeddrop__sprakchip' + (naaSprak === s.id ? ' feeddrop__sprakchip--valgt' : ''),
-        type: 'button', onclick: () => byttSprak(s.id),
-      }, s.navn))),
-    );
     drop.append(
       rad('alle', 'For deg'),
       rad('lagret', 'Lagret'),
       el('div', { class: 'feeddrop__strek' }),
       ...kategorier.map((k) => rad(k, k)),
-      el('div', { class: 'feeddrop__strek' }),
-      sprakRad,
     );
   }
   tegnDropdown();

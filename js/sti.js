@@ -55,9 +55,8 @@ export function settBib(bib) { _bib = bib; }
 /** Laster sti-definisjonene (kalles ved oppstart; cache i minne + SW). */
 export async function lastStier() {
   if (_stier) return _stier;
-  const res = await fetch('data/stier.json');
-  if (!res.ok) throw new Error(`Kunne ikke laste stier (${res.status})`);
-  _stier = await res.json();
+  const { hentSprakJson } = await import('./i18n.js');
+  _stier = await hentSprakJson('stier');
   return _stier;
 }
 
@@ -73,18 +72,16 @@ export async function lastKjeder() {
 /** Laster disiplinene (treningsformer) — data/disipliner.json. */
 export async function lastDisipliner() {
   if (_disipliner) return _disipliner;
-  const res = await fetch('data/disipliner.json');
-  if (!res.ok) throw new Error(`Kunne ikke laste disipliner (${res.status})`);
-  _disipliner = await res.json();
+  const { hentSprakJson } = await import('./i18n.js');
+  _disipliner = await hentSprakJson('disipliner');
   return _disipliner;
 }
 
 /** Laster seksjonene (nivå-tiers m/ enheter) — data/seksjoner.json. */
 export async function lastSeksjoner() {
   if (_seksjoner) return _seksjoner;
-  const res = await fetch('data/seksjoner.json');
-  if (!res.ok) throw new Error(`Kunne ikke laste seksjoner (${res.status})`);
-  _seksjoner = await res.json();
+  const { hentSprakJson } = await import('./i18n.js');
+  _seksjoner = await hentSprakJson('seksjoner');
   settSeksjonsstruktur(_seksjoner); // gi merkene enhet-/seksjon-strukturen
   return _seksjoner;
 }

@@ -1,0 +1,482 @@
+[
+  {
+    "id": "kv",
+    "navn": "Bodyweight",
+    "kategori": "hverdag",
+    "attributter": {},
+    "notat": "alltid på"
+  },
+  {
+    "id": "vegg",
+    "navn": "Open wall space",
+    "kategori": "hverdag",
+    "attributter": {},
+    "notat": "HSPU, wall sit, ben opp veggen"
+  },
+  {
+    "id": "stol",
+    "navn": "Chair / sofa / solid bench",
+    "kategori": "hverdag",
+    "attributter": {},
+    "notat": "step-up, bulgarsk, skrå push-up"
+  },
+  {
+    "id": "trapp",
+    "navn": "Stair step",
+    "kategori": "hverdag",
+    "attributter": {},
+    "notat": "step-ups, legghev, kondis"
+  },
+  {
+    "id": "handkle",
+    "navn": "Towel",
+    "kategori": "hverdag",
+    "attributter": {},
+    "notat": "dislocates, isometrisk drag, glidere-erstatning"
+  },
+  {
+    "id": "sekk",
+    "navn": "Backpack (loadable)",
+    "kategori": "hverdag",
+    "attributter": {},
+    "notat": "improvisert vekt: bøker/vannflasker"
+  },
+  {
+    "id": "matte",
+    "navn": "Exercise mat",
+    "kategori": "hjemme",
+    "attributter": {}
+  },
+  {
+    "id": "kb",
+    "navn": "Kettlebell(s)",
+    "kategori": "hjemme",
+    "attributter": {
+      "antall": null,
+      "vekter": []
+    }
+  },
+  {
+    "id": "manualer",
+    "navn": "Dumbbells (home)",
+    "kategori": "hjemme",
+    "attributter": {
+      "justerbare": null,
+      "maks": null
+    }
+  },
+  {
+    "id": "band-mini",
+    "navn": "Mini band",
+    "kategori": "hjemme",
+    "attributter": {}
+  },
+  {
+    "id": "band-lang",
+    "navn": "Long resistance band",
+    "kategori": "hjemme",
+    "attributter": {},
+    "notat": "pallof, assist, rows"
+  },
+  {
+    "id": "hoppetau",
+    "navn": "Jump rope",
+    "kategori": "hjemme",
+    "attributter": {}
+  },
+  {
+    "id": "pullup",
+    "navn": "Pull-up bar (doorway/wall)",
+    "kategori": "hjemme",
+    "attributter": {}
+  },
+  {
+    "id": "ringer",
+    "navn": "Gymnastic rings",
+    "kategori": "hjemme",
+    "attributter": {}
+  },
+  {
+    "id": "trx",
+    "navn": "Suspension trainer/TRX",
+    "kategori": "hjemme",
+    "attributter": {},
+    "notat": "dekker ringrow-varianter"
+  },
+  {
+    "id": "abwheel",
+    "navn": "Ab wheel",
+    "kategori": "hjemme",
+    "attributter": {}
+  },
+  {
+    "id": "paralletter",
+    "navn": "Parallettes",
+    "kategori": "hjemme",
+    "attributter": {},
+    "notat": "L-sit, dips lav, HS-prep"
+  },
+  {
+    "id": "glidere",
+    "navn": "Sliders",
+    "kategori": "hjemme",
+    "attributter": {},
+    "notat": "ellers: handkle på parkett"
+  },
+  {
+    "id": "vektvest",
+    "navn": "Weighted vest",
+    "kategori": "hjemme",
+    "attributter": {},
+    "notat": "modifikator: nivaJust +1 på KV-øvelser"
+  },
+  {
+    "id": "medisinball",
+    "navn": "Medicine ball",
+    "kategori": "hjemme",
+    "attributter": {}
+  },
+  {
+    "id": "slamball",
+    "navn": "Slam ball",
+    "kategori": "hjemme",
+    "attributter": {}
+  },
+  {
+    "id": "kasse",
+    "navn": "Plyo box / solid box",
+    "kategori": "hjemme",
+    "attributter": {}
+  },
+  {
+    "id": "sandsekk",
+    "navn": "Sandbag",
+    "kategori": "hjemme",
+    "attributter": {}
+  },
+  {
+    "id": "foamroller",
+    "navn": "Foam roller",
+    "kategori": "hjemme",
+    "attributter": {},
+    "notat": "restitusjon"
+  },
+  {
+    "id": "massasjeball",
+    "navn": "Massage/lacrosse ball",
+    "kategori": "hjemme",
+    "attributter": {}
+  },
+  {
+    "id": "balansepute",
+    "navn": "Balance pad/board",
+    "kategori": "hjemme",
+    "attributter": {}
+  },
+  {
+    "id": "yogablokk",
+    "navn": "Yoga block(s)",
+    "kategori": "yoga-pilates",
+    "attributter": {}
+  },
+  {
+    "id": "yogastropp",
+    "navn": "Yoga strap",
+    "kategori": "yoga-pilates",
+    "attributter": {}
+  },
+  {
+    "id": "bolster",
+    "navn": "Bolster / large cushion",
+    "kategori": "yoga-pilates",
+    "attributter": {}
+  },
+  {
+    "id": "teppe",
+    "navn": "Blanket",
+    "kategori": "yoga-pilates",
+    "attributter": {}
+  },
+  {
+    "id": "pilatesring",
+    "navn": "Pilates ring (magic circle)",
+    "kategori": "yoga-pilates",
+    "attributter": {}
+  },
+  {
+    "id": "ball-liten",
+    "navn": "Small Pilates ball (20–25 cm)",
+    "kategori": "yoga-pilates",
+    "attributter": {}
+  },
+  {
+    "id": "ball-stor",
+    "navn": "Large exercise ball (Swiss ball)",
+    "kategori": "yoga-pilates",
+    "attributter": {}
+  },
+  {
+    "id": "reformer",
+    "navn": "Reformer",
+    "kategori": "pilates-apparat",
+    "attributter": {}
+  },
+  {
+    "id": "cadillac",
+    "navn": "Cadillac / tower",
+    "kategori": "pilates-apparat",
+    "attributter": {}
+  },
+  {
+    "id": "wundachair",
+    "navn": "Wunda chair",
+    "kategori": "pilates-apparat",
+    "attributter": {}
+  },
+  {
+    "id": "barrel",
+    "navn": "Ladder barrel / spine corrector",
+    "kategori": "pilates-apparat",
+    "attributter": {}
+  },
+  {
+    "id": "stang",
+    "navn": "Olympic barbell",
+    "kategori": "frivekter-rigg",
+    "attributter": {}
+  },
+  {
+    "id": "skiver",
+    "navn": "Weight plates",
+    "kategori": "frivekter-rigg",
+    "attributter": {}
+  },
+  {
+    "id": "bumper",
+    "navn": "Bumper plates",
+    "kategori": "frivekter-rigg",
+    "attributter": {},
+    "notat": "olympiske løft/slipp"
+  },
+  {
+    "id": "ezstang",
+    "navn": "EZ bar",
+    "kategori": "frivekter-rigg",
+    "attributter": {}
+  },
+  {
+    "id": "trapbar",
+    "navn": "Trap bar",
+    "kategori": "frivekter-rigg",
+    "attributter": {}
+  },
+  {
+    "id": "rack",
+    "navn": "Squat rack / rig",
+    "kategori": "frivekter-rigg",
+    "attributter": {}
+  },
+  {
+    "id": "benk-flat",
+    "navn": "Flat bench",
+    "kategori": "frivekter-rigg",
+    "attributter": {}
+  },
+  {
+    "id": "benk-just",
+    "navn": "Adjustable bench",
+    "kategori": "frivekter-rigg",
+    "attributter": {}
+  },
+  {
+    "id": "manualsett",
+    "navn": "Full dumbbell set (2.5–50 kg)",
+    "kategori": "frivekter-rigg",
+    "attributter": {}
+  },
+  {
+    "id": "kbsett",
+    "navn": "Kettlebell set (multiple weights)",
+    "kategori": "frivekter-rigg",
+    "attributter": {}
+  },
+  {
+    "id": "landmine",
+    "navn": "Landmine",
+    "kategori": "frivekter-rigg",
+    "attributter": {}
+  },
+  {
+    "id": "dipstativ",
+    "navn": "Dip station",
+    "kategori": "frivekter-rigg",
+    "attributter": {}
+  },
+  {
+    "id": "ghd",
+    "navn": "GHD",
+    "kategori": "frivekter-rigg",
+    "attributter": {}
+  },
+  {
+    "id": "pullup-rigg",
+    "navn": "Pull-up rig",
+    "kategori": "frivekter-rigg",
+    "attributter": {}
+  },
+  {
+    "id": "kabel",
+    "navn": "Cable tower / cable crossover",
+    "kategori": "maskiner",
+    "attributter": {}
+  },
+  {
+    "id": "latpulldown",
+    "navn": "Lat pulldown",
+    "kategori": "maskiner",
+    "attributter": {}
+  },
+  {
+    "id": "kabelro",
+    "navn": "Seated cable row",
+    "kategori": "maskiner",
+    "attributter": {}
+  },
+  {
+    "id": "beinpress",
+    "navn": "Leg press",
+    "kategori": "maskiner",
+    "attributter": {}
+  },
+  {
+    "id": "legext",
+    "navn": "Leg extension",
+    "kategori": "maskiner",
+    "attributter": {}
+  },
+  {
+    "id": "legcurl",
+    "navn": "Leg curl",
+    "kategori": "maskiner",
+    "attributter": {}
+  },
+  {
+    "id": "smith",
+    "navn": "Smith machine",
+    "kategori": "maskiner",
+    "attributter": {}
+  },
+  {
+    "id": "multimaskin",
+    "navn": "Multi-gym (hotel type)",
+    "kategori": "maskiner",
+    "attributter": {}
+  },
+  {
+    "id": "maskinpark",
+    "navn": "Other strength machines (chest/shoulder/back/hip)",
+    "kategori": "maskiner",
+    "attributter": {}
+  },
+  {
+    "id": "tredemolle",
+    "navn": "Treadmill",
+    "kategori": "kondisjonsmaskiner",
+    "attributter": {}
+  },
+  {
+    "id": "romaskin",
+    "navn": "Rowing machine",
+    "kategori": "kondisjonsmaskiner",
+    "attributter": {}
+  },
+  {
+    "id": "spinsykkel",
+    "navn": "Spin bike",
+    "kategori": "kondisjonsmaskiner",
+    "attributter": {}
+  },
+  {
+    "id": "assaultbike",
+    "navn": "Assault bike",
+    "kategori": "kondisjonsmaskiner",
+    "attributter": {}
+  },
+  {
+    "id": "skierg",
+    "navn": "SkiErg",
+    "kategori": "kondisjonsmaskiner",
+    "attributter": {}
+  },
+  {
+    "id": "stepper",
+    "navn": "Stair machine/stepper",
+    "kategori": "kondisjonsmaskiner",
+    "attributter": {}
+  },
+  {
+    "id": "ellipse",
+    "navn": "Elliptical machine",
+    "kategori": "kondisjonsmaskiner",
+    "attributter": {}
+  },
+  {
+    "id": "slede",
+    "navn": "Sled / prowler",
+    "kategori": "conditioning",
+    "attributter": {}
+  },
+  {
+    "id": "battleropes",
+    "navn": "Battle ropes",
+    "kategori": "conditioning",
+    "attributter": {}
+  },
+  {
+    "id": "wallball",
+    "navn": "Wall ball + target",
+    "kategori": "conditioning",
+    "attributter": {}
+  },
+  {
+    "id": "klatretau",
+    "navn": "Climbing rope",
+    "kategori": "conditioning",
+    "attributter": {}
+  },
+  {
+    "id": "ute",
+    "navn": "Running/walking option",
+    "kategori": "ute",
+    "attributter": {},
+    "notat": "base, intervaller"
+  },
+  {
+    "id": "tuftepark",
+    "navn": "Outdoor bars (calisthenics park)",
+    "kategori": "ute",
+    "attributter": {},
+    "notat": "pull-v ute"
+  },
+  {
+    "id": "bakke",
+    "navn": "Uphill/incline",
+    "kategori": "ute",
+    "attributter": {},
+    "notat": "bakkesprint"
+  },
+  {
+    "id": "benk-ute",
+    "navn": "Park bench",
+    "kategori": "ute",
+    "attributter": {},
+    "notat": "step-up, skrå push, dips"
+  },
+  {
+    "id": "sykkel",
+    "navn": "Bicycle (outdoor)",
+    "kategori": "ute",
+    "attributter": {},
+    "notat": "base"
+  }
+]

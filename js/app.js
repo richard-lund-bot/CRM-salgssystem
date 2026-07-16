@@ -39,6 +39,7 @@ import { krediterNye, stravaKort } from './strava.js';
 import { byggVarsler, merkVarslerSett, varselKort, harUlesteVarsler } from './varsler.js';
 import { varsle } from './toast.js';
 import { visFeedSkjerm } from './feed.js';
+import { gjeldendeSprak, settSprak, startOversetter, oversettDom } from './i18n.js';
 
 const app = document.getElementById('app');
 let bib = null;
@@ -164,6 +165,7 @@ function navger() {
     (ruter[rute] || ruter.hjem)();
     oppdaterNav(rute);
     oppdaterFaneMinne(rute);
+    oversettDom(app); // engelsk-modus: oversett den nettopp tegnede skjermen
     if (byttet) gjenopprettScroll(location.hash);
   };
   // Sidebytte skal være umiddelbart — ingen skjermanimasjon på innholdet.
@@ -363,7 +365,7 @@ function heroVelkomst(profil, logg, nå) {
         'aria-label': `${streak} ${streak === 1 ? 'dags' : 'dagers'} streak`,
       }, ikon('flamme'), el('span', { class: 'streakflamme__tall' }, String(streak))),
       navn
-        ? [el('p', { class: 'hjemhero__hilsen' }, `${hilsen},`), el('h1', { class: 'hjemhero__navn' }, navn)]
+        ? [el('p', { class: 'hjemhero__hilsen' }, hilsen, ','), el('h1', { class: 'hjemhero__navn' }, navn)]
         : el('h1', { class: 'hjemhero__navn hjemhero__navn--hilsen' }, hilsen),
       budskap,
     ),
@@ -733,8 +735,19 @@ function visInnstillinger() {
   }
 
   const valgtTema = profil.innstillinger?.tema || 'standard';
+  const valgtSprak = gjeldendeSprak();
 
   skjerm('Innstillinger',
+    // Språk: hele appen på norsk eller engelsk. Bytte laster appen på nytt.
+    el('div', { class: 'kort' },
+      el('h2', {}, 'Språk'),
+      el('p', { class: 'dempet', style: 'margin-top:-4px' },
+        'Velg språk for hele appen — grensesnitt og innhold.'),
+      el('div', { class: 'chiprad chiprad--pille' },
+        chip('Norsk', { aktiv: valgtSprak === 'nb', onClick: () => { if (valgtSprak !== 'nb') settSprak('nb'); } }),
+        chip('English', { aktiv: valgtSprak === 'en', onClick: () => { if (valgtSprak !== 'en') settSprak('en'); } }),
+      ),
+    ),
     skyKort(),
     stravaKort(visInnstillinger),
     el('div', { class: 'kort' },
@@ -1236,6 +1249,10 @@ async function start() {
   settNavger(navger); // pull-to-refresh (banner.js) tegner siden på nytt
   settUlestSjekk(harUlesteVarsler); // uleste-prikk på bjella (banner.js)
   bruksTema(hentProfil()?.innstillinger?.tema);
+  // Språk: engelsk-modus starter DOM-oversetteren (norsk er standard, ingen
+  // oversetting). Observatøren fanger alt som tegnes fra nå av.
+  document.documentElement.lang = gjeldendeSprak();
+  startOversetter();
   // Lyd + haptikk: begge på som standard, styres fra Innstillinger.
   const lydHapt = hentProfil()?.innstillinger || {};
   settLydAv(lydHapt.lyd === false);

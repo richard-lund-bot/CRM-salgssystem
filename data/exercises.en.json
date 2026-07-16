@@ -1,0 +1,12899 @@
+[
+ {
+  "id": "vegg-pushup",
+  "navn": "Wall Push-up",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "push-h",
+  "kjedePos": 1,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "skra-pushup-sofa-benk",
+  "navn": "Incline Push-up (Sofa/Bench)",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "push-h",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kne-pushup",
+  "navn": "Knee Push-up",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "push-h",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "push-up",
+  "navn": "Push-up",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "push-h",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   },
+   {
+    "utstyr": [
+     "kb"
+    ],
+    "navnOverstyr": "Push-up på KB-håndtak (nøytral)"
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "bred-push-up",
+  "navn": "Wide Push-up",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "t-pushup",
+  "navn": "T Push-up",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "+ rotasjon"
+ },
+ {
+  "id": "diamant-smal-push-up",
+  "navn": "Diamond/Close Push-up",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "push-h",
+  "kjedePos": 5,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "dekline-push-up",
+  "navn": "Decline Push-up",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "push-h",
+  "kjedePos": 6,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "føtter hevet"
+ },
+ {
+  "id": "ring-push-up",
+  "navn": "Ring Push-up",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "push-h",
+  "kjedePos": 7,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   },
+   {
+    "utstyr": [
+     "ringer"
+    ],
+    "navnOverstyr": "Ring push-up (RTO-utgang)",
+    "nivaJust": 1
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "archer-push-up",
+  "navn": "Archer Push-up",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "push-h",
+  "kjedePos": 8,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "pseudo-planche-push-up",
+  "navn": "Pseudo Planche Push-up",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "push-h",
+  "kjedePos": 9,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "vekt frem over hender"
+ },
+ {
+  "id": "ettarms-progresjon",
+  "navn": "One-Arm Push-up Progression",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 5,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "push-h",
+  "kjedePos": 10,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "forhøyet → gulv"
+ },
+ {
+  "id": "pike-push-up",
+  "navn": "Pike Push-up",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "push-v",
+  "kjedePos": 1,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "hevet-pike-push-up",
+  "navn": "Elevated Pike Push-up",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "push-v",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "føtter på stol"
+ },
+ {
+  "id": "vegg-hspu-eksentrisk",
+  "navn": "Wall HSPU Eccentric",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "push-v",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "3-5 s ned"
+ },
+ {
+  "id": "vegg-hspu",
+  "navn": "Wall HSPU",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "push-v",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "fri-hspu",
+  "navn": "Freestanding HSPU",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 5,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "push-v",
+  "kjedePos": 5,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [
+   "maal-skill"
+  ]
+ },
+ {
+  "id": "stottehold-ringer",
+  "navn": "Support Hold on Rings",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "dips",
+  "kjedePos": 1,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "dips-basen"
+ },
+ {
+  "id": "negativ-dips",
+  "navn": "Negative Dips",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "dips",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   },
+   {
+    "utstyr": [
+     "dipstativ"
+    ]
+   },
+   {
+    "utstyr": [
+     "benk-ute"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "dips",
+  "navn": "Dips",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "dips",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   },
+   {
+    "utstyr": [
+     "dipstativ"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ring-dips",
+  "navn": "Ring Dips",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "dips",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "rto-ring-dips",
+  "navn": "RTO Ring Dips",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 5,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "dips",
+  "kjedePos": 5,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kb-floor-press",
+  "navn": "KB Floor Press",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "kb-press",
+  "kjedePos": 1,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb",
+     "matte"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualer",
+     "matte"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "én eller to KB"
+ },
+ {
+  "id": "kb-strict-press",
+  "navn": "KB Strict Press",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "kb-press",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   },
+   {
+    "utstyr": [
+     "kbsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kb-push-press",
+  "navn": "KB Push Press",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "kb-press",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   },
+   {
+    "utstyr": [
+     "kbsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kb-jerk",
+  "navn": "KB Jerk",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "kb-press",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   },
+   {
+    "utstyr": [
+     "kbsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kb-thruster",
+  "navn": "KB Thruster",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualer"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "squat+press"
+ },
+ {
+  "id": "dead-hang",
+  "navn": "Dead Hang",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "pull-v",
+  "kjedePos": 1,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup-rigg"
+    ]
+   },
+   {
+    "utstyr": [
+     "tuftepark"
+    ]
+   }
+  ],
+  "tags": [
+   "skulderhelse"
+  ],
+  "notat": "grep + skulderhelse"
+ },
+ {
+  "id": "skulderdrag-i-heng",
+  "navn": "Scapular Pull (Hang)",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "pull-v",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup-rigg"
+    ]
+   },
+   {
+    "utstyr": [
+     "tuftepark"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "scapula pull-ups"
+ },
+ {
+  "id": "ringrow-hoy-vinkel",
+  "navn": "Ring Row (High Angle)",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "pull-h",
+  "kjedePos": 1,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   },
+   {
+    "utstyr": [
+     "trx"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ringrow",
+  "navn": "Ring Row",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "pull-h",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   },
+   {
+    "utstyr": [
+     "trx"
+    ]
+   },
+   {
+    "utstyr": [
+     "tuftepark"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ringrow-fotter-hevet",
+  "navn": "Ring Row (Feet Elevated)",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "pull-h",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   },
+   {
+    "utstyr": [
+     "trx"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "archer-row",
+  "navn": "Archer Row",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "pull-h",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ettarms-row-progresjon",
+  "navn": "One-Arm Row Progression",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 5,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "pull-h",
+  "kjedePos": 5,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kb-bent-over-row",
+  "navn": "KB Bent-Over Row",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kb-gorilla-row",
+  "navn": "KB Gorilla Row",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "to KB på gulv"
+ },
+ {
+  "id": "renegade-row",
+  "navn": "Renegade Row",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualer"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "+ anti-rotasjon"
+ },
+ {
+  "id": "negativ-pull-up",
+  "navn": "Negative Pull-up",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "pull-v",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup-rigg"
+    ]
+   },
+   {
+    "utstyr": [
+     "tuftepark"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "3-5 s ned"
+ },
+ {
+  "id": "pull-up",
+  "navn": "Pull-up",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "pull-v",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup-rigg"
+    ]
+   },
+   {
+    "utstyr": [
+     "tuftepark"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup",
+     "band-lang"
+    ],
+    "navnOverstyr": "Assistert pull-up m/ bånd",
+    "nivaJust": -1
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "chin-up",
+  "navn": "Chin-up",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup-rigg"
+    ]
+   },
+   {
+    "utstyr": [
+     "tuftepark"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "chest-to-bar",
+  "navn": "Chest-to-Bar",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "pull-v",
+  "kjedePos": 5,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup-rigg"
+    ]
+   },
+   {
+    "utstyr": [
+     "tuftepark"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "false-grip-heng",
+  "navn": "False Grip Hang",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "pull-v",
+  "kjedePos": 6,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "MU-nøkkel"
+ },
+ {
+  "id": "mu-transition-lave-ringer",
+  "navn": "Muscle-up Transition (Low Rings)",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "pull-v",
+  "kjedePos": 7,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "muscle-up",
+  "navn": "Muscle-up",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 5,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "pull-v",
+  "kjedePos": 8,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   }
+  ],
+  "tags": [
+   "maal-skill"
+  ]
+ },
+ {
+  "id": "l-pull-up",
+  "navn": "L Pull-up",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup-rigg"
+    ]
+   },
+   {
+    "utstyr": [
+     "tuftepark"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "face-pull",
+  "navn": "Face Pull",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   },
+   {
+    "utstyr": [
+     "kabel"
+    ]
+   },
+   {
+    "utstyr": [
+     "band-lang"
+    ]
+   }
+  ],
+  "tags": [
+   "skulderhelse"
+  ]
+ },
+ {
+  "id": "ring-bicep-curl",
+  "navn": "Ring Bicep Curl",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kb-high-pull",
+  "navn": "KB High Pull",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "stol-kneboy",
+  "navn": "Chair Squat",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "kneboy",
+  "kjedePos": 1,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "ned til sete-touch"
+ },
+ {
+  "id": "air-squat",
+  "navn": "Air Squat",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "kneboy",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   },
+   {
+    "utstyr": [
+     "band-mini"
+    ],
+    "navnOverstyr": "Air squat m/ miniband (knær ut)"
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "wall-sit",
+  "navn": "Wall Sit",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "goblet-squat",
+  "navn": "Goblet Squat",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "kneboy",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualer"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "sumo-squat",
+  "navn": "Sumo Squat",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "cossack-squat",
+  "navn": "Cossack Squat",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "kneboy",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   },
+   {
+    "utstyr": [
+     "kb"
+    ],
+    "navnOverstyr": "Cossack squat m/ KB",
+    "nivaJust": 1
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kb-front-squat-dobbel",
+  "navn": "KB Front Squat (Double)",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "2×18"
+ },
+ {
+  "id": "box-pistol",
+  "navn": "Box Pistol",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "kneboy",
+  "kjedePos": 5,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "assistert-pistol",
+  "navn": "Assisted Pistol",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "kneboy",
+  "kjedePos": 6,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   },
+   {
+    "utstyr": [
+     "trx"
+    ]
+   },
+   {
+    "utstyr": [
+     "rack",
+     "stang"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "hold i ringene"
+ },
+ {
+  "id": "pistol",
+  "navn": "Pistol Squat",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 5,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "kneboy",
+  "kjedePos": 7,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [
+   "maal-skill"
+  ]
+ },
+ {
+  "id": "skrimp-assistert",
+  "navn": "Shrimp Squat (Assisted)",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "skrimp",
+  "kjedePos": 1,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   },
+   {
+    "utstyr": [
+     "trx"
+    ]
+   },
+   {
+    "utstyr": [
+     "rack",
+     "stang"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "skrimp-squat",
+  "navn": "Shrimp Squat",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "skrimp",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "sissy-squat-assistert",
+  "navn": "Sissy Squat (Assisted)",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "reverse-nordic",
+  "navn": "Reverse Nordic",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "quads/hofteb."
+ },
+ {
+  "id": "statisk-utfall",
+  "navn": "Static Lunge",
+  "monster": "utfall",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "utfall",
+  "kjedePos": 1,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "utfall-bak",
+  "navn": "Reverse Lunge",
+  "monster": "utfall",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "utfall",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   },
+   {
+    "utstyr": [
+     "kb"
+    ],
+    "navnOverstyr": "Utfall bak m/ KB/halo",
+    "nivaJust": 1
+   },
+   {
+    "utstyr": [
+     "manualer"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ga-utfall",
+  "navn": "Walking Lunge",
+  "monster": "utfall",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "utfall",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "sideutfall",
+  "navn": "Lateral Lunge",
+  "monster": "utfall",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "bulgarsk-splittkneboy",
+  "navn": "Bulgarian Split Squat",
+  "monster": "utfall",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "utfall",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   },
+   {
+    "utstyr": [
+     "kb"
+    ],
+    "navnOverstyr": "Bulgarsk splittknebøy m/ KB",
+    "nivaJust": 1
+   },
+   {
+    "utstyr": [
+     "manualer"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "step-up",
+  "navn": "Step-up",
+  "monster": "utfall",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   },
+   {
+    "utstyr": [
+     "kasse"
+    ]
+   },
+   {
+    "utstyr": [
+     "benk-ute"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "trapp/kasse"
+ },
+ {
+  "id": "ettbens-sta",
+  "navn": "Single-Leg Stand",
+  "monster": "balanse",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   },
+   {
+    "utstyr": [
+     "kv"
+    ],
+    "navnOverstyr": "Ettbens stå (lukkede øyne)",
+    "nivaJust": 1
+   },
+   {
+    "utstyr": [
+     "balansepute"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "hip-airplane",
+  "navn": "Hip Airplane",
+  "monster": "balanse",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ettbens-rdl-touch",
+  "navn": "Single-Leg RDL Touch",
+  "monster": "balanse",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "glute-bridge",
+  "navn": "Glute Bridge",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "hengsel",
+  "kjedePos": 1,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ettbens-glute-bridge",
+  "navn": "Single-Leg Glute Bridge",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "hengsel",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "hip-thrust-sofa",
+  "navn": "Hip Thrust (Sofa)",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "hengsel",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   },
+   {
+    "utstyr": [
+     "kb"
+    ],
+    "navnOverstyr": "Hip thrust m/ KB",
+    "nivaJust": 1
+   },
+   {
+    "utstyr": [
+     "manualer"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ettbens-hip-thrust",
+  "navn": "Single-Leg Hip Thrust",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "hengsel",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kb-rdl",
+  "navn": "KB RDL",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "hengsel",
+  "kjedePos": 5,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   },
+   {
+    "utstyr": [
+     "kbsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ettbens-kb-rdl",
+  "navn": "Single-Leg KB RDL",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "hengsel",
+  "kjedePos": 6,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kb-swing-tohands",
+  "navn": "KB Swing (Two-Handed)",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "kb-swing",
+  "kjedePos": 1,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   },
+   {
+    "utstyr": [
+     "kbsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kb-swing-enhands",
+  "navn": "KB Swing (One-Handed)",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "kb-swing",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   },
+   {
+    "utstyr": [
+     "kbsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kb-swing-dobbel",
+  "navn": "KB Swing (Double)",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "kb-swing",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   },
+   {
+    "utstyr": [
+     "kbsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kb-dead-clean",
+  "navn": "KB Dead Clean",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   },
+   {
+    "utstyr": [
+     "kbsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kb-clean",
+  "navn": "KB Clean",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "ol-loft",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   },
+   {
+    "utstyr": [
+     "kbsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kb-snatch",
+  "navn": "KB Snatch",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "kb-swing",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   },
+   {
+    "utstyr": [
+     "kbsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "superman-hold",
+  "navn": "Superman Hold",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "ryggekstensorer"
+ },
+ {
+  "id": "nordic-eksentrisk",
+  "navn": "Nordic Eccentric",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "hengsel",
+  "kjedePos": 7,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "føtter under sofa"
+ },
+ {
+  "id": "nordic-curl",
+  "navn": "Nordic Curl",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 5,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "hengsel",
+  "kjedePos": 8,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "suitcase-carry",
+  "navn": "Suitcase Carry",
+  "monster": "baering",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "dist",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualer"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "+ anti-lateral"
+ },
+ {
+  "id": "rack-carry",
+  "navn": "Rack Carry",
+  "monster": "baering",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualer"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "farmer-carry-dobbel",
+  "navn": "Farmer Carry (Double)",
+  "monster": "baering",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualer"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "overhead-carry",
+  "navn": "Overhead Carry",
+  "monster": "baering",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "dist",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kb-windmill",
+  "navn": "KB Windmill",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualer"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "mobilitet+styrke"
+ },
+ {
+  "id": "turkish-get-up",
+  "navn": "Turkish Get-up",
+  "monster": "helkropp",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "tgu",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "deler = nv 2-3"
+ },
+ {
+  "id": "kb-halo",
+  "navn": "KB Halo",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "STY",
+   "MOB"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualer"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "skulder"
+ },
+ {
+  "id": "kb-around-the-world",
+  "navn": "KB Around-the-World",
+  "monster": "core-rot",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "dead-bug",
+  "navn": "Dead Bug",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "hollow",
+  "kjedePos": 1,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "bird-dog",
+  "navn": "Bird Dog",
+  "monster": "core-antirot",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "planke",
+  "navn": "Plank",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "core-antiekst",
+  "kjedePos": 1,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "rkc-planke",
+  "navn": "RKC Plank",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "core-antiekst",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "maks spenn 10-20 s"
+ },
+ {
+  "id": "planke-m-skulderklapp",
+  "navn": "Plank with Shoulder Taps",
+  "monster": "core-antirot",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "core-antiekst",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "body-saw",
+  "navn": "Body Saw",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "core-antiekst",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   },
+   {
+    "utstyr": [
+     "glidere"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ring-rollout-knestaende",
+  "navn": "Ring Rollout (Kneeling)",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "core-antiekst",
+  "kjedePos": 5,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer",
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "sideplanke",
+  "navn": "Side Plank",
+  "monster": "core-lat",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "m/ dips = reps"
+ },
+ {
+  "id": "sideplanke-m-loft",
+  "navn": "Side Plank with Lift",
+  "monster": "core-lat",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 3,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "copenhagen-kort",
+  "navn": "Copenhagen Plank (Short)",
+  "monster": "core-lat",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 3,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   },
+   {
+    "utstyr": [
+     "matte"
+    ],
+    "navnOverstyr": "Copenhagen lang",
+    "nivaJust": 1
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "hollow-tuck",
+  "navn": "Hollow Tuck",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "hollow",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "hollow-hold",
+  "navn": "Hollow Hold",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 3,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "hollow",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "hollow-rocks",
+  "navn": "Hollow Rocks",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "hollow",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "arch-rocks",
+  "navn": "Arch Rocks",
+  "monster": "hengsel",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "v-ups",
+  "navn": "V-ups",
+  "monster": "core-flex",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "hollow",
+  "kjedePos": 5,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "sit-up",
+  "navn": "Sit-up",
+  "monster": "core-flex",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "bicycle-crunch",
+  "navn": "Bicycle Crunch",
+  "monster": "core-rot",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "russian-twist",
+  "navn": "Russian Twist",
+  "monster": "core-rot",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   },
+   {
+    "utstyr": [
+     "kb",
+     "matte"
+    ],
+    "navnOverstyr": "Russian twist m/ KB",
+    "nivaJust": 1
+   },
+   {
+    "utstyr": [
+     "manualer"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "flutter-kicks",
+  "navn": "Flutter Kicks",
+  "monster": "core-flex",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "seated-leg-raises",
+  "navn": "Seated Leg Raises",
+  "monster": "core-flex",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "v1-klassiker"
+ },
+ {
+  "id": "toe-touches",
+  "navn": "Toe Touches",
+  "monster": "core-flex",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "windshield-wipers-liggende",
+  "navn": "Windshield Wipers (Lying)",
+  "monster": "core-rot",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "i heng = nv 5"
+ },
+ {
+  "id": "dragon-flag-tuck",
+  "navn": "Dragon Flag Tuck",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "core-antiekst",
+  "kjedePos": 6,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "dragon-flag-straddle",
+  "navn": "Dragon Flag Straddle",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "core-antiekst",
+  "kjedePos": 7,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "dragon-flag",
+  "navn": "Dragon Flag",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 5,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "core-antiekst",
+  "kjedePos": 8,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "knee-raises-i-heng",
+  "navn": "Hanging Knee Raises",
+  "monster": "core-heng",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "core-heng",
+  "kjedePos": 1,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup-rigg"
+    ]
+   },
+   {
+    "utstyr": [
+     "tuftepark"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "leg-raises-i-heng",
+  "navn": "Hanging Leg Raises",
+  "monster": "core-heng",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "core-heng",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup-rigg"
+    ]
+   },
+   {
+    "utstyr": [
+     "tuftepark"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "toes-to-bar",
+  "navn": "Toes-to-Bar",
+  "monster": "core-heng",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "core-heng",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup-rigg"
+    ]
+   },
+   {
+    "utstyr": [
+     "tuftepark"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "l-sit-tuck",
+  "navn": "L-sit Tuck",
+  "monster": "core-heng",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 3,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "core-heng",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   },
+   {
+    "utstyr": [
+     "kb"
+    ],
+    "navnOverstyr": "L-sit tuck på KB-håndtak"
+   },
+   {
+    "utstyr": [
+     "paralletter"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "l-sit",
+  "navn": "L-sit",
+  "monster": "core-heng",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 4,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "core-heng",
+  "kjedePos": 5,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   },
+   {
+    "utstyr": [
+     "paralletter"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "pallof-press",
+  "navn": "Pallof Press",
+  "monster": "core-antirot",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "band-lang"
+    ]
+   },
+   {
+    "utstyr": [
+     "kabel"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "krever bånd"
+ },
+ {
+  "id": "staende-kb-rotasjon",
+  "navn": "Standing KB Rotation",
+  "monster": "core-rot",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "bat-navasana",
+  "navn": "Boat (Navasana)",
+  "monster": "core-flex",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "deles m/ yoga"
+ },
+ {
+  "id": "squat-jump",
+  "navn": "Squat Jump",
+  "monster": "hopp",
+  "modaliteter": [
+   "PLYO"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "hoy",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "tuck-jump",
+  "navn": "Tuck Jump",
+  "monster": "hopp",
+  "modaliteter": [
+   "PLYO"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "hoy",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "broad-jump",
+  "navn": "Broad Jump",
+  "monster": "hopp",
+  "modaliteter": [
+   "PLYO"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "hoy",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "skater-jump-lateral-bound",
+  "navn": "Skater Jump / Lateral Bound",
+  "monster": "hopp",
+  "modaliteter": [
+   "PLYO"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "hoy",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "split-jump-hopp-utfall",
+  "navn": "Split Jump / Jumping Lunge",
+  "monster": "hopp",
+  "modaliteter": [
+   "PLYO"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "hoy",
+  "kjede": "utfall",
+  "kjedePos": 5,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "trappe-kassehopp",
+  "navn": "Stair/Box Jump",
+  "monster": "hopp",
+  "modaliteter": [
+   "PLYO"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "hoy",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "pogo-hops",
+  "navn": "Pogo Hops",
+  "monster": "hopp",
+  "modaliteter": [
+   "PLYO"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "hoy",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "clap-push-up",
+  "navn": "Clap Push-up",
+  "monster": "push-h",
+  "modaliteter": [
+   "PLYO"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "hoy",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "plyo-utfallsbytte",
+  "navn": "Plyo Lunge Switch",
+  "monster": "hopp",
+  "modaliteter": [
+   "PLYO"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "hoy",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "lateral-hopp-over-kb",
+  "navn": "Lateral Jump over KB",
+  "monster": "hopp",
+  "modaliteter": [
+   "PLYO"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "hoy",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "jumping-jacks",
+  "navn": "Jumping Jacks",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "seal-jacks",
+  "navn": "Seal Jacks",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "high-knees",
+  "navn": "High Knees",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "butt-kicks",
+  "navn": "Butt Kicks",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "fast-feet",
+  "navn": "Fast Feet",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "mountain-climbers",
+  "navn": "Mountain Climbers",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "cross-body-mountain-climbers",
+  "navn": "Cross-Body Mountain Climbers",
+  "monster": "core-rot",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "plank-jacks",
+  "navn": "Plank Jacks",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "half-burpee-sprawl",
+  "navn": "Half Burpee (Sprawl)",
+  "monster": "helkropp",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "burpee",
+  "navn": "Burpee",
+  "monster": "helkropp",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "burpee-over-kb",
+  "navn": "Burpee over KB",
+  "monster": "helkropp",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "hoy",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "skater-shuffle",
+  "navn": "Skater Shuffle",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "bear-crawl",
+  "navn": "Bear Crawl",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 2,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "crab-walk",
+  "navn": "Crab Walk",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 2,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "crab-kicks",
+  "navn": "Crab Kicks",
+  "monster": "core-flex",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "inchworm-m-push-up",
+  "navn": "Inchworm with Push-up",
+  "monster": "helkropp",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "shadow-boxing",
+  "navn": "Shadow Boxing",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "usynlig-hoppetau",
+  "navn": "Invisible Jump Rope",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "step-ups-tempo",
+  "navn": "Step-ups (Tempo)",
+  "monster": "utfall",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "squat-pulse",
+  "navn": "Squat Pulse",
+  "monster": "kneboy",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "star-jump",
+  "navn": "Star Jump",
+  "monster": "hopp",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "hoy",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kb-swing-kondisjonsdose",
+  "navn": "KB Swing (Conditioning Dose)",
+  "monster": "hengsel",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "fjellstilling",
+  "navn": "Mountain Pose (Tadasana)",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "holdning",
+   "pust"
+  ]
+ },
+ {
+  "id": "staende-foroverboy",
+  "navn": "Standing Forward Fold",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "hamstrings",
+   "rygg"
+  ]
+ },
+ {
+  "id": "halvveis-loft",
+  "navn": "Halfway Lift",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "ryggstrekk"
+  ]
+ },
+ {
+  "id": "stol",
+  "navn": "Chair Pose",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "bein",
+   "core"
+  ]
+ },
+ {
+  "id": "planke-chaturanga",
+  "navn": "Plank → Chaturanga",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 2,
+  "type": "flyt",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "push",
+   "core"
+  ]
+ },
+ {
+  "id": "kobra",
+  "navn": "Cobra",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "ryggboy"
+  ]
+ },
+ {
+  "id": "oppovervendt-hund",
+  "navn": "Upward-Facing Dog",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "ryggboy"
+  ]
+ },
+ {
+  "id": "nedovervendt-hund",
+  "navn": "Downward-Facing Dog",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "helkropp"
+  ]
+ },
+ {
+  "id": "lav-utfall",
+  "navn": "Low Lunge",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "hofteboyere"
+  ]
+ },
+ {
+  "id": "hoy-utfall",
+  "navn": "High Lunge",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "bein",
+   "balanse"
+  ]
+ },
+ {
+  "id": "kriger-1",
+  "navn": "Warrior I",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "bein",
+   "hofter"
+  ]
+ },
+ {
+  "id": "kriger-2",
+  "navn": "Warrior II",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "bein",
+   "hofter"
+  ]
+ },
+ {
+  "id": "kriger-3",
+  "navn": "Warrior III",
+  "monster": "balanse",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "balanse"
+  ]
+ },
+ {
+  "id": "fredfull-kriger",
+  "navn": "Peaceful Warrior",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "sidestrekk"
+  ]
+ },
+ {
+  "id": "triangel",
+  "navn": "Triangle",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "sidestrekk",
+   "hamstrings"
+  ]
+ },
+ {
+  "id": "utvidet-sidevinkel",
+  "navn": "Extended Side Angle",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "hofter",
+   "side"
+  ]
+ },
+ {
+  "id": "halvmane",
+  "navn": "Half Moon",
+  "monster": "balanse",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 3,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "balanse"
+  ]
+ },
+ {
+  "id": "pyramide",
+  "navn": "Pyramid",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "hamstrings"
+  ]
+ },
+ {
+  "id": "rotert-triangel",
+  "navn": "Revolved Triangle",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 3,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "rotasjon",
+   "balanse"
+  ]
+ },
+ {
+  "id": "tre",
+  "navn": "Tree",
+  "monster": "balanse",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "balanse"
+  ]
+ },
+ {
+  "id": "orn",
+  "navn": "Eagle",
+  "monster": "balanse",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "balanse",
+   "skuldre"
+  ]
+ },
+ {
+  "id": "danser",
+  "navn": "Dancer",
+  "monster": "balanse",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 3,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "balanse",
+   "quad"
+  ]
+ },
+ {
+  "id": "bred-foroverboy",
+  "navn": "Wide-Legged Forward Fold",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "adduktorer"
+  ]
+ },
+ {
+  "id": "malasana",
+  "navn": "Malasana (Deep Squat)",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "hofter",
+   "ankler"
+  ]
+ },
+ {
+  "id": "krake",
+  "navn": "Crow",
+  "monster": "balanse",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 4,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "armbalanse"
+  ]
+ },
+ {
+  "id": "sidekrake",
+  "navn": "Side Crow",
+  "monster": "balanse",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 5,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "armbalanse"
+  ]
+ },
+ {
+  "id": "delfin",
+  "navn": "Dolphin",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "skuldre"
+  ],
+  "notat": "HS-prep"
+ },
+ {
+  "id": "katt-ku",
+  "navn": "Cat–Cow",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "flyt",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "ryggmobilitet"
+  ]
+ },
+ {
+  "id": "barnets-stilling",
+  "navn": "Child's Pose",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "hvile"
+  ]
+ },
+ {
+  "id": "due",
+  "navn": "Pigeon",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "sete",
+   "hofter"
+  ]
+ },
+ {
+  "id": "lav-lunge-m-quad-grep",
+  "navn": "Low Lunge with Quad Grip",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 3,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "quad",
+   "hofteboyere"
+  ]
+ },
+ {
+  "id": "sittende-foroverboy",
+  "navn": "Seated Forward Fold",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "hamstrings"
+  ]
+ },
+ {
+  "id": "sommerfugl",
+  "navn": "Butterfly",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "adduktorer"
+  ]
+ },
+ {
+  "id": "sittende-twist",
+  "navn": "Seated Twist",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "rotasjon"
+  ]
+ },
+ {
+  "id": "bro",
+  "navn": "Bridge",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "ryggboy",
+   "sete"
+  ]
+ },
+ {
+  "id": "hjul",
+  "navn": "Wheel",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 4,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "ryggboy"
+  ]
+ },
+ {
+  "id": "kamel",
+  "navn": "Camel",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 3,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "ryggboy"
+  ]
+ },
+ {
+  "id": "fisk",
+  "navn": "Fish",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "bryst"
+  ]
+ },
+ {
+  "id": "happy-baby",
+  "navn": "Happy Baby",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "hofter"
+  ]
+ },
+ {
+  "id": "liggende-twist",
+  "navn": "Reclined Twist",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "rygg"
+  ]
+ },
+ {
+  "id": "ben-opp-veggen",
+  "navn": "Legs up the Wall",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "restitusjon"
+  ]
+ },
+ {
+  "id": "savasana",
+  "navn": "Savasana",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "avspenning"
+  ]
+ },
+ {
+  "id": "sommerfugl-yin",
+  "navn": "Butterfly",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "yin"
+  ],
+  "notat": "2-5 min hold"
+ },
+ {
+  "id": "halv-sommerfugl",
+  "navn": "Half Butterfly",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "yin"
+  ],
+  "notat": "2-5 min hold"
+ },
+ {
+  "id": "dragen",
+  "navn": "Dragon (Deep Lunge)",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "yin"
+  ],
+  "notat": "2-5 min hold"
+ },
+ {
+  "id": "svanen",
+  "navn": "Swan (Yin Pigeon)",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "yin"
+  ],
+  "notat": "2-5 min hold"
+ },
+ {
+  "id": "sovende-svane",
+  "navn": "Sleeping Swan",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "yin"
+  ],
+  "notat": "2-5 min hold"
+ },
+ {
+  "id": "frosken",
+  "navn": "Frog",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "yin"
+  ],
+  "notat": "2-5 min hold"
+ },
+ {
+  "id": "caterpillar",
+  "navn": "Caterpillar (Rounded Forward Fold)",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "yin"
+  ],
+  "notat": "2-5 min hold"
+ },
+ {
+  "id": "sfinxen",
+  "navn": "Sphinx",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "yin"
+  ],
+  "notat": "2-5 min hold"
+ },
+ {
+  "id": "selen",
+  "navn": "Seal",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "yin"
+  ],
+  "notat": "2-5 min hold"
+ },
+ {
+  "id": "bananasana",
+  "navn": "Bananasana",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "yin"
+  ],
+  "notat": "2-5 min hold"
+ },
+ {
+  "id": "skolissen",
+  "navn": "Shoelace",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "yin"
+  ],
+  "notat": "2-5 min hold"
+ },
+ {
+  "id": "liggende-twist-yin",
+  "navn": "Reclined Twist",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "yin"
+  ],
+  "notat": "2-5 min hold"
+ },
+ {
+  "id": "dangling",
+  "navn": "Dangling (Hanging Forward Fold)",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "yin"
+  ],
+  "notat": "2-5 min hold"
+ },
+ {
+  "id": "malasana-hold-yin",
+  "navn": "Malasana Hold",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "yin"
+  ],
+  "notat": "2-5 min hold"
+ },
+ {
+  "id": "stottet-fisk",
+  "navn": "Supported Fish (Bolster)",
+  "monster": "flyt",
+  "modaliteter": [
+   "YOGA"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "yin"
+  ],
+  "notat": "2-5 min hold"
+ },
+ {
+  "id": "the-hundred",
+  "navn": "The Hundred",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "100 pumpetakter"
+ },
+ {
+  "id": "roll-up",
+  "navn": "Roll-up",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "single-leg-circles",
+  "navn": "Single Leg Circles",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "rolling-like-a-ball",
+  "navn": "Rolling Like a Ball",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "single-leg-stretch",
+  "navn": "Single Leg Stretch",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "double-leg-stretch",
+  "navn": "Double Leg Stretch",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "single-straight-leg",
+  "navn": "Single Straight Leg (Scissors)",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "double-straight-leg-lower-lift",
+  "navn": "Double Straight Leg Lower-Lift",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "criss-cross",
+  "navn": "Criss-Cross",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "spine-stretch-forward",
+  "navn": "Spine Stretch Forward",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "open-leg-rocker",
+  "navn": "Open Leg Rocker",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "the-saw",
+  "navn": "The Saw",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "swan",
+  "navn": "Swan",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "single-leg-kicks",
+  "navn": "Single Leg Kicks",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "double-leg-kicks",
+  "navn": "Double Leg Kicks",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "shoulder-bridge",
+  "navn": "Shoulder Bridge",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "side-kick-front-back",
+  "navn": "Side Kick Front/Back",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "side-kick-up-down",
+  "navn": "Side Kick Up/Down",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "side-kick-circles",
+  "navn": "Side Kick Circles",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "teaser-prep",
+  "navn": "Teaser Prep",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "full teaser = nv 4"
+ },
+ {
+  "id": "swimming",
+  "navn": "Swimming",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "leg-pull-front",
+  "navn": "Leg Pull Front",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "leg-pull-back",
+  "navn": "Leg Pull Back",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "mermaid",
+  "navn": "Mermaid",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "seal",
+  "navn": "Seal",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "nakke-sideboy-m-lett-drag",
+  "navn": "Neck Side Bend with Light Pull",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "nakke",
+   "statisk"
+  ]
+ },
+ {
+  "id": "nakke-rotasjon",
+  "navn": "Neck Rotation",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "nakke",
+   "statisk"
+  ]
+ },
+ {
+  "id": "levator-strekk",
+  "navn": "Levator Stretch",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "nakke",
+   "statisk"
+  ],
+  "notat": "nese mot armhule"
+ },
+ {
+  "id": "dorkarm-veggstrekk-bryst",
+  "navn": "Doorway/Wall Chest Stretch",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "vegg"
+    ]
+   }
+  ],
+  "tags": [
+   "bryst-skulder",
+   "pnf"
+  ]
+ },
+ {
+  "id": "cross-body-skulderstrekk",
+  "navn": "Cross-Body Shoulder Stretch",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "bryst-skulder",
+   "statisk"
+  ]
+ },
+ {
+  "id": "triceps-overhead-strekk",
+  "navn": "Overhead Triceps Stretch",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "bryst-skulder",
+   "statisk"
+  ]
+ },
+ {
+  "id": "passivt-heng-i-ringer",
+  "navn": "Passive Hang on Rings",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   }
+  ],
+  "tags": [
+   "bryst-skulder",
+   "statisk"
+  ]
+ },
+ {
+  "id": "barnets-stilling-toy",
+  "navn": "Child's Pose",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "rygg",
+   "statisk"
+  ]
+ },
+ {
+  "id": "katt-ku-toy",
+  "navn": "Cat–Cow",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "rygg",
+   "dyn"
+  ]
+ },
+ {
+  "id": "liggende-twist-toy",
+  "navn": "Reclined Twist",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "rygg",
+   "statisk"
+  ]
+ },
+ {
+  "id": "kobra-toy",
+  "navn": "Cobra",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "rygg",
+   "dyn"
+  ]
+ },
+ {
+  "id": "halvknestaende-hoftestrekk",
+  "navn": "Half-Kneeling Hip Flexor Stretch",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "hofteboyere",
+   "pnf"
+  ]
+ },
+ {
+  "id": "couch-stretch",
+  "navn": "Couch Stretch",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 3,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "hofteboyere",
+   "statisk"
+  ]
+ },
+ {
+  "id": "verdenshilsen",
+  "navn": "World's Greatest Stretch",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "hofteboyere",
+   "dyn"
+  ]
+ },
+ {
+  "id": "staende-hamstringstrekk-m-hael-frem",
+  "navn": "Standing Hamstring Stretch (Heel Forward)",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "hamstrings",
+   "statisk"
+  ]
+ },
+ {
+  "id": "liggende-hamstringstrekk-m-handkle",
+  "navn": "Lying Hamstring Stretch with Towel",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte",
+     "handkle"
+    ]
+   }
+  ],
+  "tags": [
+   "hamstrings",
+   "pnf"
+  ]
+ },
+ {
+  "id": "sittende-foroverboy-toy",
+  "navn": "Seated Forward Fold",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "hamstrings",
+   "statisk"
+  ]
+ },
+ {
+  "id": "figur-4-liggende",
+  "navn": "Figure-4 (Lying)",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "sete",
+   "statisk"
+  ]
+ },
+ {
+  "id": "due-toy",
+  "navn": "Pigeon",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "sete",
+   "statisk"
+  ]
+ },
+ {
+  "id": "sittende-figur-4",
+  "navn": "Seated Figure-4",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "sete",
+   "statisk"
+  ]
+ },
+ {
+  "id": "sommerfugl-toy",
+  "navn": "Butterfly",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "adduktorer",
+   "statisk"
+  ]
+ },
+ {
+  "id": "frosken-toy",
+  "navn": "Frog",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "adduktorer",
+   "statisk"
+  ]
+ },
+ {
+  "id": "sideutfall-lene",
+  "navn": "Side Lunge Lean",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "adduktorer",
+   "dyn"
+  ]
+ },
+ {
+  "id": "staende-quadstrekk",
+  "navn": "Standing Quad Stretch",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "quads",
+   "statisk"
+  ]
+ },
+ {
+  "id": "lav-lunge-m-quad-grep-toy",
+  "navn": "Low Lunge with Quad Grip",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "quads",
+   "statisk"
+  ]
+ },
+ {
+  "id": "veggstrekk-strakt-kne-gastroc",
+  "navn": "Wall Calf Stretch, Straight Knee (Gastroc)",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "vegg"
+    ]
+   }
+  ],
+  "tags": [
+   "legger",
+   "statisk"
+  ]
+ },
+ {
+  "id": "veggstrekk-boyd-kne-soleus",
+  "navn": "Wall Calf Stretch, Bent Knee (Soleus)",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "vegg"
+    ]
+   }
+  ],
+  "tags": [
+   "legger",
+   "statisk"
+  ]
+ },
+ {
+  "id": "fleksor-ekstensorstrekk-pa-alle-fire",
+  "navn": "Wrist Flexor/Extensor Stretch on All Fours",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "handledd",
+   "statisk"
+  ],
+  "notat": "obligatorisk før HS/planche-arbeid"
+ },
+ {
+  "id": "handleddsrock",
+  "navn": "Wrist Rock",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "handledd",
+   "dyn"
+  ],
+  "notat": "obligatorisk før HS/planche-arbeid"
+ },
+ {
+  "id": "knee-to-wall",
+  "navn": "Knee-to-Wall",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "vegg"
+    ]
+   }
+  ],
+  "tags": [
+   "ankler",
+   "dyn"
+  ]
+ },
+ {
+  "id": "taballe-sitt",
+  "navn": "Toe Sit (Ball of Foot)",
+  "monster": "flyt",
+  "modaliteter": [
+   "STR"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "matte"
+    ]
+   }
+  ],
+  "tags": [
+   "ankler",
+   "statisk"
+  ]
+ },
+ {
+  "id": "cars-nakke-skulder-handledd-hofte-ankel",
+  "navn": "CARs: Neck/Shoulder/Wrist/Hip/Ankle",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [
+   "nakke",
+   "skulder",
+   "handledd",
+   "hofte",
+   "ankel"
+  ]
+ },
+ {
+  "id": "katt-ku-mob",
+  "navn": "Cat–Cow",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [
+   "rygg"
+  ]
+ },
+ {
+  "id": "thorakal-rotasjon-apne-boka",
+  "navn": "Thoracic Rotation (\"Open the Book\")",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [
+   "brystrygg"
+  ]
+ },
+ {
+  "id": "thread-the-needle",
+  "navn": "Thread the Needle",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [
+   "brystrygg"
+  ]
+ },
+ {
+  "id": "skulder-dislocates-handkle-band",
+  "navn": "Shoulder Dislocates (Towel/Band)",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "MOB"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "handkle"
+    ]
+   },
+   {
+    "utstyr": [
+     "band-lang"
+    ]
+   }
+  ],
+  "tags": [
+   "skulder"
+  ]
+ },
+ {
+  "id": "scapula-push-ups",
+  "navn": "Scapular Push-ups",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "MOB"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [
+   "scapula"
+  ]
+ },
+ {
+  "id": "scapula-pull-ups-ringheng",
+  "navn": "Scapular Pull-ups (Ring Hang)",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "MOB"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   }
+  ],
+  "tags": [
+   "scapula"
+  ]
+ },
+ {
+  "id": "verdenshilsen-worlds-greatest",
+  "navn": "World's Greatest Stretch",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "MOB"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [
+   "helkropp"
+  ]
+ },
+ {
+  "id": "90-90-overganger",
+  "navn": "90/90 Transitions",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "MOB"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [
+   "hofte"
+  ]
+ },
+ {
+  "id": "90-90-fremlent-hold",
+  "navn": "90/90 Forward-Lean Hold",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "MOB"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [
+   "hofte"
+  ]
+ },
+ {
+  "id": "hip-airplane-mob",
+  "navn": "Hip Airplane",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "MOB"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [
+   "hofte"
+  ]
+ },
+ {
+  "id": "dyp-kneboy-hold-m-albuepress",
+  "navn": "Deep Squat Hold with Elbow Press",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "MOB"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [
+   "hofte",
+   "ankel"
+  ]
+ },
+ {
+  "id": "ankel-rock",
+  "navn": "Ankle Rock",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [
+   "ankel"
+  ]
+ },
+ {
+  "id": "jefferson-curl-lett-kv",
+  "navn": "Jefferson Curl (Light/Bodyweight)",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "MOB"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv",
+     "kb"
+    ]
+   }
+  ],
+  "tags": [
+   "bakkjede"
+  ]
+ },
+ {
+  "id": "handleddsserie-rocks-loft",
+  "navn": "Wrist Series (Rocks + Lifts)",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [
+   "handledd"
+  ]
+ },
+ {
+  "id": "db-benkpress",
+  "navn": "DB Bench Press",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "benkpress",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett",
+     "benk-flat"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "db-skrabenkpress",
+  "navn": "DB Incline Bench Press",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett",
+     "benk-just"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "db-flyes",
+  "navn": "DB Flyes",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett",
+     "benk-flat"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "db-skra-flyes",
+  "navn": "DB Incline Flyes",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett",
+     "benk-just"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "db-pullover",
+  "navn": "DB Pullover",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett",
+     "benk-flat"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "lats/bryst"
+ },
+ {
+  "id": "db-skulderpress-sittende",
+  "navn": "DB Shoulder Press (Seated)",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett",
+     "benk-just"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "db-skulderpress-staende",
+  "navn": "DB Shoulder Press (Standing)",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "press-stang",
+  "kjedePos": 1,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "arnold-press",
+  "navn": "Arnold Press",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "lateral-raise",
+  "navn": "Lateral Raise",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "front-raise",
+  "navn": "Front Raise",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "reverse-fly",
+  "navn": "Reverse Fly",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ],
+  "notat": "bakside skulder"
+ },
+ {
+  "id": "db-smal-press",
+  "navn": "DB Close-Grip Press",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett",
+     "benk-flat"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "triceps-bias"
+ },
+ {
+  "id": "skullcrusher-db",
+  "navn": "DB Skullcrusher",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett",
+     "benk-flat"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "overhead-triceps-ext",
+  "navn": "Overhead Triceps Extension",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "triceps-kickback",
+  "navn": "Triceps Kickback",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "ettarms-db-row",
+  "navn": "Single-Arm DB Row",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett",
+     "benk-flat"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "chest-supported-row",
+  "navn": "Chest-Supported Row",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett",
+     "benk-just"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "db-upright-row",
+  "navn": "DB Upright Row",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "db-shrug",
+  "navn": "DB Shrug",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ],
+  "notat": "traps"
+ },
+ {
+  "id": "db-curl",
+  "navn": "DB Curl",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "hammer-curl",
+  "navn": "Hammer Curl",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "skra-curl",
+  "navn": "Incline Curl",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett",
+     "benk-just"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "konsentrasjonscurl",
+  "navn": "Concentration Curl",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "db-rdl",
+  "navn": "DB RDL",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "db-markloft",
+  "navn": "DB Deadlift",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "db-legghev",
+  "navn": "DB Calf Raise",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ],
+  "notat": "legger"
+ },
+ {
+  "id": "db-side-bend",
+  "navn": "DB Side Bend",
+  "monster": "core-lat",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "db-clean-press",
+  "navn": "DB Clean & Press",
+  "monster": "helkropp",
+  "modaliteter": [
+   "STY",
+   "MET"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "db-snatch",
+  "navn": "DB Snatch",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "devils-press",
+  "navn": "Devil's Press",
+  "monster": "helkropp",
+  "modaliteter": [
+   "STY",
+   "MET"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "manualsett"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "burpee + dobbel snatch"
+ },
+ {
+  "id": "back-squat",
+  "navn": "Back Squat",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "kneboy-stang",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver",
+     "rack"
+    ]
+   },
+   {
+    "utstyr": [
+     "smith"
+    ],
+    "nivaJust": -1
+   }
+  ],
+  "tags": [],
+  "notat": "tom stang = 2"
+ },
+ {
+  "id": "front-squat-stang",
+  "navn": "Front Squat (Barbell)",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "kneboy-stang",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver",
+     "rack"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "box-squat",
+  "navn": "Box Squat",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "kneboy-stang",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver",
+     "rack",
+     "kasse"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "pause-squat",
+  "navn": "Pause Squat",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "kneboy-stang",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver",
+     "rack"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "zercher-squat",
+  "navn": "Zercher Squat",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver",
+     "rack"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "overhead-squat",
+  "navn": "Overhead Squat",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 5,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "kneboy-stang",
+  "kjedePos": 5,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "mobilitetskrav"
+ },
+ {
+  "id": "markloft",
+  "navn": "Deadlift",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "markloft",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "lett = 2"
+ },
+ {
+  "id": "sumo-markloft",
+  "navn": "Sumo Deadlift",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "markloft",
+  "kjedePos": 5,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "stang-rdl",
+  "navn": "Barbell RDL",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "markloft",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "stivbeint-markloft",
+  "navn": "Stiff-Legged Deadlift",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "rack-pull",
+  "navn": "Rack Pull",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver",
+     "rack"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "good-morning",
+  "navn": "Good Morning",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver",
+     "rack"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "hip-thrust-stang",
+  "navn": "Hip Thrust (Barbell)",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver",
+     "benk-flat"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "glute-bridge-stang",
+  "navn": "Glute Bridge (Barbell)",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "benkpress",
+  "navn": "Bench Press",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "benkpress",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver",
+     "benk-flat",
+     "rack"
+    ]
+   },
+   {
+    "utstyr": [
+     "smith"
+    ],
+    "nivaJust": -1
+   }
+  ],
+  "tags": [],
+  "notat": "tom stang = 2"
+ },
+ {
+  "id": "skra-benkpress",
+  "navn": "Incline Bench Press",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "benkpress",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver",
+     "benk-just",
+     "rack"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "smal-benkpress",
+  "navn": "Close-Grip Bench Press",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "benkpress",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver",
+     "benk-flat",
+     "rack"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "floor-press-stang",
+  "navn": "Floor Press (Barbell)",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "militaerpress-ohp",
+  "navn": "Military Press (OHP)",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "press-stang",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver",
+     "rack"
+    ]
+   },
+   {
+    "utstyr": [
+     "smith"
+    ],
+    "nivaJust": -1
+   }
+  ],
+  "tags": [],
+  "notat": "tom stang = 2"
+ },
+ {
+  "id": "push-press-stang",
+  "navn": "Push Press (Barbell)",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "press-stang",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver",
+     "rack"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "pendlay-row",
+  "navn": "Pendlay Row",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "bent-over-row-stang",
+  "navn": "Bent-Over Row (Barbell)",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver"
+    ]
+   },
+   {
+    "utstyr": [
+     "smith"
+    ],
+    "nivaJust": -1
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "barbell-shrug",
+  "navn": "Barbell Shrug",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "barbell-utfall",
+  "navn": "Barbell Lunge",
+  "monster": "utfall",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver",
+     "rack"
+    ]
+   },
+   {
+    "utstyr": [
+     "smith"
+    ],
+    "nivaJust": -1
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "barbell-split-squat",
+  "navn": "Barbell Split Squat",
+  "monster": "utfall",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver",
+     "rack"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "barbell-calf-raise",
+  "navn": "Barbell Calf Raise",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "skiver",
+     "rack"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "power-clean",
+  "navn": "Power Clean",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "ol-loft",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "bumper"
+    ]
+   }
+  ],
+  "tags": [
+   "eksplosiv"
+  ]
+ },
+ {
+  "id": "hang-clean",
+  "navn": "Hang Clean",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "bumper"
+    ]
+   }
+  ],
+  "tags": [
+   "eksplosiv"
+  ]
+ },
+ {
+  "id": "split-jerk",
+  "navn": "Split Jerk",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "press-stang",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "bumper",
+     "rack"
+    ]
+   }
+  ],
+  "tags": [
+   "eksplosiv"
+  ]
+ },
+ {
+  "id": "power-snatch",
+  "navn": "Power Snatch",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 5,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "ol-loft",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "stang",
+     "bumper"
+    ]
+   }
+  ],
+  "tags": [
+   "eksplosiv"
+  ]
+ },
+ {
+  "id": "ez-curl",
+  "navn": "EZ Bar Curl",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ezstang"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "ez-skullcrusher",
+  "navn": "EZ Bar Skullcrusher",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ezstang",
+     "benk-flat"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "trap-bar-markloft",
+  "navn": "Trap Bar Deadlift",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "markloft",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "trapbar",
+     "skiver"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "ryggvennlig inngang"
+ },
+ {
+  "id": "trap-bar-carry",
+  "navn": "Trap Bar Carry",
+  "monster": "baering",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "trapbar",
+     "skiver"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "trap-bar-jump",
+  "navn": "Trap Bar Jump",
+  "monster": "hopp",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "hoy",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "trapbar",
+     "skiver"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "power"
+ },
+ {
+  "id": "landmine-press",
+  "navn": "Landmine Press",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "landmine",
+     "stang"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "landmine-row",
+  "navn": "Landmine Row",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "landmine",
+     "stang"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "landmine-squat-press",
+  "navn": "Landmine Squat Press",
+  "monster": "helkropp",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "landmine",
+     "stang"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "landmine-rotasjon",
+  "navn": "Landmine Rotation",
+  "monster": "core-rot",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "landmine",
+     "stang"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "beinpress",
+  "navn": "Leg Press",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "beinpress"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "leg-extension",
+  "navn": "Leg Extension",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "legext"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "liggende-legcurl",
+  "navn": "Lying Leg Curl",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "legcurl"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "sittende-legcurl",
+  "navn": "Seated Leg Curl",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "legcurl"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "latpulldown-bred",
+  "navn": "Lat Pulldown (Wide)",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "latpulldown"
+    ]
+   },
+   {
+    "utstyr": [
+     "multimaskin"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "latpulldown-smal-noytral",
+  "navn": "Lat Pulldown (Close/Neutral)",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "latpulldown"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "sittende-kabelro",
+  "navn": "Seated Cable Row",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kabelro"
+    ]
+   },
+   {
+    "utstyr": [
+     "multimaskin"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "straight-arm-pulldown",
+  "navn": "Straight-Arm Pulldown",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kabel"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kabelkryss-flyes",
+  "navn": "Cable Crossover / Flyes",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kabel"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "triceps-pushdown",
+  "navn": "Triceps Pushdown",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kabel"
+    ]
+   },
+   {
+    "utstyr": [
+     "multimaskin"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "kabel-curl",
+  "navn": "Cable Curl",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kabel"
+    ]
+   },
+   {
+    "utstyr": [
+     "multimaskin"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "kabel-lateral-raise",
+  "navn": "Cable Lateral Raise",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kabel"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "kabel-pull-through",
+  "navn": "Cable Pull-Through",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kabel"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kabel-woodchop-hoy-lav",
+  "navn": "Cable Woodchop (High→Low)",
+  "monster": "core-rot",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kabel"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kabel-woodchop-lav-hoy",
+  "navn": "Cable Woodchop (Low→High)",
+  "monster": "core-rot",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "kabel"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "assistert-pull-up-maskin",
+  "navn": "Assisted Pull-up Machine",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "maskinpark"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "fyller gapet i PULL-V-kjeden"
+ },
+ {
+  "id": "assistert-dips-maskin",
+  "navn": "Assisted Dip Machine",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "maskinpark"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "fyller gapet i DIPS-kjeden"
+ },
+ {
+  "id": "brystpress-maskin",
+  "navn": "Chest Press Machine",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "maskinpark"
+    ]
+   },
+   {
+    "utstyr": [
+     "multimaskin"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "skulderpress-maskin",
+  "navn": "Shoulder Press Machine",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "maskinpark"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "row-maskin",
+  "navn": "Row Machine",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "maskinpark"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "pec-deck",
+  "navn": "Pec Deck",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "maskinpark"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "hip-abduction",
+  "navn": "Hip Abduction",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "maskinpark"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "hip-adduction",
+  "navn": "Hip Adduction",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "maskinpark"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "hip-thrust-maskin",
+  "navn": "Hip Thrust Machine",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "maskinpark"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kalvmaskin",
+  "navn": "Calf Machine",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "maskinpark"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "mageknekk-maskin",
+  "navn": "Ab Crunch Machine",
+  "monster": "core-flex",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "maskinpark"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ryggekstensjon-romersk-stol",
+  "navn": "Back Extension (Roman Chair)",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "maskinpark"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ghd-back-extension",
+  "navn": "GHD Back Extension",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ghd"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ghd-hip-extension",
+  "navn": "GHD Hip Extension",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ghd"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ghd-sit-up",
+  "navn": "GHD Sit-up",
+  "monster": "core-flex",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ghd"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "romaskin-z2",
+  "navn": "Rowing Machine Z2",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "BASE"
+  ],
+  "niva": 1,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "romaskin"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "Z2"
+ },
+ {
+  "id": "romaskin-500-m-gjentak",
+  "navn": "Rowing 500 m Repeats",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "romaskin"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "500 m-gjentak"
+ },
+ {
+  "id": "romaskin-cal-emom",
+  "navn": "Rowing Calorie EMOM",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "romaskin"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "cal-EMOM"
+ },
+ {
+  "id": "romaskin-2000-m-test",
+  "navn": "Rowing 2000 m Test",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "BASE"
+  ],
+  "niva": 3,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "romaskin"
+    ]
+   }
+  ],
+  "tags": [
+   "test"
+  ],
+  "notat": "2000 m-test; PR + setter kondisjonsbase"
+ },
+ {
+  "id": "skierg-z2",
+  "navn": "SkiErg Z2",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "BASE"
+  ],
+  "niva": 1,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "skierg"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "Z2"
+ },
+ {
+  "id": "skierg-intervaller",
+  "navn": "SkiErg Intervals",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "skierg"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "intervaller"
+ },
+ {
+  "id": "assault-bike-10-50-sprints",
+  "navn": "Assault Bike 10/50 Sprints",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "assaultbike"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "10/50-sprints"
+ },
+ {
+  "id": "assault-bike-cal-emom",
+  "navn": "Assault Bike Calorie EMOM",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT",
+   "MET"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "assaultbike"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "cal-EMOM"
+ },
+ {
+  "id": "tredemolle-z2",
+  "navn": "Treadmill Z2",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "BASE"
+  ],
+  "niva": 1,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "tredemolle"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "Z2"
+ },
+ {
+  "id": "tredemolle-4x4",
+  "navn": "Treadmill 4×4",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT"
+  ],
+  "niva": 3,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "tredemolle"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "4×4"
+ },
+ {
+  "id": "tredemolle-bakkeintervall",
+  "navn": "Treadmill Hill Intervals",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "tredemolle"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "bakkeintervall; incline"
+ },
+ {
+  "id": "gange-z2-m-stigning",
+  "navn": "Walking Z2 with Incline",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "BASE"
+  ],
+  "niva": 1,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "tredemolle"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "Z2 m/ stigning"
+ },
+ {
+  "id": "spinsykkel-z2-intervall",
+  "navn": "Spin Bike Z2 / Intervals",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "BASE",
+   "HIIT"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "spinsykkel"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "Z2 / intervall"
+ },
+ {
+  "id": "stepper-z2",
+  "navn": "Stepper Z2",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "BASE"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "stepper"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "Z2"
+ },
+ {
+  "id": "ellipse-z2",
+  "navn": "Elliptical Z2",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "BASE"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ellipse"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "Z2"
+ },
+ {
+  "id": "footwork-toes-arches-heels-tendon-stretch",
+  "navn": "Footwork: Toes / Arches / Heels / Tendon Stretch",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "grunnserien"
+ },
+ {
+  "id": "running",
+  "navn": "Running",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "pelvic-lift",
+  "navn": "Pelvic Lift",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "hundred-pa-reformer",
+  "navn": "Hundred on Reformer",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "leg-circles-i-stropper",
+  "navn": "Leg Circles in Straps",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "frog",
+  "navn": "Frog",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "coordination",
+  "navn": "Coordination",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "rowing-into-the-sternum",
+  "navn": "Rowing into the Sternum",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "rowing-from-the-chest",
+  "navn": "Rowing from the Chest",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "chest-expansion",
+  "navn": "Chest Expansion",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "elephant",
+  "navn": "Elephant",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "knee-stretches-round-arched",
+  "navn": "Knee Stretches: Round / Arched",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "knees off = 3"
+ },
+ {
+  "id": "long-stretch",
+  "navn": "Long Stretch",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "stomach-massage-round-hands-back-reach",
+  "navn": "Stomach Massage: Round / Hands Back / Reach",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "short-box-round-flat-side-twist",
+  "navn": "Short Box: Round / Flat / Side / Twist",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "long-box-pulling-straps",
+  "navn": "Long Box: Pulling Straps",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "backstroke",
+  "navn": "Backstroke",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "teaser-pa-reformer",
+  "navn": "Teaser on Reformer",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "short-spine",
+  "navn": "Short Spine",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "side-splits",
+  "navn": "Side Splits",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "mermaid-pa-reformer",
+  "navn": "Mermaid on Reformer",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "thigh-stretch",
+  "navn": "Thigh Stretch",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "reformer"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "roll-back-m-bar",
+  "navn": "Roll-Back with Bar",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "cadillac"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "arm-springs-serie",
+  "navn": "Arm Springs Series",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "cadillac"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "leg-springs-serie",
+  "navn": "Leg Springs Series",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "cadillac"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "push-through",
+  "navn": "Push-Through",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "cadillac"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "monkey",
+  "navn": "Monkey",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "cadillac"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "footwork-pa-chair",
+  "navn": "Footwork on Chair",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "wundachair"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "pumping",
+  "navn": "Pumping",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "wundachair"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "swan-pa-chair",
+  "navn": "Swan on Chair",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "wundachair"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "going-up-front",
+  "navn": "Going Up Front",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "wundachair"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "swan-pa-barrel",
+  "navn": "Swan on Barrel",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "barrel"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "side-sit-up",
+  "navn": "Side Sit-up",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "barrel"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ballet-stretch-serie",
+  "navn": "Ballet Stretch Series",
+  "monster": "flyt",
+  "modaliteter": [
+   "PIL"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "barrel"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "slede-push-hoy",
+  "navn": "Sled Push (High)",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "MET",
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "slede"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "slede-push-lav-sprint",
+  "navn": "Sled Push (Low/Sprint)",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "MET",
+   "HIIT"
+  ],
+  "niva": 3,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "hoy",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "slede"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "slede-drag-baklengs",
+  "navn": "Sled Drag (Backward)",
+  "monster": "kneboy",
+  "modaliteter": [
+   "MET",
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "slede"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "knevennlig"
+ },
+ {
+  "id": "slede-drag-m-tau-row-walk",
+  "navn": "Sled Drag with Rope (Row-Walk)",
+  "monster": "pull-h",
+  "modaliteter": [
+   "MET",
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "slede"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "lateral-slede-drag",
+  "navn": "Lateral Sled Drag",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "MET",
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "dist",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "slede"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "battle-ropes-alternating-waves",
+  "navn": "Battle Ropes Alternating Waves",
+  "monster": "helkropp",
+  "modaliteter": [
+   "MET",
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "battleropes"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "battle-ropes-double-waves",
+  "navn": "Battle Ropes Double Waves",
+  "monster": "helkropp",
+  "modaliteter": [
+   "MET",
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "battleropes"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "rope-slams",
+  "navn": "Rope Slams",
+  "monster": "helkropp",
+  "modaliteter": [
+   "MET",
+   "HIIT"
+  ],
+  "niva": 3,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "battleropes"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "rope-sirkler-ut-inn",
+  "navn": "Rope Circles (Out/In)",
+  "monster": "helkropp",
+  "modaliteter": [
+   "MET",
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "battleropes"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "lateral-whips",
+  "navn": "Lateral Whips",
+  "monster": "core-rot",
+  "modaliteter": [
+   "MET",
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "battleropes"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ropes-i-utfall-knestaende",
+  "navn": "Ropes in Lunge/Kneeling",
+  "monster": "helkropp",
+  "modaliteter": [
+   "MET",
+   "HIIT"
+  ],
+  "niva": 3,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "battleropes"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "rope-jumping-jacks",
+  "navn": "Rope Jumping Jacks",
+  "monster": "helkropp",
+  "modaliteter": [
+   "MET",
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "battleropes"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "wall-ball-shots",
+  "navn": "Wall Ball Shots",
+  "monster": "helkropp",
+  "modaliteter": [
+   "MET",
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "wallball"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "med-ball-slam",
+  "navn": "Med Ball Slam",
+  "monster": "helkropp",
+  "modaliteter": [
+   "MET",
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "slamball"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "rotasjonskast-mot-vegg",
+  "navn": "Rotational Throw to Wall",
+  "monster": "core-rot",
+  "modaliteter": [
+   "MET",
+   "HIIT"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "medisinball"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "chest-pass-mot-vegg",
+  "navn": "Chest Pass to Wall",
+  "monster": "push-h",
+  "modaliteter": [
+   "MET",
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "medisinball"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "overhead-kast",
+  "navn": "Overhead Throw",
+  "monster": "helkropp",
+  "modaliteter": [
+   "MET",
+   "HIIT"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "medisinball"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "med-ball-clean",
+  "navn": "Med Ball Clean",
+  "monster": "hengsel",
+  "modaliteter": [
+   "MET",
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "medisinball"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "tau-drag-liggende-row",
+  "navn": "Rope Pull Lying (Row)",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY",
+   "SKILL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "tau-linja",
+  "kjedePos": 1,
+  "varianter": [
+   {
+    "utstyr": [
+     "klatretau"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "fotlas-teknikk",
+  "navn": "Foot Lock Technique",
+  "monster": "skill",
+  "modaliteter": [
+   "STY",
+   "SKILL"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "klatretau"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "tauklatring-m-bein",
+  "navn": "Rope Climb with Legs",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY",
+   "SKILL"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "tau-linja",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "klatretau"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "tauklatring-uten-bein",
+  "navn": "Rope Climb without Legs",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY",
+   "SKILL"
+  ],
+  "niva": 5,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "tau-linja",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "klatretau"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "tau-heng",
+  "navn": "Rope Hang",
+  "monster": "pull-v",
+  "modaliteter": [
+   "STY",
+   "SKILL"
+  ],
+  "niva": 2,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "klatretau"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "grep"
+ },
+ {
+  "id": "band-pull-apart",
+  "navn": "Band Pull-Apart",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "band-lang"
+    ]
+   }
+  ],
+  "tags": [
+   "skulderhelse"
+  ]
+ },
+ {
+  "id": "band-row-anker",
+  "navn": "Band Row (Anchored)",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "band-lang"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "band-press-anker",
+  "navn": "Band Press (Anchored)",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "band-lang"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "band-ohp",
+  "navn": "Band OHP",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "band-lang"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "band-deadlift",
+  "navn": "Band Deadlift",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "band-lang"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "band-good-morning",
+  "navn": "Band Good Morning",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "band-lang"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "band-pallof",
+  "navn": "Band Pallof",
+  "monster": "core-antirot",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "band-lang"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "formaliserer varianten"
+ },
+ {
+  "id": "band-woodchop",
+  "navn": "Band Woodchop",
+  "monster": "core-rot",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "band-lang"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "band-triceps-pushdown",
+  "navn": "Band Triceps Pushdown",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "band-lang"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "band-curl",
+  "navn": "Band Curl",
+  "monster": "pull-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "band-lang"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "lateral-walk",
+  "navn": "Lateral Walk",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY",
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "band-mini"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "sete"
+ },
+ {
+  "id": "monster-walk",
+  "navn": "Monster Walk",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY",
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "band-mini"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "glute-bridge-m-miniband",
+  "navn": "Glute Bridge with Mini Band",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY",
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "band-mini"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "clamshell",
+  "navn": "Clamshell",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY",
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "band-mini"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "fire-hydrant",
+  "navn": "Fire Hydrant",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY",
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "band-mini"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ball-rollout",
+  "navn": "Ball Rollout",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ball-stor"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "stir-the-pot",
+  "navn": "Stir the Pot",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 3,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ball-stor"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ball-hamstring-curl",
+  "navn": "Ball Hamstring Curl",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ball-stor"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ball-pike",
+  "navn": "Ball Pike",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ball-stor"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ball-veggkneboy",
+  "navn": "Ball Wall Squat",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ball-stor",
+     "vegg"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ball-back-extension",
+  "navn": "Ball Back Extension",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ball-stor"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ball-pass-v-up-m-ball",
+  "navn": "Ball Pass (V-up with Ball)",
+  "monster": "core-flex",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ball-stor"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ring-klem-armer",
+  "navn": "Ring Squeeze (Arms)",
+  "monster": "push-h",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "pilatesring"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "ring-klem-lar",
+  "navn": "Ring Squeeze (Thighs)",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "pilatesring"
+    ]
+   }
+  ],
+  "tags": [
+   "iso"
+  ]
+ },
+ {
+  "id": "bekkenloft-m-ballklem",
+  "navn": "Pelvic Lift with Ball Squeeze",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 1,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ball-liten"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "single-unders",
+  "navn": "Single Unders",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "hoppetau"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "boxer-skip",
+  "navn": "Boxer Skip",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "hoppetau"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "hoy-kne-hopp-tau",
+  "navn": "High-Knee Skip (Rope)",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "hoppetau"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "side-til-side-tau",
+  "navn": "Side-to-Side (Rope)",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "hoppetau"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "criss-cross-tau",
+  "navn": "Criss-Cross (Rope)",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT"
+  ],
+  "niva": 4,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "hoppetau"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "double-unders",
+  "navn": "Double Unders",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "HIIT"
+  ],
+  "niva": 4,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "hoppetau"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "bear-hug-squat",
+  "navn": "Bear Hug Squat",
+  "monster": "kneboy",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "sandsekk"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "bear-hug-carry",
+  "navn": "Bear Hug Carry",
+  "monster": "baering",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "sandsekk"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "sandbag-clean-shouldering",
+  "navn": "Sandbag Clean / Shouldering",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "sandsekk"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ground-to-shoulder",
+  "navn": "Ground-to-Shoulder",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "sandsekk"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "sandbag-lunge",
+  "navn": "Sandbag Lunge",
+  "monster": "utfall",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "sandsekk"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "trx-pike",
+  "navn": "TRX Pike",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "trx"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "trx-fallout",
+  "navn": "TRX Fallout",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "trx"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "rollout-slektning"
+ },
+ {
+  "id": "trx-hamstring-curl",
+  "navn": "TRX Hamstring Curl",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "trx",
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "trx-atomic-push-up",
+  "navn": "TRX Atomic Push-up",
+  "monster": "helkropp",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "trx"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "glider-mountain-climber",
+  "navn": "Slider Mountain Climber",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "glidere"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "glider-hamstring-curl",
+  "navn": "Slider Hamstring Curl",
+  "monster": "hengsel",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "glidere",
+     "matte"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "glider-pike",
+  "navn": "Slider Pike",
+  "monster": "core-antiekst",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "glidere"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "glider-reverse-lunge",
+  "navn": "Slider Reverse Lunge",
+  "monster": "utfall",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "glidere"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "a-skip",
+  "navn": "A-Skip",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "BASE",
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ute"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "b-skip",
+  "navn": "B-Skip",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "BASE",
+   "HIIT"
+  ],
+  "niva": 3,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ute"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "hoye-kneloft-drill",
+  "navn": "High Knees (Drill)",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "BASE",
+   "HIIT"
+  ],
+  "niva": 1,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ute"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "haelspark-drill",
+  "navn": "Butt Kicks (Drill)",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "BASE",
+   "HIIT"
+  ],
+  "niva": 1,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ute"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "ankle-pops-skipping",
+  "navn": "Ankle Pops / Skipping",
+  "monster": "hopp",
+  "modaliteter": [
+   "BASE",
+   "HIIT"
+  ],
+  "niva": 1,
+  "type": "dist",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ute"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "stigningslop-strides",
+  "navn": "Strides (Build-ups)",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "BASE",
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ute"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "bakkesprint",
+  "navn": "Hill Sprint",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "BASE",
+   "HIIT"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "hoy",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "bakke"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "trappelop",
+  "navn": "Stair Running",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "BASE",
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "trapp"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "fartlek",
+  "navn": "Fartlek",
+  "monster": "lokomotorisk",
+  "modaliteter": [
+   "BASE",
+   "HIIT"
+  ],
+  "niva": 2,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "ute"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "foam-rolling-legger",
+  "navn": "Foam Rolling: Calves",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "REST",
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "foamroller"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "30–60 s/side"
+ },
+ {
+  "id": "foam-rolling-hamstrings",
+  "navn": "Foam Rolling: Hamstrings",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "REST",
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "foamroller"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "30–60 s/side"
+ },
+ {
+  "id": "foam-rolling-quads",
+  "navn": "Foam Rolling: Quads",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "REST",
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "foamroller"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "30–60 s/side"
+ },
+ {
+  "id": "foam-rolling-sete",
+  "navn": "Foam Rolling: Glutes",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "REST",
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "foamroller"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "30–60 s/side"
+ },
+ {
+  "id": "foam-rolling-ovre-rygg-thorakal",
+  "navn": "Foam Rolling: Upper Back / Thoracic",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "REST",
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "foamroller"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "60 s"
+ },
+ {
+  "id": "foam-rolling-lats",
+  "navn": "Foam Rolling: Lats",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "REST",
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "foamroller"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "30 s/side"
+ },
+ {
+  "id": "foam-rolling-adduktorer",
+  "navn": "Foam Rolling: Adductors",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "REST",
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "foamroller"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "30 s/side"
+ },
+ {
+  "id": "massasjeball-fotsale",
+  "navn": "Massage Ball: Sole of Foot",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "REST",
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "massasjeball"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "60 s/side"
+ },
+ {
+  "id": "massasjeball-brystmuskel-mot-vegg",
+  "navn": "Massage Ball: Chest (Against Wall)",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "REST",
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "massasjeball"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "45 s/side"
+ },
+ {
+  "id": "massasjeball-sete-piriformis",
+  "navn": "Massage Ball: Glutes / Piriformis",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "REST",
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "massasjeball"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "60 s/side"
+ },
+ {
+  "id": "massasjeball-skulderblad-omradet",
+  "navn": "Massage Ball: Shoulder Blade Area",
+  "monster": "mobilitet",
+  "modaliteter": [
+   "REST",
+   "MOB"
+  ],
+  "niva": 1,
+  "type": "tid",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": null,
+  "kjedePos": null,
+  "varianter": [
+   {
+    "utstyr": [
+     "massasjeball"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "45 s/side"
+ },
+ {
+  "id": "tgu-til-albue",
+  "navn": "TGU to Elbow",
+  "monster": "helkropp",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 2,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "tgu",
+  "kjedePos": 1,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "tgu-til-hand",
+  "navn": "TGU to Hand",
+  "monster": "helkropp",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "tgu",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "halv-tgu",
+  "navn": "Half TGU",
+  "monster": "helkropp",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 3,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "tgu",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "kb-sots-press",
+  "navn": "KB Sots Press",
+  "monster": "push-v",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 5,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "kb-press",
+  "kjedePos": 5,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   }
+  ],
+  "tags": [],
+  "notat": "press fra bunnen av knebøy"
+ },
+ {
+  "id": "windshield-wipers-i-heng",
+  "navn": "Hanging Windshield Wipers",
+  "monster": "core-heng",
+  "modaliteter": [
+   "CORE"
+  ],
+  "niva": 5,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "core-heng",
+  "kjedePos": 6,
+  "varianter": [
+   {
+    "utstyr": [
+     "ringer"
+    ]
+   },
+   {
+    "utstyr": [
+     "pullup"
+    ]
+   }
+  ],
+  "tags": []
+ },
+ {
+  "id": "vegg-hold-mage-inn",
+  "navn": "Wall Handstand (Chest-to-Wall)",
+  "monster": "balanse",
+  "modaliteter": [
+   "SKILL"
+  ],
+  "niva": 3,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "handstaende",
+  "kjedePos": 1,
+  "varianter": [
+   {
+    "utstyr": [
+     "vegg"
+    ]
+   }
+  ],
+  "tags": [
+   "handstaende"
+  ]
+ },
+ {
+  "id": "vegg-hold-rygg-inn",
+  "navn": "Wall Handstand (Back-to-Wall)",
+  "monster": "balanse",
+  "modaliteter": [
+   "SKILL"
+  ],
+  "niva": 3,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "handstaende",
+  "kjedePos": 2,
+  "varianter": [
+   {
+    "utstyr": [
+     "vegg"
+    ]
+   }
+  ],
+  "tags": [
+   "handstaende"
+  ]
+ },
+ {
+  "id": "toe-pulls",
+  "navn": "Toe Pulls",
+  "monster": "balanse",
+  "modaliteter": [
+   "SKILL"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "handstaende",
+  "kjedePos": 3,
+  "varianter": [
+   {
+    "utstyr": [
+     "vegg"
+    ]
+   }
+  ],
+  "tags": [
+   "handstaende"
+  ]
+ },
+ {
+  "id": "fri-handstaende",
+  "navn": "Freestanding Handstand",
+  "monster": "balanse",
+  "modaliteter": [
+   "SKILL"
+  ],
+  "niva": 5,
+  "type": "hold",
+  "unilateral": false,
+  "impact": "lav",
+  "kjede": "handstaende",
+  "kjedePos": 4,
+  "varianter": [
+   {
+    "utstyr": [
+     "kv"
+    ]
+   }
+  ],
+  "tags": [
+   "handstaende",
+   "maal-skill"
+  ]
+ },
+ {
+  "id": "bulgarsk-m-kb",
+  "navn": "Bulgarian Split Squat with KB",
+  "monster": "utfall",
+  "modaliteter": [
+   "STY"
+  ],
+  "niva": 4,
+  "type": "reps",
+  "unilateral": true,
+  "impact": "lav",
+  "kjede": "utfall",
+  "kjedePos": 6,
+  "varianter": [
+   {
+    "utstyr": [
+     "kb"
+    ]
+   },
+   {
+    "utstyr": [
+     "manualer"
+    ]
+   }
+  ],
+  "tags": []
+ }
+]

@@ -11,9 +11,8 @@ const LS_FAV = 'trening.artikkelfav';
 /** Laster artiklene (kalles ved oppstart; cache i minne + SW). */
 export async function lastArtikler() {
   if (_artikler) return _artikler;
-  const res = await fetch('data/artikler.json');
-  if (!res.ok) throw new Error(`Kunne ikke laste artikler (${res.status})`);
-  _artikler = await res.json();
+  const { hentSprakJson } = await import('./i18n.js');
+  _artikler = await hentSprakJson('artikler');
   return _artikler;
 }
 

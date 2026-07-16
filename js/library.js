@@ -4,15 +4,14 @@
 // Dataene er statiske i repoet og caches av service-workeren, så dette
 // fungerer offline etter første last. Ingen brukertilstand her.
 
+import { hentSprakJson } from './i18n.js';
+
 const FILER = ['exercises', 'equipment'];
 
 let _cache = null;
 
-async function hentJson(navn) {
-  const res = await fetch(`./data/${navn}.json`, { cache: 'no-cache' });
-  if (!res.ok) throw new Error(`Kunne ikke laste data/${navn}.json (${res.status})`);
-  return res.json();
-}
+// Språkbevisst: engelsk laster data/*.en.json med norsk fallback (i18n.js).
+const hentJson = (navn) => hentSprakJson(navn, './data');
 
 /** Laster biblioteket én gang og bygger oppslagsindekser. */
 export async function lastBibliotek() {

@@ -28,12 +28,12 @@ let _okter = null;
 let _laerLenke = null;
 export function settLaerLenke(fn) { _laerLenke = fn; }
 
-/** Laster biblioteket (kalles ved oppstart, cache i minne + SW). */
+/** Laster biblioteket (kalles ved oppstart, cache i minne + SW).
+ *  Språkbevisst: engelsk laster data/okter.en.json med norsk fallback. */
 export async function lastOkter() {
   if (_okter) return _okter;
-  const res = await fetch('data/okter.json');
-  if (!res.ok) throw new Error(`Kunne ikke laste øktbiblioteket (${res.status})`);
-  _okter = await res.json();
+  const { hentSprakJson } = await import('./i18n.js');
+  _okter = await hentSprakJson('okter');
   return _okter;
 }
 

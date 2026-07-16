@@ -35,6 +35,7 @@ const SKALL = [
   './js/styrke.js',
   './js/laer.js',
   './js/feed.js',
+  './js/i18n.js',
   './js/sti.js',
   './js/haptikk.js',
   './js/medlem.js',
@@ -81,13 +82,29 @@ const SKALL = [
   './data/seksjoner.json',
 ];
 
+// Engelske datavarianter (data/*.en.json) — precaches best-effort (se install).
+const EN_DATA = [
+  './data/feed.json', // engelsk feed (norsk = feed.nb.json, alt cachet i SKALL)
+  './data/okter.en.json', './data/exercises.en.json', './data/equipment.en.json',
+  './data/ovelsesinfo.en.json', './data/artikler.en.json', './data/stier.en.json',
+  './data/disipliner.en.json', './data/seksjoner.en.json',
+];
+
 self.addEventListener('install', (e) => {
   // cache: 'no-cache' revaliderer mot serveren (ETag) i stedet for å ta
   // filene fra HTTP-cachen — GitHub Pages cacher i 10 min, og uten dette
   // kan en ny cache-versjon fylles med gamle filer rett etter en deploy.
   e.waitUntil(
     caches.open(CACHE_VERSION)
-      .then((c) => c.addAll(SKALL.map((u) => new Request(u, { cache: 'no-cache' }))))
+      // Skallet må caches (addAll feiler samlet hvis noe mangler). De engelske
+      // datafilene (data/*.en.json) precaches best-effort hver for seg, så en
+      // ennå-ikke-oversatt fil aldri bryter installasjonen — den hentes uansett
+      // ved runtime med norsk fallback.
+      .then(async (c) => {
+        await c.addAll(SKALL.map((u) => new Request(u, { cache: 'no-cache' })));
+        await Promise.all(EN_DATA.map((u) =>
+          c.add(new Request(u, { cache: 'no-cache' })).catch(() => {})));
+      })
       .then(() => self.skipWaiting()),
   );
 });

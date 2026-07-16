@@ -1,0 +1,397 @@
+[
+ {
+  "id": "vane",
+  "tittel": "How to build a training habit that lasts",
+  "undertittel": "Small, clear steps beat motivation every time.",
+  "tags": [
+   "Habit",
+   "Getting started"
+  ],
+  "bilde": "vane",
+  "dato": "2026-07-11",
+  "lesetid": 4,
+  "avsnitt": [
+   {
+    "p": "Motivation comes and goes. What carries you through a busy week isn't willpower, but a habit so small that you can hardly say no to it."
+   },
+   {
+    "h": "Make getting started ridiculously easy"
+   },
+   {
+    "p": "Pick one movement you can do in under two minutes — ten squats, a round of cat–cow, a quick walk around the block. The goal isn't the whole session, it's simply showing up. Once you've started, it often turns into more."
+   },
+   {
+    "p": "James Clear calls this the two-minute rule: make the start so short that the threshold disappears. Behavioural scientist BJ Fogg at Stanford says the same thing in different words — shrink the habit until it barely requires any motivation, and it grows on its own."
+   },
+   {
+    "h": "Anchor the habit to something you already do"
+   },
+   {
+    "p": "“After my morning coffee, I roll out the mat.” Linking the new habit to a fixed point means you don't have to decide all over again every day. The technique has names in the research — “habit stacking” in Clear and “anchoring” in Fogg — and it builds on the fact that habits are driven more by steady cues in our surroundings than by how we feel on the day."
+   },
+   {
+    "h": "Celebrate that you showed up"
+   },
+   {
+    "p": "Every session you complete — even the short one — counts. In Mova you watch your streak and badges grow, and it's precisely that sense of progress that brings you back tomorrow."
+   }
+  ],
+  "kilder": [
+   {
+    "kilde": "James Clear – “Atomic Habits” (2018)",
+    "om": "The two-minute rule and “habit stacking”: make the habit easy, and attach it to something you already do."
+   },
+   {
+    "kilde": "BJ Fogg – “Tiny Habits” (2019), Stanford Behavior Design Lab",
+    "om": "“Anchoring”: attach a tiny new habit to an established routine and let it grow gradually."
+   },
+   {
+    "kilde": "Wendy Wood – “Good Habits, Bad Habits” (2019)",
+    "om": "Research showing that around 40% of what we do are habits driven by context, not conscious choices."
+   }
+  ]
+ },
+ {
+  "id": "progressiv-overbelastning",
+  "tittel": "Progressive overload: the key to strength",
+  "undertittel": "The body adapts to what you ask of it — a little more, a little more often.",
+  "tags": [
+   "Strength",
+   "Progress"
+  ],
+  "bilde": "progressiv",
+  "dato": "2026-07-08",
+  "lesetid": 5,
+  "avsnitt": [
+   {
+    "p": "Strength is built when you gradually give your muscles a little more than they're used to. The principle is called progressive overload, and it's the very engine of all strength training."
+   },
+   {
+    "p": "The idea is ancient. The Greek wrestler Milo of Croton is said to have carried the same calf on his shoulders every day until it grew into a full-grown ox — the load increased little by little, and his body kept pace. In the 1940s the American physician Thomas DeLorme systematised the same idea as “progressive resistance exercise” in the rehabilitation of soldiers."
+   },
+   {
+    "h": "Four ways to increase the load"
+   },
+   {
+    "p": "You don't always need more weight. You can do more reps, more sets, a slower tempo or shorter rests. All four make the session harder and give your body a reason to grow stronger."
+   },
+   {
+    "h": "Small jumps last the longest"
+   },
+   {
+    "p": "Did you manage all your reps with plenty to spare last time? Add 2.5 kg. Was it heavy? Repeat the same weight until your technique is dialled in. Mova suggests your next weight automatically based on how your last session went — use it as a starting point, not a fixed answer."
+   },
+   {
+    "h": "Technique before numbers"
+   },
+   {
+    "p": "An extra kilo is never worth a bad back. Only increase once the movement is clean and controlled through the entire set."
+   }
+  ],
+  "kilder": [
+   {
+    "kilde": "Milo of Croton (ancient tale)",
+    "om": "The classic image of gradually increased load — the calf that grew into an ox."
+   },
+   {
+    "kilde": "Thomas DeLorme – “Restoration of muscle power by heavy-resistance exercises” (1945)",
+    "om": "Laid the scientific foundation for systematic “progressive resistance exercise.”"
+   },
+   {
+    "kilde": "American College of Sports Medicine – position stand on progression in resistance training (2009)",
+    "om": "Confirms that weight, volume, tempo and rest must be increased gradually for continued progress."
+   }
+  ]
+ },
+ {
+  "id": "restitusjon",
+  "tittel": "Why rest is where the progress happens",
+  "undertittel": "You don't get strong from training — you get strong from recovering.",
+  "tags": [
+   "Recovery",
+   "Health"
+  ],
+  "bilde": "restitusjon",
+  "dato": "2026-07-04",
+  "lesetid": 4,
+  "avsnitt": [
+   {
+    "p": "During a session you actually break your body down a little. The building up — the part that makes you stronger and faster — happens in the hours and days afterwards, while you rest."
+   },
+   {
+    "p": "The phenomenon has a name: supercompensation. After a hard enough session, the body rebuilds itself a little above its old level — but only if it's allowed to rest. As early as the 1950s, stress researcher Hans Selye showed that the body responds to strain in phases, and that too much without a break eventually tips over into exhaustion."
+   },
+   {
+    "h": "Listen to the clear signals"
+   },
+   {
+    "p": "Persistent muscle soreness, poor sleep, irritability and stagnation are the body's way of asking for an easier day. Taking it isn't laziness — it's part of the plan."
+   },
+   {
+    "h": "Active rest counts too"
+   },
+   {
+    "p": "A gentle walk, light yoga or some mobility work keeps the blood circulating and loosens stiff joints without draining you. On Mova, all of this counts as movement."
+   },
+   {
+    "p": "The rule is simple: train hard enough to challenge yourself, rest well enough to grow from it."
+   }
+  ],
+  "kilder": [
+   {
+    "kilde": "Hans Selye – “The Stress of Life” (1956)",
+    "om": "General adaptation syndrome: the body moves from alarm to resistance and — without rest — to exhaustion."
+   },
+   {
+    "kilde": "The supercompensation model (Nikolai Yakovlev, Soviet sports physiology, 1950s)",
+    "om": "Fitness rises above the starting point in the recovery phase, not during the session itself."
+   },
+   {
+    "kilde": "Kellmann et al. – consensus statement on recovery and performance (2018)",
+    "om": "Recommends balancing load and rest to avoid overtraining."
+   }
+  ]
+ },
+ {
+  "id": "yin-yoga",
+  "tittel": "Yin yoga: the art of letting go",
+  "undertittel": "Long, slow holds that open the body and calm the mind.",
+  "tags": [
+   "Yoga",
+   "Calm"
+  ],
+  "bilde": "yin",
+  "dato": "2026-06-30",
+  "lesetid": 5,
+  "avsnitt": [
+   {
+    "p": "Where dynamic yoga works the muscles, yin works the connective tissue — ligaments, fascia and joints. You hold the positions for a long time, often three to five minutes, and let gravity do the work."
+   },
+   {
+    "p": "The style was shaped by Paulie Zink, with roots in Taoist yoga, and made known in the West by Paul Grilley and Sarah Powers. They were the ones who emphasised those long, slow holds that reach the connective tissue rather than the muscles."
+   },
+   {
+    "h": "The breath does the work"
+   },
+   {
+    "p": "Instead of forcing, you sink into the pose and breathe calmly. With every exhale you release a little more. It's an exercise in patience as much as in flexibility."
+   },
+   {
+    "h": "Good after hard days"
+   },
+   {
+    "p": "Yin is a perfect counterweight to running and strength work, or for an evening when body and mind need to settle. You get up softer than you lay down."
+   },
+   {
+    "h": "Discomfort, not pain"
+   },
+   {
+    "p": "Feel for a mild stretch, never a sharp pain. Ease back a little if it stings, and give your body time — the flexibility comes with regular practice."
+   }
+  ],
+  "kilder": [
+   {
+    "kilde": "Paul Grilley – “Yin Yoga: Principles and Practice” (2002)",
+    "om": "Systematised the long holds and the focus on fascia and joints rather than muscles."
+   },
+   {
+    "kilde": "Sarah Powers – “Insight Yoga” (2008)",
+    "om": "Connected yin practice to breath, awareness and the calm between effort and rest."
+   },
+   {
+    "kilde": "Paulie Zink",
+    "om": "The originator of yin yoga, with a background in Taoist yoga and martial arts."
+   }
+  ]
+ },
+ {
+  "id": "pulssoner",
+  "tittel": "Heart-rate zones: train smarter, not just harder",
+  "undertittel": "Most people train too hard on the easy days and too soft on the hard ones.",
+  "tags": [
+   "Cardio",
+   "Heart rate"
+  ],
+  "bilde": "puls",
+  "dato": "2026-06-25",
+  "lesetid": 5,
+  "avsnitt": [
+   {
+    "p": "Good cardiovascular fitness is built on a foundation of easy training, topped off with a little hard work. The trick is knowing when to do what."
+   },
+   {
+    "p": "The Norwegian-American physiologist Stephen Seiler at the University of Agder has put numbers to it: well-trained endurance athletes typically do around 80% of their sessions at an easy pace and only 20% hard. The model is called polarised training."
+   },
+   {
+    "h": "Zone 2 — the quiet gold mine"
+   },
+   {
+    "p": "Most of your cardio training should happen in zone 2: a pace at which you can still keep a conversation going. It feels almost too easy, but this is where endurance is built."
+   },
+   {
+    "h": "Intervals — the hard seasoning"
+   },
+   {
+    "p": "Once or twice a week you can add intervals in zone 4: short, hard efforts with breaks in between. They raise your maximum capacity. More is rarely better."
+   },
+   {
+    "h": "The talk test"
+   },
+   {
+    "p": "Without a heart-rate monitor you can use your breathing as a guide: if you can speak in full sentences, you're easy enough. If you can only get single words out, you're working hard. The test is no coincidence — it's been validated in research against the breathing pattern that shifts once you pass the first intensity threshold."
+   }
+  ],
+  "kilder": [
+   {
+    "kilde": "Stephen Seiler (University of Agder) – research on polarised endurance training",
+    "om": "The 80/20 split: mostly easy volume, a little hard work — the basis of zone-based thinking."
+   },
+   {
+    "kilde": "Carl Foster et al. – studies of “the talk test”",
+    "om": "The talk test is validated as a simple indicator of whether you're below or above the aerobic threshold."
+   }
+  ]
+ },
+ {
+  "id": "protein",
+  "tittel": "Protein: how much do you actually need?",
+  "undertittel": "Enough, evenly spread — and less complicated than you think.",
+  "tags": [
+   "Nutrition",
+   "Strength"
+  ],
+  "bilde": "protein",
+  "dato": "2026-06-20",
+  "lesetid": 4,
+  "avsnitt": [
+   {
+    "p": "Protein provides the building blocks your body uses to repair and build muscle after training. Get too little, and you miss out on much of the work you put into the session."
+   },
+   {
+    "h": "A simple starting point"
+   },
+   {
+    "p": "For those who train regularly, 1.6–2 grams of protein per kilo of body weight is a good target. If you weigh 70 kg, that's around 110–140 grams over the course of the day. The number isn't plucked out of thin air: a large research review by Morton and colleagues (2018) found that for most people the benefit levels off at around 1.6 grams per kilo."
+   },
+   {
+    "h": "Spread it across the day"
+   },
+   {
+    "p": "The body makes the best use of protein when you spread it over several meals, ideally 20–40 grams at a time, rather than all at dinner. That's also the advice from sports-nutrition research, which points to even distribution over one large intake."
+   },
+   {
+    "h": "Ordinary food goes a long way"
+   },
+   {
+    "p": "Eggs, chicken, fish, dairy, beans and lentils do the job. Supplements can be convenient, but they aren't necessary if your diet is varied."
+   }
+  ],
+  "kilder": [
+   {
+    "kilde": "Morton et al. – meta-analysis in the “British Journal of Sports Medicine” (2018)",
+    "om": "The benefit of more protein levels off at around ~1.6 g per kilo of body weight per day."
+   },
+   {
+    "kilde": "International Society of Sports Nutrition – position stand (Jäger et al., 2017)",
+    "om": "Recommends 1.4–2.0 g/kg and 0.25–0.55 g/kg per meal — that is, spread across the day."
+   },
+   {
+    "kilde": "Brad Schoenfeld – research on protein distribution and muscle growth",
+    "om": "Spreading intake across several meals makes better use of muscle protein synthesis than one large meal."
+   }
+  ]
+ },
+ {
+  "id": "sovn",
+  "tittel": "Sleep and training — the underrated duo",
+  "undertittel": "No supplement beats a good night's sleep.",
+  "tags": [
+   "Sleep",
+   "Health"
+  ],
+  "bilde": "sovn",
+  "dato": "2026-06-14",
+  "lesetid": 4,
+  "avsnitt": [
+   {
+    "p": "Sleep is the most powerful — and cheapest — recovery tool you have. It's at night that the body releases the hormones that repair muscle and lock in what you've learned."
+   },
+   {
+    "p": "Sleep researcher Matthew Walker calls sleep the most powerful performance enhancer we have — and the only one that's free. A Stanford study led by Cheri Mah showed that basketball players who extended their sleep both ran faster and shot more accurately."
+   },
+   {
+    "h": "Aim for seven to nine hours"
+   },
+   {
+    "p": "Too little sleep means weaker sessions, slower progress and greater injury risk. One bad night is harmless; week after week leaves its mark."
+   },
+   {
+    "h": "The evening routine shapes the night"
+   },
+   {
+    "p": "Dim the lights, put the screen away a while before bed, and keep the bedroom cool and dark. A calm breathing exercise or a little yin can lower your shoulders before you drift off."
+   },
+   {
+    "p": "Training in the evening? Try to finish the hard part a couple of hours before bed, so your heart rate has time to settle."
+   }
+  ],
+  "kilder": [
+   {
+    "kilde": "Matthew Walker – “Why We Sleep” (2017)",
+    "om": "Deep sleep releases growth hormone that repairs the body; sleep is the bedrock of recovery."
+   },
+   {
+    "kilde": "Cheri Mah et al. – study in the journal “Sleep” (2011)",
+    "om": "More sleep improved sprinting, accuracy and reaction time in athletes at Stanford."
+   }
+  ]
+ },
+ {
+  "id": "mobilitet",
+  "tittel": "Mobility vs. stretching — what's the difference?",
+  "undertittel": "Being supple isn't the same as having control.",
+  "tags": [
+   "Mobility",
+   "Flexibility"
+  ],
+  "bilde": "mobilitet",
+  "dato": "2026-06-08",
+  "lesetid": 4,
+  "avsnitt": [
+   {
+    "p": "Stretching is about how far a joint can move. Mobility is about how far you can move it with strength and control. You need both — but mobility gives you the most back for everyday life and training."
+   },
+   {
+    "h": "Active beats passive"
+   },
+   {
+    "p": "Instead of hanging passively in a stretch, mobility exercises work the joint through its full range with muscular force: hip rotations, CARs and controlled lunges. That way your flexibility becomes something to use, not just to show off."
+   },
+   {
+    "p": "The terms CARs and controlled rotations come from Functional Range Conditioning, a system developed by the physician Andreo Spina, which precisely distinguishes passive stretchability from active, controlled movement."
+   },
+   {
+    "h": "A little, often"
+   },
+   {
+    "p": "Five to ten minutes of mobility in your warm-up, or as its own short session a couple of times a week, keeps joints and muscles supple — and makes the heavy lifts safer."
+   },
+   {
+    "h": "Use what you open up"
+   },
+   {
+    "p": "Just opened up your hips? Do a few squats right afterwards. Mobility you use is mobility you keep."
+   }
+  ],
+  "kilder": [
+   {
+    "kilde": "Andreo Spina – Functional Range Conditioning (FRC) and CARs",
+    "om": "Distinguishes passive flexibility from active mobility: strength and control through the full range of the joint."
+   },
+   {
+    "kilde": "American College of Sports Medicine – guidelines for flexibility training",
+    "om": "Active, controlled movement produces more functional mobility than passive stretching alone."
+   }
+  ]
+ }
+]

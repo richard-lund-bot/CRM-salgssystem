@@ -18,9 +18,8 @@ export function settBib(bib) { _bib = bib; }
 /** Laster øvelsesinfoen (kalles ved oppstart; cache i minne + SW). */
 export async function lastOvelsesinfo() {
   if (_info) return _info;
-  const res = await fetch('data/ovelsesinfo.json');
-  if (!res.ok) throw new Error(`Kunne ikke laste øvelsesinfo (${res.status})`);
-  _info = await res.json();
+  const { hentSprakJson } = await import('./i18n.js');
+  _info = await hentSprakJson('ovelsesinfo');
   _oppslag = new Map();
   for (const o of _info) {
     for (const navn of [o.navn, ...(o.alias || [])]) {
