@@ -744,6 +744,10 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 }
 /* Scroll ned → litt mindre; scroll opp → tilbake til full størrelse. */
 .tabbar--kompakt { transform: scale(0.88); }
+/* Vekst fra kompakt ved fanetrykk (vekkTabbar): spretten tilbake — vokser et
+   hint forbi full størrelse og lander, i samme lekne språk som resten.
+   Scroll-drevet krymp/vekst beholder den rolige standard-easingen over. */
+.tabbar--vekst { transition: transform 0.42s var(--ease-bounce), box-shadow 0.3s ease; }
 .tabbar__knapp {
   position: relative; z-index: 1;
   flex: 1 1 0; display: grid; place-items: center;

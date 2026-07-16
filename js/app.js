@@ -148,7 +148,7 @@ function navger() {
   // Navigasjon vekker en kompakt bar: den vokser tilbake til full størrelse
   // mens linsen glir til ny fane (som Instagram). Å bli stående krympet ga
   // også et origin-hopp når strekk-animasjonen byttet transform-origin.
-  document.querySelector('.tabbar')?.classList.remove('tabbar--kompakt');
+  vekkTabbar();
   if (rute !== 'kjor' && rute !== 'hurtig') slippVaaken(); // timer-skjermene eier låsen
 
   const tegn = () => {
@@ -1069,7 +1069,7 @@ function settOppTabTrykk(nav) {
     punkt.style.top = `${ev.clientY - r.top}px`;
     // Berøring vekker baren umiddelbart — veksten starter allerede på
     // pointerdown, før navigasjonen, så den er godt i gang når linsen glir.
-    nav.classList.remove('tabbar--kompakt');
+    vekkTabbar(nav);
     nav.classList.remove('tabbar--trykk', 'tabbar--puls');
     void nav.offsetWidth;
     nav.classList.add('tabbar--trykk', 'tabbar--puls');
@@ -1080,6 +1080,21 @@ function settOppTabTrykk(nav) {
     if (ev.animationName === 'bar-strekk') nav.classList.remove('tabbar--strekk-hoyre', 'tabbar--strekk-venstre');
     else if (ev.animationName === 'bar-puls') nav.classList.remove('tabbar--puls');
   });
+  // Sprett-veksten (vekkTabbar) er ferdig → tilbake til nøytral easing, så
+  // neste scroll-krymp ikke arver bouncen.
+  nav.addEventListener('transitionend', (ev) => {
+    if (ev.target === nav && ev.propertyName === 'transform') nav.classList.remove('tabbar--vekst');
+  });
+}
+
+// Vekker en kompakt bar med sprett: tilbakeveksten får bounce-easing via
+// .tabbar--vekst (vokser et hint forbi full størrelse og lander), i stedet for
+// den nøytrale scroll-easingen. Klassen ryddes når transform-transisjonen er
+// ferdig (lytteren settes i byggTabbar), så scroll-krympingen forblir rolig.
+function vekkTabbar(nav = document.querySelector('.tabbar')) {
+  if (!nav || !nav.classList.contains('tabbar--kompakt')) return;
+  nav.classList.remove('tabbar--kompakt');
+  nav.classList.add('tabbar--vekst');
 }
 
 // Instagram-aktig: baren krymper litt når man scroller nedover og vokser tilbake
