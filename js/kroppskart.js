@@ -30,6 +30,19 @@ export const MUSKEL_TIL_REGION = {
   'Lår': 'lar', 'Framside lår': 'lar', 'Innside lår': 'lar',
   'Baklår': 'baklar',
   Legger: 'legger', Ankler: 'legger', 'Knær': 'legger',
+  // Engelske muskelnavn (data/ovelsesinfo.en.json) → samme regioner, så
+  // restitusjonskartet virker likt i engelsk-modus. Ikke-muskulære nøkler
+  // (Balance/Breath/Rest o.l.) utelates bevisst — de skal aldri gjøre en
+  // region rød, akkurat som yoga/tøying/mobilitet på norsk.
+  Shoulders: 'skuldre',
+  Triceps: 'armer', Biceps: 'armer', Forearms: 'armer', Wrists: 'armer', Grip: 'armer', Elbows: 'armer',
+  Chest: 'bryst',
+  Back: 'rygg', 'Upper back': 'rygg', 'Shoulder blades': 'rygg', 'Rotator cuff': 'rygg', Neck: 'rygg',
+  Core: 'kjerne', Obliques: 'kjerne', 'Side body': 'kjerne', 'Lower back': 'kjerne',
+  Glutes: 'sete', Hips: 'sete', 'Hip flexors': 'sete', Groin: 'sete',
+  Thighs: 'lar', Quads: 'lar', 'Inner thighs': 'lar',
+  Hamstrings: 'baklar',
+  Calves: 'legger', Ankles: 'legger', Knees: 'legger',
 };
 
 // Fallback når en loggrad mangler oktId (hurtig/manuell/Strava) og vi ikke kan

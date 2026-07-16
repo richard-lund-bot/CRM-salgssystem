@@ -221,7 +221,7 @@ export function visOkterSkjerm(mount) {
       el('span', { class: 'bibkort__ikon' }, ikon(ikonNavn)),
       el('span', { class: 'bibkort__navn' }, o.navn),
       el('span', { class: 'bibkort__beskr' }, o.beskrivelse),
-      o.kilde?.navn && el('span', { class: 'bibkort__kilde' }, `Basert på ${o.kilde.navn}`),
+      o.kilde?.navn && el('span', { class: 'bibkort__kilde' }, 'Basert på ', o.kilde.navn),
       el('span', { class: 'bibkort__meta' },
         el('span', { class: 'bibkort__tag' }, ikon('klokke'), `${o.varighetMin} min`),
         el('span', { class: 'bibkort__tag' }, utstyrTekst(o)),

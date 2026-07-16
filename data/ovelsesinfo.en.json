@@ -1,0 +1,3498 @@
+[
+ {
+  "navn": "March in place",
+  "kort": "A low, safe warm-up: lift your knees alternately at a walking pace and swing your arms along.",
+  "steg": [
+   "Stand tall and lift one knee at a time to hip height or lower.",
+   "Swing the opposite arm forward, as if walking.",
+   "Keep a steady pace you can talk at."
+  ],
+  "alias": [
+   "March in place, easy",
+   "Walking/marching in place",
+   "March or light jog",
+   "Knee lifts"
+  ],
+  "tips": [
+   "Pick up the pace or lift your knees higher if you want more heat."
+  ],
+  "muskler": [
+   "Hips",
+   "Thighs",
+   "Heart rate"
+  ],
+  "bilde": "marsj-paa-stedet"
+ },
+ {
+  "navn": "Light jog in place",
+  "kort": "Soft jogging in place — the heels land lightly and your heart rate creeps slowly upward.",
+  "steg": [
+   "Jog in place with short, light steps.",
+   "Land softly on the forefoot and let the heels kiss the floor.",
+   "Relax your shoulders and breathe calmly."
+  ],
+  "alias": [
+   "Jog in place"
+  ],
+  "tips": [
+   "Switch to marching any time — the warmth comes either way."
+  ],
+  "muskler": [
+   "Calves",
+   "Thighs",
+   "Heart rate"
+  ],
+  "bilde": "lett-jogg-paa-stedet"
+ },
+ {
+  "navn": "Easy walk",
+  "kort": "Walking at a comfortable pace — used as a warm-up, a rest between intervals and a cool-down.",
+  "steg": [
+   "Walk at a pace where you can talk easily.",
+   "Let your arms swing naturally and look ahead.",
+   "Use the walk to feel your breathing settle."
+  ],
+  "alias": [
+   "Easy cardio",
+   "Brisk walk"
+  ],
+  "muskler": [
+   "Heart rate"
+  ],
+  "bilde": "rolig-gange"
+ },
+ {
+  "navn": "Light cardio",
+  "kort": "Optional light cardio — stair walking, jump-rope motion without a rope, or a brisk march.",
+  "steg": [
+   "Choose a movement that raises your heart rate a little: stairs, marching or small hops.",
+   "Keep it light — you should get warm, not tired."
+  ],
+  "alias": [
+   "Light cardio (stair walking/hops without a rope)"
+  ],
+  "muskler": [
+   "Heart rate"
+  ],
+  "bilde": "lett-kondis"
+ },
+ {
+  "navn": "Easy jumping jacks",
+  "kort": "The classic jumping straddle at an easy pace — arms and legs out and in at the same time.",
+  "steg": [
+   "Jump your feet out to the sides while lifting your arms out and up.",
+   "Jump back and lower your arms in one smooth motion.",
+   "Land softly with slightly bent knees."
+  ],
+  "tips": [
+   "No jumping: step-jacks — step one leg out to the side at a time."
+  ],
+  "muskler": [
+   "Heart rate",
+   "Shoulders",
+   "Calves"
+  ],
+  "bilde": "jumping-jacks"
+ },
+ {
+  "navn": "Arm circles",
+  "kort": "Large, slow circles with straight arms — warms up the shoulders in every direction.",
+  "steg": [
+   "Stretch your arms out to the sides.",
+   "Draw large circles forward at an easy pace.",
+   "Switch direction halfway."
+  ],
+  "alias": [
+   "Arm swings"
+  ],
+  "tips": [
+   "Start with small circles and let them grow."
+  ],
+  "muskler": [
+   "Shoulders"
+  ],
+  "bilde": "armsirkler"
+ },
+ {
+  "navn": "Shoulder rolls",
+  "kort": "Roll your shoulders in large, soft circles — loosens the neck and shoulder area.",
+  "steg": [
+   "Lift your shoulders toward your ears.",
+   "Roll them back and down in a smooth circle.",
+   "Repeat and switch direction."
+  ],
+  "alias": [
+   "Shoulder rolling",
+   "Shoulder roll"
+  ],
+  "muskler": [
+   "Shoulders",
+   "Neck"
+  ],
+  "bilde": "skulderruller"
+ },
+ {
+  "navn": "Hip rotations",
+  "kort": "Large circles with the hips — like spinning a hula hoop in slow motion.",
+  "steg": [
+   "Stand with your feet hip-width apart and your hands on your hips.",
+   "Draw large, slow circles with your hips.",
+   "Switch direction halfway."
+  ],
+  "alias": [
+   "Hip circles",
+   "Standing hip circles"
+  ],
+  "muskler": [
+   "Hips",
+   "Lower back"
+  ],
+  "bilde": "hofterotasjoner"
+ },
+ {
+  "navn": "Ankle circles",
+  "kort": "Slow circles with the ankle — lubricates the joint before walking, running and squats.",
+  "steg": [
+   "Lift one foot slightly off the floor (hold onto something if needed).",
+   "Draw slow circles with your toes, both directions.",
+   "Switch feet."
+  ],
+  "muskler": [
+   "Ankles"
+  ],
+  "bilde": "ankelsirkler"
+ },
+ {
+  "navn": "Wrist circles",
+  "kort": "Soft circles and tilts with the wrists — prepares you for pressing and support exercises.",
+  "steg": [
+   "Interlace your fingers and draw slow figure-eights with your wrists.",
+   "Then tip your hands up and down with straight arms.",
+   "Shake them out loosely at the end."
+  ],
+  "alias": [
+   "Wrist circles and tilts",
+   "Wrist mobility"
+  ],
+  "muskler": [
+   "Wrists",
+   "Forearms"
+  ],
+  "bilde": "haandleddssirkler"
+ },
+ {
+  "navn": "Neck movements side to side",
+  "kort": "A gentle neck loosener: look to one side, back to center, and over to the other side.",
+  "steg": [
+   "Sit or stand tall and lower your shoulders.",
+   "Turn your head calmly to one side and stop where it feels comfortable.",
+   "Hold for a couple of breaths and switch sides."
+  ],
+  "tips": [
+   "Never force it — the neck likes small, calm movements."
+  ],
+  "muskler": [
+   "Neck"
+  ],
+  "bilde": "nakke-side-til-side"
+ },
+ {
+  "navn": "Shoulder rotations with a light dumbbell",
+  "kort": "External rotation with a light weight — wakes up the rotator cuff before pressing and rowing.",
+  "steg": [
+   "Hold a light dumbbell with your elbow tucked into your side, bent 90 degrees.",
+   "Rotate the forearm out to the side, slow and controlled.",
+   "Return to start without letting the elbow leave your body."
+  ],
+  "tips": [
+   "This should feel light — it's lubrication, not strength training."
+  ],
+  "muskler": [
+   "Shoulders",
+   "Rotator cuff"
+  ],
+  "utstyr": [
+   "Dumbbell"
+  ],
+  "bilde": "skulderrotasjon-manual"
+ },
+ {
+  "navn": "Shoulder rotations with an empty bar",
+  "kort": "Slow rotations and presses with an empty bar — prepares the shoulders for the base lifts.",
+  "steg": [
+   "Hold the bar with a wide grip in front of your body.",
+   "Lift it slowly overhead and slightly back, as far as is comfortable.",
+   "Return in front of the hips at the same slow pace."
+  ],
+  "muskler": [
+   "Shoulders",
+   "Upper back"
+  ],
+  "utstyr": [
+   "Barbell"
+  ],
+  "bilde": "skulderrotasjon-stang"
+ },
+ {
+  "navn": "Shoulder dislocates with a band",
+  "kort": "With a straight arm, the band travels from the hips, over the head and behind the back — a full shoulder circle.",
+  "steg": [
+   "Hold the band wide with straight arms in front of your hips.",
+   "Bring it slowly up over your head and further back, without bending your elbows.",
+   "Come back the same way. Wider grip = easier."
+  ],
+  "tips": [
+   "If you feel a pinch in the shoulder: take a wider grip."
+  ],
+  "muskler": [
+   "Shoulders",
+   "Chest"
+  ],
+  "utstyr": [
+   "Resistance band"
+  ],
+  "bilde": "skulderdislokater-strikk"
+ },
+ {
+  "navn": "Scapular push-ups",
+  "kort": "In a plank position: push your shoulder blades apart and let them come together — the arms stay straight.",
+  "steg": [
+   "Hold a plank on straight arms.",
+   "Without bending your elbows, lower your chest slightly by squeezing your shoulder blades together.",
+   "Then push the floor away so your upper back rounds. Repeat slowly."
+  ],
+  "tips": [
+   "Small movement — all the work happens between the shoulder blades."
+  ],
+  "muskler": [
+   "Shoulder blades",
+   "Serratus"
+  ],
+  "bilde": "scapula-armhevinger"
+ },
+ {
+  "navn": "Shoulder tap in plank",
+  "kort": "A plank where you lift one hand and tap the opposite shoulder — anti-rotation and shoulder control.",
+  "steg": [
+   "Hold a plank with your feet a little wider than usual.",
+   "Lift one hand slowly and place it on the opposite shoulder.",
+   "Set it down without your hips twisting. Switch sides."
+  ],
+  "tips": [
+   "Imagine a cup of water sitting on your lower back — it must not tip over."
+  ],
+  "muskler": [
+   "Core",
+   "Shoulders"
+  ],
+  "bilde": "skulderklapp-planke"
+ },
+ {
+  "navn": "Standing cross-march",
+  "kort": "Standing cross-coordination: hand to opposite knee, alternating — wakes up the core and balance.",
+  "steg": [
+   "Stand tall and lift one knee.",
+   "Bring the opposite hand down toward the knee.",
+   "Switch sides at an easy marching pace."
+  ],
+  "alias": [
+   "Standing cross-march, hand to opposite knee"
+  ],
+  "muskler": [
+   "Core",
+   "Hips"
+  ],
+  "bilde": "kryssmarsj"
+ },
+ {
+  "navn": "Hip hinge without weight",
+  "kort": "The very foundation of the deadlift: push your hips back with a long spine, hands sliding down the thighs.",
+  "steg": [
+   "Stand with feet hip-width apart and soft knees.",
+   "Push your hips straight back while keeping your spine long — hands slide down your thighs.",
+   "Stop when you feel a stretch in the back of your thighs, and press your hips forward to standing."
+  ],
+  "alias": [
+   "Hip hinge without weight (hands slide down the thighs)"
+  ],
+  "tips": [
+   "Think \"butt toward the wall behind you\", not \"bend down\"."
+  ],
+  "muskler": [
+   "Hamstrings",
+   "Glutes",
+   "Lower back"
+  ],
+  "bilde": "hoftehengsel"
+ },
+ {
+  "navn": "Squat",
+  "kort": "The body's most fundamental strength exercise: sit down between your hips and stand back up.",
+  "steg": [
+   "Stand with your feet shoulder-width apart, toes slightly out.",
+   "Sit down and back calmly, as if toward a chair — heels on the floor.",
+   "Go as deep as feels fine, and press back up."
+  ],
+  "alias": [
+   "Bodyweight squat",
+   "Easy squats",
+   "Deep bodyweight squats"
+  ],
+  "tips": [
+   "The knees should point the same way as the toes.",
+   "Keep your chest proud — that sorts out your back."
+  ],
+  "muskler": [
+   "Thighs",
+   "Glutes",
+   "Core"
+  ],
+  "bilde": "kneboy"
+ },
+ {
+  "navn": "Squat with chair support",
+  "kort": "A squat with a chair behind you as reassurance — sit almost all the way down, and stand back up.",
+  "steg": [
+   "Stand in front of a chair with your feet shoulder-width apart.",
+   "Lower yourself calmly until your seat just touches the chair.",
+   "Press back up without using your hands, if you can."
+  ],
+  "tips": [
+   "Managing it easily? Try without the chair next time."
+  ],
+  "muskler": [
+   "Thighs",
+   "Glutes"
+  ],
+  "utstyr": [
+   "Chair"
+  ],
+  "bilde": "kneboy-stol"
+ },
+ {
+  "navn": "Sit-to-stand from a chair",
+  "kort": "Stand up from a chair without your hands, and sit calmly back down — everyday strength at its most important.",
+  "steg": [
+   "Sit on the edge of the chair with your feet under your knees.",
+   "Lean forward a little and stand up without pushing off with your hands.",
+   "Sit calmly back down — take about 3 seconds down."
+  ],
+  "alias": [
+   "Sit-to-stand from a chair (3 s down)"
+  ],
+  "tips": [
+   "The slower down, the more strength you build."
+  ],
+  "muskler": [
+   "Thighs",
+   "Glutes"
+  ],
+  "utstyr": [
+   "Chair"
+  ],
+  "bilde": "sitt-til-staa"
+ },
+ {
+  "navn": "Goblet squat",
+  "kort": "A squat with weight held to the chest — the weight balances you and makes deep squats easier.",
+  "steg": [
+   "Hold a dumbbell or kettlebell with both hands against your chest.",
+   "Sit down calmly between your hips with your heels on the floor.",
+   "Press back up with your chest proud."
+  ],
+  "tips": [
+   "Your elbows can slide inside your knees at the bottom — that opens the hips."
+  ],
+  "muskler": [
+   "Thighs",
+   "Glutes",
+   "Core"
+  ],
+  "utstyr": [
+   "Dumbbell",
+   "Kettlebell"
+  ],
+  "bilde": "goblet-kneboy"
+ },
+ {
+  "navn": "\"Prying\" goblet squat",
+  "kort": "A deep goblet squat where you stay in the bottom position and rock calmly — opens the hips and ankles.",
+  "steg": [
+   "Hold the weight to your chest and sit all the way down into the bottom of the squat.",
+   "Stay there: rock calmly side to side and press your knees out with your elbows.",
+   "Stand up after a few calm breaths."
+  ],
+  "tips": [
+   "This is mobility with weight — calm, not reps."
+  ],
+  "muskler": [
+   "Hips",
+   "Thighs",
+   "Ankles"
+  ],
+  "utstyr": [
+   "Kettlebell",
+   "Dumbbell"
+  ],
+  "bilde": "prying-goblet-kneboy"
+ },
+ {
+  "navn": "Barbell squat",
+  "kort": "The base lift: the bar rests on your upper back while you sit down and stand up with your whole body.",
+  "steg": [
+   "Place the bar on the upper part of your back (not your neck) and lift it out of the rack.",
+   "Sit down and back calmly with your chest proud, until your thighs are roughly parallel.",
+   "Press your whole foot into the floor and stand up."
+  ],
+  "tips": [
+   "Use light weight until the technique is dialed in — depth and control before kilos.",
+   "Breathe in at the top, hold your breath on the way down, breathe out on the way up."
+  ],
+  "muskler": [
+   "Thighs",
+   "Glutes",
+   "Core",
+   "Back"
+  ],
+  "utstyr": [
+   "Barbell",
+   "Rack"
+  ],
+  "bilde": "kneboy-stang"
+ },
+ {
+  "navn": "Deep squat hold",
+  "kort": "Stay seated at the bottom of a deep squat — the hips open up gradually as you breathe.",
+  "steg": [
+   "Sit all the way down into a deep squat with your heels on the floor.",
+   "Hold onto something in front of you if needed.",
+   "Stay there and breathe calmly — your weight can shift a little side to side."
+  ],
+  "alias": [
+   "Deep squat hold with calm weight shifts",
+   "Deep squat hold with a rotational reach toward the ceiling"
+  ],
+  "tips": [
+   "If it pinches in the ankles: place something thin under your heels."
+  ],
+  "muskler": [
+   "Hips",
+   "Ankles",
+   "Thighs"
+  ],
+  "bilde": "dyp-kneboy-hold"
+ },
+ {
+  "navn": "Cossack squat",
+  "kort": "A sideways squat: all your weight over one leg while the other stretches out to the side.",
+  "steg": [
+   "Stand wide and shift your weight over to one side.",
+   "Sit down over the bent leg — the other is straight with the toe toward the ceiling.",
+   "Come up calmly and switch sides at a slow pace."
+  ],
+  "tips": [
+   "Full depth as able — hold onto something for balance if you like."
+  ],
+  "muskler": [
+   "Inner thighs",
+   "Glutes",
+   "Hips"
+  ],
+  "bilde": "cossack"
+ },
+ {
+  "navn": "Lunge",
+  "kort": "One long step forward, lower the back knee toward the floor, and push back — strength and balance in one.",
+  "steg": [
+   "Take a good step forward.",
+   "Lower the back knee calmly toward the floor — front knee over the foot.",
+   "Push off the front foot back to standing, and switch legs."
+  ],
+  "alias": [
+   "Lunge (3 s down)"
+  ],
+  "tips": [
+   "Take about 3 seconds down — control beats speed.",
+   "Wobbling? Shorter step and a fingertip on a wall for support."
+  ],
+  "muskler": [
+   "Thighs",
+   "Glutes",
+   "Balance"
+  ],
+  "bilde": "utfall"
+ },
+ {
+  "navn": "Reverse lunge",
+  "kort": "Like a lunge, but the step goes backward — gentler on the knees and easier to balance.",
+  "steg": [
+   "Take a controlled step backward.",
+   "Lower the back knee toward the floor — the weight stays on the front leg.",
+   "Push yourself back to standing and switch sides."
+  ],
+  "tips": [
+   "Keep the front heel on the floor the whole way."
+  ],
+  "muskler": [
+   "Thighs",
+   "Glutes",
+   "Balance"
+  ],
+  "bilde": "utfall-bakover"
+ },
+ {
+  "navn": "Lunge with dumbbells",
+  "kort": "A lunge with a dumbbell in each hand — same pattern, more strength.",
+  "steg": [
+   "Hold a dumbbell in each hand at your sides.",
+   "Take a step forward and lower the back knee calmly toward the floor.",
+   "Push yourself back and switch legs."
+  ],
+  "tips": [
+   "Keep your torso tall — the weights should hang quietly."
+  ],
+  "muskler": [
+   "Thighs",
+   "Glutes",
+   "Grip"
+  ],
+  "utstyr": [
+   "Dumbbells"
+  ],
+  "bilde": "utfall-manualer"
+ },
+ {
+  "navn": "Reverse lunge with dumbbells",
+  "kort": "A backward lunge with dumbbells in your hands — knee-friendly leg strength with extra load.",
+  "steg": [
+   "Hold a dumbbell in each hand and take a calm step backward.",
+   "Lower the back knee toward the floor with your torso tall.",
+   "Push off the front foot back to standing. Switch sides."
+  ],
+  "muskler": [
+   "Thighs",
+   "Glutes",
+   "Grip"
+  ],
+  "utstyr": [
+   "Dumbbells"
+  ],
+  "bilde": "utfall-bakover-manualer"
+ },
+ {
+  "navn": "Romanian deadlift with dumbbells",
+  "kort": "A hip hinge with weight: the dumbbells slide down the thighs as the hips push back — the posterior chain does the work.",
+  "steg": [
+   "Stand with the dumbbells in front of your thighs and soft knees.",
+   "Push your hips back with a long spine — the weights slide close along your legs.",
+   "Stop when you feel a stretch in the back of your thighs, and press your hips forward to standing."
+  ],
+  "alias": [
+   "Light break-in set: Romanian deadlift"
+  ],
+  "tips": [
+   "Keep the spine long the whole way — the movement comes from the hips.",
+   "Feel your glutes squeeze at the top."
+  ],
+  "muskler": [
+   "Hamstrings",
+   "Glutes",
+   "Lower back"
+  ],
+  "utstyr": [
+   "Dumbbells"
+  ],
+  "bilde": "rumensk-markloft"
+ },
+ {
+  "navn": "Barbell deadlift",
+  "kort": "Lift the bar from the floor to standing with a long spine — the entire posterior chain in one lift.",
+  "steg": [
+   "Stand with your midfoot under the bar, grip just outside your legs.",
+   "Lower your hips, lift your chest and brace — your arms are straight.",
+   "Press your legs into the floor and extend your hips forward to standing. Lower calmly the same way."
+  ],
+  "tips": [
+   "The bar should slide close along your legs the whole way.",
+   "Start light and let technique decide the weight."
+  ],
+  "muskler": [
+   "Hamstrings",
+   "Glutes",
+   "Back",
+   "Grip"
+  ],
+  "utstyr": [
+   "Barbell"
+  ],
+  "bilde": "markloft-stang"
+ },
+ {
+  "navn": "Glute bridge",
+  "kort": "Lying on your back: press your hips toward the ceiling and squeeze your glutes at the top.",
+  "steg": [
+   "Lie on your back with bent knees and your feet on the floor.",
+   "Press through your heels and lift your hips until your body is a straight line from knees to shoulders.",
+   "Squeeze your glutes for one second at the top, and lower calmly."
+  ],
+  "tips": [
+   "Don't arch your back at the top — it's the glutes that lift."
+  ],
+  "muskler": [
+   "Glutes",
+   "Hamstrings",
+   "Lower back"
+  ],
+  "bilde": "hoftebro"
+ },
+ {
+  "navn": "Push-up",
+  "kort": "The classic: lower your chest toward the floor and press up — the body as one stiff plank.",
+  "steg": [
+   "Hold a plank with your hands a little wider than your shoulders.",
+   "Lower your chest calmly toward the floor with your elbows about 45 degrees out.",
+   "Press back up without losing the plank."
+  ],
+  "alias": [
+   "Push-ups, sets 1–5 (starting test 6–10)"
+  ],
+  "tips": [
+   "Too easy/hard? Wall → knees → toes is the progression.",
+   "The hips follow the body — no sag or peak."
+  ],
+  "muskler": [
+   "Chest",
+   "Triceps",
+   "Shoulders",
+   "Core"
+  ],
+  "bilde": "armhevinger"
+ },
+ {
+  "navn": "Easy push-ups on the knees",
+  "kort": "Push-ups with your knees on the floor — same movement, friendlier load.",
+  "steg": [
+   "Get on all fours and walk your hands a little forward, body angled from knees to head.",
+   "Lower your chest calmly toward the floor.",
+   "Press back up with your body a straight line from the knees."
+  ],
+  "tips": [
+   "Brace your abs lightly so the hips don't sink."
+  ],
+  "muskler": [
+   "Chest",
+   "Triceps",
+   "Shoulders"
+  ],
+  "bilde": "armhevinger-kne"
+ },
+ {
+  "navn": "Wall push-ups",
+  "kort": "Push-ups standing against a wall — the safest way into the pressing movement.",
+  "steg": [
+   "Stand an arm's length from the wall with your hands at shoulder height.",
+   "Bend your elbows and let your chest come toward the wall.",
+   "Press yourself calmly back."
+  ],
+  "tips": [
+   "Farther from the wall = harder."
+  ],
+  "muskler": [
+   "Chest",
+   "Triceps",
+   "Shoulders"
+  ],
+  "utstyr": [
+   "Wall"
+  ],
+  "bilde": "armhevinger-vegg"
+ },
+ {
+  "navn": "Dumbbell bench press",
+  "kort": "Press the dumbbells from your chest to straight arms, lying on a bench or the floor.",
+  "steg": [
+   "Lie on a bench (or the floor) with a dumbbell in each hand at your chest.",
+   "Press the weights calmly up to straight arms.",
+   "Lower under control back to the start."
+  ],
+  "alias": [
+   "Dumbbell bench press (bench or floor)",
+   "Light break-in set: dumbbell bench press",
+   "Floor press with dumbbells"
+  ],
+  "tips": [
+   "Feet firmly on the floor, shoulder blades pulled lightly together."
+  ],
+  "muskler": [
+   "Chest",
+   "Triceps",
+   "Shoulders"
+  ],
+  "utstyr": [
+   "Dumbbells",
+   "Bench"
+  ],
+  "bilde": "manualbenkpress"
+ },
+ {
+  "navn": "Barbell bench press",
+  "kort": "The base lift for the upper body: lower the bar to your chest and press to straight arms.",
+  "steg": [
+   "Lie with your eyes under the bar, grip a little wider than your shoulders.",
+   "Lift out, lower the bar calmly to the middle of your chest.",
+   "Press up to straight arms over your shoulders."
+  ],
+  "tips": [
+   "Shoulder blades together and down — that gives a stable shelf.",
+   "Use a spotter or safety pins on heavier sets."
+  ],
+  "muskler": [
+   "Chest",
+   "Triceps",
+   "Shoulders"
+  ],
+  "utstyr": [
+   "Barbell",
+   "Bench"
+  ],
+  "bilde": "benkpress-stang"
+ },
+ {
+  "navn": "Standing dumbbell shoulder press",
+  "kort": "Press the dumbbells from your shoulders to straight arms overhead, standing.",
+  "steg": [
+   "Stand with your feet hip-width apart, dumbbells at your shoulders.",
+   "Brace your abs and press the weights straight up.",
+   "Lower calmly back to your shoulders."
+  ],
+  "tips": [
+   "Don't lean back — think tall and proud."
+  ],
+  "muskler": [
+   "Shoulders",
+   "Triceps",
+   "Core"
+  ],
+  "utstyr": [
+   "Dumbbells"
+  ],
+  "bilde": "skulderpress"
+ },
+ {
+  "navn": "Shoulder press without weight",
+  "kort": "The pressing movement without load — a perfect break-in before dumbbells.",
+  "steg": [
+   "Stand tall with your hands at shoulder height.",
+   "Press your hands calmly up to straight arms.",
+   "Lower under control back down."
+  ],
+  "muskler": [
+   "Shoulders"
+  ],
+  "bilde": "skulderpress-uten-vekt"
+ },
+ {
+  "navn": "Single-arm dumbbell row",
+  "kort": "With support on a bench: pull the dumbbell toward your hip with the elbow close to the body.",
+  "steg": [
+   "Place a knee and hand on the bench, spine long and parallel to the floor.",
+   "Let the dumbbell hang, and pull it calmly up toward your hip crest.",
+   "Lower under control. Finish the set and switch sides."
+  ],
+  "tips": [
+   "Pull with your back, not your biceps — think elbow toward your back pocket."
+  ],
+  "muskler": [
+   "Back",
+   "Biceps",
+   "Shoulder blades"
+  ],
+  "utstyr": [
+   "Dumbbell",
+   "Bench"
+  ],
+  "bilde": "manualroing"
+ },
+ {
+  "navn": "Standing bent-over dumbbell row",
+  "kort": "Hinged forward with a long spine: pull both dumbbells toward your stomach.",
+  "steg": [
+   "Hip hinge until your torso is well angled, dumbbells hanging.",
+   "Pull the weights toward the lower chest/stomach.",
+   "Lower calmly — the spine keeps the same angle the whole set."
+  ],
+  "tips": [
+   "Squeeze your shoulder blades together at the top."
+  ],
+  "muskler": [
+   "Back",
+   "Biceps",
+   "Hamstrings"
+  ],
+  "utstyr": [
+   "Dumbbells"
+  ],
+  "bilde": "foroverboyd-roing"
+ },
+ {
+  "navn": "Dumbbell biceps curl",
+  "kort": "Bend your elbows and lift the dumbbells toward your shoulders — controlled up, calm down.",
+  "steg": [
+   "Stand with the dumbbells at your sides, palms forward.",
+   "Bend your elbows and lift the weights toward your shoulders without swinging.",
+   "Lower calmly all the way down."
+  ],
+  "tips": [
+   "The elbows stay at your sides — only the forearms move."
+  ],
+  "muskler": [
+   "Biceps",
+   "Forearms"
+  ],
+  "utstyr": [
+   "Dumbbells"
+  ],
+  "bilde": "bicepscurl"
+ },
+ {
+  "navn": "Kettlebell halo",
+  "kort": "Circle the kettlebell calmly around your head — gentle for the shoulders and upper back.",
+  "steg": [
+   "Hold the bell upside down by the horns in front of your chest.",
+   "Circle it calmly around your head, close in, one way.",
+   "Switch direction halfway through the set."
+  ],
+  "tips": [
+   "Stand tall and still — it's the arms that circle, not the body."
+  ],
+  "muskler": [
+   "Shoulders",
+   "Upper back",
+   "Core"
+  ],
+  "utstyr": [
+   "Kettlebell"
+  ],
+  "bilde": "kettlebell-halo"
+ },
+ {
+  "navn": "Single-arm kettlebell swing",
+  "kort": "An explosive hip hinge: the bell swings to chest height on hip power — one arm at a time.",
+  "steg": [
+   "Start with the bell slightly in front of you, grip with one hand.",
+   "Hike it back between your legs with a long spine.",
+   "Snap your hips forward — the bell floats up to chest height and falls back on its own. Switch arms each set."
+  ],
+  "alias": [
+   "Single-arm kettlebell swing (switch arms each set)"
+  ],
+  "tips": [
+   "The arm is just a rope — the power comes from the hips.",
+   "Squeeze your glutes hard at the top of each swing."
+  ],
+  "muskler": [
+   "Glutes",
+   "Hamstrings",
+   "Core",
+   "Grip"
+  ],
+  "utstyr": [
+   "Kettlebell"
+  ],
+  "bilde": "kettlebellsving"
+ },
+ {
+  "navn": "Turkish get-up",
+  "kort": "From lying to standing with the weight overhead the whole way — control in slow motion.",
+  "steg": [
+   "Lie on your back with the bell pressed to a straight arm, the same-side knee bent.",
+   "Roll up onto your elbow, then hand; lift your hip and thread the leg under to kneeling.",
+   "Stand up calmly with your eyes on the bell — and back down the same way."
+  ],
+  "alias": [
+   "Turkish get-up, slow pace"
+  ],
+  "tips": [
+   "Do it first without weight or with a shoe balanced on your fist.",
+   "Take it calmly in each step — it's seven small exercises in one."
+  ],
+  "muskler": [
+   "Full body",
+   "Shoulders",
+   "Core"
+  ],
+  "utstyr": [
+   "Kettlebell"
+  ],
+  "bilde": "tyrkisk-oppreisning"
+ },
+ {
+  "navn": "Farmer's carry with dumbbells",
+  "kort": "Walk calmly with heavy dumbbells in your hands — pure everyday strength for grip, core and posture.",
+  "steg": [
+   "Lift a heavy-enough dumbbell in each hand.",
+   "Walk calmly and tall for a set distance or time.",
+   "Set the weights down under control and rest."
+  ],
+  "tips": [
+   "Shoulders down from your ears, gaze forward — like carrying grocery bags with style."
+  ],
+  "muskler": [
+   "Grip",
+   "Core",
+   "Traps"
+  ],
+  "utstyr": [
+   "Dumbbells"
+  ],
+  "bilde": "gaardsbaering"
+ },
+ {
+  "navn": "Plank",
+  "kort": "Hold your body as a straight, stiff line on your forearms or straight arms.",
+  "steg": [
+   "Place your elbows under your shoulders and stretch your legs out.",
+   "Brace your abs and glutes so your body becomes one straight line.",
+   "Hold while breathing calmly."
+  ],
+  "tips": [
+   "Better a shorter hold with good form than a long one with sagging hips."
+  ],
+  "muskler": [
+   "Core",
+   "Shoulders"
+  ],
+  "bilde": "planke"
+ },
+ {
+  "navn": "Side plank",
+  "kort": "A plank on your side: forearm on the floor, hips lifted — the side of the core holds you up.",
+  "steg": [
+   "Lie on your side with your elbow under your shoulder.",
+   "Lift your hips until your body is a straight line.",
+   "Hold calmly, and switch sides."
+  ],
+  "alias": [
+   "Side plank from knees or feet"
+  ],
+  "tips": [
+   "For an easier version: knees on the floor."
+  ],
+  "muskler": [
+   "Obliques",
+   "Shoulders",
+   "Hips"
+  ],
+  "bilde": "sideplanke"
+ },
+ {
+  "navn": "Modified curl-up",
+  "kort": "McGill curl-up: hands under your lower back, lift your head and shoulders a touch — back-friendly core strength.",
+  "steg": [
+   "Lie on your back, one knee bent, hands under the arch of your lower back.",
+   "Lift your head and shoulders a few centimeters without rounding your lower back.",
+   "Hold a few seconds, lower calmly. Switch legs halfway."
+  ],
+  "alias": [
+   "Modified curl-up, hands under the lower back"
+  ],
+  "tips": [
+   "A tiny movement — the neck stays neutral."
+  ],
+  "muskler": [
+   "Core"
+  ],
+  "bilde": "curl-up"
+ },
+ {
+  "navn": "Bird dog",
+  "kort": "On all fours: extend the opposite arm and leg out, hold, and \"draw a square\" home — stability without load.",
+  "steg": [
+   "Get on all fours with a straight back.",
+   "Extend one arm forward and the opposite leg back until they're in line with your body.",
+   "Hold a few seconds, return calmly and switch sides."
+  ],
+  "alias": [
+   "Bird dog — draw a square with your hand on the way home"
+  ],
+  "tips": [
+   "Your hips should point straight down the whole time — no twisting."
+  ],
+  "muskler": [
+   "Core",
+   "Lower back",
+   "Glutes"
+  ],
+  "bilde": "fuglehund"
+ },
+ {
+  "navn": "Hollow hold",
+  "kort": "Lie on your back with your lower back pressed into the floor, shoulders and legs lifted — the gymnasts' core position.",
+  "steg": [
+   "Lie on your back and press your lower back down into the floor.",
+   "Lift your shoulders and legs a little — start with bent knees.",
+   "Hold the position while breathing; extend the legs as you get stronger."
+  ],
+  "alias": [
+   "Hollow hold (start with bent knees, extend gradually)"
+  ],
+  "tips": [
+   "If you lose floor contact in your lower back: bend your knees more."
+  ],
+  "muskler": [
+   "Core"
+  ],
+  "bilde": "hollow-hold"
+ },
+ {
+  "navn": "Easy hollow rocks",
+  "kort": "The hollow position in a calm rocking back and forth — the core keeps its shape.",
+  "steg": [
+   "Get into the hollow hold position.",
+   "Rock calmly back and forth like a rocking chair.",
+   "The shape is sacred — if it disappears, take a break."
+  ],
+  "muskler": [
+   "Core"
+  ],
+  "bilde": "hollow-rocks"
+ },
+ {
+  "navn": "Bear position hold",
+  "kort": "Hold yourself on all fours with your knees lifted a touch off the floor — a stillness that burns.",
+  "steg": [
+   "Get on all fours with your hands under your shoulders.",
+   "Lift your knees 2–3 cm off the floor.",
+   "Hold the position with calm breathing and your head in line with your spine."
+  ],
+  "alias": [
+   "Bear position hold with the head up"
+  ],
+  "muskler": [
+   "Core",
+   "Thighs",
+   "Shoulders"
+  ],
+  "bilde": "krabbeposisjon"
+ },
+ {
+  "navn": "Calf raise",
+  "kort": "Up onto your toes and calmly down again — strengthens the calves and ankles.",
+  "steg": [
+   "Stand with your feet hip-width apart, ideally with fingertip support on a wall.",
+   "Press up high onto your toes.",
+   "Lower calmly all the way down."
+  ],
+  "tips": [
+   "A calm descent is half the exercise."
+  ],
+  "muskler": [
+   "Calves",
+   "Ankles"
+  ],
+  "bilde": "taahev"
+ },
+ {
+  "navn": "Wall plank",
+  "kort": "A plank with your feet on the wall (belly toward the wall) — a safe path toward a handstand.",
+  "steg": [
+   "Start in a plank with your feet against the wall.",
+   "Walk your feet up the wall and your hands closer — as far as is comfortable.",
+   "Hold briefly, and walk calmly down the same way."
+  ],
+  "alias": [
+   "Wall plank / half wall walk, belly toward the wall"
+  ],
+  "tips": [
+   "Body in one line — no arching. Short and controlled wins."
+  ],
+  "muskler": [
+   "Shoulders",
+   "Core"
+  ],
+  "utstyr": [
+   "Wall"
+  ],
+  "bilde": "vegg-planke"
+ },
+ {
+  "navn": "Kick-up to the wall",
+  "kort": "Calm kicks up to a handstand with the wall as safety.",
+  "steg": [
+   "Place your hands a hand's length from the wall.",
+   "Kick up calmly with one leg — the other follows.",
+   "Let your heels find the wall, hold briefly, and come down under control."
+  ],
+  "alias": [
+   "Optional: calm kick-ups to the wall, straight arms"
+  ],
+  "tips": [
+   "Straight arms the whole time — the shoulders actively push into the floor."
+  ],
+  "muskler": [
+   "Shoulders",
+   "Core",
+   "Balance"
+  ],
+  "utstyr": [
+   "Wall"
+  ],
+  "bilde": "oppspark-vegg"
+ },
+ {
+  "navn": "Crow prep",
+  "kort": "Balance your knees against your upper arms with your weight forward — the first step toward crow pose.",
+  "steg": [
+   "Place your hands on the floor shoulder-width apart, fingers spread.",
+   "Set your knees against your upper arms and lean your weight calmly forward.",
+   "Optionally lift one foot at a time — gaze slightly forward, not down."
+  ],
+  "alias": [
+   "Crow prep (knees to upper arms, weight forward)"
+  ],
+  "tips": [
+   "Place a cushion in front of you the first few times."
+  ],
+  "muskler": [
+   "Wrists",
+   "Core",
+   "Balance"
+  ],
+  "bilde": "kraake-forberedelse"
+ },
+ {
+  "navn": "Hip airplane",
+  "kort": "A single-leg hip hinge where the hip rotates in and out — the master exercise of balance.",
+  "steg": [
+   "Stand on one leg and hinge your torso forward with a long spine.",
+   "Rotate the hip calmly out (the chest twists up) and then in.",
+   "Keep your fingertips on a wall if you like. Switch sides."
+  ],
+  "alias": [
+   "Hip airplane from single-leg stance: rotate the hip in and out"
+  ],
+  "tips": [
+   "Small, calm rotations — it's the hip that steers."
+  ],
+  "muskler": [
+   "Glutes",
+   "Hips",
+   "Balance"
+  ],
+  "bilde": "hip-airplane"
+ },
+ {
+  "navn": "Kneeling to standing without hands",
+  "kort": "From kneeling to standing and back down — without using your hands.",
+  "steg": [
+   "Kneel with a tall torso.",
+   "Set one foot forward and stand up without support.",
+   "Come calmly back down onto the opposite knee. Switch which leg goes first."
+  ],
+  "alias": [
+   "Kneeling to standing transition without hands"
+  ],
+  "muskler": [
+   "Thighs",
+   "Glutes",
+   "Balance"
+  ],
+  "bilde": "knestaaende-til-staaende"
+ },
+ {
+  "navn": "Neck CARs",
+  "kort": "Controlled rotations with the neck through the full pain-free range of motion.",
+  "steg": [
+   "Stand or sit tall, lower your shoulders.",
+   "Draw a large, slow circle with your nose: down, to the side, up and around.",
+   "Switch direction. Stay clear of anything that hurts."
+  ],
+  "tips": [
+   "Slow is the point — the circle should take several breaths."
+  ],
+  "muskler": [
+   "Neck"
+  ],
+  "bilde": "nakke-cars"
+ },
+ {
+  "navn": "Shoulder CARs",
+  "kort": "Large, slow circles with a straight arm through the shoulder's full range of motion.",
+  "steg": [
+   "Stand tall (or on all fours) with the rest of your body completely still.",
+   "Move one straight arm slowly forward, up, back and around in the largest possible circle.",
+   "Switch direction and arm."
+  ],
+  "alias": [
+   "Shoulder CARs standing or on all fours"
+  ],
+  "tips": [
+   "The body is the statue — only the arm moves."
+  ],
+  "muskler": [
+   "Shoulders"
+  ],
+  "bilde": "skulder-cars"
+ },
+ {
+  "navn": "Elbow and wrist CARs",
+  "kort": "Calm, full circles for the elbow and wrist — lubricates the joints where they can actually move.",
+  "steg": [
+   "Keep your upper arm still and rotate the forearm slowly through its full range.",
+   "Then draw large circles with the wrist, both directions.",
+   "Switch arms."
+  ],
+  "muskler": [
+   "Elbows",
+   "Wrists"
+  ],
+  "bilde": "albue-haandledd-cars"
+ },
+ {
+  "navn": "Spine CARs",
+  "kort": "Segmented cat–cow: roll the spine slowly, vertebra by vertebra — control through the whole spinal column.",
+  "steg": [
+   "Get on all fours.",
+   "Round your back slowly from tailbone to neck, vertebra by vertebra.",
+   "Arch back just as slowly the same way."
+  ],
+  "alias": [
+   "Spine CARs / segmented cat-cow"
+  ],
+  "tips": [
+   "Think of your spine as a bicycle chain — one link at a time."
+  ],
+  "muskler": [
+   "Back",
+   "Core"
+  ],
+  "bilde": "ryggrad-cars"
+ },
+ {
+  "navn": "Hip CARs",
+  "kort": "Large, slow circles with the knee: up, out to the side, back and home — the hip's full range.",
+  "steg": [
+   "Stand with support from a wall or chair.",
+   "Lift one knee, bring it out to the side, rotate it back and set it down.",
+   "Reverse the direction. Switch sides."
+  ],
+  "alias": [
+   "Hip CARs standing with support"
+  ],
+  "tips": [
+   "Keep the pelvis still — the circle happens in the hip joint."
+  ],
+  "muskler": [
+   "Hips"
+  ],
+  "bilde": "hofte-cars"
+ },
+ {
+  "navn": "Knee and ankle CARs",
+  "kort": "Calm circles and bend/extend for the knee and ankle through the full comfortable range.",
+  "steg": [
+   "Stand on one leg with support, lift the other knee.",
+   "Draw small circles with the lower leg from the knee, both directions.",
+   "Finish with calm ankle circles. Switch sides."
+  ],
+  "muskler": [
+   "Knees",
+   "Ankles"
+  ],
+  "bilde": "kne-ankel-cars"
+ },
+ {
+  "navn": "Head nods on all fours",
+  "kort": "Small nods of the head up and down on all fours — wakes up deep neck control.",
+  "steg": [
+   "Get on all fours with a long spine.",
+   "Nod your head calmly down (chin toward chest) and up, in a small range.",
+   "The rest of your back stays completely still."
+  ],
+  "alias": [
+   "Head nods on all fours, up/down"
+  ],
+  "muskler": [
+   "Neck"
+  ],
+  "bilde": "hodenikk"
+ },
+ {
+  "navn": "Head nod rotations",
+  "kort": "On all fours: turn your head calmly side to side like a \"no\" — neck rotation with support.",
+  "steg": [
+   "Get on all fours with your neck in line with your spine.",
+   "Turn your head slowly to one side, back to center, then the other side.",
+   "Small range, no forcing."
+  ],
+  "alias": [
+   "Head nod rotations side to side"
+  ],
+  "muskler": [
+   "Neck"
+  ],
+  "bilde": "hodenikk-rotasjoner"
+ },
+ {
+  "navn": "Rolling back to belly",
+  "kort": "Roll from back to belly led by the arm — ancient, soft core coordination.",
+  "steg": [
+   "Lie on your back with your arms overhead.",
+   "Reach one arm across your body and let it lead the roll onto your belly — the legs relax.",
+   "Roll back, and switch side/direction."
+  ],
+  "alias": [
+   "Rolling back to belly led by the arm"
+  ],
+  "tips": [
+   "Slow and soft — the legs shouldn't kick you around."
+  ],
+  "muskler": [
+   "Core",
+   "Coordination"
+  ],
+  "bilde": "rulling-rygg-mage"
+ },
+ {
+  "navn": "Rocking on all fours",
+  "kort": "Rock calmly back and forth on all fours, heels toward your seat — gently opens the hips and knees.",
+  "steg": [
+   "Get on all fours.",
+   "Push your hips calmly back toward your heels, as far as is comfortable.",
+   "Rock forward again and repeat in a calm rhythm."
+  ],
+  "alias": [
+   "Rocking on all fours, heels toward the seat"
+  ],
+  "muskler": [
+   "Hips",
+   "Knees",
+   "Back"
+  ],
+  "bilde": "vugging"
+ },
+ {
+  "navn": "Jump forward",
+  "kort": "A small, soft jump forward from standing — landing with bent knees and full control.",
+  "steg": [
+   "Stand with your feet hip-width apart.",
+   "Swing your arms and jump a short distance forward.",
+   "Land softly with bent knees, and walk calmly back."
+  ],
+  "alias": [
+   "Walk/jump forward"
+  ],
+  "tips": [
+   "The landing is the exercise — silent and stable."
+  ],
+  "muskler": [
+   "Thighs",
+   "Calves",
+   "Balance"
+  ],
+  "bilde": "gaa-hopp-frem"
+ },
+ {
+  "navn": "Mountain pose",
+  "kort": "Yoga's resting point: stand tall and still with your weight evenly distributed — everything starts here.",
+  "steg": [
+   "Stand with your feet together or hip-width apart.",
+   "Lengthen tall through the crown of your head, let your shoulders drop.",
+   "Breathe calmly and feel your whole sole against the floor."
+  ],
+  "alias": [
+   "Mountain pose (exhale)"
+  ],
+  "muskler": [
+   "Posture"
+  ],
+  "bilde": "fjellstilling"
+ },
+ {
+  "navn": "Seated mountain pose",
+  "kort": "The calm of mountain pose on a chair: sit tall with both feet on the floor.",
+  "steg": [
+   "Sit on the edge of the chair with your feet flat on the floor.",
+   "Lengthen tall through the crown of your head and lower your shoulders.",
+   "Rest your hands on your thighs and breathe calmly."
+  ],
+  "muskler": [
+   "Posture"
+  ],
+  "utstyr": [
+   "Chair"
+  ],
+  "bilde": "sittende-fjellstilling"
+ },
+ {
+  "navn": "Arms up",
+  "kort": "The inhale position of the sun salutation: the arms lift in a large arc overhead.",
+  "steg": [
+   "From standing (or seated): lift your arms out and up on an inhale.",
+   "Lengthen tall without hiking your shoulders.",
+   "Your gaze can follow your hands if the neck wants to."
+  ],
+  "alias": [
+   "Arms up (inhale)",
+   "Arms up with a straight back",
+   "Arms up with a straight back (inhale)"
+  ],
+  "muskler": [
+   "Shoulders",
+   "Side body"
+  ],
+  "bilde": "armer-opp"
+ },
+ {
+  "navn": "Standing forward fold",
+  "kort": "The exhale position: fold your torso softly down over your legs with soft knees.",
+  "steg": [
+   "Fold forward from your hips on an exhale.",
+   "Let your head and arms hang heavy — knees well bent if you like.",
+   "Rise calmly back up, vertebra by vertebra."
+  ],
+  "alias": [
+   "Standing forward fold (exhale)",
+   "Forward fold",
+   "Forward fold (exhale)",
+   "Easy forward fold"
+  ],
+  "tips": [
+   "Soft knees make the fold good for both back and hamstrings."
+  ],
+  "muskler": [
+   "Hamstrings",
+   "Back"
+  ],
+  "bilde": "staaende-foroverboy"
+ },
+ {
+  "navn": "Forward fold over the thighs",
+  "kort": "Seated on a chair: fold your torso down over your thighs and let everything hang.",
+  "steg": [
+   "Sit on the edge of the chair with your feet firmly on the floor.",
+   "Fold your torso down over your thighs on an exhale.",
+   "Let your head and arms hang heavy before you roll calmly up."
+  ],
+  "muskler": [
+   "Back",
+   "Hamstrings"
+  ],
+  "utstyr": [
+   "Chair"
+  ],
+  "bilde": "foroverboy-laar"
+ },
+ {
+  "navn": "Halfway lift",
+  "kort": "Halfway up from the forward fold: a long, flat back and gaze forward.",
+  "steg": [
+   "From the forward fold: lift your torso halfway on an inhale.",
+   "Hands on your shins or thighs, spine long as a table.",
+   "Release back down on an exhale."
+  ],
+  "alias": [
+   "Halfway lift (inhale)"
+  ],
+  "muskler": [
+   "Back",
+   "Hamstrings"
+  ],
+  "bilde": "halvveis-loft"
+ },
+ {
+  "navn": "Chaturanga",
+  "kort": "Yoga's low plank: lower yourself halfway with your elbows close to the body — knees down is perfectly fine.",
+  "steg": [
+   "From a plank: lower yourself calmly halfway down.",
+   "The elbows point back and stay close to your ribs.",
+   "Set your knees down for control if you like."
+  ],
+  "alias": [
+   "Chaturanga (knees ok)"
+  ],
+  "tips": [
+   "Think \"lower with style\" — knees over collapse."
+  ],
+  "muskler": [
+   "Chest",
+   "Triceps",
+   "Core"
+  ],
+  "bilde": "chaturanga"
+ },
+ {
+  "navn": "Cobra",
+  "kort": "A soft backbend from the belly: the chest lifts with light help from the hands.",
+  "steg": [
+   "Lie on your belly with your hands under your shoulders.",
+   "Lift your chest calmly on an inhale — the elbows stay bent.",
+   "The shoulders slide down from the ears. Lower on an exhale."
+  ],
+  "tips": [
+   "Lift with your back, not your arms — the hands just assist."
+  ],
+  "muskler": [
+   "Back",
+   "Chest"
+  ],
+  "bilde": "kobra"
+ },
+ {
+  "navn": "Upward-facing dog",
+  "kort": "A powerful backbend on straight arms: hips and thighs lifted off the floor.",
+  "steg": [
+   "From a low position: press up onto straight arms.",
+   "Roll over your toes so the tops of your feet are on the floor — thighs and hips lift.",
+   "The chest opens forward, shoulders down."
+  ],
+  "tips": [
+   "For a gentler version: do cobra instead."
+  ],
+  "muskler": [
+   "Back",
+   "Chest",
+   "Wrists"
+  ],
+  "bilde": "oppovervendt-hund"
+ },
+ {
+  "navn": "Downward-facing dog",
+  "kort": "An inverted V: hands and feet on the floor, hips high — the whole back of the body stretches.",
+  "steg": [
+   "From all fours: lift your knees and push your hips up and back.",
+   "Push the floor away with straight arms — spine long.",
+   "Pedal calmly with bent knees if you like. The heels don't need to reach the floor."
+  ],
+  "alias": [
+   "Downward-facing dog (5 breaths)"
+  ],
+  "tips": [
+   "Bent knees and a long spine beat straight legs and a rounded back."
+  ],
+  "muskler": [
+   "Shoulders",
+   "Hamstrings",
+   "Calves",
+   "Back"
+  ],
+  "bilde": "nedovervendt-hund"
+ },
+ {
+  "navn": "Chair (utkatasana)",
+  "kort": "Sit in an invisible chair: knees bent, chest lifted, arms forward or up.",
+  "steg": [
+   "From standing: bend your knees and lower your hips as if toward a chair.",
+   "Weight in your heels, chest proud.",
+   "The arms reach forward or up. Hold and breathe."
+  ],
+  "alias": [
+   "Chair"
+  ],
+  "muskler": [
+   "Thighs",
+   "Glutes",
+   "Core"
+  ],
+  "bilde": "stol-utkatasana"
+ },
+ {
+  "navn": "Warrior I",
+  "kort": "A lunge position with the hips forward and arms toward the ceiling — grounded and rising at once.",
+  "steg": [
+   "Take a long step back and angle the back foot slightly out.",
+   "Bend the front knee over the ankle — the hips point forward.",
+   "Lift your arms toward the ceiling and lower your shoulders. Switch sides."
+  ],
+  "alias": [
+   "Warrior I right",
+   "Warrior I left"
+  ],
+  "muskler": [
+   "Thighs",
+   "Hips",
+   "Shoulders"
+  ],
+  "bilde": "kriger-1"
+ },
+ {
+  "navn": "Warrior II",
+  "kort": "A wide lunge with open hips: the arms reach out each way, gaze over the front hand.",
+  "steg": [
+   "Stand wide; the front foot points forward, the back foot parallel to the back edge.",
+   "Bend the front knee over the ankle — the hips open to the side.",
+   "Reach your arms out each way and look over your front fingertips."
+  ],
+  "muskler": [
+   "Thighs",
+   "Hips",
+   "Shoulders"
+  ],
+  "bilde": "kriger-2"
+ },
+ {
+  "navn": "Peaceful warrior",
+  "kort": "From warrior II: the front arm lifts toward the ceiling while the back hand rests on the leg — a soft side arc.",
+  "steg": [
+   "From warrior II: turn the front palm up.",
+   "Lift the arm up and back on an inhale — the back hand slides down the leg.",
+   "The front knee stays bent. Breathe in the arc, and switch sides."
+  ],
+  "muskler": [
+   "Side body",
+   "Hips"
+  ],
+  "bilde": "fredfull-kriger"
+ },
+ {
+  "navn": "Triangle",
+  "kort": "Straight legs, a long side bend over the front leg — the body opens like a triangular sail.",
+  "steg": [
+   "From a wide stance: straighten the front leg and lean your torso forward over it.",
+   "Lower your hand to your shin or a block, the other arm toward the ceiling.",
+   "Open your chest and breathe. Switch sides."
+  ],
+  "tips": [
+   "Better to lean high with an open torso than deep with a collapse."
+  ],
+  "muskler": [
+   "Hamstrings",
+   "Side body",
+   "Hips"
+  ],
+  "bilde": "triangel"
+ },
+ {
+  "navn": "Extended side angle",
+  "kort": "From warrior II: the forearm on the front thigh, the top arm reaching overhead — one long line.",
+  "steg": [
+   "From warrior II: lower your forearm onto the front thigh (or your hand to the floor).",
+   "Reach the top arm overhead in line with your body.",
+   "Roll your chest up and breathe along the side line. Switch sides."
+  ],
+  "muskler": [
+   "Side body",
+   "Thighs",
+   "Hips"
+  ],
+  "bilde": "utvidet-sidevinkel"
+ },
+ {
+  "navn": "Standing side bend",
+  "kort": "Straight up and down: one arm overhead, lean calmly to the opposite side.",
+  "steg": [
+   "Stand tall and lift one arm overhead.",
+   "Lean calmly to the opposite side without leaning forward or back.",
+   "Breathe in the stretch and switch sides."
+  ],
+  "muskler": [
+   "Side body"
+  ],
+  "bilde": "staaende-sideboy"
+ },
+ {
+  "navn": "Seated side bend",
+  "kort": "Seated: one arm overhead and lean calmly to the opposite side — the side body breathes.",
+  "steg": [
+   "Sit tall (on a chair or the floor) with both sit bones heavy.",
+   "Lift one arm and lean calmly to the opposite side.",
+   "Hold a few breaths, come up and switch sides."
+  ],
+  "muskler": [
+   "Side body"
+  ],
+  "bilde": "sittende-sideboy"
+ },
+ {
+  "navn": "Seated twist",
+  "kort": "A calm rotation from seated: turn your torso to one side and stay for a few breaths.",
+  "steg": [
+   "Sit tall and place the opposite hand on your knee/thigh.",
+   "Grow tall on the inhale, twist calmly further on the exhale.",
+   "A few calm breaths — then switch sides."
+  ],
+  "tips": [
+   "The rotation comes from above: the chest leads, the neck follows last."
+  ],
+  "muskler": [
+   "Back",
+   "Core"
+  ],
+  "bilde": "sittende-twist"
+ },
+ {
+  "navn": "Seated cat–cow",
+  "kort": "Cat–cow from a chair: round and arch your back alternately at the pace of your breath.",
+  "steg": [
+   "Sit on the edge of the chair with your hands on your thighs.",
+   "Inhale: lift your chest and arch your back lightly.",
+   "Exhale: round your back and let your head drop softly. Repeat calmly."
+  ],
+  "muskler": [
+   "Back",
+   "Neck"
+  ],
+  "utstyr": [
+   "Chair"
+  ],
+  "bilde": "sittende-katt-ku"
+ },
+ {
+  "navn": "Cat–cow",
+  "kort": "The spine's windshield wiper: alternate softly between a rounded and arched back on all fours, in time with your breath.",
+  "steg": [
+   "Get on all fours with your hands under your shoulders.",
+   "Inhale: drop your belly, lift your chest and gaze (cow).",
+   "Exhale: round your back and let your head drop (cat). Repeat calmly."
+  ],
+  "alias": [
+   "Cat-cow (McGill's cat-camel)",
+   "Cat-cow, soft and slow",
+   "Cat–camel",
+   "Cat-camel"
+  ],
+  "tips": [
+   "Let your breath set the pace — one breath per movement."
+  ],
+  "muskler": [
+   "Back",
+   "Neck",
+   "Core"
+  ],
+  "bilde": "katt-ku"
+ },
+ {
+  "navn": "Child's pose",
+  "kort": "Yoga's resting position: seat toward your heels, forehead to the mat, arms forward or along your sides.",
+  "steg": [
+   "From kneeling: lower your seat toward your heels.",
+   "Rest your forehead on the mat and let your arms rest forward or back.",
+   "Breathe calmly into your back and stay as long as you like."
+  ],
+  "alias": [
+   "Child's pose",
+   "Child's pose — forehead on the mat, arms along the sides"
+  ],
+  "tips": [
+   "Knees wide makes room for the belly; a cushion under the forehead makes everything better."
+  ],
+  "muskler": [
+   "Back",
+   "Hips"
+  ],
+  "bilde": "barnets-stilling"
+ },
+ {
+  "navn": "Child's pose with side bend",
+  "kort": "Child's pose where your hands walk to one side — stretches the whole side line.",
+  "steg": [
+   "Get into child's pose with your arms forward.",
+   "Walk both hands calmly over to one side until it stretches along the side.",
+   "A few calm breaths, then the hands walk over to the other side."
+  ],
+  "alias": [
+   "Child's pose w/ side bend"
+  ],
+  "muskler": [
+   "Side body",
+   "Back"
+  ],
+  "bilde": "barnets-stilling-sideboy"
+ },
+ {
+  "navn": "Savasana",
+  "kort": "The art of the ending: lie flat, let your body get heavy and do absolutely nothing.",
+  "steg": [
+   "Lie on your back with your arms slightly out from your body, palms up.",
+   "Close your eyes and release all control of your breath.",
+   "Stay lying down — the stillness is the exercise itself."
+  ],
+  "alias": [
+   "Savasana or seated stillness",
+   "Savasana — flat on your back, let the body get heavy"
+  ],
+  "tips": [
+   "A blanket over the body makes it easier to let go."
+  ],
+  "muskler": [
+   "Rest"
+  ],
+  "bilde": "savasana"
+ },
+ {
+  "navn": "Roll to the side and sit up",
+  "kort": "The gentle way out of savasana: roll onto your side, rest, and push yourself calmly up.",
+  "steg": [
+   "Draw your knees softly in and roll onto one side.",
+   "Stay lying for a couple of breaths.",
+   "Push yourself calmly up to sitting with your hands."
+  ],
+  "alias": [
+   "Roll to the side, sit up slowly"
+  ],
+  "muskler": [
+   "Rest"
+  ],
+  "bilde": "rull-til-siden"
+ },
+ {
+  "navn": "Butterfly",
+  "kort": "Seated with the soles together: let your knees fall out and fold softly forward with a rounded back.",
+  "steg": [
+   "Sit with the soles of your feet together, a little away from your hips.",
+   "Let your knees sink out to the sides under their own weight.",
+   "Fold softly forward with a rounded back and stay, breath by breath."
+  ],
+  "alias": [
+   "Butterfly",
+   "Butterfly (soles together, rounded back forward)",
+   "Seated groin (soles together, light press)",
+   "Seated groin"
+  ],
+  "tips": [
+   "In yin, a slack back is allowed — gravity does the work."
+  ],
+  "muskler": [
+   "Hips",
+   "Inner thighs",
+   "Back"
+  ],
+  "bilde": "sommerfuglen"
+ },
+ {
+  "navn": "Caterpillar",
+  "kort": "The yin version of a seated forward fold: fold forward over straight legs and let your back round.",
+  "steg": [
+   "Sit with your legs straight (slightly bent knees are fine).",
+   "Fold your torso softly forward and let your head hang.",
+   "Let your back round and stay in the fold for several calm breaths."
+  ],
+  "alias": [
+   "Caterpillar (seated forward fold-yin)",
+   "Caterpillar",
+   "Caterpillar (seated forward fold, relaxed back)",
+   "Seated forward fold",
+   "Seated forward bend"
+  ],
+  "muskler": [
+   "Hamstrings",
+   "Back"
+  ],
+  "bilde": "larven"
+ },
+ {
+  "navn": "Sphinx",
+  "kort": "Lying on your belly on your forearms: a mild, passive backbend you can rest in.",
+  "steg": [
+   "Lie on your belly and place your elbows under your shoulders.",
+   "Let your forearms support you — chest open, shoulders down.",
+   "Release your seat and legs completely relaxed and stay in the position."
+  ],
+  "alias": [
+   "Sphinx",
+   "Sphinx (lying on the belly on the forearms)"
+  ],
+  "muskler": [
+   "Back",
+   "Chest"
+  ],
+  "bilde": "sfinksen"
+ },
+ {
+  "navn": "Seal",
+  "kort": "Sphinx's big brother: press up onto straighter arms for a deeper, still passive backbend.",
+  "steg": [
+   "From sphinx: place your hands on the floor and straighten your arms more.",
+   "Let your hips get heavy in the mat.",
+   "Come calmly down if your lower back speaks up."
+  ],
+  "tips": [
+   "Sphinx is always a good alternative."
+  ],
+  "muskler": [
+   "Back",
+   "Chest"
+  ],
+  "bilde": "selen"
+ },
+ {
+  "navn": "Dragon",
+  "kort": "The yin lunge: a long, low lunge position where the hip flexor gets plenty of time to release.",
+  "steg": [
+   "From all fours: set one foot far forward between your hands.",
+   "Let the back knee rest on the floor and lower your hips forward and down.",
+   "Stay in the position for several breaths, and switch sides."
+  ],
+  "alias": [
+   "Dragon (low lunge-yin)"
+  ],
+  "tips": [
+   "A cushion under the back knee makes the dragon much friendlier."
+  ],
+  "muskler": [
+   "Hip flexors",
+   "Hips",
+   "Groin"
+  ],
+  "bilde": "dragen"
+ },
+ {
+  "navn": "Swan",
+  "kort": "The yin version of pigeon: front shin across, back leg long behind — fold forward and stay.",
+  "steg": [
+   "From all fours: bring one knee forward behind the wrist, the shin angled under you.",
+   "Stretch the other leg long behind you.",
+   "Fold your torso forward over the front leg and rest there. Switch sides."
+  ],
+  "alias": [
+   "Swan (sleeping pigeon)",
+   "Pigeon leg on the floor",
+   "Pigeon / hip stretch"
+  ],
+  "tips": [
+   "A cushion under the hip makes the position even and safe."
+  ],
+  "muskler": [
+   "Glutes",
+   "Hips"
+  ],
+  "bilde": "svanen"
+ },
+ {
+  "navn": "Frog",
+  "kort": "Knees wide, hips back: a deep and demanding yin opener for the inner thighs.",
+  "steg": [
+   "From all fours: push your knees wide out to the sides, shins on the floor.",
+   "Lower yourself onto your forearms and let your hips sink back.",
+   "Stay in the position with calm breaths — never go further than comfortable."
+  ],
+  "tips": [
+   "Cushions under the knees are almost mandatory."
+  ],
+  "muskler": [
+   "Inner thighs",
+   "Hips"
+  ],
+  "bilde": "frosken"
+ },
+ {
+  "navn": "Saddle",
+  "kort": "A yin backbend from kneeling: lean back onto a cushion along your spine — the front of the thighs and hips open.",
+  "steg": [
+   "Sit on your knees with a cushion/bolster behind you.",
+   "Lean calmly back onto the cushion as far as is comfortable.",
+   "Stay in the position and breathe — come calmly up onto your side."
+  ],
+  "alias": [
+   "Saddle with a cushion along the spine"
+  ],
+  "tips": [
+   "If you feel your knee: try one side at a time or skip it."
+  ],
+  "muskler": [
+   "Quads",
+   "Hip flexors"
+  ],
+  "utstyr": [
+   "Cushion"
+  ],
+  "bilde": "sadelen"
+ },
+ {
+  "navn": "Snail",
+  "kort": "A mild inversion: the legs swing over the head with a folded blanket under the shoulders.",
+  "steg": [
+   "Lie on your back with a folded blanket under your shoulders.",
+   "Swing your legs calmly over your head, supporting your back with your hands.",
+   "Stay only as long as it's comfortable — roll calmly back down."
+  ],
+  "alias": [
+   "Snail with a folded blanket under the shoulders"
+  ],
+  "tips": [
+   "Never turn your head while in the position. Legs up the wall is a nice alternative."
+  ],
+  "muskler": [
+   "Back",
+   "Neck"
+  ],
+  "utstyr": [
+   "Blanket"
+  ],
+  "bilde": "sneglen"
+ },
+ {
+  "navn": "Bananasana",
+  "kort": "A lying banana: feet and torso travel to the same side — a long, lazy side stretch.",
+  "steg": [
+   "Lie on your back and move your feet to one side.",
+   "Move your shoulders and arms to the same side — the body becomes a banana.",
+   "Relax completely and stay there. Switch sides."
+  ],
+  "alias": [
+   "Bananasana (lying banana, side-line stretch)"
+  ],
+  "muskler": [
+   "Side body"
+  ],
+  "bilde": "bananasana"
+ },
+ {
+  "navn": "Melting heart",
+  "kort": "Kneeling with the chest melting toward the floor, arms reaching forward — opens the chest and shoulders.",
+  "steg": [
+   "From all fours: keep your hips over your knees and walk your hands far forward.",
+   "Lower your chest toward the floor and let the heart \"melt\" down.",
+   "Your forehead or chin rests on the mat. Stay and breathe."
+  ],
+  "alias": [
+   "Melting heart (anahatasana, kneeling, chest toward the floor)"
+  ],
+  "muskler": [
+   "Chest",
+   "Shoulders",
+   "Back"
+  ],
+  "bilde": "smeltende-hjerte"
+ },
+ {
+  "navn": "Reclined twist",
+  "kort": "The back's favorite: the knees fall to one side while the shoulders rest on the floor.",
+  "steg": [
+   "Lie on your back and draw your knees up.",
+   "Let them fall calmly to one side — arms out, shoulders heavy.",
+   "Look the opposite way if you like. A few calm breaths, and switch sides."
+  ],
+  "alias": [
+   "Reclined twist"
+  ],
+  "tips": [
+   "Let your knees rest on a cushion if they don't reach the floor."
+  ],
+  "muskler": [
+   "Back",
+   "Chest",
+   "Hips"
+  ],
+  "bilde": "liggende-vridning"
+ },
+ {
+  "navn": "Twisted roots",
+  "kort": "A reclined twist with crossed legs — a deeper, more concentrated twist.",
+  "steg": [
+   "Lie on your back and cross one leg over the other.",
+   "Let the crossed knees fall to one side, shoulders on the floor.",
+   "Stay in the twist for several breaths, and switch the cross and side."
+  ],
+  "alias": [
+   "Twisted roots (reclined twist w/ bent, crossed knees)"
+  ],
+  "muskler": [
+   "Back",
+   "Hips"
+  ],
+  "bilde": "twisted-roots"
+ },
+ {
+  "navn": "Side fold over a wide leg",
+  "kort": "Seated with the legs wide: lean sideways over one leg and breathe into the side line.",
+  "steg": [
+   "Sit with your legs wide apart.",
+   "Lean sideways down over one leg — your forearm can rest on the thigh.",
+   "The opposite arm reaches overhead. Switch sides."
+  ],
+  "alias": [
+   "Side fold over a wide leg (side bend over a straight leg)"
+  ],
+  "muskler": [
+   "Side body",
+   "Inner thighs"
+  ],
+  "bilde": "sidefold-bredt-bein"
+ },
+ {
+  "navn": "Legs up the wall",
+  "kort": "The most restorative of them all: lie with your seat against the wall and your legs resting up.",
+  "steg": [
+   "Sit sideways against a wall and swing your legs up as you lie down.",
+   "Seat as close to the wall as is comfortable — the arms rest open.",
+   "Stay in the position and let your breath settle."
+  ],
+  "alias": [
+   "Viparita Karani — legs up the wall, seat against the wall",
+   "Viparita karani legs up the wall"
+  ],
+  "muskler": [
+   "Rest",
+   "Circulation"
+  ],
+  "utstyr": [
+   "Wall"
+  ],
+  "bilde": "beina-opp-vegg"
+ },
+ {
+  "navn": "Supta Baddha Konasana",
+  "kort": "Reclined butterfly: soles of the feet together, knees open — rest with support and breathe.",
+  "steg": [
+   "Lie on your back with the soles of your feet together.",
+   "Let your knees fall open — place cushions under them if you like.",
+   "Hands on your belly or out to the sides. Rest."
+  ],
+  "alias": [
+   "Supta Baddha Konasana — soles together, knees out to the sides",
+   "Supta baddha konasana soles together"
+  ],
+  "muskler": [
+   "Hips",
+   "Rest"
+  ],
+  "bilde": "supta-baddha-konasana"
+ },
+ {
+  "navn": "Hamstring stretch",
+  "kort": "A calm stretch for the back of the thigh — choose a lying, seated or standing variant.",
+  "steg": [
+   "Lie on your back and stretch one leg toward the ceiling (hold behind the thigh).",
+   "Draw the leg softly toward you until it stretches behind the thigh.",
+   "Breathe calmly, releasing a little more with each exhale. Switch sides."
+  ],
+  "alias": [
+   "Hamstring lying (hands behind thigh, press the heel down)",
+   "Hamstring lying"
+  ],
+  "tips": [
+   "Never push into pain — 6–7 out of 10 in stretch feeling lasts a long time."
+  ],
+  "muskler": [
+   "Hamstrings"
+  ],
+  "bilde": "hamstringtoyning"
+ },
+ {
+  "navn": "Lying hamstring with a band",
+  "kort": "A lying hamstring stretch with a band around the foot — precise and relaxed.",
+  "steg": [
+   "Lie on your back with a band around the sole of your foot.",
+   "Extend the leg toward the ceiling and let the band hold it up.",
+   "Relax the rest of your body and breathe. Switch sides."
+  ],
+  "alias": [
+   "Hamstring lying w/ band"
+  ],
+  "muskler": [
+   "Hamstrings"
+  ],
+  "utstyr": [
+   "Resistance band"
+  ],
+  "bilde": "hamstring-liggende-strikk"
+ },
+ {
+  "navn": "Standing hamstring",
+  "kort": "A standing hamstring stretch: heel forward, hips leaning back.",
+  "steg": [
+   "Set one heel slightly forward with a straight leg, toes up.",
+   "Lean your hips back with a long spine until it stretches behind the thigh.",
+   "Your hands can rest on the other thigh. Switch sides."
+  ],
+  "alias": [
+   "Standing hamstring (heel forward, lean the hip back)"
+  ],
+  "muskler": [
+   "Hamstrings"
+  ],
+  "bilde": "hamstring-staaende"
+ },
+ {
+  "navn": "Half split",
+  "kort": "From a lunge position: straighten the front leg and fold over it with a long spine.",
+  "steg": [
+   "From a kneeling lunge: push your hips back and straighten the front leg.",
+   "Tip your toes toward you and fold your torso forward with a long spine.",
+   "Calm breaths, and switch sides."
+  ],
+  "alias": [
+   "Half split (hamstring fold in a lunge)"
+  ],
+  "muskler": [
+   "Hamstrings",
+   "Calves"
+  ],
+  "bilde": "halv-splitt"
+ },
+ {
+  "navn": "Split progression with support",
+  "kort": "Calm work toward the splits with blocks or cushions as support — only as far as the body wants.",
+  "steg": [
+   "From a half split: let the front foot slide further forward with support under your hands.",
+   "Lower yourself only as far as feels safe — cushions under the front thigh help.",
+   "Breathe calmly at the end range, and come up under control. Switch sides."
+  ],
+  "alias": [
+   "Split progression w/ support"
+  ],
+  "tips": [
+   "This is patience work — millimeters are progress."
+  ],
+  "muskler": [
+   "Hamstrings",
+   "Hip flexors"
+  ],
+  "utstyr": [
+   "Cushions",
+   "Blocks"
+  ],
+  "bilde": "splittprogresjon"
+ },
+ {
+  "navn": "Hip flexor stretch",
+  "kort": "A kneeling lunge: push your hip calmly forward until it stretches at the front of the back hip.",
+  "steg": [
+   "Kneel in a lunge with the back knee on the floor.",
+   "Squeeze the back glute and push your hips calmly forward — without arching your back.",
+   "It stretches at the front of the hip. Breathe, and switch sides."
+  ],
+  "alias": [
+   "Kneeling hip flexor stretch",
+   "Hip flexor in a deep lunge (press the back knee toward the floor)",
+   "Hip flexor in a deep lunge"
+  ],
+  "tips": [
+   "Lift the same-side arm for extra length."
+  ],
+  "muskler": [
+   "Hip flexors",
+   "Quads"
+  ],
+  "bilde": "hofteboyertoyning"
+ },
+ {
+  "navn": "Side-lying hip flexor",
+  "kort": "Side-lying: the heel is drawn toward the seat while the hip is actively extended back.",
+  "steg": [
+   "Lie on your side and grab the ankle of the top leg.",
+   "Draw the heel toward your seat and press the hip actively forward.",
+   "Keep your ribs down. Switch sides."
+  ],
+  "alias": [
+   "Side-lying hip flexor (heel to seat, active hip extension)"
+  ],
+  "muskler": [
+   "Hip flexors",
+   "Quads"
+  ],
+  "bilde": "hofteboyer-sideliggende"
+ },
+ {
+  "navn": "Quad stretch",
+  "kort": "A classic front-of-thigh stretch: heel to the seat, knees together.",
+  "steg": [
+   "Stand on one leg (hold onto something if needed) and grab the opposite ankle.",
+   "Draw the heel softly toward your seat with the knees close together.",
+   "Stand tall — don't arch. Switch sides."
+  ],
+  "alias": [
+   "Quad stretch",
+   "Stretch the front of the thigh",
+   "Standing quadriceps w/ balance",
+   "Standing quadriceps w balance"
+  ],
+  "muskler": [
+   "Quads",
+   "Hip flexors"
+  ],
+  "bilde": "laartoyning"
+ },
+ {
+  "navn": "Calf stretch",
+  "kort": "A stretch for the calf: the back leg straight with the heel on the floor, lean toward the wall.",
+  "steg": [
+   "Stand facing a wall with one leg well back.",
+   "Press the back heel into the floor and lean forward until it stretches in the calf.",
+   "Switch sides. Bend the back knee slightly to reach deeper into the calf."
+  ],
+  "alias": [
+   "Calf against the wall",
+   "Calf against the wall (press the ball of the foot to the wall)"
+  ],
+  "muskler": [
+   "Calves",
+   "Ankles"
+  ],
+  "utstyr": [
+   "Wall"
+  ],
+  "bilde": "leggtoy"
+ },
+ {
+  "navn": "Calf with a band",
+  "kort": "A seated calf stretch: band around the sole of the foot, pull your toes toward you.",
+  "steg": [
+   "Sit with one leg straight and a band around the sole of your foot.",
+   "Pull your toes calmly toward you until it stretches in the calf.",
+   "Hold and breathe. Switch sides."
+  ],
+  "alias": [
+   "Calf w/ band (flexion toward you)",
+   "Calf w band"
+  ],
+  "muskler": [
+   "Calves"
+  ],
+  "utstyr": [
+   "Resistance band"
+  ],
+  "bilde": "legg-strikk"
+ },
+ {
+  "navn": "Lying adductor with a band",
+  "kort": "Lying down: the leg is guided out to the side with a band — the inner thigh releases calmly.",
+  "steg": [
+   "Lie on your back with a band around one sole of the foot.",
+   "Extend the leg up and let it fall calmly out to the side.",
+   "The opposite hip stays heavy on the floor. Switch sides."
+  ],
+  "alias": [
+   "Lying adductor w/ band (leg out to the side)",
+   "Lying adductor w band"
+  ],
+  "muskler": [
+   "Inner thighs"
+  ],
+  "utstyr": [
+   "Resistance band"
+  ],
+  "bilde": "adduktor-liggende-strikk"
+ },
+ {
+  "navn": "Seated adductor at the wall",
+  "kort": "Seated against a wall with the knees open: press your knees lightly against your hands — an active inner-thigh stretch.",
+  "steg": [
+   "Sit with your back against a wall and the soles of your feet together.",
+   "Place your hands on the inside of your knees.",
+   "Press your knees lightly against your hands for a few seconds, release — and let them sink a little deeper."
+  ],
+  "alias": [
+   "Seated adductor at the wall (press the knees against the hands)",
+   "Seated adductor at the wall"
+  ],
+  "muskler": [
+   "Inner thighs"
+  ],
+  "utstyr": [
+   "Wall"
+  ],
+  "bilde": "adduktor-sittende-vegg"
+ },
+ {
+  "navn": "Chest stretch",
+  "kort": "Open the chest: arms behind the body or against a doorframe — the antidote to a day at the screen.",
+  "steg": [
+   "Interlace your hands behind your back (or hold onto a doorframe).",
+   "Lift your chest and draw your shoulders softly back.",
+   "Breathe into your chest and hold."
+  ],
+  "alias": [
+   "Chest stretch",
+   "Chest stretch with arms behind",
+   "Chest stretch in a doorframe",
+   "Chest in a doorway",
+   "Chest stretch on the floor"
+  ],
+  "muskler": [
+   "Chest",
+   "Shoulders"
+  ],
+  "bilde": "brysttoyning"
+ },
+ {
+  "navn": "Lying chest sweep",
+  "kort": "Side-lying: the top arm opens in a large arc out and down — the chest follows.",
+  "steg": [
+   "Lie on your side with your knees bent and your arms together in front of you.",
+   "Lift the top arm and sweep it in a large arc over to the other side.",
+   "Let your gaze follow your hand, and sweep calmly back. Switch sides."
+  ],
+  "alias": [
+   "Lying chest sweep (arm actively out/down)"
+  ],
+  "muskler": [
+   "Chest",
+   "Back"
+  ],
+  "bilde": "brystsving-liggende"
+ },
+ {
+  "navn": "Open book",
+  "kort": "A side-lying rotation: the top arm opens like a page of a book — hold at the end range.",
+  "steg": [
+   "Lie on your side with your knees bent 90 degrees and your arms reaching in front of you.",
+   "Open the top arm over to the opposite side, like a book being opened.",
+   "Hold at the end range for a few breaths — the knees stay put. Switch sides."
+  ],
+  "alias": [
+   "Open book (thoracic rotation, hold the end range)"
+  ],
+  "muskler": [
+   "Chest",
+   "Back"
+  ],
+  "bilde": "aapen-bok"
+ },
+ {
+  "navn": "Cross-body shoulder pull",
+  "kort": "Pull one arm across your chest — a simple and effective shoulder stretch.",
+  "steg": [
+   "Bring one arm straight across your chest.",
+   "Use the other arm to draw it softly closer.",
+   "Keep the shoulder low. Switch sides."
+  ],
+  "alias": [
+   "Shoulder stretch"
+  ],
+  "muskler": [
+   "Shoulders"
+  ],
+  "bilde": "skulder-kryssdrag"
+ },
+ {
+  "navn": "Shoulder opener at the wall",
+  "kort": "Hands on the wall, chest lowering down — the shoulders open into a full stretch.",
+  "steg": [
+   "Place your hands on the wall at shoulder height and step back a little.",
+   "Lower your chest down between your arms with a long spine.",
+   "Breathe where it stretches in your shoulders and chest."
+  ],
+  "muskler": [
+   "Shoulders",
+   "Chest"
+  ],
+  "utstyr": [
+   "Wall"
+  ],
+  "bilde": "skulderaapner-vegg"
+ },
+ {
+  "navn": "Neck side bend",
+  "kort": "Let your ear sink calmly toward your shoulder — the neck's simplest and best stretch.",
+  "steg": [
+   "Sit or stand tall and lower both shoulders.",
+   "Let one ear sink calmly toward that shoulder.",
+   "A hand can rest lightly on top of the head — weight only, never pulling. Switch sides."
+  ],
+  "muskler": [
+   "Neck"
+  ],
+  "bilde": "nakke-sideboy"
+ },
+ {
+  "navn": "Forearm stretch",
+  "kort": "Stretch the forearms: straight arm, bend the hand up and down with light help.",
+  "steg": [
+   "Stretch one arm forward with the palm up.",
+   "Bend the hand down with light help from the other — it stretches in the forearm.",
+   "Turn the palm down and repeat the other way. Switch arms."
+  ],
+  "muskler": [
+   "Forearms",
+   "Wrists"
+  ],
+  "bilde": "underarmstoyning"
+ },
+ {
+  "navn": "QL / side stretch",
+  "kort": "A deep side stretch for the lower back's side muscle: lean over with a raised arm and let the side breathe.",
+  "steg": [
+   "Sit or stand with good height.",
+   "Lift one arm and lean calmly over to the opposite side, slightly forward.",
+   "Breathe into the side of your back. Switch sides."
+  ],
+  "alias": [
+   "QL side stretch",
+   "QL side stretch"
+  ],
+  "muskler": [
+   "Lower back",
+   "Side body"
+  ],
+  "bilde": "ql-sidestrekk"
+ },
+ {
+  "navn": "World's greatest stretch",
+  "kort": "A lunge, elbow to the floor and rotation toward the ceiling — hips, back and chest in one movement.",
+  "steg": [
+   "Take a long lunge and place both hands inside the front foot.",
+   "Lower the elbow on the same side as the front leg toward the floor.",
+   "Then rotate that arm up toward the ceiling and follow with your gaze. Switch sides."
+  ],
+  "alias": [
+   "World's greatest stretch: lunge, elbow to the floor, rotation, hip back"
+  ],
+  "tips": [
+   "Take the movement slowly — it isn't called \"world's greatest\" for nothing."
+  ],
+  "muskler": [
+   "Hips",
+   "Back",
+   "Chest"
+  ],
+  "bilde": "verdens-beste"
+ },
+ {
+  "navn": "Figure-4",
+  "kort": "The ankle over the opposite knee — the glutes and deep hip rotators let go.",
+  "steg": [
+   "Lying down: place one ankle over the opposite knee.",
+   "Grab behind the thigh and draw the legs softly toward you.",
+   "Seated on a chair: lean calmly forward instead. Switch sides."
+  ],
+  "alias": [
+   "Figure-4 (ankle over knee)",
+   "Figure-4 lying",
+   "Hip stretch"
+  ],
+  "muskler": [
+   "Glutes",
+   "Hips"
+  ],
+  "bilde": "figur-4"
+ },
+ {
+  "navn": "90/90 hip stretch",
+  "kort": "Both legs at 90 degrees on the floor: lean over the front shin with a long spine.",
+  "steg": [
+   "Sit with the front leg bent 90 degrees in front of you and the back leg 90 degrees to the side.",
+   "Grow tall and lean your torso calmly forward over the front shin.",
+   "Breathe where it stretches in the glute. Switch sides."
+  ],
+  "alias": [
+   "90/90 hip stretch (lean over the front shin)",
+   "90/90 hip stretch",
+   "Leaning forward over the front shin with a long spine"
+  ],
+  "muskler": [
+   "Glutes",
+   "Hips"
+  ],
+  "bilde": "90-90"
+ },
+ {
+  "navn": "90/90 switches",
+  "kort": "From 90/90: the knees swing together over to the opposite side without hands — active hip control.",
+  "steg": [
+   "Sit in the 90/90 position with your hands lightly behind you (or lifted).",
+   "Swing both knees calmly over to the opposite side.",
+   "Control the whole way — no speed. Repeat side to side."
+  ],
+  "alias": [
+   "90/90 switches without hands",
+   "90/90 tip side to side with the hands behind"
+  ],
+  "muskler": [
+   "Hips"
+  ],
+  "bilde": "90-90-switches"
+ },
+ {
+  "navn": "Lift-off internal rotation",
+  "kort": "From 90/90: lift the back foot off the floor while the knee stays down — strength in the hip's internal rotation.",
+  "steg": [
+   "Sit in 90/90 with a tall torso.",
+   "Lift the back foot off the floor without the knee leaving the ground.",
+   "Hold a couple of seconds, lower calmly. Repeat and switch sides."
+  ],
+  "alias": [
+   "Lift-off internal rotation: back foot lifts, knee on the ground"
+  ],
+  "tips": [
+   "Small movement, big effect — don't lean away."
+  ],
+  "muskler": [
+   "Hips"
+  ],
+  "bilde": "lift-off-innad"
+ },
+ {
+  "navn": "Lift-off external rotation",
+  "kort": "From 90/90: lift the entire front shin off the floor — the strength test of external rotation.",
+  "steg": [
+   "Sit in 90/90 with your hands lightly behind you.",
+   "Lift the entire front shin a few centimeters off the floor.",
+   "Hold briefly, lower calmly. Repeat and switch sides."
+  ],
+  "alias": [
+   "Lift-off external rotation: front shin lifts off the floor"
+  ],
+  "muskler": [
+   "Hips",
+   "Glutes"
+  ],
+  "bilde": "lift-off-utad"
+ },
+ {
+  "navn": "Pigeon push-up",
+  "kort": "From pigeon pose: press your torso up and down from the front shin — an active hip opener.",
+  "steg": [
+   "Get into pigeon pose with the front shin on the floor.",
+   "Press your hands into the floor and lift your torso — feel the pressure in the front hip.",
+   "Lower calmly back down. Repeat and switch sides."
+  ],
+  "alias": [
+   "Pigeon push-up: press up from the front shin"
+  ],
+  "muskler": [
+   "Glutes",
+   "Hips"
+  ],
+  "bilde": "pigeon-push-up"
+ },
+ {
+  "navn": "Calm breathing",
+  "kort": "Sit or lie still and let your breath become long and low — the nervous system's off switch.",
+  "steg": [
+   "Find a comfortable position, seated or lying down.",
+   "Breathe in through your nose, low down into your belly.",
+   "Let the exhale become a little longer than the inhale. Continue calmly."
+  ],
+  "alias": [
+   "Calm breathing lying down",
+   "Calm breaths with closed eyes"
+  ],
+  "muskler": [
+   "Calm",
+   "Breath"
+  ],
+  "bilde": "rolig-pust"
+ },
+ {
+  "navn": "Belly breathing lying down",
+  "kort": "Lying with your hands on your belly: breathe so your hands rise — deep, calm diaphragmatic breathing.",
+  "steg": [
+   "Lie on your back with bent knees and your hands on your belly.",
+   "Breathe in through your nose so your belly (and hands) rise.",
+   "Breathe slowly out and feel your belly sink. Repeat calmly."
+  ],
+  "alias": [
+   "Belly breathing lying on the back"
+  ],
+  "muskler": [
+   "Breath",
+   "Calm"
+  ],
+  "bilde": "magepust"
+ },
+ {
+  "navn": "Box breathing",
+  "kort": "Breathe in a square: in 4 — hold 4 — out 4 — hold 4. Simple, powerful, calming.",
+  "steg": [
+   "Breathe in through your nose while counting to 4.",
+   "Hold your breath for 4. Breathe out for 4. Hold empty for 4.",
+   "Repeat the rounds at a calm pace."
+  ],
+  "alias": [
+   "Box breathing 4-4-4-4"
+  ],
+  "tips": [
+   "If 4 is too long: use 3. The rhythm matters more than the number."
+  ],
+  "muskler": [
+   "Breath",
+   "Calm"
+  ],
+  "bilde": "boks-pust"
+ },
+ {
+  "navn": "Coherent breathing",
+  "kort": "About 5.5 breaths per minute: equal inhale and exhale — heart calm on pure rhythm.",
+  "steg": [
+   "Breathe in calmly for about 5.5 seconds.",
+   "Breathe out just as calmly for about 5.5 seconds.",
+   "Continue — smooth as a wave, without pauses."
+  ],
+  "alias": [
+   "Coherent breathing 5.5/min",
+   "Coherent breathing 5"
+  ],
+  "muskler": [
+   "Breath",
+   "Calm"
+  ],
+  "bilde": "koherent-pust"
+ },
+ {
+  "navn": "Cyclic sighing",
+  "kort": "A double inhale through the nose, a long exhale through the mouth — the fastest way to a calmer heart rate.",
+  "steg": [
+   "Breathe in through your nose, and take a small extra inhale at the top.",
+   "Release a long, relaxed exhale through your mouth.",
+   "Repeat for one to two minutes."
+  ],
+  "muskler": [
+   "Breath",
+   "Calm"
+  ],
+  "bilde": "syklisk-sukk"
+ },
+ {
+  "navn": "Wall push-up",
+  "kort": "The gentlest pressing movement: stand against a wall and push in and out with a straight body — learn the direction without loading the joints.",
+  "steg": [
+   "Stand an arm's length from the wall with your feet hip-width apart and your hands flat on the wall at chest height, a little wider than your shoulders.",
+   "Brace your abs and glutes so your body is one straight line from head to heel.",
+   "Bend your elbows calmly and let your chest come toward the wall — the elbows point diagonally back, not straight out to the sides.",
+   "Press yourself back to straight arms without losing the straight line."
+  ],
+  "tips": [
+   "Want it harder? Move your feet farther from the wall.",
+   "The hips don't lag behind and don't stick up — the whole body moves as one plank."
+  ],
+  "muskler": [
+   "Chest",
+   "Triceps",
+   "Shoulders",
+   "Core"
+  ],
+  "utstyr": [
+   "Wall"
+  ],
+  "bilde": "vegg-pushup"
+ },
+ {
+  "navn": "Chair squat",
+  "kort": "Sit calmly down toward a chair and stand up without your hands — the safest entry to the squat.",
+  "steg": [
+   "Stand in front of a chair with your feet shoulder-width apart and toes slightly out.",
+   "Push your hips back and sit calmly down until your seat just touches the chair.",
+   "Keep your weight on your heels and your chest proud.",
+   "Stand up without pushing off with your hands, if you can."
+  ],
+  "tips": [
+   "The slower you lower yourself, the more strength you build.",
+   "Managing it easily? Use a lower chair, or drop the touch and switch to a free squat."
+  ],
+  "muskler": [
+   "Thighs",
+   "Glutes",
+   "Core"
+  ],
+  "utstyr": [
+   "Chair"
+  ],
+  "bilde": "kneboy-stol"
+ },
+ {
+  "navn": "Ring row high angle",
+  "kort": "The easiest pulling movement: stand fairly upright and pull your chest toward your hands — the higher the angle, the easier.",
+  "steg": [
+   "Grip rings, a bar or the edge of a sturdy table at chest height.",
+   "Walk your feet slightly forward so you lean back with a straight body — fairly upright to begin with.",
+   "Pull your chest toward your hands by driving your elbows back and squeezing your shoulder blades together.",
+   "Lower yourself calmly back to straight arms with full control."
+  ],
+  "tips": [
+   "More upright = easier. Want it harder, walk your feet farther forward so your body is more horizontal.",
+   "Keep your body straight as a plank the whole way — no sagging in the lower back."
+  ],
+  "muskler": [
+   "Back",
+   "Biceps",
+   "Shoulder blades"
+  ],
+  "utstyr": [
+   "Rings",
+   "Bar"
+  ],
+  "bilde": "ringrow-hoy-vinkel"
+ },
+ {
+  "navn": "Glute bridge",
+  "kort": "Lie on your back and press your hips toward the ceiling — the simplest way to wake up and strengthen the glutes.",
+  "steg": [
+   "Lie on your back with bent knees and your feet flat on the floor, hip-width apart.",
+   "Press through your heels and lift your hips until your body is a straight line from knees to shoulders.",
+   "Squeeze your glutes hard for one second at the top.",
+   "Lower your hips calmly back down without fully releasing the tension."
+  ],
+  "tips": [
+   "The power comes from the glutes, not the lower back — don't arch your back at the top.",
+   "Feel it mostly in your hamstrings? Move your feet a little closer to your seat."
+  ],
+  "muskler": [
+   "Glutes",
+   "Hamstrings",
+   "Core"
+  ],
+  "bilde": "hoftebro"
+ },
+ {
+  "navn": "Incline push-up (sofa/bench)",
+  "kort": "Push-ups with your hands raised on a sofa or bench — the lower the surface, the harder. The bridge between wall and floor.",
+  "steg": [
+   "Place your hands on the edge of a sofa or bench, a little wider than your shoulders.",
+   "Walk your feet back until your body is a straight, tight line from head to heel.",
+   "Lower your chest calmly toward the edge with your elbows about 45 degrees in toward the body.",
+   "Press yourself back up to straight arms without losing the plank."
+  ],
+  "tips": [
+   "Lower the surface height when it feels easy — a stair step, sofa, low bench.",
+   "The hips follow the body — no sag and no peak."
+  ],
+  "muskler": [
+   "Chest",
+   "Triceps",
+   "Shoulders",
+   "Core"
+  ],
+  "utstyr": [
+   "Bench",
+   "Sofa"
+  ],
+  "bilde": "skra-pushup"
+ },
+ {
+  "navn": "Air squat",
+  "kort": "A free squat without support: sit down between your hips until your thighs are horizontal, and stand up.",
+  "steg": [
+   "Stand with your feet shoulder-width apart and toes slightly out.",
+   "Push your hips back and down as if toward an invisible chair — the knees follow the direction of the toes.",
+   "Go down until your thighs are roughly horizontal, with your heels on the floor and chest up.",
+   "Press your whole foot into the floor and stand all the way up."
+  ],
+  "tips": [
+   "Weight evenly on the whole foot with good contact in the heels.",
+   "Knees hurting? Check that they point the same way as the toes, and don't go deeper than you have control."
+  ],
+  "muskler": [
+   "Thighs",
+   "Glutes",
+   "Core"
+  ],
+  "bilde": "kneboy"
+ },
+ {
+  "navn": "Ring row",
+  "kort": "The same pull as high angle, but your body is more horizontal now — a real step up in back strength.",
+  "steg": [
+   "Grip rings or a bar at chest height and walk your feet forward until your body is well angled.",
+   "Brace your abs and glutes so your body is a straight line.",
+   "Pull your chest toward your hands with your shoulders down and back and your elbows close to the body.",
+   "Lower yourself calmly out to straight arms with full control."
+  ],
+  "tips": [
+   "Pull with your back, not your arms — think \"elbows back and shoulder blades together\".",
+   "The more horizontal your body, the harder the pull."
+  ],
+  "muskler": [
+   "Back",
+   "Biceps",
+   "Shoulder blades",
+   "Core"
+  ],
+  "utstyr": [
+   "Rings",
+   "Bar"
+  ],
+  "bilde": "ringrow"
+ },
+ {
+  "navn": "Single-leg glute bridge",
+  "kort": "A glute bridge on one leg — twice the work on the glute, and it reveals if one side is weaker.",
+  "steg": [
+   "Lie on your back with bent knees and your feet on the floor.",
+   "Extend one leg straight out, in line with the thigh.",
+   "Press through the heel of the leg on the floor and lift your hips to a straight line.",
+   "Squeeze the glute at the top, lower calmly, and finish the set before you switch sides."
+  ],
+  "tips": [
+   "Keep your hips level — don't let the free side sink down.",
+   "Too easy? Hold a short pause at the top of each lift."
+  ],
+  "muskler": [
+   "Glutes",
+   "Hamstrings",
+   "Core"
+  ],
+  "bilde": "ettbens-glute-bridge"
+ },
+ {
+  "navn": "Dead bug",
+  "kort": "Lie on your back and lower the opposite arm and leg calmly while your lower back presses into the floor — safe, deep core strength.",
+  "steg": [
+   "Lie on your back with your arms straight up and your hips and knees bent 90 degrees.",
+   "Press your lower back down into the floor so the arch disappears.",
+   "Lower the opposite arm and leg calmly toward the floor without your back lifting.",
+   "Return to start and switch sides at a calm pace."
+  ],
+  "tips": [
+   "Losing floor contact in your lower back? Lower less, or keep the legs still and move only the arms.",
+   "Breathe out calmly as you extend — it helps the core hold."
+  ],
+  "muskler": [
+   "Core"
+  ],
+  "bilde": "dead-bug"
+ },
+ {
+  "navn": "Knee push-up",
+  "kort": "Push-ups on the knees — the same movement with less load, the direct bridge to a full push-up from the toes.",
+  "steg": [
+   "Get on all fours and set your hands a little wider than your shoulders, slightly in front of them.",
+   "Lower your knees to the floor and stretch your body out to a straight line from knees to head.",
+   "Lower your chest calmly toward the floor with your elbows about 45 degrees in.",
+   "Press back up without your hips sinking or sticking up."
+  ],
+  "tips": [
+   "Put something soft under your knees if it pinches.",
+   "Ready for more? Move your hands farther forward, or finish with one rep from the toes."
+  ],
+  "muskler": [
+   "Chest",
+   "Triceps",
+   "Shoulders",
+   "Core"
+  ],
+  "bilde": "armhevinger-kne"
+ },
+ {
+  "navn": "Goblet squat",
+  "kort": "A squat with weight held to the chest — the weight balances you and makes it easier to sit deep and upright.",
+  "steg": [
+   "Hold a dumbbell, kettlebell or something heavy with both hands against your chest.",
+   "Sit calmly down between your hips with your heels on the floor.",
+   "Go as deep as you have control, with your elbows inside your knees at the bottom.",
+   "Press your whole foot into the floor and stand up with your chest proud."
+  ],
+  "tips": [
+   "The weight in front helps you keep your torso upright.",
+   "Let your elbows slide inside your knees at the bottom — that opens the hips."
+  ],
+  "muskler": [
+   "Thighs",
+   "Glutes",
+   "Core"
+  ],
+  "utstyr": [
+   "Dumbbell",
+   "Kettlebell"
+  ],
+  "bilde": "goblet-kneboy"
+ },
+ {
+  "navn": "Hip thrust (sofa)",
+  "kort": "Upper back against the edge of the sofa, press your hips up to horizontal — the strongest posterior-chain exercise you can do at home.",
+  "steg": [
+   "Sit on the floor with the upper part of your back against the edge of a sofa, feet flat on the floor.",
+   "Press through your heels and lift your hips until your body is horizontal from knees to shoulders.",
+   "Squeeze your glutes hard at the top and keep your chin lightly tucked.",
+   "Lower your hips calmly and repeat without fully resting at the bottom."
+  ],
+  "tips": [
+   "Your shins should be roughly vertical at the top — adjust your foot placement until it matches.",
+   "Want more? Hold a pause at the top, or place a weight over your hips."
+  ],
+  "muskler": [
+   "Glutes",
+   "Hamstrings",
+   "Core"
+  ],
+  "utstyr": [
+   "Sofa"
+  ],
+  "bilde": "hip-thrust-sofa"
+ },
+ {
+  "navn": "Hollow tuck",
+  "kort": "Lie on your back, press your lower back down and lift your shoulders and bent legs — the foundation of all core strength.",
+  "steg": [
+   "Lie on your back and press your lower back hard down into the floor.",
+   "Lift your shoulders a little off the floor and draw your knees up toward 90 degrees.",
+   "Hold the tension with bent legs (tuck) while breathing calmly.",
+   "Extend your legs further out as you get stronger — but only as long as your lower back stays on the floor."
+  ],
+  "tips": [
+   "Losing floor contact in your lower back? Draw your knees closer to your chest again.",
+   "A small, steady position beats a large one that collapses."
+  ],
+  "muskler": [
+   "Core"
+  ],
+  "bilde": "hollow-tuck"
+ },
+ {
+  "navn": "Reverse lunge",
+  "kort": "A step backward and lower the back knee toward the floor — safer for the knees and easier to balance than a forward lunge.",
+  "steg": [
+   "Stand tall with your feet hip-width apart.",
+   "Take a controlled step backward and lower the back knee calmly toward the floor.",
+   "Keep your weight on the front leg with the heel on the floor and your torso tall.",
+   "Push off the front foot back to standing, and switch sides."
+  ],
+  "tips": [
+   "A shorter step gives more in the thighs, a longer step more in the glutes.",
+   "Wobbling? Keep a fingertip against a wall for balance."
+  ],
+  "muskler": [
+   "Thighs",
+   "Glutes",
+   "Balance"
+  ],
+  "bilde": "utfall-bak"
+ },
+ {
+  "navn": "Breath-guided pace",
+  "kort": "Steer your effort with your breath: the talk test shows whether you're in the easy, moderate or hard zone — completely without a heart rate monitor.",
+  "steg": [
+   "Notice your breath as you move: if you can talk in full sentences, you're in the easy zone.",
+   "If speech only comes in short phrases, you're in the moderate zone. If you can manage only single words, it's hard.",
+   "Adjust your pace up or down until your breath matches the zone the session calls for."
+  ],
+  "tips": [
+   "RPE 1–10 is the same idea: 3–4 is easy, 5–7 moderate, 8–9 hard."
+  ],
+  "muskler": [
+   "Breath",
+   "Heart rate"
+  ],
+  "bilde": "pustestyrt-tempo"
+ },
+ {
+  "navn": "Walking technique",
+  "kort": "Good walking: stand tall, roll the foot from heel to toe and let your arms swing relaxed in time with your steps.",
+  "steg": [
+   "Stand tall with your gaze forward and your shoulders lowered and relaxed.",
+   "Set the heel down first and roll softly through the whole foot to the toe-off.",
+   "Let your arms swing naturally from the shoulder — opposite arm to opposite leg."
+  ],
+  "tips": [
+   "Short, frequent steps carry you better than long, dragging steps."
+  ],
+  "muskler": [
+   "Calves",
+   "Hips",
+   "Core"
+  ],
+  "bilde": "gaateknikk"
+ },
+ {
+  "navn": "Easy walking",
+  "kort": "Walking in a comfortable zone 1 where you can talk and sing. The base session that builds endurance and brings you back to recovery.",
+  "steg": [
+   "Walk at a pace where your breathing is completely free and you can talk effortlessly.",
+   "Keep your shoulders loose and your breath even — this should feel easy.",
+   "Use easy walking as a base session, warm-up and rest between harder efforts."
+  ],
+  "tips": [
+   "Does it feel \"too easy\"? Then you're right on target in zone 1."
+  ],
+  "muskler": [
+   "Heart rate",
+   "Calves"
+  ],
+  "bilde": "rolig-gange"
+ },
+ {
+  "navn": "Brisk walking",
+  "kort": "Brisk, purposeful walking in zone 2–3: breathe noticeably harder, active arms and long, powerful steps — but you keep it going.",
+  "steg": [
+   "Increase your pace until your breathing becomes clearly heavier, but you can still get out short sentences.",
+   "Bend your elbows around 90° and pump your arms actively to drive the pace up.",
+   "Take longer, more powerful push-offs and keep your torso tall."
+  ],
+  "tips": [
+   "Aim for around 100–120 steps per minute for good brisk walking."
+  ],
+  "muskler": [
+   "Calves",
+   "Glutes",
+   "Hips",
+   "Heart rate"
+  ],
+  "bilde": "rask-gaaing"
+ },
+ {
+  "navn": "Uphill walking",
+  "kort": "Walk uphill safely and strongly: lean slightly forward from the ankles, shorten your steps and let the glutes and calves do the work.",
+  "steg": [
+   "Lean your whole body slightly forward from the ankles — don't bend at the hip.",
+   "Shorten your steps and increase your cadence instead of taking long strides.",
+   "Push off with the whole foot and use your arms actively uphill."
+  ],
+  "tips": [
+   "The hill sets the intensity — keep an even breath and lower the pace as needed."
+  ],
+  "muskler": [
+   "Glutes",
+   "Thighs",
+   "Calves",
+   "Heart rate"
+  ],
+  "bilde": "motbakkegaaing"
+ },
+ {
+  "navn": "Running technique",
+  "kort": "Run light and injury-free: tall posture, a quick and light cadence, and let the foot land under your body — not far in front.",
+  "steg": [
+   "Run tall and relaxed with your gaze forward; lean slightly forward from the ankles.",
+   "Take short, quick steps — aim for around 170–180 steps per minute.",
+   "Let your foot land under your hips, not far in front, and keep your shoulders and hands loose."
+  ],
+  "tips": [
+   "Think \"light, silent steps\" — less braking means less load."
+  ],
+  "muskler": [
+   "Calves",
+   "Thighs",
+   "Core",
+   "Heart rate"
+  ],
+  "bilde": "loepeteknikk"
+ },
+ {
+  "navn": "Walk-run method",
+  "kort": "Alternate between short jogging intervals and walking breaks. The safest start to running — the body tolerates more when you break it up.",
+  "steg": [
+   "Warm up with a few minutes of brisk walking.",
+   "Jog calmly for a set interval (e.g. one minute), then walk until you're recovered.",
+   "Repeat the alternation, and increase the jogging time a little from week to week."
+  ],
+  "tips": [
+   "Keep the jogging efforts so calm that the walking break almost feels unnecessary — then the pace is right."
+  ],
+  "muskler": [
+   "Calves",
+   "Thighs",
+   "Heart rate"
+  ],
+  "bilde": "gaa-loep-metoden"
+ },
+ {
+  "navn": "Easy jog",
+  "kort": "An easy jog in zone 2 at a conversational pace the whole way. It almost feels too easy, but this is where the endurance engine is built.",
+  "steg": [
+   "Jog at a pace where you can hold a conversation in full sentences.",
+   "Keep your steps light and your breath even — drop the pace chase.",
+   "Slow down rather than blow past the zone; easy should be easy."
+  ],
+  "tips": [
+   "Most of your sessions should be here — roughly 80% easy, 20% hard."
+  ],
+  "muskler": [
+   "Calves",
+   "Thighs",
+   "Heart rate"
+  ],
+  "bilde": "rolig-jogg"
+ },
+ {
+  "navn": "Threshold pace",
+  "kort": "A \"comfortably hard\" pace in zone 3–4 you can hold for quite a while: heavy breathing, short phrases — the edge where the body tolerates the most speed.",
+  "steg": [
+   "Find the pace that is comfortably hard — you can get out a few words, not full sentences.",
+   "Hold it steady through the whole effort without tipping over into all-out.",
+   "Break it into intervals with short breaks to stay in the right zone."
+  ],
+  "tips": [
+   "Start too hard and the pace falls off — better to sit just under and hold it steady."
+  ],
+  "muskler": [
+   "Calves",
+   "Thighs",
+   "Heart rate",
+   "Breath"
+  ],
+  "bilde": "terskeltempo"
+ },
+ {
+  "navn": "Interval effort",
+  "kort": "Short, hard efforts in zone 4–5 with breaks in between: this is where top speed and fitness rise fastest — but dose the hard work wisely.",
+  "steg": [
+   "Warm up well before the first effort — hard work requires a warm body.",
+   "Run the effort hard and steady as prescribed, not all out in the first seconds.",
+   "Take the prescribed break (easy jog or walk) so you're ready for the next effort."
+  ],
+  "tips": [
+   "Quality over quantity: stop while the efforts still hold their pace."
+  ],
+  "muskler": [
+   "Calves",
+   "Thighs",
+   "Heart rate",
+   "Breath"
+  ],
+  "bilde": "intervalldrag"
+ },
+ {
+  "navn": "The interval principle",
+  "kort": "The core of HIIT: alternate between short, hard work efforts and breaks. This lets you work harder than you could hold continuously.",
+  "steg": [
+   "Choose a work effort (e.g. 20–60 seconds) where you really push, and a break afterward.",
+   "In the work you give near-maximal effort — your breathing should get heavy and speech break up.",
+   "Use the break to recover a little, and repeat. It's the alternation that gives the effect."
+  ],
+  "tips": [
+   "The body burns extra for a while after the session (EPOC) — that's why HIIT is so time-efficient."
+  ],
+  "muskler": [
+   "Heart rate",
+   "Breath"
+  ]
+ },
+ {
+  "navn": "The Tabata protocol",
+  "kort": "20 seconds of maximal work, 10 seconds of rest, 8 rounds = 4 brutally hard minutes. The most famous HIIT recipe.",
+  "steg": [
+   "Choose one exercise you can do safely at high speed.",
+   "Work all out for 20 seconds, rest for 10 — that's one round.",
+   "Repeat for 8 rounds total. Four minutes, but they should sting."
+  ],
+  "tips": [
+   "The original (Tabata, 1996) was done on a bike at very high intensity — start easier until your fitness is dialed in."
+  ],
+  "muskler": [
+   "Heart rate",
+   "Breath"
+  ]
+ },
+ {
+  "navn": "The 30-20-10 method",
+  "kort": "One minute split into 30 sec easy, 20 sec moderate and 10 sec max — repeated. A smart, self-regulating way to dose speed.",
+  "steg": [
+   "Move easily for 30 seconds, increase to moderate for 20, and give it all for the last 10.",
+   "That makes one minute. Repeat five times, then take a break.",
+   "The short max part raises the intensity without making the whole session impossibly hard."
+  ],
+  "tips": [
+   "Developed at the University of Copenhagen (Gunnarsson & Bangsbo) — improves fitness on a low training volume."
+  ],
+  "muskler": [
+   "Heart rate",
+   "Breath"
+  ]
+ },
+ {
+  "navn": "High knees",
+  "kort": "Run in place with your knees high toward hip height at a quick pace. A simple, effective heart-rate driver with no equipment at all.",
+  "steg": [
+   "Run in place and lift your knees alternately toward hip height.",
+   "Land softly on the forefoot and use your arms actively for pace.",
+   "Keep your torso tall and your abs lightly braced."
+  ],
+  "tips": [
+   "Want it easier? Walk with high knees instead of running."
+  ],
+  "muskler": [
+   "Calves",
+   "Hips",
+   "Heart rate"
+  ],
+  "bilde": "marsj-paa-stedet"
+ },
+ {
+  "navn": "Jumping jacks",
+  "kort": "A jumping straddle: jump your feet out to the sides while your arms go up overhead, and gather again. A classic full-body cardio exercise.",
+  "steg": [
+   "Jump your feet out to the sides while lifting your arms out and up overhead.",
+   "Jump back and lower your arms in one smooth motion.",
+   "Keep a steady, quick rhythm and land softly with slightly bent knees."
+  ],
+  "tips": [
+   "No jumping: step-jacks — step one leg out to the side at a time."
+  ],
+  "muskler": [
+   "Shoulders",
+   "Calves",
+   "Heart rate"
+  ],
+  "bilde": "jumping-jacks"
+ },
+ {
+  "navn": "Squat jump",
+  "kort": "An explosive squat: lower down and jump powerfully up, land softly with bent knees. Builds explosive leg power and heart rate.",
+  "steg": [
+   "Lower yourself into a squat with your chest lifted.",
+   "Shoot explosively up into a jump from the whole foot.",
+   "Land softly with bent knees and go straight down into the next."
+  ],
+  "tips": [
+   "No jumping: do quick, deep squats instead — nearly as effective."
+  ],
+  "muskler": [
+   "Thighs",
+   "Glutes",
+   "Heart rate"
+  ],
+  "bilde": "kneboy"
+ },
+ {
+  "navn": "Jumping lunge",
+  "kort": "Jump and switch legs in the air from lunge to lunge. An explosive single-leg exercise that challenges heart rate, power and balance.",
+  "steg": [
+   "Start in a lunge with both knees bent.",
+   "Jump straight up and switch your legs in the air, so the opposite leg is forward.",
+   "Land softly in a new lunge and continue in rhythm."
+  ],
+  "tips": [
+   "Too much? Do alternating lunges without the jump — step forward and back at an easy pace."
+  ],
+  "muskler": [
+   "Thighs",
+   "Glutes",
+   "Heart rate",
+   "Balance"
+  ],
+  "bilde": "utfall-bakover"
+ },
+ {
+  "navn": "Burpees",
+  "kort": "The king of HIIT: from standing down with your hands, jump your legs back to a plank, jump in again and up in a hop. The whole body.",
+  "steg": [
+   "Place your hands on the floor and jump (or step) your legs back to a plank.",
+   "Take a push-up if you like, then jump your legs back in toward your hands.",
+   "Stand up in a jump with your arms overhead, and repeat."
+  ],
+  "tips": [
+   "Easier: drop the jump and the push-up — step out and in and stand up calmly."
+  ],
+  "muskler": [
+   "Chest",
+   "Thighs",
+   "Core",
+   "Heart rate"
+  ],
+  "bilde": "burpees"
+ },
+ {
+  "navn": "Mountain climber",
+  "kort": "Mountain climbers: in a plank you draw your knees alternately and quickly in toward your chest. Trains the core and heart rate at once.",
+  "steg": [
+   "Start in a steady plank on your hands with a straight body.",
+   "Draw one knee quickly in toward your chest, and switch legs at a running pace.",
+   "Keep your hips low and your abs braced — don't let your seat bounce up."
+  ],
+  "tips": [
+   "Take it easier by stepping the knees in one at a time instead of running."
+  ],
+  "muskler": [
+   "Core",
+   "Shoulders",
+   "Heart rate"
+  ],
+  "bilde": "fjellklatrer"
+ },
+ {
+  "navn": "Zone-based cycling",
+  "kort": "Steer your effort by zones (Z1–Z5) from heart rate or power. Your FTP sets the boundaries — the foundation of all smart bike training.",
+  "steg": [
+   "Divide your effort into zones: Z1–Z2 is easy, Z3–Z4 is hard but steady, Z5 is max.",
+   "With a power meter, the zones are set from FTP (threshold power); otherwise you steer by heart rate and feel.",
+   "Put most of your rides in the low zones and the few hard ones at the top — a polarized distribution."
+  ],
+  "tips": [
+   "No meter? The talk test works: easy = talk freely, hard = short phrases, max = single words."
+  ],
+  "muskler": [
+   "Heart rate",
+   "Thighs"
+  ]
+ },
+ {
+  "navn": "Easy base ride",
+  "kort": "Steady, comfortable cycling in zone 1–2 where you can talk. The bedrock of all endurance — this is where the big aerobic engine is built.",
+  "steg": [
+   "Hold a steady, comfortable pace where your breathing is free and you can talk.",
+   "Aim for a round, even cadence around 85–95 rpm.",
+   "Use the ride to build volume — time in the saddle counts more than speed."
+  ],
+  "tips": [
+   "Does it feel \"too easy\"? Then you're right in zone 2 — most people ride their base rides too hard."
+  ],
+  "muskler": [
+   "Thighs",
+   "Heart rate"
+  ]
+ },
+ {
+  "navn": "Recovery spin",
+  "kort": "Very light pedaling (soft-pedal) that keeps the legs moving without load. Active rest between efforts and on easy days.",
+  "steg": [
+   "Pedal completely lightly in zone 1 with low resistance — your legs should barely feel it.",
+   "Use it as an active break between hard intervals to recover.",
+   "A full recovery session should feel too easy — the point is to move blood, not to train."
+  ],
+  "tips": [
+   "Tempted to push? Don't — recovery only works when it's genuinely easy."
+  ],
+  "muskler": [
+   "Heart rate",
+   "Thighs"
+  ]
+ },
+ {
+  "navn": "Cadence",
+  "kort": "Cadence: how many revolutions you pedal per minute (rpm). Round, even pedaling technique and the right cadence spare the legs and give speed.",
+  "steg": [
+   "Pedal round and even — think of \"scraping mud off your shoe\" at the bottom of the stroke.",
+   "Find a comfortable base cadence around 85–95 rpm on flat ground.",
+   "Practice spin-ups: raise the cadence smoothly to 110–120+ rpm in an easy gear without bouncing in the saddle."
+  ],
+  "tips": [
+   "Bouncing in the saddle at high cadence? Ease off a little and build the smoothness up gradually."
+  ],
+  "muskler": [
+   "Thighs",
+   "Calves",
+   "Heart rate"
+  ]
+ },
+ {
+  "navn": "Uphill pedaling",
+  "kort": "Cycling uphill or in a heavy gear with lower cadence and more force. Alternate seated and standing to spread the load.",
+  "steg": [
+   "On a climb: choose a gear that lets you hold steady force without grinding to a stall.",
+   "Sit and pedal with a calm, powerful cadence (60–75 rpm) and a steady torso.",
+   "Rise up when it gets steep or your legs need a change — rock the bike lightly."
+  ],
+  "tips": [
+   "Standing pedaling gives more power but costs more — use it in doses."
+  ],
+  "muskler": [
+   "Thighs",
+   "Glutes",
+   "Heart rate"
+  ]
+ },
+ {
+  "navn": "Threshold cycling",
+  "kort": "A \"comfortably hard\" pace around threshold (sweet spot / Z3–Z4) you can hold for a long time. Moves the limit for how long you can sustain speed.",
+  "steg": [
+   "Find the pace that is hard but steady — around 88–95% of threshold (FTP).",
+   "Keep the load stable through the whole effort, not jerky.",
+   "Break it into blocks of 8–20 minutes with short breaks."
+  ],
+  "tips": [
+   "Sweet spot (just below threshold) gives a lot of effect for the wear — the backbone of many plans."
+  ],
+  "muskler": [
+   "Thighs",
+   "Heart rate"
+  ]
+ },
+ {
+  "navn": "VO2 intervals",
+  "kort": "Short, hard efforts in zone 5 (3–5 min, or 30/15) that raise maximal oxygen uptake fastest. Dose the hard work wisely.",
+  "steg": [
+   "Warm up well, then do hard efforts where your breathing maxes out — 3–5 min or short 30/15 efforts.",
+   "Hold a steady, high load through the effort instead of emptying yourself at the start.",
+   "Take the prescribed break (light pedaling) so you can hold the quality in the next effort."
+  ],
+  "tips": [
+   "One to two such sessions a week is enough — they're very demanding and need recovery."
+  ],
+  "muskler": [
+   "Thighs",
+   "Heart rate",
+   "Breath"
+  ]
+ }
+]
