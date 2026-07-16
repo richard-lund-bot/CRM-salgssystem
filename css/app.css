@@ -3297,6 +3297,11 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 }
 @media (prefers-reduced-motion: reduce) { .intkort, .intkort__bak { transition: none; } }
 
+/* Dedikert innleggsside (#/post): fokusmodus med tilbake-header; kortet
+   fyller bredden som i feeden. */
+.postside { padding: 10px; }
+.postside .fkort { min-height: auto; }
+
 /* Innleggskortet: 100 % av skjermbredden, avrundede hjørner; det hvite
    mellomrommet er den eneste deleren mellom innlegg */
 .feedliste { display: flex; flex-direction: column; gap: 14px; }

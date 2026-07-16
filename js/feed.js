@@ -17,7 +17,7 @@ import { pling, plingSekvens } from './lyd.js';
 import { vibrer } from './haptikk.js';
 import { REDUSERT } from './animasjon.js';
 import { byggVarsler, varselKort, merkVarslerSett, harUlesteVarsler, tidSiden } from './varsler.js';
-import { gjeldendeSprak } from './i18n.js';
+import { gjeldendeSprak, t } from './i18n.js';
 import {
   rangerPoster, lagDwellSporer, registrerInteraksjon, interesser,
   harValgtInteresser, settInteresser, kategoriRangScore, storyErSett,
@@ -884,8 +884,10 @@ function åpneStory(stories, startIdx, vert, { påSett = null, påSeIFeed = null
         }, ikon('bok', 'ikon ikon--liten'), `${post.kilde.org || 'Kilde'} — ${post.kilde.tittel || ''}`),
         el('button', {
           class: 'story__feed', type: 'button',
-          onclick: () => { lukk(); påSeIFeed?.(post); },
-        }, `Spill i feeden · ${post.xp} XP`),
+          // Åpner innlegget på sin egen side (spillbart), i stedet for bare å
+          // filtrere feeden — så man faktisk kan spille akkurat dette innlegget.
+          onclick: () => { lukk(); location.hash = `#/post?id=${encodeURIComponent(post.id)}`; },
+        }, `${t('Spill innlegget')} · ${post.xp} XP`),
       ),
     );
     spillAv();
@@ -1043,6 +1045,40 @@ export function visFeedSkjerm(mount) {
   });
 
   mount.append(scroll);
+}
+
+// ==========================================================================
+// Dedikert innleggsside (#/post?id=…) — ett spillbart innlegg i fokusmodus
+// med en tilbake-header til feeden. Åpnes fra story-CTA-en «Spill innlegget»
+// (og kan dyplenkes). Gjenbruker feedKort så spillet, kildene og
+// engasjementsraden virker akkurat som i feeden.
+// ==========================================================================
+export function visPostSkjerm(mount) {
+  const id = new URLSearchParams(location.hash.split('?')[1] || '').get('id');
+  tom(mount);
+  const header = el('header', { class: 'topp topp--kjor' },
+    el('button', { class: 'topp__tilbake', type: 'button', title: t('Tilbake'), onclick: () => tilbakeTilFeed() }, '‹'),
+    el('div', {}, el('h1', { class: 'topp__tittel' }, t('Innlegg'))),
+  );
+  const main = el('main', { class: 'innhold innhold--ovelse postside' },
+    el('p', { class: 'dempet feedscroll__laster' }, t('Laster feeden…')));
+  mount.append(header, main);
+
+  lastFeed().then(() => {
+    const post = (_feed?.posts || []).find((p) => p.id === id);
+    tom(main);
+    if (!post) { location.hash = '#/hjem'; return; }
+    // Dwell teller også her: å åpne innlegget på egen side er sterkt engasjement.
+    registrerInteraksjon(post, 'story');
+    main.append(feedKort(post, mount));
+  }).catch(() => { location.hash = '#/hjem'; });
+}
+
+// Tilbake til feeden: bruk historikken hvis vi kom derfra (bevarer scroll),
+// ellers naviger eksplisitt.
+function tilbakeTilFeed() {
+  if (history.length > 1) history.back();
+  else location.hash = '#/hjem';
 }
 
 // Øktfrø for utforsknings-jitteren: stabilt mens man scroller, varierer mellom

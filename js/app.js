@@ -38,7 +38,7 @@ import * as sync from './sync.js';
 import { krediterNye, stravaKort } from './strava.js';
 import { byggVarsler, merkVarslerSett, varselKort, harUlesteVarsler } from './varsler.js';
 import { varsle } from './toast.js';
-import { visFeedSkjerm } from './feed.js';
+import { visFeedSkjerm, visPostSkjerm } from './feed.js';
 import { gjeldendeSprak, settSprak, startOversetter, oversettDom } from './i18n.js';
 
 const app = document.getElementById('app');
@@ -47,6 +47,7 @@ let bib = null;
 // --- Ruter (hash-basert) ---
 const ruter = {
   hjem: () => visFeedSkjerm(app), // Hjem er lærings-feeden (M37)
+  post: () => visPostSkjerm(app), // dedikert side for ett feed-innlegg (spillbart)
   trening: visTrening, // Min dag-dashbordet bor på Trening-fanen
   beveg: () => visOkterSkjerm(app), // Treningsbibliotek-fanen er øktbiblioteket
   hurtig: () => visHurtigSkjerm(app),
@@ -81,7 +82,7 @@ const ruter = {
 // Skjermene med egen tilbake-header er fokusmodus (skjuler tab-baren).
 // «sti» (ferdighetsreisen) er bevisst IKKE fokus: bunnbaren blir stående helt
 // til man går inn i en leksjon/kamp (som er egne fullskjerm-overlegg).
-const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel', 'logg-inn', 'bli-medlem']);
+const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel', 'post', 'logg-inn', 'bli-medlem']);
 
 // Medlemssidene (auth). Uinnloggede sendes hit; innloggede slippes forbi.
 const AUTH_RUTER = new Set(['logg-inn', 'bli-medlem']);
@@ -98,6 +99,7 @@ const FANE_AV_RUTE = {
   bibliotek: 'merker', om: 'merker', plan: 'merker',
   styrke: 'merker', kalender: 'merker', reise: 'merker', tilpass: 'merker',
   aktivitet: 'merker', historikk: 'merker', // Aktivitet-fanen er borte — skjermen eies av Profil
+  post: 'hjem', // dedikert innleggsside hører til Hjem-feeden
   ny: 'beveg', okter: 'beveg',
   artikkel: 'laer', sti: 'laer', disiplin: 'laer', seksjon: 'laer',
 };

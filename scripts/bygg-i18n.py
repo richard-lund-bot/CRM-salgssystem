@@ -7,6 +7,12 @@ EN = {
  # Øvelsesoppslag
  'Søk øvelse…': 'Search exercise…', 'Bibliotek': 'Library', 'Alle': 'All',
  'øvelser': 'exercises', 'Ingen treff.': 'No matches.', 'Filtrer': 'Filter',
+ # Bibliotek/økt-filtre og -kort
+ 'Viderekommen': 'Intermediate', 'Erfaren': 'Advanced', 'Uten utstyr': 'No equipment',
+ 'Rolig': 'Easy', 'Intens': 'Intense', 'Lett': 'Light', 'Moderat': 'Moderate',
+ 'Hard': 'Hard', 'Maks': 'Max', 'Uten utstyr.': 'No equipment.',
+ 'Velg en økt som passer dagen din.': 'Choose a session that fits your day.',
+ 'Basert på': 'Based on', 'Start': 'Start', 'Planlegg': 'Plan', 'Logg': 'Log', 'min': 'min',
  # Navigasjon / faner
  'Hjem': 'Home', 'Trening': 'Training', 'Profil': 'Profile',
  'Treningsbibliotek': 'Training Library', 'Lær': 'Learn', 'Aktivitet': 'Activity',
@@ -152,6 +158,8 @@ EN = {
  'Riktig!': 'Correct!', 'Kilde': 'Source', 'Fakta': 'Fact', 'Myte': 'Myth', 'trekk': 'moves',
  'Ingen varsler ennå': 'No notifications yet',
  'Fullfør en økt eller spill i feeden, så dukker det opp her.': 'Complete a session or play in the feed and it shows up here.',
+ # Dedikert innleggsside
+ 'Innlegg': 'Post', 'Spill innlegget': 'Play the post', 'Tilbake': 'Back',
 }
 
 # Kompendium/merke-tekster (lengre) — legg til
