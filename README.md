@@ -66,7 +66,7 @@ index.html              app-skall
 css/app.css             stil (Mova-designsystemet, mobil først)
 js/
   app.js                inngang, ruter, tab-bar (Hjem/Trening/Profil/Treningsbibliotek/Lær), Min dag (Trening), meny + innstillinger
-  feed.js               Hjem-fanen: den spillbare lærings-feeden (7 minispill-moduler, XP, kilder, lik/lagre/del)
+  feed.js               Hjem-fanen: spillbar lærings-feed i sosial-drakt (gradientkort, 7 minispill, aksjonsrail, varsel-skyveside, kommentarpanel)
   banner.js             det hvite toppbanneret (profil m/ nivåboble, wordmark, ukeskalender) + sidetittel
   bevegelse.js          bevegelseslaget: 12 bevegelsestyper, spec-XP-formel, Momentum, Dagens gnist
   beveg.js              hurtigstart m/ timer, manuell logg, «Du beveget deg»-skjermen (Beveg-fanen er øktbiblioteket)

@@ -1,22 +1,25 @@
-// Feed (M37) — den spillbare lærings-feeden på Hjem-fanen. Kunnskap som
-// scroll-erstatning: hvert innlegg er en kort innholdsbit med et minispill
-// rett i kortet (Aha-masterplanen: Preview → Play → Commit → Feedback →
-// Continue). Sju spillmoduler deler samme skall, svarmotor og
-// tilbakemeldingsstruktur — forklaringen er den egentlige belønningen.
-// Innholdet bor i data/feed.json (fiktive redaksjonelle guider, kildelenket).
+// Feed (M38) — den spillbare lærings-feeden på Hjem-fanen, i sosial-feed-drakt:
+// ingen banner/bakgrunnsbilde, kun en slank topplinje med «For deg»-dropdown
+// (kategorier + Lagret), kalender til venstre og bjelle til høyre. Hvert
+// innlegg er et fullbredde gradientkort med avrundede hjørner og hvitt
+// mellomrom, minispillet rett i kortet (Aha-masterplanen: Preview → Play →
+// Commit → Feedback → Continue) og aksjonene (lik/kommenter/lagre/del) som
+// en vertikal rail til høyre. Varslene bor i et Instagram-aktig skyvepanel
+// (gruppert per dag, sveip bort for å lukke); kommentarfeltet skyver inn fra
+// høyre og legger seg halvveis over. Innholdet bor i data/feed.json.
 // XP går inn i profilens globale nivå; per-innlegg-tilstand (spilt/likt/
-// lagret) bor lokalt i localStorage, samme offline-first-mønster som ellers.
+// lagret/kommentarer) bor lokalt i localStorage, offline-first som ellers.
 import { el, tom, ikon } from './ui.js';
 import { hentProfil, lagreProfil } from './store.js';
-import { fanesideMedTittel } from './banner.js';
 import { nivaFraTotalXp } from './niva.js';
 import { varsle } from './toast.js';
 import { pling, plingSekvens } from './lyd.js';
 import { vibrer } from './haptikk.js';
 import { REDUSERT } from './animasjon.js';
+import { byggVarsler, varselKort, merkVarslerSett, harUlesteVarsler, tidSiden } from './varsler.js';
 
 const LS_FEED = 'trening.feed';
-const BATCH = 6; // innlegg per innlastingsrunde (uendelig scroll)
+const BATCH = 5; // innlegg per innlastingsrunde (uendelig scroll)
 
 // --- Data -------------------------------------------------------------------
 let _feed = null;
@@ -43,9 +46,9 @@ function lesTilstand() {
   try {
     const raw = localStorage.getItem(LS_FEED);
     const t = raw ? JSON.parse(raw) : {};
-    return { spilt: t.spilt || {}, likt: t.likt || {}, lagret: t.lagret || {} };
+    return { spilt: t.spilt || {}, likt: t.likt || {}, lagret: t.lagret || {}, komm: t.komm || {} };
   } catch {
-    return { spilt: {}, likt: {}, lagret: {} };
+    return { spilt: {}, likt: {}, lagret: {}, komm: {} };
   }
 }
 
@@ -163,8 +166,8 @@ function svarPanel(post, { perfekt, xp, res = null, tittelOverstyr = null }) {
   );
 }
 
-// Fullfører et spill: lås modulen, krediter XP, vis tilbakemelding og
-// oppdater toppstatistikken. `perfekt` = feilfritt førsteforsøk.
+// Fullfører et spill: lås modulen, krediter XP, vis tilbakemelding.
+// `perfekt` = feilfritt førsteforsøk.
 function fullfor(post, modul, perfekt, { øvelse = false, tittelOverstyr = null } = {}) {
   modul.classList.add('spill--laast');
   if (perfekt) { vibrer('riktig'); pling(880); } else { vibrer('feil'); pling(392, 0.16); }
@@ -172,7 +175,6 @@ function fullfor(post, modul, perfekt, { øvelse = false, tittelOverstyr = null 
   const panel = svarPanel(post, { perfekt, xp, res: øvelse ? (perfekt ? 'perfekt' : 'delvis') : res, tittelOverstyr });
   if (!REDUSERT()) panel.classList.add('spillsvar--inn');
   modul.append(panel);
-  _oppdaterToppstats?.();
 }
 
 // ==========================================================================
@@ -262,7 +264,6 @@ function spillKoblePar(post, { øvelse = false } = {}) {
   let funnet = 0;
 
   const venstreKnapper = new Map();
-  const høyreKnapper = new Map();
 
   function sjekkPar(vTekst, hTekst, vKnapp, hKnapp) {
     const fasit = par.find((p) => p.left === vTekst)?.right === hTekst;
@@ -305,7 +306,6 @@ function spillKoblePar(post, { øvelse = false } = {}) {
       if (k.disabled || !valgtVenstre) return;
       sjekkPar(valgtVenstre.tekst, tekst, valgtVenstre.knapp, k);
     });
-    høyreKnapper.set(tekst, k);
     return k;
   }));
 
@@ -409,7 +409,7 @@ function spillMemory(post, { øvelse = false } = {}) {
       åpne.push({ kort: flate, data });
       if (åpne.length < 2) return;
       trekk++;
-      teller.textContent = `${trekk} ${trekk === 1 ? 'trekk' : 'trekk'}`;
+      teller.textContent = `${trekk} trekk`;
       const [a, b] = åpne;
       åpne = [];
       if (a.data.par === b.data.par) {
@@ -447,17 +447,17 @@ function spillMemory(post, { øvelse = false } = {}) {
   return modul;
 }
 
-// --- Spillskall: felles hode for alle modulene ------------------------------
+// --- Spillskall: felles hode for alle modulene (mørkt glass på gradientkortet)
 function spillSkall(post) {
   const [navn, ikonNavn] = SPILLNAVN[post.spill.game_type] || ['Minispill', 'terning'];
-  const skall = el('div', { class: 'spill' },
+  const skall = el('div', { class: 'spill spill--mork' },
     el('div', { class: 'spill__hode' },
       el('span', { class: 'spill__type' }, ikon(ikonNavn, 'ikon ikon--liten'), navn),
       el('span', { class: 'spill__xp' }, `${post.xp} XP`),
     ),
   );
-  // Fakta/Myte og Fyll hullet bærer selve påstanden i spillflaten; de andre
-  // stiller spørsmålet som prompt her.
+  // Fyll hullet bærer selve påstanden i spillflaten; de andre stiller
+  // spørsmålet som prompt her.
   if (post.spill.game_type !== 'Fill the Gap') {
     skall.append(el('p', { class: 'spill__prompt' }, post.spill.prompt));
   }
@@ -474,39 +474,200 @@ function byggSpill(post, opts = {}) {
   }
 }
 
+// Allerede spilt: kompakt oppsummering med resultat + forklaring, og mulighet
+// til å øve på nytt (uten ny XP) — repetisjon er læringens venn.
+function spiltOppsummering(post, spilt) {
+  const dato = new Date(spilt.ts).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' });
+  const panel = svarPanel(post, { perfekt: spilt.res === 'perfekt', xp: 0, res: spilt.res });
+  return el('div', { class: 'spill spill--mork spill--laast' },
+    el('div', { class: 'spill__hode' },
+      el('span', { class: 'spill__type' }, ikon('sjekk', 'ikon ikon--liten'), 'Spilt ' + dato),
+      el('span', { class: 'spill__xp' }, `+${spilt.xp} XP`),
+    ),
+    panel,
+    el('button', {
+      class: 'knapp knapp--sekundaer spill__igjen', type: 'button',
+      onclick: (ev) => { ev.currentTarget.closest('.spill').replaceWith(byggSpill(post, { øvelse: true })); },
+    }, 'Øv på nytt'),
+  );
+}
+
 // ==========================================================================
-// Innleggskort: guide-hode, gradient-hero med hook, tittel + sammendrag,
-// spillmodulen, og en sekundær engasjementsrad (masterplanen: lik/lagre/del
-// forblir sekundært — spillet og forklaringen er hovedsaken).
+// Skyvepaneler — Instagram-språket: en side som glir inn fra høyre og
+// sveipes bort igjen (eller lukkes med pila). Delt gest for varsler (full
+// bredde) og kommentarer (halvveis over).
+// ==========================================================================
+function skyvGest(panel, lukk) {
+  let startX = null;
+  let startY = null;
+  let drar = false;
+  panel.addEventListener('pointerdown', (ev) => {
+    if (!ev.isPrimary) return;
+    startX = ev.clientX;
+    startY = ev.clientY;
+    drar = false;
+  });
+  panel.addEventListener('pointermove', (ev) => {
+    if (startX == null) return;
+    const dx = ev.clientX - startX;
+    const dy = ev.clientY - startY;
+    if (!drar) {
+      if (Math.abs(dx) < 12 || Math.abs(dx) < Math.abs(dy) * 1.2) return; // vertikal scroll vinner
+      drar = true;
+      panel.setPointerCapture(ev.pointerId);
+      panel.classList.add('skyv--drar');
+    }
+    panel.style.transform = `translateX(${Math.max(0, dx)}px)`;
+  });
+  const slipp = (ev) => {
+    if (startX == null) return;
+    const dx = ev.clientX - startX;
+    startX = null;
+    if (!drar) return;
+    drar = false;
+    panel.classList.remove('skyv--drar');
+    panel.style.transform = '';
+    if (dx > 90) lukk();
+  };
+  panel.addEventListener('pointerup', slipp);
+  panel.addEventListener('pointercancel', slipp);
+}
+
+function lukkPanel(panel, bakteppe = null) {
+  panel.classList.remove('skyv--apen');
+  bakteppe?.classList.remove('kommbak--apen');
+  const fjern = () => { panel.remove(); bakteppe?.remove(); };
+  if (REDUSERT()) fjern();
+  else {
+    panel.addEventListener('transitionend', fjern, { once: true });
+    setTimeout(fjern, 500); // fallback
+  }
+}
+
+function åpnePanel(panel, bakteppe = null) {
+  if (REDUSERT()) { panel.classList.add('skyv--apen'); bakteppe?.classList.add('kommbak--apen'); return; }
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    panel.classList.add('skyv--apen');
+    bakteppe?.classList.add('kommbak--apen');
+  }));
+}
+
+// --- Varsler: fullbredde skyveside gruppert per dag (I dag / I går / …) -----
+function dagGruppe(ts, nå = new Date()) {
+  const start = new Date(nå); start.setHours(0, 0, 0, 0);
+  if (ts >= start.getTime()) return 'I dag';
+  if (ts >= start.getTime() - 86400000) return 'I går';
+  if (ts >= start.getTime() - 7 * 86400000) return 'Siste 7 dager';
+  return 'Tidligere';
+}
+
+function åpneVarsler(vert, påLukket) {
+  const feed = byggVarsler();
+  const innhold = el('div', { class: 'skyvepanel__innhold' });
+  if (!feed.length) {
+    innhold.append(el('div', { class: 'kort tomstyrke' },
+      el('span', { class: 'tomstyrke__disk' }, ikon('bjelle')),
+      el('p', { class: 'oppmuntring__tittel' }, 'Ingen varsler ennå'),
+      el('p', { class: 'dempet' }, 'Fullfør en økt eller spill i feeden, så dukker det opp her.'),
+    ));
+  } else {
+    let forrigeGruppe = null;
+    for (const v of feed) {
+      const gruppe = dagGruppe(v.ts);
+      if (gruppe !== forrigeGruppe) {
+        forrigeGruppe = gruppe;
+        innhold.append(el('h2', { class: 'skyvepanel__dag' }, gruppe));
+      }
+      innhold.append(varselKort(v));
+    }
+  }
+
+  const panel = el('div', { class: 'skyvepanel', role: 'dialog', 'aria-label': 'Varsler' },
+    el('header', { class: 'skyvepanel__topp' },
+      el('button', {
+        class: 'ikonknapp ikonknapp--plain', type: 'button', 'aria-label': 'Tilbake',
+        onclick: () => lukk(),
+      }, ikon('chevron', 'ikon ikon--flip')),
+      el('h1', { class: 'skyvepanel__tittel' }, 'Varsler'),
+    ),
+    innhold,
+  );
+  const lukk = () => { lukkPanel(panel); påLukket?.(); };
+  skyvGest(panel, lukk);
+  vert.append(panel);
+  åpnePanel(panel);
+  merkVarslerSett(feed[0]?.ts); // alt som vises nå regnes som sett
+}
+
+// --- Kommentarer: halvside som skyver inn fra høyre --------------------------
+// Fellesskapskommentarer finnes ikke ennå (seed-tallet vises som kontekst);
+// egne kommentarer lagres lokalt på enheten så feltet faktisk virker.
+function åpneKommentarer(post, vert, påEndret) {
+  const liste = el('div', { class: 'kommpanel__liste' });
+
+  function tegnListe() {
+    tom(liste);
+    const mine = lesTilstand().komm[post.id] || [];
+    if (!mine.length) {
+      liste.append(el('p', { class: 'kommpanel__tom' },
+        `${formaterTall(post.seed?.comments || 0)} kommentarer fra fellesskapet kommer snart. Dine notater lagres bare hos deg.`));
+    } else {
+      for (const k of mine.slice().reverse()) {
+        liste.append(el('div', { class: 'kommentar' },
+          el('span', { class: 'kommentar__hvem' }, 'Du', el('span', { class: 'kommentar__tid' }, ` · ${tidSiden(k.ts)}`)),
+          el('p', { class: 'kommentar__tekst' }, k.tekst),
+        ));
+      }
+      liste.append(el('p', { class: 'kommpanel__tom' },
+        `${formaterTall(post.seed?.comments || 0)} kommentarer fra fellesskapet kommer snart.`));
+    }
+  }
+  tegnListe();
+
+  const felt = el('input', { class: 'kommpanel__felt', type: 'text', placeholder: 'Skriv en kommentar…', maxlength: '280' });
+  const send = () => {
+    const tekst = felt.value.trim();
+    if (!tekst) return;
+    endreTilstand((s) => {
+      s.komm[post.id] = s.komm[post.id] || [];
+      s.komm[post.id].push({ tekst, ts: Date.now() });
+    });
+    felt.value = '';
+    vibrer('lett');
+    tegnListe();
+    påEndret?.();
+  };
+  felt.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') send(); });
+
+  const bakteppe = el('div', { class: 'kommbak' });
+  const panel = el('div', { class: 'kommpanel', role: 'dialog', 'aria-label': 'Kommentarer' },
+    el('header', { class: 'kommpanel__topp' },
+      el('h2', { class: 'kommpanel__tittel' }, 'Kommentarer'),
+      el('span', { class: 'kommpanel__antall' }, formaterTall((post.seed?.comments || 0) + (lesTilstand().komm[post.id] || []).length)),
+    ),
+    liste,
+    el('div', { class: 'kommpanel__fot' },
+      felt,
+      el('button', { class: 'kommpanel__send', type: 'button', 'aria-label': 'Send', onclick: send }, ikon('send')),
+    ),
+  );
+  const lukk = () => lukkPanel(panel, bakteppe);
+  bakteppe.addEventListener('click', lukk);
+  skyvGest(panel, lukk);
+  vert.append(bakteppe, panel);
+  åpnePanel(panel, bakteppe);
+}
+
+// ==========================================================================
+// Innleggskortet: fullbredde gradientkort med avrundede hjørner («fullside
+// bakgrunn» per innlegg), innhold rett på flaten uten delere, minispillet i
+// mørkt glass, aksjonsrail til høyre og guide + postet-tid nederst.
 // ==========================================================================
 function guideAvatar(poster) {
   return el('span', {
     class: 'feedavatar',
     style: `background:linear-gradient(135deg, ${poster.aksentStart}, ${poster.aksentSlutt})`,
   }, (poster.navn || '?').slice(0, 1));
-}
-
-function kortHode(post, poster) {
-  return el('div', { class: 'feedkort__hode' },
-    guideAvatar(poster),
-    el('div', { class: 'feedkort__hvem' },
-      el('span', { class: 'feedkort__navn' }, poster.navn,
-        el('span', { class: 'feedkort__handle' }, ` ${poster.handle}`)),
-      el('span', { class: 'feedkort__meta' },
-        `${post.kategori} · ${VANSKELIGHET[post.vanskelighet] || post.vanskelighet} · ~${post.estimertSek}s`),
-    ),
-    el('span', { class: 'feedkort__serie' }, post.serie),
-  );
-}
-
-function kortHero(post, poster) {
-  return el('div', {
-    class: 'feedhero',
-    style: `background:linear-gradient(135deg, ${poster.aksentStart}, ${poster.aksentSlutt})`,
-  },
-    el('span', { class: 'feedhero__kategori' }, post.underkategori || post.kategori),
-    el('p', { class: 'feedhero__hook' }, post.hook),
-  );
 }
 
 function delInnlegg(post) {
@@ -519,151 +680,165 @@ function delInnlegg(post) {
   }
 }
 
-function engasjementsRad(post) {
+// Vertikal aksjonsrail (som referansen): lik, kommenter, lagre, del — hvite
+// sirkler med tall under, til høyre for spillmodulen.
+function aksjonsRail(post, vert) {
   const t = lesTilstand();
-  const likt = !!t.likt[post.id];
-  const lagret = !!t.lagret[post.id];
 
-  const likTall = el('span', { class: 'feedknapp__tall' }, formaterTall((post.seed?.likes || 0) + (likt ? 1 : 0)));
-  const likKnapp = el('button', { class: 'feedknapp' + (likt ? ' feedknapp--paa' : ''), type: 'button', 'aria-label': 'Lik' },
-    ikon('hjerte', 'ikon ikon--liten'), likTall);
-  likKnapp.addEventListener('click', () => {
+  const railKnapp = (ikonNavn, tall, etikett, onClick, påOverride = false) => {
+    const tallEl = el('span', { class: 'rail__tall' }, tall);
+    const knapp = el('button', {
+      class: 'rail__knapp' + (påOverride ? ' rail__knapp--paa' : ''),
+      type: 'button', 'aria-label': etikett, onclick: onClick,
+    }, ikon(ikonNavn));
+    return { rot: el('div', { class: 'rail__punkt' }, knapp, tallEl), knapp, tallEl };
+  };
+
+  const lik = railKnapp('hjerte', formaterTall((post.seed?.likes || 0) + (t.likt[post.id] ? 1 : 0)), 'Lik', () => {
     const ny = !lesTilstand().likt[post.id];
     endreTilstand((s) => { if (ny) s.likt[post.id] = 1; else delete s.likt[post.id]; });
-    likKnapp.classList.toggle('feedknapp--paa', ny);
-    likTall.textContent = formaterTall((post.seed?.likes || 0) + (ny ? 1 : 0));
+    lik.knapp.classList.toggle('rail__knapp--paa', ny);
+    lik.tallEl.textContent = formaterTall((post.seed?.likes || 0) + (ny ? 1 : 0));
     if (ny) vibrer('lett');
+  }, !!t.likt[post.id]);
+
+  const kommTall = () => formaterTall((post.seed?.comments || 0) + (lesTilstand().komm[post.id] || []).length);
+  const komm = railKnapp('snakke', kommTall(), 'Kommentarer', () => {
+    åpneKommentarer(post, vert, () => { komm.tallEl.textContent = kommTall(); });
   });
 
-  const lagreKnapp = el('button', { class: 'feedknapp' + (lagret ? ' feedknapp--paa' : ''), type: 'button', 'aria-label': 'Lagre' },
-    ikon('bok', 'ikon ikon--liten'), el('span', { class: 'feedknapp__tall' }, 'Lagre'));
-  lagreKnapp.addEventListener('click', () => {
+  const lagre = railKnapp('bokmerke', formaterTall((post.seed?.saves || 0) + (t.lagret[post.id] ? 1 : 0)), 'Lagre', () => {
     const ny = !lesTilstand().lagret[post.id];
     endreTilstand((s) => { if (ny) s.lagret[post.id] = 1; else delete s.lagret[post.id]; });
-    lagreKnapp.classList.toggle('feedknapp--paa', ny);
-    if (ny) varsle('Lagret — finn det igjen under «Lagret»-filteret');
-  });
+    lagre.knapp.classList.toggle('rail__knapp--paa', ny);
+    lagre.tallEl.textContent = formaterTall((post.seed?.saves || 0) + (ny ? 1 : 0));
+    if (ny) varsle('Lagret — finn det igjen under «Lagret» i For deg-menyen');
+  }, !!t.lagret[post.id]);
 
-  return el('div', { class: 'feedkort__fot' },
-    likKnapp,
-    el('button', {
-      class: 'feedknapp', type: 'button', 'aria-label': 'Kommentarer',
-      onclick: () => varsle('Kommentarer kommer snart'),
-    }, ikon('konvolutt', 'ikon ikon--liten'), el('span', { class: 'feedknapp__tall' }, formaterTall(post.seed?.comments || 0))),
-    lagreKnapp,
-    el('button', { class: 'feedknapp', type: 'button', 'aria-label': 'Del', onclick: () => delInnlegg(post) },
-      ikon('pilhoyre', 'ikon ikon--liten'), el('span', { class: 'feedknapp__tall' }, 'Del')),
-  );
+  const del = railKnapp('dele', formaterTall(post.seed?.shares || 0), 'Del', () => delInnlegg(post));
+
+  return el('div', { class: 'rail' }, lik.rot, komm.rot, lagre.rot, del.rot);
 }
 
-// Allerede spilt: kompakt oppsummering med resultat + forklaring, og mulighet
-// til å øve på nytt (uten ny XP) — repetisjon er læringens venn.
-function spiltOppsummering(post, spilt, kortInnhold) {
-  const dato = new Date(spilt.ts).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' });
-  const panel = svarPanel(post, { perfekt: spilt.res === 'perfekt', xp: 0, res: spilt.res, tittelOverstyr: spilt.res === 'perfekt' ? 'Riktig!' : 'Godt forsøk!' });
-  const boks = el('div', { class: 'spill spill--laast' },
-    el('div', { class: 'spill__hode' },
-      el('span', { class: 'spill__type' }, ikon('sjekk', 'ikon ikon--liten'), 'Spilt ' + dato),
-      el('span', { class: 'spill__xp' }, `+${spilt.xp} XP`),
-    ),
-    panel,
-    el('button', {
-      class: 'knapp knapp--sekundaer spill__igjen', type: 'button',
-      onclick: (ev) => { ev.currentTarget.closest('.spill').replaceWith(byggSpill(post, { øvelse: true })); },
-    }, 'Øv på nytt'),
-  );
-  kortInnhold.append(boks);
-}
-
-function feedKort(post) {
+function feedKort(post, vert) {
   const poster = posterFor(post.posterId) || { navn: 'Aha', handle: '@aha', aksentStart: '#0BA69F', aksentSlutt: '#4FA9F5' };
   const spilt = lesTilstand().spilt[post.id];
+  const ts = Date.parse(post.opprettet || '') || Date.now();
 
-  const kort = el('article', { class: 'feedkort' },
-    kortHode(post, poster),
-    kortHero(post, poster),
-    el('div', { class: 'feedkort__kropp' },
-      el('h2', { class: 'feedkort__tittel' }, post.tittel),
-      el('p', { class: 'feedkort__sammendrag' }, post.sammendrag),
+  const spillsone = el('div', { class: 'fkort__spillsone' },
+    spilt ? spiltOppsummering(post, spilt) : byggSpill(post));
+
+  return el('article', {
+    class: 'fkort',
+    style: `background:linear-gradient(165deg, ${poster.aksentStart}, ${poster.aksentSlutt})`,
+  },
+    el('div', { class: 'fkort__hode' },
+      el('span', { class: 'fkort__kategori' }, post.underkategori || post.kategori),
+      el('span', { class: 'fkort__vansk' }, VANSKELIGHET[post.vanskelighet] || post.vanskelighet),
+    ),
+    el('p', { class: 'fkort__hook' }, post.hook),
+    el('h2', { class: 'fkort__tittel' }, post.tittel),
+    el('p', { class: 'fkort__sammendrag' }, post.sammendrag),
+    el('div', { class: 'fkort__midt' },
+      spillsone,
+      aksjonsRail(post, vert),
+    ),
+    el('div', { class: 'fkort__bunn' },
+      guideAvatar(poster),
+      el('div', { class: 'fkort__hvem' },
+        el('span', { class: 'fkort__navn' }, poster.navn,
+          el('span', { class: 'fkort__handle' }, ` ${poster.handle}`)),
+        el('span', { class: 'fkort__serie' }, `${post.serie} · ${tidSiden(ts)}`),
+      ),
     ),
   );
-  if (spilt) spiltOppsummering(post, spilt, kort);
-  else kort.append(byggSpill(post));
-  kort.append(engasjementsRad(post));
-  return kort;
 }
 
 // ==========================================================================
-// Selve feeden (#/hjem): toppstats, filterchips (kategori + Lagret), og
-// innleggene i redaksjonell rekkefølge med batch-innlasting ved scroll.
+// Selve feeden (#/hjem): slank topplinje (kalender · «For deg»-dropdown ·
+// bjelle), fullbredde innlegg uten delere, og batch-innlasting ved scroll.
+// Ingen banner, ikke noe bakgrunnsbilde — innholdet ER siden.
 // ==========================================================================
-let _oppdaterToppstats = null;
-
-function toppStats(antallTotalt) {
-  const t = lesTilstand();
-  const spilteIder = Object.keys(t.spilt);
-  const iDag = new Date(); iDag.setHours(0, 0, 0, 0);
-  const dagens = spilteIder.filter((id) => t.spilt[id].ts >= iDag.getTime());
-  const dagensXp = dagens.reduce((s, id) => s + (t.spilt[id].xp || 0), 0);
-  return {
-    venstre: `${spilteIder.length} av ${antallTotalt} spilt`,
-    høyre: dagens.length ? `${dagens.length} i dag · +${dagensXp} XP` : 'Ingen spilt i dag — scroll og lær!',
-  };
-}
-
 export function visFeedSkjerm(mount) {
-  const main = fanesideMedTittel(mount, {
-    tittel: 'Oppdag',
-    under: 'Kunnskap du kan spille — rett i feeden.',
-  });
+  document.body.classList.add('fane-laast'); // egen scrollflate, som fanesidene
+  tom(mount);
 
-  const laster = el('p', { class: 'dempet' }, 'Laster feeden…');
-  main.append(laster);
+  const scroll = el('div', { class: 'hjem-scroll feedscroll' });
+  const laster = el('p', { class: 'dempet feedscroll__laster' }, 'Laster feeden…');
+  scroll.append(laster);
 
   lastFeed().then((data) => {
     laster.remove();
-    byggFeed(main, data);
+    byggFeed(mount, scroll, data);
   }).catch((e) => {
     laster.remove();
-    main.append(el('div', { class: 'kort kort--info' },
+    scroll.append(el('div', { class: 'kort kort--info' },
       el('h2', {}, 'Kunne ikke laste feeden'),
       el('p', { class: 'dempet' }, e.message),
     ));
   });
+
+  mount.append(scroll);
 }
 
-function byggFeed(main, data) {
+function byggFeed(mount, scroll, data) {
   const posts = data.posts.slice().sort((a, b) => a.rekkefolge - b.rekkefolge);
-
-  // --- Toppstats: spilt totalt + dagens fangst -----------------------------
-  const statVenstre = el('span', { class: 'feedstats__tekst' });
-  const statHøyre = el('span', { class: 'feedstats__tekst feedstats__tekst--hoyre' });
-  const statRad = el('div', { class: 'feedstats' },
-    ikon('lyn', 'ikon ikon--liten'), statVenstre,
-    el('span', { class: 'feedstats__skille' }),
-    statHøyre,
-  );
-  _oppdaterToppstats = () => {
-    const s = toppStats(posts.length);
-    statVenstre.textContent = s.venstre;
-    statHøyre.textContent = s.høyre;
-  };
-  _oppdaterToppstats();
-
-  // --- Filter: Alle · Lagret · kategoriene i innholdet ----------------------
   const kategorier = [...new Set(posts.map((p) => p.kategori))];
+
+  // --- Topplinje: kalender · «For deg» med dropdown · bjelle ----------------
   let filter = 'alle';
-  const chips = new Map();
-  const chipRad = el('div', { class: 'feedfilter' });
-  const leggChip = (id, tekst) => {
-    const c = el('button', { class: 'artchip' + (filter === id ? ' artchip--valgt' : ''), type: 'button' }, tekst);
-    c.addEventListener('click', () => { filter = id; for (const [k, ch] of chips) ch.classList.toggle('artchip--valgt', k === id); tegnListe(); });
-    chips.set(id, c);
-    chipRad.append(c);
+  const fordegTekst = el('span', { class: 'fordeg__tekst' }, 'For deg');
+  const drop = el('div', { class: 'feeddrop', hidden: true });
+
+  const fordeg = el('button', {
+    class: 'fordeg', type: 'button', 'aria-haspopup': 'true',
+    onclick: (ev) => { ev.stopPropagation(); drop.hidden = !drop.hidden; },
+  }, fordegTekst, ikon('chevronned', 'ikon fordeg__pil'));
+
+  function velgFilter(id, navn) {
+    filter = id;
+    fordegTekst.textContent = navn;
+    drop.hidden = true;
+    tegnDropdown();
+    tegnListe();
+    scroll.scrollTop = 0;
+  }
+
+  function tegnDropdown() {
+    tom(drop);
+    const rad = (id, navn) => el('button', {
+      class: 'feeddrop__rad' + (filter === id ? ' feeddrop__rad--valgt' : ''), type: 'button',
+      onclick: () => velgFilter(id, id === 'alle' ? 'For deg' : navn),
+    }, el('span', {}, navn), filter === id && ikon('sjekk', 'ikon ikon--liten'));
+    drop.append(
+      rad('alle', 'For deg'),
+      rad('lagret', 'Lagret'),
+      el('div', { class: 'feeddrop__strek' }),
+      ...kategorier.map((k) => rad(k, k)),
+    );
+  }
+  tegnDropdown();
+  document.addEventListener('click', (ev) => {
+    if (!drop.hidden && !drop.contains(ev.target) && !fordeg.contains(ev.target)) drop.hidden = true;
+  });
+
+  const bjelle = el('button', {
+    class: 'ikonknapp ikonknapp--plain ikonknapp--bjelle', type: 'button',
+    'aria-label': harUlesteVarsler() ? 'Varsler — nye' : 'Varsler',
+  }, ikon('bjelle'));
+  const prikk = () => {
+    bjelle.querySelector('.varselprikk')?.remove();
+    if (harUlesteVarsler()) bjelle.append(el('i', { class: 'varselprikk' }));
   };
-  leggChip('alle', 'Alle');
-  leggChip('lagret', 'Lagret');
-  for (const k of kategorier) leggChip(k, k);
+  prikk();
+  bjelle.addEventListener('click', () => åpneVarsler(mount, prikk));
+
+  const topp = el('div', { class: 'feedtopp' },
+    el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/kalender', 'aria-label': 'Mosjonskalender' }, ikon('kalender')),
+    fordeg,
+    bjelle,
+    drop,
+  );
 
   // --- Liste med batch-innlasting -------------------------------------------
   const liste = el('div', { class: 'feedliste' });
@@ -674,14 +849,14 @@ function byggFeed(main, data) {
   function leggBatch() {
     const neste = synlige.slice(vist, vist + BATCH);
     vist += neste.length;
-    for (const p of neste) liste.append(feedKort(p));
+    for (const p of neste) liste.append(feedKort(p, mount));
     vaktpost.style.display = vist < synlige.length ? '' : 'none';
     if (!synlige.length) {
       liste.append(el('div', { class: 'kort tomstyrke' },
-        el('span', { class: 'tomstyrke__disk' }, ikon('bok')),
+        el('span', { class: 'tomstyrke__disk' }, ikon('bokmerke')),
         el('p', { class: 'oppmuntring__tittel' }, 'Ingenting her ennå'),
         el('p', { class: 'dempet' }, filter === 'lagret'
-          ? 'Trykk «Lagre» på et innlegg for å ta vare på det her.'
+          ? 'Trykk bokmerket på et innlegg for å ta vare på det her.'
           : 'Ingen innlegg i denne kategorien.'),
       ));
     }
@@ -701,9 +876,10 @@ function byggFeed(main, data) {
 
   const observer = new IntersectionObserver((oppf) => {
     if (oppf.some((o) => o.isIntersecting) && vist < synlige.length) leggBatch();
-  }, { rootMargin: '600px' });
+  }, { rootMargin: '900px' });
   observer.observe(vaktpost);
 
   tegnListe();
-  main.append(statRad, chipRad, liste, vaktpost);
+  scroll.append(liste, vaktpost);
+  mount.prepend(topp);
 }

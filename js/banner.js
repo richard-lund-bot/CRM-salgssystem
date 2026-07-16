@@ -171,15 +171,16 @@ export function lagBanner({ hoyre = null, dagAksjon = null } = {}) {
 
   if (hoyre) hoyre.classList.add('hjembanner__hoyre');
   const ulest = _harUleste();
+  // Bjella bor til høyre og kalenderen til venstre (M38 — speiler feed-toppen).
   return el('div', { class: 'hjembanner' },
     el('div', { class: 'hjembanner__rad' },
       innstillingerKnapp(),
-      el('a', {
-        class: 'ikonknapp ikonknapp--plain ikonknapp--bjelle', href: '#/varsler',
+      el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/kalender', 'aria-label': 'Mosjonskalender' }, ikon('kalender')),
+      el('span', { class: 'hjembanner__logo' }, wordmark()),
+      hoyre || el('a', {
+        class: 'ikonknapp ikonknapp--plain ikonknapp--bjelle hjembanner__hoyre', href: '#/varsler',
         'aria-label': ulest ? 'Varsler — nye' : 'Varsler',
       }, ikon('bjelle'), ulest && el('i', { class: 'varselprikk' })),
-      el('span', { class: 'hjembanner__logo' }, wordmark()),
-      hoyre || el('a', { class: 'ikonknapp ikonknapp--plain hjembanner__hoyre', href: '#/kalender', 'aria-label': 'Mosjonskalender' }, ikon('kalender')),
     ),
     uke,
   );

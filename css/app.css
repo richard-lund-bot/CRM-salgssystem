@@ -3126,65 +3126,102 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 }
 
 /* ==========================================================================
-   Feed (M37) — den spillbare lærings-feeden på Hjem. Innleggskort med
-   guide-hode, gradient-hero og et minispill rett i kortet. Spillmodulene
-   deler tilstandsspråk med leksjonene (grønn #2FA84F for riktig, korall for
-   feil — aldri skam) og gjenbruker valg-riktig/valg-feil-animasjonene.
+   Feed (M38) — sosial-feed-drakt: slank topplinje med «For deg»-dropdown,
+   fullbredde gradientkort uten delere («fullside» bakgrunn per innlegg),
+   minispill i mørkt glass, aksjonsrail til høyre, varsler som skyveside og
+   kommentarer som halvside fra høyre. Riktig/feil deler språk med leksjonene.
    ========================================================================== */
-/* Toppstats + filterchips */
-.feedstats {
-  display: flex; align-items: center; gap: 8px;
-  background: var(--bg-kort); border-radius: var(--radius-pill);
-  padding: 10px 14px; box-shadow: var(--shadow-xs);
-  font-size: 13px; color: var(--tekst-2); margin-bottom: 10px;
-}
-.feedstats .ikon { color: var(--aksent); flex: 0 0 auto; }
-.feedstats__tekst { font-weight: 600; white-space: nowrap; }
-.feedstats__tekst--hoyre { color: var(--dempet); font-weight: 500; overflow: hidden; text-overflow: ellipsis; }
-.feedstats__skille { flex: 1; }
-.feedfilter {
-  display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 10px;
-  scrollbar-width: none; -webkit-overflow-scrolling: touch;
-}
-.feedfilter::-webkit-scrollbar { display: none; }
-.feedfilter .artchip { flex: 0 0 auto; }
+/* Egen scrollflate uten banner og bakgrunnsbilde — innholdet ER siden */
+.feedscroll { background: var(--bg); padding: calc(env(safe-area-inset-top) + 64px) 10px 0; }
+.feedscroll__laster { padding: 20px 8px; }
 
-/* Innleggskortet */
-.feedliste { display: flex; flex-direction: column; gap: 16px; }
-.feedkort { background: var(--bg-kort); border-radius: var(--radius-xl); box-shadow: var(--shadow-card); overflow: hidden; }
-.feedkort__hode { display: flex; align-items: center; gap: 10px; padding: 12px 14px 10px; }
+/* Topplinje: kalender · For deg ˅ · bjelle */
+.feedtopp {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 15;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; padding: calc(env(safe-area-inset-top) + 8px) 12px 8px;
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.fordeg {
+  display: inline-flex; align-items: center; gap: 4px;
+  border: none; background: none; cursor: pointer;
+  font-family: var(--font-display); font-weight: 600; font-size: 20px;
+  color: var(--tekst); padding: 6px 10px;
+}
+.fordeg__pil { width: 18px; height: 18px; margin-top: 2px; }
+.ikon--flip { transform: scaleX(-1); }
+
+/* Dropdown under «For deg» */
+.feeddrop {
+  position: absolute; top: calc(100% + 2px); left: 50%; transform: translateX(-50%);
+  min-width: 210px; max-height: 58vh; overflow-y: auto;
+  background: var(--bg-kort); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md); padding: 6px; z-index: 16;
+}
+.feeddrop__rad {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  width: 100%; border: none; background: none; cursor: pointer;
+  font-family: inherit; font-size: 14.5px; color: var(--tekst);
+  padding: 10px 12px; border-radius: var(--radius-sm); text-align: left;
+}
+.feeddrop__rad:active { background: var(--bg-kort-2); }
+.feeddrop__rad--valgt { font-weight: 700; color: var(--aksent); }
+.feeddrop__rad--valgt .ikon { color: var(--aksent); }
+.feeddrop__strek { height: 1px; background: var(--kant); margin: 4px 8px; }
+
+/* Innleggskortet: fullbredde gradient med avrundede hjørner; det hvite
+   mellomrommet er den eneste deleren mellom innlegg */
+.feedliste { display: flex; flex-direction: column; gap: 14px; }
+.fkort {
+  border-radius: var(--radius-2xl); color: #fff;
+  padding: 18px 14px 14px; min-height: min(74vh, 640px);
+  display: flex; flex-direction: column;
+  box-shadow: var(--shadow-card);
+}
+.fkort__hode { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 14px; }
+.fkort__kategori {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.2); padding: 5px 11px; border-radius: var(--radius-pill);
+}
+.fkort__vansk { font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.85); }
+.fkort__hook {
+  margin: 0 0 10px; font-family: var(--font-display); font-weight: 600;
+  font-size: 26px; line-height: 1.16; text-wrap: balance;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.15);
+}
+.fkort__tittel { margin: 0 0 6px; font-size: 15.5px; font-weight: 700; line-height: 1.3; color: rgba(255, 255, 255, 0.95); }
+.fkort__sammendrag { margin: 0 0 14px; font-size: 13.5px; line-height: 1.5; color: rgba(255, 255, 255, 0.82); }
+.fkort__midt { display: grid; grid-template-columns: 1fr 48px; gap: 10px; align-items: end; margin-top: auto; }
+.fkort__spillsone { min-width: 0; }
+.fkort__bunn { display: flex; align-items: center; gap: 10px; padding-top: 14px; }
 .feedavatar {
-  width: 40px; height: 40px; border-radius: 50%; flex: 0 0 auto;
+  width: 38px; height: 38px; border-radius: 50%; flex: 0 0 auto;
   display: grid; place-items: center; color: #fff;
-  font-family: var(--font-display); font-weight: 600; font-size: 18px;
+  font-family: var(--font-display); font-weight: 600; font-size: 17px;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.65);
 }
-.feedkort__hvem { display: flex; flex-direction: column; min-width: 0; flex: 1; }
-.feedkort__navn { font-weight: 700; font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.feedkort__handle { color: var(--dempet); font-weight: 500; font-size: 13px; }
-.feedkort__meta { font-size: 12px; color: var(--tekst-2); }
-.feedkort__serie {
-  flex: 0 0 auto; max-width: 34%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  font-size: 11px; font-weight: 600; color: var(--tekst-2);
-  background: var(--bg-kort-2); border-radius: var(--radius-pill); padding: 4px 10px;
+.fkort__hvem { display: flex; flex-direction: column; min-width: 0; }
+.fkort__navn { font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fkort__handle { font-weight: 500; font-size: 12.5px; color: rgba(255, 255, 255, 0.75); }
+.fkort__serie { font-size: 12px; color: rgba(255, 255, 255, 0.75); }
+
+/* Aksjonsrail til høyre (som referansen): hvite sirkler med tall under */
+.rail { display: flex; flex-direction: column; gap: 12px; align-items: center; padding-bottom: 4px; }
+.rail__punkt { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.rail__knapp {
+  width: 44px; height: 44px; border-radius: 50%; border: none; cursor: pointer;
+  display: grid; place-items: center;
+  background: rgba(255, 255, 255, 0.92); color: var(--ink-800);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  transition: transform var(--dur-fast) ease, background var(--dur-fast) ease;
 }
-.feedhero {
-  min-height: 148px; padding: 16px; position: relative;
-  display: flex; flex-direction: column; justify-content: flex-end; gap: 8px;
-}
-.feedhero__kategori {
-  align-self: flex-start; font-size: 11px; font-weight: 700;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  background: rgba(255, 255, 255, 0.22); color: #fff;
-  padding: 4px 10px; border-radius: var(--radius-pill);
-}
-.feedhero__hook {
-  margin: 0; font-family: var(--font-display); font-weight: 600;
-  font-size: 21px; line-height: 1.22; color: #fff;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.18); text-wrap: balance;
-}
-.feedkort__kropp { padding: 12px 14px 0; }
-.feedkort__tittel { margin: 0 0 6px; font-family: var(--font-display); font-weight: 600; font-size: 17px; line-height: 1.25; }
-.feedkort__sammendrag { margin: 0; font-size: 14px; line-height: 1.5; color: var(--tekst-2); }
+.rail__knapp .ikon { width: 21px; height: 21px; }
+.rail__knapp:active { transform: scale(0.9); }
+.rail__knapp--paa { background: var(--coral-500); color: #fff; }
+.rail__knapp--paa .ikon { fill: currentColor; }
+.rail__tall { font-size: 11.5px; font-weight: 700; color: #fff; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); }
 
 /* Spillmodulen — felles skall (Preview → Play → Commit → Feedback) */
 .spill { margin: 12px 14px 0; background: var(--bg); border-radius: var(--radius-lg); padding: 12px; }
@@ -3288,22 +3325,96 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 @keyframes svar-inn { from { opacity: 0; transform: translateY(6px); } }
 @keyframes xp-pop { 0% { transform: scale(0.6); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
 
-/* Engasjementsraden — bevisst sekundær (masterplanen) */
-.feedkort__fot { display: flex; align-items: center; gap: 6px; padding: 10px 10px 12px; margin-top: 6px; }
-.feedknapp {
-  display: inline-flex; align-items: center; gap: 6px; border: none; background: none;
-  padding: 8px 10px; border-radius: var(--radius-pill);
-  font-family: inherit; font-size: 13px; font-weight: 600; color: var(--tekst-2); cursor: pointer;
+/* Mørkt glass-modus for spillmodulen — på gradientkortene i feeden */
+.spill--mork { background: rgba(13, 18, 28, 0.55); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: #fff; }
+.spill--mork .spill__type { color: var(--teal-300); }
+.spill--mork .spill__prompt, .spill--mork .gap__setning { color: #fff; }
+.spill--mork .spill__hint, .spill--mork .memory__trekk { color: rgba(255, 255, 255, 0.68); }
+.spill--mork .spillvalg, .spill--mork .gapbrikke, .spill--mork .parknapp,
+.spill--mork .rekkerad, .spill--mork .memkort {
+  background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.26); color: #fff;
 }
-.feedknapp:active { background: var(--bg-kort-2); }
-.feedknapp--paa { color: var(--coral-500); }
-.feedknapp--paa .ikon { fill: currentColor; }
+.spill--mork .spillvalg--riktig, .spill--mork .gapbrikke--brukt { background: #E7F6EC; border-color: #2FA84F; color: #1C6B34; }
+.spill--mork .spillvalg--feil, .spill--mork .gapbrikke--feil { background: var(--coral-100); border-color: var(--coral-500); color: var(--fare); }
+.spill--mork .gap__hull { border-bottom-color: var(--teal-300); color: rgba(255, 255, 255, 0.7); }
+.spill--mork .gap__hull--riktig { color: #9FE8B8; border-bottom-color: #2FA84F; }
+.spill--mork .parknapp--valgt { border-color: var(--teal-300); background: rgba(126, 208, 203, 0.28); }
+.spill--mork .parknapp--feil { background: rgba(255, 111, 97, 0.3); border-color: var(--coral-400); }
+.spill--mork .rekkerad--riktig { background: rgba(47, 168, 79, 0.3); border-color: #2FA84F; }
+.spill--mork .rekkerad--feil { background: rgba(255, 111, 97, 0.22); border-color: var(--coral-400); }
+.spill--mork .rekkerad__nr { background: rgba(255, 255, 255, 0.16); color: #fff; }
+.spill--mork .rekkerad--riktig .rekkerad__nr { background: #2FA84F; }
+.spill--mork .rekkerad__pil { background: rgba(255, 255, 255, 0.14); color: #fff; }
+.spill--mork .memkort__bak { color: rgba(255, 255, 255, 0.55); }
+.spill--mork .memkort--apen { border-color: var(--teal-300); background: rgba(126, 208, 203, 0.25); }
+/* Parfargene (solide) vinner også i mørk modus */
+.spill--mork .parknapp--par1, .spill--mork .memkort--par1 { background: var(--teal-600); border-color: var(--teal-600); }
+.spill--mork .parknapp--par2, .spill--mork .memkort--par2 { background: var(--navy-600); border-color: var(--navy-600); }
+.spill--mork .parknapp--par3, .spill--mork .memkort--par3 { background: var(--coral-700); border-color: var(--coral-700); }
+.spill--mork .parknapp--par4, .spill--mork .memkort--par4 { background: var(--varm-600); border-color: var(--varm-600); }
+
+/* Skyvepaneler — Instagram-språket: varsler som full side fra høyre
+   (sveip bort eller pil for å lukke), kommentarer som halvside over. */
+.skyvepanel {
+  position: fixed; inset: 0; z-index: 40;
+  background: var(--bg);
+  transform: translateX(103%);
+  transition: transform 0.32s var(--ease-out);
+  display: flex; flex-direction: column;
+  touch-action: pan-y;
+}
+.skyvepanel.skyv--apen { transform: translateX(0); }
+.skyv--drar { transition: none !important; }
+.skyvepanel__topp {
+  display: flex; align-items: center; gap: 8px;
+  padding: calc(env(safe-area-inset-top) + 10px) 12px 10px;
+}
+.skyvepanel__tittel { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 22px; }
+.skyvepanel__innhold { flex: 1; overflow-y: auto; padding: 0 14px calc(env(safe-area-inset-bottom) + 24px); }
+.skyvepanel__dag { margin: 18px 0 8px; font-size: 16px; font-weight: 700; }
+
+.kommbak { position: fixed; inset: 0; z-index: 39; background: rgba(17, 38, 77, 0); transition: background 0.3s ease; }
+.kommbak--apen { background: rgba(17, 38, 77, 0.35); }
+.kommpanel {
+  position: fixed; top: 0; bottom: 0; right: 0; z-index: 40;
+  width: min(80%, 420px);
+  background: var(--bg-kort); border-radius: var(--radius-2xl) 0 0 var(--radius-2xl);
+  box-shadow: -12px 0 40px rgba(17, 38, 77, 0.18);
+  transform: translateX(105%); transition: transform 0.32s var(--ease-out);
+  display: flex; flex-direction: column; touch-action: pan-y;
+}
+.kommpanel.skyv--apen { transform: translateX(0); }
+.kommpanel__topp { display: flex; align-items: baseline; gap: 8px; padding: calc(env(safe-area-inset-top) + 18px) 18px 10px; }
+.kommpanel__tittel { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 20px; }
+.kommpanel__antall { font-size: 13px; font-weight: 700; color: var(--dempet); }
+.kommpanel__liste { flex: 1; overflow-y: auto; padding: 4px 18px; }
+.kommpanel__tom { font-size: 13px; line-height: 1.5; color: var(--dempet); margin: 10px 0; }
+.kommentar { padding: 10px 0; border-bottom: 1px solid var(--kant); }
+.kommentar__hvem { font-size: 13px; font-weight: 700; }
+.kommentar__tid { font-weight: 500; color: var(--dempet); font-size: 12px; }
+.kommentar__tekst { margin: 3px 0 0; font-size: 14px; line-height: 1.45; }
+.kommpanel__fot {
+  display: flex; gap: 8px; align-items: center;
+  padding: 10px 14px calc(env(safe-area-inset-bottom) + 14px);
+  border-top: 1px solid var(--kant);
+}
+.kommpanel__felt {
+  flex: 1; min-width: 0; border: 1.5px solid var(--kant-sterk); border-radius: var(--radius-pill);
+  padding: 10px 14px; font-family: inherit; font-size: 14px; background: var(--bg);
+}
+.kommpanel__felt:focus { outline: none; border-color: var(--aksent); }
+.kommpanel__send {
+  width: 42px; height: 42px; border-radius: 50%; border: none; cursor: pointer; flex: 0 0 auto;
+  background: var(--aksent); color: #fff; display: grid; place-items: center;
+}
+.kommpanel__send .ikon { width: 19px; height: 19px; }
 .feed__vaktpost { height: 1px; }
 
 @media (prefers-reduced-motion: reduce) {
   .spillvalg--riktig, .spillvalg--feil, .gapbrikke--feil, .parknapp--feil,
   .spillsvar--inn, .spillsvar__xp { animation: none !important; }
   .memkort__bak, .memkort__frem { transition: none; }
+  .skyvepanel, .kommpanel, .kommbak, .rail__knapp { transition: none; }
 }
 
 /* ==========================================================================

@@ -359,6 +359,7 @@
   {
    "id": "POST-001",
    "rekkefolge": 1,
+   "opprettet": "2026-07-01T08:00:00",
    "posterId": "P003",
    "kategori": "Science",
    "underkategori": "Climate & oceans",
@@ -407,6 +408,7 @@
   {
    "id": "POST-002",
    "rekkefolge": 2,
+   "opprettet": "2026-07-01T14:00:00",
    "posterId": "P003",
    "kategori": "Science",
    "underkategori": "Geology",
@@ -476,6 +478,7 @@
   {
    "id": "POST-003",
    "rekkefolge": 3,
+   "opprettet": "2026-07-01T20:00:00",
    "posterId": "P003",
    "kategori": "Science",
    "underkategori": "Earth systems",
@@ -529,6 +532,7 @@
   {
    "id": "POST-004",
    "rekkefolge": 4,
+   "opprettet": "2026-07-02T02:00:00",
    "posterId": "P003",
    "kategori": "Science",
    "underkategori": "Volcanoes",
@@ -576,6 +580,7 @@
   {
    "id": "POST-005",
    "rekkefolge": 5,
+   "opprettet": "2026-07-02T08:00:00",
    "posterId": "P020",
    "kategori": "Science",
    "underkategori": "Marine biology",
@@ -622,6 +627,7 @@
   {
    "id": "POST-006",
    "rekkefolge": 6,
+   "opprettet": "2026-07-02T14:00:00",
    "posterId": "P002",
    "kategori": "Science",
    "underkategori": "Genetics",
@@ -669,6 +675,7 @@
   {
    "id": "POST-007",
    "rekkefolge": 7,
+   "opprettet": "2026-07-02T20:00:00",
    "posterId": "P016",
    "kategori": "Science",
    "underkategori": "Medicine",
@@ -717,6 +724,7 @@
   {
    "id": "POST-008",
    "rekkefolge": 8,
+   "opprettet": "2026-07-03T02:00:00",
    "posterId": "P001",
    "kategori": "Science",
    "underkategori": "Physics",
@@ -763,6 +771,7 @@
   {
    "id": "POST-009",
    "rekkefolge": 9,
+   "opprettet": "2026-07-03T08:00:00",
    "posterId": "P002",
    "kategori": "Science",
    "underkategori": "Biology",
@@ -832,6 +841,7 @@
   {
    "id": "POST-010",
    "rekkefolge": 10,
+   "opprettet": "2026-07-03T14:00:00",
    "posterId": "P001",
    "kategori": "Science",
    "underkategori": "Climate physics",
@@ -879,6 +889,7 @@
   {
    "id": "POST-011",
    "rekkefolge": 11,
+   "opprettet": "2026-07-03T20:00:00",
    "posterId": "P004",
    "kategori": "Space",
    "underkategori": "Moon",
@@ -948,6 +959,7 @@
   {
    "id": "POST-012",
    "rekkefolge": 12,
+   "opprettet": "2026-07-04T02:00:00",
    "posterId": "P004",
    "kategori": "Space",
    "underkategori": "Moon & Earth",
@@ -996,6 +1008,7 @@
   {
    "id": "POST-013",
    "rekkefolge": 13,
+   "opprettet": "2026-07-04T08:00:00",
    "posterId": "P004",
    "kategori": "Space",
    "underkategori": "Earth orbit",
@@ -1042,6 +1055,7 @@
   {
    "id": "POST-014",
    "rekkefolge": 14,
+   "opprettet": "2026-07-04T14:00:00",
    "posterId": "P004",
    "kategori": "Space",
    "underkategori": "Eclipses",
@@ -1093,6 +1107,7 @@
   {
    "id": "POST-015",
    "rekkefolge": 15,
+   "opprettet": "2026-07-04T20:00:00",
    "posterId": "P005",
    "kategori": "Space",
    "underkategori": "Stars",
@@ -1140,6 +1155,7 @@
   {
    "id": "POST-016",
    "rekkefolge": 16,
+   "opprettet": "2026-07-05T02:00:00",
    "posterId": "P005",
    "kategori": "Space",
    "underkategori": "Exoplanets",
@@ -1187,6 +1203,7 @@
   {
    "id": "POST-017",
    "rekkefolge": 17,
+   "opprettet": "2026-07-05T08:00:00",
    "posterId": "P005",
    "kategori": "Space",
    "underkategori": "Black holes",
@@ -1233,6 +1250,7 @@
   {
    "id": "POST-018",
    "rekkefolge": 18,
+   "opprettet": "2026-07-05T14:00:00",
    "posterId": "P005",
    "kategori": "Space",
    "underkategori": "Milky Way",
@@ -1281,6 +1299,7 @@
   {
    "id": "POST-019",
    "rekkefolge": 19,
+   "opprettet": "2026-07-05T20:00:00",
    "posterId": "P006",
    "kategori": "History",
    "underkategori": "Ancient Rome",
@@ -1350,6 +1369,7 @@
   {
    "id": "POST-020",
    "rekkefolge": 20,
+   "opprettet": "2026-07-06T02:00:00",
    "posterId": "P006",
    "kategori": "History",
    "underkategori": "Ancient Rome",
@@ -1397,6 +1417,7 @@
   {
    "id": "POST-021",
    "rekkefolge": 21,
+   "opprettet": "2026-07-06T08:00:00",
    "posterId": "P008",
    "kategori": "History",
    "underkategori": "Printing revolution",
@@ -1450,6 +1471,7 @@
   {
    "id": "POST-022",
    "rekkefolge": 22,
+   "opprettet": "2026-07-06T14:00:00",
    "posterId": "P007",
    "kategori": "History",
    "underkategori": "Medieval law",
@@ -1496,6 +1518,7 @@
   {
    "id": "POST-023",
    "rekkefolge": 23,
+   "opprettet": "2026-07-06T20:00:00",
    "posterId": "P008",
    "kategori": "History",
    "underkategori": "Pandemics",
@@ -1565,6 +1588,7 @@
   {
    "id": "POST-024",
    "rekkefolge": 24,
+   "opprettet": "2026-07-07T02:00:00",
    "posterId": "P008",
    "kategori": "History",
    "underkategori": "Global exchange",
@@ -1613,6 +1637,7 @@
   {
    "id": "POST-025",
    "rekkefolge": 25,
+   "opprettet": "2026-07-07T08:00:00",
    "posterId": "P007",
    "kategori": "History",
    "underkategori": "Vikings",
@@ -1659,6 +1684,7 @@
   {
    "id": "POST-026",
    "rekkefolge": 26,
+   "opprettet": "2026-07-07T14:00:00",
    "posterId": "P009",
    "kategori": "History",
    "underkategori": "Early cities",
@@ -1706,6 +1732,7 @@
   {
    "id": "POST-027",
    "rekkefolge": 27,
+   "opprettet": "2026-07-07T20:00:00",
    "posterId": "P006",
    "kategori": "History",
    "underkategori": "Ancient Egypt",
@@ -1754,6 +1781,7 @@
   {
    "id": "POST-028",
    "rekkefolge": 28,
+   "opprettet": "2026-07-08T02:00:00",
    "posterId": "P006",
    "kategori": "History",
    "underkategori": "Ancient Greece",
@@ -1800,6 +1828,7 @@
   {
    "id": "POST-029",
    "rekkefolge": 29,
+   "opprettet": "2026-07-08T08:00:00",
    "posterId": "P008",
    "kategori": "History",
    "underkategori": "Industrial Revolution",
@@ -1848,6 +1877,7 @@
   {
    "id": "POST-030",
    "rekkefolge": 30,
+   "opprettet": "2026-07-08T14:00:00",
    "posterId": "P008",
    "kategori": "History",
    "underkategori": "Atlantic revolutions",
@@ -1901,6 +1931,7 @@
   {
    "id": "POST-031",
    "rekkefolge": 31,
+   "opprettet": "2026-07-08T20:00:00",
    "posterId": "P009",
    "kategori": "History",
    "underkategori": "Abolition",
@@ -1970,6 +2001,7 @@
   {
    "id": "POST-032",
    "rekkefolge": 32,
+   "opprettet": "2026-07-09T02:00:00",
    "posterId": "P008",
    "kategori": "History",
    "underkategori": "Space Age",
@@ -2023,6 +2055,7 @@
   {
    "id": "POST-033",
    "rekkefolge": 33,
+   "opprettet": "2026-07-09T08:00:00",
    "posterId": "P008",
    "kategori": "History",
    "underkategori": "Cold War",
@@ -2070,6 +2103,7 @@
   {
    "id": "POST-034",
    "rekkefolge": 34,
+   "opprettet": "2026-07-09T14:00:00",
    "posterId": "P010",
    "kategori": "Technology",
    "underkategori": "Internet",
@@ -2123,6 +2157,7 @@
   {
    "id": "POST-035",
    "rekkefolge": 35,
+   "opprettet": "2026-07-09T20:00:00",
    "posterId": "P012",
    "kategori": "Technology",
    "underkategori": "Cybersecurity",
@@ -2192,6 +2227,7 @@
   {
    "id": "POST-036",
    "rekkefolge": 36,
+   "opprettet": "2026-07-10T02:00:00",
    "posterId": "P011",
    "kategori": "Technology",
    "underkategori": "Hardware",
@@ -2239,6 +2275,7 @@
   {
    "id": "POST-037",
    "rekkefolge": 37,
+   "opprettet": "2026-07-10T08:00:00",
    "posterId": "P011",
    "kategori": "Technology",
    "underkategori": "Navigation",
@@ -2285,6 +2322,7 @@
   {
    "id": "POST-038",
    "rekkefolge": 38,
+   "opprettet": "2026-07-10T14:00:00",
    "posterId": "P010",
    "kategori": "Technology",
    "underkategori": "Codes",
@@ -2332,6 +2370,7 @@
   {
    "id": "POST-039",
    "rekkefolge": 39,
+   "opprettet": "2026-07-10T20:00:00",
    "posterId": "P012",
    "kategori": "Technology",
    "underkategori": "Artificial intelligence",
@@ -2380,6 +2419,7 @@
   {
    "id": "POST-040",
    "rekkefolge": 40,
+   "opprettet": "2026-07-11T02:00:00",
    "posterId": "P011",
    "kategori": "Technology",
    "underkategori": "Energy storage",
@@ -2449,6 +2489,7 @@
   {
    "id": "POST-041",
    "rekkefolge": 41,
+   "opprettet": "2026-07-11T08:00:00",
    "posterId": "P010",
    "kategori": "Technology",
    "underkategori": "Cloud computing",
@@ -2495,6 +2536,7 @@
   {
    "id": "POST-042",
    "rekkefolge": 42,
+   "opprettet": "2026-07-11T14:00:00",
    "posterId": "P011",
    "kategori": "Technology",
    "underkategori": "Manufacturing",
@@ -2548,6 +2590,7 @@
   {
    "id": "POST-043",
    "rekkefolge": 43,
+   "opprettet": "2026-07-11T20:00:00",
    "posterId": "P013",
    "kategori": "Mind",
    "underkategori": "Sleep & learning",
@@ -2596,6 +2639,7 @@
   {
    "id": "POST-044",
    "rekkefolge": 44,
+   "opprettet": "2026-07-12T02:00:00",
    "posterId": "P014",
    "kategori": "Mind",
    "underkategori": "Attention",
@@ -2642,6 +2686,7 @@
   {
    "id": "POST-045",
    "rekkefolge": 45,
+   "opprettet": "2026-07-12T08:00:00",
    "posterId": "P013",
    "kategori": "Mind",
    "underkategori": "Learning science",
@@ -2689,6 +2734,7 @@
   {
    "id": "POST-046",
    "rekkefolge": 46,
+   "opprettet": "2026-07-12T14:00:00",
    "posterId": "P014",
    "kategori": "Mind",
    "underkategori": "Cognitive bias",
@@ -2736,6 +2782,7 @@
   {
    "id": "POST-047",
    "rekkefolge": 47,
+   "opprettet": "2026-07-12T20:00:00",
    "posterId": "P015",
    "kategori": "Mind",
    "underkategori": "Expectations",
@@ -2805,6 +2852,7 @@
   {
    "id": "POST-048",
    "rekkefolge": 48,
+   "opprettet": "2026-07-13T02:00:00",
    "posterId": "P015",
    "kategori": "Mind",
    "underkategori": "Stress",
@@ -2874,6 +2922,7 @@
   {
    "id": "POST-049",
    "rekkefolge": 49,
+   "opprettet": "2026-07-13T08:00:00",
    "posterId": "P013",
    "kategori": "Mind",
    "underkategori": "Neuroplasticity",
@@ -2920,6 +2969,7 @@
   {
    "id": "POST-050",
    "rekkefolge": 50,
+   "opprettet": "2026-07-13T14:00:00",
    "posterId": "P014",
    "kategori": "Mind",
    "underkategori": "Habits",
@@ -2973,6 +3023,7 @@
   {
    "id": "POST-051",
    "rekkefolge": 51,
+   "opprettet": "2026-07-13T20:00:00",
    "posterId": "P013",
    "kategori": "Mind",
    "underkategori": "Memory",
@@ -3019,6 +3070,7 @@
   {
    "id": "POST-052",
    "rekkefolge": 52,
+   "opprettet": "2026-07-14T02:00:00",
    "posterId": "P016",
    "kategori": "Health",
    "underkategori": "Vaccines",
@@ -3072,6 +3124,7 @@
   {
    "id": "POST-053",
    "rekkefolge": 53,
+   "opprettet": "2026-07-14T08:00:00",
    "posterId": "P016",
    "kategori": "Health",
    "underkategori": "Hygiene",
@@ -3119,6 +3172,7 @@
   {
    "id": "POST-054",
    "rekkefolge": 54,
+   "opprettet": "2026-07-14T14:00:00",
    "posterId": "P017",
    "kategori": "Health",
    "underkategori": "Strength",
@@ -3167,6 +3221,7 @@
   {
    "id": "POST-055",
    "rekkefolge": 55,
+   "opprettet": "2026-07-14T20:00:00",
    "posterId": "P017",
    "kategori": "Health",
    "underkategori": "Cardiovascular fitness",
@@ -3236,6 +3291,7 @@
   {
    "id": "POST-056",
    "rekkefolge": 56,
+   "opprettet": "2026-07-15T02:00:00",
    "posterId": "P018",
    "kategori": "Health",
    "underkategori": "Digestion",
@@ -3283,6 +3339,7 @@
   {
    "id": "POST-057",
    "rekkefolge": 57,
+   "opprettet": "2026-07-15T08:00:00",
    "posterId": "P018",
    "kategori": "Health",
    "underkategori": "Hydration",
@@ -3329,6 +3386,7 @@
   {
    "id": "POST-058",
    "rekkefolge": 58,
+   "opprettet": "2026-07-15T14:00:00",
    "posterId": "P016",
    "kategori": "Health",
    "underkategori": "Sun safety",
@@ -3398,6 +3456,7 @@
   {
    "id": "POST-059",
    "rekkefolge": 59,
+   "opprettet": "2026-07-15T20:00:00",
    "posterId": "P016",
    "kategori": "Health",
    "underkategori": "Sleep & immunity",
@@ -3445,6 +3504,7 @@
   {
    "id": "POST-060",
    "rekkefolge": 60,
+   "opprettet": "2026-07-16T02:00:00",
    "posterId": "P016",
    "kategori": "Health",
    "underkategori": "Antimicrobial resistance",
@@ -3493,6 +3553,7 @@
   {
    "id": "POST-061",
    "rekkefolge": 61,
+   "opprettet": "2026-07-16T08:00:00",
    "posterId": "P020",
    "kategori": "Nature",
    "underkategori": "Coral reefs",
@@ -3539,6 +3600,7 @@
   {
    "id": "POST-062",
    "rekkefolge": 62,
+   "opprettet": "2026-07-16T14:00:00",
    "posterId": "P021",
    "kategori": "Nature",
    "underkategori": "Pollination",
@@ -3608,6 +3670,7 @@
   {
    "id": "POST-063",
    "rekkefolge": 63,
+   "opprettet": "2026-07-16T20:00:00",
    "posterId": "P020",
    "kategori": "Nature",
    "underkategori": "Cephalopods",
@@ -3655,6 +3718,7 @@
   {
    "id": "POST-064",
    "rekkefolge": 64,
+   "opprettet": "2026-07-17T02:00:00",
    "posterId": "P019",
    "kategori": "Nature",
    "underkategori": "Fungi",
@@ -3703,6 +3767,7 @@
   {
    "id": "POST-065",
    "rekkefolge": 65,
+   "opprettet": "2026-07-17T08:00:00",
    "posterId": "P021",
    "kategori": "Nature",
    "underkategori": "Predators & ecosystems",
@@ -3750,6 +3815,7 @@
   {
    "id": "POST-066",
    "rekkefolge": 66,
+   "opprettet": "2026-07-17T14:00:00",
    "posterId": "P020",
    "kategori": "Nature",
    "underkategori": "Coasts",
@@ -3819,6 +3885,7 @@
   {
    "id": "POST-067",
    "rekkefolge": 67,
+   "opprettet": "2026-07-17T20:00:00",
    "posterId": "P021",
    "kategori": "Nature",
    "underkategori": "Migration",
@@ -3888,6 +3955,7 @@
   {
    "id": "POST-068",
    "rekkefolge": 68,
+   "opprettet": "2026-07-18T02:00:00",
    "posterId": "P021",
    "kategori": "Nature",
    "underkategori": "Bird navigation",
@@ -3934,6 +4002,7 @@
   {
    "id": "POST-069",
    "rekkefolge": 69,
+   "opprettet": "2026-07-18T08:00:00",
    "posterId": "P019",
    "kategori": "Nature",
    "underkategori": "Forests & climate",
@@ -3987,6 +4056,7 @@
   {
    "id": "POST-070",
    "rekkefolge": 70,
+   "opprettet": "2026-07-18T14:00:00",
    "posterId": "P020",
    "kategori": "Nature",
    "underkategori": "Sea turtles",
@@ -4034,6 +4104,7 @@
   {
    "id": "POST-071",
    "rekkefolge": 71,
+   "opprettet": "2026-07-18T20:00:00",
    "posterId": "P022",
    "kategori": "World",
    "underkategori": "Time & longitude",
@@ -4082,6 +4153,7 @@
   {
    "id": "POST-072",
    "rekkefolge": 72,
+   "opprettet": "2026-07-19T02:00:00",
    "posterId": "P022",
    "kategori": "World",
    "underkategori": "Climate patterns",
@@ -4129,6 +4201,7 @@
   {
    "id": "POST-073",
    "rekkefolge": 73,
+   "opprettet": "2026-07-19T08:00:00",
    "posterId": "P022",
    "kategori": "World",
    "underkategori": "Rivers",
@@ -4182,6 +4255,7 @@
   {
    "id": "POST-074",
    "rekkefolge": 74,
+   "opprettet": "2026-07-19T14:00:00",
    "posterId": "P023",
    "kategori": "World",
    "underkategori": "Cities",
@@ -4229,6 +4303,7 @@
   {
    "id": "POST-075",
    "rekkefolge": 75,
+   "opprettet": "2026-07-19T20:00:00",
    "posterId": "P023",
    "kategori": "World",
    "underkategori": "Languages",
@@ -4298,6 +4373,7 @@
   {
    "id": "POST-076",
    "rekkefolge": 76,
+   "opprettet": "2026-07-20T02:00:00",
    "posterId": "P022",
    "kategori": "World",
    "underkategori": "Mountains & weather",
@@ -4367,6 +4443,7 @@
   {
    "id": "POST-077",
    "rekkefolge": 77,
+   "opprettet": "2026-07-20T08:00:00",
    "posterId": "P022",
    "kategori": "World",
    "underkategori": "Natural hazards",
@@ -4413,6 +4490,7 @@
   {
    "id": "POST-078",
    "rekkefolge": 78,
+   "opprettet": "2026-07-20T14:00:00",
    "posterId": "P022",
    "kategori": "World",
    "underkategori": "Ocean & climate",
@@ -4482,6 +4560,7 @@
   {
    "id": "POST-079",
    "rekkefolge": 79,
+   "opprettet": "2026-07-20T20:00:00",
    "posterId": "P024",
    "kategori": "Society",
    "underkategori": "Economics & institutions",
@@ -4551,6 +4630,7 @@
   {
    "id": "POST-080",
    "rekkefolge": 80,
+   "opprettet": "2026-07-21T02:00:00",
    "posterId": "P024",
    "kategori": "Society",
    "underkategori": "Shared resources",
@@ -4598,6 +4678,7 @@
   {
    "id": "POST-081",
    "rekkefolge": 81,
+   "opprettet": "2026-07-21T08:00:00",
    "posterId": "P025",
    "kategori": "Society",
    "underkategori": "Misinformation",
@@ -4644,6 +4725,7 @@
   {
    "id": "POST-082",
    "rekkefolge": 82,
+   "opprettet": "2026-07-21T14:00:00",
    "posterId": "P024",
    "kategori": "Society",
    "underkategori": "Social behavior",
@@ -4692,6 +4774,7 @@
   {
    "id": "POST-083",
    "rekkefolge": 83,
+   "opprettet": "2026-07-21T20:00:00",
    "posterId": "P025",
    "kategori": "Society",
    "underkategori": "Platform design",
@@ -4739,6 +4822,7 @@
   {
    "id": "POST-084",
    "rekkefolge": 84,
+   "opprettet": "2026-07-22T02:00:00",
    "posterId": "P024",
    "kategori": "Society",
    "underkategori": "Population data",
@@ -4808,6 +4892,7 @@
   {
    "id": "POST-085",
    "rekkefolge": 85,
+   "opprettet": "2026-07-22T08:00:00",
    "posterId": "P027",
    "kategori": "Culture",
    "underkategori": "Music history",
@@ -4877,6 +4962,7 @@
   {
    "id": "POST-086",
    "rekkefolge": 86,
+   "opprettet": "2026-07-22T14:00:00",
    "posterId": "P026",
    "kategori": "Culture",
    "underkategori": "Art history",
@@ -4924,6 +5010,7 @@
   {
    "id": "POST-087",
    "rekkefolge": 87,
+   "opprettet": "2026-07-22T20:00:00",
    "posterId": "P026",
    "kategori": "Culture",
    "underkategori": "Oral heritage",
@@ -4970,6 +5057,7 @@
   {
    "id": "POST-088",
    "rekkefolge": 88,
+   "opprettet": "2026-07-23T02:00:00",
    "posterId": "P026",
    "kategori": "Culture",
    "underkategori": "Media history",
@@ -5017,6 +5105,7 @@
   {
    "id": "POST-089",
    "rekkefolge": 89,
+   "opprettet": "2026-07-23T08:00:00",
    "posterId": "P026",
    "kategori": "Culture",
    "underkategori": "Film",
@@ -5070,6 +5159,7 @@
   {
    "id": "POST-090",
    "rekkefolge": 90,
+   "opprettet": "2026-07-23T14:00:00",
    "posterId": "P028",
    "kategori": "Economics",
    "underkategori": "Prices",
@@ -5118,6 +5208,7 @@
   {
    "id": "POST-091",
    "rekkefolge": 91,
+   "opprettet": "2026-07-23T20:00:00",
    "posterId": "P028",
    "kategori": "Economics",
    "underkategori": "Saving",
@@ -5171,6 +5262,7 @@
   {
    "id": "POST-092",
    "rekkefolge": 92,
+   "opprettet": "2026-07-24T02:00:00",
    "posterId": "P029",
    "kategori": "Economics",
    "underkategori": "Markets",
@@ -5218,6 +5310,7 @@
   {
    "id": "POST-093",
    "rekkefolge": 93,
+   "opprettet": "2026-07-24T08:00:00",
    "posterId": "P029",
    "kategori": "Economics",
    "underkategori": "Decision-making",
@@ -5265,6 +5358,7 @@
   {
    "id": "POST-094",
    "rekkefolge": 94,
+   "opprettet": "2026-07-24T14:00:00",
    "posterId": "P028",
    "kategori": "Economics",
    "underkategori": "Risk",
@@ -5311,6 +5405,7 @@
   {
    "id": "POST-095",
    "rekkefolge": 95,
+   "opprettet": "2026-07-24T20:00:00",
    "posterId": "P031",
    "kategori": "Everyday",
    "underkategori": "Baking",
@@ -5364,6 +5459,7 @@
   {
    "id": "POST-096",
    "rekkefolge": 96,
+   "opprettet": "2026-07-25T02:00:00",
    "posterId": "P031",
    "kategori": "Everyday",
    "underkategori": "Cleaning chemistry",
@@ -5433,6 +5529,7 @@
   {
    "id": "POST-097",
    "rekkefolge": 97,
+   "opprettet": "2026-07-25T08:00:00",
    "posterId": "P030",
    "kategori": "Everyday",
    "underkategori": "Appliances",
@@ -5481,6 +5578,7 @@
   {
    "id": "POST-098",
    "rekkefolge": 98,
+   "opprettet": "2026-07-25T14:00:00",
    "posterId": "P030",
    "kategori": "Everyday",
    "underkategori": "Microwaves",
@@ -5527,6 +5625,7 @@
   {
    "id": "POST-099",
    "rekkefolge": 99,
+   "opprettet": "2026-07-25T20:00:00",
    "posterId": "P032",
    "kategori": "Everyday",
    "underkategori": "Bicycles",
@@ -5596,6 +5695,7 @@
   {
    "id": "POST-100",
    "rekkefolge": 100,
+   "opprettet": "2026-07-26T02:00:00",
    "posterId": "P031",
    "kategori": "Everyday",
    "underkategori": "Coffee",
