@@ -3131,16 +3131,17 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
    minispill i mørkt glass, aksjonsrail til høyre, varsler som skyveside og
    kommentarer som halvside fra høyre. Riktig/feil deler språk med leksjonene.
    ========================================================================== */
-/* Egen scrollflate uten banner og bakgrunnsbilde — innholdet ER siden */
-.feedscroll { background: var(--bg); padding: calc(env(safe-area-inset-top) + 8px) 10px 0; }
-.feedscroll__laster { padding: 20px 8px; }
+/* Egen scrollflate uten banner og bakgrunnsbilde — innholdet ER siden.
+   Ingen sidepadding: kortene skal ta 100 % av skjermbredden. */
+.feedscroll { background: var(--bg); padding: calc(env(safe-area-inset-top) + 8px) 0 0; }
+.feedscroll__laster { padding: 20px 16px; }
 
 /* Topplinje: kalender · For deg ˅ · bjelle — ligger i scrollflaten og
    scrolles forbi som resten av innholdet (ikke fast). */
 .feedtopp {
   position: relative; z-index: 2; /* anker + lag for dropdownen */
   display: flex; align-items: center; justify-content: space-between;
-  gap: 8px; padding: 4px 2px 6px;
+  gap: 8px; padding: 4px 12px 6px;
 }
 .fordeg {
   display: inline-flex; align-items: center; gap: 4px;
@@ -3172,7 +3173,7 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 /* Story-raden — nyhetsprototypen: gradientringer per domene, grå når sett */
 .storyrad {
   display: flex; gap: 12px; overflow-x: auto;
-  padding: 4px 4px 12px; margin: 0 -2px;
+  padding: 4px 12px 12px;
   scrollbar-width: none; -webkit-overflow-scrolling: touch;
 }
 .storyrad::-webkit-scrollbar { display: none; }
@@ -3239,11 +3240,12 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
   font-family: inherit; font-size: 13px; font-weight: 700; padding: 10px 16px;
 }
 
-/* Innleggskortet: fullbredde gradient med avrundede hjørner; det hvite
+/* Innleggskortet: 100 % av skjermbredden, avrundede hjørner; det hvite
    mellomrommet er den eneste deleren mellom innlegg */
 .feedliste { display: flex; flex-direction: column; gap: 14px; }
+.feedliste > .kort { margin: 0 12px; } /* tom-/feiltilstander skal ikke i kant */
 .fkort {
-  border-radius: var(--radius-2xl); color: #fff;
+  width: 100%; border-radius: var(--radius-2xl); color: #fff;
   padding: 18px 14px 14px; min-height: min(74vh, 640px);
   display: flex; flex-direction: column;
   box-shadow: var(--shadow-card);
