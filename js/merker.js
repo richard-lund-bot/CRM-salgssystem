@@ -457,12 +457,33 @@ export function visMerkerSkjerm(mount) {
     typeRing('mobilitet', 'teal'),
   );
 
-  // Meny-lista (snarveier + innstillinger) bor nå bak tannhjulet (#/meny),
-  // ikke lenger på Profil.
   const restitusjon = kroppskartWidget(hentLogg());
 
-  fanesideMedTittel(mount, { tittel: 'Profil', under: 'Nivået ditt, merkene dine — og alt det andre.' })
-    .append(hero, typerad, restitusjon, ...MERKE_KATEGORIER.map(bolk));
+  // Trening-området (M37): alt av treningsstats og -oppslag samlet på Profil —
+  // typenivåene, restitusjonskartet og snarveier til Aktivitet (den gamle
+  // fanen), Styrke & fremgang og Øvelsesoppslaget.
+  const lenke = (ikonNavn, tekst, href) => el('a', { class: 'listerad', href },
+    el('span', { class: 'listerad__ikon' }, ikon(ikonNavn)),
+    el('span', { class: 'listerad__navn' }, tekst),
+    el('span', { class: 'listerad__chevron' }, ikon('chevron')),
+  );
+  const treningsomrade = el('section', { class: 'merkebolk' },
+    el('div', { class: 'merkebolk__hode' },
+      el('h2', { class: 'merkebolk__tittel' }, 'Trening'),
+    ),
+    typerad,
+    restitusjon,
+    el('div', { class: 'kort' },
+      el('div', { class: 'liste' },
+        lenke('puls', 'Aktivitet & historikk', '#/aktivitet'),
+        lenke('vekt', 'Styrke & fremgang', '#/styrke'),
+        lenke('sok', 'Øvelsesoppslag', '#/bibliotek'),
+      ),
+    ),
+  );
+
+  fanesideMedTittel(mount, { tittel: 'Profil', under: 'Nivået ditt, treningen din og merkene dine — samlet.' })
+    .append(hero, treningsomrade, ...MERKE_KATEGORIER.map(bolk));
 
   // Kommer man fra «restitusjonsbehov»-lenka på Min dag, scroll widgeten inn.
   if (vis === 'restitusjon') {

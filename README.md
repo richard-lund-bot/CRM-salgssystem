@@ -65,7 +65,8 @@ python3 -m http.server 8000
 index.html              app-skall
 css/app.css             stil (Mova-designsystemet, mobil først)
 js/
-  app.js                inngang, ruter, tab-bar (Min dag/Beveg/Merker/Aktivitet/Meny), Min dag, meny + innstillinger
+  app.js                inngang, ruter, tab-bar (Hjem/Trening/Profil/Treningsbibliotek/Lær), Min dag (Trening), meny + innstillinger
+  feed.js               Hjem-fanen: den spillbare lærings-feeden (7 minispill-moduler, XP, kilder, lik/lagre/del)
   banner.js             det hvite toppbanneret (profil m/ nivåboble, wordmark, ukeskalender) + sidetittel
   bevegelse.js          bevegelseslaget: 12 bevegelsestyper, spec-XP-formel, Momentum, Dagens gnist
   beveg.js              hurtigstart m/ timer, manuell logg, «Du beveget deg»-skjermen (Beveg-fanen er øktbiblioteket)
@@ -76,7 +77,7 @@ js/
   bibliotek-okter.js    øktbiblioteket: 60 kuraterte true-and-tested økter (bolker per nivå, filter, start)
   kjor.js               øktspilleren: review + kjøre-UI (guide/sekvens/pust/fasetimer), delvis teller
   niva.js               motor: XP (spec-formel), registrerBevegelse, nivåkurve, PR-uttrekk
-  historikk.js          Aktivitet-skjerm: Historikk (heatmap/volum/donut/balanse/logg) + Prestasjoner
+  historikk.js          Aktivitet-skjerm (nås fra Trening-området på Profil): Historikk + Prestasjoner
   kalender.js           Mosjonskalender: ukeliste, planlegg bibliotekøkter på dato
   sync.js               skysync: magic-link-auth + PostgREST + last-write-wins-fletting
   strava.js             Strava-broen: krediterer importerte Garmin-økter (XP på enheten) + innstillingskort
@@ -84,6 +85,7 @@ js/
   animasjon.js          animasjonsverktøykasse: tallOpp, lagRing, lagKonfetti, fyllInn
   config.js             Supabase-URL/nøkkel + app-versjon
 data/
+  feed.json             lærings-feeden: 100 innlegg m/ minispill + 32 fiktive guider (fra Aha-seed, kildelenket)
   okter.json            øktbiblioteket: 60 kuraterte økter (10 kategorier × 3 skillnivåer × 2 intensiteter)
   exercises.json        ~530 øvelser (øvelsesoppslaget) — bygges av merge-parts.mjs
   equipment.json        utstyrsnavn (for oppslaget)

@@ -1,8 +1,10 @@
-// App-inngang for Mova (M15 — merker i stedet for reisen).
-// Navigasjon: Min dag · Beveg · Merker · Aktivitet · Meny.
-// Min dag åpner med hilsen, dagens statkort og bevegelsesgrid — formulert
+// App-inngang for Mova (M37 — feeden er hjem).
+// Navigasjon: Hjem (lærings-feed) · Trening (Min dag) · Profil · Treningsbibliotek · Lær.
+// Hjem er den spillbare kunnskaps-feeden (js/feed.js); Min dag-dashbordet
+// (hilsen, dagens statkort, bevegelsesgrid) bor på Trening-fanen — formulert
 // som tilbud, aldri skam. Nivået bor som en liten boble på profilikonet;
-// feiringen bor i merkene (js/merker.js).
+// feiringen bor i merkene (js/merker.js), og treningsstats/-oppslag er samlet
+// under Trening-området på profilen.
 import { lastBibliotek, MODALITET_NAVN, MONSTER_NAVN } from './library.js';
 import {
   hentProfil, harProfil, lagreProfil, hentLogg, nullstillAlt,
@@ -36,14 +38,16 @@ import * as sync from './sync.js';
 import { krediterNye, stravaKort } from './strava.js';
 import { byggVarsler, merkVarslerSett, varselKort, harUlesteVarsler } from './varsler.js';
 import { varsle } from './toast.js';
+import { visFeedSkjerm } from './feed.js';
 
 const app = document.getElementById('app');
 let bib = null;
 
 // --- Ruter (hash-basert) ---
 const ruter = {
-  hjem: visHjem,
-  beveg: () => visOkterSkjerm(app), // Beveg-fanen er øktbiblioteket
+  hjem: () => visFeedSkjerm(app), // Hjem er lærings-feeden (M37)
+  trening: visTrening, // Min dag-dashbordet bor på Trening-fanen
+  beveg: () => visOkterSkjerm(app), // Treningsbibliotek-fanen er øktbiblioteket
   hurtig: () => visHurtigSkjerm(app),
   loggfor: () => visLoggforSkjerm(app),
   merker: () => visMerkerSkjerm(app),
@@ -84,7 +88,7 @@ const AUTH_RUTER = new Set(['logg-inn', 'bli-medlem']);
 // --- Per-fane navigasjonsminne -------------------------------------------
 // Hver bunnfane husker hvor den var (full hash + scroll), så et fanebytte og
 // tilbake ikke nullstiller til fane-roten (som i vanlige apper).
-const FANER = ['hjem', 'beveg', 'merker', 'aktivitet', 'laer'];
+const FANER = ['hjem', 'trening', 'merker', 'beveg', 'laer'];
 // Under-rute → eier-fane. Samme kart som lyser opp riktig fane i oppdaterNav.
 // meny/innstillinger/varsler er bevisst utelatt: de er egne sider (nås fra
 // tannhjulet/bjella, ikke inne i en fane), så de lyser ingen fane og huskes
@@ -92,11 +96,12 @@ const FANER = ['hjem', 'beveg', 'merker', 'aktivitet', 'laer'];
 const FANE_AV_RUTE = {
   bibliotek: 'merker', om: 'merker', plan: 'merker',
   styrke: 'merker', kalender: 'merker', reise: 'merker', tilpass: 'merker',
-  historikk: 'aktivitet', ny: 'beveg', okter: 'beveg',
+  aktivitet: 'merker', historikk: 'merker', // Aktivitet-fanen er borte — skjermen eies av Profil
+  ny: 'beveg', okter: 'beveg',
   artikkel: 'laer', sti: 'laer', disiplin: 'laer', seksjon: 'laer',
 };
 const faneForRute = (rute) => FANE_AV_RUTE[rute] || rute;
-const faneMinne = { hjem: '#/hjem', beveg: '#/beveg', merker: '#/merker', aktivitet: '#/aktivitet', laer: '#/laer' };
+const faneMinne = { hjem: '#/hjem', trening: '#/trening', merker: '#/merker', beveg: '#/beveg', laer: '#/laer' };
 const scrollMinne = new Map();
 let forrigeHash = '';
 // Fanesidene scroller et indre .hjem-scroll; reise-/vanlige skjermer scroller vinduet.
@@ -143,7 +148,7 @@ function navger() {
   if (rute !== 'kjor' && rute !== 'hurtig') slippVaaken(); // timer-skjermene eier låsen
 
   const tegn = () => {
-    (ruter[rute] || visHjem)();
+    (ruter[rute] || ruter.hjem)();
     oppdaterNav(rute);
     oppdaterFaneMinne(rute);
     if (byttet) gjenopprettScroll(location.hash);
@@ -179,11 +184,12 @@ function fane(tittel, under, ...innhold) {
 }
 
 // ===========================================================================
-// Min dag — Mova-dashbord: hvit banner med header + ukeskalender (buet
-// underkant — resten av siden ligger som underlag), tre statistikk-kort
+// Trening (Min dag) — Mova-dashbord: hvit banner med header + ukeskalender
+// (buet underkant — resten av siden ligger som underlag), tre statistikk-kort
 // (dagens minutter, ukas aktive dager, nivå/XP) og bevegelsesgrid. Heroen
 // samler dagens budskap: planlagt økt, positiv kvittering, eller «Vi
 // anbefaler»-boksen fra anbefalingsmotoren; streaken vises som kompakt flamme.
+// Bodde på Hjem-fanen frem til M37 — nå er feeden hjem og dette Trening.
 // ===========================================================================
 
 function isoDato(d) {
@@ -196,7 +202,7 @@ function isoDato(d) {
 // Dagsmål i minutter, avledet av foretrukket varighetsklasse.
 const DAGSMAAL = { mikro: 10, kort: 20, standard: 40, lang: 60 };
 
-function visHjem() {
+function visTrening() {
   const profil = hentProfil();
   if (!profil) {
     skjerm('Mova', velkommenKort());
@@ -683,11 +689,11 @@ function visMeny() {
     el('span', { class: 'listerad__navn' }, tekst),
     el('span', { class: 'listerad__chevron' }, ikon('chevron')),
   );
-  fane('Meny', 'Snarveier, oppslag og innstillinger.',
+  // Treningssnarveiene (styrke, øvelsesoppslag, aktivitet) bor nå under
+  // Trening-området på Profil — menyen er kun innstillinger og oppslag om appen.
+  fane('Meny', 'Innstillinger og om appen.',
     el('div', { class: 'kort' },
       el('div', { class: 'liste' },
-        lenke('vekt', 'Styrke & fremgang', '#/styrke'),
-        lenke('sok', 'Øvelsesoppslag', '#/bibliotek'),
         lenke('gir', 'Innstillinger', '#/innstillinger'),
         lenke('info', 'Om Mova', '#/om'),
       ),
@@ -1035,10 +1041,10 @@ function byggTabbar() {
   const nav = el('nav', { class: 'tabbar', 'aria-label': 'Hovedmeny' },
     el('span', { class: 'tabbar__refraksjon', 'aria-hidden': 'true' }),
     el('span', { class: 'tabbar__linse', 'aria-hidden': 'true' }),
-    tab('hjem', 'hjem', 'hjemfyll', 'I dag'),
-    tab('beveg', 'loper', 'loperfyll', 'Trening'),
+    tab('hjem', 'hjem', 'hjemfyll', 'Hjem'),
+    tab('trening', 'loper', 'loperfyll', 'Trening'),
     tab('merker', 'person', 'personfyll', 'Profil'),
-    tab('aktivitet', 'puls', null, 'Aktivitet'),
+    tab('beveg', 'vekt', null, 'Treningsbibliotek'),
     tab('laer', 'bok', 'bokfyll', 'Lær'),
     el('span', { class: 'tabbar__trykkpunkt', 'aria-hidden': 'true' }),
     el('span', { class: 'tabbar__flash', 'aria-hidden': 'true' }),
@@ -1240,9 +1246,11 @@ function oppdaterSyncMerke(status) {
   const knapp = document.querySelector('.tabbar__knapp[data-rute="meny"]');
   if (knapp) knapp.classList.toggle('tabbar__knapp--synker', status === 'synker');
   // Hvis brukeren står på en skjerm som viser synket data, tegn på nytt.
+  // «hjem» (feeden) tegnes bevisst IKKE på nytt ved synk — en redraw midt i
+  // et påbegynt minispill ville nullstilt spillet under fingrene på folk.
   if (status === 'synket') {
     const rute = (location.hash.replace('#/', '') || 'hjem').split('?')[0];
-    if (['hjem', 'historikk', 'aktivitet', 'merker', 'innstillinger'].includes(rute)) navger();
+    if (['trening', 'historikk', 'aktivitet', 'merker', 'innstillinger'].includes(rute)) navger();
   }
 }
 

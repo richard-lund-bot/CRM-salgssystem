@@ -393,7 +393,7 @@ export function visBevegelseFerdig(mount, resultat, { bevegelse, varighetMin, ti
         el('p', { class: 'dempet' }, mom.undertekst),
       ),
       el('div', { class: 'knapprad' },
-        el('button', { class: 'knapp', type: 'button', onclick: () => { location.hash = '#/hjem'; } }, 'Til Min dag'),
+        el('button', { class: 'knapp', type: 'button', onclick: () => { location.hash = '#/trening'; } }, 'Til Min dag'),
         el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: () => { location.hash = '#/merker'; } }, 'Se merkene'),
       ),
     ),

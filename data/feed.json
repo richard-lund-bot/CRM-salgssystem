@@ -1,0 +1,5645 @@
+{
+ "schemaVersion": "1.0",
+ "beskrivelse": "Spillbar lærings-feed (Aha-seed): 100 innlegg med minispill, kilder og fiktive redaksjonelle guider.",
+ "posters": [
+  {
+   "id": "P001",
+   "navn": "Nova",
+   "handle": "@nova.science",
+   "kategori": "Science",
+   "dekker": "Physics, energy and surprising natural laws",
+   "slagord": "Let’s make the invisible visible.",
+   "bio": "A fictional Aha guide for physics and big scientific ideas.",
+   "aksentStart": "#6D28D9",
+   "aksentSlutt": "#EC4899"
+  },
+  {
+   "id": "P002",
+   "navn": "Luma",
+   "handle": "@luma.lab",
+   "kategori": "Science",
+   "dekker": "Chemistry, materials and molecules",
+   "slagord": "Tiny particles. Big consequences.",
+   "bio": "A fictional Aha guide who turns chemistry into quick visual stories.",
+   "aksentStart": "#0EA5E9",
+   "aksentSlutt": "#22C55E"
+  },
+  {
+   "id": "P003",
+   "navn": "Terra",
+   "handle": "@terra.earth",
+   "kategori": "Science",
+   "dekker": "Geology, climate and Earth systems",
+   "slagord": "Earth is always moving.",
+   "bio": "A fictional Aha guide for the forces shaping our planet.",
+   "aksentStart": "#15803D",
+   "aksentSlutt": "#F59E0B"
+  },
+  {
+   "id": "P004",
+   "navn": "Orbit",
+   "handle": "@orbit.space",
+   "kategori": "Space",
+   "dekker": "Planets, moons and orbital mechanics",
+   "slagord": "Look up. Then look closer.",
+   "bio": "A fictional Aha guide for planets, moons and cosmic motion.",
+   "aksentStart": "#1D4ED8",
+   "aksentSlutt": "#9333EA"
+  },
+  {
+   "id": "P005",
+   "navn": "Sol",
+   "handle": "@sol.cosmos",
+   "kategori": "Space",
+   "dekker": "Stars, galaxies, black holes and exoplanets",
+   "slagord": "The universe is stranger than fiction.",
+   "bio": "A fictional Aha guide for the deep universe.",
+   "aksentStart": "#F97316",
+   "aksentSlutt": "#EAB308"
+  },
+  {
+   "id": "P006",
+   "navn": "Cleo",
+   "handle": "@cleo.history",
+   "kategori": "History",
+   "dekker": "Ancient Egypt, Greece and Rome",
+   "slagord": "The past was never boring.",
+   "bio": "A fictional Aha guide for the ancient Mediterranean world.",
+   "aksentStart": "#C2410C",
+   "aksentSlutt": "#FBBF24"
+  },
+  {
+   "id": "P007",
+   "navn": "Saga",
+   "handle": "@saga.north",
+   "kategori": "History",
+   "dekker": "Vikings, medieval Europe and northern history",
+   "slagord": "Every legend has a paper trail.",
+   "bio": "A fictional Aha guide for medieval and Nordic history.",
+   "aksentStart": "#0F766E",
+   "aksentSlutt": "#60A5FA"
+  },
+  {
+   "id": "P008",
+   "navn": "Chronos",
+   "handle": "@chronos.timeline",
+   "kategori": "History",
+   "dekker": "Revolutions, empires and global turning points",
+   "slagord": "First this happened. Then everything changed.",
+   "bio": "A fictional Aha guide for world-changing sequences of events.",
+   "aksentStart": "#7C3AED",
+   "aksentSlutt": "#EF4444"
+  },
+  {
+   "id": "P009",
+   "navn": "Nia",
+   "handle": "@nia.people",
+   "kategori": "History",
+   "dekker": "Social history, overlooked people and daily life",
+   "slagord": "History happened to real people.",
+   "bio": "A fictional Aha guide for the lives behind major events.",
+   "aksentStart": "#DB2777",
+   "aksentSlutt": "#F97316"
+  },
+  {
+   "id": "P010",
+   "navn": "Pixel",
+   "handle": "@pixel.tech",
+   "kategori": "Technology",
+   "dekker": "Internet, software and digital systems",
+   "slagord": "Your screen has a secret life.",
+   "bio": "A fictional Aha guide for how digital technology works.",
+   "aksentStart": "#4F46E5",
+   "aksentSlutt": "#06B6D4"
+  },
+  {
+   "id": "P011",
+   "navn": "Coda",
+   "handle": "@coda.builds",
+   "kategori": "Technology",
+   "dekker": "Engineering, hardware and manufacturing",
+   "slagord": "Take it apart. Understand it. Build it better.",
+   "bio": "A fictional Aha guide for engineered systems and making things.",
+   "aksentStart": "#0891B2",
+   "aksentSlutt": "#84CC16"
+  },
+  {
+   "id": "P012",
+   "navn": "Cipher",
+   "handle": "@cipher.secure",
+   "kategori": "Technology",
+   "dekker": "Privacy, encryption and AI literacy",
+   "slagord": "Pause before you trust the screen.",
+   "bio": "A fictional Aha guide for security, AI and digital trust.",
+   "aksentStart": "#111827",
+   "aksentSlutt": "#8B5CF6"
+  },
+  {
+   "id": "P013",
+   "navn": "Mira",
+   "handle": "@mira.mind",
+   "kategori": "Mind",
+   "dekker": "Memory, sleep and learning",
+   "slagord": "Your brain learns by changing.",
+   "bio": "A fictional Aha guide for memory, sleep and learning science.",
+   "aksentStart": "#A855F7",
+   "aksentSlutt": "#EC4899"
+  },
+  {
+   "id": "P014",
+   "navn": "Nudge",
+   "handle": "@nudge.behavior",
+   "kategori": "Mind",
+   "dekker": "Habits, decisions and cognitive biases",
+   "slagord": "Your brain took a shortcut again.",
+   "bio": "A fictional Aha guide for habits, choices and mental shortcuts.",
+   "aksentStart": "#F43F5E",
+   "aksentSlutt": "#F59E0B"
+  },
+  {
+   "id": "P015",
+   "navn": "Echo",
+   "handle": "@echo.psych",
+   "kategori": "Mind",
+   "dekker": "Emotion, stress and social psychology",
+   "slagord": "Notice the pattern before it runs you.",
+   "bio": "A fictional Aha guide for emotions and social behavior.",
+   "aksentStart": "#0EA5E9",
+   "aksentSlutt": "#A855F7"
+  },
+  {
+   "id": "P016",
+   "navn": "Vita",
+   "handle": "@vita.health",
+   "kategori": "Health",
+   "dekker": "Prevention, immunity and public health",
+   "slagord": "Small habits protect big systems.",
+   "bio": "A fictional Aha guide for public health and prevention.",
+   "aksentStart": "#16A34A",
+   "aksentSlutt": "#14B8A6"
+  },
+  {
+   "id": "P017",
+   "navn": "Pulse",
+   "handle": "@pulse.moves",
+   "kategori": "Health",
+   "dekker": "Exercise, heart, muscle and recovery",
+   "slagord": "Movement changes more than muscles.",
+   "bio": "A fictional Aha guide for exercise and recovery science.",
+   "aksentStart": "#EF4444",
+   "aksentSlutt": "#F97316"
+  },
+  {
+   "id": "P018",
+   "navn": "Savor",
+   "handle": "@savor.food",
+   "kategori": "Health",
+   "dekker": "Nutrition, digestion and food science",
+   "slagord": "Food is chemistry you can taste.",
+   "bio": "A fictional Aha guide for nutrition and food science.",
+   "aksentStart": "#84CC16",
+   "aksentSlutt": "#F59E0B"
+  },
+  {
+   "id": "P019",
+   "navn": "Flora",
+   "handle": "@flora.green",
+   "kategori": "Nature",
+   "dekker": "Plants, forests and fungi",
+   "slagord": "The quietest systems do huge work.",
+   "bio": "A fictional Aha guide for plants, forests and fungi.",
+   "aksentStart": "#15803D",
+   "aksentSlutt": "#84CC16"
+  },
+  {
+   "id": "P020",
+   "navn": "Reef",
+   "handle": "@reef.ocean",
+   "kategori": "Nature",
+   "dekker": "Ocean life, coral reefs and coasts",
+   "slagord": "The ocean is full of plot twists.",
+   "bio": "A fictional Aha guide for ocean life and coastal ecosystems.",
+   "aksentStart": "#0284C7",
+   "aksentSlutt": "#14B8A6"
+  },
+  {
+   "id": "P021",
+   "navn": "Wild",
+   "handle": "@wild.behavior",
+   "kategori": "Nature",
+   "dekker": "Animals, migration and ecosystems",
+   "slagord": "Nature already invented that.",
+   "bio": "A fictional Aha guide for animal behavior and ecosystems.",
+   "aksentStart": "#CA8A04",
+   "aksentSlutt": "#EA580C"
+  },
+  {
+   "id": "P022",
+   "navn": "Atlas",
+   "handle": "@atlas.world",
+   "kategori": "World",
+   "dekker": "Geography, climate patterns and places",
+   "slagord": "Every place has a reason.",
+   "bio": "A fictional Aha guide for geography and how places work.",
+   "aksentStart": "#2563EB",
+   "aksentSlutt": "#10B981"
+  },
+  {
+   "id": "P023",
+   "navn": "Locale",
+   "handle": "@locale.people",
+   "kategori": "World",
+   "dekker": "Languages, cities and human geography",
+   "slagord": "Maps are made of people too.",
+   "bio": "A fictional Aha guide for cities, languages and human geography.",
+   "aksentStart": "#7C3AED",
+   "aksentSlutt": "#06B6D4"
+  },
+  {
+   "id": "P024",
+   "navn": "Civic",
+   "handle": "@civic.society",
+   "kategori": "Society",
+   "dekker": "Institutions, public goods and communities",
+   "slagord": "Society is a system we all touch.",
+   "bio": "A fictional Aha guide for institutions and shared systems.",
+   "aksentStart": "#334155",
+   "aksentSlutt": "#0EA5E9"
+  },
+  {
+   "id": "P025",
+   "navn": "Signal",
+   "handle": "@signal.media",
+   "kategori": "Society",
+   "dekker": "Media, misinformation and online behavior",
+   "slagord": "Check the signal, not just the volume.",
+   "bio": "A fictional Aha guide for media literacy and online information.",
+   "aksentStart": "#DC2626",
+   "aksentSlutt": "#7C3AED"
+  },
+  {
+   "id": "P026",
+   "navn": "Muse",
+   "handle": "@muse.culture",
+   "kategori": "Culture",
+   "dekker": "Art, storytelling and cultural history",
+   "slagord": "Culture leaves clues everywhere.",
+   "bio": "A fictional Aha guide for art and storytelling.",
+   "aksentStart": "#BE185D",
+   "aksentSlutt": "#7C3AED"
+  },
+  {
+   "id": "P027",
+   "navn": "Riff",
+   "handle": "@riff.sound",
+   "kategori": "Culture",
+   "dekker": "Music, sound and performance",
+   "slagord": "Hear the history inside the sound.",
+   "bio": "A fictional Aha guide for music and sound culture.",
+   "aksentStart": "#F97316",
+   "aksentSlutt": "#EC4899"
+  },
+  {
+   "id": "P028",
+   "navn": "Penny",
+   "handle": "@penny.econ",
+   "kategori": "Economics",
+   "dekker": "Money, prices and personal finance concepts",
+   "slagord": "Follow the incentives.",
+   "bio": "A fictional Aha guide for everyday economics.",
+   "aksentStart": "#059669",
+   "aksentSlutt": "#EAB308"
+  },
+  {
+   "id": "P029",
+   "navn": "Ledger",
+   "handle": "@ledger.systems",
+   "kategori": "Economics",
+   "dekker": "Markets, trade and economic systems",
+   "slagord": "Every choice has a trade-off.",
+   "bio": "A fictional Aha guide for markets and economic systems.",
+   "aksentStart": "#1E3A8A",
+   "aksentSlutt": "#0F766E"
+  },
+  {
+   "id": "P030",
+   "navn": "Tinker",
+   "handle": "@tinker.everyday",
+   "kategori": "Everyday",
+   "dekker": "Everyday physics, appliances and mechanisms",
+   "slagord": "Ordinary things are secretly engineering.",
+   "bio": "A fictional Aha guide for the science hidden in ordinary objects.",
+   "aksentStart": "#EA580C",
+   "aksentSlutt": "#0EA5E9"
+  },
+  {
+   "id": "P031",
+   "navn": "Pippa",
+   "handle": "@pippa.kitchenlab",
+   "kategori": "Everyday",
+   "dekker": "Cooking, coffee and kitchen chemistry",
+   "slagord": "Your kitchen is already a laboratory.",
+   "bio": "A fictional Aha guide for cooking and kitchen science.",
+   "aksentStart": "#F59E0B",
+   "aksentSlutt": "#EF4444"
+  },
+  {
+   "id": "P032",
+   "navn": "Dash",
+   "handle": "@dash.motion",
+   "kategori": "Everyday",
+   "dekker": "Transport, machines and movement",
+   "slagord": "Motion always makes a trade.",
+   "bio": "A fictional Aha guide for machines, transport and motion.",
+   "aksentStart": "#2563EB",
+   "aksentSlutt": "#F97316"
+  }
+ ],
+ "posts": [
+  {
+   "id": "POST-001",
+   "rekkefolge": 1,
+   "posterId": "P003",
+   "kategori": "Science",
+   "underkategori": "Climate & oceans",
+   "serie": "Earth in Motion",
+   "tittel": "The oceans are storing most of Earth’s excess heat",
+   "hook": "The biggest heat sink on Earth is not the atmosphere.",
+   "sammendrag": "Because water can store enormous amounts of heat, the ocean absorbs the great majority of the excess heat trapped by greenhouse gases. That changes sea level, marine heatwaves and ecosystems.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Where has most of the excess heat from recent global warming gone?",
+    "options": [
+     "The deep ocean and upper ocean",
+     "The Moon",
+     "Only city buildings",
+     "Mostly desert sand"
+    ],
+    "correct_answer": "The deep ocean and upper ocean",
+    "explanation": "The ocean is Earth’s dominant heat reservoir and has absorbed most of the excess heat.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Climate Change Impacts",
+    "org": "NOAA",
+    "url": "https://www.noaa.gov/education/resource-collections/climate/climate-change-impacts"
+   },
+   "lesMer": {
+    "tittel": "Ocean Currents",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/education/tutorial_currents/"
+   },
+   "tags": [
+    "climate",
+    "ocean",
+    "heat"
+   ],
+   "seed": {
+    "likes": 5787,
+    "comments": 34,
+    "saves": 1105,
+    "shares": 69
+   }
+  },
+  {
+   "id": "POST-002",
+   "rekkefolge": 2,
+   "posterId": "P003",
+   "kategori": "Science",
+   "underkategori": "Geology",
+   "serie": "Earth in Motion",
+   "tittel": "Continents move because Earth’s surface is broken into plates",
+   "hook": "The ground beneath you is moving—just very slowly.",
+   "sammendrag": "Earth’s outer shell is divided into large plates that move relative to one another. Their boundaries are where many earthquakes, volcanoes and mountain ranges form.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 30,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Match each plate boundary with what commonly happens there.",
+    "options": [
+     {
+      "left": "Divergent",
+      "right": "Plates move apart"
+     },
+     {
+      "left": "Convergent",
+      "right": "Plates move together"
+     },
+     {
+      "left": "Transform",
+      "right": "Plates slide past"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Divergent",
+      "right": "Plates move apart"
+     },
+     {
+      "left": "Convergent",
+      "right": "Plates move together"
+     },
+     {
+      "left": "Transform",
+      "right": "Plates slide past"
+     }
+    ],
+    "explanation": "Different boundary motions produce different geological patterns.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "This Dynamic Earth: The Story of Plate Tectonics",
+    "org": "U.S. Geological Survey",
+    "url": "https://pubs.usgs.gov/gip/dynamic/"
+   },
+   "lesMer": {
+    "tittel": "What Was Pangea?",
+    "org": "U.S. Geological Survey",
+    "url": "https://www.usgs.gov/faqs/what-was-pangea"
+   },
+   "tags": [
+    "geology",
+    "tectonics",
+    "earthquakes"
+   ],
+   "seed": {
+    "likes": 5478,
+    "comments": 227,
+    "saves": 918,
+    "shares": 378
+   }
+  },
+  {
+   "id": "POST-003",
+   "rekkefolge": 3,
+   "posterId": "P003",
+   "kategori": "Science",
+   "underkategori": "Earth systems",
+   "serie": "Earth in Motion",
+   "tittel": "The water cycle is powered by sunlight and gravity",
+   "hook": "Rain is only one frame in a global recycling loop.",
+   "sammendrag": "Sunlight drives evaporation, while gravity returns water through precipitation, rivers and groundwater. Water is constantly moving among ocean, atmosphere, ice and land.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Put a simple water-cycle pathway in order.",
+    "options": [
+     "Sunlight causes evaporation",
+     "Water vapor condenses into clouds",
+     "Precipitation falls",
+     "Runoff and groundwater return water"
+    ],
+    "correct_answer": [
+     "Sunlight causes evaporation",
+     "Water vapor condenses into clouds",
+     "Precipitation falls",
+     "Runoff and groundwater return water"
+    ],
+    "explanation": "Evaporation, condensation, precipitation and return flow form a repeating cycle.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "The Water Cycle",
+    "org": "NOAA",
+    "url": "https://www.noaa.gov/education/resource-collections/freshwater/water-cycle"
+   },
+   "lesMer": {
+    "tittel": "Hurricanes",
+    "org": "NOAA",
+    "url": "https://www.noaa.gov/education/resource-collections/weather-atmosphere/hurricanes"
+   },
+   "tags": [
+    "water",
+    "weather",
+    "earth systems"
+   ],
+   "seed": {
+    "likes": 588,
+    "comments": 200,
+    "saves": 1247,
+    "shares": 317
+   }
+  },
+  {
+   "id": "POST-004",
+   "rekkefolge": 4,
+   "posterId": "P003",
+   "kategori": "Science",
+   "underkategori": "Volcanoes",
+   "serie": "Earth in Motion",
+   "tittel": "Large eruptions can cool the planet for a while",
+   "hook": "Volcanoes can make sunsets brighter—and temperatures slightly lower.",
+   "sammendrag": "Explosive eruptions can send sulfur dioxide high into the atmosphere. It forms reflective aerosols that temporarily reduce incoming sunlight and cool the lower atmosphere.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 25,
+   "xp": 120,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "A major eruption injects sulfur dioxide into the stratosphere. What is the most likely short-term climate effect?",
+    "options": [
+     "Temporary global cooling",
+     "Permanent loss of gravity",
+     "Immediate global warming of several degrees"
+    ],
+    "correct_answer": "Temporary global cooling",
+    "explanation": "Stratospheric sulfate aerosols reflect part of the Sun’s energy back to space.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Volcanoes Can Affect Climate",
+    "org": "U.S. Geological Survey",
+    "url": "https://www.usgs.gov/programs/VHP/volcanoes-can-affect-climate"
+   },
+   "lesMer": {
+    "tittel": "This Dynamic Earth: The Story of Plate Tectonics",
+    "org": "U.S. Geological Survey",
+    "url": "https://pubs.usgs.gov/gip/dynamic/"
+   },
+   "tags": [
+    "volcano",
+    "climate",
+    "aerosols"
+   ],
+   "seed": {
+    "likes": 3275,
+    "comments": 249,
+    "saves": 837,
+    "shares": 110
+   }
+  },
+  {
+   "id": "POST-005",
+   "rekkefolge": 5,
+   "posterId": "P020",
+   "kategori": "Science",
+   "underkategori": "Marine biology",
+   "serie": "Ocean Plot Twists",
+   "tittel": "Coral bleaching is a stress response—not coral turning into stone",
+   "hook": "A reef can lose its color before it loses its life.",
+   "sammendrag": "When corals are stressed by unusually warm water, they can expel the symbiotic algae that provide much of their color and energy. Prolonged stress can lead to coral death.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Bleached coral is always already dead.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "Bleached coral is severely stressed and more vulnerable, but it may recover if conditions improve soon enough.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "How Does Climate Change Affect Coral Reefs?",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/facts/coralreef-climate.html"
+   },
+   "lesMer": {
+    "tittel": "Corals Tutorial",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/education/tutorial_corals/"
+   },
+   "tags": [
+    "coral",
+    "warming",
+    "ecosystems"
+   ],
+   "seed": {
+    "likes": 4596,
+    "comments": 275,
+    "saves": 1548,
+    "shares": 284
+   }
+  },
+  {
+   "id": "POST-006",
+   "rekkefolge": 6,
+   "posterId": "P002",
+   "kategori": "Science",
+   "underkategori": "Genetics",
+   "serie": "Tiny Particles",
+   "tittel": "DNA is a chemical information system",
+   "hook": "Your cells read a four-letter molecular alphabet.",
+   "sammendrag": "DNA stores biological instructions in sequences of four chemical bases. Cells copy and use parts of those instructions to build proteins and regulate activity.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 18,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "DNA stores biological information in the order of chemical ____.",
+    "options": [
+     "bases",
+     "bones",
+     "bubbles"
+    ],
+    "correct_answer": "bases",
+    "explanation": "The sequence of DNA bases carries genetic information.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "DNA Fact Sheet",
+    "org": "National Human Genome Research Institute",
+    "url": "https://www.genome.gov/about-genomics/fact-sheets/DNA-Fact-Sheet"
+   },
+   "lesMer": {
+    "tittel": "DNA Fact Sheet",
+    "org": "National Human Genome Research Institute",
+    "url": "https://www.genome.gov/about-genomics/fact-sheets/DNA-Fact-Sheet"
+   },
+   "tags": [
+    "DNA",
+    "genes",
+    "cells"
+   ],
+   "seed": {
+    "likes": 2213,
+    "comments": 300,
+    "saves": 240,
+    "shares": 180
+   }
+  },
+  {
+   "id": "POST-007",
+   "rekkefolge": 7,
+   "posterId": "P016",
+   "kategori": "Science",
+   "underkategori": "Medicine",
+   "serie": "Health Myths",
+   "tittel": "Antibiotics do not treat viral infections",
+   "hook": "A powerful medicine can still be the wrong tool.",
+   "sammendrag": "Antibiotics target bacteria or bacterial processes. Viruses use host cells differently, so illnesses such as colds and flu do not improve because of antibiotics.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Which illness is antibiotics generally designed to treat?",
+    "options": [
+     "A bacterial infection",
+     "A common cold caused by a virus",
+     "Seasonal allergies",
+     "A sprained ankle"
+    ],
+    "correct_answer": "A bacterial infection",
+    "explanation": "Antibiotics act against bacteria, not viruses.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "About Antibiotic Use",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/antibiotic-use/about/index.html"
+   },
+   "lesMer": {
+    "tittel": "About Antimicrobial Resistance",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/antimicrobial-resistance/about/index.html"
+   },
+   "tags": [
+    "antibiotics",
+    "bacteria",
+    "viruses"
+   ],
+   "seed": {
+    "likes": 4285,
+    "comments": 193,
+    "saves": 1027,
+    "shares": 173
+   }
+  },
+  {
+   "id": "POST-008",
+   "rekkefolge": 8,
+   "posterId": "P001",
+   "kategori": "Science",
+   "underkategori": "Physics",
+   "serie": "Invisible Physics",
+   "tittel": "Space is silent because sound needs matter to travel",
+   "hook": "An explosion in space can be bright without being loud.",
+   "sammendrag": "Sound is a mechanical vibration that travels through particles in a gas, liquid or solid. In the near-vacuum of space, there are too few particles to carry ordinary sound waves.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "A nearby explosion in empty space would create a normal booming sound you could hear through your helmet.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "Light can cross a vacuum, but ordinary sound waves need a material medium.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Sound",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/science/sound-physics"
+   },
+   "lesMer": {
+    "tittel": "Solar System Exploration",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/solar-system/"
+   },
+   "tags": [
+    "sound",
+    "vacuum",
+    "space"
+   ],
+   "seed": {
+    "likes": 3446,
+    "comments": 333,
+    "saves": 339,
+    "shares": 203
+   }
+  },
+  {
+   "id": "POST-009",
+   "rekkefolge": 9,
+   "posterId": "P002",
+   "kategori": "Science",
+   "underkategori": "Biology",
+   "serie": "Tiny Particles",
+   "tittel": "Photosynthesis turns light energy into stored chemical energy",
+   "hook": "Plants do not eat sunlight—they use it to build fuel.",
+   "sammendrag": "Using light, carbon dioxide and water, plants and many microbes produce energy-rich sugars and release oxygen. The process supports most food webs.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 30,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Match each photosynthesis input or output.",
+    "options": [
+     {
+      "left": "Light",
+      "right": "Energy source"
+     },
+     {
+      "left": "Carbon dioxide",
+      "right": "Carbon input"
+     },
+     {
+      "left": "Oxygen",
+      "right": "Released product"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Light",
+      "right": "Energy source"
+     },
+     {
+      "left": "Carbon dioxide",
+      "right": "Carbon input"
+     },
+     {
+      "left": "Oxygen",
+      "right": "Released product"
+     }
+    ],
+    "explanation": "Photosynthesis uses light to rearrange matter into sugars and oxygen.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "Photosynthesis",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/science/photosynthesis"
+   },
+   "lesMer": {
+    "tittel": "Forests and the Carbon Cycle",
+    "org": "NASA Earth Observatory",
+    "url": "https://earthobservatory.nasa.gov/features/CarbonCycle/page4.php"
+   },
+   "tags": [
+    "photosynthesis",
+    "plants",
+    "energy"
+   ],
+   "seed": {
+    "likes": 4842,
+    "comments": 210,
+    "saves": 887,
+    "shares": 68
+   }
+  },
+  {
+   "id": "POST-010",
+   "rekkefolge": 10,
+   "posterId": "P001",
+   "kategori": "Science",
+   "underkategori": "Climate physics",
+   "serie": "Invisible Physics",
+   "tittel": "The greenhouse effect is natural—extra greenhouse gases intensify it",
+   "hook": "Without the greenhouse effect Earth would be far colder.",
+   "sammendrag": "Certain gases absorb and re-emit infrared energy, helping keep Earth warm. Human emissions increase their concentration and strengthen this heat-trapping effect.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 18,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "Greenhouse gases absorb and re-emit outgoing ____ energy.",
+    "options": [
+     "infrared",
+     "sound",
+     "magnetic"
+    ],
+    "correct_answer": "infrared",
+    "explanation": "Earth releases heat mainly as infrared radiation, which greenhouse gases can absorb.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "What Is the Greenhouse Effect?",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/climate-change/faq/what-is-the-greenhouse-effect/"
+   },
+   "lesMer": {
+    "tittel": "Climate Change Impacts",
+    "org": "NOAA",
+    "url": "https://www.noaa.gov/education/resource-collections/climate/climate-change-impacts"
+   },
+   "tags": [
+    "climate",
+    "greenhouse effect",
+    "radiation"
+   ],
+   "seed": {
+    "likes": 851,
+    "comments": 98,
+    "saves": 1579,
+    "shares": 179
+   }
+  },
+  {
+   "id": "POST-011",
+   "rekkefolge": 11,
+   "posterId": "P004",
+   "kategori": "Space",
+   "underkategori": "Moon",
+   "serie": "Moon School",
+   "tittel": "Moon phases are changing views of the same sunlit Moon",
+   "hook": "The Moon does not create a new shadow shape every night.",
+   "sammendrag": "Half of the Moon is always illuminated by the Sun. As the Moon orbits Earth, we see different portions of that lit half.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 40,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Match the phase with its appearance.",
+    "options": [
+     {
+      "card_a": "New Moon",
+      "card_b": "Lit side mostly faces away"
+     },
+     {
+      "card_a": "First Quarter",
+      "card_b": "Half-lit disk"
+     },
+     {
+      "card_a": "Full Moon",
+      "card_b": "Near side fully illuminated"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "New Moon",
+      "card_b": "Lit side mostly faces away"
+     },
+     {
+      "card_a": "First Quarter",
+      "card_b": "Half-lit disk"
+     },
+     {
+      "card_a": "Full Moon",
+      "card_b": "Near side fully illuminated"
+     }
+    ],
+    "explanation": "Phases depend on the Sun-Earth-Moon geometry.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "Moon Phases",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/moon/moon-phases/"
+   },
+   "lesMer": {
+    "tittel": "Eclipses",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/eclipses/"
+   },
+   "tags": [
+    "moon",
+    "phases",
+    "orbit"
+   ],
+   "seed": {
+    "likes": 4803,
+    "comments": 348,
+    "saves": 87,
+    "shares": 94
+   }
+  },
+  {
+   "id": "POST-012",
+   "rekkefolge": 12,
+   "posterId": "P004",
+   "kategori": "Space",
+   "underkategori": "Moon & Earth",
+   "serie": "Moon School",
+   "tittel": "The Moon is the main driver of ocean tides",
+   "hook": "The sea responds to gravity on a planetary scale.",
+   "sammendrag": "The Moon’s gravity changes the distribution of ocean water around Earth. The Sun also contributes, producing stronger or weaker tidal ranges depending on alignment.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "What is the main cause of Earth’s ocean tides?",
+    "options": [
+     "The Moon’s gravity",
+     "Cloud shadows",
+     "Earth’s magnetic field",
+     "Underwater volcanoes"
+    ],
+    "correct_answer": "The Moon’s gravity",
+    "explanation": "The Moon’s gravitational pull is the dominant tidal influence.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Tides",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/moon/tides/"
+   },
+   "lesMer": {
+    "tittel": "Ocean Currents",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/education/tutorial_currents/"
+   },
+   "tags": [
+    "tides",
+    "moon",
+    "gravity"
+   ],
+   "seed": {
+    "likes": 5936,
+    "comments": 348,
+    "saves": 491,
+    "shares": 301
+   }
+  },
+  {
+   "id": "POST-013",
+   "rekkefolge": 13,
+   "posterId": "P004",
+   "kategori": "Space",
+   "underkategori": "Earth orbit",
+   "serie": "Orbit Mechanics",
+   "tittel": "Seasons come mainly from Earth’s tilt—not distance from the Sun",
+   "hook": "Northern winter happens while Earth is near its closest point to the Sun.",
+   "sammendrag": "Earth’s axis is tilted. During each orbit, that tilt changes the angle and duration of sunlight reaching each hemisphere, creating seasons.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Summer happens because Earth is much closer to the Sun.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "Seasons are primarily caused by Earth’s axial tilt and changing sunlight angle, not the small annual change in distance.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "What Causes the Seasons?",
+    "org": "NASA Space Place",
+    "url": "https://spaceplace.nasa.gov/seasons/en/"
+   },
+   "lesMer": {
+    "tittel": "Solar System Exploration",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/solar-system/"
+   },
+   "tags": [
+    "seasons",
+    "earth",
+    "sunlight"
+   ],
+   "seed": {
+    "likes": 3994,
+    "comments": 185,
+    "saves": 83,
+    "shares": 186
+   }
+  },
+  {
+   "id": "POST-014",
+   "rekkefolge": 14,
+   "posterId": "P004",
+   "kategori": "Space",
+   "underkategori": "Eclipses",
+   "serie": "Moon School",
+   "tittel": "Eclipses require a precise three-body alignment",
+   "hook": "A new Moon does not produce a solar eclipse every month.",
+   "sammendrag": "The Moon’s orbit is tilted relative to Earth’s orbit around the Sun. Eclipses happen only when the bodies align near the crossing points of those orbital planes.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 35,
+   "xp": 120,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Put a solar-eclipse alignment in spatial order from the Sun outward.",
+    "options": [
+     "Sun",
+     "Moon",
+     "Earth"
+    ],
+    "correct_answer": [
+     "Sun",
+     "Moon",
+     "Earth"
+    ],
+    "explanation": "During a solar eclipse, the Moon passes between the Sun and Earth.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Eclipses",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/eclipses/"
+   },
+   "lesMer": {
+    "tittel": "Moon Phases",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/moon/moon-phases/"
+   },
+   "tags": [
+    "eclipse",
+    "moon",
+    "alignment"
+   ],
+   "seed": {
+    "likes": 811,
+    "comments": 289,
+    "saves": 1436,
+    "shares": 353
+   }
+  },
+  {
+   "id": "POST-015",
+   "rekkefolge": 15,
+   "posterId": "P005",
+   "kategori": "Space",
+   "underkategori": "Stars",
+   "serie": "Deep Universe",
+   "tittel": "Stars shine because atomic nuclei fuse in their cores",
+   "hook": "A star is a gravity-powered fusion reactor.",
+   "sammendrag": "Extreme pressure and temperature in stellar cores allow light nuclei to fuse into heavier ones, releasing energy that eventually escapes as light and heat.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 18,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "Stars produce energy mainly through nuclear ____ in their cores.",
+    "options": [
+     "fusion",
+     "freezing",
+     "friction"
+    ],
+    "correct_answer": "fusion",
+    "explanation": "Fusion converts a small amount of mass into a large amount of energy.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "Stars",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/universe/stars/"
+   },
+   "lesMer": {
+    "tittel": "Solar System Exploration",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/solar-system/"
+   },
+   "tags": [
+    "stars",
+    "fusion",
+    "energy"
+   ],
+   "seed": {
+    "likes": 4997,
+    "comments": 156,
+    "saves": 833,
+    "shares": 298
+   }
+  },
+  {
+   "id": "POST-016",
+   "rekkefolge": 16,
+   "posterId": "P005",
+   "kategori": "Space",
+   "underkategori": "Exoplanets",
+   "serie": "Deep Universe",
+   "tittel": "A tiny dip in starlight can reveal an unseen planet",
+   "hook": "Astronomers can discover worlds by watching a star blink.",
+   "sammendrag": "When an exoplanet crosses in front of its star from our viewpoint, it blocks a small fraction of the light. Repeated dips can reveal the planet’s orbit and approximate size.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 25,
+   "xp": 120,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "A star dims by the same small amount at regular intervals. What is a likely explanation?",
+    "options": [
+     "An orbiting planet repeatedly transits the star",
+     "The star is moving behind Earth",
+     "The telescope has discovered sound waves"
+    ],
+    "correct_answer": "An orbiting planet repeatedly transits the star",
+    "explanation": "Regular, repeatable dips are the signature used by the transit method.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Exoplanets",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/exoplanets/"
+   },
+   "lesMer": {
+    "tittel": "Stars",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/universe/stars/"
+   },
+   "tags": [
+    "exoplanets",
+    "transit",
+    "astronomy"
+   ],
+   "seed": {
+    "likes": 1336,
+    "comments": 118,
+    "saves": 914,
+    "shares": 265
+   }
+  },
+  {
+   "id": "POST-017",
+   "rekkefolge": 17,
+   "posterId": "P005",
+   "kategori": "Space",
+   "underkategori": "Black holes",
+   "serie": "Deep Universe",
+   "tittel": "A black hole is not a cosmic vacuum cleaner",
+   "hook": "From far away, its gravity behaves like any other object of the same mass.",
+   "sammendrag": "A black hole’s event horizon marks a region from which light cannot escape. Objects do not get pulled in from unlimited distances; stable orbits are possible outside it.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 15,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "A black hole automatically sucks in everything in its galaxy.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "Its gravity weakens with distance like other gravity. Objects can orbit safely if they are far enough away.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Black Holes",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/universe/black-holes/"
+   },
+   "lesMer": {
+    "tittel": "Stars",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/universe/stars/"
+   },
+   "tags": [
+    "black holes",
+    "gravity",
+    "event horizon"
+   ],
+   "seed": {
+    "likes": 6245,
+    "comments": 383,
+    "saves": 268,
+    "shares": 77
+   }
+  },
+  {
+   "id": "POST-018",
+   "rekkefolge": 18,
+   "posterId": "P005",
+   "kategori": "Space",
+   "underkategori": "Milky Way",
+   "serie": "Deep Universe",
+   "tittel": "Our solar system orbits the center of the Milky Way",
+   "hook": "One galactic year takes roughly hundreds of millions of Earth years.",
+   "sammendrag": "The Sun and its planets travel around the Milky Way’s center. NASA estimates one orbit takes about 230 million years.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "What does the entire solar system orbit over very long timescales?",
+    "options": [
+     "The center of the Milky Way",
+     "The Moon",
+     "Mars",
+     "A nearby comet"
+    ],
+    "correct_answer": "The center of the Milky Way",
+    "explanation": "The Sun is one of many stars orbiting within the Milky Way galaxy.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Solar System Exploration",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/solar-system/"
+   },
+   "lesMer": {
+    "tittel": "Stars",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/universe/stars/"
+   },
+   "tags": [
+    "Milky Way",
+    "solar system",
+    "galactic orbit"
+   ],
+   "seed": {
+    "likes": 1229,
+    "comments": 119,
+    "saves": 1235,
+    "shares": 45
+   }
+  },
+  {
+   "id": "POST-019",
+   "rekkefolge": 19,
+   "posterId": "P006",
+   "kategori": "History",
+   "underkategori": "Ancient Rome",
+   "serie": "Rome in Motion",
+   "tittel": "Roman aqueducts moved water mostly with gravity",
+   "hook": "The engineering trick was a tiny, controlled downhill slope.",
+   "sammendrag": "Roman engineers surveyed long routes so water could flow gradually from springs to cities. Bridges were only the most visible parts of much larger systems.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 30,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Match the Roman water-system term with its role.",
+    "options": [
+     {
+      "left": "Aqueduct channel",
+      "right": "Carries flowing water"
+     },
+     {
+      "left": "Settling tank",
+      "right": "Lets sediment fall out"
+     },
+     {
+      "left": "Public fountain",
+      "right": "Distributes water in the city"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Aqueduct channel",
+      "right": "Carries flowing water"
+     },
+     {
+      "left": "Settling tank",
+      "right": "Lets sediment fall out"
+     },
+     {
+      "left": "Public fountain",
+      "right": "Distributes water in the city"
+     }
+    ],
+    "explanation": "Roman systems combined careful gradients, channels, tanks and distribution points.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "Aqueduct",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/technology/aqueduct-engineering"
+   },
+   "lesMer": {
+    "tittel": "Roman Empire",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/place/Roman-Empire"
+   },
+   "tags": [
+    "Rome",
+    "engineering",
+    "aqueducts"
+   ],
+   "seed": {
+    "likes": 5281,
+    "comments": 78,
+    "saves": 1573,
+    "shares": 212
+   }
+  },
+  {
+   "id": "POST-020",
+   "rekkefolge": 20,
+   "posterId": "P006",
+   "kategori": "History",
+   "underkategori": "Ancient Rome",
+   "serie": "Rome in Motion",
+   "tittel": "The Roman Senate changed dramatically across centuries",
+   "hook": "The same institution had different power under republic and empire.",
+   "sammendrag": "During the Roman Republic, the Senate was central to elite political decision-making. Under emperors, it remained important but operated under increasingly dominant imperial authority.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 25,
+   "xp": 120,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Rome shifts from republic to rule by emperors. What most likely happens to the Senate?",
+    "options": [
+     "It remains but loses political independence",
+     "It becomes a modern elected parliament",
+     "It takes direct control of every legion"
+    ],
+    "correct_answer": "It remains but loses political independence",
+    "explanation": "The Senate continued, but imperial power increasingly constrained it.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Roman Empire",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/place/Roman-Empire"
+   },
+   "lesMer": {
+    "tittel": "Aqueduct",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/technology/aqueduct-engineering"
+   },
+   "tags": [
+    "Rome",
+    "Senate",
+    "republic"
+   ],
+   "seed": {
+    "likes": 1326,
+    "comments": 180,
+    "saves": 1196,
+    "shares": 216
+   }
+  },
+  {
+   "id": "POST-021",
+   "rekkefolge": 21,
+   "posterId": "P008",
+   "kategori": "History",
+   "underkategori": "Printing revolution",
+   "serie": "Ideas That Spread",
+   "tittel": "Movable-type printing accelerated the spread of texts",
+   "hook": "Books became easier to reproduce at a scale scribes could not match.",
+   "sammendrag": "European printing presses using movable metal type dramatically increased the speed and consistency of book production, lowering costs and helping ideas travel.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Order a simplified early printing workflow.",
+    "options": [
+     "Arrange reusable metal type",
+     "Ink the raised type",
+     "Press paper against the type",
+     "Repeat pages for many copies"
+    ],
+    "correct_answer": [
+     "Arrange reusable metal type",
+     "Ink the raised type",
+     "Press paper against the type",
+     "Repeat pages for many copies"
+    ],
+    "explanation": "Reusable type and a press made repeated copies much faster than hand-copying.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Printing Press",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/technology/printing-press"
+   },
+   "lesMer": {
+    "tittel": "Printing and the Book Arts",
+    "org": "Library of Congress",
+    "url": "https://www.loc.gov/collections/"
+   },
+   "tags": [
+    "printing",
+    "books",
+    "technology"
+   ],
+   "seed": {
+    "likes": 528,
+    "comments": 92,
+    "saves": 1497,
+    "shares": 321
+   }
+  },
+  {
+   "id": "POST-022",
+   "rekkefolge": 22,
+   "posterId": "P007",
+   "kategori": "History",
+   "underkategori": "Medieval law",
+   "serie": "Power and Rights",
+   "tittel": "Magna Carta did not instantly create modern democracy",
+   "hook": "Its later symbolic power became larger than its original immediate effect.",
+   "sammendrag": "Magna Carta began as a 1215 settlement between King John and rebellious barons. Later generations reinterpreted parts of it as symbols of lawful government and limits on power.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 15,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Magna Carta immediately gave equal democratic rights to everyone in England.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "It addressed a medieval political crisis and mainly protected elite interests, though some clauses later gained broader constitutional meaning.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Magna Carta",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Magna-Carta"
+   },
+   "lesMer": {
+    "tittel": "Printing Press",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/technology/printing-press"
+   },
+   "tags": [
+    "Magna Carta",
+    "law",
+    "medieval"
+   ],
+   "seed": {
+    "likes": 2882,
+    "comments": 193,
+    "saves": 271,
+    "shares": 161
+   }
+  },
+  {
+   "id": "POST-023",
+   "rekkefolge": 23,
+   "posterId": "P008",
+   "kategori": "History",
+   "underkategori": "Pandemics",
+   "serie": "Turning Points",
+   "tittel": "Trade networks helped the Black Death move across regions",
+   "hook": "The same routes that carried goods also carried disease.",
+   "sammendrag": "The fourteenth-century plague spread through connected trade and travel networks. Fleas, rodents and human movement all played roles in transmission.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 40,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Match the historical factor with its role in plague spread.",
+    "options": [
+     {
+      "card_a": "Trade routes",
+      "card_b": "Connected distant ports and cities"
+     },
+     {
+      "card_a": "Fleas",
+      "card_b": "Carried plague bacteria between hosts"
+     },
+     {
+      "card_a": "Crowded towns",
+      "card_b": "Enabled rapid local transmission"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Trade routes",
+      "card_b": "Connected distant ports and cities"
+     },
+     {
+      "card_a": "Fleas",
+      "card_b": "Carried plague bacteria between hosts"
+     },
+     {
+      "card_a": "Crowded towns",
+      "card_b": "Enabled rapid local transmission"
+     }
+    ],
+    "explanation": "Pandemics move through biological and social systems at the same time.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "Black Death",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/event/Black-Death"
+   },
+   "lesMer": {
+    "tittel": "Silk Road",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Silk-Road-trade-route"
+   },
+   "tags": [
+    "Black Death",
+    "trade",
+    "pandemic"
+   ],
+   "seed": {
+    "likes": 4588,
+    "comments": 157,
+    "saves": 242,
+    "shares": 22
+   }
+  },
+  {
+   "id": "POST-024",
+   "rekkefolge": 24,
+   "posterId": "P008",
+   "kategori": "History",
+   "underkategori": "Global exchange",
+   "serie": "Connected Worlds",
+   "tittel": "The Silk Road was a network—not one road",
+   "hook": "Ideas and technologies moved alongside silk and spices.",
+   "sammendrag": "The Silk Road linked many overland and maritime routes across Eurasia. Goods, religions, artistic styles, technologies and diseases moved through chains of traders and cities.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Which description best fits the historical Silk Road?",
+    "options": [
+     "A changing network of routes across Eurasia",
+     "One paved highway from China to Rome",
+     "A route used only for silk",
+     "A single empire’s private road"
+    ],
+    "correct_answer": "A changing network of routes across Eurasia",
+    "explanation": "The term describes interconnected trade routes rather than one continuous road.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Silk Road",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Silk-Road-trade-route"
+   },
+   "lesMer": {
+    "tittel": "Black Death",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/event/Black-Death"
+   },
+   "tags": [
+    "Silk Road",
+    "trade",
+    "exchange"
+   ],
+   "seed": {
+    "likes": 6369,
+    "comments": 242,
+    "saves": 994,
+    "shares": 230
+   }
+  },
+  {
+   "id": "POST-025",
+   "rekkefolge": 25,
+   "posterId": "P007",
+   "kategori": "History",
+   "underkategori": "Vikings",
+   "serie": "Northern Stories",
+   "tittel": "Vikings were traders and settlers as well as raiders",
+   "hook": "The raid is only one part of the Viking Age story.",
+   "sammendrag": "Norse seafarers raided, traded, explored and settled across wide areas. Their ships connected Scandinavia with the North Atlantic, Europe and river routes toward the east.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Every Viking was primarily a full-time raider.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "Viking-age communities included farmers, craftspeople, merchants, settlers and warriors.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Viking",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Viking-people"
+   },
+   "lesMer": {
+    "tittel": "Silk Road",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Silk-Road-trade-route"
+   },
+   "tags": [
+    "Vikings",
+    "trade",
+    "settlement"
+   ],
+   "seed": {
+    "likes": 771,
+    "comments": 12,
+    "saves": 1347,
+    "shares": 295
+   }
+  },
+  {
+   "id": "POST-026",
+   "rekkefolge": 26,
+   "posterId": "P009",
+   "kategori": "History",
+   "underkategori": "Early cities",
+   "serie": "Everyday History",
+   "tittel": "Some of the earliest cities grew in Mesopotamia",
+   "hook": "Irrigation, farming and administration helped dense settlements emerge.",
+   "sammendrag": "Southern Mesopotamian cities developed around productive agriculture, waterways, temples, trade and systems for organizing labor and resources.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 18,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "Many early Mesopotamian cities grew near the Tigris and ____ rivers.",
+    "options": [
+     "Euphrates",
+     "Amazon",
+     "Thames"
+    ],
+    "correct_answer": "Euphrates",
+    "explanation": "The Tigris-Euphrates river system supported agriculture and urban settlement.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "Mesopotamia",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/place/Mesopotamia-historical-region-Asia"
+   },
+   "lesMer": {
+    "tittel": "Silk Road",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Silk-Road-trade-route"
+   },
+   "tags": [
+    "Mesopotamia",
+    "cities",
+    "irrigation"
+   ],
+   "seed": {
+    "likes": 5375,
+    "comments": 317,
+    "saves": 1450,
+    "shares": 333
+   }
+  },
+  {
+   "id": "POST-027",
+   "rekkefolge": 27,
+   "posterId": "P006",
+   "kategori": "History",
+   "underkategori": "Ancient Egypt",
+   "serie": "Ancient Lives",
+   "tittel": "The pyramids were built by organized labor forces",
+   "hook": "Evidence points to skilled crews and supported workers—not a simple movie version of enslaved masses.",
+   "sammendrag": "Archaeology has revealed workers’ settlements, food remains and organized crews associated with pyramid construction. Labor obligations and skilled specialization were central.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 20,
+   "xp": 120,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "What evidence has helped historians understand pyramid construction?",
+    "options": [
+     "Workers’ settlements and crew records",
+     "Modern video footage",
+     "Roman newspapers",
+     "Satellite broadcasts"
+    ],
+    "correct_answer": "Workers’ settlements and crew records",
+    "explanation": "Archaeological remains near Giza reveal organized labor, provisioning and specialized teams.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Pyramids of Giza",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Pyramids-of-Giza"
+   },
+   "lesMer": {
+    "tittel": "Mesopotamia",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/place/Mesopotamia-historical-region-Asia"
+   },
+   "tags": [
+    "Egypt",
+    "pyramids",
+    "archaeology"
+   ],
+   "seed": {
+    "likes": 374,
+    "comments": 116,
+    "saves": 309,
+    "shares": 324
+   }
+  },
+  {
+   "id": "POST-028",
+   "rekkefolge": 28,
+   "posterId": "P006",
+   "kategori": "History",
+   "underkategori": "Ancient Greece",
+   "serie": "Power and Rights",
+   "tittel": "Athenian democracy included only part of the population",
+   "hook": "Direct democracy did not mean universal participation.",
+   "sammendrag": "Adult male citizens could participate directly in Athenian political institutions. Women, enslaved people and resident foreigners were excluded from citizenship.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 15,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Everyone living in ancient Athens could vote in its democracy.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "Political participation was restricted to a minority of the population: adult male citizens.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Athenian Democracy",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/democracy/England"
+   },
+   "lesMer": {
+    "tittel": "Roman Empire",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/place/Roman-Empire"
+   },
+   "tags": [
+    "Athens",
+    "democracy",
+    "citizenship"
+   ],
+   "seed": {
+    "likes": 1957,
+    "comments": 347,
+    "saves": 1305,
+    "shares": 83
+   }
+  },
+  {
+   "id": "POST-029",
+   "rekkefolge": 29,
+   "posterId": "P008",
+   "kategori": "History",
+   "underkategori": "Industrial Revolution",
+   "serie": "Turning Points",
+   "tittel": "Steam power loosened industry’s dependence on rivers",
+   "hook": "Factories could move closer to workers, coal and markets.",
+   "sammendrag": "Early factories often relied on water power. Improved steam engines allowed machines and transport systems to operate in more locations, accelerating industrialization.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Factories adopt reliable steam engines. What becomes more possible?",
+    "options": [
+     "Locating production away from fast-flowing rivers",
+     "Eliminating the need for fuel",
+     "Ending urban growth",
+     "Making every product by hand"
+    ],
+    "correct_answer": "Locating production away from fast-flowing rivers",
+    "explanation": "Steam power gave factories more flexibility in where they operated.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Industrial Revolution",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/event/Industrial-Revolution"
+   },
+   "lesMer": {
+    "tittel": "Printing Press",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/technology/printing-press"
+   },
+   "tags": [
+    "Industrial Revolution",
+    "steam",
+    "factories"
+   ],
+   "seed": {
+    "likes": 4435,
+    "comments": 346,
+    "saves": 1414,
+    "shares": 129
+   }
+  },
+  {
+   "id": "POST-030",
+   "rekkefolge": 30,
+   "posterId": "P008",
+   "kategori": "History",
+   "underkategori": "Atlantic revolutions",
+   "serie": "Freedom Struggles",
+   "tittel": "The Haitian Revolution created the first independent Black republic",
+   "hook": "Enslaved people defeated slavery and colonial rule through revolution.",
+   "sammendrag": "Beginning in 1791 in Saint-Domingue, a complex revolution overthrew slavery and French colonial power. Haiti declared independence in 1804.",
+   "vanskelighet": "Advanced",
+   "estimertSek": 35,
+   "xp": 160,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Order four major stages of the Haitian Revolution.",
+    "options": [
+     "Large slave uprising begins in 1791",
+     "Slavery is abolished in the colony",
+     "French forces attempt to restore control",
+     "Haiti declares independence in 1804"
+    ],
+    "correct_answer": [
+     "Large slave uprising begins in 1791",
+     "Slavery is abolished in the colony",
+     "French forces attempt to restore control",
+     "Haiti declares independence in 1804"
+    ],
+    "explanation": "The revolution moved from uprising through abolition, renewed war and independence.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Haitian Revolution",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Haitian-Revolution"
+   },
+   "lesMer": {
+    "tittel": "Abolitionism",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/abolitionism-European-and-American-social-movement"
+   },
+   "tags": [
+    "Haiti",
+    "revolution",
+    "slavery"
+   ],
+   "seed": {
+    "likes": 864,
+    "comments": 115,
+    "saves": 69,
+    "shares": 177
+   }
+  },
+  {
+   "id": "POST-031",
+   "rekkefolge": 31,
+   "posterId": "P009",
+   "kategori": "History",
+   "underkategori": "Abolition",
+   "serie": "Freedom Struggles",
+   "tittel": "Ending the Atlantic slave trade and ending slavery were different processes",
+   "hook": "A legal ban on trading people did not automatically free those already enslaved.",
+   "sammendrag": "Different countries prohibited the slave trade and abolished slavery at different times. Enforcement was uneven, and illegal trafficking continued after bans.",
+   "vanskelighet": "Advanced",
+   "estimertSek": 30,
+   "xp": 160,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Match each term with its meaning.",
+    "options": [
+     {
+      "left": "Abolition of the trade",
+      "right": "Ban on transporting and selling enslaved people across routes"
+     },
+     {
+      "left": "Emancipation",
+      "right": "Legal freeing of enslaved people"
+     },
+     {
+      "left": "Enforcement",
+      "right": "Actions used to make laws effective"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Abolition of the trade",
+      "right": "Ban on transporting and selling enslaved people across routes"
+     },
+     {
+      "left": "Emancipation",
+      "right": "Legal freeing of enslaved people"
+     },
+     {
+      "left": "Enforcement",
+      "right": "Actions used to make laws effective"
+     }
+    ],
+    "explanation": "Trade bans, emancipation and enforcement were connected but distinct.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "Abolitionism",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/abolitionism-European-and-American-social-movement"
+   },
+   "lesMer": {
+    "tittel": "Haitian Revolution",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Haitian-Revolution"
+   },
+   "tags": [
+    "abolition",
+    "slavery",
+    "law"
+   ],
+   "seed": {
+    "likes": 1228,
+    "comments": 185,
+    "saves": 1358,
+    "shares": 123
+   }
+  },
+  {
+   "id": "POST-032",
+   "rekkefolge": 32,
+   "posterId": "P008",
+   "kategori": "History",
+   "underkategori": "Space Age",
+   "serie": "Turning Points",
+   "tittel": "Apollo 11 was a chain of precisely timed stages",
+   "hook": "The Moon landing was not one vehicle flying straight down and back.",
+   "sammendrag": "The mission used a Saturn V launch vehicle, command-service module and lunar module. Separate stages handled launch, lunar landing, rendezvous and return.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Put the central Apollo 11 mission stages in order.",
+    "options": [
+     "Launch from Earth",
+     "Enter lunar orbit",
+     "Lunar module lands",
+     "Astronauts return and splash down"
+    ],
+    "correct_answer": [
+     "Launch from Earth",
+     "Enter lunar orbit",
+     "Lunar module lands",
+     "Astronauts return and splash down"
+    ],
+    "explanation": "Apollo 11 progressed through launch, lunar operations, rendezvous and Earth return.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Apollo 11 Mission Overview",
+    "org": "NASA",
+    "url": "https://www.nasa.gov/mission/apollo-11/"
+   },
+   "lesMer": {
+    "tittel": "Moon Phases",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/moon/moon-phases/"
+   },
+   "tags": [
+    "Apollo 11",
+    "Moon landing",
+    "space history"
+   ],
+   "seed": {
+    "likes": 1315,
+    "comments": 352,
+    "saves": 458,
+    "shares": 369
+   }
+  },
+  {
+   "id": "POST-033",
+   "rekkefolge": 33,
+   "posterId": "P008",
+   "kategori": "History",
+   "underkategori": "Cold War",
+   "serie": "Turning Points",
+   "tittel": "The Berlin Wall opened after a confused announcement",
+   "hook": "A press conference accelerated a political crisis already in motion.",
+   "sammendrag": "On 9 November 1989, an East German official gave an unclear statement about new travel rules. Crowds gathered at checkpoints, and guards eventually opened them.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 25,
+   "xp": 120,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "An official mistakenly suggests new travel rules take effect immediately. What happens next?",
+    "options": [
+     "Crowds gather at checkpoints and pressure guards to open them",
+     "The wall becomes taller overnight",
+     "All travel is permanently banned"
+    ],
+    "correct_answer": "Crowds gather at checkpoints and pressure guards to open them",
+    "explanation": "Public pressure at the checkpoints helped turn the announcement into a historic opening.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Berlin Wall",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/Berlin-Wall"
+   },
+   "lesMer": {
+    "tittel": "Industrial Revolution",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/event/Industrial-Revolution"
+   },
+   "tags": [
+    "Berlin Wall",
+    "Cold War",
+    "1989"
+   ],
+   "seed": {
+    "likes": 2295,
+    "comments": 386,
+    "saves": 1243,
+    "shares": 62
+   }
+  },
+  {
+   "id": "POST-034",
+   "rekkefolge": 34,
+   "posterId": "P010",
+   "kategori": "Technology",
+   "underkategori": "Internet",
+   "serie": "How the Internet Works",
+   "tittel": "The internet moves information in packets",
+   "hook": "A webpage arrives as many small pieces, not one continuous object.",
+   "sammendrag": "Networks divide data into packets that may travel through different routes. Devices reassemble them at the destination using addressing and ordering information.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Order a simplified packet journey.",
+    "options": [
+     "App divides data into packets",
+     "Routers forward packets",
+     "Packets reach the destination",
+     "Device reassembles the data"
+    ],
+    "correct_answer": [
+     "App divides data into packets",
+     "Routers forward packets",
+     "Packets reach the destination",
+     "Device reassembles the data"
+    ],
+    "explanation": "Packet switching lets networks route many users’ data efficiently.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "What Is a Data Packet?",
+    "org": "Cloudflare Learning Center",
+    "url": "https://www.cloudflare.com/learning/network-layer/what-is-a-packet/"
+   },
+   "lesMer": {
+    "tittel": "The NIST Definition of Cloud Computing",
+    "org": "NIST",
+    "url": "https://csrc.nist.gov/pubs/sp/800/145/final"
+   },
+   "tags": [
+    "internet",
+    "packets",
+    "networks"
+   ],
+   "seed": {
+    "likes": 4931,
+    "comments": 312,
+    "saves": 704,
+    "shares": 277
+   }
+  },
+  {
+   "id": "POST-035",
+   "rekkefolge": 35,
+   "posterId": "P012",
+   "kategori": "Technology",
+   "underkategori": "Cybersecurity",
+   "serie": "Trust the Screen?",
+   "tittel": "Encryption turns readable information into protected ciphertext",
+   "hook": "A message can travel through public networks without being readable to everyone.",
+   "sammendrag": "Encryption uses algorithms and keys to transform plaintext into ciphertext. The intended recipient uses the appropriate key to recover the information.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 30,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Match each security term with its role.",
+    "options": [
+     {
+      "left": "Plaintext",
+      "right": "Readable original message"
+     },
+     {
+      "left": "Ciphertext",
+      "right": "Encrypted unreadable form"
+     },
+     {
+      "left": "Key",
+      "right": "Value used to encrypt or decrypt"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Plaintext",
+      "right": "Readable original message"
+     },
+     {
+      "left": "Ciphertext",
+      "right": "Encrypted unreadable form"
+     },
+     {
+      "left": "Key",
+      "right": "Value used to encrypt or decrypt"
+     }
+    ],
+    "explanation": "Encryption separates readable content from the protected form sent or stored.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "What Is Encryption?",
+    "org": "Cloudflare Learning Center",
+    "url": "https://www.cloudflare.com/learning/ssl/what-is-encryption/"
+   },
+   "lesMer": {
+    "tittel": "Artificial Intelligence",
+    "org": "NIST",
+    "url": "https://www.nist.gov/artificial-intelligence"
+   },
+   "tags": [
+    "encryption",
+    "privacy",
+    "security"
+   ],
+   "seed": {
+    "likes": 4510,
+    "comments": 328,
+    "saves": 504,
+    "shares": 266
+   }
+  },
+  {
+   "id": "POST-036",
+   "rekkefolge": 36,
+   "posterId": "P011",
+   "kategori": "Technology",
+   "underkategori": "Hardware",
+   "serie": "Inside the Machine",
+   "tittel": "Semiconductors can be controlled to conduct or resist current",
+   "hook": "Modern electronics depend on materials that are neither simple conductors nor simple insulators.",
+   "sammendrag": "Semiconductor properties can be engineered and controlled, allowing transistors to switch and amplify electrical signals. Billions of transistors can fit on modern chips.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 18,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "A transistor can act as an electronic ____.",
+    "options": [
+     "switch",
+     "battery charger cable only",
+     "speaker cone"
+    ],
+    "correct_answer": "switch",
+    "explanation": "Transistors control current and are the basic switching elements of digital circuits.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "Semiconductors",
+    "org": "NIST",
+    "url": "https://www.nist.gov/semiconductors"
+   },
+   "lesMer": {
+    "tittel": "Artificial Intelligence",
+    "org": "NIST",
+    "url": "https://www.nist.gov/artificial-intelligence"
+   },
+   "tags": [
+    "semiconductors",
+    "chips",
+    "transistors"
+   ],
+   "seed": {
+    "likes": 3418,
+    "comments": 349,
+    "saves": 1277,
+    "shares": 231
+   }
+  },
+  {
+   "id": "POST-037",
+   "rekkefolge": 37,
+   "posterId": "P011",
+   "kategori": "Technology",
+   "underkategori": "Navigation",
+   "serie": "Invisible Technology",
+   "tittel": "GPS needs relativity corrections to stay accurate",
+   "hook": "Einstein’s physics is inside your phone’s location dot.",
+   "sammendrag": "Satellite clocks experience motion and gravity differently from clocks on Earth. GPS systems correct for relativistic effects so timing errors do not grow into large position errors.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 15,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "GPS would remain equally accurate without corrections from relativity.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "Relativistic clock-rate differences would accumulate and create significant positioning errors.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "GPS and Relativity",
+    "org": "NIST",
+    "url": "https://www.nist.gov/pml/time-and-frequency-division/popular-links/time-frequency-z/gps-and-relativity"
+   },
+   "lesMer": {
+    "tittel": "Solar System Exploration",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/solar-system/"
+   },
+   "tags": [
+    "GPS",
+    "relativity",
+    "satellites"
+   ],
+   "seed": {
+    "likes": 650,
+    "comments": 174,
+    "saves": 356,
+    "shares": 252
+   }
+  },
+  {
+   "id": "POST-038",
+   "rekkefolge": 38,
+   "posterId": "P010",
+   "kategori": "Technology",
+   "underkategori": "Codes",
+   "serie": "Invisible Technology",
+   "tittel": "QR codes can remain readable after limited damage",
+   "hook": "The missing corner of a code may not destroy the message.",
+   "sammendrag": "QR codes include error-correction data. Depending on the correction level and damage pattern, software can reconstruct missing information.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Part of a QR code is scratched but the finder patterns remain visible. What may happen?",
+    "options": [
+     "It can still scan because of error correction",
+     "It always becomes a different website",
+     "It starts broadcasting Bluetooth"
+    ],
+    "correct_answer": "It can still scan because of error correction",
+    "explanation": "QR codes were designed with multiple error-correction levels.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "History of QR Code",
+    "org": "DENSO WAVE",
+    "url": "https://www.qrcode.com/en/history/"
+   },
+   "lesMer": {
+    "tittel": "Semiconductors",
+    "org": "NIST",
+    "url": "https://www.nist.gov/semiconductors"
+   },
+   "tags": [
+    "QR code",
+    "error correction",
+    "scanning"
+   ],
+   "seed": {
+    "likes": 5240,
+    "comments": 368,
+    "saves": 350,
+    "shares": 101
+   }
+  },
+  {
+   "id": "POST-039",
+   "rekkefolge": 39,
+   "posterId": "P012",
+   "kategori": "Technology",
+   "underkategori": "Artificial intelligence",
+   "serie": "Trust the Screen?",
+   "tittel": "Machine-learning systems learn statistical patterns from examples",
+   "hook": "They do not store human understanding in the same way a person does.",
+   "sammendrag": "Machine learning fits models to data so they can classify, predict or generate outputs. Performance depends on training data, evaluation and how the system is used.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "What does a machine-learning model primarily learn from training data?",
+    "options": [
+     "Statistical patterns useful for prediction",
+     "A human childhood",
+     "Guaranteed truth",
+     "A complete moral system"
+    ],
+    "correct_answer": "Statistical patterns useful for prediction",
+    "explanation": "Models optimize mathematical relationships in data; they do not automatically understand truth or context.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Artificial Intelligence",
+    "org": "NIST",
+    "url": "https://www.nist.gov/artificial-intelligence"
+   },
+   "lesMer": {
+    "tittel": "What Is a Data Packet?",
+    "org": "Cloudflare Learning Center",
+    "url": "https://www.cloudflare.com/learning/network-layer/what-is-a-packet/"
+   },
+   "tags": [
+    "AI",
+    "machine learning",
+    "patterns"
+   ],
+   "seed": {
+    "likes": 2049,
+    "comments": 281,
+    "saves": 1524,
+    "shares": 18
+   }
+  },
+  {
+   "id": "POST-040",
+   "rekkefolge": 40,
+   "posterId": "P011",
+   "kategori": "Technology",
+   "underkategori": "Energy storage",
+   "serie": "Inside the Machine",
+   "tittel": "A battery moves ions internally and electrons through a circuit",
+   "hook": "Stored chemical energy becomes electrical work.",
+   "sammendrag": "During discharge, chemical reactions drive electrons through the external circuit while ions move through the electrolyte. Charging reverses the process using supplied energy.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 40,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Match the battery component with its role.",
+    "options": [
+     {
+      "card_a": "Electrodes",
+      "card_b": "Host electrochemical reactions"
+     },
+     {
+      "card_a": "Electrolyte",
+      "card_b": "Carries ions"
+     },
+     {
+      "card_a": "External circuit",
+      "card_b": "Carries electrons to the device"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Electrodes",
+      "card_b": "Host electrochemical reactions"
+     },
+     {
+      "card_a": "Electrolyte",
+      "card_b": "Carries ions"
+     },
+     {
+      "card_a": "External circuit",
+      "card_b": "Carries electrons to the device"
+     }
+    ],
+    "explanation": "Battery operation separates ion movement inside from electron flow through the circuit.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "How Does a Lithium-Ion Battery Work?",
+    "org": "U.S. Department of Energy",
+    "url": "https://www.energy.gov/eere/articles/how-does-lithium-ion-battery-work"
+   },
+   "lesMer": {
+    "tittel": "Semiconductors",
+    "org": "NIST",
+    "url": "https://www.nist.gov/semiconductors"
+   },
+   "tags": [
+    "battery",
+    "energy",
+    "chemistry"
+   ],
+   "seed": {
+    "likes": 1339,
+    "comments": 65,
+    "saves": 731,
+    "shares": 61
+   }
+  },
+  {
+   "id": "POST-041",
+   "rekkefolge": 41,
+   "posterId": "P010",
+   "kategori": "Technology",
+   "underkategori": "Cloud computing",
+   "serie": "How the Internet Works",
+   "tittel": "The cloud is still someone else’s computers",
+   "hook": "Remote services feel invisible because the infrastructure is hidden.",
+   "sammendrag": "Cloud computing provides shared computing resources over networks on demand. Applications and data run in distributed data centers rather than only on the user’s device.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Cloud files are stored in a literal cloud in the sky.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "They are stored and processed on physical servers in data centers connected through networks.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "The NIST Definition of Cloud Computing",
+    "org": "NIST",
+    "url": "https://csrc.nist.gov/pubs/sp/800/145/final"
+   },
+   "lesMer": {
+    "tittel": "What Is a Data Packet?",
+    "org": "Cloudflare Learning Center",
+    "url": "https://www.cloudflare.com/learning/network-layer/what-is-a-packet/"
+   },
+   "tags": [
+    "cloud",
+    "servers",
+    "data centers"
+   ],
+   "seed": {
+    "likes": 4853,
+    "comments": 291,
+    "saves": 397,
+    "shares": 214
+   }
+  },
+  {
+   "id": "POST-042",
+   "rekkefolge": 42,
+   "posterId": "P011",
+   "kategori": "Technology",
+   "underkategori": "Manufacturing",
+   "serie": "Inside the Machine",
+   "tittel": "3D printing builds objects one layer at a time",
+   "hook": "Complex internal shapes become possible because the object grows gradually.",
+   "sammendrag": "Additive manufacturing creates parts by depositing, curing or fusing material in successive layers from a digital model. Different processes use plastics, metals, resins and other materials.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Order a typical additive-manufacturing workflow.",
+    "options": [
+     "Create a digital 3D model",
+     "Slice the model into layers",
+     "Print the layers",
+     "Finish and inspect the part"
+    ],
+    "correct_answer": [
+     "Create a digital 3D model",
+     "Slice the model into layers",
+     "Print the layers",
+     "Finish and inspect the part"
+    ],
+    "explanation": "Digital geometry is converted into machine instructions before the physical build.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Additive Manufacturing",
+    "org": "NIST",
+    "url": "https://www.nist.gov/topics/additive-manufacturing"
+   },
+   "lesMer": {
+    "tittel": "Semiconductors",
+    "org": "NIST",
+    "url": "https://www.nist.gov/semiconductors"
+   },
+   "tags": [
+    "3D printing",
+    "manufacturing",
+    "design"
+   ],
+   "seed": {
+    "likes": 3610,
+    "comments": 153,
+    "saves": 918,
+    "shares": 29
+   }
+  },
+  {
+   "id": "POST-043",
+   "rekkefolge": 43,
+   "posterId": "P013",
+   "kategori": "Mind",
+   "underkategori": "Sleep & learning",
+   "serie": "Your Learning Brain",
+   "tittel": "Sleep helps stabilize newly learned memories",
+   "hook": "Practice matters—but what happens after practice matters too.",
+   "sammendrag": "During sleep, the brain reorganizes and consolidates aspects of learning. Sleep loss can make attention and memory formation more difficult.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Which statement best summarizes sleep’s role in learning?",
+    "options": [
+     "Sleep helps consolidate memories",
+     "Sleep permanently records every detail",
+     "Dreams replace practice",
+     "Only daytime rest matters"
+    ],
+    "correct_answer": "Sleep helps consolidate memories",
+    "explanation": "Sleep supports memory consolidation and next-day cognitive performance.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "The Benefits of Slumber",
+    "org": "NIH News in Health",
+    "url": "https://newsinhealth.nih.gov/2013/04/benefits-slumber"
+   },
+   "lesMer": {
+    "tittel": "Understanding Sleep",
+    "org": "National Institute of Neurological Disorders and Stroke",
+    "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/understanding-sleep"
+   },
+   "tags": [
+    "sleep",
+    "memory",
+    "learning"
+   ],
+   "seed": {
+    "likes": 1284,
+    "comments": 323,
+    "saves": 695,
+    "shares": 184
+   }
+  },
+  {
+   "id": "POST-044",
+   "rekkefolge": 44,
+   "posterId": "P014",
+   "kategori": "Mind",
+   "underkategori": "Attention",
+   "serie": "Mental Shortcuts",
+   "tittel": "Multitasking often means rapid task switching",
+   "hook": "The brain pays a small cost every time it changes goals.",
+   "sammendrag": "When people switch between demanding tasks, attention must reconfigure. These switching costs can slow performance and increase mistakes.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Doing two demanding tasks at once always makes you faster.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "For many cognitive tasks, switching divides attention and adds time and errors.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Multitasking: Switching Costs",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/research/action/multitask"
+   },
+   "lesMer": {
+    "tittel": "Memory Is More Than a Mental Video Recorder",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/news/podcasts/speaking-of-psychology/memory"
+   },
+   "tags": [
+    "multitasking",
+    "attention",
+    "productivity"
+   ],
+   "seed": {
+    "likes": 3580,
+    "comments": 21,
+    "saves": 1184,
+    "shares": 363
+   }
+  },
+  {
+   "id": "POST-045",
+   "rekkefolge": 45,
+   "posterId": "P013",
+   "kategori": "Mind",
+   "underkategori": "Learning science",
+   "serie": "Your Learning Brain",
+   "tittel": "Spacing practice usually beats one giant cram session",
+   "hook": "Forgetting a little can make later retrieval more useful.",
+   "sammendrag": "Reviewing material across separate sessions creates repeated retrieval opportunities and strengthens long-term retention more reliably than massed practice.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Two learners study the same total time. One spreads sessions across a week. Who is more likely to remember later?",
+    "options": [
+     "The learner using spaced sessions",
+     "The learner doing one uninterrupted cram only",
+     "Neither can ever remember"
+    ],
+    "correct_answer": "The learner using spaced sessions",
+    "explanation": "Spacing and retrieval practice generally support longer-lasting memory.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "The Benefits of Slumber",
+    "org": "NIH News in Health",
+    "url": "https://newsinhealth.nih.gov/2013/04/benefits-slumber"
+   },
+   "lesMer": {
+    "tittel": "Memory Is More Than a Mental Video Recorder",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/news/podcasts/speaking-of-psychology/memory"
+   },
+   "tags": [
+    "spacing",
+    "learning",
+    "memory"
+   ],
+   "seed": {
+    "likes": 2280,
+    "comments": 146,
+    "saves": 366,
+    "shares": 339
+   }
+  },
+  {
+   "id": "POST-046",
+   "rekkefolge": 46,
+   "posterId": "P014",
+   "kategori": "Mind",
+   "underkategori": "Cognitive bias",
+   "serie": "Mental Shortcuts",
+   "tittel": "Confirmation bias makes supporting evidence easier to notice",
+   "hook": "We often investigate our own beliefs like defense lawyers, not neutral judges.",
+   "sammendrag": "People tend to seek, interpret and remember information in ways that support existing views. Deliberately looking for disconfirming evidence can improve reasoning.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 18,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "Confirmation bias makes us favor information that ____ what we already believe.",
+    "options": [
+     "supports",
+     "randomly erases",
+     "has the longest headline"
+    ],
+    "correct_answer": "supports",
+    "explanation": "The bias shapes what evidence we notice and how we interpret it.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "Social Influence",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/topics/social-influence"
+   },
+   "lesMer": {
+    "tittel": "Memory Is More Than a Mental Video Recorder",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/news/podcasts/speaking-of-psychology/memory"
+   },
+   "tags": [
+    "bias",
+    "beliefs",
+    "reasoning"
+   ],
+   "seed": {
+    "likes": 4494,
+    "comments": 98,
+    "saves": 764,
+    "shares": 195
+   }
+  },
+  {
+   "id": "POST-047",
+   "rekkefolge": 47,
+   "posterId": "P015",
+   "kategori": "Mind",
+   "underkategori": "Expectations",
+   "serie": "Mind and Medicine",
+   "tittel": "Placebo effects are real responses—but not proof that every treatment works",
+   "hook": "Expectations can change symptoms without curing every underlying disease.",
+   "sammendrag": "Placebo responses can influence pain, perception and other outcomes through expectation and context. Controlled trials compare treatments with placebos to separate specific treatment effects.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 30,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Match the trial term with its meaning.",
+    "options": [
+     {
+      "left": "Placebo",
+      "right": "Inactive or comparison intervention"
+     },
+     {
+      "left": "Blinding",
+      "right": "Participants do not know assignment"
+     },
+     {
+      "left": "Treatment effect",
+      "right": "Difference attributable to the tested intervention"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Placebo",
+      "right": "Inactive or comparison intervention"
+     },
+     {
+      "left": "Blinding",
+      "right": "Participants do not know assignment"
+     },
+     {
+      "left": "Treatment effect",
+      "right": "Difference attributable to the tested intervention"
+     }
+    ],
+    "explanation": "Clinical trials use controls to distinguish expectation, natural change and treatment effects.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "Placebo Effect",
+    "org": "National Center for Complementary and Integrative Health",
+    "url": "https://www.nccih.nih.gov/health/placebo-effect"
+   },
+   "lesMer": {
+    "tittel": "Understanding Sleep",
+    "org": "National Institute of Neurological Disorders and Stroke",
+    "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/understanding-sleep"
+   },
+   "tags": [
+    "placebo",
+    "clinical trials",
+    "expectation"
+   ],
+   "seed": {
+    "likes": 4367,
+    "comments": 417,
+    "saves": 607,
+    "shares": 115
+   }
+  },
+  {
+   "id": "POST-048",
+   "rekkefolge": 48,
+   "posterId": "P015",
+   "kategori": "Mind",
+   "underkategori": "Stress",
+   "serie": "Mind and Body",
+   "tittel": "The stress response prepares the body for action",
+   "hook": "Useful in short bursts, costly when it never switches off.",
+   "sammendrag": "Stress activates coordinated brain and body systems that increase alertness and mobilize energy. Persistent stress can disrupt sleep, mood and physical health.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 40,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Match the stress-response change with its immediate purpose.",
+    "options": [
+     {
+      "card_a": "Faster heart rate",
+      "card_b": "Moves blood rapidly"
+     },
+     {
+      "card_a": "Heightened alertness",
+      "card_b": "Detects threats"
+     },
+     {
+      "card_a": "Released fuel",
+      "card_b": "Provides quick energy"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Faster heart rate",
+      "card_b": "Moves blood rapidly"
+     },
+     {
+      "card_a": "Heightened alertness",
+      "card_b": "Detects threats"
+     },
+     {
+      "card_a": "Released fuel",
+      "card_b": "Provides quick energy"
+     }
+    ],
+    "explanation": "The acute stress response prioritizes immediate action.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "So Stressed Out Fact Sheet",
+    "org": "National Institute of Mental Health",
+    "url": "https://www.nimh.nih.gov/health/publications/so-stressed-out-fact-sheet"
+   },
+   "lesMer": {
+    "tittel": "Understanding Sleep",
+    "org": "National Institute of Neurological Disorders and Stroke",
+    "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/understanding-sleep"
+   },
+   "tags": [
+    "stress",
+    "fight or flight",
+    "health"
+   ],
+   "seed": {
+    "likes": 4551,
+    "comments": 391,
+    "saves": 676,
+    "shares": 104
+   }
+  },
+  {
+   "id": "POST-049",
+   "rekkefolge": 49,
+   "posterId": "P013",
+   "kategori": "Mind",
+   "underkategori": "Neuroplasticity",
+   "serie": "Your Learning Brain",
+   "tittel": "The brain changes with learning and experience",
+   "hook": "Adult brains are not fixed wiring diagrams.",
+   "sammendrag": "Neural connections can strengthen, weaken and reorganize in response to practice, injury and experience. Plasticity remains possible throughout life, although it varies by system and age.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "The adult brain cannot form new learning-related connections.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "Adult brains remain plastic and can change with experience, though change is not unlimited.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Understanding Sleep",
+    "org": "National Institute of Neurological Disorders and Stroke",
+    "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/understanding-sleep"
+   },
+   "lesMer": {
+    "tittel": "Memory Is More Than a Mental Video Recorder",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/news/podcasts/speaking-of-psychology/memory"
+   },
+   "tags": [
+    "neuroplasticity",
+    "learning",
+    "brain"
+   ],
+   "seed": {
+    "likes": 3713,
+    "comments": 211,
+    "saves": 1442,
+    "shares": 294
+   }
+  },
+  {
+   "id": "POST-050",
+   "rekkefolge": 50,
+   "posterId": "P014",
+   "kategori": "Mind",
+   "underkategori": "Habits",
+   "serie": "Mental Shortcuts",
+   "tittel": "Habits become easier when a cue repeatedly triggers the same action",
+   "hook": "Your environment can start a behavior before conscious debate begins.",
+   "sammendrag": "Repeated behavior in a stable context can build cue-response associations. Changing cues, friction and rewards can make habits easier or harder to repeat.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Order a simple habit loop.",
+    "options": [
+     "Cue appears",
+     "Behavior starts",
+     "Immediate result or reward follows",
+     "Association strengthens through repetition"
+    ],
+    "correct_answer": [
+     "Cue appears",
+     "Behavior starts",
+     "Immediate result or reward follows",
+     "Association strengthens through repetition"
+    ],
+    "explanation": "Repeated cue-action-result cycles can make behavior more automatic.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Social Influence",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/topics/social-influence"
+   },
+   "lesMer": {
+    "tittel": "Multitasking: Switching Costs",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/research/action/multitask"
+   },
+   "tags": [
+    "habits",
+    "behavior",
+    "cues"
+   ],
+   "seed": {
+    "likes": 1978,
+    "comments": 112,
+    "saves": 1460,
+    "shares": 217
+   }
+  },
+  {
+   "id": "POST-051",
+   "rekkefolge": 51,
+   "posterId": "P013",
+   "kategori": "Mind",
+   "underkategori": "Memory",
+   "serie": "Your Learning Brain",
+   "tittel": "Memory is reconstructed, not replayed like a perfect video",
+   "hook": "Each act of remembering can rebuild the event.",
+   "sammendrag": "Memory combines stored details with context, expectations and later information. Confidence and accuracy are related imperfectly.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 15,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "A vivid, confident memory is guaranteed to be completely accurate.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "Memories can feel vivid and sincere while containing omissions or distortions.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Memory Is More Than a Mental Video Recorder",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/news/podcasts/speaking-of-psychology/memory"
+   },
+   "lesMer": {
+    "tittel": "The Illusory Truth Effect",
+    "org": "PubMed Central / NIH",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8116821/"
+   },
+   "tags": [
+    "memory",
+    "reconstruction",
+    "confidence"
+   ],
+   "seed": {
+    "likes": 3336,
+    "comments": 349,
+    "saves": 1161,
+    "shares": 55
+   }
+  },
+  {
+   "id": "POST-052",
+   "rekkefolge": 52,
+   "posterId": "P016",
+   "kategori": "Health",
+   "underkategori": "Vaccines",
+   "serie": "Defence Systems",
+   "tittel": "Vaccines train immune memory before the real infection",
+   "hook": "The immune system can rehearse without facing the full disease.",
+   "sammendrag": "Vaccines present antigens or instructions that stimulate immune responses. Memory cells can then respond faster and more effectively during later exposure.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Order a simplified vaccine response.",
+    "options": [
+     "Vaccine presents an antigen or instruction",
+     "Immune cells respond",
+     "Memory cells remain",
+     "Later exposure triggers a faster response"
+    ],
+    "correct_answer": [
+     "Vaccine presents an antigen or instruction",
+     "Immune cells respond",
+     "Memory cells remain",
+     "Later exposure triggers a faster response"
+    ],
+    "explanation": "Vaccination prepares adaptive immune memory before infection.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Explaining How Vaccines Work",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/vaccines/basics/explaining-how-vaccines-work.html"
+   },
+   "lesMer": {
+    "tittel": "Sleep and Immune Function",
+    "org": "PubMed Central / NIH",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3256323/"
+   },
+   "tags": [
+    "vaccines",
+    "immunity",
+    "memory cells"
+   ],
+   "seed": {
+    "likes": 2728,
+    "comments": 323,
+    "saves": 259,
+    "shares": 301
+   }
+  },
+  {
+   "id": "POST-053",
+   "rekkefolge": 53,
+   "posterId": "P016",
+   "kategori": "Health",
+   "underkategori": "Hygiene",
+   "serie": "Defence Systems",
+   "tittel": "Soap helps lift microbes and oils from skin",
+   "hook": "The scrubbing and rinsing are part of the chemistry.",
+   "sammendrag": "Soap molecules interact with water and oily material, helping detach dirt and microbes so they can be carried away during rinsing.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 18,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "Handwashing works best when soap, friction and ____ work together.",
+    "options": [
+     "rinsing",
+     "perfume",
+     "cold air"
+    ],
+    "correct_answer": "rinsing",
+    "explanation": "Soap loosens material, friction helps detach it and water carries it away.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "About Hand Hygiene",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/clean-hands/about/index.html"
+   },
+   "lesMer": {
+    "tittel": "The Chemistry of Cleaning",
+    "org": "American Chemical Society",
+    "url": "https://www.acs.org/education/resources/highschool/chemmatters/past-issues/archive-2014-2015/cleaning-chemistry.html"
+   },
+   "tags": [
+    "handwashing",
+    "soap",
+    "prevention"
+   ],
+   "seed": {
+    "likes": 503,
+    "comments": 316,
+    "saves": 396,
+    "shares": 167
+   }
+  },
+  {
+   "id": "POST-054",
+   "rekkefolge": 54,
+   "posterId": "P017",
+   "kategori": "Health",
+   "underkategori": "Strength",
+   "serie": "Move for Health",
+   "tittel": "Resistance training challenges muscle and bone",
+   "hook": "Strength work changes more than how much you can lift.",
+   "sammendrag": "Progressive resistance exercise stimulates muscle adaptation and places load on bones. It also supports function, balance and metabolic health.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Which activity is resistance training?",
+    "options": [
+     "Squats against body weight or added load",
+     "Watching a race",
+     "Only stretching a finger",
+     "Taking a nap"
+    ],
+    "correct_answer": "Squats against body weight or added load",
+    "explanation": "Resistance training requires muscles to work against an external or body-weight load.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Benefits of Physical Activity",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/physical-activity/php/about/index.html"
+   },
+   "lesMer": {
+    "tittel": "Debunking the Myth of Exercise-Induced Immune Suppression",
+    "org": "PubMed Central / NIH",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5911985/"
+   },
+   "tags": [
+    "strength",
+    "muscle",
+    "bone"
+   ],
+   "seed": {
+    "likes": 449,
+    "comments": 254,
+    "saves": 584,
+    "shares": 206
+   }
+  },
+  {
+   "id": "POST-055",
+   "rekkefolge": 55,
+   "posterId": "P017",
+   "kategori": "Health",
+   "underkategori": "Cardiovascular fitness",
+   "serie": "Move for Health",
+   "tittel": "Regular aerobic activity makes the heart and circulation more efficient",
+   "hook": "The heart adapts to repeated demand.",
+   "sammendrag": "Activities that raise breathing and heart rate train cardiovascular systems. Benefits accumulate with regular activity and do not require elite performance.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 40,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Match the activity with the main movement pattern.",
+    "options": [
+     {
+      "card_a": "Brisk walking",
+      "card_b": "Steady aerobic work"
+     },
+     {
+      "card_a": "Cycling",
+      "card_b": "Repeated lower-body aerobic work"
+     },
+     {
+      "card_a": "Swimming",
+      "card_b": "Whole-body aerobic work"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Brisk walking",
+      "card_b": "Steady aerobic work"
+     },
+     {
+      "card_a": "Cycling",
+      "card_b": "Repeated lower-body aerobic work"
+     },
+     {
+      "card_a": "Swimming",
+      "card_b": "Whole-body aerobic work"
+     }
+    ],
+    "explanation": "Many activities can improve cardiorespiratory fitness when performed regularly.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "Benefits of Physical Activity",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/physical-activity/php/about/index.html"
+   },
+   "lesMer": {
+    "tittel": "Debunking the Myth of Exercise-Induced Immune Suppression",
+    "org": "PubMed Central / NIH",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5911985/"
+   },
+   "tags": [
+    "cardio",
+    "heart",
+    "exercise"
+   ],
+   "seed": {
+    "likes": 5779,
+    "comments": 31,
+    "saves": 1477,
+    "shares": 348
+   }
+  },
+  {
+   "id": "POST-056",
+   "rekkefolge": 56,
+   "posterId": "P018",
+   "kategori": "Health",
+   "underkategori": "Digestion",
+   "serie": "Food Systems",
+   "tittel": "Dietary fiber feeds both digestion and gut microbes",
+   "hook": "Some food reaches the colon specifically because you cannot digest it fully.",
+   "sammendrag": "Different fibers add bulk, hold water or are fermented by gut microbes. Fiber-rich foods are associated with better digestive and cardiometabolic health.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 18,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "Many gut microbes ferment certain types of dietary ____.",
+    "options": [
+     "fiber",
+     "plastic",
+     "salt crystals"
+    ],
+    "correct_answer": "fiber",
+    "explanation": "Fermentable fibers can become fuel for microbes in the colon.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "Water and Healthier Drinks",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/healthy-weight-growth/water-healthy-drinks/index.html"
+   },
+   "lesMer": {
+    "tittel": "Benefits of Physical Activity",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/physical-activity/php/about/index.html"
+   },
+   "tags": [
+    "fiber",
+    "gut",
+    "nutrition"
+   ],
+   "seed": {
+    "likes": 2274,
+    "comments": 331,
+    "saves": 155,
+    "shares": 195
+   }
+  },
+  {
+   "id": "POST-057",
+   "rekkefolge": 57,
+   "posterId": "P018",
+   "kategori": "Health",
+   "underkategori": "Hydration",
+   "serie": "Food Systems",
+   "tittel": "Water needs change with heat, activity, food and individual physiology",
+   "hook": "There is no single perfect number for every person in every condition.",
+   "sammendrag": "The body loses water through urine, sweat, breathing and digestion. Needs rise with heat, exercise, illness and other circumstances.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Every adult needs exactly the same amount of water each day.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "Hydration needs vary with body size, climate, activity, diet, health and pregnancy or breastfeeding.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Water and Healthier Drinks",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/healthy-weight-growth/water-healthy-drinks/index.html"
+   },
+   "lesMer": {
+    "tittel": "Benefits of Physical Activity",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/physical-activity/php/about/index.html"
+   },
+   "tags": [
+    "hydration",
+    "water",
+    "exercise"
+   ],
+   "seed": {
+    "likes": 2008,
+    "comments": 162,
+    "saves": 1018,
+    "shares": 186
+   }
+  },
+  {
+   "id": "POST-058",
+   "rekkefolge": 58,
+   "posterId": "P016",
+   "kategori": "Health",
+   "underkategori": "Sun safety",
+   "serie": "Everyday Prevention",
+   "tittel": "Broad-spectrum sunscreen targets UVA and UVB exposure",
+   "hook": "Sunburn is only one visible sign of ultraviolet damage.",
+   "sammendrag": "UVA and UVB radiation contribute differently to skin damage. Broad-spectrum products are designed to protect across both ranges when used as directed.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 30,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Match each label with its meaning.",
+    "options": [
+     {
+      "left": "Broad spectrum",
+      "right": "UVA and UVB protection"
+     },
+     {
+      "left": "SPF",
+      "right": "Measure focused mainly on UVB sunburn protection"
+     },
+     {
+      "left": "Reapplication",
+      "right": "Restores coverage after time, water or rubbing"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Broad spectrum",
+      "right": "UVA and UVB protection"
+     },
+     {
+      "left": "SPF",
+      "right": "Measure focused mainly on UVB sunburn protection"
+     },
+     {
+      "left": "Reapplication",
+      "right": "Restores coverage after time, water or rubbing"
+     }
+    ],
+    "explanation": "Effective sun protection depends on product type, amount, coverage and reapplication.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "Sunscreen: How to Help Protect Your Skin from the Sun",
+    "org": "U.S. Food and Drug Administration",
+    "url": "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun"
+   },
+   "lesMer": {
+    "tittel": "Benefits of Physical Activity",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/physical-activity/php/about/index.html"
+   },
+   "tags": [
+    "sunscreen",
+    "UV",
+    "skin"
+   ],
+   "seed": {
+    "likes": 6224,
+    "comments": 199,
+    "saves": 310,
+    "shares": 343
+   }
+  },
+  {
+   "id": "POST-059",
+   "rekkefolge": 59,
+   "posterId": "P016",
+   "kategori": "Health",
+   "underkategori": "Sleep & immunity",
+   "serie": "Defence Systems",
+   "tittel": "Sleep and immunity influence each other",
+   "hook": "Rest is part of the immune system’s operating environment.",
+   "sammendrag": "Sleep supports coordinated immune activity, and immune signals also influence sleep during illness. Persistent sleep loss can alter immune responses.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 25,
+   "xp": 120,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Someone repeatedly sleeps too little before and after an immune challenge. What is the most defensible prediction?",
+    "options": [
+     "Their immune response may be less well supported",
+     "They become permanently immune to every virus",
+     "Sleep has no biological connection to immunity"
+    ],
+    "correct_answer": "Their immune response may be less well supported",
+    "explanation": "Research links sufficient sleep with healthier regulation of immune responses.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Sleep and Immune Function",
+    "org": "PubMed Central / NIH",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3256323/"
+   },
+   "lesMer": {
+    "tittel": "Understanding Sleep",
+    "org": "National Institute of Neurological Disorders and Stroke",
+    "url": "https://www.ninds.nih.gov/health-information/public-education/brain-basics/understanding-sleep"
+   },
+   "tags": [
+    "sleep",
+    "immunity",
+    "recovery"
+   ],
+   "seed": {
+    "likes": 5276,
+    "comments": 311,
+    "saves": 538,
+    "shares": 317
+   }
+  },
+  {
+   "id": "POST-060",
+   "rekkefolge": 60,
+   "posterId": "P016",
+   "kategori": "Health",
+   "underkategori": "Antimicrobial resistance",
+   "serie": "Defence Systems",
+   "tittel": "Bacteria—not people—become resistant to antibiotics",
+   "hook": "Resistance is evolution happening under selection pressure.",
+   "sammendrag": "Antibiotic exposure can kill susceptible bacteria while resistant variants survive and multiply. Resistant infections can then spread between people, animals and environments.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 20,
+   "xp": 120,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "What becomes resistant during antibiotic resistance?",
+    "options": [
+     "Bacteria or other microbes",
+     "The patient’s bones",
+     "The medicine bottle",
+     "Human skin color"
+    ],
+    "correct_answer": "Bacteria or other microbes",
+    "explanation": "Resistance is a trait of microbes that lets them survive drugs designed to kill them.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "About Antimicrobial Resistance",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/antimicrobial-resistance/about/index.html"
+   },
+   "lesMer": {
+    "tittel": "About Antibiotic Use",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/antibiotic-use/about/index.html"
+   },
+   "tags": [
+    "antibiotic resistance",
+    "evolution",
+    "public health"
+   ],
+   "seed": {
+    "likes": 3211,
+    "comments": 381,
+    "saves": 352,
+    "shares": 277
+   }
+  },
+  {
+   "id": "POST-061",
+   "rekkefolge": 61,
+   "posterId": "P020",
+   "kategori": "Nature",
+   "underkategori": "Coral reefs",
+   "serie": "Ocean Plot Twists",
+   "tittel": "Corals are animals that build living limestone cities",
+   "hook": "A reef may look like a colorful rock garden, but its builders are animals.",
+   "sammendrag": "Each coral colony is made of many small polyps related to jellyfish and sea anemones. Many reef-building corals create calcium-carbonate skeletons that accumulate over generations.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Corals are underwater plants.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "Coral polyps are animals, although many live with photosynthetic algae.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Corals Tutorial",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/education/tutorial_corals/"
+   },
+   "lesMer": {
+    "tittel": "How Does Climate Change Affect Coral Reefs?",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/facts/coralreef-climate.html"
+   },
+   "tags": [
+    "coral",
+    "animals",
+    "reef"
+   ],
+   "seed": {
+    "likes": 1783,
+    "comments": 217,
+    "saves": 1366,
+    "shares": 259
+   }
+  },
+  {
+   "id": "POST-062",
+   "rekkefolge": 62,
+   "posterId": "P021",
+   "kategori": "Nature",
+   "underkategori": "Pollination",
+   "serie": "Animal Engineers",
+   "tittel": "Pollinators move pollen between flowers",
+   "hook": "Many fruits and seeds begin with an animal carrying microscopic grains.",
+   "sammendrag": "Bees, flies, butterflies, birds, bats and other animals can transfer pollen between flower structures, enabling fertilization in many plant species.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 40,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Match the pollinator with a flower cue it may use.",
+    "options": [
+     {
+      "card_a": "Bee",
+      "card_b": "Color and scent"
+     },
+     {
+      "card_a": "Moth",
+      "card_b": "Night fragrance"
+     },
+     {
+      "card_a": "Hummingbird",
+      "card_b": "Bright tubular flower"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Bee",
+      "card_b": "Color and scent"
+     },
+     {
+      "card_a": "Moth",
+      "card_b": "Night fragrance"
+     },
+     {
+      "card_a": "Hummingbird",
+      "card_b": "Bright tubular flower"
+     }
+    ],
+    "explanation": "Different flowers attract different pollinators through shape, color, scent and timing.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "Pollinator Science",
+    "org": "U.S. Geological Survey",
+    "url": "https://www.usgs.gov/programs/ecosystems/science/pollinators"
+   },
+   "lesMer": {
+    "tittel": "Photosynthesis",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/science/photosynthesis"
+   },
+   "tags": [
+    "pollination",
+    "bees",
+    "flowers"
+   ],
+   "seed": {
+    "likes": 5109,
+    "comments": 264,
+    "saves": 727,
+    "shares": 149
+   }
+  },
+  {
+   "id": "POST-063",
+   "rekkefolge": 63,
+   "posterId": "P020",
+   "kategori": "Nature",
+   "underkategori": "Cephalopods",
+   "serie": "Ocean Plot Twists",
+   "tittel": "An octopus has three hearts",
+   "hook": "Its circulation works differently from ours.",
+   "sammendrag": "Two hearts pump blood through the gills, while a third sends oxygenated blood around the body. Octopus blood uses copper-containing hemocyanin and appears blue.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 18,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "Two octopus hearts pump blood through the ____.",
+    "options": [
+     "gills",
+     "tentacle tips",
+     "eyes"
+    ],
+    "correct_answer": "gills",
+    "explanation": "The branchial hearts move blood through the gills; the systemic heart serves the body.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "Octopuses",
+    "org": "Smithsonian Ocean",
+    "url": "https://ocean.si.edu/ocean-life/invertebrates/octopuses"
+   },
+   "lesMer": {
+    "tittel": "Corals Tutorial",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/education/tutorial_corals/"
+   },
+   "tags": [
+    "octopus",
+    "hearts",
+    "ocean"
+   ],
+   "seed": {
+    "likes": 5631,
+    "comments": 138,
+    "saves": 1146,
+    "shares": 230
+   }
+  },
+  {
+   "id": "POST-064",
+   "rekkefolge": 64,
+   "posterId": "P019",
+   "kategori": "Nature",
+   "underkategori": "Fungi",
+   "serie": "Quiet Systems",
+   "tittel": "Fungi are major recyclers in ecosystems",
+   "hook": "A fallen tree becomes raw material for the next generation of life.",
+   "sammendrag": "Fungi release enzymes that break down complex organic material outside their bodies, then absorb nutrients. This returns carbon and minerals to ecosystem cycles.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "What is a major ecological role of many fungi?",
+    "options": [
+     "Decomposing dead organic material",
+     "Creating sunlight",
+     "Stopping all bacteria",
+     "Producing ocean tides"
+    ],
+    "correct_answer": "Decomposing dead organic material",
+    "explanation": "Fungal decomposition helps recycle nutrients from dead material.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Fungi and Forest Ecosystems",
+    "org": "U.S. Forest Service",
+    "url": "https://www.fs.usda.gov/research/treesearch"
+   },
+   "lesMer": {
+    "tittel": "Forests and the Carbon Cycle",
+    "org": "NASA Earth Observatory",
+    "url": "https://earthobservatory.nasa.gov/features/CarbonCycle/page4.php"
+   },
+   "tags": [
+    "fungi",
+    "decomposition",
+    "forest"
+   ],
+   "seed": {
+    "likes": 4592,
+    "comments": 75,
+    "saves": 141,
+    "shares": 106
+   }
+  },
+  {
+   "id": "POST-065",
+   "rekkefolge": 65,
+   "posterId": "P021",
+   "kategori": "Nature",
+   "underkategori": "Predators & ecosystems",
+   "serie": "Animal Engineers",
+   "tittel": "Predators can change ecosystems without eating every prey animal",
+   "hook": "Fear and movement can matter alongside predation.",
+   "sammendrag": "Predators may alter where prey feed, move and gather. These behavioral changes can affect vegetation and other species, although real ecosystems are complex and effects vary.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 25,
+   "xp": 120,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Large predators return to an ecosystem. Which change is plausible?",
+    "options": [
+     "Prey behavior and grazing locations may shift",
+     "Every prey animal disappears immediately",
+     "Plants stop needing sunlight"
+    ],
+    "correct_answer": "Prey behavior and grazing locations may shift",
+    "explanation": "Predators influence both prey numbers and behavior, with effects that can spread through food webs.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Wolves and the Ecology of Fear",
+    "org": "U.S. National Park Service",
+    "url": "https://www.nps.gov/articles/000/wolves-and-the-ecology-of-fear.htm"
+   },
+   "lesMer": {
+    "tittel": "Pollinator Science",
+    "org": "U.S. Geological Survey",
+    "url": "https://www.usgs.gov/programs/ecosystems/science/pollinators"
+   },
+   "tags": [
+    "wolves",
+    "food webs",
+    "behavior"
+   ],
+   "seed": {
+    "likes": 5886,
+    "comments": 229,
+    "saves": 1136,
+    "shares": 311
+   }
+  },
+  {
+   "id": "POST-066",
+   "rekkefolge": 66,
+   "posterId": "P020",
+   "kategori": "Nature",
+   "underkategori": "Coasts",
+   "serie": "Ocean Plot Twists",
+   "tittel": "Mangrove roots can reduce wave energy and trap sediment",
+   "hook": "A forest can function like living coastal infrastructure.",
+   "sammendrag": "Dense mangrove roots slow water, capture sediment and provide habitat. Mangrove belts can reduce some wave and storm impacts, though protection depends on storm strength and local conditions.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 30,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Match the mangrove feature with its benefit.",
+    "options": [
+     {
+      "left": "Dense roots",
+      "right": "Slow water and trap sediment"
+     },
+     {
+      "left": "Nursery habitat",
+      "right": "Shelters young fish"
+     },
+     {
+      "left": "Coastal vegetation",
+      "right": "Stores carbon and stabilizes shorelines"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Dense roots",
+      "right": "Slow water and trap sediment"
+     },
+     {
+      "left": "Nursery habitat",
+      "right": "Shelters young fish"
+     },
+     {
+      "left": "Coastal vegetation",
+      "right": "Stores carbon and stabilizes shorelines"
+     }
+    ],
+    "explanation": "Mangroves combine ecological habitat with physical coastal functions.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "Mangroves",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/ecosystems/mangroves/"
+   },
+   "lesMer": {
+    "tittel": "Hurricanes",
+    "org": "NOAA",
+    "url": "https://www.noaa.gov/education/resource-collections/weather-atmosphere/hurricanes"
+   },
+   "tags": [
+    "mangroves",
+    "coasts",
+    "habitat"
+   ],
+   "seed": {
+    "likes": 3797,
+    "comments": 132,
+    "saves": 593,
+    "shares": 270
+   }
+  },
+  {
+   "id": "POST-067",
+   "rekkefolge": 67,
+   "posterId": "P021",
+   "kategori": "Nature",
+   "underkategori": "Migration",
+   "serie": "Animal Journeys",
+   "tittel": "Whale migrations connect feeding and breeding grounds",
+   "hook": "Some of the largest animals make some of the longest seasonal journeys.",
+   "sammendrag": "Many whale populations move between productive high-latitude feeding areas and warmer breeding or calving regions. Routes differ by species and population.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 40,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Match the seasonal location with its common role for many migratory whales.",
+    "options": [
+     {
+      "card_a": "High-latitude waters",
+      "card_b": "Intensive feeding"
+     },
+     {
+      "card_a": "Warmer waters",
+      "card_b": "Breeding or calving"
+     },
+     {
+      "card_a": "Migration corridor",
+      "card_b": "Travel between seasonal habitats"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "High-latitude waters",
+      "card_b": "Intensive feeding"
+     },
+     {
+      "card_a": "Warmer waters",
+      "card_b": "Breeding or calving"
+     },
+     {
+      "card_a": "Migration corridor",
+      "card_b": "Travel between seasonal habitats"
+     }
+    ],
+    "explanation": "Migration lets whales use different habitats for different stages of life.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "Whales",
+    "org": "NOAA Fisheries",
+    "url": "https://www.fisheries.noaa.gov/whales"
+   },
+   "lesMer": {
+    "tittel": "Ocean Currents",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/education/tutorial_currents/"
+   },
+   "tags": [
+    "whales",
+    "migration",
+    "ocean"
+   ],
+   "seed": {
+    "likes": 5641,
+    "comments": 284,
+    "saves": 1464,
+    "shares": 289
+   }
+  },
+  {
+   "id": "POST-068",
+   "rekkefolge": 68,
+   "posterId": "P021",
+   "kategori": "Nature",
+   "underkategori": "Bird navigation",
+   "serie": "Animal Journeys",
+   "tittel": "Migratory birds combine several navigation cues",
+   "hook": "The sky, landscape and Earth’s magnetic field can all contribute.",
+   "sammendrag": "Birds may use the Sun, stars, landmarks, odors and magnetic information. Different species and life stages rely on different combinations.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 15,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "All migratory birds navigate using only one built-in compass.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "Bird navigation often combines multiple sensory cues and learned information.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Bird Migration",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/science/migration-animal/Birds"
+   },
+   "lesMer": {
+    "tittel": "Pollinator Science",
+    "org": "U.S. Geological Survey",
+    "url": "https://www.usgs.gov/programs/ecosystems/science/pollinators"
+   },
+   "tags": [
+    "birds",
+    "migration",
+    "navigation"
+   ],
+   "seed": {
+    "likes": 3618,
+    "comments": 384,
+    "saves": 1145,
+    "shares": 80
+   }
+  },
+  {
+   "id": "POST-069",
+   "rekkefolge": 69,
+   "posterId": "P019",
+   "kategori": "Nature",
+   "underkategori": "Forests & climate",
+   "serie": "Quiet Systems",
+   "tittel": "Forests move carbon between air, wood and soil",
+   "hook": "A forest is both a living carbon store and an active carbon exchange.",
+   "sammendrag": "Plants take up carbon dioxide through photosynthesis and store carbon in biomass. Respiration, decomposition, fire and land-use change return carbon to the atmosphere.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 35,
+   "xp": 120,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Order one simplified forest carbon pathway.",
+    "options": [
+     "Tree absorbs carbon dioxide",
+     "Carbon becomes plant tissue",
+     "Leaves or wood die",
+     "Decomposition releases some carbon"
+    ],
+    "correct_answer": [
+     "Tree absorbs carbon dioxide",
+     "Carbon becomes plant tissue",
+     "Leaves or wood die",
+     "Decomposition releases some carbon"
+    ],
+    "explanation": "Forest carbon continuously moves through growth, death and decomposition.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Forests and the Carbon Cycle",
+    "org": "NASA Earth Observatory",
+    "url": "https://earthobservatory.nasa.gov/features/CarbonCycle/page4.php"
+   },
+   "lesMer": {
+    "tittel": "Photosynthesis",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/science/photosynthesis"
+   },
+   "tags": [
+    "forests",
+    "carbon",
+    "climate"
+   ],
+   "seed": {
+    "likes": 1427,
+    "comments": 176,
+    "saves": 703,
+    "shares": 55
+   }
+  },
+  {
+   "id": "POST-070",
+   "rekkefolge": 70,
+   "posterId": "P020",
+   "kategori": "Nature",
+   "underkategori": "Sea turtles",
+   "serie": "Ocean Plot Twists",
+   "tittel": "Nest temperature can influence the sex of sea-turtle hatchlings",
+   "hook": "For many sea turtles, warmer sand tends to produce more females.",
+   "sammendrag": "Sea turtles have temperature-dependent sex determination. The relationship differs among species and nesting conditions, and extreme heat can reduce survival.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 25,
+   "xp": 120,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "A nesting beach becomes consistently warmer. What trend may occur in many sea-turtle populations?",
+    "options": [
+     "A higher proportion of female hatchlings",
+     "All hatchlings become mammals",
+     "Eggs no longer need oxygen"
+    ],
+    "correct_answer": "A higher proportion of female hatchlings",
+    "explanation": "Incubation temperature influences sex determination in sea turtles.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Sea Turtles",
+    "org": "NOAA Fisheries",
+    "url": "https://www.fisheries.noaa.gov/sea-turtles"
+   },
+   "lesMer": {
+    "tittel": "Climate Change Impacts",
+    "org": "NOAA",
+    "url": "https://www.noaa.gov/education/resource-collections/climate/climate-change-impacts"
+   },
+   "tags": [
+    "sea turtles",
+    "temperature",
+    "reproduction"
+   ],
+   "seed": {
+    "likes": 3098,
+    "comments": 138,
+    "saves": 372,
+    "shares": 66
+   }
+  },
+  {
+   "id": "POST-071",
+   "rekkefolge": 71,
+   "posterId": "P022",
+   "kategori": "World",
+   "underkategori": "Time & longitude",
+   "serie": "Why Places Work",
+   "tittel": "Time zones approximate Earth’s rotation",
+   "hook": "Local noon shifts as Earth turns, but borders make the map messy.",
+   "sammendrag": "Earth rotates once per day, so solar time changes with longitude. Standard time zones simplify coordination and often bend around political borders.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Why do standard time zones exist?",
+    "options": [
+     "To coordinate clock time across regions as Earth rotates",
+     "Because gravity changes every hour",
+     "To keep all places at local noon",
+     "Because the Moon demands it"
+    ],
+    "correct_answer": "To coordinate clock time across regions as Earth rotates",
+    "explanation": "Time zones standardize local time instead of every longitude using a different clock.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "World Time Scales and Time Zones",
+    "org": "NIST",
+    "url": "https://www.nist.gov/pml/time-and-frequency-division/popular-links/time-frequency-z/time-zones"
+   },
+   "lesMer": {
+    "tittel": "Solar System Exploration",
+    "org": "NASA",
+    "url": "https://science.nasa.gov/solar-system/"
+   },
+   "tags": [
+    "time zones",
+    "longitude",
+    "rotation"
+   ],
+   "seed": {
+    "likes": 284,
+    "comments": 162,
+    "saves": 1289,
+    "shares": 192
+   }
+  },
+  {
+   "id": "POST-072",
+   "rekkefolge": 72,
+   "posterId": "P022",
+   "kategori": "World",
+   "underkategori": "Climate patterns",
+   "serie": "Weather Systems",
+   "tittel": "A monsoon is a seasonal wind shift—not simply heavy rain",
+   "hook": "The rain is a consequence of a larger circulation change.",
+   "sammendrag": "Monsoon systems involve seasonal reversals or shifts in winds linked to land-ocean heating contrasts. These shifts can create distinct wet and dry seasons.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 18,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "A monsoon is fundamentally a seasonal change in large-scale ____.",
+    "options": [
+     "winds",
+     "mountain height",
+     "ocean salinity only"
+    ],
+    "correct_answer": "winds",
+    "explanation": "Seasonal wind changes transport moisture and help organize rainfall.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "North American Monsoon",
+    "org": "NOAA",
+    "url": "https://www.climate.gov/news-features/blogs/enso/north-american-monsoon"
+   },
+   "lesMer": {
+    "tittel": "Hurricanes",
+    "org": "NOAA",
+    "url": "https://www.noaa.gov/education/resource-collections/weather-atmosphere/hurricanes"
+   },
+   "tags": [
+    "monsoon",
+    "wind",
+    "rain"
+   ],
+   "seed": {
+    "likes": 2023,
+    "comments": 115,
+    "saves": 1249,
+    "shares": 133
+   }
+  },
+  {
+   "id": "POST-073",
+   "rekkefolge": 73,
+   "posterId": "P022",
+   "kategori": "World",
+   "underkategori": "Rivers",
+   "serie": "Why Places Work",
+   "tittel": "River deltas form where sediment accumulates near a river mouth",
+   "hook": "A river can build new land as it slows down.",
+   "sammendrag": "When a river enters a lake or sea, its flow often loses energy and drops sediment. Channels divide and migrate across the growing delta.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Order a simplified delta-building process.",
+    "options": [
+     "River carries sediment",
+     "Flow slows near the coast",
+     "Sediment settles",
+     "Channels split across new deposits"
+    ],
+    "correct_answer": [
+     "River carries sediment",
+     "Flow slows near the coast",
+     "Sediment settles",
+     "Channels split across new deposits"
+    ],
+    "explanation": "Deltas grow when sediment supply exceeds removal by waves, tides and sinking.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "River Deltas and Coastal Change",
+    "org": "NASA Earth Observatory",
+    "url": "https://earthobservatory.nasa.gov/"
+   },
+   "lesMer": {
+    "tittel": "Ocean Currents",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/education/tutorial_currents/"
+   },
+   "tags": [
+    "rivers",
+    "deltas",
+    "sediment"
+   ],
+   "seed": {
+    "likes": 826,
+    "comments": 337,
+    "saves": 1095,
+    "shares": 347
+   }
+  },
+  {
+   "id": "POST-074",
+   "rekkefolge": 74,
+   "posterId": "P023",
+   "kategori": "World",
+   "underkategori": "Cities",
+   "serie": "People on the Map",
+   "tittel": "Most people now live in urban areas",
+   "hook": "Humanity has become increasingly urban within a few generations.",
+   "sammendrag": "Urbanization reflects migration, population growth and the reclassification or expansion of settlements. The pattern varies widely across countries and regions.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "A region urbanizes rapidly. Which pressure commonly increases?",
+    "options": [
+     "Demand for housing, transport and services",
+     "The number of time zones",
+     "The length of the year"
+    ],
+    "correct_answer": "Demand for housing, transport and services",
+    "explanation": "Rapid urban growth requires infrastructure, planning and public services.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Urbanization",
+    "org": "Our World in Data",
+    "url": "https://ourworldindata.org/urbanization"
+   },
+   "lesMer": {
+    "tittel": "Why We Conduct the Decennial Census",
+    "org": "U.S. Census Bureau",
+    "url": "https://www.census.gov/programs-surveys/decennial-census/about/why.html"
+   },
+   "tags": [
+    "urbanization",
+    "cities",
+    "population"
+   ],
+   "seed": {
+    "likes": 1735,
+    "comments": 284,
+    "saves": 1397,
+    "shares": 251
+   }
+  },
+  {
+   "id": "POST-075",
+   "rekkefolge": 75,
+   "posterId": "P023",
+   "kategori": "World",
+   "underkategori": "Languages",
+   "serie": "People on the Map",
+   "tittel": "Language families reflect shared historical ancestry",
+   "hook": "English, Hindi and Norwegian are distant relatives.",
+   "sammendrag": "Linguists compare systematic patterns in vocabulary, sounds and grammar to reconstruct relationships among languages. Borrowed words alone do not establish ancestry.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 40,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Match the language with its broad family.",
+    "options": [
+     {
+      "card_a": "Norwegian",
+      "card_b": "Indo-European"
+     },
+     {
+      "card_a": "Finnish",
+      "card_b": "Uralic"
+     },
+     {
+      "card_a": "Arabic",
+      "card_b": "Afro-Asiatic"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Norwegian",
+      "card_b": "Indo-European"
+     },
+     {
+      "card_a": "Finnish",
+      "card_b": "Uralic"
+     },
+     {
+      "card_a": "Arabic",
+      "card_b": "Afro-Asiatic"
+     }
+    ],
+    "explanation": "Language families are based on historical descent, not geographic closeness alone.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "Language Families",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/language/Classification-of-languages"
+   },
+   "lesMer": {
+    "tittel": "Oral Traditions and Expressions",
+    "org": "UNESCO",
+    "url": "https://ich.unesco.org/en/oral-traditions-and-expressions-00053"
+   },
+   "tags": [
+    "languages",
+    "families",
+    "linguistics"
+   ],
+   "seed": {
+    "likes": 2918,
+    "comments": 13,
+    "saves": 813,
+    "shares": 103
+   }
+  },
+  {
+   "id": "POST-076",
+   "rekkefolge": 76,
+   "posterId": "P022",
+   "kategori": "World",
+   "underkategori": "Mountains & weather",
+   "serie": "Weather Systems",
+   "tittel": "Mountains can create wet and dry sides",
+   "hook": "Air that climbs a mountain can lose moisture before descending.",
+   "sammendrag": "Moist air cools as it rises, increasing condensation and precipitation. Descending air on the leeward side warms and dries, creating a rain-shadow effect.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 30,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Match the mountain side with its typical condition.",
+    "options": [
+     {
+      "left": "Windward",
+      "right": "Air rises and often becomes wetter"
+     },
+     {
+      "left": "Leeward",
+      "right": "Air descends and often becomes drier"
+     },
+     {
+      "left": "Summit",
+      "right": "Air pressure and temperature are lower"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Windward",
+      "right": "Air rises and often becomes wetter"
+     },
+     {
+      "left": "Leeward",
+      "right": "Air descends and often becomes drier"
+     },
+     {
+      "left": "Summit",
+      "right": "Air pressure and temperature are lower"
+     }
+    ],
+    "explanation": "Topography redirects airflow and changes temperature and moisture.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "Rain Shadow",
+    "org": "National Weather Service",
+    "url": "https://www.weather.gov/"
+   },
+   "lesMer": {
+    "tittel": "The Water Cycle",
+    "org": "NOAA",
+    "url": "https://www.noaa.gov/education/resource-collections/freshwater/water-cycle"
+   },
+   "tags": [
+    "rain shadow",
+    "mountains",
+    "weather"
+   ],
+   "seed": {
+    "likes": 5870,
+    "comments": 81,
+    "saves": 857,
+    "shares": 356
+   }
+  },
+  {
+   "id": "POST-077",
+   "rekkefolge": 77,
+   "posterId": "P022",
+   "kategori": "World",
+   "underkategori": "Natural hazards",
+   "serie": "Why Places Work",
+   "tittel": "Most earthquakes cluster near plate boundaries",
+   "hook": "The global map of earthquakes outlines Earth’s moving plates.",
+   "sammendrag": "Stress builds where plates collide, separate or slide past. When faults slip, stored elastic energy is released as seismic waves.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Earthquakes occur randomly and show no relationship to plate boundaries.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "Earthquakes strongly cluster along tectonic plate boundaries, although intraplate earthquakes also occur.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Earthquake Hazards Program",
+    "org": "U.S. Geological Survey",
+    "url": "https://www.usgs.gov/programs/earthquake-hazards"
+   },
+   "lesMer": {
+    "tittel": "This Dynamic Earth: The Story of Plate Tectonics",
+    "org": "U.S. Geological Survey",
+    "url": "https://pubs.usgs.gov/gip/dynamic/"
+   },
+   "tags": [
+    "earthquakes",
+    "plates",
+    "hazards"
+   ],
+   "seed": {
+    "likes": 5530,
+    "comments": 201,
+    "saves": 398,
+    "shares": 88
+   }
+  },
+  {
+   "id": "POST-078",
+   "rekkefolge": 78,
+   "posterId": "P022",
+   "kategori": "World",
+   "underkategori": "Ocean & climate",
+   "serie": "Weather Systems",
+   "tittel": "Ocean currents redistribute heat around the planet",
+   "hook": "A current can shape climate thousands of kilometers away.",
+   "sammendrag": "Wind, density differences, Earth’s rotation and basin shapes drive ocean circulation. Currents transport warm and cold water, influencing regional weather and ecosystems.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 40,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Match the current property with its effect.",
+    "options": [
+     {
+      "card_a": "Warm current",
+      "card_b": "Carries heat toward cooler regions"
+     },
+     {
+      "card_a": "Cold current",
+      "card_b": "Brings cooler water toward lower latitudes"
+     },
+     {
+      "card_a": "Upwelling",
+      "card_b": "Raises nutrient-rich deep water"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Warm current",
+      "card_b": "Carries heat toward cooler regions"
+     },
+     {
+      "card_a": "Cold current",
+      "card_b": "Brings cooler water toward lower latitudes"
+     },
+     {
+      "card_a": "Upwelling",
+      "card_b": "Raises nutrient-rich deep water"
+     }
+    ],
+    "explanation": "Ocean circulation moves both heat and nutrients.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "Ocean Currents",
+    "org": "NOAA Ocean Service",
+    "url": "https://oceanservice.noaa.gov/education/tutorial_currents/"
+   },
+   "lesMer": {
+    "tittel": "Climate Change Impacts",
+    "org": "NOAA",
+    "url": "https://www.noaa.gov/education/resource-collections/climate/climate-change-impacts"
+   },
+   "tags": [
+    "ocean currents",
+    "climate",
+    "upwelling"
+   ],
+   "seed": {
+    "likes": 893,
+    "comments": 336,
+    "saves": 822,
+    "shares": 69
+   }
+  },
+  {
+   "id": "POST-079",
+   "rekkefolge": 79,
+   "posterId": "P024",
+   "kategori": "Society",
+   "underkategori": "Economics & institutions",
+   "serie": "Shared Systems",
+   "tittel": "Public goods are difficult to exclude people from using",
+   "hook": "Street lighting works even for someone who did not pay directly at the lamp.",
+   "sammendrag": "Public goods are commonly described as non-excludable and non-rival: people cannot easily be prevented from benefiting, and one person’s use may not reduce another’s.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 30,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Match the public-good property with its meaning.",
+    "options": [
+     {
+      "left": "Non-excludable",
+      "right": "Hard to prevent access"
+     },
+     {
+      "left": "Non-rival",
+      "right": "One person’s use does not significantly reduce another’s"
+     },
+     {
+      "left": "Free-rider problem",
+      "right": "Benefit without contributing"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Non-excludable",
+      "right": "Hard to prevent access"
+     },
+     {
+      "left": "Non-rival",
+      "right": "One person’s use does not significantly reduce another’s"
+     },
+     {
+      "left": "Free-rider problem",
+      "right": "Benefit without contributing"
+     }
+    ],
+    "explanation": "These properties make voluntary private provision difficult in some cases.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "Public Goods",
+    "org": "International Monetary Fund",
+    "url": "https://www.imf.org/external/pubs/ft/fandd/basics/54-public-goods.htm"
+   },
+   "lesMer": {
+    "tittel": "Tragedy of the Commons",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/science/tragedy-of-the-commons"
+   },
+   "tags": [
+    "public goods",
+    "institutions",
+    "economics"
+   ],
+   "seed": {
+    "likes": 5475,
+    "comments": 126,
+    "saves": 911,
+    "shares": 92
+   }
+  },
+  {
+   "id": "POST-080",
+   "rekkefolge": 80,
+   "posterId": "P024",
+   "kategori": "Society",
+   "underkategori": "Shared resources",
+   "serie": "Shared Systems",
+   "tittel": "A shared resource can be depleted even when each individual acts rationally",
+   "hook": "The group loses when everyone follows the same short-term incentive.",
+   "sammendrag": "The tragedy of the commons describes situations where individuals overuse a shared, limited resource because benefits are private while costs are spread across the group.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Fishers can take unlimited fish from one shared lake. What may happen without coordination?",
+    "options": [
+     "The fish population may be depleted",
+     "The lake automatically creates infinite fish",
+     "Everyone always catches more forever"
+    ],
+    "correct_answer": "The fish population may be depleted",
+    "explanation": "Uncoordinated extraction can exceed the resource’s capacity to recover.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Tragedy of the Commons",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/science/tragedy-of-the-commons"
+   },
+   "lesMer": {
+    "tittel": "Public Goods",
+    "org": "International Monetary Fund",
+    "url": "https://www.imf.org/external/pubs/ft/fandd/basics/54-public-goods.htm"
+   },
+   "tags": [
+    "commons",
+    "resources",
+    "cooperation"
+   ],
+   "seed": {
+    "likes": 3624,
+    "comments": 128,
+    "saves": 461,
+    "shares": 18
+   }
+  },
+  {
+   "id": "POST-081",
+   "rekkefolge": 81,
+   "posterId": "P025",
+   "kategori": "Society",
+   "underkategori": "Misinformation",
+   "serie": "Check the Signal",
+   "tittel": "Repeated statements can feel truer—even without new evidence",
+   "hook": "Familiarity is not the same as accuracy.",
+   "sammendrag": "The illusory truth effect occurs when repetition increases perceived truth. Checking the original evidence and source remains important even when a claim feels familiar.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "A claim becomes more accurate simply because you have seen it many times.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "Repetition can increase familiarity and perceived truth without improving accuracy.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "The Illusory Truth Effect",
+    "org": "PubMed Central / NIH",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8116821/"
+   },
+   "lesMer": {
+    "tittel": "Memory Is More Than a Mental Video Recorder",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/news/podcasts/speaking-of-psychology/memory"
+   },
+   "tags": [
+    "misinformation",
+    "repetition",
+    "media literacy"
+   ],
+   "seed": {
+    "likes": 379,
+    "comments": 192,
+    "saves": 1413,
+    "shares": 273
+   }
+  },
+  {
+   "id": "POST-082",
+   "rekkefolge": 82,
+   "posterId": "P024",
+   "kategori": "Society",
+   "underkategori": "Social behavior",
+   "serie": "Shared Systems",
+   "tittel": "People use others’ behavior as information about what is normal",
+   "hook": "A crowded tip jar can change what the next person does.",
+   "sammendrag": "Social norms influence choices by signaling what others commonly do or approve of. Norm messages can help or backfire depending on how they are framed.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "What is a social norm?",
+    "options": [
+     "A belief about what others do or approve of",
+     "A law of gravity",
+     "A private memory only",
+     "A type of weather front"
+    ],
+    "correct_answer": "A belief about what others do or approve of",
+    "explanation": "Norms guide behavior through perceived expectations and common practices.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Social Influence",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/topics/social-influence"
+   },
+   "lesMer": {
+    "tittel": "The Illusory Truth Effect",
+    "org": "PubMed Central / NIH",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8116821/"
+   },
+   "tags": [
+    "social norms",
+    "behavior",
+    "groups"
+   ],
+   "seed": {
+    "likes": 1476,
+    "comments": 14,
+    "saves": 741,
+    "shares": 308
+   }
+  },
+  {
+   "id": "POST-083",
+   "rekkefolge": 83,
+   "posterId": "P025",
+   "kategori": "Society",
+   "underkategori": "Platform design",
+   "serie": "Check the Signal",
+   "tittel": "Recommendation systems optimize for chosen signals",
+   "hook": "The feed shows what the system predicts will achieve its objective.",
+   "sammendrag": "Platforms rank content using many signals such as past interactions, freshness and predicted engagement. The objective selected by designers shapes what is amplified.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 18,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "A recommendation algorithm ranks content according to selected data and an optimization ____.",
+    "options": [
+     "objective",
+     "weather system",
+     "moral instinct"
+    ],
+    "correct_answer": "objective",
+    "explanation": "The system’s target—such as predicted engagement—strongly shapes its recommendations.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "Algorithms in Social Media Platforms",
+    "org": "Pew Research Center",
+    "url": "https://www.pewresearch.org/internet/"
+   },
+   "lesMer": {
+    "tittel": "Artificial Intelligence",
+    "org": "NIST",
+    "url": "https://www.nist.gov/artificial-intelligence"
+   },
+   "tags": [
+    "algorithms",
+    "social media",
+    "engagement"
+   ],
+   "seed": {
+    "likes": 2629,
+    "comments": 279,
+    "saves": 796,
+    "shares": 97
+   }
+  },
+  {
+   "id": "POST-084",
+   "rekkefolge": 84,
+   "posterId": "P024",
+   "kategori": "Society",
+   "underkategori": "Population data",
+   "serie": "Shared Systems",
+   "tittel": "A census supports representation and public planning",
+   "hook": "Counting people changes how resources and political seats are allocated.",
+   "sammendrag": "Population counts inform electoral representation, funding formulas, infrastructure planning and demographic analysis. Accurate coverage matters because missing groups distorts decisions.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 40,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Match the census use with its output.",
+    "options": [
+     {
+      "card_a": "Representation",
+      "card_b": "Allocation of political seats"
+     },
+     {
+      "card_a": "Planning",
+      "card_b": "Estimates for schools, transport and services"
+     },
+     {
+      "card_a": "Research",
+      "card_b": "Population and demographic statistics"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Representation",
+      "card_b": "Allocation of political seats"
+     },
+     {
+      "card_a": "Planning",
+      "card_b": "Estimates for schools, transport and services"
+     },
+     {
+      "card_a": "Research",
+      "card_b": "Population and demographic statistics"
+     }
+    ],
+    "explanation": "Census data becomes infrastructure for many public decisions.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "Why We Conduct the Decennial Census",
+    "org": "U.S. Census Bureau",
+    "url": "https://www.census.gov/programs-surveys/decennial-census/about/why.html"
+   },
+   "lesMer": {
+    "tittel": "Urbanization",
+    "org": "Our World in Data",
+    "url": "https://ourworldindata.org/urbanization"
+   },
+   "tags": [
+    "census",
+    "population",
+    "planning"
+   ],
+   "seed": {
+    "likes": 1150,
+    "comments": 141,
+    "saves": 1201,
+    "shares": 208
+   }
+  },
+  {
+   "id": "POST-085",
+   "rekkefolge": 85,
+   "posterId": "P027",
+   "kategori": "Culture",
+   "underkategori": "Music history",
+   "serie": "Hear the History",
+   "tittel": "The blues helped shape rock, jazz and popular music",
+   "hook": "A short musical form became a foundation for global sounds.",
+   "sammendrag": "Blues traditions developed from African American musical practices and histories. Blues harmony, phrasing, rhythm and expressive techniques influenced many later genres.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 30,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Match the musical element with its role.",
+    "options": [
+     {
+      "left": "Call and response",
+      "right": "Alternating musical phrases"
+     },
+     {
+      "left": "Blue notes",
+      "right": "Expressively altered pitches"
+     },
+     {
+      "left": "Twelve-bar form",
+      "right": "Common repeating harmonic structure"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Call and response",
+      "right": "Alternating musical phrases"
+     },
+     {
+      "left": "Blue notes",
+      "right": "Expressively altered pitches"
+     },
+     {
+      "left": "Twelve-bar form",
+      "right": "Common repeating harmonic structure"
+     }
+    ],
+    "explanation": "The blues is not one fixed sound, but these elements became widely influential.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "The Blues",
+    "org": "Smithsonian Folkways",
+    "url": "https://folkways.si.edu/the-blues"
+   },
+   "lesMer": {
+    "tittel": "Motion Picture",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/art/motion-picture"
+   },
+   "tags": [
+    "blues",
+    "music",
+    "African American history"
+   ],
+   "seed": {
+    "likes": 3135,
+    "comments": 340,
+    "saves": 1555,
+    "shares": 152
+   }
+  },
+  {
+   "id": "POST-086",
+   "rekkefolge": 86,
+   "posterId": "P026",
+   "kategori": "Culture",
+   "underkategori": "Art history",
+   "serie": "How Images Work",
+   "tittel": "Linear perspective creates the illusion of depth on a flat surface",
+   "hook": "Parallel lines can appear to meet at a vanishing point.",
+   "sammendrag": "Renaissance artists formalized geometric systems that mapped three-dimensional space onto two-dimensional surfaces. Perspective transformed architecture, painting and visual storytelling.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 18,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "In linear perspective, receding parallel lines appear to meet at a ____ point.",
+    "options": [
+     "vanishing",
+     "boiling",
+     "musical"
+    ],
+    "correct_answer": "vanishing",
+    "explanation": "The vanishing point organizes the visual illusion of depth.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "Renaissance Art and Perspective",
+    "org": "The Metropolitan Museum of Art",
+    "url": "https://www.metmuseum.org/toah/hd/reni/hd_reni.htm"
+   },
+   "lesMer": {
+    "tittel": "Motion Picture",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/art/motion-picture"
+   },
+   "tags": [
+    "Renaissance",
+    "perspective",
+    "art"
+   ],
+   "seed": {
+    "likes": 1057,
+    "comments": 225,
+    "saves": 49,
+    "shares": 167
+   }
+  },
+  {
+   "id": "POST-087",
+   "rekkefolge": 87,
+   "posterId": "P026",
+   "kategori": "Culture",
+   "underkategori": "Oral heritage",
+   "serie": "Living Culture",
+   "tittel": "Oral traditions are living practices, not frozen recordings",
+   "hook": "A story can remain recognizable while changing with each telling.",
+   "sammendrag": "Oral traditions transmit history, knowledge, identity and artistic expression through performance. Variation is often part of the tradition rather than an error.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 15,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "An oral tradition is authentic only if every teller repeats exactly the same words.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "Many oral traditions are adapted in performance while preserving themes, structures or community meaning.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Oral Traditions and Expressions",
+    "org": "UNESCO",
+    "url": "https://ich.unesco.org/en/oral-traditions-and-expressions-00053"
+   },
+   "lesMer": {
+    "tittel": "Language Families",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/topic/language/Classification-of-languages"
+   },
+   "tags": [
+    "oral tradition",
+    "storytelling",
+    "heritage"
+   ],
+   "seed": {
+    "likes": 624,
+    "comments": 43,
+    "saves": 1082,
+    "shares": 41
+   }
+  },
+  {
+   "id": "POST-088",
+   "rekkefolge": 88,
+   "posterId": "P026",
+   "kategori": "Culture",
+   "underkategori": "Media history",
+   "serie": "Living Culture",
+   "tittel": "Printing changed who could reproduce and circulate ideas",
+   "hook": "The medium altered speed, scale and consistency.",
+   "sammendrag": "Printed books, pamphlets and newspapers enabled texts to circulate more widely and consistently. Access remained unequal, but communication networks expanded.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "A society gains cheaper, faster printing. What is a likely result?",
+    "options": [
+     "More rapid circulation of texts and arguments",
+     "Spoken language disappears",
+     "Every reader agrees with the same idea"
+    ],
+    "correct_answer": "More rapid circulation of texts and arguments",
+    "explanation": "Printing increased the scale and speed of reproduction without guaranteeing agreement.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Printing and the Book Arts",
+    "org": "Library of Congress",
+    "url": "https://www.loc.gov/collections/"
+   },
+   "lesMer": {
+    "tittel": "Printing Press",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/technology/printing-press"
+   },
+   "tags": [
+    "printing",
+    "media",
+    "ideas"
+   ],
+   "seed": {
+    "likes": 4644,
+    "comments": 156,
+    "saves": 461,
+    "shares": 267
+   }
+  },
+  {
+   "id": "POST-089",
+   "rekkefolge": 89,
+   "posterId": "P026",
+   "kategori": "Culture",
+   "underkategori": "Film",
+   "serie": "How Images Work",
+   "tittel": "Movies create motion from a sequence of still images",
+   "hook": "Your visual system connects rapidly changing frames.",
+   "sammendrag": "Cinema records and displays successive images quickly enough that viewers perceive continuous movement. Motion perception is more complex than one simple persistence-of-vision explanation.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Order the basic film-motion process.",
+    "options": [
+     "Camera records successive images",
+     "Images are stored as frames",
+     "Projector or screen displays frames rapidly",
+     "Viewer perceives continuous motion"
+    ],
+    "correct_answer": [
+     "Camera records successive images",
+     "Images are stored as frames",
+     "Projector or screen displays frames rapidly",
+     "Viewer perceives continuous motion"
+    ],
+    "explanation": "Motion pictures depend on rapid sequences and the brain’s motion-processing systems.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Motion Picture",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/art/motion-picture"
+   },
+   "lesMer": {
+    "tittel": "Memory Is More Than a Mental Video Recorder",
+    "org": "American Psychological Association",
+    "url": "https://www.apa.org/news/podcasts/speaking-of-psychology/memory"
+   },
+   "tags": [
+    "film",
+    "frames",
+    "motion perception"
+   ],
+   "seed": {
+    "likes": 2306,
+    "comments": 241,
+    "saves": 1121,
+    "shares": 205
+   }
+  },
+  {
+   "id": "POST-090",
+   "rekkefolge": 90,
+   "posterId": "P028",
+   "kategori": "Economics",
+   "underkategori": "Prices",
+   "serie": "Money Without Mystery",
+   "tittel": "Inflation reduces what a unit of money can buy",
+   "hook": "The number on the note stays the same while its purchasing power changes.",
+   "sammendrag": "Inflation is a sustained increase in the general price level. Individual prices move differently, but broad inflation means money buys fewer goods and services on average.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "What does broad inflation usually do to purchasing power?",
+    "options": [
+     "Reduces it",
+     "Guarantees every wage rises equally",
+     "Makes all prices identical",
+     "Eliminates scarcity"
+    ],
+    "correct_answer": "Reduces it",
+    "explanation": "When the general price level rises, a fixed amount of money buys less.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Inflation: Prices on the Rise",
+    "org": "International Monetary Fund",
+    "url": "https://www.imf.org/en/Publications/fandd/issues/Series/Back-to-Basics/Inflation"
+   },
+   "lesMer": {
+    "tittel": "What Are Supply and Demand?",
+    "org": "Federal Reserve Bank of St. Louis",
+    "url": "https://www.stlouisfed.org/open-vault/2020/january/what-is-supply-demand"
+   },
+   "tags": [
+    "inflation",
+    "prices",
+    "purchasing power"
+   ],
+   "seed": {
+    "likes": 3411,
+    "comments": 319,
+    "saves": 160,
+    "shares": 344
+   }
+  },
+  {
+   "id": "POST-091",
+   "rekkefolge": 91,
+   "posterId": "P028",
+   "kategori": "Economics",
+   "underkategori": "Saving",
+   "serie": "Money Without Mystery",
+   "tittel": "Compound growth earns returns on earlier returns",
+   "hook": "Time can become part of the investment engine.",
+   "sammendrag": "With compounding, gains are added to the balance and can generate additional gains later. The result depends on rate, time, fees and whether returns are positive.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Order a simple annual compounding cycle.",
+    "options": [
+     "Start with a balance",
+     "Earn a return",
+     "Add the return to the balance",
+     "Next period’s return uses the new balance"
+    ],
+    "correct_answer": [
+     "Start with a balance",
+     "Earn a return",
+     "Add the return to the balance",
+     "Next period’s return uses the new balance"
+    ],
+    "explanation": "Compounding repeats growth on an evolving balance.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "Compound Interest Calculator and Explanation",
+    "org": "Investor.gov / U.S. SEC",
+    "url": "https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator"
+   },
+   "lesMer": {
+    "tittel": "Diversification",
+    "org": "Investor.gov / U.S. SEC",
+    "url": "https://www.investor.gov/introduction-investing/investing-basics/glossary/diversification"
+   },
+   "tags": [
+    "compound interest",
+    "saving",
+    "time"
+   ],
+   "seed": {
+    "likes": 5595,
+    "comments": 35,
+    "saves": 881,
+    "shares": 264
+   }
+  },
+  {
+   "id": "POST-092",
+   "rekkefolge": 92,
+   "posterId": "P029",
+   "kategori": "Economics",
+   "underkategori": "Markets",
+   "serie": "Market Mechanics",
+   "tittel": "Prices coordinate supply and demand",
+   "hook": "A shortage sends information to buyers and sellers.",
+   "sammendrag": "When demand rises relative to available supply, prices often rise, encouraging more supply or reduced demand. Real markets also include rules, bargaining power and delays.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Demand for a product rises quickly while supply cannot increase yet. What commonly happens first?",
+    "options": [
+     "The price faces upward pressure",
+     "The product becomes infinite",
+     "Demand automatically becomes zero"
+    ],
+    "correct_answer": "The price faces upward pressure",
+    "explanation": "Higher demand against fixed short-term supply tends to create scarcity and price pressure.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "What Are Supply and Demand?",
+    "org": "Federal Reserve Bank of St. Louis",
+    "url": "https://www.stlouisfed.org/open-vault/2020/january/what-is-supply-demand"
+   },
+   "lesMer": {
+    "tittel": "Inflation: Prices on the Rise",
+    "org": "International Monetary Fund",
+    "url": "https://www.imf.org/en/Publications/fandd/issues/Series/Back-to-Basics/Inflation"
+   },
+   "tags": [
+    "supply",
+    "demand",
+    "prices"
+   ],
+   "seed": {
+    "likes": 4978,
+    "comments": 211,
+    "saves": 1045,
+    "shares": 56
+   }
+  },
+  {
+   "id": "POST-093",
+   "rekkefolge": 93,
+   "posterId": "P029",
+   "kategori": "Economics",
+   "underkategori": "Decision-making",
+   "serie": "Market Mechanics",
+   "tittel": "Opportunity cost is the best alternative you give up",
+   "hook": "The real cost of an hour is what else that hour could have done.",
+   "sammendrag": "Choosing one option uses time, money or resources that cannot be used elsewhere. Opportunity cost focuses on the next-best alternative, not every imaginable option.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 18,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "The opportunity cost of a choice is the value of the best ____ alternative.",
+    "options": [
+     "forgone",
+     "identical",
+     "impossible"
+    ],
+    "correct_answer": "forgone",
+    "explanation": "Opportunity cost measures the most valuable option not chosen.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "Opportunity Cost",
+    "org": "Federal Reserve Education",
+    "url": "https://www.federalreserveeducation.org/about-the-fed/structure-and-functions/monetary-policy"
+   },
+   "lesMer": {
+    "tittel": "What Are Supply and Demand?",
+    "org": "Federal Reserve Bank of St. Louis",
+    "url": "https://www.stlouisfed.org/open-vault/2020/january/what-is-supply-demand"
+   },
+   "tags": [
+    "opportunity cost",
+    "choices",
+    "trade-offs"
+   ],
+   "seed": {
+    "likes": 6148,
+    "comments": 274,
+    "saves": 1217,
+    "shares": 262
+   }
+  },
+  {
+   "id": "POST-094",
+   "rekkefolge": 94,
+   "posterId": "P028",
+   "kategori": "Economics",
+   "underkategori": "Risk",
+   "serie": "Money Without Mystery",
+   "tittel": "Diversification spreads exposure across investments",
+   "hook": "It reduces concentration risk—but does not remove all risk.",
+   "sammendrag": "Holding different assets can reduce the impact of one investment performing badly. Correlations matter, and diversification cannot guarantee gains or prevent market-wide losses.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 15,
+   "xp": 120,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Diversification guarantees that an investment portfolio cannot lose money.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "Diversification can reduce specific concentration risks, but broad market losses and other risks remain.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Diversification",
+    "org": "Investor.gov / U.S. SEC",
+    "url": "https://www.investor.gov/introduction-investing/investing-basics/glossary/diversification"
+   },
+   "lesMer": {
+    "tittel": "Compound Interest Calculator and Explanation",
+    "org": "Investor.gov / U.S. SEC",
+    "url": "https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator"
+   },
+   "tags": [
+    "diversification",
+    "risk",
+    "investing"
+   ],
+   "seed": {
+    "likes": 4515,
+    "comments": 409,
+    "saves": 342,
+    "shares": 311
+   }
+  },
+  {
+   "id": "POST-095",
+   "rekkefolge": 95,
+   "posterId": "P031",
+   "kategori": "Everyday",
+   "underkategori": "Baking",
+   "serie": "Kitchen Laboratory",
+   "tittel": "Bread rises because yeast produces carbon dioxide",
+   "hook": "A dough is a stretchy gas-trapping structure.",
+   "sammendrag": "Yeast metabolizes sugars and releases carbon dioxide. Gluten and other dough structures trap bubbles, while baking sets the expanded shape.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 35,
+   "xp": 80,
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Order the bread-rising process.",
+    "options": [
+     "Yeast consumes available sugars",
+     "Carbon dioxide forms",
+     "Dough traps expanding bubbles",
+     "Heat sets the bread structure"
+    ],
+    "correct_answer": [
+     "Yeast consumes available sugars",
+     "Carbon dioxide forms",
+     "Dough traps expanding bubbles",
+     "Heat sets the bread structure"
+    ],
+    "explanation": "Fermentation creates gas; dough structure captures it; baking fixes the final form.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "The Chemistry of Bread",
+    "org": "American Chemical Society",
+    "url": "https://www.acs.org/education/resources/highschool/chemmatters/past-issues/archive-2015-2016/bread-chemistry.html"
+   },
+   "lesMer": {
+    "tittel": "Photosynthesis",
+    "org": "Encyclopaedia Britannica",
+    "url": "https://www.britannica.com/science/photosynthesis"
+   },
+   "tags": [
+    "bread",
+    "yeast",
+    "fermentation"
+   ],
+   "seed": {
+    "likes": 2944,
+    "comments": 305,
+    "saves": 1555,
+    "shares": 125
+   }
+  },
+  {
+   "id": "POST-096",
+   "rekkefolge": 96,
+   "posterId": "P031",
+   "kategori": "Everyday",
+   "underkategori": "Cleaning chemistry",
+   "serie": "Kitchen Laboratory",
+   "tittel": "Soap molecules have water-loving and oil-loving ends",
+   "hook": "That split personality helps oil mix into rinse water.",
+   "sammendrag": "Surfactants surround oily material in structures that can remain dispersed in water. Agitation and rinsing then remove the suspended grime.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 30,
+   "xp": 120,
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Match the surfactant feature with its role.",
+    "options": [
+     {
+      "left": "Hydrophilic end",
+      "right": "Interacts with water"
+     },
+     {
+      "left": "Hydrophobic end",
+      "right": "Interacts with oils"
+     },
+     {
+      "left": "Micelle",
+      "right": "Surrounds oily material"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Hydrophilic end",
+      "right": "Interacts with water"
+     },
+     {
+      "left": "Hydrophobic end",
+      "right": "Interacts with oils"
+     },
+     {
+      "left": "Micelle",
+      "right": "Surrounds oily material"
+     }
+    ],
+    "explanation": "Surfactants bridge materials that normally resist mixing.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "The Chemistry of Cleaning",
+    "org": "American Chemical Society",
+    "url": "https://www.acs.org/education/resources/highschool/chemmatters/past-issues/archive-2014-2015/cleaning-chemistry.html"
+   },
+   "lesMer": {
+    "tittel": "About Hand Hygiene",
+    "org": "CDC",
+    "url": "https://www.cdc.gov/clean-hands/about/index.html"
+   },
+   "tags": [
+    "soap",
+    "surfactants",
+    "cleaning"
+   ],
+   "seed": {
+    "likes": 2112,
+    "comments": 27,
+    "saves": 880,
+    "shares": 265
+   }
+  },
+  {
+   "id": "POST-097",
+   "rekkefolge": 97,
+   "posterId": "P030",
+   "kategori": "Everyday",
+   "underkategori": "Appliances",
+   "serie": "Ordinary Engineering",
+   "tittel": "A refrigerator moves heat out—it does not create cold",
+   "hook": "The warm coils behind the fridge are part of the cooling process.",
+   "sammendrag": "A refrigeration cycle uses a working fluid, compression and expansion to absorb heat inside the cabinet and release it into the room.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Why can the back of a running refrigerator feel warm?",
+    "options": [
+     "It releases heat removed from inside plus compressor energy",
+     "Cold leaks backward",
+     "Food generates nuclear energy",
+     "The light bulb powers the freezer"
+    ],
+    "correct_answer": "It releases heat removed from inside plus compressor energy",
+    "explanation": "The refrigerator is a heat pump moving energy from the cold interior to the warmer room.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Refrigerators and Freezers",
+    "org": "U.S. Department of Energy",
+    "url": "https://www.energy.gov/energysaver/refrigerators-and-freezers"
+   },
+   "lesMer": {
+    "tittel": "Microwave Oven Radiation",
+    "org": "U.S. Food and Drug Administration",
+    "url": "https://www.fda.gov/radiation-emitting-products/home-business-and-entertainment-products/microwave-ovens"
+   },
+   "tags": [
+    "refrigerator",
+    "heat pump",
+    "appliances"
+   ],
+   "seed": {
+    "likes": 3477,
+    "comments": 129,
+    "saves": 1391,
+    "shares": 110
+   }
+  },
+  {
+   "id": "POST-098",
+   "rekkefolge": 98,
+   "posterId": "P030",
+   "kategori": "Everyday",
+   "underkategori": "Microwaves",
+   "serie": "Ordinary Engineering",
+   "tittel": "Microwave ovens heat food through electromagnetic fields",
+   "hook": "The plate does not heat food by becoming a tiny sun.",
+   "sammendrag": "Microwave energy interacts strongly with polar molecules and ions in food, producing molecular motion and heating. The pattern can be uneven, which is why standing time and stirring help.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 15,
+   "xp": 80,
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Microwave ovens make food radioactive.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "Microwave radiation is non-ionizing and does not make food radioactive.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Microwave Oven Radiation",
+    "org": "U.S. Food and Drug Administration",
+    "url": "https://www.fda.gov/radiation-emitting-products/home-business-and-entertainment-products/microwave-ovens"
+   },
+   "lesMer": {
+    "tittel": "Refrigerators and Freezers",
+    "org": "U.S. Department of Energy",
+    "url": "https://www.energy.gov/energysaver/refrigerators-and-freezers"
+   },
+   "tags": [
+    "microwave",
+    "radiation",
+    "cooking"
+   ],
+   "seed": {
+    "likes": 2460,
+    "comments": 312,
+    "saves": 965,
+    "shares": 302
+   }
+  },
+  {
+   "id": "POST-099",
+   "rekkefolge": 99,
+   "posterId": "P032",
+   "kategori": "Everyday",
+   "underkategori": "Bicycles",
+   "serie": "Motion Trade-offs",
+   "tittel": "Bicycle gears trade force for wheel rotation",
+   "hook": "An easier gear lets your legs spin more for each wheel turn.",
+   "sammendrag": "Gear ratios determine how crank rotation translates into wheel rotation. Lower gears reduce required pedal force for hills but require more pedal revolutions for distance.",
+   "vanskelighet": "Beginner",
+   "estimertSek": 40,
+   "xp": 80,
+   "spill": {
+    "game_type": "Match the Pairs",
+    "prompt": "Match the riding situation with the useful gear choice.",
+    "options": [
+     {
+      "card_a": "Steep climb",
+      "card_b": "Lower gear"
+     },
+     {
+      "card_a": "Fast flat road",
+      "card_b": "Higher gear"
+     },
+     {
+      "card_a": "Starting from rest",
+      "card_b": "Relatively low gear"
+     }
+    ],
+    "correct_answer": [
+     {
+      "card_a": "Steep climb",
+      "card_b": "Lower gear"
+     },
+     {
+      "card_a": "Fast flat road",
+      "card_b": "Higher gear"
+     },
+     {
+      "card_a": "Starting from rest",
+      "card_b": "Relatively low gear"
+     }
+    ],
+    "explanation": "Gears let riders trade cadence, force and speed.",
+    "interaction": "memory_flip"
+   },
+   "kilde": {
+    "tittel": "Gears and Mechanical Advantage",
+    "org": "Exploratorium",
+    "url": "https://www.exploratorium.edu/snacks/gears"
+   },
+   "lesMer": {
+    "tittel": "Semiconductors",
+    "org": "NIST",
+    "url": "https://www.nist.gov/semiconductors"
+   },
+   "tags": [
+    "bicycle",
+    "gears",
+    "mechanical advantage"
+   ],
+   "seed": {
+    "likes": 2760,
+    "comments": 196,
+    "saves": 817,
+    "shares": 263
+   }
+  },
+  {
+   "id": "POST-100",
+   "rekkefolge": 100,
+   "posterId": "P031",
+   "kategori": "Everyday",
+   "underkategori": "Coffee",
+   "serie": "Kitchen Laboratory",
+   "tittel": "Coffee extraction is a balance of time, temperature, grind and water",
+   "hook": "The same beans can taste sour, sweet or bitter depending on the process.",
+   "sammendrag": "Brewing dissolves many compounds at different rates. Grind size, water temperature, contact time and agitation influence how much and what types of material enter the cup.",
+   "vanskelighet": "Intermediate",
+   "estimertSek": 25,
+   "xp": 120,
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Coffee tastes sharply sour and weak after a very fast brew. What adjustment is often reasonable?",
+    "options": [
+     "Increase extraction with finer grind or more contact time",
+     "Use much less contact time",
+     "Remove all water",
+     "Freeze the cup while brewing"
+    ],
+    "correct_answer": "Increase extraction with finer grind or more contact time",
+    "explanation": "A fast, weak and sour brew often indicates under-extraction, though taste and equipment vary.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Coffee Brewing Research",
+    "org": "Specialty Coffee Association",
+    "url": "https://sca.coffee/research"
+   },
+   "lesMer": {
+    "tittel": "The Chemistry of Bread",
+    "org": "American Chemical Society",
+    "url": "https://www.acs.org/education/resources/highschool/chemmatters/past-issues/archive-2015-2016/bread-chemistry.html"
+   },
+   "tags": [
+    "coffee",
+    "extraction",
+    "brewing"
+   ],
+   "seed": {
+    "likes": 602,
+    "comments": 200,
+    "saves": 309,
+    "shares": 354
+   }
+  }
+ ]
+}

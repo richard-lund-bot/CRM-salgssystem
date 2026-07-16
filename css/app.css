@@ -3118,6 +3118,187 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 }
 
 /* ==========================================================================
+   Feed (M37) — den spillbare lærings-feeden på Hjem. Innleggskort med
+   guide-hode, gradient-hero og et minispill rett i kortet. Spillmodulene
+   deler tilstandsspråk med leksjonene (grønn #2FA84F for riktig, korall for
+   feil — aldri skam) og gjenbruker valg-riktig/valg-feil-animasjonene.
+   ========================================================================== */
+/* Toppstats + filterchips */
+.feedstats {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg-kort); border-radius: var(--radius-pill);
+  padding: 10px 14px; box-shadow: var(--shadow-xs);
+  font-size: 13px; color: var(--tekst-2); margin-bottom: 10px;
+}
+.feedstats .ikon { color: var(--aksent); flex: 0 0 auto; }
+.feedstats__tekst { font-weight: 600; white-space: nowrap; }
+.feedstats__tekst--hoyre { color: var(--dempet); font-weight: 500; overflow: hidden; text-overflow: ellipsis; }
+.feedstats__skille { flex: 1; }
+.feedfilter {
+  display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 10px;
+  scrollbar-width: none; -webkit-overflow-scrolling: touch;
+}
+.feedfilter::-webkit-scrollbar { display: none; }
+.feedfilter .artchip { flex: 0 0 auto; }
+
+/* Innleggskortet */
+.feedliste { display: flex; flex-direction: column; gap: 16px; }
+.feedkort { background: var(--bg-kort); border-radius: var(--radius-xl); box-shadow: var(--shadow-card); overflow: hidden; }
+.feedkort__hode { display: flex; align-items: center; gap: 10px; padding: 12px 14px 10px; }
+.feedavatar {
+  width: 40px; height: 40px; border-radius: 50%; flex: 0 0 auto;
+  display: grid; place-items: center; color: #fff;
+  font-family: var(--font-display); font-weight: 600; font-size: 18px;
+}
+.feedkort__hvem { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.feedkort__navn { font-weight: 700; font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.feedkort__handle { color: var(--dempet); font-weight: 500; font-size: 13px; }
+.feedkort__meta { font-size: 12px; color: var(--tekst-2); }
+.feedkort__serie {
+  flex: 0 0 auto; max-width: 34%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-size: 11px; font-weight: 600; color: var(--tekst-2);
+  background: var(--bg-kort-2); border-radius: var(--radius-pill); padding: 4px 10px;
+}
+.feedhero {
+  min-height: 148px; padding: 16px; position: relative;
+  display: flex; flex-direction: column; justify-content: flex-end; gap: 8px;
+}
+.feedhero__kategori {
+  align-self: flex-start; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.22); color: #fff;
+  padding: 4px 10px; border-radius: var(--radius-pill);
+}
+.feedhero__hook {
+  margin: 0; font-family: var(--font-display); font-weight: 600;
+  font-size: 21px; line-height: 1.22; color: #fff;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.18); text-wrap: balance;
+}
+.feedkort__kropp { padding: 12px 14px 0; }
+.feedkort__tittel { margin: 0 0 6px; font-family: var(--font-display); font-weight: 600; font-size: 17px; line-height: 1.25; }
+.feedkort__sammendrag { margin: 0; font-size: 14px; line-height: 1.5; color: var(--tekst-2); }
+
+/* Spillmodulen — felles skall (Preview → Play → Commit → Feedback) */
+.spill { margin: 12px 14px 0; background: var(--bg); border-radius: var(--radius-lg); padding: 12px; }
+.spill__hode { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.spill__type { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--aksent); }
+.spill__xp { flex: 0 0 auto; font-size: 12px; font-weight: 700; color: var(--varm-600); background: var(--varm-100); border-radius: var(--radius-pill); padding: 3px 9px; }
+.spill__prompt { margin: 4px 0 10px; font-weight: 600; font-size: 15px; line-height: 1.4; }
+.spill__hint { margin: 0 0 10px; font-size: 12.5px; color: var(--dempet); }
+.spill__sjekk { margin-top: 10px; width: 100%; }
+.spill__igjen { margin-top: 10px; }
+
+/* Ett trykk, ett svar (Riktig svar / Hva skjedde? / Fakta eller myte) */
+.spillvalgliste { display: flex; flex-direction: column; gap: 8px; }
+.spillvalgliste--rad { flex-direction: row; }
+.spillvalgliste--rad .spillvalg { flex: 1; text-align: center; font-weight: 700; }
+.spillvalg {
+  text-align: left; padding: 12px 14px; border: 2px solid var(--kant);
+  border-radius: var(--radius-md); background: var(--bg-kort);
+  font-family: inherit; font-size: 14.5px; color: var(--tekst); cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+}
+.spillvalg:disabled { cursor: default; opacity: 0.72; }
+.spillvalg--stor { padding: 14px; font-size: 15.5px; }
+.spillvalg--riktig { border-color: #2FA84F; background: #E7F6EC; color: #1C6B34; opacity: 1 !important; animation: valg-riktig 0.5s var(--ease-bounce); }
+.spillvalg--feil { border-color: var(--coral-500); background: var(--coral-100); color: var(--fare); opacity: 1 !important; animation: valg-feil 0.32s ease-in-out; }
+
+/* Fyll hullet */
+.gap__setning { margin: 4px 0 12px; font-size: 15.5px; line-height: 1.6; font-weight: 600; }
+.gap__hull { display: inline-block; min-width: 74px; padding: 0 6px; text-align: center; border-bottom: 2px dashed var(--aksent); color: var(--dempet); }
+.gap__hull--riktig { color: #1C6B34; border-bottom: 2px solid #2FA84F; font-weight: 700; }
+.gapbrikker { display: flex; flex-wrap: wrap; gap: 8px; }
+.gapbrikke {
+  padding: 9px 16px; border-radius: var(--radius-pill); border: 2px solid var(--kant);
+  background: var(--bg-kort); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+}
+.gapbrikke:disabled { cursor: default; }
+.gapbrikke--feil { border-color: var(--coral-500); background: var(--coral-100); color: var(--fare); opacity: 0.6; text-decoration: line-through; animation: valg-feil 0.32s ease-in-out; }
+.gapbrikke--brukt { border-color: #2FA84F; background: #E7F6EC; color: #1C6B34; }
+
+/* Koble begrepene (trykk venstre → høyre); parfargene deles med memory */
+.par { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.par__kol { display: flex; flex-direction: column; gap: 8px; }
+.parknapp {
+  min-height: 52px; padding: 10px; border: 2px solid var(--kant);
+  border-radius: var(--radius-md); background: var(--bg-kort);
+  font-family: inherit; font-size: 13.5px; line-height: 1.35; color: var(--tekst); cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+}
+.parknapp--valgt { border-color: var(--aksent); background: var(--aksent-svak); }
+.parknapp--feil { border-color: var(--coral-500); background: var(--coral-100); animation: valg-feil 0.32s ease-in-out; }
+.parknapp--laast { cursor: default; color: #fff; font-weight: 600; }
+
+/* Riktig rekkefølge */
+.rekkeliste { display: flex; flex-direction: column; gap: 8px; }
+.rekkerad { display: flex; align-items: center; gap: 10px; background: var(--bg-kort); border: 2px solid var(--kant); border-radius: var(--radius-md); padding: 8px 10px; }
+.rekkerad--riktig { border-color: #2FA84F; background: #E7F6EC; }
+.rekkerad--feil { border-color: var(--coral-200); background: var(--coral-100); }
+.rekkerad__nr { width: 24px; height: 24px; border-radius: 50%; flex: 0 0 auto; background: var(--bg-kort-2); display: grid; place-items: center; font-size: 12px; font-weight: 700; color: var(--tekst-2); }
+.rekkerad--riktig .rekkerad__nr { background: #2FA84F; color: #fff; }
+.rekkerad__tekst { flex: 1; font-size: 13.5px; line-height: 1.35; font-weight: 600; }
+.rekkerad__piler { display: flex; flex-direction: column; gap: 2px; }
+.rekkerad__pil { width: 30px; height: 24px; border: none; border-radius: 8px; background: var(--bg-kort-2); display: grid; place-items: center; color: var(--tekst-2); cursor: pointer; }
+.rekkerad__pil:disabled { opacity: 0.35; cursor: default; }
+.rekkerad__pil:active { background: var(--aksent-svak); color: var(--aksent); }
+
+/* Finn parene (memory 2×3) */
+.memory__hode { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.memory__trekk { font-size: 12px; font-weight: 600; color: var(--dempet); white-space: nowrap; }
+.memory { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.memkort {
+  position: relative; min-height: 86px; padding: 6px; border: 2px solid var(--kant);
+  border-radius: var(--radius-md); background: var(--bg-kort);
+  font-family: inherit; cursor: pointer; transition: border-color 0.12s, background 0.15s;
+}
+.memkort__bak { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ink-300); transition: opacity 0.18s; }
+.memkort__frem { display: grid; place-items: center; min-height: 70px; font-size: 12px; line-height: 1.3; font-weight: 600; text-align: center; opacity: 0; transition: opacity 0.18s; }
+.memkort--apen .memkort__bak, .memkort--funnet .memkort__bak { opacity: 0; }
+.memkort--apen .memkort__frem, .memkort--funnet .memkort__frem { opacity: 1; }
+.memkort--apen { border-color: var(--aksent); background: var(--aksent-svak); }
+.memkort--funnet { color: #fff; cursor: default; }
+/* Parfargene (delt med Koble begrepene) — må stå etter basisreglene over,
+   ellers taper de kaskaden mot .parknapp/.memkort sin hvite bakgrunn. */
+.parknapp--par1, .memkort--par1 { background: var(--teal-600); border-color: var(--teal-600); }
+.parknapp--par2, .memkort--par2 { background: var(--navy-600); border-color: var(--navy-600); }
+.parknapp--par3, .memkort--par3 { background: var(--coral-700); border-color: var(--coral-700); }
+.parknapp--par4, .memkort--par4 { background: var(--varm-600); border-color: var(--varm-600); }
+
+/* Tilbakemelding: fasit + forklaring + kilde (forklaringen er belønningen) */
+.spillsvar { margin-top: 12px; padding: 12px; border-radius: var(--radius-md); background: #E7F6EC; }
+.spillsvar--delvis { background: var(--sky-100); }
+.spillsvar__rad { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.spillsvar__status { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 14px; color: #1C6B34; }
+.spillsvar--delvis .spillsvar__status { color: var(--navy-600); }
+.spillsvar__xp { flex: 0 0 auto; background: var(--varm-600); color: #fff; font-weight: 700; font-size: 12px; padding: 3px 10px; border-radius: var(--radius-pill); animation: xp-pop 0.5s var(--ease-pop); }
+.spillsvar__forklaring { margin: 0 0 8px; font-size: 13.5px; line-height: 1.5; color: var(--tekst); }
+.spillsvar__kilder { display: flex; flex-direction: column; gap: 4px; }
+.spillsvar__kilde { display: flex; align-items: baseline; gap: 6px; font-size: 12.5px; color: var(--teal-700); text-decoration: none; }
+.spillsvar__kildeetikett { flex: 0 0 auto; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dempet); }
+.spillsvar__kildenavn { text-decoration: underline; }
+.spillsvar--inn { animation: svar-inn 0.3s var(--ease-out); }
+@keyframes svar-inn { from { opacity: 0; transform: translateY(6px); } }
+@keyframes xp-pop { 0% { transform: scale(0.6); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
+
+/* Engasjementsraden — bevisst sekundær (masterplanen) */
+.feedkort__fot { display: flex; align-items: center; gap: 6px; padding: 10px 10px 12px; margin-top: 6px; }
+.feedknapp {
+  display: inline-flex; align-items: center; gap: 6px; border: none; background: none;
+  padding: 8px 10px; border-radius: var(--radius-pill);
+  font-family: inherit; font-size: 13px; font-weight: 600; color: var(--tekst-2); cursor: pointer;
+}
+.feedknapp:active { background: var(--bg-kort-2); }
+.feedknapp--paa { color: var(--coral-500); }
+.feedknapp--paa .ikon { fill: currentColor; }
+.feed__vaktpost { height: 1px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .spillvalg--riktig, .spillvalg--feil, .gapbrikke--feil, .parknapp--feil,
+  .spillsvar--inn, .spillsvar__xp { animation: none !important; }
+  .memkort__bak, .memkort__frem { transition: none; }
+}
+
+/* ==========================================================================
    Reduced-motion — konsolidert backstop (M33). Fyller tidligere hull og dekker
    de nye animasjonene. Kun opacity/farge-endringer overlever; ingen overshoot,
    ingen looper, ingen store forflytninger (motion-sickness-prinsippet).
