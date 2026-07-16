@@ -1078,6 +1078,38 @@ function byggTabbar() {
   document.body.append(nav);
   settOppTabTrykk(nav);
   settOppTabKrymp();
+  settOppReTapp(nav);
+}
+
+// Trykk på fanen man ALLEREDE står i → tilbakestill fanen til førstesiden
+// (rot) og tegn den på nytt (refresh), som i vanlige apper. Et trykk på en
+// annen fane beholder per-fane-minnet (går dit man var). Vi lytter i fangst-
+// fasen så vi rekker å avbryte hash-navigasjonen før den skjer.
+function settOppReTapp(nav) {
+  nav.addEventListener('click', (ev) => {
+    const knapp = ev.target.closest('.tabbar__knapp');
+    if (!knapp) return;
+    const tab = knapp.dataset.rute;
+    const naaRute = (location.hash.replace('#/', '') || 'hjem').split('?')[0];
+    if (faneForRute(naaRute) !== tab) return; // annen fane → vanlig navigasjon
+    ev.preventDefault();
+    tilbakestillFane(tab);
+  }, true);
+}
+
+// Nullstiller en fanes minne til roten, går dit og tvinger en fersk tegning
+// (også når man alt står på roten, der hash ikke endrer seg).
+function tilbakestillFane(tab) {
+  const rot = `#/${tab}`;
+  faneMinne[tab] = rot;
+  scrollMinne.set(rot, 0);
+  if (location.hash === rot) {
+    navger(); // samme hash → tegn på nytt manuelt (refresh)
+    const s = aktivScroller();
+    if (s) s.scrollTop = 0;
+  } else {
+    location.hash = rot; // ulik hash → hashchange → navger tegner roten på topp
+  }
 }
 
 // Trykk-effekt: ved pointerdown lysner hele baren (screen-flash) og en
