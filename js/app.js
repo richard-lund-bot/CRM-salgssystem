@@ -145,6 +145,10 @@ function navger() {
   if (byttet && forrigeHash) scrollMinne.set(forrigeHash, aktivScroller().scrollTop);
   document.body.classList.toggle('fokusmodus', FOKUS.has(rute));
   document.body.classList.remove('fane-laast'); // settes på nytt av fanesidene
+  // Navigasjon vekker en kompakt bar: den vokser tilbake til full størrelse
+  // mens linsen glir til ny fane (som Instagram). Å bli stående krympet ga
+  // også et origin-hopp når strekk-animasjonen byttet transform-origin.
+  document.querySelector('.tabbar')?.classList.remove('tabbar--kompakt');
   if (rute !== 'kjor' && rute !== 'hurtig') slippVaaken(); // timer-skjermene eier låsen
 
   const tegn = () => {
@@ -1063,6 +1067,9 @@ function settOppTabTrykk(nav) {
     const r = nav.getBoundingClientRect();
     punkt.style.left = `${ev.clientX - r.left}px`;
     punkt.style.top = `${ev.clientY - r.top}px`;
+    // Berøring vekker baren umiddelbart — veksten starter allerede på
+    // pointerdown, før navigasjonen, så den er godt i gang når linsen glir.
+    nav.classList.remove('tabbar--kompakt');
     nav.classList.remove('tabbar--trykk', 'tabbar--puls');
     void nav.offsetWidth;
     nav.classList.add('tabbar--trykk', 'tabbar--puls');
@@ -1125,8 +1132,12 @@ function flyttTabIndikator() {
   ind.style.transform = `translateX(${x}px) translateX(-50%)`;
   // Strekk baren kun ved lange hopp til en ytterfane — det er der pillen
   // ellers ville truffet kanten. Puls-klassen fjernes så bar-animasjonene
-  // ikke kjemper om scale-egenskapen.
-  if (Number.isFinite(forrige) && erYtterst && Math.abs(x - forrige) > aktiv.offsetWidth * 1.5) {
+  // ikke kjemper om scale-egenskapen. Strekken droppes mens baren vokser fra
+  // kompakt (transform ≠ identitet): strekk-klassenes transform-origin-bytte
+  // ville re-ankret krympe-skalaen og fått hele baren til å hoppe.
+  const mt = getComputedStyle(nav).transform;
+  const fullStorrelse = mt === 'none' || mt === 'matrix(1, 0, 0, 1, 0, 0)';
+  if (Number.isFinite(forrige) && erYtterst && fullStorrelse && Math.abs(x - forrige) > aktiv.offsetWidth * 1.5) {
     nav.classList.remove('tabbar--puls', 'tabbar--strekk-hoyre', 'tabbar--strekk-venstre');
     void nav.offsetWidth;
     nav.classList.add(x > forrige ? 'tabbar--strekk-hoyre' : 'tabbar--strekk-venstre');

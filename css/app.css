@@ -823,6 +823,10 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 .tabbar--strekk-hoyre, .tabbar--strekk-venstre { animation: bar-strekk 0.4s linear; }
 .tabbar--strekk-hoyre { transform-origin: left center; }
 .tabbar--strekk-venstre { transform-origin: right center; }
+/* Kompakt og strekk samtidig (scroll midt i strekken): kompakt-ankeret vinner,
+   så origin-byttet aldri kan re-ankre krympe-skalaen og flytte baren. */
+.tabbar--kompakt.tabbar--strekk-hoyre,
+.tabbar--kompakt.tabbar--strekk-venstre { transform-origin: bottom center; }
 /* Toppen ved 60% ≈ 0,24s = idet pillen lander (glidingen er 0,25s og innenfor
    1px av målet like før slutt). Ease-in opp: bulingen bygger seg mens pillen
    nærmer seg enden — ikke før. Myk retur etterpå. */
