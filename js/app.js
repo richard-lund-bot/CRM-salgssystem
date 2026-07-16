@@ -87,24 +87,37 @@ const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovels
 // Medlemssidene (auth). Uinnloggede sendes hit; innloggede slippes forbi.
 const AUTH_RUTER = new Set(['logg-inn', 'bli-medlem']);
 
-// --- Per-fane navigasjonsminne -------------------------------------------
+// --- Fane-register (én kilde til sannhet) --------------------------------
+// Bunnfanene defineres ett sted: id/rute, ikonene, etiketten og hvilke
+// under-ruter fanen «eier» (barn). Alt annet (FANER-listen, under-rute→fane-
+// kartet, per-fane-minnet og selve tab-baren i byggTabbar) utledes herfra, så
+// en ny pilar-fane legges til med én oppføring i stedet for fem redigeringer.
+//
 // Hver bunnfane husker hvor den var (full hash + scroll), så et fanebytte og
-// tilbake ikke nullstiller til fane-roten (som i vanlige apper).
-const FANER = ['hjem', 'trening', 'merker', 'beveg', 'laer'];
-// Under-rute → eier-fane. Samme kart som lyser opp riktig fane i oppdaterNav.
-// meny/innstillinger/varsler er bevisst utelatt: de er egne sider (nås fra
-// tannhjulet/bjella, ikke inne i en fane), så de lyser ingen fane og huskes
-// aldri som fane-mål — ellers ville f.eks. Profil-fanen «låst» seg til Varsler.
-const FANE_AV_RUTE = {
-  bibliotek: 'merker', om: 'merker', plan: 'merker',
-  styrke: 'merker', kalender: 'merker', reise: 'merker', tilpass: 'merker',
-  aktivitet: 'merker', historikk: 'merker', // Aktivitet-fanen er borte — skjermen eies av Profil
-  post: 'hjem', // dedikert innleggsside hører til Hjem-feeden
-  ny: 'beveg', okter: 'beveg',
-  artikkel: 'laer', sti: 'laer', disiplin: 'laer', seksjon: 'laer',
-};
+// tilbake ikke nullstiller til fane-roten (som i vanlige apper). meny/
+// innstillinger/varsler er bevisst IKKE barn av noen fane: de er egne sider
+// (nås fra tannhjulet/bjella), lyser ingen fane og huskes aldri som fane-mål —
+// ellers ville f.eks. Profil-fanen «låst» seg til Varsler.
+const FANER_DEF = [
+  { id: 'hjem', rute: 'hjem', ikon: 'hjem', fyll: 'hjemfyll', label: 'Hjem',
+    barn: ['post'] }, // dedikert innleggsside hører til Hjem-feeden
+  { id: 'trening', rute: 'trening', ikon: 'loper', fyll: 'loperfyll', label: 'Trening',
+    barn: [] },
+  { id: 'merker', rute: 'merker', ikon: 'person', fyll: 'personfyll', label: 'Profil',
+    // Aktivitet-fanen er borte — skjermen eies av Profil. reise/tilpass er gamle lenker.
+    barn: ['bibliotek', 'om', 'plan', 'styrke', 'kalender', 'reise', 'tilpass', 'aktivitet', 'historikk'] },
+  { id: 'beveg', rute: 'beveg', ikon: 'vekt', fyll: null, label: 'Treningsbibliotek',
+    barn: ['ny', 'okter'] },
+  { id: 'laer', rute: 'laer', ikon: 'bok', fyll: 'bokfyll', label: 'Lær',
+    barn: ['artikkel', 'sti', 'disiplin', 'seksjon'] },
+];
+const FANER = FANER_DEF.map((f) => f.id);
+// Under-rute → eier-fane, utledet av barn-listene.
+const FANE_AV_RUTE = Object.fromEntries(
+  FANER_DEF.flatMap((f) => f.barn.map((b) => [b, f.id])),
+);
 const faneForRute = (rute) => FANE_AV_RUTE[rute] || rute;
-const faneMinne = { hjem: '#/hjem', trening: '#/trening', merker: '#/merker', beveg: '#/beveg', laer: '#/laer' };
+const faneMinne = Object.fromEntries(FANER_DEF.map((f) => [f.id, `#/${f.rute}`]));
 const scrollMinne = new Map();
 let forrigeHash = '';
 // Fanesidene scroller et indre .hjem-scroll; reise-/vanlige skjermer scroller vinduet.
@@ -1069,11 +1082,7 @@ function byggTabbar() {
   const nav = el('nav', { class: 'tabbar', 'aria-label': 'Hovedmeny' },
     el('span', { class: 'tabbar__refraksjon', 'aria-hidden': 'true' }),
     el('span', { class: 'tabbar__linse', 'aria-hidden': 'true' }),
-    tab('hjem', 'hjem', 'hjemfyll', 'Hjem'),
-    tab('trening', 'loper', 'loperfyll', 'Trening'),
-    tab('merker', 'person', 'personfyll', 'Profil'),
-    tab('beveg', 'vekt', null, 'Treningsbibliotek'),
-    tab('laer', 'bok', 'bokfyll', 'Lær'),
+    ...FANER_DEF.map((f) => tab(f.rute, f.ikon, f.fyll, f.label)),
     el('span', { class: 'tabbar__flash', 'aria-hidden': 'true' }),
   );
   document.body.append(nav);

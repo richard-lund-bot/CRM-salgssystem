@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 # Genererer js/i18n.js: NO→EN-ordbok (nøkler trimmet) + runtime (t + DOM-oversetter).
+# Skriver til js/i18n.js som standard; gi en filsti som argument for å skrive et
+# annet sted (brukes av scripts/sjekk-i18n.mjs for å sjekke drift uten å røre
+# den committede fila).
 import json
+import os
+import sys
 
 # NO (trimmet) → EN. Norsk er kilde; manglende oppslag faller tilbake til norsk.
 EN = {
@@ -312,5 +317,9 @@ export function startOversetter() {
 }
 '''
 js = js.replace('%%EN%%', json.dumps(EN, ensure_ascii=False, indent=1))
-open('/home/user/CRM-salgssystem/js/i18n.js', 'w').write(js)
-print('js/i18n.js skrevet med', len(EN), 'oppslag')
+# Standard: skriv til js/i18n.js ved siden av scripts/. Valgfritt argument
+# overstyrer utfilen (drift-sjekken skriver til en midlertidig fil).
+standard = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'js', 'i18n.js')
+ut = sys.argv[1] if len(sys.argv) > 1 else standard
+open(ut, 'w').write(js)
+print(f'{ut} skrevet med', len(EN), 'oppslag')

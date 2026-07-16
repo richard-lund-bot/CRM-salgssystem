@@ -13,10 +13,16 @@
     "test:sync": "node scripts/smoke-sync.mjs",
     "test:strava": "node scripts/smoke-strava.mjs",
     "sjekk-versjon": "node scripts/sjekk-cache-versjon.mjs",
+    "sjekk-skall": "node scripts/sjekk-skall.mjs",
+    "sjekk-i18n": "node scripts/sjekk-i18n.mjs",
     "installer-hooks": "node scripts/installer-hooks.mjs",
     "prepare": "node scripts/installer-hooks.mjs",
     "test:ovelser": "node scripts/smoke-ovelser.mjs",
     "test:styrke": "node scripts/smoke-styrke.mjs",
-    "test:feiring": "node scripts/smoke-feiring.mjs"
+    "test:feiring": "node scripts/smoke-feiring.mjs",
+    "e2e": "node tests/e2e/smoke.cjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.48.0"
   }
 }

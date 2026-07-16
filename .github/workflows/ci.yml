@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Fundament-vaktene: SKALL-komplettering, versjons-kobling og i18n-drift.
+      # (Kjøres også av pre-commit-hooken lokalt.)
+      - name: Fundament-vakter
+        run: |
+          node scripts/sjekk-skall.mjs
+          node scripts/sjekk-i18n.mjs
+          node scripts/sjekk-cache-versjon.mjs
+
+      # Rene funksjons-røyktester (ingen nettleser).
+      - name: Enhets-røyktester
+        run: npm test
+
+      # E2E-røyksele (Playwright + Chromium).
+      - name: Installer avhengigheter
+        run: npm install
+
+      - name: Installer Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: E2E-røyktester
+        run: npm run e2e

@@ -5,7 +5,23 @@ export const SUPABASE_ANON_KEY =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJrdnBoZ2JmeWZ5bWlsendnbWdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwMTEyMDMsImV4cCI6MjA5ODU4NzIwM30.ufVPAqsCRgaPUn9nNDdyq4YCQ4bA7LwsaJ-TVxfLAE0';
 
 // App-versjon: bumpes for å tvinge ny service-worker-cache.
-export const APP_VERSION = 'm45-3.4.0';
+export const APP_VERSION = 'm46-3.5.0';
+
+// Merkevare — én kilde til sannhet. En rebrand bytter kun disse konstantene;
+// resten av appen skal etter hvert lese herfra i stedet for hardkodet «Mova».
+// Cache-prefikset i sw.js er APP_NAME i små bokstaver (håndheves av hooken).
+export const APP_NAME = 'Mova';
+export const APP_SHORT = 'Mova';
+export const APP_TAGLINE = 'Move for Life';
+
+// Lagrings-prefiks for localStorage-nøkler. Nøklene er interne og usynlige for
+// brukeren; en fremtidig rebrand kan rute nye nøkler via en nokkel()-hjelper
+// uten å foreldreløse eksisterende data. Beholdes 'trening' inntil videre.
+export const LS_PREFIX = 'trening';
+
+// Støttede språk (Norge-først, 'nb' er standard). Utvides for Norden senere
+// uten å endre lasterne — hentSprakJson prøver .<lang>.json → base .json (NB).
+export const STOTTEDE_SPRAK = ['nb', 'en'];
 
 // Aktiverte OAuth-leverandører på medlemssidene. Må også være aktivert i
 // Supabase (Auth → Providers). Legg til 'apple' her når den er satt opp.

@@ -1,4 +1,9 @@
 #!/bin/sh
-# Påminnelse: bump CACHE_VERSION når skallfiler endres.
-# Aktiveres via `npm run installer-hooks` (setter core.hooksPath = scripts/hooks).
+# Fundament-vakter (Fase 0). Aktiveres via `npm run installer-hooks`
+# (setter core.hooksPath = scripts/hooks).
+#   1) CACHE_VERSION bumpet + i takt med APP_VERSION når skallfiler endres
+#   2) service-worker-precachen (SKALL/EN_DATA) er komplett
+#   3) js/i18n.js er i takt med generatoren
 node scripts/sjekk-cache-versjon.mjs || exit 1
+node scripts/sjekk-skall.mjs || exit 1
+node scripts/sjekk-i18n.mjs || exit 1

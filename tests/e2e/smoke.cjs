@@ -1,0 +1,115 @@
+// Lett E2E-røyksele (Fase 0). Fem reiser som må holde gjennom rebrand og
+// taksonomi-endringer, så assertene keyer på data-*/roller/klasser — IKKE
+// merkevaretekst (unntatt selve språk-testen, som må sjekke at tekst byttet).
+//
+// Kjøres med `npm run e2e`. Lokalt trengs Playwright på modul-stien:
+//   NODE_PATH=/opt/node22/lib/node_modules npm run e2e
+// I CI installeres `playwright` som devDependency (require finner den i
+// node_modules). En liten innebygd statisk server gjør at vi slipper http-server.
+const http = require('node:http');
+const fs = require('node:fs');
+const path = require('node:path');
+const { chromium } = require('playwright');
+
+const ROT = path.resolve(__dirname, '..', '..');
+const PORT = Number(process.env.E2E_PORT || 8199);
+const BASE = `http://127.0.0.1:${PORT}`;
+
+const TYPER = {
+  '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.mjs': 'text/javascript',
+  '.css': 'text/css', '.json': 'application/json', '.webmanifest': 'application/manifest+json',
+  '.woff2': 'font/woff2', '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml',
+};
+
+function lagServer() {
+  return http.createServer((req, res) => {
+    let p = decodeURIComponent(req.url.split('?')[0]);
+    if (p === '/' || p === '') p = '/index.html';
+    const filsti = path.join(ROT, p);
+    if (!filsti.startsWith(ROT)) { res.writeHead(403); res.end(); return; }
+    fs.readFile(filsti, (err, buf) => {
+      if (err) { res.writeHead(404); res.end('404'); return; }
+      res.writeHead(200, {
+        'Content-Type': TYPER[path.extname(filsti)] || 'application/octet-stream',
+        'Service-Worker-Allowed': '/',
+        'Cache-Control': 'no-cache',
+      });
+      res.end(buf);
+    });
+  });
+}
+
+const feil = [];
+function sjekk(navn, ok, ekstra = '') {
+  console.log(`${ok ? '✓' : '✗'} ${navn}${ekstra ? ` — ${ekstra}` : ''}`);
+  if (!ok) feil.push(navn);
+}
+
+const FANER = ['hjem', 'trening', 'merker', 'beveg', 'laer'];
+
+(async () => {
+  const server = lagServer();
+  await new Promise((r) => server.listen(PORT, r));
+  const browser = await chromium.launch();
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  page.on('pageerror', (e) => { console.log('SIDEFEIL:', e.message); feil.push('pageerror: ' + e.message); });
+
+  // Seed en innlogget økt + ferdig profil (feedInteresser:[] så interesse-arket
+  // ikke blokkerer), ellers sender medlemsgaten oss til innlogging.
+  await page.addInitScript(() => {
+    localStorage.setItem('trening.sesjon', JSON.stringify({ refresh_token: 'fake', access_token: 'fake', epost: 't@t.no' }));
+    localStorage.setItem('trening.profil', JSON.stringify({ navn: 'Test', ukemaal: 3, varighetsklasse: 'standard', globalXp: 100, innstillinger: { lyd: false, haptikk: false, feedInteresser: [] } }));
+    localStorage.setItem('trening.logg', '[]');
+  });
+
+  const hash = () => page.evaluate(() => location.hash);
+
+  // --- 1) Boot: appen tegner, splash ryddet ----------------------------------
+  await page.goto(`${BASE}/#/hjem`);
+  await page.waitForSelector('.fkort', { timeout: 20000 });
+  sjekk('Appen booter og tegner #app', (await page.locator('#app > *').count()) > 0);
+
+  // --- 2) Feeden rendrer flere kort ------------------------------------------
+  const antKort = await page.locator('.fkort').count();
+  sjekk('Feeden rendrer flere kort', antKort >= 3, `${antKort} kort`);
+
+  // --- 3) Service worker registrerer + precachen fylles ----------------------
+  const sw = await page.evaluate(async () => {
+    if (!('serviceWorker' in navigator)) return { klar: false, antall: 0, harApp: false };
+    await navigator.serviceWorker.ready;
+    const keys = await caches.keys();
+    const treff = await caches.match(location.origin + '/js/app.js');
+    return { klar: true, antall: keys.length, harApp: !!treff };
+  });
+  sjekk('Service worker aktiv', sw.klar);
+  sjekk('Minst én cache finnes', sw.antall >= 1, `${sw.antall} cache(r)`);
+  sjekk('Skallet er precachet (js/app.js)', sw.harApp);
+
+  // --- 4) Tab-navigasjon over alle FANER (data-rute, ikke etikett) ------------
+  // Naviger i en rekkefølge der hvert trykk er en ANNEN fane (unngår re-tap-
+  // reload), og bekreft rute + aktiv-markering.
+  for (const rute of ['beveg', 'laer', 'merker', 'trening', 'hjem']) {
+    await page.click(`.tabbar__knapp[data-rute="${rute}"]`);
+    await page.waitForTimeout(250);
+    const h = await hash();
+    const aktiv = await page.locator(`.tabbar__knapp[data-rute="${rute}"]`).evaluate((n) => n.classList.contains('tabbar__knapp--aktiv'));
+    sjekk(`Fane «${rute}» navigerer + markeres aktiv`, h.startsWith(`#/${rute}`) && aktiv, h);
+  }
+  sjekk('Alle fem faner finnes i baren', (await page.locator('.tabbar__knapp').count()) === FANER.length);
+
+  // --- 5) Språkbytte nb↔en (den ene testen som SKAL sjekke tekst) -------------
+  // Sett den persistente trening.sprak-nøkkelen (samme som settSprak bruker) —
+  // init-scriptet re-seeder profilen ved reload, men rører ikke denne nøkkelen.
+  await page.evaluate(() => localStorage.setItem('trening.sprak', 'en'));
+  await page.reload({ waitUntil: 'load' }); // ekte re-boot så språket leses på nytt
+  await page.waitForSelector('.fkort', { timeout: 20000 });
+  const langAttr = await page.evaluate(() => document.documentElement.lang);
+  const hjemLabel = await page.getAttribute('.tabbar__knapp[data-rute="hjem"]', 'aria-label');
+  sjekk('Språkbytte setter <html lang="en">', langAttr === 'en', langAttr);
+  sjekk('UI oversettes til engelsk (Hjem→Home)', hjemLabel === 'Home', String(hjemLabel));
+
+  await browser.close();
+  await new Promise((r) => server.close(r));
+  console.log(feil.length ? `\n${feil.length} FEIL: ${feil.join(', ')}` : '\nAlle E2E-røyksjekker passerte');
+  process.exit(feil.length ? 1 : 0);
+})().catch((e) => { console.error('KRÆSJ:', e); process.exit(2); });

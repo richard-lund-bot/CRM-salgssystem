@@ -7,8 +7,35 @@
 // pre-commit-hooken (installeres via `npm run installer-hooks` / `npm install`),
 // eller manuelt med `npm run sjekk-versjon`.
 import { execSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join, resolve } from 'node:path';
 
 const KJØR = (cmd) => execSync(cmd, { encoding: 'utf8' }).trim();
+const ROT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+
+// Invariant: CACHE_VERSION i sw.js skal være APP_NAME (små bokstaver) + '-' +
+// APP_VERSION fra js/config.js. Dette binder de to versjonsstrengene sammen og
+// fanger nettopp feilen der CACHE_VERSION fryser mens APP_VERSION drar videre
+// (eller motsatt). Kjøres alltid, uavhengig av hva som er staget.
+function sjekkVersjonsKobling() {
+  const config = readFileSync(join(ROT, 'js/config.js'), 'utf8');
+  const sw = readFileSync(join(ROT, 'sw.js'), 'utf8');
+  const appNavn = config.match(/APP_NAME\s*=\s*['"]([^'"]+)['"]/)?.[1];
+  const appVer = config.match(/APP_VERSION\s*=\s*['"]([^'"]+)['"]/)?.[1];
+  const cacheVer = sw.match(/CACHE_VERSION\s*=\s*['"]([^'"]+)['"]/)?.[1];
+  if (!appNavn || !appVer || !cacheVer) return; // kan ikke sjekke — ikke blokker
+  const ventet = `${appNavn.toLowerCase()}-${appVer}`;
+  if (cacheVer !== ventet) {
+    console.error('\n\x1b[31m✗ CACHE_VERSION og APP_VERSION er ute av takt.\x1b[0m');
+    console.error(`  sw.js CACHE_VERSION = "\x1b[33m${cacheVer}\x1b[0m"`);
+    console.error(`  forventet           = "\x1b[36m${ventet}\x1b[0m"  (APP_NAME.toLowerCase() + '-' + APP_VERSION)`);
+    console.error('  Sett begge til samme versjon i sw.js og js/config.js.\n');
+    process.exit(1);
+  }
+}
+
+sjekkVersjonsKobling();
 
 // Filer som sendes til brukeren og caches av service workeren.
 const ERSKALL = (fil) =>
