@@ -166,6 +166,12 @@ EN = {
  'Fullfør en økt eller spill i feeden, så dukker det opp her.': 'Complete a session or play in the feed and it shows up here.',
  # Dedikert innleggsside
  'Innlegg': 'Post', 'Spill innlegget': 'Play the post', 'Tilbake': 'Back',
+ # Blue-zones-pilarer (interesse-arket) + arktekst
+ 'Bevegelse': 'Movement', 'Kosthold': 'Nutrition', 'Tilhørighet': 'Belonging',
+ 'Ro': 'Calm', 'Mening': 'Meaning', 'Nysgjerrig': 'Curious',
+ 'Hva vil du ha mer av?': 'What do you want more of?',
+ 'Velg livsområdene du vil se mer av i feeden. Du kan endre når som helst.':
+   'Choose the areas of life you want more of in the feed. You can change this anytime.',
 }
 
 # Kompendium/merke-tekster (lengre) — legg til
@@ -213,14 +219,16 @@ export function gjeldendeSprak() {
 export function erEngelsk() { return gjeldendeSprak() === 'en'; }
 
 /**
- * Laster en datafil for gjeldende språk: prøver data/<navn>.en.json i
- * engelsk-modus og faller tilbake til den norske data/<navn>.json (så en
- * manglende oversettelse aldri bryter appen — innholdet vises på norsk).
+ * Laster en datafil for gjeldende språk. Norsk er basefila (uten suffiks);
+ * ethvert annet språk prøver data/<navn>.<lang>.json først og faller tilbake
+ * til den norske data/<navn>.json (så en manglende oversettelse aldri bryter
+ * appen). Dermed «bare virker» data/<navn>.sv.json osv. når Norden legges til.
  */
 export async function hentSprakJson(navn, base = 'data') {
-  if (erEngelsk()) {
+  const sprak = gjeldendeSprak();
+  if (sprak !== 'nb') {
     try {
-      const r = await fetch(`${base}/${navn}.en.json`, { cache: 'no-cache' });
+      const r = await fetch(`${base}/${navn}.${sprak}.json`, { cache: 'no-cache' });
       if (r.ok) return await r.json();
     } catch { /* faller tilbake til norsk under */ }
   }

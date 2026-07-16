@@ -17,29 +17,35 @@ import { pling, plingSekvens } from './lyd.js';
 import { vibrer } from './haptikk.js';
 import { REDUSERT } from './animasjon.js';
 import { byggVarsler, varselKort, merkVarslerSett, harUlesteVarsler, tidSiden } from './varsler.js';
-import { gjeldendeSprak, t } from './i18n.js';
+import { gjeldendeSprak, t, hentSprakJson } from './i18n.js';
 import {
-  rangerPoster, lagDwellSporer, registrerInteraksjon, interesser,
-  harValgtInteresser, settInteresser, kategoriRangScore, storyErSett,
+  rangerPoster, lagDwellSporer, registrerInteraksjon,
+  harValgtInteresser, kategoriRangScore, storyErSett,
+  PILARER, pillarer, settPillarer, harValgtPillarer,
 } from './feed-rang.js';
+
+// Blue-zones-pilarene med visningsnavn (norsk kilde; i18n oversetter til
+// engelsk). Interesse-arket lar brukeren velge disse — den grove livsstils-
+// aksen — mens katId-affiniteten finjusterer under panseret.
+const PILAR_NAVN = {
+  bevegelse: 'Bevegelse', kosthold: 'Kosthold', tilhorighet: 'Tilhørighet',
+  ro: 'Ro', mening: 'Mening', nysgjerrig: 'Nysgjerrig',
+};
 
 const LS_FEED = 'trening.feed'; // per-innlegg-tilstand (spilt/likt/lagret/komm)
 const BATCH = 5; // innlegg per innlastingsrunde (uendelig scroll)
 
 // --- Data -------------------------------------------------------------------
-// Feeden følger appens globale språk (Innstillinger): norsk laster
-// data/feed.nb.json, engelsk data/feed.json. Cache per språk.
-const FEEDFIL = { nb: 'data/feed.nb.json', en: 'data/feed.json' };
+// Feeden følger appens globale språk via den vanlige språk-lasteren, som resten
+// av datasettene: data/feed.json er norsk base, data/feed.<lang>.json (f.eks.
+// feed.en.json) er oversettelsen, med fallback til norsk. Cache per språk.
 const _feedCache = new Map(); // sprak-id → datasett
 let _feed = null; // aktivt datasett (for posterFor m.m.)
 
 /** Laster feeden for gjeldende språk dovent — cache per språk i minne + SW. */
 export function lastFeed(sprak = gjeldendeSprak()) {
-  const id = FEEDFIL[sprak] ? sprak : 'nb';
-  if (_feedCache.has(id)) { _feed = _feedCache.get(id); return Promise.resolve(_feed); }
-  return fetch(FEEDFIL[id])
-    .then((res) => { if (!res.ok) throw new Error(`Kunne ikke laste feeden (${res.status})`); return res.json(); })
-    .then((data) => { _feedCache.set(id, data); _feed = data; return data; });
+  if (_feedCache.has(sprak)) { _feed = _feedCache.get(sprak); return Promise.resolve(_feed); }
+  return hentSprakJson('feed').then((data) => { _feedCache.set(sprak, data); _feed = data; return data; });
 }
 
 function posterFor(id) {
@@ -1089,8 +1095,6 @@ function nyttFeedFro() { _feedFro = Math.floor(Math.random() * 1e9) + 1; return 
 function byggFeed(mount, scroll, data) {
   const posts = data.posts.slice();
   const kategorier = [...new Set(posts.map((p) => p.kategori))];
-  // Kategori-id → visningsnavn (for interessekortet på gjeldende språk).
-  const katNavn = new Map(posts.map((p) => [p.katId, p.kategori]));
   const fro = nyttFeedFro();
 
   // Dwell-sporing: måler visningstid per kort → affinitet per kategori.
@@ -1213,7 +1217,7 @@ function byggFeed(mount, scroll, data) {
     el('div', { class: 'feeddrop__strek' }),
     el('button', {
       class: 'feeddrop__rad feeddrop__rad--handling', type: 'button',
-      onclick: () => { drop.hidden = true; visInteressekort(mount, katNavn, () => tegnListe()); },
+      onclick: () => { drop.hidden = true; visInteressekort(mount, () => tegnListe()); },
     }, el('span', {}, ikon('stjerne', 'ikon ikon--liten'), ' Interesser'), null),
   );
   tegnDropdown(); // nå med «Interesser»-inngangen
@@ -1227,8 +1231,10 @@ function byggFeed(mount, scroll, data) {
   scroll.append(topp, kropp);
   settOppFeedPull(scroll, kropp, spinn, () => visFeedSkjerm(mount));
 
-  // Første besøk uten valgte interesser → be brukeren melde inn (kan hoppes over).
-  if (!harValgtInteresser()) visInteressekort(mount, katNavn, () => tegnListe(), true);
+  // Første besøk uten valgte pilarer/interesser → be brukeren melde inn (kan
+  // hoppes over). Har brukeren alt valgt katId-interesser (gammel modell), lar
+  // vi arket ligge til de selv åpner det fra menyen.
+  if (!harValgtPillarer() && !harValgtInteresser()) visInteressekort(mount, () => tegnListe(), true);
 }
 
 // Pull-to-refresh på feeden: dra ned fra toppen → headeren står, kroppen
@@ -1301,41 +1307,41 @@ function settOppFeedPull(scroll, kropp, spinn, reload) {
 // deklarerer interesser ved første besøk. Sterkeste signal i rangeringen.
 // Kan redigeres senere fra For deg-menyen. Vises som et ark over feeden.
 // ==========================================================================
-function visInteressekort(vert, katNavn, påLagret, forstegang = false) {
-  const valgt = new Set(interesser() || []);
-  const chips = new Map();
+function visInteressekort(vert, påLagret, forstegang = false) {
+  // Deklarer den grove pilar-interessen (blue-zones-aksen). katId-affiniteten
+  // bygges implisitt av engasjement og røres ikke her.
+  const valgt = new Set(pillarer() || []);
 
-  function tegnChip(katId, navn) {
+  function tegnChip(pilarId, navn) {
     const c = el('button', {
-      class: 'intchip' + (valgt.has(katId) ? ' intchip--valgt' : ''), type: 'button',
+      class: 'intchip' + (valgt.has(pilarId) ? ' intchip--valgt' : ''), type: 'button',
       onclick: () => {
-        if (valgt.has(katId)) valgt.delete(katId); else valgt.add(katId);
-        c.classList.toggle('intchip--valgt', valgt.has(katId));
+        if (valgt.has(pilarId)) valgt.delete(pilarId); else valgt.add(pilarId);
+        c.classList.toggle('intchip--valgt', valgt.has(pilarId));
         lagreKnapp.disabled = valgt.size === 0;
       },
     }, navn);
-    chips.set(katId, c);
     return c;
   }
 
   const rutenett = el('div', { class: 'intkort__grid' },
-    ...[...katNavn.entries()].map(([id, navn]) => tegnChip(id, navn)));
+    ...PILARER.map((id) => tegnChip(id, PILAR_NAVN[id] || id)));
 
   const lagreKnapp = el('button', {
     class: 'knapp intkort__lagre', type: 'button', disabled: valgt.size === 0,
-    onclick: () => { settInteresser([...valgt]); lukk(); påLagret?.(); },
+    onclick: () => { settPillarer([...valgt]); lukk(); påLagret?.(); },
   }, 'Lagre interesser');
 
   const ark = el('div', { class: 'intkort', role: 'dialog', 'aria-label': 'Velg interesser' },
     el('div', { class: 'intkort__panel' },
       el('span', { class: 'intkort__eyebrow' }, 'For deg'),
-      el('h2', { class: 'intkort__tittel' }, 'Hva vil du lære om?'),
-      el('p', { class: 'intkort__under' }, 'Velg det du er nysgjerrig på, så løftes det i feeden. Du kan endre når som helst.'),
+      el('h2', { class: 'intkort__tittel' }, 'Hva vil du ha mer av?'),
+      el('p', { class: 'intkort__under' }, 'Velg livsområdene du vil se mer av i feeden. Du kan endre når som helst.'),
       rutenett,
       lagreKnapp,
       el('button', {
         class: 'intkort__hopp', type: 'button',
-        onclick: () => { if (forstegang) settInteresser([]); lukk(); påLagret?.(); },
+        onclick: () => { if (forstegang) settPillarer([]); lukk(); påLagret?.(); },
       }, forstegang ? 'Hopp over — vis meg litt av alt' : 'Avbryt'),
     ),
   );

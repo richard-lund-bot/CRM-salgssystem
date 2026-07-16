@@ -74,6 +74,41 @@ export function settInteresser(katIder) {
   lagreProfil(profil);
 }
 
+// --- Blue-zones-pilarer (additivt lag over katId) ---------------------------
+// Pilaren er den GROVE livsstils-aksen (bevegelse/kosthold/tilhørighet/ro/
+// mening + «nysgjerrig» for arvet allmennkunnskap). katId er den FINE
+// affinitets-aksen og røres aldri — pilaren utledes av katId (eller et valgfritt
+// post.pilar-felt på nytt, pilar-nativt innhold). Dermed beholder vi all
+// eksisterende personalisering samtidig som feeden rammes rundt pilarene.
+export const PILARER = ['bevegelse', 'kosthold', 'tilhorighet', 'ro', 'mening', 'nysgjerrig'];
+const KATID_PILAR = {
+  health: 'bevegelse', // kropp/aktivitet/helse
+  mind: 'ro',          // mental ro / mindfulness
+  society: 'tilhorighet', // fellesskap / sosialt
+  // Resten av dagens allmennkunnskap → nysgjerrig (lærelyst + variasjon).
+  science: 'nysgjerrig', history: 'nysgjerrig', nature: 'nysgjerrig',
+  space: 'nysgjerrig', technology: 'nysgjerrig', world: 'nysgjerrig',
+  economics: 'nysgjerrig', culture: 'nysgjerrig', everyday: 'nysgjerrig',
+};
+/** Pilaren for en katId (default «nysgjerrig»). */
+export function pilarForKat(katId) { return KATID_PILAR[katId] || 'nysgjerrig'; }
+/** Pilaren for et innlegg: eksplisitt post.pilar vinner, ellers utledet av katId. */
+export function pilarFor(post) { return post?.pilar || pilarForKat(post?.katId); }
+
+/** Deklarerte pilar-interesser (grov akse). null = ikke valgt ennå. */
+export function pillarer() {
+  const p = hentProfil()?.innstillinger?.feedPillarer;
+  return Array.isArray(p) ? p : null;
+}
+export function harValgtPillarer() { return pillarer() != null; }
+export function settPillarer(pilarIder) {
+  const profil = hentProfil();
+  if (!profil) return;
+  profil.innstillinger = profil.innstillinger || {};
+  profil.innstillinger.feedPillarer = [...new Set(pilarIder)].filter((p) => PILARER.includes(p));
+  lagreProfil(profil);
+}
+
 // --- Signal-registrering ----------------------------------------------------
 /** Legg til visningstid (ms) for et innlegg og marker som sett når det er lest nok. */
 export function registrerVisning(post, ms) {
@@ -126,10 +161,12 @@ export function rangerPoster(posts, fro = 1) {
   const aff = normaliserAffinitet(t.kat);
   const tidAff = normaliserAffinitet(t.katTid[tidsbotte()] || {}); // affinitet akkurat nå
   const valgte = interesser() || [];
+  const valgtePilarer = pillarer() || []; // grov pilar-akse (tom → additivt 0)
   const nyeste = Math.max(...posts.map((p) => p.rekkefolge || 0), 1);
 
   const skår = (p) => {
     const interesse = valgte.includes(p.katId) ? 1 : 0;
+    const pilarInteresse = valgtePilarer.includes(pilarFor(p)) ? 1 : 0;
     const affinitet = aff[p.katId] || 0;
     const tid = tidAff[p.katId] || 0; // pleier du dette på denne tida av døgnet?
     const spilt = fs.spilt && fs.spilt[p.id] ? 1 : 0;
@@ -137,7 +174,8 @@ export function rangerPoster(posts, fro = 1) {
     const ferskhet = (p.rekkefolge || 0) / nyeste; // nyere litt høyere
     const utforsk = jitter(p.id, fro); // 0–1 variasjon
     return (
-      3.0 * interesse
+      3.0 * interesse       // fin katId-interesse (sterkest)
+      + 2.5 * pilarInteresse // grov pilar-interesse (blue-zones-aksen)
       + 2.0 * affinitet
       + 1.0 * tid     // tid-på-døgnet-affinitet (moderat nudge)
       + 0.4 * ferskhet
@@ -159,7 +197,8 @@ export function kategoriRangScore(katId) {
   const aff = normaliserAffinitet(t.kat)[katId] || 0;
   const tid = normaliserAffinitet(t.katTid[tidsbotte()] || {})[katId] || 0;
   const interesse = (interesser() || []).includes(katId) ? 1 : 0;
-  return 3.0 * interesse + 2.0 * aff + 1.0 * tid;
+  const pilarInteresse = (pillarer() || []).includes(pilarForKat(katId)) ? 1 : 0;
+  return 3.0 * interesse + 2.5 * pilarInteresse + 2.0 * aff + 1.0 * tid;
 }
 
 /** Om en story er sett (fra feed-tilstanden) — brukt til å legge sette bakerst. */

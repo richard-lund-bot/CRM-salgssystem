@@ -3,7 +3,7 @@
 //   - navigasjon/HTML: network-first med cache-fallback (fersk UI når nett finnes)
 //   - data/JS/CSS/ikoner: cache-first (raskt, fungerer offline)
 // Bump CACHE_VERSION for å rulle ut ny cache.
-const CACHE_VERSION = 'takt-m47-4.0.1';
+const CACHE_VERSION = 'takt-m48-4.1.0';
 const SKALL = [
   './',
   './index.html',
@@ -74,7 +74,6 @@ const SKALL = [
   './data/ovelsesinfo.json',
   './data/artikler.json',
   './data/feed.json',
-  './data/feed.nb.json',
   './data/exercises.json',
   './data/equipment.json',
   './data/chains.json',
@@ -84,8 +83,8 @@ const SKALL = [
 ];
 
 // Engelske datavarianter (data/*.en.json) — precaches best-effort (se install).
-// feed.json (engelsk feed) ligger allerede i SKALL og er derfor ikke med her.
 const EN_DATA = [
+  './data/feed.en.json',
   './data/okter.en.json', './data/exercises.en.json', './data/equipment.en.json',
   './data/ovelsesinfo.en.json', './data/artikler.en.json', './data/stier.en.json',
   './data/disipliner.en.json', './data/seksjoner.en.json',

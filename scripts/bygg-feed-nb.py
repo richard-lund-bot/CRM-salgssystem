@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-# Bygger data/feed.nb.json — full norsk oversettelse av feeden. Gjenbruker
-# strukturen fra feed.json (rekkefølge, spilltyper, fasit-posisjoner) så
-# correct_answer alltid holder seg konsistent; kun tekst byttes til norsk.
+# Bygger data/feed.json — den norske basefeeden — fra den engelsk-authorede
+# data/feed.en.json. Gjenbruker strukturen (rekkefølge, spilltyper, fasit-
+# posisjoner) så correct_answer alltid holder seg konsistent; kun tekst byttes
+# til norsk. (Feeden følger nå appens vanlige språkkonvensjon: base = norsk,
+# .en.json = engelsk — lastet via hentSprakJson.)
 import json
 
-BASE = json.load(open('/home/user/CRM-salgssystem/data/feed.json'))
+BASE = json.load(open('/home/user/CRM-salgssystem/data/feed.en.json'))
 
 KAT = {
     'Culture': 'Kultur', 'Economics': 'Økonomi', 'Everyday': 'Hverdag',
@@ -992,8 +994,8 @@ if mangler:
     raise SystemExit(f'Mangler oversettelse for: {mangler}')
 
 ut = {**BASE, 'sprak': 'nb', 'beskrivelse': 'Spillbar lærings-feed på norsk (Aha-seed): 100 innlegg med minispill, kilder og fiktive redaksjonelle guider.', 'posters': posters_ut, 'posts': posts_ut}
-json.dump(ut, open('/home/user/CRM-salgssystem/data/feed.nb.json', 'w'), ensure_ascii=False, indent=1)
-print('feed.nb.json skrevet:', len(posts_ut), 'innlegg')
+json.dump(ut, open('/home/user/CRM-salgssystem/data/feed.json', 'w'), ensure_ascii=False, indent=1)
+print('feed.json (norsk base) skrevet:', len(posts_ut), 'innlegg')
 
 # Sanity: fasit konsistent
 for p in posts_ut:
