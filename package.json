@@ -1,9 +1,9 @@
 {
-  "name": "mova",
+  "name": "takt",
   "version": "0.5.0",
   "private": true,
   "type": "module",
-  "description": "Mova — Move for Life. Bevegelsesapp der all bevegelse teller: gåturer, økter, sport og lek gir XP, nivåer og merker. PWA i vanilla HTML/CSS/JS.",
+  "description": "Takt — Daglige valg, gode år. Helhetlig livsstils-PWA (blue zones): bevegelse, læring og ro, offline-first. Vanilla HTML/CSS/JS.",
   "scripts": {
     "merge": "node scripts/merge-parts.mjs",
     "validate": "node scripts/validate.mjs",

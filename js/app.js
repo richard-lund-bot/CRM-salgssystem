@@ -11,7 +11,7 @@ import {
   planForDato,
 } from './store.js';
 import { el, tom, chip, ikon, bryter } from './ui.js';
-import { APP_VERSION } from './config.js';
+import { APP_VERSION, APP_NAME, APP_TAGLINE } from './config.js';
 import { kjorOnboarding } from './onboarding.js';
 import { visReviewSkjerm, visKjoreSkjerm } from './kjor.js';
 import { settBib as settBibHist, visAktivitetSkjerm } from './historikk.js';
@@ -235,7 +235,7 @@ const DAGSMAAL = { mikro: 10, kort: 20, standard: 40, lang: 60 };
 function visTrening() {
   const profil = hentProfil();
   if (!profil) {
-    skjerm('Mova', velkommenKort());
+    skjerm(APP_NAME, velkommenKort());
     return;
   }
   const logg = hentLogg();
@@ -676,7 +676,7 @@ function visStyrke() {
 
 // --- Temaer (CSS-paletter, se app.css) — alle fritt tilgjengelige -----------
 const TEMAER = [
-  { id: 'standard', navn: 'Mova (standard)', prikk: '#008382' },
+  { id: 'standard', navn: `${APP_NAME} (standard)`, prikk: '#008382' },
   { id: 'mork', navn: 'Marine', prikk: '#11264D' },
   { id: 'midnatt', navn: 'Midnatt', prikk: '#2E8FE0' },
   { id: 'glod', navn: 'Glød', prikk: '#E8853D' },
@@ -725,7 +725,7 @@ function visMeny() {
     el('div', { class: 'kort' },
       el('div', { class: 'liste' },
         lenke('gir', 'Innstillinger', '#/innstillinger'),
-        lenke('info', 'Om Mova', '#/om'),
+        lenke('info', `Om ${APP_NAME}`, '#/om'),
       ),
     ),
   );
@@ -1013,9 +1013,9 @@ function ovelseKort(e) {
 
 function visOm() {
   const profil = hentProfil();
-  skjerm('Om Mova',
+  skjerm(`Om ${APP_NAME}`,
     el('div', { class: 'kort' },
-      el('h2', {}, 'Mova — Move for Life.'),
+      el('h2', {}, `${APP_NAME} — ${APP_TAGLINE}.`),
       el('p', {}, 'Bevegelse kan være hva som helst du liker — en tur, en økt, en fotballkamp. Alt teller, alt gir XP, og merkene samler det du får til. PWA i vanilla HTML/CSS/JS.'),
       el('p', { class: 'dempet' }, `Versjon ${APP_VERSION}`),
       el('p', { class: 'dempet' }, `${hentOkter().length} økter i biblioteket · ${bib.exercises.length} øvelser i oppslaget.`),
@@ -1049,7 +1049,7 @@ function settGlassrefraksjonFlagg() {
 // Legger inn SVG-filteret som driver glass-refraksjonen (feDisplacementMap på en
 // myk fraktalstøy). Skjult, 0×0, injiseres kun én gang.
 function leggInnGlassFilter() {
-  if (document.getElementById('mova-glass')) return;
+  if (document.getElementById('takt-glass')) return;
   const NS = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(NS, 'svg');
   svg.setAttribute('aria-hidden', 'true');
@@ -1057,7 +1057,7 @@ function leggInnGlassFilter() {
   svg.setAttribute('height', '0');
   svg.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden';
   svg.innerHTML = `
-    <filter id="mova-glass" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+    <filter id="takt-glass" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
       <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="2" seed="7" result="stoy" />
       <feGaussianBlur in="stoy" stdDeviation="2" result="mykStoy" />
       <feDisplacementMap in="SourceGraphic" in2="mykStoy" scale="16" xChannelSelector="R" yChannelSelector="G" />

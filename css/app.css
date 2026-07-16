@@ -738,8 +738,8 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 }
 @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   html.kan-glassrefraksjon .tabbar__refraksjon {
-    -webkit-backdrop-filter: url(#mova-glass);
-    backdrop-filter: url(#mova-glass);
+    -webkit-backdrop-filter: url(#takt-glass);
+    backdrop-filter: url(#takt-glass);
   }
 }
 /* Scroll ned → litt mindre; scroll opp → tilbake til full størrelse. */

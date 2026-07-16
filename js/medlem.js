@@ -4,7 +4,7 @@
 // Supabase GoTrue via js/sync.js: e-post + passord, samt Apple/Facebook (OAuth).
 // Ingen tab-bar (fokusmodus). Onboarding bygges på nytt i neste steg.
 import { el, tom, ikon } from './ui.js';
-import { OAUTH_PROVIDERE } from './config.js';
+import { OAUTH_PROVIDERE, APP_SHORT, APP_TAGLINE } from './config.js';
 import * as sync from './sync.js';
 
 // Leverandør-metadata (merkeikon + visningsnavn). Hvilke som vises styres av
@@ -21,8 +21,8 @@ export function settEtterInnlogget(fn) { _etterInnlogget = fn; }
 // --- Delte byggeklosser ---------------------------------------------------
 function movaMerke() {
   return el('div', { class: 'auth__merke' },
-    el('span', { class: 'auth__logo' }, 'mova'),
-    el('span', { class: 'auth__tagline' }, 'Move for Life'),
+    el('span', { class: 'auth__logo' }, APP_SHORT.toLowerCase()),
+    el('span', { class: 'auth__tagline' }, APP_TAGLINE),
   );
 }
 

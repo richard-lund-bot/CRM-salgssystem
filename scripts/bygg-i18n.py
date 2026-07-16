@@ -75,7 +75,7 @@ EN = {
  'Ta profilen på nytt': 'Redo the profile', 'Send innloggingslenke': 'Send login link',
  'Slette ALT — profil, logg, XP og historikk? Kan ikke angres.':
    'Delete EVERYTHING — profile, log, XP and history? Cannot be undone.',
- 'Innstillinger og om appen.': 'Settings and about the app.', 'Om Mova': 'About Mova',
+ 'Innstillinger og om appen.': 'Settings and about the app.', 'Om Takt': 'About Takt',
  'Admin-modus på': 'Admin mode on', 'Ser appen som et vanlig medlem': 'Viewing the app as a regular member',
  'Tilbake til normal': 'Back to normal', 'Nøytral': 'Neutral', 'Færre': 'Fewer', 'Høy': 'High',
  'Ukemål nådd': 'Weekly goal reached',
@@ -148,7 +148,8 @@ EN = {
  'F.eks. hagearbeid, leking med barna…': 'E.g. gardening, playing with the kids…',
  'Et vennlig mål for rytmen din. Livet går foran — ingenting «ryker».': 'A friendly goal for your rhythm. Life comes first — nothing “breaks”.',
  # Om
- 'Mova — Move for Life.': 'Mova — Move for Life.', 'Move for Life': 'Move for Life',
+ 'Takt — Daglige valg, gode år.': 'Takt — Daily choices, good years.',
+ 'Daglige valg, gode år': 'Daily choices, good years',
  # Diverse tagger
  'høy impact': 'high impact', 'per side': 'per side', 'Øvet': 'Intermediate', 'Nybegynner': 'Beginner', 'Avansert': 'Advanced',
  'Test': 'Test',

@@ -6,6 +6,7 @@
 // denne · neste). En dag åpner mosjonskalenderen på den datoen — med mindre
 // skjermen sender inn sin egen dag-aksjon (biblioteket: logg/start/planlegg).
 import { el, tom, ikon } from './ui.js';
+import { APP_NAME, APP_SHORT } from './config.js';
 import { hentLogg } from './store.js';
 import * as sync from './sync.js';
 
@@ -53,8 +54,8 @@ function mandagFor(d) {
 }
 
 function wordmark() {
-  return el('a', { class: 'wordmark', href: '#/hjem', 'aria-label': 'Mova' },
-    'mova', el('span', { class: 'wordmark__prikk' }, '.'));
+  return el('a', { class: 'wordmark', href: '#/hjem', 'aria-label': APP_NAME },
+    APP_SHORT.toLowerCase(), el('span', { class: 'wordmark__prikk' }, '.'));
 }
 
 // Tannhjul oppe til venstre — åpner meny-huben (#/meny). Lyser aktivt når man er

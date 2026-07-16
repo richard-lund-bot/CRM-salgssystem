@@ -1,7 +1,7 @@
 {
-  "name": "Mova — Move for Life",
-  "short_name": "Mova",
-  "description": "Din vennlige følgesvenn for mer bevegelse i hverdagen — økter, nivåer, belønninger og historikk, offline-first.",
+  "name": "Takt — Daglige valg, gode år",
+  "short_name": "Takt",
+  "description": "Små daglige valg som blir gode år — bevegelse, læring og ro i én rolig, offline-først app.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

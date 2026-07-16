@@ -5,14 +5,14 @@ export const SUPABASE_ANON_KEY =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJrdnBoZ2JmeWZ5bWlsendnbWdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwMTEyMDMsImV4cCI6MjA5ODU4NzIwM30.ufVPAqsCRgaPUn9nNDdyq4YCQ4bA7LwsaJ-TVxfLAE0';
 
 // App-versjon: bumpes for å tvinge ny service-worker-cache.
-export const APP_VERSION = 'm46-3.5.0';
+export const APP_VERSION = 'm47-4.0.0';
 
 // Merkevare — én kilde til sannhet. En rebrand bytter kun disse konstantene;
-// resten av appen skal etter hvert lese herfra i stedet for hardkodet «Mova».
+// resten av appen leser herfra i stedet for et hardkodet navn.
 // Cache-prefikset i sw.js er APP_NAME i små bokstaver (håndheves av hooken).
-export const APP_NAME = 'Mova';
-export const APP_SHORT = 'Mova';
-export const APP_TAGLINE = 'Move for Life';
+export const APP_NAME = 'Takt';
+export const APP_SHORT = 'Takt';
+export const APP_TAGLINE = 'Daglige valg, gode år';
 
 // Lagrings-prefiks for localStorage-nøkler. Nøklene er interne og usynlige for
 // brukeren; en fremtidig rebrand kan rute nye nøkler via en nokkel()-hjelper
