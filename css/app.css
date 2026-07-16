@@ -3137,12 +3137,31 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .feedscroll__laster { padding: 20px 16px; }
 
 /* Topplinje: kalender · For deg ˅ · bjelle — ligger i scrollflaten og
-   scrolles forbi som resten av innholdet (ikke fast). */
+   scrolles forbi som resten av innholdet (ikke fast). Ugjennomsiktig + z:3 så
+   den dekker pull-to-refresh-spinneren når feeden er i hvile. */
 .feedtopp {
-  position: relative; z-index: 2; /* anker + lag for dropdownen */
+  position: relative; z-index: 3; /* anker + lag for dropdownen + dekker pull-spinneren */
   display: flex; align-items: center; justify-content: space-between;
-  gap: 8px; padding: 4px 12px 6px;
+  gap: 8px; padding: 4px 12px 6px; background: var(--bg);
 }
+
+/* Pull-to-refresh-kropp: alt under headeren dras ned ved pull, og spinneren
+   (som ligger like over kroppens topp, gjemt bak den ugjennomsiktige headeren)
+   kommer til syne i mellomrommet som åpner seg. */
+.feedpull { position: relative; z-index: 1; background: var(--bg); }
+.feedpull--anim { transition: transform 0.32s var(--ease-out); }
+.feedpull__spinn {
+  position: absolute; top: -44px; left: 50%; margin-left: -17px;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
+  display: grid; place-items: center;
+  opacity: 0; pointer-events: none;
+}
+.feedpull__spinn--klar { background: var(--aksent-svak); }
+.feedpull__spinn--spinner .pullspinn__ring { animation: pullspinn-rot 0.8s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .feedpull--anim { transition: none; } }
 .fordeg {
   display: inline-flex; align-items: center; gap: 4px;
   border: none; background: none; cursor: pointer;

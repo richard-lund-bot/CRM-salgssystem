@@ -1183,11 +1183,81 @@ function byggFeed(mount, scroll, data) {
   tegnDropdown(); // nå med «Interesser»-inngangen
 
   tegnListe();
-  // Topplinja ligger i scrollflaten — den scrolles forbi som resten.
-  scroll.append(topp, storyRad, liste, vaktpost);
+  // Topplinja blir stående; alt under (stories + innlegg) ligger i en «pull»-
+  // kropp som dras ned ved pull-to-refresh, så headeren og storyene splittes og
+  // en reload-spinner kommer til syne i mellomrommet (som Instagram).
+  const spinn = el('div', { class: 'feedpull__spinn', 'aria-hidden': 'true' }, el('i', { class: 'pullspinn__ring' }));
+  const kropp = el('div', { class: 'feedpull' }, spinn, storyRad, liste, vaktpost);
+  scroll.append(topp, kropp);
+  settOppFeedPull(scroll, kropp, spinn, () => visFeedSkjerm(mount));
 
   // Første besøk uten valgte interesser → be brukeren melde inn (kan hoppes over).
   if (!harValgtInteresser()) visInteressekort(mount, katNavn, () => tegnListe(), true);
+}
+
+// Pull-to-refresh på feeden: dra ned fra toppen → headeren står, kroppen
+// (stories + innlegg) glir ned, og spinneren kommer til syne i mellomrommet.
+// Slipp forbi terskelen → spinneren snurrer og feeden lastes på nytt (re-
+// rangeres). Ellers spretter kroppen tilbake. Touch (mobil) — vertikal-
+// dominante drag i toppen; horisontale story-sveip og vanlig scroll rører den ikke.
+function settOppFeedPull(scroll, kropp, spinn, reload) {
+  const TERSKEL = 72;
+  const MAKS = 130;
+  const DEMP = 0.5;
+  let startX = null;
+  let startY = null;
+  let pull = 0;
+  let aktiv = false;
+  let opptatt = false;
+
+  function settPull(p) {
+    pull = p;
+    kropp.style.transform = p ? `translateY(${p}px)` : '';
+    spinn.style.opacity = String(Math.min(1, p / TERSKEL));
+    spinn.style.setProperty('--vri', `${Math.round(p * 3)}deg`);
+    spinn.classList.toggle('feedpull__spinn--klar', p >= TERSKEL);
+  }
+
+  scroll.addEventListener('touchstart', (e) => {
+    if (opptatt || scroll.scrollTop > 0) { startY = null; return; }
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    aktiv = false;
+    kropp.classList.remove('feedpull--anim');
+  }, { passive: true });
+
+  scroll.addEventListener('touchmove', (e) => {
+    if (startY == null || opptatt) return;
+    const dy = e.touches[0].clientY - startY;
+    const dx = e.touches[0].clientX - startX;
+    if (!aktiv) {
+      if (dy <= 6 || Math.abs(dx) > Math.abs(dy)) { if (dy < 0) startY = null; return; } // scroll/horisontalt story-sveip
+      aktiv = true;
+    }
+    if (scroll.scrollTop > 0) { startY = null; if (pull) settPull(0); return; }
+    if (e.cancelable) e.preventDefault(); // stopp native overskroll mens vi drar
+    settPull(Math.min(MAKS, dy * DEMP));
+  }, { passive: false });
+
+  const slipp = () => {
+    if (startY == null || opptatt) return;
+    startY = null;
+    if (!aktiv) return;
+    aktiv = false;
+    if (pull >= TERSKEL) {
+      opptatt = true;
+      kropp.classList.add('feedpull--anim');
+      kropp.style.transform = 'translateY(60px)';
+      spinn.classList.add('feedpull__spinn--spinner');
+      spinn.style.opacity = '1';
+      setTimeout(() => { reload(); }, 700); // reload bygger hele feeden på nytt (fersk topp)
+    } else {
+      kropp.classList.add('feedpull--anim');
+      settPull(0);
+    }
+  };
+  scroll.addEventListener('touchend', slipp, { passive: true });
+  scroll.addEventListener('touchcancel', slipp, { passive: true });
 }
 
 // ==========================================================================
