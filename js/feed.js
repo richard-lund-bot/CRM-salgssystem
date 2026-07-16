@@ -46,9 +46,9 @@ function lesTilstand() {
   try {
     const raw = localStorage.getItem(LS_FEED);
     const t = raw ? JSON.parse(raw) : {};
-    return { spilt: t.spilt || {}, likt: t.likt || {}, lagret: t.lagret || {}, komm: t.komm || {} };
+    return { spilt: t.spilt || {}, likt: t.likt || {}, lagret: t.lagret || {}, komm: t.komm || {}, story: t.story || {} };
   } catch {
-    return { spilt: {}, likt: {}, lagret: {}, komm: {} };
+    return { spilt: {}, likt: {}, lagret: {}, komm: {}, story: {} };
   }
 }
 
@@ -659,6 +659,187 @@ function åpneKommentarer(post, vert, påEndret) {
 }
 
 // ==========================================================================
+// Stories — nyhetsprototypen: «Nytt nå»-digesten + én story per domene,
+// avledet av de nyeste kildelenkede innleggene (ingen påfunnede nyheter).
+// Ringen har domenets gradient til storyen er sett, så grå (per enhet).
+// Viseren er fullskjerm à la Instagram: fremdriftssegmenter øverst, trykk
+// høyre/venstre for neste/forrige, hold for pause, sveip ned eller X lukker.
+// ==========================================================================
+const SLIDE_MS = 6000;
+
+function byggStories(posts) {
+  const sortert = posts.slice().sort((a, b) => (Date.parse(b.opprettet || 0) || 0) - (Date.parse(a.opprettet || 0) || 0));
+  const stories = [{ id: 'story-nytt', navn: 'Nytt nå', slides: sortert.slice(0, 5), aksentStart: '#0BA69F', aksentSlutt: '#FF6F61' }];
+  const perDomene = new Map();
+  for (const p of sortert) {
+    if (!perDomene.has(p.kategori)) perDomene.set(p.kategori, []);
+    const l = perDomene.get(p.kategori);
+    if (l.length < 4) l.push(p);
+  }
+  for (const [domene, slides] of perDomene) {
+    const g = posterFor(slides[0].posterId);
+    stories.push({
+      id: `story-${domene}`, navn: domene, slides,
+      aksentStart: g?.aksentStart || '#0BA69F', aksentSlutt: g?.aksentSlutt || '#4FA9F5',
+    });
+  }
+  return stories;
+}
+
+function lagStoryRad(posts, vert, påSeIFeed) {
+  const stories = byggStories(posts);
+  const rad = el('div', { class: 'storyrad' });
+  function tegn() {
+    tom(rad);
+    const sett = lesTilstand().story;
+    stories.forEach((story, i) => {
+      rad.append(el('button', {
+        class: 'storysirkel' + (sett[story.id] ? ' storysirkel--sett' : ''), type: 'button',
+        'aria-label': `Story: ${story.navn}`,
+        onclick: () => åpneStory(stories, i, vert, { påSett: tegn, påSeIFeed }),
+      },
+        el('span', { class: 'storysirkel__ring', style: `background:linear-gradient(45deg, ${story.aksentStart}, ${story.aksentSlutt})` },
+          el('span', { class: 'storysirkel__indre', style: `background:linear-gradient(135deg, ${story.aksentStart}, ${story.aksentSlutt})` },
+            story.id === 'story-nytt' ? ikon('lyn') : story.navn.slice(0, 1)),
+        ),
+        el('span', { class: 'storysirkel__navn' }, story.navn),
+      ));
+    });
+  }
+  tegn();
+  return rad;
+}
+
+function åpneStory(stories, startIdx, vert, { påSett = null, påSeIFeed = null } = {}) {
+  let sIdx = startIdx;
+  let slideIdx = 0;
+  let timer = null;
+  let startTs = 0;
+  let rest = SLIDE_MS;
+  let fyllAktiv = null;
+
+  const flate = el('div', { class: 'story__flate' });
+  const overlay = el('div', { class: 'story', role: 'dialog', 'aria-label': 'Story' }, flate);
+
+  const stopp = () => { if (timer) { clearTimeout(timer); timer = null; } };
+  function lukk() { stopp(); overlay.remove(); }
+
+  function markerSett() {
+    const id = stories[sIdx].id;
+    endreTilstand((s) => { s.story = s.story || {}; s.story[id] = Date.now(); });
+    påSett?.();
+  }
+
+  // Fremdrift: det aktive segmentet fylles lineært over gjenstående tid;
+  // hold pauser både fyllet og timeren (samme oppskrift som Instagram).
+  function spillAv() {
+    stopp();
+    startTs = Date.now();
+    if (fyllAktiv && !REDUSERT()) {
+      fyllAktiv.style.transition = `width ${rest}ms linear`;
+      requestAnimationFrame(() => { fyllAktiv.style.width = '100%'; });
+    } else if (fyllAktiv) {
+      fyllAktiv.style.width = '100%';
+    }
+    timer = setTimeout(neste, rest);
+  }
+
+  function pause() {
+    if (!timer) return;
+    stopp();
+    rest = Math.max(250, rest - (Date.now() - startTs));
+    if (fyllAktiv) {
+      const w = getComputedStyle(fyllAktiv).width;
+      fyllAktiv.style.transition = 'none';
+      fyllAktiv.style.width = w;
+    }
+  }
+
+  function neste() {
+    if (slideIdx + 1 < stories[sIdx].slides.length) { slideIdx++; tegn(); }
+    else if (sIdx + 1 < stories.length) { sIdx++; slideIdx = 0; tegn(); }
+    else lukk();
+  }
+
+  function forrige() {
+    if (slideIdx > 0) { slideIdx--; tegn(); }
+    else if (sIdx > 0) { sIdx--; slideIdx = stories[sIdx].slides.length - 1; tegn(); }
+    else tegn(); // første slide i første story → start den på nytt
+  }
+
+  function tegn() {
+    markerSett();
+    rest = SLIDE_MS;
+    const story = stories[sIdx];
+    const post = story.slides[slideIdx];
+    const guide = posterFor(post.posterId) || { navn: 'Aha', aksentStart: story.aksentStart, aksentSlutt: story.aksentSlutt };
+    const ts = Date.parse(post.opprettet || '') || Date.now();
+
+    flate.style.background = `linear-gradient(170deg, ${guide.aksentStart}, ${guide.aksentSlutt})`;
+    tom(flate);
+
+    const seg = story.slides.map((_, i) => el('span', { class: 'story__seg' },
+      el('i', { class: 'story__segfyll', style: i < slideIdx ? 'width:100%' : 'width:0' })));
+    fyllAktiv = seg[slideIdx].firstChild;
+
+    flate.append(
+      el('div', { class: 'story__prog' }, ...seg),
+      el('div', { class: 'story__hode' },
+        guideAvatar(guide),
+        el('div', { class: 'story__hvem' },
+          el('span', { class: 'story__navn' }, story.navn),
+          el('span', { class: 'story__tid' }, `${guide.navn} · ${tidSiden(ts)}`),
+        ),
+        el('button', { class: 'story__lukk', type: 'button', 'aria-label': 'Lukk', onclick: lukk }, ikon('kryss')),
+      ),
+      el('div', { class: 'story__innhold' },
+        el('span', { class: 'story__eyebrow' }, `Nytt · ${post.underkategori || post.kategori}`),
+        el('h2', { class: 'story__tittel' }, post.hook),
+        el('p', { class: 'story__tekst' }, post.sammendrag),
+      ),
+      el('div', { class: 'story__bunn' },
+        post.kilde?.url && el('a', {
+          class: 'story__kilde', href: post.kilde.url, target: '_blank', rel: 'noopener',
+        }, ikon('bok', 'ikon ikon--liten'), `${post.kilde.org || 'Kilde'} — ${post.kilde.tittel || ''}`),
+        el('button', {
+          class: 'story__feed', type: 'button',
+          onclick: () => { lukk(); påSeIFeed?.(post); },
+        }, `Spill i feeden · ${post.xp} XP`),
+      ),
+    );
+    spillAv();
+  }
+
+  // Gester: kort trykk = neste/forrige (høyre/venstre sone), hold = pause,
+  // sveip nedover = lukk. Lenker/knapper på sliden er unntatt sonene.
+  let nedTs = 0;
+  let nedY = 0;
+  let sveipet = false;
+  flate.addEventListener('pointerdown', (ev) => {
+    if (ev.target.closest('a, button')) return;
+    nedTs = Date.now();
+    nedY = ev.clientY;
+    sveipet = false;
+    pause();
+  });
+  flate.addEventListener('pointermove', (ev) => {
+    if (!nedTs) return;
+    if (ev.clientY - nedY > 80) { sveipet = true; nedTs = 0; lukk(); }
+  });
+  flate.addEventListener('pointerup', (ev) => {
+    if (!nedTs || sveipet) { nedTs = 0; return; }
+    const holdt = Date.now() - nedTs;
+    nedTs = 0;
+    if (holdt > 260) { spillAv(); return; } // holdet var pausen — bare fortsett
+    if (ev.clientX < flate.clientWidth * 0.3) forrige(); else neste();
+  });
+  flate.addEventListener('pointercancel', () => { nedTs = 0; spillAv(); });
+
+  vert.append(overlay);
+  tegn();
+}
+
+// ==========================================================================
 // Innleggskortet: fullbredde gradientkort med avrundede hjørner («fullside
 // bakgrunn» per innlegg), innhold rett på flaten uten delere, minispillet i
 // mørkt glass, aksjonsrail til høyre og guide + postet-tid nederst.
@@ -756,8 +937,9 @@ function feedKort(post, vert) {
 
 // ==========================================================================
 // Selve feeden (#/hjem): slank topplinje (kalender · «For deg»-dropdown ·
-// bjelle), fullbredde innlegg uten delere, og batch-innlasting ved scroll.
-// Ingen banner, ikke noe bakgrunnsbilde — innholdet ER siden.
+// bjelle) som scroller forbi med resten av innholdet (ikke fast), story-rad
+// med nyhetsprototypen, fullbredde innlegg uten delere, og batch-innlasting
+// ved scroll. Ingen banner, ikke noe bakgrunnsbilde — innholdet ER siden.
 // ==========================================================================
 export function visFeedSkjerm(mount) {
   document.body.classList.add('fane-laast'); // egen scrollflate, som fanesidene
@@ -879,7 +1061,10 @@ function byggFeed(mount, scroll, data) {
   }, { rootMargin: '900px' });
   observer.observe(vaktpost);
 
+  // Story-raden: «Spill i feeden» fra en slide hopper til domenets filter.
+  const storyRad = lagStoryRad(posts, mount, (post) => velgFilter(post.kategori, post.kategori));
+
   tegnListe();
-  scroll.append(liste, vaktpost);
-  mount.prepend(topp);
+  // Topplinja ligger i scrollflaten — den scrolles forbi som resten.
+  scroll.append(topp, storyRad, liste, vaktpost);
 }
