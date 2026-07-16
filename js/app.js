@@ -119,9 +119,18 @@ function oppdaterFaneMinne(rute) {
 
 // Gjenopprett scroll for en hash (default topp). Re-apply etter layout og litt
 // senere for skjermer som fyller innhold async (f.eks. seksjon henter JSON).
+// Scroll-hendelsene dette utløser er programmatiske: krymp-lytteren
+// (settOppTabKrymp) må ikke tolke dem som «scroll ned» og krympe baren —
+// et fanebytte skal ALLTID vise baren i full størrelse, uansett hvor dypt
+// fanen sto. Derfor dempes krympingen et lite vindu rundt gjenopprettingen.
+let krympStilleTil = 0;
 function gjenopprettScroll(hash) {
   const y = scrollMinne.get(hash) || 0;
   const sett = () => { const s = aktivScroller(); if (s) s.scrollTop = y; };
+  // Bare dype gjenopprettinger utløser scroll-ned-hendelser som må dempes;
+  // y=0 (fersk side / til toppen) fyrer ingen eller en ufarlig opp-hendelse,
+  // og skal ikke stjele brukerens første ekte scroll.
+  if (y > 0) krympStilleTil = performance.now() + 250; // dekker sett() nå + rAF + 120ms
   sett();
   if (y > 0) { requestAnimationFrame(sett); setTimeout(sett, 120); }
 }
@@ -1119,10 +1128,13 @@ function settOppTabKrymp() {
     requestAnimationFrame(() => {
       venter = false;
       const dy = y - sisteY;
+      sisteY = y; // følg alltid posisjonen — også når krympingen er dempet
+      // Programmatisk scroll-restore (fanebytte) skal aldri krympe baren;
+      // neste ekte scroll måles da mot den gjenopprettede posisjonen.
+      if (performance.now() < krympStilleTil) return;
       if (y < 32) bar.classList.remove('tabbar--kompakt');       // nær toppen → full
       else if (dy > 3) bar.classList.add('tabbar--kompakt');     // ned → litt mindre
       else if (dy < -3) bar.classList.remove('tabbar--kompakt'); // opp → større
-      sisteY = y;
     });
   };
   window.addEventListener('scroll', paa, { passive: true, capture: true });
