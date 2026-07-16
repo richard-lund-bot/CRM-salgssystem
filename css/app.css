@@ -724,6 +724,26 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
   content: ''; position: absolute; inset: 3px; border-radius: 999px;
   pointer-events: none; z-index: 0;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.32);
+  /* Diagonal spekulær-glans over øvre kant — antyder lys som treffer glasset.
+     Ren maling, virker overalt (også iOS). */
+  background-image: linear-gradient(158deg,
+    rgba(255, 255, 255, 0.28) 0%,
+    rgba(255, 255, 255, 0.05) 34%,
+    rgba(255, 255, 255, 0) 52%);
+}
+/* (1) Ekte refraksjon som progressiv forbedring: en dedikert flate med
+   SVG-forvrengning i backdrop-filter. Slås kun på der den faktisk rendres
+   (Chromium-motorer, via .kan-glassrefraksjon satt i js/app.js) — iOS Safari
+   støtter ikke url()-forvrengning i backdrop og beholder frost-fallbacken. */
+.tabbar__refraksjon {
+  position: absolute; inset: 0; border-radius: inherit;
+  pointer-events: none; z-index: 0;
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  html.kan-glassrefraksjon .tabbar__refraksjon {
+    -webkit-backdrop-filter: url(#mova-glass);
+    backdrop-filter: url(#mova-glass);
+  }
 }
 /* Scroll ned → litt mindre; scroll opp → tilbake til full størrelse. */
 .tabbar--kompakt { transform: scale(0.88); }
@@ -750,7 +770,13 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 .tabbar__linse {
   position: absolute; top: 5px; bottom: 5px; left: 0;
   width: 64px; border-radius: 999px;
-  background: color-mix(in srgb, var(--c-glass) 50%, transparent);
+  overflow: hidden; /* holder lys-sveipet innenfor pillen */
+  background-color: color-mix(in srgb, var(--c-glass) 50%, transparent);
+  /* (2) Sterkere spekulær-glans på linsen: lys topp, mørkere bunn → glassaktig. */
+  background-image: linear-gradient(155deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.08) 40%,
+    rgba(0, 0, 0, 0.05) 100%);
   box-shadow:
     inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 10%), transparent),
     inset 2px 1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 90%), transparent),
@@ -762,7 +788,30 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
   opacity: 0; z-index: 0; pointer-events: none;
   transition: transform 0.42s var(--ease-bounce), opacity 0.2s ease;
 }
+/* (3) Lys-sveip / refraksjonsskimmer: en diagonal glansstripe som feier over
+   linsen hver gang den glir til en ny fane (klassen settes i flyttTabIndikator). */
+.tabbar__linse::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.55) 48%,
+    rgba(255, 255, 255, 0.75) 50%,
+    rgba(255, 255, 255, 0.55) 52%,
+    transparent 70%);
+  transform: translateX(-130%);
+  opacity: 0;
+}
+.tabbar__linse--sveip::after { animation: linse-sveip 0.6s var(--ease-standard); }
+@keyframes linse-sveip {
+  0% { transform: translateX(-130%); opacity: 0; }
+  22% { opacity: 1; }
+  100% { transform: translateX(130%); opacity: 0; }
+}
 @keyframes synkpuls { 50% { opacity: 0.4; } }
+@media (prefers-reduced-motion: reduce) {
+  .tabbar__linse--sveip::after { animation: none; }
+}
 
 /* Fokusmodus: skjul tab-bar under onboarding/review/kjøring */
 .fokusmodus .tabbar { display: none; }

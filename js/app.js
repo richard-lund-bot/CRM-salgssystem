@@ -983,8 +983,45 @@ function visOm() {
 
 // --- Tab-bar (Mova BottomNav: hvit flate, aktiv fane i aksentfargen).
 // Profil står i midten, litt større enn de andre. ---
+// Sjekker om motoren faktisk rendrer SVG-forvrengning i backdrop-filter.
+// Chromium gjør det; WebKit/Safari (inkl. iOS) gjør det ikke — der beholder vi
+// frost-fallbacken. Kalles én gang; setter .kan-glassrefraksjon på <html>.
+function settGlassrefraksjonFlagg() {
+  const ua = navigator.userAgent || '';
+  const erWebKit = /\bSafari\b/.test(ua) && !/\b(Chrome|Chromium|CriOS|Edg|OPR|SamsungBrowser)\b/.test(ua);
+  const stotter = !erWebKit && (
+    (window.CSS && CSS.supports && (
+      CSS.supports('backdrop-filter', 'url(#x)') ||
+      CSS.supports('-webkit-backdrop-filter', 'url(#x)')
+    )) || false
+  );
+  document.documentElement.classList.toggle('kan-glassrefraksjon', stotter);
+  return stotter;
+}
+
+// Legger inn SVG-filteret som driver glass-refraksjonen (feDisplacementMap på en
+// myk fraktalstøy). Skjult, 0×0, injiseres kun én gang.
+function leggInnGlassFilter() {
+  if (document.getElementById('mova-glass')) return;
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('aria-hidden', 'true');
+  svg.setAttribute('width', '0');
+  svg.setAttribute('height', '0');
+  svg.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden';
+  svg.innerHTML = `
+    <filter id="mova-glass" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="2" seed="7" result="stoy" />
+      <feGaussianBlur in="stoy" stdDeviation="2" result="mykStoy" />
+      <feDisplacementMap in="SourceGraphic" in2="mykStoy" scale="16" xChannelSelector="R" yChannelSelector="G" />
+    </filter>`;
+  document.body.append(svg);
+}
+
 function byggTabbar() {
   if (document.querySelector('.tabbar')) return;
+  settGlassrefraksjonFlagg();
+  leggInnGlassFilter();
   // Flytende liquid-glass-bar à la Instagram: kun ikoner (etiketten blir aria-
   // label for skjermlesere), en glidende glass-linse bak aktiv fane, og aktiv
   // fane får det fylte, svarte ikonet (linje-varianten byttes via CSS).
@@ -996,6 +1033,7 @@ function byggTabbar() {
   ));
 
   document.body.append(el('nav', { class: 'tabbar', 'aria-label': 'Hovedmeny' },
+    el('span', { class: 'tabbar__refraksjon', 'aria-hidden': 'true' }),
     el('span', { class: 'tabbar__linse', 'aria-hidden': 'true' }),
     tab('hjem', 'hjem', 'hjemfyll', 'I dag'),
     tab('beveg', 'loper', 'loperfyll', 'Trening'),
@@ -1045,7 +1083,16 @@ function flyttTabIndikator() {
   if (!ind) return;
   if (!aktiv) { ind.style.opacity = '0'; return; }
   ind.style.opacity = '1';
-  ind.style.transform = `translateX(${aktiv.offsetLeft + aktiv.offsetWidth / 2}px) translateX(-50%)`;
+  const x = aktiv.offsetLeft + aktiv.offsetWidth / 2;
+  const nyPos = `translateX(${x}px) translateX(-50%)`;
+  // Lys-sveip kun når linsen faktisk glir til en ny fane (ikke ved re-render på
+  // samme fane). Restart animasjonen ved å fjerne/tvinge reflow/legge på klassen.
+  if (ind.style.transform && ind.style.transform !== nyPos) {
+    ind.classList.remove('tabbar__linse--sveip');
+    void ind.offsetWidth;
+    ind.classList.add('tabbar__linse--sveip');
+  }
+  ind.style.transform = nyPos;
 }
 
 // Anvender valgt app-tema (M6). Kalles ved oppstart og når temaet endres.
