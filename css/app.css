@@ -705,17 +705,15 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
   background: color-mix(in srgb, var(--c-light) 40%, transparent);
   -webkit-backdrop-filter: blur(8px) saturate(150%);
   backdrop-filter: blur(8px) saturate(150%);
+  /* Myke, diffuse gløder uten skarpe kantlinjer — jevn, linjefri glassflate. */
   box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 10%), transparent),
-    inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 90%), transparent),
-    inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 80%), transparent),
-    inset -3px -8px 1px -6px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 60%), transparent),
-    inset -0.3px -1px 4px 0px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 12%), transparent),
-    inset -1.5px 2.5px 0px -2px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 20%), transparent),
-    inset 0px 3px 4px -2px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 20%), transparent),
-    inset 2px -6.5px 1px -4px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 10%), transparent),
+    inset 0 12px 20px -14px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 90%), transparent),
+    inset 0 -10px 18px -16px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 25%), transparent),
     0px 1px 5px 0px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 10%), transparent),
     0px 6px 16px 0px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 8%), transparent);
+  /* Klipp til kapselen så glass-linsen aldri stikker utenfor når den
+     spretter over lange avstander (bar-strekk gjør resten av jobben). */
+  overflow: hidden;
   z-index: 20;
   transform: scale(1); transform-origin: bottom center;
   transition: transform 0.36s var(--ease-standard), box-shadow 0.3s ease;
@@ -723,25 +721,11 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .tabbar { background: color-mix(in srgb, var(--bg-kort) 92%, transparent); }
 }
-/* «Speil»-kant à la Instagram: skarp lys ytre rim (sterkest på de buede endene)
-   + en svak andre-kant litt inn, som antyder glassrefraksjonen. iOS gjør ikke
-   backdrop-forvrengning, så kanten males med lys/skygge i stedet. */
-.tabbar::after {
+/* Diagonal spekulær-glans over øvre kant — antyder lys som treffer glasset
+   uten synlige kantlinjer. Ren maling, virker overalt (også iOS). */
+.tabbar::before {
   content: ''; position: absolute; inset: 0; border-radius: inherit;
   pointer-events: none; z-index: 0;
-  box-shadow:
-    inset 0 1.5px 1px -0.5px rgba(255, 255, 255, 0.95),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.5),
-    inset 3px 0 3px -2px rgba(255, 255, 255, 0.9),
-    inset -3px 0 3px -2px rgba(255, 255, 255, 0.9),
-    inset 0 -2px 2px -1px rgba(0, 0, 0, 0.06);
-}
-.tabbar::before {
-  content: ''; position: absolute; inset: 3px; border-radius: 999px;
-  pointer-events: none; z-index: 0;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.32);
-  /* Diagonal spekulær-glans over øvre kant — antyder lys som treffer glasset.
-     Ren maling, virker overalt (også iOS). */
   background-image: linear-gradient(158deg,
     rgba(255, 255, 255, 0.28) 0%,
     rgba(255, 255, 255, 0.05) 34%,
@@ -826,9 +810,22 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 }
 .tabbar--trykk .tabbar__trykkpunkt { animation: trykk-puls 0.5s ease-out; }
 @keyframes trykk-puls { 0% { opacity: 1; } 100% { opacity: 0; } }
+/* Trykk-puls: hele baren vokser et hakk og faller straks tilbake.
+   Bruker scale-egenskapen så den komponerer med transform (kompakt-krympen). */
+.tabbar--puls { animation: bar-puls 0.3s var(--ease-standard); }
+@keyframes bar-puls { 0%, 100% { scale: 1; } 35% { scale: 1.04; } }
+/* Lang glidetur (to+ faner): baren strekker seg i fartsretningen og smalner
+   et hint vertikalt — væske-aktig — så pillen ser ut til å presses inn i
+   enden mens overflow-klippet holder den innenfor kapselen. Klassene settes
+   i flyttTabIndikator og ryddes på animationend (settOppTabTrykk). */
+.tabbar--strekk-hoyre, .tabbar--strekk-venstre { animation: bar-strekk 0.42s var(--ease-standard); }
+.tabbar--strekk-hoyre { transform-origin: left center; }
+.tabbar--strekk-venstre { transform-origin: right center; }
+@keyframes bar-strekk { 0%, 100% { scale: 1 1; } 55% { scale: 1.05 0.965; } }
 @keyframes synkpuls { 50% { opacity: 0.4; } }
 @media (prefers-reduced-motion: reduce) {
-  .tabbar--trykk .tabbar__flash, .tabbar--trykk .tabbar__trykkpunkt { animation: none; }
+  .tabbar--trykk .tabbar__flash, .tabbar--trykk .tabbar__trykkpunkt,
+  .tabbar--puls, .tabbar--strekk-hoyre, .tabbar--strekk-venstre { animation: none; }
 }
 
 /* Fokusmodus: skjul tab-bar under onboarding/review/kjøring */

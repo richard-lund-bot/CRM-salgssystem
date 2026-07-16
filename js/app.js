@@ -1057,9 +1057,15 @@ function settOppTabTrykk(nav) {
     const r = nav.getBoundingClientRect();
     punkt.style.left = `${ev.clientX - r.left}px`;
     punkt.style.top = `${ev.clientY - r.top}px`;
-    nav.classList.remove('tabbar--trykk');
+    nav.classList.remove('tabbar--trykk', 'tabbar--puls');
     void nav.offsetWidth;
-    nav.classList.add('tabbar--trykk');
+    nav.classList.add('tabbar--trykk', 'tabbar--puls');
+  });
+  // Rydd bort ferdige bar-animasjoner så klassene ikke blir hengende og
+  // påvirker transform-origin (strekk) eller re-trigges av cascade-bytter.
+  nav.addEventListener('animationend', (ev) => {
+    if (ev.animationName === 'bar-strekk') nav.classList.remove('tabbar--strekk-hoyre', 'tabbar--strekk-venstre');
+    else if (ev.animationName === 'bar-puls') nav.classList.remove('tabbar--puls');
   });
 }
 
@@ -1102,7 +1108,18 @@ function flyttTabIndikator() {
   if (!ind) return;
   if (!aktiv) { ind.style.opacity = '0'; return; }
   ind.style.opacity = '1';
-  ind.style.transform = `translateX(${aktiv.offsetLeft + aktiv.offsetWidth / 2}px) translateX(-50%)`;
+  const x = aktiv.offsetLeft + aktiv.offsetWidth / 2;
+  const forrige = Number(ind.dataset.x ?? NaN);
+  ind.dataset.x = String(x);
+  ind.style.transform = `translateX(${x}px) translateX(-50%)`;
+  // Lang glidetur (mer enn nabofanen): strekk baren i fartsretningen så den
+  // ser ut til å gi etter for pillen som spretter inn mot enden. Puls-klassen
+  // fjernes så bar-animasjonene ikke kjemper om scale-egenskapen.
+  if (Number.isFinite(forrige) && Math.abs(x - forrige) > aktiv.offsetWidth * 1.5) {
+    nav.classList.remove('tabbar--puls', 'tabbar--strekk-hoyre', 'tabbar--strekk-venstre');
+    void nav.offsetWidth;
+    nav.classList.add(x > forrige ? 'tabbar--strekk-hoyre' : 'tabbar--strekk-venstre');
+  }
 }
 
 // Anvender valgt app-tema (M6). Kalles ved oppstart og når temaet endres.
