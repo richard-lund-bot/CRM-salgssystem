@@ -1107,15 +1107,20 @@ function flyttTabIndikator() {
   const aktiv = nav?.querySelector('.tabbar__knapp--aktiv');
   if (!ind) return;
   if (!aktiv) { ind.style.opacity = '0'; return; }
-  ind.style.opacity = '1';
+  const knapper = nav.querySelectorAll('.tabbar__knapp');
+  const erYtterst = aktiv === knapper[0] || aktiv === knapper[knapper.length - 1];
   const x = aktiv.offsetLeft + aktiv.offsetWidth / 2;
   const forrige = Number(ind.dataset.x ?? NaN);
   ind.dataset.x = String(x);
+  // Ytterfanene: rett easing så pillen bremser inn mot enden i stedet for å
+  // sprette forbi målet og utenfor kapselen. Innerfaner beholder spretten.
+  ind.classList.toggle('tabbar__linse--rett', erYtterst);
+  ind.style.opacity = '1';
   ind.style.transform = `translateX(${x}px) translateX(-50%)`;
-  // Lang glidetur (mer enn nabofanen): strekk baren i fartsretningen så den
-  // ser ut til å gi etter for pillen som spretter inn mot enden. Puls-klassen
-  // fjernes så bar-animasjonene ikke kjemper om scale-egenskapen.
-  if (Number.isFinite(forrige) && Math.abs(x - forrige) > aktiv.offsetWidth * 1.5) {
+  // Strekk baren kun ved lange hopp til en ytterfane — det er der pillen
+  // ellers ville truffet kanten. Puls-klassen fjernes så bar-animasjonene
+  // ikke kjemper om scale-egenskapen.
+  if (Number.isFinite(forrige) && erYtterst && Math.abs(x - forrige) > aktiv.offsetWidth * 1.5) {
     nav.classList.remove('tabbar--puls', 'tabbar--strekk-hoyre', 'tabbar--strekk-venstre');
     void nav.offsetWidth;
     nav.classList.add(x > forrige ? 'tabbar--strekk-hoyre' : 'tabbar--strekk-venstre');

@@ -711,9 +711,6 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
     inset 0 -10px 18px -16px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 25%), transparent),
     0px 1px 5px 0px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 10%), transparent),
     0px 6px 16px 0px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 8%), transparent);
-  /* Klipp til kapselen så glass-linsen aldri stikker utenfor når den
-     spretter over lange avstander (bar-strekk gjør resten av jobben). */
-  overflow: hidden;
   z-index: 20;
   transform: scale(1); transform-origin: bottom center;
   transition: transform 0.36s var(--ease-standard), box-shadow 0.3s ease;
@@ -787,6 +784,10 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
   opacity: 0; z-index: 0; pointer-events: none;
   transition: transform 0.42s var(--ease-bounce), opacity 0.2s ease;
 }
+/* Mot ytterfanene ville sprett-easingen svinge pillen forbi målet og utenfor
+   kapselen — dit glir den med rett easing i stedet (klasse fra flyttTabIndikator),
+   så den bremser inn mot enden uten å noensinne stikke ut. */
+.tabbar__linse--rett { transition-timing-function: var(--ease-standard), ease; }
 /* (3) Trykk-effekt (klassen tabbar--trykk settes i settOppTabTrykk):
    hele baren lysner et blunk som en screen-blanding, og en overmettet,
    uskarp sirkel pulserer rundt selve trykkpunktet (posisjon via left/top). */
@@ -814,14 +815,14 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
    Bruker scale-egenskapen så den komponerer med transform (kompakt-krympen). */
 .tabbar--puls { animation: bar-puls 0.3s var(--ease-standard); }
 @keyframes bar-puls { 0%, 100% { scale: 1; } 35% { scale: 1.04; } }
-/* Lang glidetur (to+ faner): baren strekker seg i fartsretningen og smalner
-   et hint vertikalt — væske-aktig — så pillen ser ut til å presses inn i
-   enden mens overflow-klippet holder den innenfor kapselen. Klassene settes
-   i flyttTabIndikator og ryddes på animationend (settOppTabTrykk). */
+/* Langt hopp til en ytterfane: baren strekker seg i fartsretningen og smalner
+   et hint vertikalt — væske-aktig — som om den gir etter for pillen som
+   glir inn mot enden. Kun ytterfanene: der er det pillen ellers ville truffet
+   kanten. Klassene settes i flyttTabIndikator og ryddes på animationend. */
 .tabbar--strekk-hoyre, .tabbar--strekk-venstre { animation: bar-strekk 0.42s var(--ease-standard); }
 .tabbar--strekk-hoyre { transform-origin: left center; }
 .tabbar--strekk-venstre { transform-origin: right center; }
-@keyframes bar-strekk { 0%, 100% { scale: 1 1; } 55% { scale: 1.05 0.965; } }
+@keyframes bar-strekk { 0%, 100% { scale: 1 1; } 60% { scale: 1.05 0.965; } }
 @keyframes synkpuls { 50% { opacity: 0.4; } }
 @media (prefers-reduced-motion: reduce) {
   .tabbar--trykk .tabbar__flash, .tabbar--trykk .tabbar__trykkpunkt,
