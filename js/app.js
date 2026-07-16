@@ -720,7 +720,7 @@ function visInnstillinger() {
     stravaKort(visInnstillinger),
     el('div', { class: 'kort' },
       el('h2', {}, 'Ukemål'),
-      el('div', { class: 'chiprad' },
+      el('div', { class: 'chiprad chiprad--pille' },
         ...[2, 3, 4, 5, 6].map((n) => chip(String(n), {
           aktiv: profil.ukemaal === n, onClick: () => lagre((p) => { p.ukemaal = n; }),
         })),
@@ -738,7 +738,7 @@ function visInnstillinger() {
               el('span', { class: 'prefrad__ikon' }, ikon(kat.ikon)),
               el('span', { class: 'prefrad__navn' }, kat.navn),
             ),
-            el('div', { class: 'chiprad prefrad__valg' },
+            el('div', { class: 'chiprad prefrad__valg chiprad--pille' },
               ...PREF_NIVAER.map((niv) => chip(niv.navn, {
                 aktiv: naa === niv.id,
                 onClick: () => lagre((p) => {
