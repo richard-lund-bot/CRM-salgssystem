@@ -159,7 +159,10 @@ function lesHandleRå() {
 function skrivHandle(o) { try { localStorage.setItem(LS_HANDLE, JSON.stringify(o)); } catch { /* valgfri */ } }
 export function lesHandleliste() {
   const h = lesHandleRå();
-  return { personer: h.personer || 2, ekstra: h.ekstra || [], avkrysset: h.avkrysset || {}, egne: h.egne || [] };
+  return {
+    personer: h.personer || 2, ekstra: h.ekstra || [], avkrysset: h.avkrysset || {},
+    egne: h.egne || [], har: h.har || {},
+  };
 }
 export function settHandlelisteRå(o) { skrivHandle(o && typeof o === 'object' ? o : {}); }
 
@@ -180,13 +183,49 @@ export function veksleAvkrysset(key) {
   if (h.avkrysset[key]) delete h.avkrysset[key]; else h.avkrysset[key] = true;
   skrivHandle(h); return !!h.avkrysset[key];
 }
+/** Hurtiglegg-til: én egen vare rett i handlelista (kategori gjettes om den ikke er gitt). */
 export function leggEgenVare({ navn, mengde, enhet, kategori }) {
   const n = (navn || '').trim(); if (!n) return null;
   const h = lesHandleliste();
-  h.egne.push({ navn: n.slice(0, 40), mengde: mengde || null, enhet: enhet || '', kategori: kategori || 'annet' });
+  const kat = kategori || gjettVarekategori(n);
+  const vare = { navn: n.slice(0, 40), mengde: mengde || null, enhet: enhet || '', kategori: kat };
+  // Var den «har hjemme»? Da vil brukeren nå faktisk kjøpe den → av med har-flagget.
+  delete h.har[nid(vare)];
+  if (!h.egne.some((e) => nid(e) === nid(vare))) h.egne.push(vare);
+  skrivHandle(h); return vare;
+}
+/** Fjern en egen vare (kun manuelt tillagte varer kan slettes helt). */
+export function fjernEgenVare(key) {
+  const h = lesHandleliste();
+  h.egne = h.egne.filter((e) => nid(e) !== key);
   skrivHandle(h); return h;
 }
 export function tømAvkrysset() { const h = lesHandleliste(); h.avkrysset = {}; skrivHandle(h); }
+
+// «Har hjemme» (spiskammer): varer du allerede har og som derfor holdes UTE av
+// kjøpelista. Fylles i review-arket når du legger til en oppskrift; kan
+// angres fra «Har hjemme»-seksjonen. Nøkkelen er den samme som for varene.
+export function erHar(item) { return !!lesHandleliste().har[nid(item)]; }
+export function settHar(item, harDet) {
+  const h = lesHandleliste(); const key = nid(item);
+  if (harDet) h.har[key] = { navn: item.navn, enhet: item.enhet || '', kategori: item.kategori || 'annet' };
+  else delete h.har[key];
+  skrivHandle(h); return harDet;
+}
+export function veksleHar(item) { return settHar(item, !erHar(item)); }
+
+// Gjett varekategori fra navnet (for hurtiglegg-til). Faller til «annet».
+const KATEGORI_HINT = [
+  [/tomat|løk|hvitløk|gulr|paprika|agurk|salat|spinat|brokkoli|kål|potet|sitron|lime|eple|banan|bær|blåbær|frukt|grønnsak|urter|persille|basilikum|koriander|mynte|vårløk|squash|aubergin|sopp|avokado|ingefær|chili/i, 'grønnsaker'],
+  [/bønne|linse|kikert|erter|belgvekst/i, 'belgvekster'],
+  [/ris|pasta|byggryn|havre|quinoa|brød|mel|couscous|bulgur|korn|gryn|knekkebrød/i, 'korn'],
+  [/melk|yoghurt|ost|fløte|smør|egg|feta|parmesan|rømme|kjøtt|kylling|laks|fisk|reker|skinke|pølse|tofu|kesam|kvarg/i, 'kjøl'],
+];
+export function gjettVarekategori(navn) {
+  const n = String(navn || '');
+  for (const [re, kat] of KATEGORI_HINT) if (re.test(n)) return kat;
+  return 'annet';
+}
 
 // --- Favoritter (bokmerkede oppskrifter) -----------------------------------
 const LS_FAV = 'trening.matfavoritter';
@@ -210,6 +249,8 @@ export const VARE_KATEGORIER = [
 ];
 
 function nid(item) { return `${item.kategori}::${item.navn}`.toLowerCase(); }
+/** Stabil nøkkel for en vare (kategori + navn) — brukes til avkryssing/har. */
+export function vareId(item) { return nid(item); }
 function rundMengde(x, enhet) {
   if (x == null) return null;
   const heltall = ['stk', 'boks', 'pk', 'glass', 'bunt', 'eske', 'kurv', 'håndfull', 'fedd', 'pose', 'klype'];
@@ -262,20 +303,45 @@ export function byggHandleliste(ts = Date.now()) {
       }
     }
   }
+  const egneKeys = new Set(h.egne.map((e) => nid(e)));
   for (const e of h.egne) {
     const key = nid(e);
     if (!agg.has(key)) agg.set(key, { navn: e.navn, mengde: e.mengde, enhet: e.enhet || '', kategori: e.kategori || 'annet' });
   }
 
+  // Kjøpelista: alt aggregert, MINUS det du har hjemme (h.har). Egne varer
+  // merkes (kan slettes helt), resten kan bare krysses av eller flyttes til har.
   const grupper = [];
   for (const kat of VARE_KATEGORIER) {
-    const varer = [...agg.values()].filter((v) => v.kategori === kat.id).map((v) => ({
-      key: nid(v), navn: v.navn, mengde: rundMengde(v.mengde, v.enhet), enhet: v.enhet, avkrysset: !!h.avkrysset[nid(v)],
-    })).sort((a, b) => a.navn.localeCompare(b.navn, 'nb'));
+    const varer = [...agg.values()].filter((v) => v.kategori === kat.id).map((v) => {
+      const key = nid(v);
+      return { key, navn: v.navn, mengde: rundMengde(v.mengde, v.enhet), enhet: v.enhet, avkrysset: !!h.avkrysset[key], egen: egneKeys.has(key) };
+    }).filter((v) => !h.har[v.key]).sort((a, b) => a.navn.localeCompare(b.navn, 'nb'));
     if (varer.length) grupper.push({ ...kat, varer, antall: varer.length, avkrysset: varer.filter((x) => x.avkrysset).length });
   }
   const totalVarer = grupper.reduce((s, g) => s + g.antall, 0);
-  return { grupper, personer: h.personer || 2, perType, totalVarer };
+  const har = Object.entries(h.har).map(([key, v]) => ({ key, navn: v.navn, enhet: v.enhet || '', kategori: v.kategori || 'annet' }))
+    .sort((a, b) => a.navn.localeCompare(b.navn, 'nb'));
+  return { grupper, personer: h.personer || 2, perType, totalVarer, har };
+}
+
+/**
+ * Review-modell for én oppskrift: de sammenslåtte varene (skalert til antall
+ * personer), hver med om du allerede har den hjemme. Brukes av arket som spør
+ * «hva av dette har du?» før oppskriften legges i handlelista.
+ */
+export function oppskriftVarer(o, personer = null) {
+  if (!o) return [];
+  const h = lesHandleliste();
+  const faktor = (personer || h.personer || 2) / (o.porsjoner || 4);
+  const agg = new Map();
+  for (const ing of oppskriftIngredienser(o)) {
+    const key = nid(ing);
+    const skalert = ing.mengde != null ? ing.mengde * faktor : null;
+    if (agg.has(key)) { const e = agg.get(key); e.mengde = (e.mengde != null && skalert != null) ? e.mengde + skalert : (e.mengde ?? skalert); }
+    else agg.set(key, { key, navn: ing.navn, mengde: skalert, enhet: ing.enhet || '', kategori: ing.kategori || 'annet' });
+  }
+  return [...agg.values()].map((v) => ({ ...v, mengde: rundMengde(v.mengde, v.enhet), har: !!h.har[v.key] }));
 }
 
 /** Flat tekst av handlelista til deling (Web Share / utklipp). */

@@ -4327,3 +4327,40 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .handlekilde__navn { font-size: 14px; font-weight: 600; }
 .handlekilde__meta { font-size: 12px; color: var(--dempet); }
 .handlekilde .ikon { width: 18px; height: 18px; color: var(--dempet); flex: 0 0 auto; }
+
+/* ---- Handleliste: hurtiglegg-til + review-ark + har hjemme ---- */
+.hurtigadd { display: flex; align-items: center; gap: 10px; padding: 8px 10px 8px 14px; }
+.hurtigadd__ikon { width: 19px; height: 19px; color: var(--dempet); flex: 0 0 auto; }
+.hurtigadd__felt { flex: 1; min-width: 0; border: none; background: transparent; padding: 10px 0; font-size: 15px; color: var(--tekst); }
+.hurtigadd__felt:focus { outline: none; }
+.hurtigadd__knapp { display: grid; place-items: center; width: 38px; height: 38px; flex: 0 0 auto; border-radius: 50%;
+  background: var(--aksent); color: #fff; border: none; cursor: pointer; box-shadow: var(--shadow-action); }
+.hurtigadd__knapp .ikon { width: 20px; height: 20px; }
+.hurtigadd__knapp:active { transform: scale(0.92); }
+
+.handlevare__slett { display: grid; place-items: center; width: 28px; height: 28px; flex: 0 0 auto; margin: -4px -4px -4px 4px;
+  border-radius: 50%; color: var(--dempet); cursor: pointer; }
+.handlevare__slett .ikon { width: 15px; height: 15px; }
+.handlevare__slett:active { background: var(--bg-kort-2); }
+
+/* Har hjemme-seksjonen (spiskammer) */
+.handlegruppe--har .handlegruppe__disk { color: var(--sage); }
+.handlehar__hint { margin: 0; padding: 12px 16px 4px; font-size: 12.5px; color: var(--dempet); }
+.handlevare--harhjemme .handlevare__navn { color: var(--tekst-2); }
+.handlevare--harhjemme .handlevare__mengde { color: var(--aksent); font-weight: 600; }
+.handlevare__boks--har { background: var(--sage); border-color: var(--sage); color: #fff; }
+
+/* Review-ark: «fjern haken på det du har hjemme» */
+.reviewvarer { display: flex; flex-direction: column; gap: 2px; max-height: 46vh; overflow-y: auto; margin: 0 -4px; }
+.reviewvare { display: flex; align-items: center; gap: 12px; width: 100%; padding: 11px 6px; cursor: pointer;
+  background: none; border: none; text-align: left; color: var(--tekst); }
+.reviewvare__boks { display: grid; place-items: center; width: 24px; height: 24px; flex: 0 0 auto; border-radius: 7px;
+  background: var(--aksent); border: 1.5px solid var(--aksent); color: #fff; }
+.reviewvare__boks .ikon { width: 14px; height: 14px; }
+.reviewvare__navn { flex: 1; font-size: 15px; min-width: 0; }
+.reviewvare__mengde { font-size: 13px; color: var(--dempet); flex: 0 0 auto; }
+.reviewvare--har .reviewvare__boks { background: transparent; border-color: var(--kant-sterk); color: transparent; }
+.reviewvare--har .reviewvare__navn { color: var(--dempet); }
+.reviewark__fot { position: sticky; bottom: 0; margin: 6px -18px 0; padding: 12px 18px 2px; background: var(--bg); border-top: 1px solid var(--kant); }
+.reviewark__bekreft { width: 100%; }
+.reviewark__bekreft:disabled { opacity: 0.5; }

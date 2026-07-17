@@ -141,6 +141,14 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
   await page.goto(BASE + '/#/handleliste');
   await page.waitForSelector('.handletopp', { timeout: 20000 });
   sjekk('Handleliste viser personvelger', (await page.locator('.handletopp__stepper').count()) === 1);
+  sjekk('Handleliste har hurtiglegg-til', (await page.locator('.hurtigadd__felt').count()) === 1);
+  // Review-ark: «Legg til i handleliste» spør hva du har fra før
+  await page.goto(BASE + '/#/oppskrift?id=bonnegryte-tomat');
+  await page.waitForSelector('.oppdetalj__handling', { timeout: 20000 });
+  await page.locator('.oppdetalj__handlinger .knapp--sekundaer').click();
+  await page.waitForSelector('.reviewvarer', { timeout: 5000 });
+  sjekk('Review-ark lister oppskriftens varer', (await page.locator('.reviewvare').count()) > 0);
+  await page.evaluate(() => document.querySelector('.ark')?.remove());
 
   // Tilbake til Hjem så språktesten under finner .hjemdash etter reload.
   await page.goto(BASE + '/#/hjem');

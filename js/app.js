@@ -45,7 +45,8 @@ import {
   oppskriftTags, OPPSKRIFT_FILTRE, filtrerOppskrifter, dagensOppskrift,
   lesMatplan, maaltidFor, settMaaltid, autofyllUke, planStatus, ukeDatoer, ukenummer, mandagFor,
   lesHandleliste, settPersoner, leggOppskriftIHandle, fjernOppskriftFraHandle, veksleAvkrysset,
-  leggEgenVare, tømAvkrysset, byggHandleliste, handlelisteTekst, handlelisteKilder,
+  leggEgenVare, fjernEgenVare, settHar, veksleHar, gjettVarekategori, oppskriftVarer,
+  tømAvkrysset, byggHandleliste, handlelisteTekst, handlelisteKilder,
   erFavoritt, veksleFavoritt, VARE_KATEGORIER, isoDag as matIsoDag,
 } from './mat.js';
 import { SOSIALE_VANER, dagensInnslag as sosDagensInnslag, veksleVane as sosVeksleVane, sosialStatus, lesSosiallogg, leggTilEgen } from './sosialt.js';
@@ -210,6 +211,9 @@ function navger() {
   // redraws (samme hash, f.eks. etter synk) rører den ikke.
   const byttet = location.hash !== forrigeHash;
   if (byttet && forrigeHash) scrollMinne.set(forrigeHash, aktivScroller().scrollTop);
+  // Et åpent bunnark hører til siden man forlot — lukk det ved ekte navigasjon
+  // så det ikke blir hengende som et usynlig overlegg på neste skjerm.
+  if (byttet) document.querySelector('.ark')?.remove();
   document.body.classList.toggle('fokusmodus', FOKUS.has(rute));
   document.body.classList.remove('fane-laast'); // settes på nytt av fanesidene
   // Navigasjon vekker en kompakt bar: den vokser tilbake til full størrelse
@@ -775,7 +779,7 @@ function visOppskriftSkjerm(mount) {
   const planKnapp = el('button', { class: 'knapp oppdetalj__handling', type: 'button',
     onclick: () => leggIUkesplanArk(o) }, ikon('kalender', 'ikon'), el('span', {}, 'Legg i ukesplan'));
   const handleKnapp = el('button', { class: 'knapp knapp--sekundaer oppdetalj__handling', type: 'button',
-    onclick: () => { leggOppskriftIHandle(o.id); vibrer(); varsle('Lagt i handlelista', { ikon: 'handlepose' }); } },
+    onclick: () => leggIHandlelisteArk(o) },
     ikon('handlepose', 'ikon'), el('span', {}, 'Legg til i handleliste'));
 
   // Ingredienser (2-kolonner) + valgfri dressing.
@@ -855,6 +859,42 @@ function leggIUkesplanArk(o) {
     el('p', { class: 'arketikett' }, 'Hvilken dag?'),
     dagRad);
   lukkArk = lukk;
+}
+
+// Bunnark: review ingrediensene før oppskriften legges i handlelista. Alt er
+// huket av («skal kjøpes») som standard — fjern haken på det du har hjemme, så
+// legges bare resten til. Det du har hjemme havner i «Har hjemme»-seksjonen.
+function leggIHandlelisteArk(o) {
+  const varer = oppskriftVarer(o); // {key,navn,mengde,enhet,kategori,har}
+  const kjop = new Map(varer.map((v) => [v.key, !v.har])); // key → skal kjøpes?
+  let lukkArk = () => {};
+
+  const bekreft = el('button', { class: 'knapp reviewark__bekreft', type: 'button',
+    onclick: () => {
+      leggOppskriftIHandle(o.id);
+      for (const v of varer) settHar(v, !kjop.get(v.key)); // ikke huket = har hjemme
+      vibrer(); varsle('Lagt i handlelista', { ikon: 'handlepose' });
+      lukkArk();
+    } }, el('span', {}, 'Legg til'));
+  const oppdater = () => {
+    const n = [...kjop.values()].filter(Boolean).length;
+    bekreft.firstChild.textContent = n ? `Legg til ${n} ${n === 1 ? 'vare' : 'varer'}` : 'Ingenting å legge til';
+    bekreft.disabled = n === 0;
+  };
+  const rader = varer.map((v) => {
+    const rad = el('button', { class: 'reviewvare' + (kjop.get(v.key) ? '' : ' reviewvare--har'), type: 'button',
+      onclick: () => { const paa = !kjop.get(v.key); kjop.set(v.key, paa); rad.classList.toggle('reviewvare--har', !paa); oppdater(); } },
+      el('span', { class: 'reviewvare__boks' }, ikon('sjekk', 'ikon')),
+      el('span', { class: 'reviewvare__navn' }, v.navn),
+      el('span', { class: 'reviewvare__mengde' }, v.mengde != null ? `${v.mengde} ${v.enhet}`.trim() : ''));
+    return rad;
+  });
+  const { lukk } = visArk('Legg til i handleliste',
+    el('p', { class: 'dempet dempet--tett' }, `${o.navn} · fjern haken på det du har hjemme`),
+    el('div', { class: 'reviewvarer' }, ...rader),
+    el('div', { class: 'reviewark__fot' }, bekreft));
+  lukkArk = lukk;
+  oppdater();
 }
 
 // --- Ukesplan --------------------------------------------------------------
@@ -1000,25 +1040,38 @@ function byggHandleInnhold(tegnPåNytt) {
     el('div', { class: 'handletopp__stepper' }, stepper(-1), personTall, stepper(1)),
     del);
 
-  const deler = [toppKort];
+  // Hurtiglegg-til: skriv en vare og trykk + (eller Enter). Kategori gjettes.
+  const felt = el('input', { class: 'hurtigadd__felt', type: 'text', placeholder: 'Legg til en vare…', maxlength: '40', enterkeyhint: 'done' });
+  const leggTil = () => {
+    if (!leggEgenVare({ navn: felt.value })) return;
+    felt.value = ''; vibrer(); varsle('Lagt til', { ikon: 'handlepose' }); tegnPåNytt();
+  };
+  felt.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); leggTil(); } });
+  const hurtig = el('section', { class: 'kort hurtigadd' },
+    ikon('handlepose', 'ikon hurtigadd__ikon'),
+    felt,
+    el('button', { class: 'hurtigadd__knapp', type: 'button', 'aria-label': 'Legg til vare', onclick: leggTil }, ikon('pluss', 'ikon')));
+  const deler = [toppKort, hurtig];
 
-  if (!b.totalVarer) {
+  if (!b.totalVarer && !b.har.length) {
     deler.push(el('section', { class: 'kort handletom' },
       el('span', { class: 'handletom__disk' }, ikon('handlepose')),
       el('h2', { class: 'kost__tittel' }, 'Lista er tom'),
-      el('p', { class: 'dempet' }, 'Legg oppskrifter i ukesplanen, så fyller handlelista seg selv.'),
+      el('p', { class: 'dempet' }, 'Legg oppskrifter i ukesplanen eller skriv inn en vare over — så fyller lista seg.'),
       el('a', { class: 'knapp', href: '#/ukesplan' }, 'Åpne ukesplan')));
     return deler;
   }
 
-  // Varegrupper (kollapsbare).
+  // Varegrupper (kollapsbare). Egne varer kan slettes helt; resten krysses av.
   for (const g of b.grupper) {
     const kropp = el('div', { class: 'handlegruppe__kropp' }, ...g.varer.map((v) => {
       const rad = el('button', { class: 'handlevare' + (v.avkrysset ? ' handlevare--av' : ''), type: 'button',
         onclick: () => { veksleAvkrysset(v.key); rad.classList.toggle('handlevare--av'); vibrer(); oppdaterTeller(); } },
         el('span', { class: 'handlevare__boks' }, ikon('sjekk', 'ikon handlevare__hake')),
         el('span', { class: 'handlevare__navn' }, v.navn),
-        el('span', { class: 'handlevare__mengde' }, v.mengde != null ? `${v.mengde} ${v.enhet}`.trim() : ''));
+        el('span', { class: 'handlevare__mengde' }, v.mengde != null ? `${v.mengde} ${v.enhet}`.trim() : ''),
+        v.egen ? el('span', { class: 'handlevare__slett', role: 'button', 'aria-label': 'Fjern vare',
+          onclick: (e) => { e.preventDefault(); e.stopPropagation(); fjernEgenVare(v.key); vibrer(); tegnPåNytt(); } }, ikon('kryss', 'ikon')) : null);
       return rad;
     }));
     const teller = el('span', { class: 'handlegruppe__teller' }, `${g.avkrysset} av ${g.antall}`);
@@ -1033,6 +1086,27 @@ function byggHandleInnhold(tegnPåNytt) {
       const av = [...kropp.querySelectorAll('.handlevare--av')].length;
       teller.textContent = `${av} av ${g.varer.length}`;
     };
+    gruppe.append(hode, kropp);
+    deler.push(gruppe);
+  }
+
+  // Har hjemme (spiskammer): varene du krysset av i review-arket. Starter
+  // kollapset. Trykk på en vare for å legge den tilbake i kjøpelista.
+  if (b.har.length) {
+    const kropp = el('div', { class: 'handlegruppe__kropp handlegruppe__kropp--skjul' },
+      el('p', { class: 'handlehar__hint' }, 'Trykk på en vare for å legge den tilbake i lista.'),
+      ...b.har.map((v) => el('button', { class: 'handlevare handlevare--harhjemme', type: 'button',
+        onclick: () => { settHar(v, false); vibrer(); tegnPåNytt(); } },
+        el('span', { class: 'handlevare__boks handlevare__boks--har' }, ikon('sjekk', 'ikon handlevare__hake')),
+        el('span', { class: 'handlevare__navn' }, v.navn),
+        el('span', { class: 'handlevare__mengde' }, 'Legg tilbake'))));
+    const gruppe = el('section', { class: 'kort handlegruppe handlegruppe--har' });
+    const hode = el('button', { class: 'handlegruppe__hode', type: 'button', 'aria-expanded': 'false',
+      onclick: () => { const skjult = kropp.classList.toggle('handlegruppe__kropp--skjul'); hode.setAttribute('aria-expanded', String(!skjult)); hode.querySelector('.handlegruppe__chevron').classList.toggle('handlegruppe__chevron--lukket', skjult); } },
+      el('span', { class: 'handlegruppe__disk' }, ikon('sjekk')),
+      el('span', { class: 'handlegruppe__navn' }, 'Har hjemme'),
+      el('span', { class: 'handlegruppe__teller' }, String(b.har.length)),
+      ikon('chevronsopp', 'ikon handlegruppe__chevron handlegruppe__chevron--lukket'));
     gruppe.append(hode, kropp);
     deler.push(gruppe);
   }

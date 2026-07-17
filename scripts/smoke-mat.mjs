@@ -82,6 +82,29 @@ m.autofyllUke(ts);
 const full = m.planStatus(ts);
 sjekk(full.antall === 21 && full.dager === 7, 'autofyllUke fyller alle 21 måltider (7 dager × 3)');
 
+// --- Hurtiglegg-til: kategori gjettes, egen vare kan slettes ---
+m.settPersoner(2);
+const spinat = m.leggEgenVare({ navn: 'Fersk spinat' });
+sjekk(spinat && spinat.kategori === 'grønnsaker', 'hurtiglegg-til gjetter kategori (spinat→grønnsaker)');
+sjekk(m.gjettVarekategori('Kyllingfilet') === 'kjøl' && m.gjettVarekategori('Ukjent ting') === 'annet', 'kategori-gjetting med fallback');
+let egenIListe = m.byggHandleliste(ts).grupper.flatMap((g) => g.varer).find((v) => v.navn === 'Fersk spinat');
+sjekk(egenIListe && egenIListe.egen === true, 'egen vare merkes som egen i lista');
+m.fjernEgenVare(m.vareId(spinat));
+sjekk(!m.byggHandleliste(ts).grupper.flatMap((g) => g.varer).some((v) => v.navn === 'Fersk spinat'), 'fjernEgenVare sletter egen vare');
+
+// --- Review/«har hjemme»: markerte varer holdes ute av kjøpelista ---
+const bonne = m.oppskriftMedId('bonnegryte-tomat');
+const rvarer = m.oppskriftVarer(bonne);
+sjekk(rvarer.length > 0 && rvarer.every((v) => v.har === false), 'oppskriftVarer gir review-modell (ingen har fra før)');
+const olje = rvarer.find((v) => /olivenolje/i.test(v.navn));
+m.settHar(olje, true);
+sjekk(m.erHar(olje), 'settHar markerer «har hjemme»');
+const utenOlje = m.byggHandleliste(ts).grupper.flatMap((g) => g.varer);
+sjekk(!utenOlje.some((v) => /olivenolje/i.test(v.navn)), '«har hjemme»-vare holdes ute av kjøpelista');
+sjekk(m.byggHandleliste(ts).har.some((v) => /olivenolje/i.test(v.navn)), 'har-lista viser de «har hjemme»-varene');
+m.veksleHar(olje);
+sjekk(!m.erHar(olje), 'veksleHar legger varen tilbake i lista');
+
 // --- Deletekst ---
 sjekk(m.handlelisteTekst(ts).startsWith('Handleliste'), 'handlelisteTekst er delbar tekst');
 
