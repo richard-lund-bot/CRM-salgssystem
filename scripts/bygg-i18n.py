@@ -183,6 +183,12 @@ EN = {
  'Dagens måltider': 'Today’s meals',
  'Hva spiste du i dag? (valgfritt)': 'What did you eat today? (optional)',
  'Lær mer om blue zones-kosthold': 'Learn more about blue zones eating',
+ # Kosthold-merker
+ 'Første gode valg': 'First good choice', 'Ditt første blue-zones-valg': 'Your first blue zones choice',
+ 'God uke på kjøkkenet': 'A good week in the kitchen', 'Gode valg 7 dager': 'Good choices for 7 days',
+ 'Tre dager på rad': 'Three days in a row', 'Kosthold-streak 3 dager': 'Nutrition streak of 3 days',
+ 'To uker på rad': 'Two weeks in a row', 'Kosthold-streak 14 dager': 'Nutrition streak of 14 days',
+ 'Vanen sitter': 'The habit sticks', 'Gode valg 30 dager': 'Good choices for 30 days',
 }
 
 # Kompendium/merke-tekster (lengre) — legg til

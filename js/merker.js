@@ -9,6 +9,7 @@ import { nivaFraTotalXp, nivaKostnad, ukeNokkel, prsFraLogg, nivaPerType } from 
 import { loggBevegelse, NIVATYPE_NAVN } from './bevegelse.js';
 import { oktMedId } from './bibliotek-okter.js';
 import { regionScores, lagKroppskart } from './kroppskart.js';
+import { lesMatlogg } from './kosthold.js';
 import { fanesideMedTittel } from './banner.js';
 import { fyllInn, lagRing, REDUSERT } from './animasjon.js';
 
@@ -168,6 +169,23 @@ function byggKontekst(profil, logg, planer) {
 
   const planGjort = (planer || []).filter((p) => p.status === 'gjort').length;
 
+  // Kosthold (egen matlogg, trening.matlogg): aktive dager (≥1 god vane) og
+  // kosthold-streak, så Kosthold-merkene avledes rent — atskilt fra bevegelse.
+  const matdager = [...new Set(
+    (lesMatlogg() || [])
+      .filter((o) => o.vaner && Object.values(o.vaner).some(Boolean))
+      .map((o) => dagsStart(Date.parse(o.dato) || 0))
+      .filter((t) => t > 0),
+  )].sort((a, b) => a - b);
+  const kostDagerDato = matdager.map((t) => new Date(t).toISOString());
+  const kostStreakDato = new Map();
+  let kostRekke = 0;
+  for (let i = 0; i < matdager.length; i++) {
+    kostRekke = i > 0 && matdager[i] - matdager[i - 1] === DAG ? kostRekke + 1 : 1;
+    if (!kostStreakDato.has(kostRekke)) kostStreakDato.set(kostRekke, new Date(matdager[i]).toISOString());
+  }
+  const kostMaksStreak = Math.max(0, ...kostStreakDato.keys());
+
   // Enhet-/seksjon-fullført: avledes av uteksaminering (3★ pr. enhet). En enhet
   // er fullført når den har en 3★-graduation-rad; en seksjon når alle enhetene
   // er uteksaminert. Datoen er da 3★ først ble nådd. Krever injisert struktur.
@@ -220,6 +238,10 @@ function byggKontekst(profil, logg, planer) {
     bossStjerner: (stiId) => bossStjernePerSti.get(stiId) || 0,
     bossSlaattDato: (stiId) => bossSlaattDato.get(stiId) || null,
     planGjort,
+    kostDager: matdager.length,
+    kostDagerDato: (n) => kostDagerDato[n - 1] || null,
+    kostStreak: kostMaksStreak,
+    kostStreakDato: (n) => kostStreakDato.get(n) || null,
     niva: nivaFraTotalXp(profil?.globalXp || 0).niva,
   };
 }
@@ -237,6 +259,7 @@ export const MERKE_KATEGORIER = [
   { id: 'milepaler', navn: 'Milepæler' },
   { id: 'streak', navn: 'Streak' },
   { id: 'rytme', navn: 'Ukerytme' },
+  { id: 'kosthold', navn: 'Kosthold' },
   { id: 'laering', navn: 'Ferdighetsstier' },
   { id: 'nytt', navn: 'Prøv noe nytt' },
   { id: 'tid', navn: 'Tid i bevegelse' },
@@ -265,6 +288,13 @@ export const MERKER = {
     teller('uker-2', 'To gode uker', 'Ukemålet nådd 2 uker på rad', 'kalender', 'teal', 2, (c) => c.maksUker, (c) => c.ukerDato(2)),
     teller('uker-4', 'Månedsrytme', 'Ukemålet nådd 4 uker på rad', 'kalender', 'blaa', 4, (c) => c.maksUker, (c) => c.ukerDato(4)),
     teller('uker-8', 'Vanedyr', 'Ukemålet nådd 8 uker på rad', 'kalender', 'lilla', 8, (c) => c.maksUker, (c) => c.ukerDato(8)),
+  ],
+  kosthold: [
+    teller('kost-1', 'Første gode valg', 'Ditt første blue-zones-valg', 'eple', 'lime', 1, (c) => c.kostDager, (c) => c.kostDagerDato(1)),
+    teller('kost-7', 'God uke på kjøkkenet', 'Gode valg 7 dager', 'eple', 'teal', 7, (c) => c.kostDager, (c) => c.kostDagerDato(7)),
+    teller('kost-streak-3', 'Tre dager på rad', 'Kosthold-streak 3 dager', 'flamme', 'koral', 3, (c) => c.kostStreak, (c) => c.kostStreakDato(3)),
+    teller('kost-streak-14', 'To uker på rad', 'Kosthold-streak 14 dager', 'flamme', 'gul', 14, (c) => c.kostStreak, (c) => c.kostStreakDato(14)),
+    teller('kost-30', 'Vanen sitter', 'Gode valg 30 dager', 'trofe', 'indigo', 30, (c) => c.kostDager, (c) => c.kostDagerDato(30)),
   ],
   laering: [
     teller('laer-1', 'Første trinn', 'Lærte din første øvelses-teknikk', 'stjerne', 'lime', 1, (c) => c.laerAntall, (c) => c.laerDato(1)),

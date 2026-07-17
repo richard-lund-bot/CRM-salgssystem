@@ -11,6 +11,7 @@ import {
   settEndringslytter,
 } from './store.js';
 import { lesStyrkelogg, settStyrkeloggRå, oktVolum } from './styrke.js';
+import { lesMatlogg, settMatloggRå } from './kosthold.js';
 
 const AUTH = `${SUPABASE_URL}/auth/v1`;
 const REST = `${SUPABASE_URL}/rest/v1`;
@@ -211,6 +212,11 @@ async function pull() {
     const rader = await rest('styrke_logs?select=data,oppdatert&order=oppdatert.desc');
     settStyrkeloggRå(flettPerId(lesStyrkelogg(), rader, 'dato'));
   } catch (e) { console.warn('Styrkelogg-pull hoppet over', e.message); }
+  // Måltidslogg (kosthold) synkes isolert, samme mønster som styrkeloggen.
+  try {
+    const rader = await rest('meal_logs?select=data,oppdatert&order=oppdatert.desc');
+    settMatloggRå(flettPerId(lesMatlogg(), rader, 'dato'));
+  } catch (e) { console.warn('Måltidslogg-pull hoppet over', e.message); }
 }
 
 async function push() {
@@ -244,6 +250,19 @@ async function push() {
         })),
       });
     } catch (e) { console.warn('Styrkelogg-push hoppet over', e.message); }
+  }
+  const matlogg = lesMatlogg();
+  if (matlogg.length) {
+    try {
+      await rest('meal_logs?on_conflict=id', {
+        method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
+        body: matlogg.map((o) => ({
+          id: o.id, user_id: uid, dato: (o.dato || '').slice(0, 10),
+          antall: Object.values(o.vaner || {}).filter(Boolean).length,
+          data: o, oppdatert: o.oppdatert || o.dato || new Date().toISOString(),
+        })),
+      });
+    } catch (e) { console.warn('Måltidslogg-push hoppet over', e.message); }
   }
 }
 

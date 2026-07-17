@@ -184,5 +184,45 @@
    { "kilde": "Andreo Spina – Functional Range Conditioning (FRC) og CARs", "om": "Skiller passiv fleksibilitet fra aktiv mobilitet: styrke og kontroll gjennom hele leddbanen." },
    { "kilde": "American College of Sports Medicine – retningslinjer for bevegelighetstrening", "om": "Aktiv, kontrollert bevegelse gir mer funksjonell bevegelighet enn passiv tøying alene." }
   ]
+ },
+ {
+  "id": "blue-zones-tallerken",
+  "tittel": "Blue zones-tallerkenen: mest planter",
+  "undertittel": "De som lever lengst spiser ikke perfekt — de spiser mest planter, ofte.",
+  "tags": ["Kosthold", "Blue zones"],
+  "dato": "2026-07-16",
+  "lesetid": 4,
+  "avsnitt": [
+   { "p": "I verdens «blue zones» — Okinawa, Sardinia, Ikaria, Nicoya og Loma Linda — lever folk uvanlig lenge og friskt. De teller ikke kalorier. Fellesnevneren på tallerkenen er enkel: mest planter, lite kjøtt, og ekte mat framfor ferdigmat." },
+   { "h": "Belgvekster hver dag" },
+   { "p": "Bønner, linser og kikerter er hjørnesteinen i alle blue zones. En kopp om dagen gir metthet, fiber og protein uten det raske blodsukkerfallet. Forskeren Dan Buettner, som kartla sonene for National Geographic, kaller belgvekster «verdens beste langtlevende-mat»." },
+   { "h": "Fyll to tredeler med planter" },
+   { "p": "Grønnsaker, fullkorn, nøtter og frukt utgjør mesteparten. Kjøtt er mer krydder enn hovedrett — gjerne bare noen ganger i måneden. Fisk noen ganger i uka passer godt inn i et nordisk kjøkken." },
+   { "h": "Små, gode valg slår store kur" },
+   { "p": "Du trenger ikke legge om alt på én gang. Bytt ett måltid til en linsegryte, ha bønner i salaten, velg fullkorn framfor hvitt. Gjentatte små valg er nettopp det som bygger gode år." }
+  ],
+  "kilder": [
+   { "kilde": "Dan Buettner – «The Blue Zones» (National Geographic, 2008/2012)", "om": "Kartla fem områder med uvanlig mange hundreåringer; belgvekster og et plantebasert kosthold går igjen." },
+   { "kilde": "Willett m.fl. – EAT-Lancet-kommisjonen (2019)", "om": "Et hovedsakelig plantebasert kosthold er godt både for helse og planet." }
+  ]
+ },
+ {
+  "id": "hara-hachi-bu",
+  "tittel": "Hara hachi bu: stopp ved 80 %",
+  "undertittel": "Et gammelt japansk måltidsråd som gjør måtehold enkelt.",
+  "tags": ["Kosthold", "Måtehold"],
+  "dato": "2026-07-15",
+  "lesetid": 3,
+  "avsnitt": [
+   { "p": "På Okinawa sier folk «hara hachi bu» før de spiser — en påminnelse om å slutte når magen er rundt 80 % mett. Det høres lite ut, men det er nok av en grunn: metthetssignalet fra magen til hjernen bruker omtrent 20 minutter på å komme fram." },
+   { "h": "Derfor virker det" },
+   { "p": "Spiser du sakte og stopper litt før du er stappmett, rekker signalet å ta deg igjen — og du lander på passe. Spiser du fort til du «kjenner deg mett», har du som regel allerede spist for mye." },
+   { "h": "Slik øver du" },
+   { "p": "Legg fra deg gaffelen mellom hver bit. Bruk mindre tallerken. Spør deg selv midtveis: «er jeg fortsatt sulten, eller bare ikke helt mett?» Måtehold er ikke å sulte — det er å stoppe i tide." }
+  ],
+  "kilder": [
+   { "kilde": "Craig Willcox m.fl. – «The Okinawa Program» (2001)", "om": "Beskriver «hara hachi bu»: å spise til man er rundt 80 % mett, som en nøkkel til lang levetid på Okinawa." },
+   { "kilde": "Studier på metthet og spisetempo", "om": "Metthetssignaler bruker ~20 minutter; saktere spising gir lavere totalt matinntak." }
+  ]
  }
 ]
