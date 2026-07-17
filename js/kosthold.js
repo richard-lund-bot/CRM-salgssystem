@@ -3,22 +3,19 @@
 // (grønt, belgvekster, fullkorn, fisk, måtehold) og kan legge et kort
 // måltidsnotat. Alt ligger lokalt i sin EGEN logg (trening.matlogg) — atskilt
 // fra bevegelsesloggen (trening.logg) så treningsstatistikk/streak/merker aldri
-// blandes. XP går inn i det globale nivået; streak og feiring gjenbrukes fra
-// bevegelses-/feiringssystemet (beregnStreak, kisteKort, streakEtter).
-import { hentProfil, lagreProfil } from './store.js';
-import { globaltNiva } from './niva.js';
+// blandes. Vanene mater mat-gnisten (js/gnist.js: 3+ gode valg tenner dagen);
+// streak og feiring gjenbrukes fra bevegelses-/feiringssystemet.
 import { beregnStreak } from './bevegelse.js';
 
 const LS = 'trening.matlogg';
 
-// Blue-zones-vaner (stabile id-er; visningsnavn oversettes av i18n). Én XP-verdi
-// per avhuking — små, jevne belønninger for ekte handlinger.
+// Blue-zones-vaner (stabile id-er; visningsnavn oversettes av i18n).
 export const VANER = [
-  { id: 'gront', navn: 'Grønnsaker', xp: 5 },
-  { id: 'belg', navn: 'Belgvekster', xp: 5 },
-  { id: 'fullkorn', navn: 'Fullkorn', xp: 5 },
-  { id: 'fisk', navn: 'Fisk', xp: 5 },
-  { id: 'moderasjon', navn: 'Måtehold', xp: 5 },
+  { id: 'gront', navn: 'Grønnsaker' },
+  { id: 'belg', navn: 'Belgvekster' },
+  { id: 'fullkorn', navn: 'Fullkorn' },
+  { id: 'fisk', navn: 'Fisk' },
+  { id: 'moderasjon', navn: 'Måtehold' },
 ];
 const VANE = Object.fromEntries(VANER.map((v) => [v.id, v]));
 
@@ -63,14 +60,13 @@ export function kostStatus(nå = Date.now()) {
 
 function hentEllerLagDag(logg, dato) {
   let o = logg.find((x) => x.dato === dato);
-  if (!o) { o = { id: `mat-${dato}`, dato, vaner: {}, notat: '', xp: 0, oppdatert: '' }; logg.push(o); }
+  if (!o) { o = { id: `mat-${dato}`, dato, vaner: {}, notat: '', oppdatert: '' }; logg.push(o); }
   return o;
 }
 
 /**
- * Slår en vane av/på for en dag. Gir/trekker XP (globalt nivå), oppdaterer
- * streaken og returnerer et resultat feiringen kan bruke:
- *   { aktiv, xp, globalOpp, streakØkte, streak }
+ * Slår en vane av/på for en dag. Oppdaterer streaken og returnerer et
+ * resultat feiringen kan bruke: { aktiv, streakØkte, streak }.
  */
 export function veksleVane(vaneId, dato = isoDag()) {
   const vane = VANE[vaneId];
@@ -80,25 +76,12 @@ export function veksleVane(vaneId, dato = isoDag()) {
   const dag = hentEllerLagDag(logg, dato);
   const aktiv = !dag.vaner[vaneId];
   dag.vaner[vaneId] = aktiv;
-  const dxp = aktiv ? vane.xp : -vane.xp;
-  dag.xp = Math.max(0, (dag.xp || 0) + dxp);
   dag.oppdatert = new Date().toISOString();
   skriv(logg);
 
-  // Global XP (samme nivåkurve som bevegelse) — via profilen som synkes.
-  const profil = hentProfil();
-  let globalOpp = 0;
-  if (profil) {
-    const før = globaltNiva(profil.globalXp || 0);
-    profil.globalXp = Math.max(0, (profil.globalXp || 0) + dxp);
-    lagreProfil(profil);
-    const etter = globaltNiva(profil.globalXp || 0);
-    if (etter > før) globalOpp = etter;
-  }
-
   const streakEtterVerdi = beregnStreak(aktiveDager(logg), Date.now());
   const streakØkte = streakEtterVerdi > streakFør ? streakEtterVerdi : 0;
-  return { aktiv, xp: dxp, globalOpp, streakØkte, streak: streakEtterVerdi };
+  return { aktiv, streakØkte, streak: streakEtterVerdi };
 }
 
 /** Lagrer et kort måltidsnotat på en dag (valgfritt, ingen makroer). */

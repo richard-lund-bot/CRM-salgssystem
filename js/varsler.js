@@ -1,14 +1,12 @@
-// Varslingssystem (M24) — en avledet varsel-feed bak bjella. Tre kilder,
-// alle regnet ut fra loggen + profilen ved visning (ingen egen datalagring):
+// Varslingssystem (M24) — en avledet varsel-feed bak bjella. To kilder,
+// begge regnet ut fra loggen + profilen ved visning (ingen egen datalagring):
 //   1) fullførte økter (fra trening.logg)
-//   2) nivå-opp (løpende sum av øktenes xp krysser en nivåterskel)
-//   3) nylig opptjente merker (merkerNå() gir `dato` for hvert merke)
+//   2) nylig opptjente merker (merkerNå() gir `dato` for hvert merke)
 // «Sett»-tidspunktet er device-spesifikt og ligger bare i localStorage — det
 // synkes ikke (det er visningstilstand, ikke data). Skjermen (visVarsler) bor i
 // app.js så den kan bruke skjerm()-skallet; her ligger modellen + kort-visning.
 import { el, ikon } from './ui.js';
 import { hentProfil, hentLogg, hentPlan } from './store.js';
-import { nivaFraTotalXp } from './niva.js';
 import { merkerNå } from './merker.js';
 import { BEVEGELSER, aktivitetNavn, loggBevegelse } from './bevegelse.js';
 
@@ -49,7 +47,6 @@ export function byggVarsler(profil = hentProfil(), logg = hentLogg(), planer = h
     const bev = loggBevegelse(o);
     const deler = [];
     if (o.varighetMin) deler.push(`${o.varighetMin} min`);
-    if (o.xp) deler.push(`+${o.xp} XP`);
     ut.push({
       id: `okt-${o.id || loggTs(o)}`,
       type: 'okt',
@@ -62,30 +59,7 @@ export function byggVarsler(profil = hentProfil(), logg = hentLogg(), planer = h
     });
   }
 
-  // 2) Nivå-opp (globalt). Løpende sum av xp i kronologisk rekkefølge — samme
-  // tall som nivaFraTotalXp gir, siden globalXp bare er summen av øktenes xp.
-  // En stor økt kan krysse flere terskler; da blir det ett varsel per nivå.
-  const kron = [...logg].filter((o) => loggTs(o) > 0).sort((a, b) => loggTs(a) - loggTs(b));
-  let sum = 0;
-  for (const o of kron) {
-    const for_ = nivaFraTotalXp(sum).niva;
-    sum += o.xp || 0;
-    const etter = nivaFraTotalXp(sum).niva;
-    for (let n = for_ + 1; n <= etter; n++) {
-      ut.push({
-        id: `niva-${n}`,
-        type: 'levelup',
-        tittel: `Nivå ${n} nådd!`,
-        tekst: 'Nytt globalt nivå — bra jobba.',
-        ikon: 'stjerne',
-        farge: 'gul',
-        ts: loggTs(o),
-        href: '#/merker',
-      });
-    }
-  }
-
-  // 3) Opptjente merker (bare de med kjent dato — noen få har null dato og
+  // 2) Opptjente merker (bare de med kjent dato — noen få har null dato og
   // kan ikke plasseres i tid; de vises fortsatt på Profil).
   for (const m of merkerNå()) {
     if (!m.oppnadd || !m.dato) continue;

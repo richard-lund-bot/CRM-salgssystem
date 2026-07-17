@@ -6,8 +6,8 @@
 // sesjonsklokke teller total tid, og både den og stegtimeren regner med
 // veggklokke-tid (ikke tellende intervaller), så alt løper riktig videre selv
 // om skjermen låses eller appen legges i bakgrunnen — og våkenlåsen holder
-// skjermen på. Fullføring registreres som bevegelse (XP via
-// registrerBevegelse) — samme varme ferdigskjerm som all annen bevegelse.
+// skjermen på. Fullføring registreres som bevegelse (registrerOgLogg) —
+// samme varme ferdigskjerm som all annen bevegelse.
 import { el, tom, ikon } from './ui.js';
 import { settPlanStatus } from './store.js';
 import { registrerOgLogg, visBevegelseFerdig } from './beveg.js';
@@ -740,8 +740,8 @@ function fasePlan(blk) {
 }
 
 // ===========================================================================
-// Fullføring — registreres som bevegelse (XP via registrerBevegelse) og
-// feires med samme varme ferdigskjerm som all annen bevegelse.
+// Fullføring — registreres som bevegelse (registrerOgLogg) og feires med
+// samme varme ferdigskjerm som all annen bevegelse.
 // ===========================================================================
 function fullfor(mount, okt, delvis, settLogg = []) {
   slippVaaken();

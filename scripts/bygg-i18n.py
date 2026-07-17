@@ -45,11 +45,12 @@ EN = {
  'Vi anbefaler': 'We recommend', 'Start økt': 'Start session', 'Start økta': 'Start the session',
  'Åpne plan': 'Open plan', 'Planlagt i dag': 'Planned today', 'Se økter': 'See sessions',
  'Velg bevegelse': 'Choose movement', 'Vis alle': 'Show all', 'Start når det passer deg': 'Start whenever it suits you',
- 'Minutter i dag': 'Minutes today', 'Aktive dager': 'Active days', 'XP til neste nivå': 'XP to next level',
+ 'Minutter i dag': 'Minutes today', 'Aktive dager': 'Active days', 'Gnist-streak': 'Spark streak',
+ 'tent i dag': 'lit today',
  'God morgen': 'Good morning', 'God dag': 'Good day', 'God kveld': 'Good evening', 'God natt': 'Good night',
  'Hvorfor denne økta?': 'Why this session?',
  # Profil / merker
- 'Nivået ditt, treningen din og merkene dine — samlet.': 'Your level, your training and your badges — together.',
+ 'Flammen din, treningen din og merkene dine — samlet.': 'Your flame, your training and your badges — together.',
  'Milepæler': 'Milestones', 'Store øyeblikk': 'Big moments', 'Prøv noe nytt': 'Try something new',
  'Månedsrytme': 'Monthly rhythm', 'Døgnet rundt': 'Around the clock', 'Oppnådd': 'Achieved',
  'På vei': 'On the way', 'På vei mot': 'On the way to', 'Streak økt': 'Streak increased',
@@ -73,15 +74,15 @@ EN = {
    'Little chimes and vibrations in the celebrations and the session player.',
  'Navnet brukes i hilsenen på Min dag.': 'The name is used in the greeting on My day.',
  'Ta profilen på nytt': 'Redo the profile', 'Send innloggingslenke': 'Send login link',
- 'Slette ALT — profil, logg, XP og historikk? Kan ikke angres.':
-   'Delete EVERYTHING — profile, log, XP and history? Cannot be undone.',
+ 'Slette ALT — profil, logg, streaks og historikk? Kan ikke angres.':
+   'Delete EVERYTHING — profile, log, streaks and history? Cannot be undone.',
  'Innstillinger og om appen.': 'Settings and about the app.', 'Om Takt': 'About Takt',
  'Admin-modus på': 'Admin mode on', 'Ser appen som et vanlig medlem': 'Viewing the app as a regular member',
  'Tilbake til normal': 'Back to normal', 'Nøytral': 'Neutral', 'Færre': 'Fewer', 'Høy': 'High',
  'Ukemål nådd': 'Weekly goal reached',
  # Varsler
- 'Ingen varsler ennå': 'No notifications yet', 'Nytt globalt nivå — bra jobba.': 'New global level — well done.',
- 'Nivå': 'Level', 'nivå': 'level', 'XP': 'XP',
+ 'Ingen varsler ennå': 'No notifications yet',
+ 'Nivå': 'Level', 'nivå': 'level',
  # Beveg / hurtigstart / logg
  'Hurtigstart med timer.': 'Quick start with timer.', 'Fri økt med timer': 'Free session with timer',
  'Logg noe du alt har gjort': 'Log something you’ve already done', 'Klar til å bevege deg': 'Ready to move',
@@ -193,8 +194,8 @@ EN = {
  'Feed': 'Feed', 'Mat': 'Food', 'Sosialt': 'Social',
  'Pust. Senk skuldrene. Vær her.': 'Breathe. Drop your shoulders. Be here.',
  'Pust deg rolig': 'Breathe yourself calm',
- 'Noen minutter bevisst pust senker stress og roer nervesystemet. Velg en øvelse — den spilles med rolig tempo og lyd.':
-   'A few minutes of conscious breathing lowers stress and calms the nervous system. Pick an exercise — it plays at a calm pace with sound.',
+ 'Noen minutter bevisst pust senker stress og roer nervesystemet. Én fullført rolig økt tenner ro-gnisten for dagen. Velg en øvelse — den spilles med rolig tempo og lyd.':
+   'A few minutes of conscious breathing lowers stress and calms the nervous system. One completed calm session lights the calm spark for the day. Pick an exercise — it plays at a calm pace with sound.',
  'Vi lever lengre sammen.': 'We live longer together.',
  'Fellesskap kommer snart': 'Community coming soon',
  'Å være sosial ansikt til ansikt er noe av det som betyr mest for et langt, godt liv. Her kommer ekte møteplasser i nærheten og små dytt til å møtes — vi bygger det stein for stein.':
@@ -256,6 +257,36 @@ EN = {
  'Små økter teller.': 'Small sessions count.',
  'av dagsmålet': 'of daily goal', 'gode valg i dag': 'good choices today',
 }
+
+# Gnist/blå flamme-systemet (M54) — streaks i stedet for XP
+EN.update({
+ 'Blå flamme': 'Blue flame', 'Blå flamme!': 'Blue flame!',
+ 'blå dager på rad': 'blue days in a row', 'blå dag på rad': 'blue day in a row',
+ 'blå på rad': 'blue in a row', 'blå dager totalt': 'blue days total',
+ 'blå dag': 'blue day', 'blå dager': 'blue days', 'totalt': 'total',
+ 'gnister i dag': 'sparks today', 'Gnisten er tent!': 'The spark is lit!',
+ 'dagers gnist-streak': 'day spark streak', 'mot dagens gnist': 'towards today’s spark',
+ 'dagens gnist': 'today’s spark', 'Gnist tent — godt jobba': 'Spark lit — well done',
+ 'Én rolig økt tenner gnisten': 'One calm session lights the spark',
+ 'Ett godt valg tenner gnisten': 'One good choice lights the spark',
+ 'Blå dag — alle gnistene tent!': 'Blue day — all sparks lit!',
+ 'God fremdrift!': 'Good progress!', 'Godt i gang.': 'Well underway.',
+ 'Ny dag, nye gnister.': 'New day, new sparks.', 'Streak de gode vanene.': 'Streak the good habits.',
+ 'Jeg lever blue zone': 'I live blue zone',
+ 'Alle gnistene tent i dag — en ekte blue zone-dag.': 'All sparks lit today — a true blue zone day.',
+ 'Alle gnistene tent i dag!': 'All sparks lit today!',
+ 'Alle gnistene tent — blå dag!': 'All sparks lit — blue day!',
+ 'Første blå dag': 'First blue day', 'Alle gnistene tent samme dag': 'All sparks lit on the same day',
+ 'Tre blå på rad': 'Three blue in a row', 'Blå flamme 3 dager på rad': 'Blue flame 3 days in a row',
+ 'Blå uke': 'Blue week', 'Blå flamme 7 dager på rad': 'Blue flame 7 days in a row',
+ 'To blå uker': 'Two blue weeks', 'Blå flamme 14 dager på rad': 'Blue flame 14 days in a row',
+ 'Blue zone-måneden': 'The blue zone month', 'Blå flamme 30 dager på rad': 'Blue flame 30 days in a row',
+ 'Ikke ennå': 'Not yet', 'Tent': 'Lit', 'Godt valg': 'Good choice',
+ 'Alt teller — hvert minutt bygger dagens gnist.': 'Everything counts — every minute builds today’s spark.',
+ 'Velkommen tilbake — det teller dobbelt i hjertet.': 'Welcome back — it counts double at heart.',
+ 'Dagens bevegelses-gnist er i boks.': 'Today’s movement spark is in the bag.',
+ 'dagers streak': 'day streak', 'min til gnist': 'min to spark',
+})
 
 # Kompendium/merke-tekster (lengre) — legg til
 EN.update({

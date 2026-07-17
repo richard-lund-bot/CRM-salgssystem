@@ -4,8 +4,7 @@
 import { el, tom, ikon } from './ui.js';
 import { MODALITET_NAVN } from './library.js';
 import { hentLogg, hentProfil } from './store.js';
-import { prsFraLogg, ukeNokkel, globaltNiva } from './niva.js';
-import { BEVEGELSE_NAVN, aktivitetNavn, loggBevegelse, dagerMedAktivitet, MODALITET_TIL_BEVEGELSE } from './bevegelse.js';
+import { prsFraLogg, ukeNokkel, beregnStreak, BEVEGELSE_NAVN, aktivitetNavn, loggBevegelse, dagerMedAktivitet, MODALITET_TIL_BEVEGELSE } from './bevegelse.js';
 import { registrerOgLogg } from './beveg.js';
 import { fanesideMedTittel } from './banner.js';
 import { fyllInn } from './animasjon.js';
@@ -75,14 +74,12 @@ function historikkInnhold(main) {
 // --- All-Time Stats (Runna-stil rader) ------------------------------------
 function alleTiderKort(logg, profil) {
   const totMin = logg.reduce((s, o) => s + (o.varighetMin || 0), 0);
-  const totXp = profil?.globalXp || logg.reduce((s, o) => s + (o.xp || 0), 0);
   const lengste = logg.reduce((m, o) => Math.max(m, o.varighetMin || 0), 0);
   const prAntall = Object.keys(prsFraLogg(logg)).length;
   const timer = Math.floor(totMin / 60);
   const rader = [
     ['loper', 'Bevegelser totalt', String(logg.length)],
     ['stoppeklokke', 'Tid i bevegelse', `${timer}t ${totMin % 60}m`],
-    ['lyn', 'Total XP', String(totXp)],
     ['graf', 'Lengste bevegelse', `${lengste} min`],
     ['medalje', 'Personlige rekorder', String(prAntall)],
   ];
@@ -103,12 +100,11 @@ function alleTiderKort(logg, profil) {
 // --- Oppsummering ---------------------------------------------------------
 function oppsummering(logg, profil, nå) {
   const totMin = logg.reduce((s, o) => s + (o.varighetMin || 0), 0);
-  const totXp = profil?.globalXp || logg.reduce((s, o) => s + (o.xp || 0), 0);
   const aktive7 = dagerMedAktivitet(logg, nå, 7).filter((m) => m > 0).length;
   return el('div', { class: 'statrad' },
     stat(logg.length, 'bevegelser'),
     stat(Math.round(totMin / 60) + 't', 'i bevegelse'),
-    stat(globaltNiva(totXp), 'nivå'),
+    stat(beregnStreak(logg, nå), 'dagers streak'),
     stat(`${aktive7}/7`, 'dager sist uke'),
   );
 }
@@ -158,10 +154,9 @@ function ukesvolumKort(logg, nå) {
   const uker = [];
   for (let i = antallUker - 1; i >= 0; i--) uker.push(ukeNokkel(nå - i * 7 * DAG));
   const min = Object.fromEntries(uker.map((u) => [u, 0]));
-  const xp = Object.fromEntries(uker.map((u) => [u, 0]));
   for (const o of logg) {
     const u = ukeNokkel(Date.parse(o.dato));
-    if (u in min) { min[u] += o.varighetMin || 0; xp[u] += o.xp || 0; }
+    if (u in min) min[u] += o.varighetMin || 0;
   }
   const maks = Math.max(1, ...uker.map((u) => min[u]));
   return el('div', { class: 'kort' },
@@ -171,7 +166,7 @@ function ukesvolumKort(logg, nå) {
         const fyll = el('div', { class: 'bar__fyll' });
         fyllInn(fyll, 'height', `${Math.round((min[u] / maks) * 100)}%`);
         return el('div', { class: 'bar' },
-          el('div', { class: 'bar__soyle', title: `${min[u]} min · ${xp[u]} XP` }, fyll),
+          el('div', { class: 'bar__soyle', title: `${min[u]} min` }, fyll),
           el('span', { class: 'bar__navn' }, u.slice(6)),
         );
       }),
@@ -396,7 +391,7 @@ function oktRad(o) {
     el('button', { class: 'okt__topp', type: 'button', onclick: () => { detalj.hidden = !detalj.hidden; } },
       el('span', { class: 'okt__dato' }, dato),
       el('span', { class: 'okt__mod' }, aktivitetNavn(o, MODALITET_NAVN) + (o.delvis ? ' · delvis' : '')),
-      el('span', { class: 'okt__meta' }, `${o.varighetMin} min · +${o.xp || 0} XP`),
+      el('span', { class: 'okt__meta' }, `${o.varighetMin} min`),
     ),
     detalj,
   );

@@ -50,7 +50,11 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
 (async () => {
   const server = lagServer();
   await new Promise((r) => server.listen(PORT, r));
-  const browser = await chromium.launch();
+  // E2E_CHROMIUM lar miljøer med ferdiginstallert nettleser peke på binæren
+  // (f.eks. /opt/pw-browsers/chromium) i stedet for å laste ned på nytt.
+  const browser = await chromium.launch(
+    process.env.E2E_CHROMIUM ? { executablePath: process.env.E2E_CHROMIUM } : {},
+  );
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
   page.on('pageerror', (e) => { console.log('SIDEFEIL:', e.message); feil.push('pageerror: ' + e.message); });
 
@@ -68,7 +72,8 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
   await page.goto(`${BASE}/#/hjem`);
   await page.waitForSelector('.hjemdash', { timeout: 20000 });
   sjekk('Appen booter og tegner #app', (await page.locator('#app > *').count()) > 0);
-  sjekk('Hjem viser DAGENS TAKT-ring', (await page.locator('.taktring').count()) > 0);
+  sjekk('Hjem viser den blå flammen', (await page.locator('.blaaflamme').count()) > 0);
+  sjekk('Hjem viser de fire røde gnistene', (await page.locator('.gnistchip').count()) === 4);
   sjekk('Hjem har feed-ikon oppe til venstre', (await page.locator('.hjemtopp__feed').count()) === 1);
 
   // --- 2) Feeden bor på #/feed og rendrer flere kort -------------------------

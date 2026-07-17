@@ -1,9 +1,9 @@
 // Bevegelseslaget (M11 — Mova-spesifikasjonen §5–9): all bevegelse teller.
-// Definerer de tolv bevegelsestypene, XP-formelen fra spesifikasjonen
-// (minutter × bevegelsesfaktor × intensitetsfaktor, minst 5 XP), Momentum
-// (rytme over rullerende 7 dager — aldri en streak som «ryker») og Dagens
-// gnist (ett lavterskel-forslag per dag). Ingen DOM her — rene data og
-// funksjoner over profil + logg, så alt kan gjenbrukes fra alle skjermer.
+// Definerer de tolv bevegelsestypene, dags-streaken, Momentum (rytme over
+// rullerende 7 dager — aldri en streak som «ryker») og Dagens gnist (ett
+// lavterskel-forslag per dag). Progresjonen er streaks (js/gnist.js), ikke
+// poeng. Ingen DOM her — rene data og funksjoner over profil + logg, så alt
+// kan gjenbrukes fra alle skjermer.
 
 // --- De tolv bevegelsestypene ----------------------------------------------
 // «slag» styrer hvordan bevegelsen startes fra Beveg-skjermen:
@@ -11,18 +11,18 @@
 //   fri       → hurtigstart med timer (gå/løp/sykle/fri bevegelse)
 //   logg      → logges manuelt (sport, annet)
 export const BEVEGELSER = {
-  walk: { navn: 'Gåtur', ikon: 'loper', faktor: 1.0, slag: 'fri' },
-  run: { navn: 'Løping', ikon: 'lyn', faktor: 1.4, slag: 'fri' },
-  bike: { navn: 'Sykkel', ikon: 'sykkel', faktor: 1.2, slag: 'fri' },
-  strength: { navn: 'Styrke', ikon: 'vekt', faktor: 1.3, slag: 'generator', modalitet: 'STY' },
-  bodyweight: { navn: 'Kroppsvekt', ikon: 'person', faktor: 1.2, slag: 'generator', modalitet: 'CORE' },
-  yoga: { navn: 'Yoga', ikon: 'yoga', faktor: 1.0, slag: 'generator', modalitet: 'YOGA' },
-  stretch: { navn: 'Tøying', ikon: 'blad', faktor: 0.9, slag: 'generator', modalitet: 'STR' },
-  mobility: { navn: 'Mobilitet', ikon: 'repeat', faktor: 0.9, slag: 'generator', modalitet: 'MOB' },
-  hiit: { navn: 'HIIT', ikon: 'flamme', faktor: 1.4, slag: 'generator', modalitet: 'HIIT' },
-  sport: { navn: 'Sport og lek', ikon: 'ball', faktor: 1.4, slag: 'logg' },
-  recovery: { navn: 'Restitusjon', ikon: 'hjerte', faktor: 0.8, slag: 'generator', modalitet: 'REST' },
-  custom: { navn: 'Annen bevegelse', ikon: 'stjerne', faktor: 1.0, slag: 'logg' },
+  walk: { navn: 'Gåtur', ikon: 'loper', slag: 'fri' },
+  run: { navn: 'Løping', ikon: 'lyn', slag: 'fri' },
+  bike: { navn: 'Sykkel', ikon: 'sykkel', slag: 'fri' },
+  strength: { navn: 'Styrke', ikon: 'vekt', slag: 'generator', modalitet: 'STY' },
+  bodyweight: { navn: 'Kroppsvekt', ikon: 'person', slag: 'generator', modalitet: 'CORE' },
+  yoga: { navn: 'Yoga', ikon: 'yoga', slag: 'generator', modalitet: 'YOGA' },
+  stretch: { navn: 'Tøying', ikon: 'blad', slag: 'generator', modalitet: 'STR' },
+  mobility: { navn: 'Mobilitet', ikon: 'repeat', slag: 'generator', modalitet: 'MOB' },
+  hiit: { navn: 'HIIT', ikon: 'flamme', slag: 'generator', modalitet: 'HIIT' },
+  sport: { navn: 'Sport og lek', ikon: 'ball', slag: 'logg' },
+  recovery: { navn: 'Restitusjon', ikon: 'hjerte', slag: 'generator', modalitet: 'REST' },
+  custom: { navn: 'Annen bevegelse', ikon: 'stjerne', slag: 'logg' },
 };
 
 export const BEVEGELSE_NAVN = Object.fromEntries(
@@ -73,17 +73,6 @@ export const SPORTER = [
   'Fotball', 'Tennis / padel', 'Svømming', 'Ski', 'Basketball', 'Klatring',
   'Dans', 'Skøyter', 'Kampsport', 'Golf', 'Volleyball', 'Annen sport',
 ];
-
-// --- XP (§8): minutter × bevegelsesfaktor × intensitetsfaktor --------------
-// Intensitetsspennet er bevisst smalt (0,8–1,25) så rolig bevegelse aldri
-// føles verdiløs. Minste XP for enhver bevegelse: 5.
-export const INTENSITETS_FAKTOR = { 1: 0.8, 2: 0.9, 3: 1.0, 4: 1.15, 5: 1.25 };
-
-export function beregnXp(minutter, bevegelse, intensitet = 3) {
-  const bf = BEVEGELSER[bevegelse]?.faktor ?? 1.0;
-  const inf = INTENSITETS_FAKTOR[intensitet] ?? 1.0;
-  return Math.max(5, Math.round((minutter || 0) * bf * inf));
-}
 
 // --- Aktivitet per dag (grunnlag for Momentum og rytme-prikker) ------------
 const DAG = 86400000;
@@ -264,7 +253,7 @@ export function dagensGnist(profil, logg, nå = Date.now()) {
 
   if (mom.tilstand === 'ny' || mom.tilstand === 'klar') {
     const g = { bevegelse: 'walk', tittel: '10 minutter frisk luft', undertekst: 'Rolig tempo. Du kan snu når du vil.', minutter: 10, intensitet: 2 };
-    return { ...g, comeback: mom.tilstand === 'klar', href: startHref('walk', { maalMin: 10 }), xp: beregnXp(10, 'walk', 2) };
+    return { ...g, comeback: mom.tilstand === 'klar', href: startHref('walk', { maalMin: 10 }) };
   }
 
   const favoritter = (profil?.bevegelsesFavoritter || []).filter((b) => GNISTER[b]);
@@ -279,8 +268,36 @@ export function dagensGnist(profil, logg, nå = Date.now()) {
     bevegelse,
     comeback: false,
     href: startHref(bevegelse, { varighetsklasse, intensitet: g.intensitet, maalMin: g.minutter }),
-    xp: beregnXp(g.minutter, bevegelse, g.intensitet),
   };
+}
+
+// --- Ukenøkkel (brukes av ukesvolum og ukemål-merker) ----------------------
+/** ISO-ukenøkkel «YYYY-Www» for en dato. */
+export function ukeNokkel(ts) {
+  const d = new Date(ts);
+  d.setHours(0, 0, 0, 0);
+  // Torsdag i inneværende uke bestemmer året (ISO 8601).
+  d.setDate(d.getDate() + 3 - ((d.getDay() + 6) % 7));
+  const uke1 = new Date(d.getFullYear(), 0, 4);
+  const nr = 1 + Math.round(((d - uke1) / DAG - 3 + ((uke1.getDay() + 6) % 7)) / 7);
+  return `${d.getFullYear()}-W${String(nr).padStart(2, '0')}`;
+}
+
+// --- PR-uttrekk -----------------------------------------------------------
+/** Best per øvelse fra loggens resultater. */
+export function prsFraLogg(logg) {
+  const pr = {};
+  for (const o of logg) {
+    for (const r of o.resultater || []) {
+      const p = pr[r.id] || (pr[r.id] = { id: r.id, dato: o.dato });
+      if (Number.isFinite(r.reps)) p.reps = Math.max(p.reps || 0, r.reps);
+      if (Number.isFinite(r.last)) p.last = Math.max(p.last || 0, r.last);
+      if (Number.isFinite(r.holdSek)) p.holdSek = Math.max(p.holdSek || 0, r.holdSek);
+      if (Number.isFinite(r.distKm)) p.distKm = Math.max(p.distKm || 0, r.distKm);
+      p.dato = o.dato;
+    }
+  }
+  return pr;
 }
 
 /** Visningsnavn for en loggoppføring (ny bevegelses-logg eller gammel økt-logg). */

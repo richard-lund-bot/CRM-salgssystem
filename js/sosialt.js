@@ -3,19 +3,18 @@
 // Okinawa). Ingen sosial graf, ingen scraping: du huker av de gode sosiale
 // valgene du fikk til i dag (møtte noen, ringte en du er glad i, delte et
 // måltid, ble med på noe). Egen logg (trening.sosiallogg), atskilt fra alt
-// annet. XP → globalt nivå; streak/feiring gjenbrukes fra bevegelsessystemet.
-import { hentProfil, lagreProfil } from './store.js';
-import { globaltNiva } from './niva.js';
+// annet. Valgene mater sosial-gnisten (js/gnist.js: ett valg tenner dagen);
+// streak/feiring gjenbrukes fra bevegelsessystemet.
 import { beregnStreak } from './bevegelse.js';
 
 const LS = 'trening.sosiallogg';
 
 // Sosiale blue-zones-vaner (stabile id-er; visningsnavn oversettes av i18n).
 export const SOSIALE_VANER = [
-  { id: 'motte', navn: 'Møtte noen', xp: 5 },
-  { id: 'naere', navn: 'Ringte en du er glad i', xp: 5 },
-  { id: 'maaltid', navn: 'Delte et måltid', xp: 5 },
-  { id: 'fellesskap', navn: 'Ble med på noe', xp: 5 },
+  { id: 'motte', navn: 'Møtte noen' },
+  { id: 'naere', navn: 'Ringte en du er glad i' },
+  { id: 'maaltid', navn: 'Delte et måltid' },
+  { id: 'fellesskap', navn: 'Ble med på noe' },
 ];
 const VANE = Object.fromEntries(SOSIALE_VANER.map((v) => [v.id, v]));
 
@@ -57,13 +56,13 @@ export function sosialStatus(nå = Date.now()) {
 
 function hentEllerLagDag(logg, dato) {
   let o = logg.find((x) => x.dato === dato);
-  if (!o) { o = { id: `sos-${dato}`, dato, vaner: {}, xp: 0, oppdatert: '' }; logg.push(o); }
+  if (!o) { o = { id: `sos-${dato}`, dato, vaner: {}, oppdatert: '' }; logg.push(o); }
   return o;
 }
 
 /**
- * Slår en sosial vane av/på for en dag. Gir/trekker XP, oppdaterer streaken og
- * returnerer et feirings-resultat: { aktiv, xp, globalOpp, streakØkte, streak }.
+ * Slår en sosial vane av/på for en dag. Oppdaterer streaken og returnerer et
+ * feirings-resultat: { aktiv, streakØkte, streak }.
  */
 export function veksleVane(vaneId, dato = isoDag()) {
   const vane = VANE[vaneId];
@@ -73,22 +72,10 @@ export function veksleVane(vaneId, dato = isoDag()) {
   const dag = hentEllerLagDag(logg, dato);
   const aktiv = !dag.vaner[vaneId];
   dag.vaner[vaneId] = aktiv;
-  const dxp = aktiv ? vane.xp : -vane.xp;
-  dag.xp = Math.max(0, (dag.xp || 0) + dxp);
   dag.oppdatert = new Date().toISOString();
   skriv(logg);
 
-  const profil = hentProfil();
-  let globalOpp = 0;
-  if (profil) {
-    const før = globaltNiva(profil.globalXp || 0);
-    profil.globalXp = Math.max(0, (profil.globalXp || 0) + dxp);
-    lagreProfil(profil);
-    const etter = globaltNiva(profil.globalXp || 0);
-    if (etter > før) globalOpp = etter;
-  }
-
   const streakEtterVerdi = beregnStreak(aktiveDager(logg), Date.now());
   const streakØkte = streakEtterVerdi > streakFør ? streakEtterVerdi : 0;
-  return { aktiv, xp: dxp, globalOpp, streakØkte, streak: streakEtterVerdi };
+  return { aktiv, streakØkte, streak: streakEtterVerdi };
 }

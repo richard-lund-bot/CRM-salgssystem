@@ -6,20 +6,19 @@
 // rike «hvordan gjøre»-kortene (ovelse.js / ovelsesinfo.json).
 //
 // «Mestret» lagres ikke som egen tilstand — det avledes fra bevegelsesloggen
-// (en fullført praksis logges via registrerOgLogg med kilde 'laer'). Slik gir
-// et trinn XP, mater streaken og kan låse opp merker gjennom den eksisterende
-// motoren, og alt synker som vanlig. Neste trinn låses opp når forrige er
+// (en fullført praksis logges via registrerOgLogg med kilde 'laer'). Slik
+// mater et trinn streaken/gnisten og kan låse opp merker gjennom den
+// eksisterende motoren, og alt synker som vanlig. Neste trinn låses opp når forrige er
 // mestret.
 import { el, tom, ikon } from './ui.js';
 import { hentLogg, hentPlan, leggTilPlan, fjernPlan } from './store.js';
 import { settSeksjonsstruktur } from './merker.js';
 import { ovelseInfo, ovelseBilde, visOvelseArk, ovelseKanon } from './ovelse.js';
 import { registrerOgLogg } from './beveg.js';
-import { beregnXp } from './bevegelse.js';
 import { lagKonfetti, REDUSERT } from './animasjon.js';
 import { vibrer } from './haptikk.js';
 import { plingSekvens } from './lyd.js';
-import { kisteKort, streakEtter } from './feiring.js';
+import { kisteKort, streakEtter, blaaEtter } from './feiring.js';
 
 // Mova-maskot: den ekte push-up-pandaen — illustrerte poser i icons/brand/panda.
 // Poser: idle, wave, flex, cheer, pushup-up, pushup-down. Brukes som guide, på
@@ -1021,7 +1020,7 @@ function settOppSkrymping(container) {
   setTimeout(() => { oppdater(); visForste(); }, 150); // første visning etter inngangs-staggeren
 }
 
-// --- Node-popover (trykk på node → kort med START + XP) -------------------
+// --- Node-popover (trykk på node → kort med START) -------------------------
 let _apenPopover = null;
 let _aktivWrap = null;
 // Satt mens en dyplenke (aapneStegNode) jobber, så seksjonens auto-åpning av
@@ -1060,8 +1059,6 @@ function apneNodePopover(sti, ledd, tilstand, wrap, { stille = false } = {}) {
   const e = _bib?.ovelse(ledd.ovelse);
   const navn = e?.navn || ledd.ovelse;
   const niva = NIVA[ledd.niva] || NIVA[1];
-  const data = (sti.trinn && sti.trinn[ledd.ovelse]) || {};
-  const xp = beregnXp(data.minutter || 3, sti.bevegelse || 'bodyweight', 3);
 
   let kort;
   if (tilstand === 'laast') {
@@ -1074,7 +1071,7 @@ function apneNodePopover(sti, ledd, tilstand, wrap, { stille = false } = {}) {
   } else {
     const start = tilstand !== 'mestret'; // gjeldende → START med lyn
     const cta = start ? 'Start' : 'Øv igjen';
-    const knapp = knappStart(`${cta} · +${xp} XP`, () => startMedAnimasjon(sti, ledd));
+    const knapp = knappStart(cta, () => startMedAnimasjon(sti, ledd));
     const ctaEl = start
       ? el('div', { class: 'reise-popover__cta' }, lynSvg('reise-boble__lyn reise-boble__lyn--a'), knapp, lynSvg('reise-boble__lyn reise-boble__lyn--b'))
       : knapp;
@@ -1260,7 +1257,7 @@ function startLeksjon(sti, ledd) {
 
   function fullfor() {
     vibrer('medium');
-    let res = { xp: 0, nyeMerker: [] };
+    let res = { nyeMerker: [] };
     try {
       res = registrerOgLogg({
         bevegelse: sti.bevegelse || 'bodyweight',
@@ -1278,24 +1275,23 @@ function startLeksjon(sti, ledd) {
     settFramdrift(steg.length - 1);
     tom(kropp); tom(bunn);
     lukkX.style.visibility = 'hidden';
-    // Claim-kiste: heiende panda, XP-avdekking og «Låst opp!»-pling.
+    // Claim-kiste: heiende panda, merke-avdekking og «Låst opp!»-pling.
     kropp.append(kisteKort({
-      xp: res.xp || 0,
       tittel: 'Teknikk lært!',
       under: navn,
       merker: res.nyeMerker || [],
       opplaste: res.nyeOpplaste || [],
     }));
     // «Fortsett» → ev. streak-feiring («Jeg er dedikert»), så tilbake til stien.
-    bunn.append(primaer('Fortsett', async () => { await streakEtter(res); lukk(); reTegnReise(); }));
+    bunn.append(primaer('Fortsett', async () => { await streakEtter(res); await blaaEtter(); lukk(); reTegnReise(); }));
   }
 }
 
 // ===========================================================================
 // Teori (kompendium): en «les først»-leksjon per enhet. Kort artikkel med
 // header, avsnitt og kilder, etterfulgt av noen flervalgs-spørsmål. Fullført
-// logges (kilde 'laer', node 'teori') så den gir XP, mater streaken og kan
-// feires — og de tre teoriene til sammen danner seksjonens kompendium.
+// logges (kilde 'laer', node 'teori') så den mater streaken og kan feires —
+// og de tre teoriene til sammen danner seksjonens kompendium.
 // ===========================================================================
 /** Om enhetens teori er lest ferdig — avledet fra bevegelsesloggen. */
 function teoriFullfort(seksjonId, teoriId) {
@@ -1465,7 +1461,7 @@ function startTeori(seksjon, enhet) {
 
   function fullfor() {
     vibrer('medium');
-    let res = { xp: 0, nyeMerker: [] };
+    let res = { nyeMerker: [] };
     try {
       res = registrerOgLogg({
         bevegelse: 'bodyweight',
@@ -1484,7 +1480,6 @@ function startTeori(seksjon, enhet) {
     tom(kropp); tom(bunn);
     lukkX.style.visibility = 'hidden';
     kropp.append(kisteKort({
-      xp: res.xp || 0,
       tittel: 'Teori fullført!',
       under: t.tittel,
       merker: res.nyeMerker || [],
@@ -1494,6 +1489,7 @@ function startTeori(seksjon, enhet) {
     }));
     bunn.append(primaer('Fortsett', async () => {
       await streakEtter(res);
+      await blaaEtter();
       _teoriAvslor = { seksjon: seksjon.id, enhet: enhet.id }; // utløser kaskade-avsløringen
       lukk();
       reTegnReise();
@@ -1694,7 +1690,7 @@ function startUteksaminering(seksjon, enhet, startLegendarisk = false) {
     const stjerner = beregnStjerner();
     vibrer('feiring');
     const totalReps = resultater.reduce((n, r) => n + (r.faktisk || 0), 0);
-    let res = { xp: 0, nyeMerker: [] };
+    let res = { nyeMerker: [] };
     try {
       res = registrerOgLogg({
         bevegelse: 'bodyweight',
@@ -1727,7 +1723,6 @@ function startUteksaminering(seksjon, enhet, startLegendarisk = false) {
           : (legendarisk
             ? 'Ikke helt legendarisk ennå — du må treffe alle de doble målene. Prøv igjen når du er klar.'
             : 'Ikke helt uteksaminert ennå — traff du rep-målet i alle settene, får du tre stjerner. Legg en plan for neste forsøk?')),
-      el('div', { class: 'leksjon-feiring__xp' }, ikon('lyn', 'ikon'), ` +${res.xp || 0} XP`),
       ...((res.nyeMerker || []).length
         ? [el('div', { class: 'leksjon-feiring__merke' }, ikon('medalje', 'ikon'), ' Nytt merke: ' + res.nyeMerker.map((m) => m.navn).join(', '))]
         : []),
@@ -1739,7 +1734,7 @@ function startUteksaminering(seksjon, enhet, startLegendarisk = false) {
     if (!bestatt && !legendarisk) seier.append(planleggBlokk());
     kropp.append(seier);
     // «Fortsett» → ev. streak-feiring («Jeg er dedikert»), så lukk.
-    bunn.append(leksjonPrimaer('Fortsett', async () => { await streakEtter(res); lukk(); }));
+    bunn.append(leksjonPrimaer('Fortsett', async () => { await streakEtter(res); await blaaEtter(); lukk(); }));
     try { overlay.append(lagKonfetti()); } catch { /* valgfri feiring */ }
     if ((res.nyeOpplaste || []).length) { try { plingSekvens(res.nyeOpplaste.length); } catch { /* valgfri */ } }
   }
@@ -1921,7 +1916,7 @@ function startBossKamp(sti, boss, startNiva) {
       clearTimeout(dukkTimer);
       vibrer('riktig');
       const vunnet = niva + 1;
-      let res = { xp: 0, nyeMerker: [] };
+      let res = { nyeMerker: [] };
       try {
         res = registrerOgLogg({
           bevegelse: sti.bevegelse || 'bodyweight',
@@ -1945,8 +1940,7 @@ function startBossKamp(sti, boss, startNiva) {
         pandaImg('cheer', 'kamp__runde-panda'),
         el('h1', { class: 'kamp__runde-tittel' }, 'Runde vunnet!'),
         el('div', { class: 'kamp__runde-stjerne' }, ikon('stjerne', 'ikon')),
-        el('div', { class: 'leksjon-feiring__xp' }, ikon('lyn', 'ikon'), ` +${res.xp || 0} XP`),
-      ),
+        ),
     );
     bunn.append(leksjonPrimaer('Neste runde', () => { niva += 1; tegnRunde(); }));
     try { overlay.append(lagKonfetti()); } catch { /* valgfri feiring */ }
@@ -1962,8 +1956,7 @@ function startBossKamp(sti, boss, startNiva) {
         stjerneRad(BOSS_MAKS_STJERNER, 'kamp__seier-stjerner'),
         el('h1', { class: 'kamp__seier-tittel' }, 'Pandaen er slått!'),
         el('p', { class: 'kamp__seier-under' }, 'Du er push-up-mester 🐼'),
-        el('div', { class: 'leksjon-feiring__xp' }, ikon('lyn', 'ikon'), ` +${res.xp || 0} XP`),
-        ...((res.nyeMerker || []).length
+          ...((res.nyeMerker || []).length
           ? [el('div', { class: 'leksjon-feiring__merke' }, ikon('medalje', 'ikon'), ' Nytt merke: ' + res.nyeMerker.map((m) => m.navn).join(', '))]
           : []),
       ),

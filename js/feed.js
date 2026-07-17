@@ -7,13 +7,11 @@
 // en vertikal rail til høyre. Varslene bor i et Instagram-aktig skyvepanel
 // (gruppert per dag, sveip bort for å lukke); kommentarfeltet skyver inn fra
 // høyre og legger seg halvveis over. Innholdet bor i data/feed.json.
-// XP går inn i profilens globale nivå; per-innlegg-tilstand (spilt/likt/
-// lagret/kommentarer) bor lokalt i localStorage, offline-first som ellers.
+// Per-innlegg-tilstand (spilt/likt/lagret/kommentarer) bor lokalt i
+// localStorage, offline-first som ellers.
 import { el, tom, ikon } from './ui.js';
-import { hentProfil, lagreProfil } from './store.js';
-import { nivaFraTotalXp } from './niva.js';
 import { varsle } from './toast.js';
-import { pling, plingSekvens } from './lyd.js';
+import { pling } from './lyd.js';
 import { vibrer } from './haptikk.js';
 import { REDUSERT } from './animasjon.js';
 import { byggVarsler, varselKort, merkVarslerSett, harUlesteVarsler, tidSiden } from './varsler.js';
@@ -119,30 +117,17 @@ function stokkUlik(arr, seedStr) {
   return ut;
 }
 
-// --- XP-kreditering ----------------------------------------------------------
-// Første fullføring gir XP: full pott ved feilfritt spill, halv ved forsøk med
-// bom — deltakelse belønnes, men forklaringen er alltid hele poenget. XP går
-// rett i profilens globalXp (nivåboblen), synkes som vanlig profilendring.
-function giXp(post, perfekt) {
+// --- Spilt-registrering ------------------------------------------------------
+// Første fullføring bokføres (perfekt/delvis) — deltakelse teller, og
+// forklaringen er alltid hele poenget. Ingen poeng: læringen er belønningen,
+// og engasjementssignalet mater rangeringen.
+function registrerSpilt(post, perfekt) {
   const t = lesTilstand();
-  if (t.spilt[post.id]) return { xp: 0, res: t.spilt[post.id].res };
+  if (t.spilt[post.id]) return { res: t.spilt[post.id].res };
   const res = perfekt ? 'perfekt' : 'delvis';
-  const xp = perfekt ? post.xp : Math.max(10, Math.round(post.xp / 10) * 5);
-  endreTilstand((s) => { s.spilt[post.id] = { res, xp, ts: Date.now() }; });
+  endreTilstand((s) => { s.spilt[post.id] = { res, ts: Date.now() }; });
   registrerInteraksjon(post, 'spilt'); // sterkest engasjementssignal for rangeringen
-
-  const profil = hentProfil();
-  if (profil) {
-    const før = nivaFraTotalXp(profil.globalXp || 0).niva;
-    profil.globalXp = (profil.globalXp || 0) + xp;
-    lagreProfil(profil);
-    const etter = nivaFraTotalXp(profil.globalXp).niva;
-    if (etter > før) {
-      plingSekvens(3);
-      varsle(`Nivå ${etter} — læring teller også!`);
-    }
-  }
-  return { xp, res };
+  return { res };
 }
 
 // --- Småhjelpere ---------------------------------------------------------------
@@ -176,16 +161,15 @@ function eksternLenke(k, etikett) {
 // ==========================================================================
 // Tilbakemelding (delt av alle modulene): lås svaret, vis riktig/feil
 // umiddelbart, forklar hvorfor i én-to setninger, og tilby kilde/dypere
-// lesning. XP-merket popper når noe faktisk ble kreditert.
+// lesning.
 // ==========================================================================
-function svarPanel(post, { perfekt, xp, res = null, tittelOverstyr = null }) {
+function svarPanel(post, { perfekt, res = null, tittelOverstyr = null }) {
   const r = res || (perfekt ? 'perfekt' : 'delvis');
   const tittel = tittelOverstyr || (r === 'perfekt' ? 'Riktig!' : 'Godt forsøk!');
   return el('div', { class: `spillsvar spillsvar--${r === 'perfekt' ? 'riktig' : 'delvis'}` },
     el('div', { class: 'spillsvar__rad' },
       el('span', { class: 'spillsvar__status' },
         ikon(r === 'perfekt' ? 'sjekk' : 'info', 'ikon ikon--liten'), tittel),
-      xp > 0 && el('span', { class: 'spillsvar__xp' }, `+${xp} XP`),
     ),
     el('p', { class: 'spillsvar__forklaring' }, post.spill.explanation),
     el('div', { class: 'spillsvar__kilder' },
@@ -195,13 +179,13 @@ function svarPanel(post, { perfekt, xp, res = null, tittelOverstyr = null }) {
   );
 }
 
-// Fullfører et spill: lås modulen, krediter XP, vis tilbakemelding.
+// Fullfører et spill: lås modulen, bokfør spilt, vis tilbakemelding.
 // `perfekt` = feilfritt førsteforsøk.
 function fullfor(post, modul, perfekt, { øvelse = false, tittelOverstyr = null } = {}) {
   modul.classList.add('spill--laast');
   if (perfekt) { vibrer('riktig'); pling(880); } else { vibrer('feil'); pling(392, 0.16); }
-  const { xp, res } = øvelse ? { xp: 0, res: perfekt ? 'perfekt' : 'delvis' } : giXp(post, perfekt);
-  const panel = svarPanel(post, { perfekt, xp, res: øvelse ? (perfekt ? 'perfekt' : 'delvis') : res, tittelOverstyr });
+  const { res } = øvelse ? { res: perfekt ? 'perfekt' : 'delvis' } : registrerSpilt(post, perfekt);
+  const panel = svarPanel(post, { perfekt, res, tittelOverstyr });
   if (!REDUSERT()) panel.classList.add('spillsvar--inn');
   modul.append(panel);
 }
@@ -547,7 +531,6 @@ function spillSkall(post) {
   const skall = el('div', { class: 'spill spill--mork' },
     el('div', { class: 'spill__hode' },
       el('span', { class: 'spill__type' }, ikon(ikonNavn, 'ikon ikon--liten'), navn),
-      el('span', { class: 'spill__xp' }, `${post.xp} XP`),
     ),
   );
   // Fyll hullet bærer selve påstanden i spillflaten; de andre stiller
@@ -569,14 +552,13 @@ function byggSpill(post, opts = {}) {
 }
 
 // Allerede spilt: kompakt oppsummering med resultat + forklaring, og mulighet
-// til å øve på nytt (uten ny XP) — repetisjon er læringens venn.
+// til å øve på nytt — repetisjon er læringens venn.
 function spiltOppsummering(post, spilt) {
   const dato = new Date(spilt.ts).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' });
-  const panel = svarPanel(post, { perfekt: spilt.res === 'perfekt', xp: 0, res: spilt.res });
+  const panel = svarPanel(post, { perfekt: spilt.res === 'perfekt', res: spilt.res });
   return el('div', { class: 'spill spill--mork spill--laast' },
     el('div', { class: 'spill__hode' },
       el('span', { class: 'spill__type' }, ikon('sjekk', 'ikon ikon--liten'), 'Spilt ' + dato),
-      el('span', { class: 'spill__xp' }, `+${spilt.xp} XP`),
     ),
     panel,
     el('button', {
@@ -911,7 +893,7 @@ function åpneStory(stories, startIdx, vert, { påSett = null, påSeIFeed = null
           // Åpner innlegget på sin egen side (spillbart), i stedet for bare å
           // filtrere feeden — så man faktisk kan spille akkurat dette innlegget.
           onclick: () => { lukk(); location.hash = `#/post?id=${encodeURIComponent(post.id)}`; },
-        }, `${t('Spill innlegget')} · ${post.xp} XP`),
+        }, t('Spill innlegget')),
       ),
     );
     spillAv();

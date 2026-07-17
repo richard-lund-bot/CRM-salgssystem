@@ -3,9 +3,10 @@
 // («aldri skam, delvis gjennomføring teller»):
 //   1) claim-kiste med heiende panda etter fullført modul (kisteKort),
 //   2) «pling pling» på opplåste økter (avdekket i kista + egen lyd),
-//   3) streak-økning med «Jeg er dedikert»-bekreftelse (streakFeiring).
+//   3) streak-økning med «Jeg er dedikert»-bekreftelse (streakFeiring),
+//   4) blå flamme-feiring når alle gnistene tennes samme dag (blaaFeiring).
 //
-// Rekkefølge i praksis: kista avdekker XP + opplåsninger inne i leksjons-
+// Rekkefølge i praksis: kista avdekker merker + opplåsninger inne i leksjons-
 // skjermen; når brukeren trykker «Fortsett» spilles streak-feiringen over
 // hele skjermen. Alt gjenbruker de eksisterende byggeklossene (animasjon.js,
 // haptikk.js, lyd.js) og respekterer prefers-reduced-motion (via tallOpp/
@@ -15,6 +16,7 @@ import { tallOpp, lagKonfetti, lagGnist } from './animasjon.js';
 import { vibrer } from './haptikk.js';
 import { pling } from './lyd.js';
 import { feiringsHvorfor } from './mening.js';
+import { hentGnistStatus } from './gnist.js';
 
 // Maskoten i cheer-posen — egen liten bygger så vi slipper å importere sti.js
 // (som importerer denne modulen tilbake; ville blitt en syklus).
@@ -52,10 +54,9 @@ function kisteSvg(klasse = '') {
 /**
  * «Claim-kiste»-kortet — den heiende feiringen etter en fullført modul.
  * Bygger et kort du legger inn i leksjons-skjermen (kropp). Det spiller seg
- * selv når det monteres: kista åpnes, XP telles opp, og nye merker + opplåste
- * økter avdekkes én etter én med pling. `kort.spillAv()` er også eksponert.
+ * selv når det monteres: kista åpnes, og nye merker + opplåste økter avdekkes
+ * én etter én med pling. `kort.spillAv()` er også eksponert.
  *
- * @param xp        opptjent XP (fra registrerOgLogg-resultatet)
  * @param tittel    stor tittel («Teknikk lært!»)
  * @param under     undertekst (øvelsens/temaets navn)
  * @param merker    res.nyeMerker (avdekkes som «Nytt merke: …»)
@@ -63,8 +64,7 @@ function kisteSvg(klasse = '') {
  * @param panda     vis heiende panda (default true) — ellers valgfritt topp-ikon
  * @param ikonNavn  topp-ikon når panda=false (f.eks. 'bok' for teori)
  */
-export function kisteKort({ xp = 0, tittel = 'Fullført!', under = '', merker = [], opplaste = [], panda = true, ikonNavn = null } = {}) {
-  const xpEl = el('div', { class: 'kiste-kort__xp' }, '+0 XP');
+export function kisteKort({ tittel = 'Fullført!', under = '', merker = [], opplaste = [], panda = true, ikonNavn = null } = {}) {
   const linjer = el('div', { class: 'kiste-kort__linjer' });
   const kiste = kisteSvg('kiste-kort__kiste');
   const kort = el('div', { class: 'kiste-kort' },
@@ -73,7 +73,6 @@ export function kisteKort({ xp = 0, tittel = 'Fullført!', under = '', merker = 
     kiste,
     el('h1', { class: 'kiste-kort__tittel' }, tittel),
     under ? el('p', { class: 'kiste-kort__under' }, under) : null,
-    xpEl,
     linjer,
   );
 
@@ -83,7 +82,6 @@ export function kisteKort({ xp = 0, tittel = 'Fullført!', under = '', merker = 
     vibrer('feiring');
     pling(880, 0.12);
     kiste.classList.add('kiste--apen');
-    tallOpp(xpEl, xp, { format: (n) => `+${n} XP` });
     const rader = [
       ...merker.map((m) => ({ ikon: 'medalje', tekst: `Nytt merke: ${m.navn}`, klasse: 'merke' })),
       ...opplaste.map((o) => ({ ikon: 'lasopp', tekst: `Låst opp: ${o.navn}`, klasse: 'opplast' })),
@@ -184,5 +182,72 @@ export async function streakEtter(res) {
   if (streak > 0 && !streakFeiretIdag()) {
     settStreakFeiret();
     await streakFeiring(streak);
+  }
+}
+
+// --- Blå flamme-feiring (blue zone-dagen) ----------------------------------
+// Når ALLE de røde gnistene tennes samme dag, blir dagen blå — det feires én
+// gang per dag, samme device-lokale gating som streak-feiringen.
+const BLAA_FLAGG = (iso) => `takt.blaaFeiret.${iso}`;
+function blaaFeiretIdag() {
+  try { return localStorage.getItem(BLAA_FLAGG(isoIdag())) === '1'; } catch { return false; }
+}
+function settBlaaFeiret() {
+  try { localStorage.setItem(BLAA_FLAGG(isoIdag()), '1'); } catch { /* ignorer */ }
+}
+
+/**
+ * Fullskjerm blå flamme-feiring: den røde gnist-estetikken i blue zone-blått,
+ * med den blå streaken som teller. Resolver når brukeren bekrefter.
+ */
+export function blaaFeiring(streak) {
+  return new Promise((resolve) => {
+    if (typeof document === 'undefined') { resolve(); return; }
+    vibrer('feiring');
+    const tall = el('span', { class: 'streakfeiring__tall' }, '0');
+    const knapp = el('button', { class: 'streakfeiring__knapp streakfeiring__knapp--blaa', type: 'button' }, 'Jeg lever blue zone');
+    const hvorfor = feiringsHvorfor();
+    const overlay = el('div', { class: 'streakfeiring streakfeiring--blaa', role: 'dialog', 'aria-label': 'Blå dag' },
+      el('div', { class: 'streakfeiring__glo' }),
+      el('div', { class: 'streakfeiring__flamme' }, ikon('flamme', 'ikon')),
+      el('div', { class: 'streakfeiring__teller' },
+        tall, el('span', { class: 'streakfeiring__enhet' }, streak === 1 ? 'blå dag' : 'blå dager på rad')),
+      el('h1', { class: 'streakfeiring__tittel' }, 'Blå flamme!'),
+      hvorfor
+        ? el('p', { class: 'streakfeiring__hvorfor' },
+          el('span', { class: 'streakfeiring__hvorfor-merkelapp' }, 'Ett steg nærmere'),
+          hvorfor)
+        : el('p', { class: 'streakfeiring__under' },
+          'Alle gnistene tent i dag — en ekte blue zone-dag.'),
+      el('div', { class: 'streakfeiring__bunn' }, knapp),
+    );
+    let ferdig = false;
+    const lukk = () => {
+      if (ferdig) return; ferdig = true;
+      vibrer('medium');
+      overlay.classList.add('streakfeiring--ut');
+      setTimeout(() => { overlay.remove(); resolve(); }, 380);
+    };
+    knapp.addEventListener('click', lukk);
+    document.body.append(overlay);
+    try { overlay.append(lagGnist(14), lagKonfetti(26, { sprut: true })); } catch { /* valgfri feiring */ }
+    requestAnimationFrame(() => {
+      overlay.classList.add('streakfeiring--pa');
+      pling(740, 0.14);
+      tallOpp(tall, streak, { fra: Math.max(0, streak - 1), ms: 800 });
+    });
+  });
+}
+
+/**
+ * Spiller blå flamme-feiringen dersom dagen nettopp ble komplett blå (alle
+ * gnistene tent) og den ikke alt er feiret i dag. Kalles etter enhver
+ * registrering som kan ha tent en gnist. Resolver alltid.
+ */
+export async function blaaEtter() {
+  const gs = hentGnistStatus();
+  if (gs.blaa.iDagAlle && !blaaFeiretIdag()) {
+    settBlaaFeiret();
+    await blaaFeiring(gs.blaa.streak);
   }
 }

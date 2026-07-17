@@ -1,16 +1,15 @@
 // Strava-broen (M14): økter fra Garmin-klokka går Garmin → Strava →
-// webhook (Supabase Edge Function) → rad i session_logs med data.xp = null.
-// Denne modulen gjør resten på enheten: etter hver pull krediteres nye
-// rader med XP via registrerBevegelse (profilen synkes som hel blob og må
-// aldri røres av serveren), soft-slettede rader fjernes, og planlagte økter
-// samme dag hukes av. I tillegg eier den Strava-kortet i innstillingene.
+// webhook (Supabase Edge Function) → rad i session_logs med data.xp = null
+// (markøren for «ubokført»). Denne modulen gjør resten på enheten: etter hver
+// pull bokføres nye rader (profilen synkes som hel blob og må aldri røres av
+// serveren), soft-slettede rader fjernes, og planlagte økter samme dag hukes
+// av. I tillegg eier den Strava-kortet i innstillingene.
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from './config.js';
 import { el } from './ui.js';
 import {
   hentProfil, lagreProfil, hentLogg, settLoggRå, planForDato, settPlanStatus,
 } from './store.js';
-import { registrerBevegelse } from './niva.js';
-import { erComeback, MODALITET_TIL_BEVEGELSE, KATEGORI_TIL_BEVEGELSE } from './bevegelse.js';
+import { MODALITET_TIL_BEVEGELSE, KATEGORI_TIL_BEVEGELSE } from './bevegelse.js';
 import { oktMedId } from './bibliotek-okter.js';
 import { erInnlogget, gyldigToken } from './sync.js';
 
@@ -36,40 +35,31 @@ function hukAvPlan(o) {
 
 /**
  * Post-pull-krok (kobles via sync.settEtterPull): rydder soft-slettede
- * Strava-rader og krediterer XP for nye. Hovedboka profil.stravaKreditert
- * bor i samme last-write-wins-objekt som XP-en — de kan aldri sprike, så
- * to enheter kan ikke dobbelkreditere samme aktivitet.
+ * Strava-rader og bokfører nye (huker av planer og stempler raden som
+ * bokført, så den teller i gnist/streak-motoren som all annen bevegelse).
+ * Hovedboka profil.stravaKreditert bor i profilens last-write-wins-objekt,
+ * så to enheter kan ikke dobbeltbokføre samme aktivitet.
  */
 export function krediterNye() {
   const logg = hentLogg();
   const uslettet = logg.filter((o) => !(o.kilde === 'strava' && o.slettet));
   let endret = uslettet.length !== logg.length;
 
-  let profil = hentProfil();
+  const profil = hentProfil();
   if (!profil) { if (endret) settLoggRå(uslettet); return; }
 
   const bok = new Set(profil.stravaKreditert || []);
+  // xp == null er serverens «ubokført»-markør; bokførte rader stemples med
+  // `kreditert` (historiske rader bærer et xp-tall fra XP-tida — også bokført).
   const nye = uslettet
-    .filter((o) => o.kilde === 'strava' && o.xp == null && !bok.has(o.id))
+    .filter((o) => o.kilde === 'strava' && o.xp == null && !o.kreditert && !bok.has(o.id))
     .sort((a, b) => (Date.parse(a.dato) || 0) - (Date.parse(b.dato) || 0));
 
   if (nye.length) {
-    // Comeback vurderes mot loggen slik den så ut FØR de nye radene.
-    const grunnlag = uslettet.filter((x) => !(x.kilde === 'strava' && x.xp == null));
     for (const o of nye) {
-      const tid = Date.parse(o.dato) || Date.now();
-      const comeback = erComeback(grunnlag, tid);
-      const { profil: ny, resultat } = registrerBevegelse(profil, {
-        bevegelse: o.bevegelse || 'custom',
-        varighetMin: o.varighetMin || 1,
-        intensitet: o.intensitet || 3,
-        comeback,
-      }, tid);
-      profil = ny;
-      o.xp = resultat.xp;
+      o.kreditert = true;
       o.oppdatert = new Date().toISOString();
       bok.add(o.id);
-      grunnlag.push(o);
       hukAvPlan(o);
     }
     profil.stravaKreditert = [...bok].slice(-200);
@@ -138,7 +128,7 @@ export function stravaKort(tegnPåNytt) {
       ));
     } else {
       if (retur !== 'feil') {
-        status.textContent = 'Koble til Strava, så havner økter fra Garmin-klokka automatisk i loggen — med XP.';
+        status.textContent = 'Koble til Strava, så havner økter fra Garmin-klokka automatisk i loggen — de teller mot gnisten din.';
       }
       kort.append(el('div', { class: 'knapprad' },
         el('button', {

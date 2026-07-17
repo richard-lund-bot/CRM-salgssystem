@@ -1,8 +1,8 @@
 # mova — Move for Life.
 
 Bevegelsesapp der **all bevegelse teller**: en gåtur, en kuratert styrkeøkt, en
-fotballkamp eller hagearbeid gir XP, bygger nivå og låser opp merker — streaks,
-«prøv noe nytt», milepæler og mye mer. Øktbiblioteket (60 true-and-tested økter)
+fotballkamp eller hagearbeid tenner dagens gnist, bygger streaks og låser opp
+merker — «prøv noe nytt», milepæler og mye mer. Øktbiblioteket (60 true-and-tested økter)
 er én av flere veier inn — ikke hele appen. Vanilla HTML/CSS/JS, ingen byggesteg, installerbar som PWA.
 Norsk UI, mobil først. Systemdefinisjon: Mova-spesifikasjonen (idé-dokumentet) —
 kjerneprinsipp: *senk dørstokkmila, aldri skam, delvis gjennomføring teller.*
@@ -31,23 +31,30 @@ Bygget ved å gjenbruke repoet og Supabase-prosjektet fra en tidligere Ringelist
 | M13 | Øktbiblioteket erstatter generatoren: 60 kuraterte økter, review/kjøring, preferanse-først onboarding | ✅ |
 | M14 | Strava-broen: Garmin-økter inn i Mova automatisk (webhook → kreditering på enheten) | ✅ |
 | M15 | Merker erstatter Min reise: 40 merker (streaks, prøv noe nytt, milepæler …), nivå som boble på profilikonet, felles faneside-design, stor opprydding (figur/reise/generator-rester ut) | ✅ |
+| M54 | Streaks i stedet for XP: gnist-motoren (`js/gnist.js`) med dagsterskler per pilar, røde gnist-streaks og blå blue zone-flamme som kjernemåling på Hjem; XP/nivå fjernet overalt, Blå flamme-merker, blå fullskjermsfeiring | ✅ |
 
 > Appen er offline-first: localStorage er alltid primærkilden, og alt fungerer
 > uten innlogging. Skysync er opt-in — logg inn med e-post i Innstillinger for å
-> dele profil, logg og nivå mellom enheter.
+> dele profil, logg og streaks mellom enheter.
 >
-> **Kjerneloopen (Mova-spec §2):** åpne appen → velg en bevegelse → beveg deg →
-> få XP → nivået tikker oppover → merker låses opp → kom tilbake i morgen.
+> **Kjerneloopen (M54 — streaks i stedet for XP):** åpne appen → gjør dagens
+> små valg per pilar → røde gnister tennes → tenner du alle fire samme dag er
+> dagen BLÅ → den blå flammen (blue zone-streaken) på Hjem vokser → kom
+> tilbake i morgen.
 >
-> **Tre lag progresjon:** *nivå* (hyppig, uten tak — et lite tall på
-> profilikonet, `js/niva.js`), *merker* (40 stk utledet av loggen: streaks,
-> «prøv noe nytt», milepæler, tid, døgnet rundt, comeback m.m., `js/merker.js`)
-> og *Momentum* (rytme over rullerende 7 dager — aldri en streak som «ryker»,
+> **Gnist-systemet (`js/gnist.js`):** hver pilar har en lav dagsterskel —
+> bevegelse 10 min, mat 3 gode valg, ro én rolig økt, sosialt ett godt valg.
+> Terskel nådd = rød gnist tent; sammenhengende dager bygger pilarens
+> gnist-streak, og dager der ALLE gnistene tennes bygger den blå flammen —
+> kjernemålingen på hjemskjermen. Alt avledes av loggene ved lesetid
+> (ingenting lagres, ingenting kan «mistes»); nådefristen gjør at dagens gnist
+> alltid kan komme før døgnet er omme.
+>
+> **Tre lag progresjon:** *gnister/blå flamme* (dagsrytmen, `js/gnist.js`),
+> *merker* (60 stk utledet av loggene: streaks, blå flamme, «prøv noe nytt»,
+> milepæler, tid, døgnet rundt, comeback m.m., `js/merker.js`) og *Momentum*
+> (rytme over rullerende 7 dager — aldri en streak som «ryker»,
 > `js/bevegelse.js`).
->
-> **XP-formelen (spec §8):** `minutter × bevegelsesfaktor (0,8–1,4) ×
-> intensitetsfaktor (0,8–1,25)`, minst 5 XP — rolig bevegelse er aldri verdiløs.
-> Comeback etter pause gir dobbel XP og eget merke.
 
 ## Kjøre lokalt
 
@@ -68,19 +75,19 @@ js/
   app.js                inngang, ruter, tab-bar (Hjem/Trening/Profil/Treningsbibliotek/Lær), Min dag (Trening), meny + innstillinger
   feed.js               Hjem-fanen: spillbar lærings-feed i sosial-drakt (gradientkort, 7 minispill, aksjonsrail, varsel-skyveside, kommentarpanel)
   banner.js             det hvite toppbanneret (profil m/ nivåboble, wordmark, ukeskalender) + sidetittel
-  bevegelse.js          bevegelseslaget: 12 bevegelsestyper, spec-XP-formel, Momentum, Dagens gnist
+  bevegelse.js          bevegelseslaget: 12 bevegelsestyper, dags-streak, Momentum, Dagens gnist
   beveg.js              hurtigstart m/ timer, manuell logg, «Du beveget deg»-skjermen (Beveg-fanen er øktbiblioteket)
-  merker.js             merkesystemet: 40 merker utledet av loggen + Merker-skjermen
+  merker.js             merkesystemet: 60 merker utledet av loggene + Profil-skjermen
   library.js            laster + indekserer statiske data (offline-first)
   store.js              brukertilstand i localStorage (Spor-mønster)
   onboarding.js         4-skjerms onboarding, preferanse-først (motivasjon, favorittbevegelser, ukemål, navn)
   bibliotek-okter.js    øktbiblioteket: 60 kuraterte true-and-tested økter (bolker per nivå, filter, start)
   kjor.js               øktspilleren: review + kjøre-UI (guide/sekvens/pust/fasetimer), delvis teller
-  niva.js               motor: XP (spec-formel), registrerBevegelse, nivåkurve, PR-uttrekk
+  gnist.js              gnist-motoren: dagsterskler per pilar, røde gnist-streaks, blå flamme
   historikk.js          Aktivitet-skjerm (nås fra Trening-området på Profil): Historikk + Prestasjoner
   kalender.js           Mosjonskalender: ukeliste, planlegg bibliotekøkter på dato
   sync.js               skysync: magic-link-auth + PostgREST + last-write-wins-fletting
-  strava.js             Strava-broen: krediterer importerte Garmin-økter (XP på enheten) + innstillingskort
+  strava.js             Strava-broen: bokfører importerte Garmin-økter (teller mot gnisten) + innstillingskort
   ui.js                 DOM-hjelpere + inline SVG-ikonsett
   animasjon.js          animasjonsverktøykasse: tallOpp, lagRing, lagKonfetti, fyllInn
   config.js             Supabase-URL/nøkkel + app-versjon
@@ -98,8 +105,9 @@ scripts/
   valider-okter.mjs     validerer øktbiblioteket (celler, skjema, kilder) — kjør til grønt
   merge-parts.mjs       bygger exercises.json + sequences.json fra parts/
   gen-icons.mjs         genererer PWA-ikoner
-  smoke-bevegelse.mjs   headless test: XP-formelen, fri bevegelse, Momentum, Dagens gnist, nivåkurve
-  smoke-merker.mjs      headless test: merkemotoren (alle 40 merker + nyeMerker-diffen)
+  smoke-bevegelse.mjs   headless test: bevegelsestypene, Momentum, Dagens gnist
+  smoke-gnist.mjs       headless test: gnist-motoren (terskler, røde gnister, blå flamme)
+  smoke-merker.mjs      headless test: merkemotoren (alle 60 merker + nyeMerker-diffen)
   smoke-sync.mjs        headless test: last-write-wins-fletting (profil + logg per id)
   smoke-strava.mjs      headless test: Strava-broen (mapping, kreditering, dedupe, sletting, plan)
   strava-abonner.mjs    engangs: opprett/list/slett Stravas webhook-abonnement

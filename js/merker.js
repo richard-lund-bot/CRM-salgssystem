@@ -1,18 +1,18 @@
 // Merker (M15) — badgesystemet som erstatter «Min reise». Alt utledes fra
 // loggen + profilen ved lesetid (rene funksjoner): ingenting kan «mistes»,
 // sync trenger aldri lagre merkestatus, og Strava-importerte økter teller
-// automatisk med. Nivå/XP er et lavmælt tall (nivåboblen på profilikonet);
-// merkene er feiringen — streaks, prøv noe nytt, milepæler og mye rart.
+// automatisk med. Kjerneprogresjonen er streaks (js/gnist.js: røde gnister
+// per pilar, blå flamme når alle tennes); merkene er feiringen — streaks,
+// prøv noe nytt, milepæler og mye rart.
 import { el, tom, ikon } from './ui.js';
 import { hentProfil, hentLogg, hentPlan } from './store.js';
-import { nivaFraTotalXp, nivaKostnad, ukeNokkel, prsFraLogg, nivaPerType } from './niva.js';
-import { loggBevegelse, NIVATYPE_NAVN } from './bevegelse.js';
-import { oktMedId } from './bibliotek-okter.js';
+import { loggBevegelse, ukeNokkel, prsFraLogg } from './bevegelse.js';
+import { blaaDager, hentGnistStatus } from './gnist.js';
 import { regionScores, lagKroppskart } from './kroppskart.js';
 import { lesMatlogg } from './kosthold.js';
 import { lesSosiallogg } from './sosialt.js';
 import { fanesideMedTittel } from './banner.js';
-import { fyllInn, lagRing, REDUSERT } from './animasjon.js';
+import { REDUSERT } from './animasjon.js';
 
 const DAG = 86400000;
 
@@ -38,11 +38,9 @@ function byggKontekst(profil, logg, planer) {
   // Kumulative tellere med dato for når hver terskel ble krysset.
   const antallDato = new Map();   // n-te bevegelse → dato
   const minutterDato = [];        // [{min, dato}] kumulative minutter
-  const xpDato = [];              // [{xp, dato}] kumulativ XP
   const typerDato = [];           // [{antall, dato}] n-te nye bevegelsestype
   const settTyper = new Set();
   let kumMin = 0;
-  let kumXp = 0;
 
   // Første forekomst av «øyeblikk»-betingelser.
   const forste = {};
@@ -68,8 +66,6 @@ function byggKontekst(profil, logg, planer) {
     antallDato.set(antallDato.size + 1, o.dato);
     kumMin += o.varighetMin || 0;
     minutterDato.push({ min: kumMin, dato: o.dato });
-    kumXp += o.xp || 0;
-    xpDato.push({ xp: kumXp, dato: o.dato });
 
     const type = loggBevegelse(o);
     if (!settTyper.has(type)) {
@@ -203,6 +199,25 @@ function byggKontekst(profil, logg, planer) {
   }
   const sosMaksStreak = Math.max(0, ...sosStreakDato.keys());
 
+  // Blå dager (js/gnist.js): dager der ALLE pilar-gnistene ble tent — grunnlag
+  // for Blå flamme-merkene. Lokale ISO-dager stemples til kl. 12 lokal tid så
+  // merkedatoene oppfører seg som de andre.
+  const blaaListe = [...blaaDager({ logg: logg || [], matlogg: lesMatlogg(), sosiallogg: lesSosiallogg() })].sort();
+  const blaaDatoListe = [];
+  const blaaStreakDatoMap = new Map();
+  let blaaRekke = 0;
+  let forrigeBlaaTs = null;
+  for (const dagIso of blaaListe) {
+    const t = new Date(`${dagIso}T12:00:00`).getTime();
+    if (!Number.isFinite(t)) continue;
+    const iso = new Date(t).toISOString();
+    blaaDatoListe.push(iso);
+    blaaRekke = forrigeBlaaTs != null && Math.round((t - forrigeBlaaTs) / DAG) === 1 ? blaaRekke + 1 : 1;
+    forrigeBlaaTs = t;
+    if (!blaaStreakDatoMap.has(blaaRekke)) blaaStreakDatoMap.set(blaaRekke, iso);
+  }
+  const blaaMaksStreak = Math.max(0, ...blaaStreakDatoMap.keys());
+
   // Enhet-/seksjon-fullført: avledes av uteksaminering (3★ pr. enhet). En enhet
   // er fullført når den har en 3★-graduation-rad; en seksjon når alle enhetene
   // er uteksaminert. Datoen er da 3★ først ble nådd. Krever injisert struktur.
@@ -228,7 +243,6 @@ function byggKontekst(profil, logg, planer) {
     antallDato: (n) => antallDato.get(n) || null,
     minutter: kumMin,
     minutterDato: (min) => minutterDato.find((m) => m.min >= min)?.dato || null,
-    xpDato: (xp) => xpDato.find((x) => x.xp >= xp)?.dato || null,
     typer: settTyper.size,
     typerDato: (n) => typerDato.find((t) => t.antall >= n)?.dato || null,
     forste,
@@ -263,7 +277,10 @@ function byggKontekst(profil, logg, planer) {
     sosDagerDato: (n) => sosDagerDato[n - 1] || null,
     sosStreak: sosMaksStreak,
     sosStreakDato: (n) => sosStreakDato.get(n) || null,
-    niva: nivaFraTotalXp(profil?.globalXp || 0).niva,
+    blaaDagerAntall: blaaDatoListe.length,
+    blaaDagerDato: (n) => blaaDatoListe[n - 1] || null,
+    blaaStreak: blaaMaksStreak,
+    blaaStreakDato: (n) => blaaStreakDatoMap.get(n) || null,
   };
 }
 
@@ -285,7 +302,7 @@ export const MERKE_KATEGORIER = [
   { id: 'laering', navn: 'Ferdighetsstier' },
   { id: 'nytt', navn: 'Prøv noe nytt' },
   { id: 'tid', navn: 'Tid i bevegelse' },
-  { id: 'niva', navn: 'Nivå' },
+  { id: 'blaflamme', navn: 'Blå flamme' },
   { id: 'oyeblikk', navn: 'Store øyeblikk' },
   { id: 'dognet', navn: 'Døgnet rundt' },
   { id: 'ekstra', navn: 'Litt av hvert' },
@@ -349,9 +366,13 @@ export const MERKER = {
     teller('tid-24t', 'Et helt døgn', '24 timer i bevegelse', 'stoppeklokke', 'blaa', 1440, (c) => c.minutter, (c) => c.minutterDato(1440)),
     teller('tid-100t', '100 timer', '100 timer i bevegelse', 'trofe', 'indigo', 6000, (c) => c.minutter, (c) => c.minutterDato(6000)),
   ],
-  niva: [5, 10, 20, 35, 50].map((n, i) =>
-    teller(`niva-${n}`, `Nivå ${n}`, `Nådd nivå ${n}`, 'medalje', ['teal', 'blaa', 'lilla', 'oransje', 'gul'][i], n,
-      (c) => c.niva, (c) => c.xpDato(xpForNiva(n)))),
+  blaflamme: [
+    teller('blaa-1', 'Første blå dag', 'Alle gnistene tent samme dag', 'flamme', 'teal', 1, (c) => c.blaaDagerAntall, (c) => c.blaaDagerDato(1)),
+    teller('blaa-3', 'Tre blå på rad', 'Blå flamme 3 dager på rad', 'flamme', 'blaa', 3, (c) => c.blaaStreak, (c) => c.blaaStreakDato(3)),
+    teller('blaa-7', 'Blå uke', 'Blå flamme 7 dager på rad', 'flamme', 'lilla', 7, (c) => c.blaaStreak, (c) => c.blaaStreakDato(7)),
+    teller('blaa-14', 'To blå uker', 'Blå flamme 14 dager på rad', 'flamme', 'indigo', 14, (c) => c.blaaStreak, (c) => c.blaaStreakDato(14)),
+    teller('blaa-30', 'Blue zone-måneden', 'Blå flamme 30 dager på rad', 'trofe', 'gul', 30, (c) => c.blaaStreak, (c) => c.blaaStreakDato(30)),
+  ],
   oyeblikk: [
     oyeblikk('okt-45', 'Langøkta', 'Én bevegelse på 45 minutter eller mer', 'fjell', 'oransje', 'min45'),
     oyeblikk('okt-90', 'Eventyrdagen', 'Én bevegelse på 90 minutter eller mer', 'fjell', 'indigo', 'min90'),
@@ -373,13 +394,6 @@ export const MERKER = {
     oyeblikk('strava-1', 'Koblet på klokka', 'Første økt importert fra Strava', 'puls', 'oransje', 'strava'),
   ],
 };
-
-// Total-XP som trengs for å stå på nivå n (invers av nivåkurven).
-function xpForNiva(n) {
-  let sum = 0;
-  for (let i = 1; i < n; i++) sum += nivaKostnad(i);
-  return sum;
-}
 
 /** Alle merker med beregnet status: [{...def, oppnadd, dato, verdi, maal, kategori}]. */
 export function beregnMerker(profil, logg, planer) {
@@ -406,7 +420,7 @@ export function merkerNå() {
 }
 
 // ===========================================================================
-// Skjermen: #/merker — nivåhero + merkegalleri i Min dag/bibliotek-stilen.
+// Skjermen: #/merker — blå flamme-hero + merkegalleri i Min dag/bibliotek-stilen.
 // ===========================================================================
 function datoTekst(iso) {
   if (!iso) return 'Oppnådd';
@@ -454,18 +468,19 @@ export function visMerkerSkjerm(mount) {
   if (!profil) { location.hash = '#/hjem'; return; }
   const vis = new URLSearchParams(location.hash.split('?')[1] || '').get('vis');
   const merker = beregnMerker(profil, hentLogg(), hentPlan());
-  const info = nivaFraTotalXp(profil.globalXp || 0);
+  const gs = hentGnistStatus();
   const oppnadd = merker.filter((m) => m.oppnadd).length;
 
-  const xpFyll = el('div', { class: 'xpbar__fyll' });
-  fyllInn(xpFyll, 'width', `${info.pct}%`);
-
+  // Blå flamme-heroen: kjernemålingen — hvor lenge du har streaket blue
+  // zone-dagene, og hvor langt dagens flamme er kommet.
   const hero = el('div', { class: 'kort merkehero' },
-    el('span', { class: 'merkehero__niva movflis--teal' }, String(info.niva)),
+    el('span', { class: 'merkehero__flamme' + (gs.blaa.iDagAlle ? ' merkehero__flamme--tent' : '') }, ikon('flamme')),
     el('div', { class: 'merkehero__meta' },
-      el('span', { class: 'merkehero__tittel' }, `Nivå ${info.niva}`),
-      el('div', { class: 'xpbar merkehero__bar' }, xpFyll),
-      el('span', { class: 'merkehero__sub' }, `${info.igjen} XP til nivå ${info.niva + 1} · ${oppnadd} av ${merker.length} merker`),
+      el('span', { class: 'merkehero__tittel' }, 'Blå flamme'),
+      el('span', { class: 'merkehero__sub' },
+        `${gs.blaa.streak} ${gs.blaa.streak === 1 ? 'blå dag' : 'blå dager'} på rad · ${gs.blaa.totaltBlaa} totalt`),
+      el('span', { class: 'merkehero__sub' },
+        gs.blaa.iDagAlle ? 'Alle gnistene tent i dag!' : `${gs.blaa.tentIDag} av 4 gnister tent i dag · ${oppnadd} av ${merker.length} merker`),
     ),
   );
 
@@ -495,32 +510,11 @@ export function visMerkerSkjerm(mount) {
     );
   }
 
-  // Nivå per treningstype (M17): tre små ringer under det globale nivået.
-  // Per-økt `typer`-override brukes når øktbiblioteket er lastet; ellers arves
-  // typen fra bevegelsen på loggraden.
-  const nt = nivaPerType(hentLogg(), (o) => (o.oktId ? oktMedId(o.oktId)?.typer : null));
-  const typeRing = (id, farge) => {
-    const ni = nt[id];
-    const ring = lagRing(52);
-    requestAnimationFrame(() => ring.sett(ni.pct / 100));
-    return el('div', { class: `typeniva typeniva--${farge}` },
-      el('div', { class: 'typeniva__ring' }, ring.svg,
-        el('span', { class: 'typeniva__niva' }, String(ni.niva))),
-      el('span', { class: 'typeniva__navn' }, NIVATYPE_NAVN[id]),
-      el('span', { class: 'typeniva__sub' }, `${ni.igjen} XP igjen`),
-    );
-  };
-  const typerad = el('div', { class: 'kort typenivarad' },
-    typeRing('kondisjon', 'koral'),
-    typeRing('styrke', 'blaa'),
-    typeRing('mobilitet', 'teal'),
-  );
-
   const restitusjon = kroppskartWidget(hentLogg());
 
   // Trening-området (M37): alt av treningsstats og -oppslag samlet på Profil —
-  // typenivåene, restitusjonskartet og snarveier til Aktivitet (den gamle
-  // fanen), Styrke & fremgang og Øvelsesoppslaget.
+  // restitusjonskartet og snarveier til Aktivitet (den gamle fanen), Styrke &
+  // fremgang og Øvelsesoppslaget.
   const lenke = (ikonNavn, tekst, href) => el('a', { class: 'listerad', href },
     el('span', { class: 'listerad__ikon' }, ikon(ikonNavn)),
     el('span', { class: 'listerad__navn' }, tekst),
@@ -530,7 +524,6 @@ export function visMerkerSkjerm(mount) {
     el('div', { class: 'merkebolk__hode' },
       el('h2', { class: 'merkebolk__tittel' }, 'Trening'),
     ),
-    typerad,
     restitusjon,
     el('div', { class: 'kort' },
       el('div', { class: 'liste' },
@@ -541,7 +534,7 @@ export function visMerkerSkjerm(mount) {
     ),
   );
 
-  fanesideMedTittel(mount, { tittel: 'Profil', under: 'Nivået ditt, treningen din og merkene dine — samlet.' })
+  fanesideMedTittel(mount, { tittel: 'Profil', under: 'Flammen din, treningen din og merkene dine — samlet.' })
     .append(hero, treningsomrade, ...MERKE_KATEGORIER.map(bolk));
 
   // Kommer man fra «restitusjonsbehov»-lenka på Min dag, scroll widgeten inn.

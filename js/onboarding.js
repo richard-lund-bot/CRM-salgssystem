@@ -171,7 +171,6 @@ export function kjorOnboarding(container, ferdig) {
       bevegelsesFavoritter: state.favoritter.slice(),
       ukemaal: state.ukemaal,
       varighetsklasse: state.varighetsklasse,
-      globalXp: 0,
       innstillinger: {},
     };
   }

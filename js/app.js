@@ -1,10 +1,9 @@
-// App-inngang for Mova (M37 — feeden er hjem).
-// Navigasjon: Hjem (lærings-feed) · Trening (Min dag) · Profil · Treningsbibliotek · Lær.
-// Hjem er den spillbare kunnskaps-feeden (js/feed.js); Min dag-dashbordet
-// (hilsen, dagens statkort, bevegelsesgrid) bor på Trening-fanen — formulert
-// som tilbud, aldri skam. Nivået bor som en liten boble på profilikonet;
-// feiringen bor i merkene (js/merker.js), og treningsstats/-oppslag er samlet
-// under Trening-området på profilen.
+// App-inngang for Takt.
+// Navigasjon: Hjem (dagens dashbord) · Mat · Bevegelse · Ro · Sosialt.
+// Kjernemålingen er den blå flammen (js/gnist.js): røde gnist-streaks per
+// pilar, og en blå blue zone-streak når alle tennes samme dag — formulert
+// som tilbud, aldri skam. Feiringen bor i merkene (js/merker.js), og
+// treningsstats/-oppslag er samlet under Trening-området på profilen.
 import { lastBibliotek, MODALITET_NAVN, MONSTER_NAVN } from './library.js';
 import {
   hentProfil, harProfil, lagreProfil, hentLogg, nullstillAlt,
@@ -25,7 +24,7 @@ import { lastStier, lastKjeder, lastDisipliner, lastSeksjoner, settBib as settBi
 import { visMerkerSkjerm } from './merker.js';
 import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
 import { lagFaneside, fanesideMedTittel, settNavger, settUlestSjekk, dagsfase, lagPullOppdatering } from './banner.js';
-import { nivaFraTotalXp } from './niva.js';
+import { hentGnistStatus, GNIST_PILARER } from './gnist.js';
 import { dagerMedAktivitet, okterHref, beregnStreak } from './bevegelse.js';
 import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, aapneOkt, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN, KATEGORIER, settLaerLenke } from './bibliotek-okter.js';
 import { settBib as settBibOpp, settOkterKilde, erAdminEpost, adminModusPaa, settAdminModus } from './opplasing.js';
@@ -46,7 +45,7 @@ import {
   STARTSPORSMAL, lesHvorfor, leggTilHvorfor, slettHvorfor, kanLeggeTil,
   ukensRefleksjon, settRefleksjon, lesRefleksjoner,
 } from './mening.js';
-import { streakEtter } from './feiring.js';
+import { streakEtter, blaaEtter } from './feiring.js';
 
 const app = document.getElementById('app');
 let bib = null;
@@ -233,10 +232,10 @@ function fane(tittel, under, ...innhold) {
 }
 
 // ===========================================================================
-// Hjem (M53) — dagens dashbord. Erstatter feeden som hjem: hilsen, DAGENS TAKT-
-// ring (dagens rytme på tvers av pilarene), pilar-brikker, «dagens valg» og
-// «dagens fokus». Feeden («dagens feed») nås via feed-ikonet oppe til venstre
-// eller ved å sveipe til venstre fra hjem-skjermen.
+// Hjem (M54) — dagens dashbord med den BLÅ FLAMMEN som kjernemåling: hvor
+// mange blue zone-dager på rad (alle gnistene tent), de fire røde gnist-
+// streakene per pilar, «dagens valg» og «dagens fokus». Feeden («dagens
+// feed») nås via feed-ikonet oppe til venstre eller ved å sveipe til venstre.
 // ===========================================================================
 const HILSEN = { natt: 'God natt', morgen: 'God morgen', formiddag: 'God formiddag', dag: 'God dag', kveld: 'God kveld' };
 const DAGENS_FOKUS = [
@@ -258,33 +257,35 @@ function visHjemDashboard(mount) {
   if (!profil) { skjerm(APP_NAME, velkommenKort()); return; }
 
   const fase = dagsfase(new Date().getHours());
-  const iDag = isoIdagLokal();
   const dagsnr = Math.floor(Date.now() / 86400000);
 
-  // --- Dagens signaler per pilar ---
-  const bevegDag = hentLogg().some((o) => (o.dato || '').slice(0, 10) === iDag);
-  const kost = kostStatus();
-  const sos = sosialStatus();
+  // --- Dagens gnister (js/gnist.js): terskler per pilar + den blå flammen ---
+  const gs = hentGnistStatus();
+  const blaa = gs.blaa;
   const reflektert = !!ukensRefleksjon();
   const harHvorforNaa = lesHvorfor().length > 0;
 
+  // Hint per pilar: tent → kvittering; ellers hvor langt igjen til terskelen.
+  const pilarHint = {
+    bevegelse: (s) => (s.naadd ? 'Gnist tent — godt jobba' : `${s.verdi} av ${s.maal} min bevegelse`),
+    mat: (s) => (s.naadd ? 'Gnist tent — godt jobba' : `${s.verdi} av ${s.maal} gode valg`),
+    ro: (s) => (s.naadd ? 'Gnist tent — godt jobba' : 'Én rolig økt tenner gnisten'),
+    sosialt: (s) => (s.naadd ? 'Gnist tent — godt jobba' : 'Ett godt valg tenner gnisten'),
+  };
   const valg = [
-    { rute: 'trening', ikon: 'loper', navn: 'Bevegelse', hint: 'Beveg deg litt', gjort: bevegDag },
-    { rute: 'kosthold', ikon: 'eple', navn: 'Mat', hint: 'Mest planter, litt fisk', gjort: kost.iDagAntall > 0 },
-    { rute: 'ro', ikon: 'maane', navn: 'Ro', hint: 'Pust, senk skuldrene', gjort: false },
-    { rute: 'sosialt', ikon: 'snakke', navn: 'Sosialt', hint: 'Ta kontakt med noen', gjort: sos.iDagAntall > 0 },
-    { rute: 'mening', ikon: 'kompass', navn: 'Mening', hint: 'Kjenn ditt hvorfor', gjort: reflektert || harHvorforNaa },
+    ...GNIST_PILARER.map((p) => ({
+      rute: p.rute, ikon: p.ikon, navn: p.navn,
+      hint: pilarHint[p.id](gs.pilarer[p.id].iDag),
+      gjort: gs.pilarer[p.id].iDag.naadd,
+      streak: gs.pilarer[p.id].streak,
+    })),
+    // Mening er rammen rundt vanene (ukentlig refleksjon) — med i dagens valg,
+    // men bærer ingen gnist.
+    { rute: 'mening', ikon: 'kompass', navn: 'Mening', hint: 'Kjenn ditt hvorfor', gjort: reflektert || harHvorforNaa, streak: 0 },
   ];
-  // DAGENS TAKT — granulær: snitt av pilarenes dags-fyllingsgrad.
-  const grader = [
-    bevegDag ? 1 : 0,
-    kost.antallVaner ? kost.iDagAntall / kost.antallVaner : 0,
-    sos.antallVaner ? sos.iDagAntall / sos.antallVaner : 0,
-    reflektert ? 1 : (harHvorforNaa ? 0.5 : 0),
-  ];
-  const takt = Math.round((grader.reduce((a, b) => a + b, 0) / grader.length) * 100);
-  const gjortAntall = valg.filter((v) => v.gjort).length;
-  const taktOrd = takt >= 80 ? 'Sterk rytme!' : takt >= 50 ? 'God fremdrift!' : takt > 0 ? 'Godt i gang.' : 'Ny dag, ny takt.';
+  const taktOrd = blaa.iDagAlle ? 'Blå dag — alle gnistene tent!'
+    : blaa.tentIDag >= 2 ? 'God fremdrift!'
+      : blaa.tentIDag > 0 ? 'Godt i gang.' : 'Ny dag, nye gnister.';
 
   // --- Topplinje: feed-ikon (venstre), wordmark, meny (høyre) ---
   const topp = el('header', { class: 'hjemtopp' },
@@ -294,29 +295,44 @@ function visHjemDashboard(mount) {
     el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/meny', 'aria-label': 'Meny' }, ikon('gir')),
   );
 
-  // --- Hilsen + DAGENS TAKT-ring (på dagsfase-bilde) ---
-  const pst = el('span', { class: 'taktring__pst' }, '0%');
-  const ring = lagRing(52);
-  const ringBoks = el('div', { class: 'taktring' }, ring.svg,
-    el('div', { class: 'taktring__midt' }, pst, el('span', { class: 'taktring__merkelapp' }, 'Dagens takt')));
+  // --- Hilsen + BLÅ FLAMME (kjernemålingen, på dagsfase-bilde) ---
+  const blaaTall = el('span', { class: 'blaaflamme__tall' }, '0');
+  const flammeBoks = el('a', { class: 'blaaflamme' + (blaa.iDagAlle ? ' blaaflamme--tent' : ''), href: '#/merker',
+    'aria-label': `Blå flamme: ${blaa.streak} ${blaa.streak === 1 ? 'blå dag' : 'blå dager'} på rad` },
+    el('span', { class: 'blaaflamme__ikon' }, ikon('flamme')),
+    el('div', { class: 'blaaflamme__midt' },
+      blaaTall,
+      el('span', { class: 'blaaflamme__merkelapp' }, blaa.streak === 1 ? 'blå dag på rad' : 'blå dager på rad')),
+  );
   const hero = el('section', { class: `hjemdash__hero hjemdash__hero--${fase}`,
     style: `background-image:url('icons/brand/hero-${fase}.webp')` },
     el('div', { class: 'hjemdash__scrim', 'aria-hidden': 'true' }),
     el('div', { class: 'hjemdash__hilsen' },
       el('h1', { class: 'hjemdash__tittel' }, `${HILSEN[fase]}, ${profil.navn || 'du'}.`),
-      el('p', { class: 'hjemdash__under' }, 'God rytme i dag!')),
-    ringBoks,
+      el('p', { class: 'hjemdash__under' }, 'Streak de gode vanene.')),
+    flammeBoks,
     el('p', { class: 'hjemdash__taktord' }, taktOrd),
   );
 
-  // --- Tre nøkkelbrikker ---
+  // --- De fire røde gnistene (streak per pilar, lenker til pilaren) ---
+  const gnistrad = el('div', { class: 'gnistrad' },
+    ...GNIST_PILARER.map((p) => {
+      const st = gs.pilarer[p.id];
+      return el('a', { class: 'gnistchip' + (st.iDag.naadd ? ' gnistchip--tent' : ''), href: `#/${p.rute}`,
+        'aria-label': `${p.navn}: ${st.streak} ${st.streak === 1 ? 'dag' : 'dager'} på rad${st.iDag.naadd ? ' — tent i dag' : ''}` },
+        el('span', { class: 'gnistchip__flamme' }, ikon('flamme')),
+        el('span', { class: 'gnistchip__tall' }, String(st.streak)),
+        el('span', { class: 'gnistchip__navn' }, p.navn));
+    }));
+
+  // --- Nøkkelbrikker: dagens gnister + blå totaler ---
   const brikke = (tall, navn) => el('div', { class: 'taktbrikke' },
     el('span', { class: 'taktbrikke__tall' }, tall),
     el('span', { class: 'taktbrikke__navn' }, navn));
   const brikker = el('div', { class: 'taktbrikker' },
-    brikke(`${gjortAntall}/5`, 'pilarer i dag'),
-    brikke(`${kost.iDagAntall}/${kost.antallVaner}`, 'mat i dag'),
-    brikke(`${sos.iDagAntall}/${sos.antallVaner}`, 'sosialt i dag'),
+    brikke(`${blaa.tentIDag}/${GNIST_PILARER.length}`, 'gnister i dag'),
+    brikke(String(blaa.streak), 'blå på rad'),
+    brikke(String(blaa.totaltBlaa), 'blå dager totalt'),
   );
 
   // --- Dagens valg (pilar-sjekkliste, hver rad lenker til pilaren) ---
@@ -325,6 +341,8 @@ function visHjemDashboard(mount) {
     el('span', { class: 'valgrad__midt' },
       el('span', { class: 'valgrad__navn' }, v.navn),
       el('span', { class: 'valgrad__hint' }, v.hint)),
+    v.streak >= 1 && el('span', { class: 'valgrad__gnist' + (v.gjort ? ' valgrad__gnist--tent' : '') },
+      ikon('flamme'), String(v.streak)),
     el('span', { class: 'valgrad__sjekk' }, ikon(v.gjort ? 'sjekk' : 'chevron')),
   ));
   const dagensValg = el('section', { class: 'kort hjemdash__valg' },
@@ -347,7 +365,7 @@ function visHjemDashboard(mount) {
   tom(mount);
   const scroll = el('div', { class: 'hjemdash-scroll' },
     topp,
-    el('main', { class: 'innhold hjemdash' }, hero, brikker, dagensValg, dagensFokus, feedHint),
+    el('main', { class: 'innhold hjemdash' }, hero, gnistrad, brikker, dagensValg, dagensFokus, feedHint),
   );
   mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: dashScrollTop }));
 
@@ -360,10 +378,9 @@ function visHjemDashboard(mount) {
     if (dx < -60 && Math.abs(dx) > Math.abs(dy) * 1.5) location.hash = '#/feed';
   }, { passive: true });
 
-  // Animer ring + prosent inn.
+  // Animer den blå streaken inn.
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    ring.sett(takt / 100);
-    tallOpp(pst, takt, { format: (n) => `${n}%` });
+    tallOpp(blaaTall, blaa.streak, { ms: 700 });
   }));
 }
 
@@ -470,9 +487,10 @@ function visUtforskSkjerm(mount) {
 
 // ===========================================================================
 // Kosthold (Fase 3) — blue-zones-spising som daglige HANDLINGER, ikke tall.
-// Dagens gode vaner hukes av (grønt/belgvekster/fullkorn/fisk/måtehold), gir XP
-// og bygger en egen kosthold-streak (atskilt fra bevegelse). Valgfritt kort
-// måltidsnotat. Gjenbruker XP-nivået, flammefeiringen og «Lær»-artiklene.
+// Dagens gode vaner hukes av (grønt/belgvekster/fullkorn/fisk/måtehold); tre
+// gode valg tenner mat-gnisten (js/gnist.js) og bygger mat-streaken (atskilt
+// fra bevegelse). Valgfritt kort måltidsnotat. Gjenbruker flammefeiringen og
+// «Lær»-artiklene.
 // ===========================================================================
 function visKostholdSkjerm(mount) {
   const profil = hentProfil();
@@ -481,12 +499,13 @@ function visKostholdSkjerm(mount) {
 
   const tegnStatus = () => {
     const s = kostStatus();
+    const gm = hentGnistStatus().pilarer.mat;
     const stat = (tall, navn) => el('div', { class: 'koststat' },
       el('span', { class: 'koststat__tall' }, String(tall)),
       el('span', { class: 'koststat__navn' }, navn));
     return el('div', { class: 'koststatus' },
-      stat(s.streak, 'dager på rad'),
-      stat(`${s.iDagAntall}/${s.antallVaner}`, 'gode valg i dag'),
+      stat(gm.streak, 'dagers gnist-streak'),
+      stat(`${s.iDagAntall}/${gm.iDag.maal}`, 'mot dagens gnist'),
       stat(s.ukeAktive, 'aktive dager'));
   };
   let statusBoks = tegnStatus();
@@ -498,9 +517,10 @@ function visKostholdSkjerm(mount) {
         const res = veksleVane(v.id);
         if (!res) return;
         c.classList.toggle('intchip--valgt', res.aktiv);
-        if (res.aktiv) { vibrer(); varsle(`+${res.xp} XP`, { ikon: 'blad' }); }
+        if (res.aktiv) { vibrer(); varsle('Godt valg', { ikon: 'blad' }); }
         const ny = tegnStatus(); statusBoks.replaceWith(ny); statusBoks = ny;
-        if (res.streakØkte > 0) await streakEtter(res); // flammefeiring, én gang/dag
+        await streakEtter(res); // flammefeiring, én gang/dag
+        await blaaEtter();      // ble dagen komplett blå → blå flamme-feiring
       },
     }, v.navn);
     return c;
@@ -521,10 +541,10 @@ function visKostholdSkjerm(mount) {
   const laerLenke = el('a', { class: 'kostlenke', href: '#/laer' },
     ikon('bok', 'ikon ikon--liten'), el('span', {}, 'Lær mer om blue zones-kosthold'));
 
-  const s0 = kostStatus();
+  const gm0 = hentGnistStatus().pilarer.mat;
   const main = pilarSkall(mount, {
     navn: 'mat', tittel: 'Mest planter. Litt fisk.', under: 'Måtehold — stopp ved 80 %.',
-    ring: { pst: s0.antallVaner ? Math.round((s0.iDagAntall / s0.antallVaner) * 100) : 0, merkelapp: 'gode valg i dag' },
+    ring: { pst: Math.min(100, Math.round((gm0.iDag.verdi / gm0.iDag.maal) * 100)), merkelapp: 'mot dagens gnist' },
   });
   main.append(statusBoks, vaneKort, notatKort, laerLenke);
 }
@@ -543,9 +563,17 @@ function visRoSkjerm(mount) {
     .filter((o) => o.kategori === 'restitusjon')
     .sort((a, b) => (RO_PUST.has(b.id) - RO_PUST.has(a.id)) || (a.varighetMin - b.varighetMin));
 
+  const gro = hentGnistStatus().pilarer.ro;
+  const stat = (tall, navn) => el('div', { class: 'koststat' },
+    el('span', { class: 'koststat__tall' }, String(tall)),
+    el('span', { class: 'koststat__navn' }, navn));
+  const statusBoks = el('div', { class: 'koststatus' },
+    stat(gro.streak, 'dagers gnist-streak'),
+    stat(gro.iDag.naadd ? 'Tent' : 'Ikke ennå', 'dagens gnist'));
+
   const intro = el('section', { class: 'kort' },
     el('h2', { class: 'kost__tittel' }, 'Pust deg rolig'),
-    el('p', { class: 'dempet' }, 'Noen minutter bevisst pust senker stress og roer nervesystemet. Velg en øvelse — den spilles med rolig tempo og lyd.'));
+    el('p', { class: 'dempet' }, 'Noen minutter bevisst pust senker stress og roer nervesystemet. Én fullført rolig økt tenner ro-gnisten for dagen. Velg en øvelse — den spilles med rolig tempo og lyd.'));
 
   // Rolige økter/pust skal alltid kunne startes fritt (aldri låst bak «lær
   // øvelsene først»), så vi sender en ulåst status til aapneOkt.
@@ -558,8 +586,9 @@ function visRoSkjerm(mount) {
 
   const main = pilarSkall(mount, {
     navn: 'ro', tittel: 'Pust. Senk skuldrene.', under: 'Vær her — noen rolige minutter.',
+    ring: { pst: gro.iDag.naadd ? 100 : 0, merkelapp: 'dagens gnist' },
   });
-  main.append(intro, el('div', { class: 'roliste' }, ...kort));
+  main.append(statusBoks, intro, el('div', { class: 'roliste' }, ...kort));
 }
 
 // ===========================================================================
@@ -574,11 +603,12 @@ function visSosialtSkjerm(mount) {
 
   const tegnStatus = () => {
     const s = sosialStatus();
+    const gsos = hentGnistStatus().pilarer.sosialt;
     const stat = (tall, navn) => el('div', { class: 'koststat' },
       el('span', { class: 'koststat__tall' }, String(tall)),
       el('span', { class: 'koststat__navn' }, navn));
     return el('div', { class: 'koststatus' },
-      stat(s.streak, 'dager på rad'),
+      stat(gsos.streak, 'dagers gnist-streak'),
       stat(`${s.iDagAntall}/${s.antallVaner}`, 'gode valg i dag'),
       stat(s.ukeAktive, 'aktive dager'));
   };
@@ -590,9 +620,10 @@ function visSosialtSkjerm(mount) {
         const res = sosVeksleVane(v.id);
         if (!res) return;
         c.classList.toggle('intchip--valgt', res.aktiv);
-        if (res.aktiv) { vibrer(); varsle(`+${res.xp} XP`, { ikon: 'hjerte' }); }
+        if (res.aktiv) { vibrer(); varsle('Godt valg', { ikon: 'hjerte' }); }
         const ny = tegnStatus(); statusBoks.replaceWith(ny); statusBoks = ny;
-        if (res.streakØkte > 0) await streakEtter(res);
+        await streakEtter(res);
+        await blaaEtter();
       } }, v.navn);
     return c;
   });
@@ -638,7 +669,7 @@ function visSosialtSkjerm(mount) {
 // ===========================================================================
 // Trening (Min dag) — Mova-dashbord: hvit banner med header + ukeskalender
 // (buet underkant — resten av siden ligger som underlag), tre statistikk-kort
-// (dagens minutter, ukas aktive dager, nivå/XP) og bevegelsesgrid. Heroen
+// (dagens minutter, ukas aktive dager, gnist-streak) og bevegelsesgrid. Heroen
 // samler dagens budskap: planlagt økt, positiv kvittering, eller «Vi
 // anbefaler»-boksen fra anbefalingsmotoren; streaken vises som kompakt flamme.
 // Bodde på Hjem-fanen frem til M37 — nå er feeden hjem og dette Trening.
@@ -945,7 +976,7 @@ function heroPlanBoks(p) {
   );
 }
 
-// Tre kort: dagens minutter mot dagsmålet, ukas aktive dager, nivå/XP.
+// Tre kort: dagens minutter mot dagsmålet, ukas aktive dager, gnist-streaken.
 // Med glass=true (i heroen) er kortene frostet hvite så bildet skinner gjennom.
 function statKortRad(profil, logg, glass = false) {
   const idagIso = isoDato(new Date());
@@ -955,17 +986,17 @@ function statKortRad(profil, logg, glass = false) {
   const maal = DAGSMAAL[profil.varighetsklasse] || 40;
   const dager = dagerMedAktivitet(logg, Date.now(), 7);
   const aktive = dager.filter((m) => m > 0).length;
-  const info = nivaFraTotalXp(profil.globalXp || 0);
+  const beveg = hentGnistStatus().pilarer.bevegelse;
 
   const minBar = el('div', { class: 'xpbar__fyll' });
   fyllInn(minBar, 'width', `${Math.min(100, Math.round((minutter / maal) * 100))}%`);
-  const xpBar = el('div', { class: 'xpbar__fyll' });
-  fyllInn(xpBar, 'width', `${info.pct}%`);
+  const gnistBar = el('div', { class: 'xpbar__fyll xpbar__fyll--gnist' });
+  fyllInn(gnistBar, 'width', `${Math.min(100, Math.round((beveg.iDag.verdi / beveg.iDag.maal) * 100))}%`);
 
   // Tallene teller opp (i takt med at barene fyller) — dashbordet «våkner».
   const minTall = el('span', { class: 'statkort__tall' }, '0');
   const aktiveTall = el('span', { class: 'statkort__tall' }, '0');
-  const xpTall = el('span', { class: 'statkort__tall statkort__tall--xp' }, '0');
+  const gnistTall = el('span', { class: 'statkort__tall' }, '0');
 
   const rad = el('div', { class: 'statkort-rad' + (glass ? ' statkort-rad--glass' : '') },
     el('div', { class: 'statkort' },
@@ -989,18 +1020,18 @@ function statKortRad(profil, logg, glass = false) {
       ),
     ),
     el('a', { class: 'statkort', href: '#/merker' },
-      el('span', { class: 'statkort__label' }, `Nivå ${info.niva}`),
+      el('span', { class: 'statkort__label' }, 'Gnist-streak'),
       el('div', { class: 'statkort__midt' },
-        el('span', { class: 'stathex' }, 'M'),
-        xpTall,
+        gnistTall,
+        el('span', { class: 'statkort__ikon statkort__ikon--gnist' + (beveg.iDag.naadd ? ' statkort__ikon--tent' : '') }, ikon('flamme')),
       ),
-      el('span', { class: 'statkort__sub' }, 'XP til neste nivå'),
-      el('div', { class: 'xpbar statkort__bar' }, xpBar),
+      el('span', { class: 'statkort__sub' }, beveg.iDag.naadd ? 'tent i dag' : `${beveg.iDag.verdi}/${beveg.iDag.maal} min til gnist`),
+      el('div', { class: 'xpbar statkort__bar' }, gnistBar),
     ),
   );
   tallOpp(minTall, minutter, { ms: 600 });
   tallOpp(aktiveTall, aktive, { ms: 500 });
-  tallOpp(xpTall, info.igjen, { ms: 700 });
+  tallOpp(gnistTall, beveg.streak, { ms: 700 });
   return rad;
 }
 
@@ -1120,8 +1151,8 @@ const TEMAER = [
   { id: 'gull', navn: 'Gull', prikk: '#B08D2A' },
 ];
 
-// Varsler (bak bjella): en avledet feed av fullførte økter, nivå-opp og
-// opptjente merker (js/varsler.js). Å åpne skjermen markerer alt som sett, så
+// Varsler (bak bjella): en avledet feed av fullførte økter og opptjente
+// merker (js/varsler.js). Å åpne skjermen markerer alt som sett, så
 // prikken på bjella forsvinner ved neste tegning.
 function visVarsler() {
   const profil = hentProfil();
@@ -1133,7 +1164,7 @@ function visVarsler() {
     : el('div', { class: 'kort tomstyrke' },
         el('span', { class: 'tomstyrke__disk' }, ikon('bjelle')),
         el('p', { class: 'oppmuntring__tittel' }, 'Ingen varsler ennå'),
-        el('p', { class: 'dempet' }, 'Fullfør en økt, så dukker den opp her — sammen med nivå-opp og nye merker.'),
+        el('p', { class: 'dempet' }, 'Fullfør en økt, så dukker den opp her — sammen med nye merker.'),
         el('a', { class: 'knapp', href: '#/beveg' }, 'Finn en økt'),
       );
 
@@ -1389,7 +1420,7 @@ function visInnstillinger() {
       el('div', { class: 'knapprad' },
         el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: startOnboarding }, 'Ta profilen på nytt'),
       ),
-      el('p', { class: 'dempet' }, 'Setter opp preferansene på nytt — rører aldri logg/XP.'),
+      el('p', { class: 'dempet' }, 'Setter opp preferansene på nytt — rører aldri loggen eller streakene.'),
     ),
     sync.erInnlogget() ? el('div', { class: 'kort' },
       el('h2', {}, 'Konto'),
@@ -1407,7 +1438,7 @@ function visInnstillinger() {
       el('h2', {}, 'Faresone'),
       el('button', {
         class: 'knapp knapp--fare', type: 'button',
-        onclick: () => { if (confirm('Slette ALT — profil, logg, XP og historikk? Kan ikke angres.')) { nullstillAlt(); location.hash = '#/hjem'; location.reload(); } },
+        onclick: () => { if (confirm('Slette ALT — profil, logg, streaks og historikk? Kan ikke angres.')) { nullstillAlt(); location.hash = '#/hjem'; location.reload(); } },
       }, 'Full nullstilling'),
     ),
   );
@@ -1454,7 +1485,7 @@ function skyKort() {
     );
   } else {
     const epostfelt = el('input', { class: 'sok', type: 'email', inputmode: 'email', placeholder: 'din@epost.no', autocomplete: 'email' });
-    const status = el('p', { class: 'dempet' }, 'Del profil, logg og nivå mellom telefon og nettbrett.');
+    const status = el('p', { class: 'dempet' }, 'Del profil, logg og streaks mellom telefon og nettbrett.');
     kort.append(
       epostfelt,
       el('div', { class: 'knapprad', style: 'margin-top:10px' },
@@ -1550,14 +1581,14 @@ function visOm() {
   skjerm(`Om ${APP_NAME}`,
     el('div', { class: 'kort' },
       el('h2', {}, `${APP_NAME} — ${APP_TAGLINE}.`),
-      el('p', {}, 'Bevegelse kan være hva som helst du liker — en tur, en økt, en fotballkamp. Alt teller, alt gir XP, og merkene samler det du får til. PWA i vanilla HTML/CSS/JS.'),
+      el('p', {}, 'Bevegelse kan være hva som helst du liker — en tur, en økt, en fotballkamp. Alt teller mot gnistene dine, og merkene samler det du får til. PWA i vanilla HTML/CSS/JS.'),
       el('p', { class: 'dempet' }, `Versjon ${APP_VERSION}`),
       el('p', { class: 'dempet' }, `${hentOkter().length} økter i biblioteket · ${bib.exercises.length} øvelser i oppslaget.`),
     ),
     profil && el('div', { class: 'kort' },
       el('h2', {}, 'Profil'),
       el('p', { class: 'dempet' }, `Motivasjon: ${(profil.motivasjon?.valg || []).join(', ') || '–'}`),
-      el('p', { class: 'dempet' }, `Ukemål ${profil.ukemaal} · nivå ${nivaFraTotalXp(profil.globalXp || 0).niva}`),
+      el('p', { class: 'dempet' }, `Ukemål ${profil.ukemaal}`),
     ),
   );
 }

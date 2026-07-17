@@ -1,23 +1,23 @@
 // Beveg (M11 — spec §5): fri bevegelse og manuell logging. Beveg-fanen selv
 // er øktbiblioteket (bibliotek-okter.js); her bor hurtigstart med timer
-// (gå/løp/sykle), manuell logg og fullført-skjermen. Alt gir XP, flytter
-// nivået og kan låse opp merker (§5.12: aldri skam, delvis gjennomføring
-// teller, manuelle logger teller). Hurtigstart-timeren regner med
+// (gå/løp/sykle), manuell logg og fullført-skjermen. Alt teller mot dagens
+// gnist/streak og kan låse opp merker (§5.12: aldri skam, delvis gjennom-
+// føring teller, manuelle logger teller). Hurtigstart-timeren regner med
 // veggklokke-tid og lagres i localStorage — turen teller videre med
 // skjermen av, og gjenopptas selv om appen startes på nytt.
 import { el, tom, chip, ikon } from './ui.js';
 import { LS } from './config.js';
-import { hentProfil, lagreProfil, hentLogg, leggTilLogg } from './store.js';
-import { registrerBevegelse } from './niva.js';
+import { hentLogg, leggTilLogg } from './store.js';
 import {
   BEVEGELSER, BEVEGELSE_NAVN, SPORTER,
-  beregnXp, erComeback, bevegelsesMomentum, beregnStreak,
+  erComeback, bevegelsesMomentum, beregnStreak,
 } from './bevegelse.js';
+import { hentGnistStatus, GNIST_PILARER } from './gnist.js';
 import { merkerNå, nyeMerker } from './merker.js';
 import { tallOpp } from './animasjon.js';
 import { holdVaaken, slippVaaken } from './vaakenlaas.js';
 import { laasteOktIder, nyeOpplaste } from './opplasing.js';
-import { streakEtter, kisteKort } from './feiring.js';
+import { streakEtter, blaaEtter, kisteKort } from './feiring.js';
 
 let aktivTimer = null;
 let vedSynlig = null; // oppdaterer klokka umiddelbart når appen våkner
@@ -54,15 +54,13 @@ function lagreAktiv(a) {
 
 // --- Registrering: én vei inn for all fri/manuell bevegelse ----------------
 export function registrerOgLogg({ bevegelse, varighetMin, intensitet = 3, tittel = null, kilde = 'manuell', dato = null, ekstra = {} }) {
-  const profil = hentProfil();
   const logg = hentLogg();
   const nå = Date.now();
   const comeback = erComeback(logg, nå);
   const merkerFør = merkerNå();
   const førStreak = beregnStreak(logg, nå);
   const førLåste = kilde === 'laer' ? laasteOktIder() : null; // øyeblikksbilde før teknikk læres
-  const { profil: ny, resultat } = registrerBevegelse(profil, { bevegelse, varighetMin, intensitet, comeback }, nå);
-  lagreProfil(ny);
+  const resultat = { comeback };
   leggTilLogg({
     id: `bev-${nå}`,
     dato: dato || new Date(nå).toISOString(),
@@ -70,7 +68,6 @@ export function registrerOgLogg({ bevegelse, varighetMin, intensitet = 3, tittel
     tittel,
     varighetMin,
     intensitet,
-    xp: resultat.xp,
     kilde,
     fullfort: true,
     ...ekstra,
@@ -322,7 +319,7 @@ export function visLoggforSkjerm(mount) {
           ),
         ),
         el('p', { class: 'dempet', style: 'text-align:center' },
-          `≈ +${beregnXp(state.minutter, state.bevegelse, state.intensitet)} XP`),
+          'Alt teller — hvert minutt bygger dagens gnist.'),
         el('div', { class: 'fast-bunn' },
           el('button', {
             class: 'knapp', type: 'button',
@@ -349,7 +346,7 @@ export function visLoggforSkjerm(mount) {
 
 // ===========================================================================
 // Fullført-skjerm — «Du beveget deg. Det teller.» (spec §7/§15.5)
-// Feirer XP, nivåopprykk og nye merker — varm og rolig, aldri høylytt.
+// Feirer gnisten, streaken og nye merker — varm og rolig, aldri høylytt.
 // ===========================================================================
 export function visBevegelseFerdig(mount, resultat, { bevegelse, varighetMin, tittel = null, delvis = false, styrke = null } = {}) {
   const logg = hentLogg();
@@ -359,20 +356,24 @@ export function visBevegelseFerdig(mount, resultat, { bevegelse, varighetMin, ti
   const volumTall = løft && el('div', { class: 'loft__tall' }, '0 kg');
   const aktivitet = tittel || BEVEGELSE_NAVN[bevegelse] || 'Bevegelse';
 
+  // Dagens gnist-status etter registreringen: er bevegelses-gnisten tent, og
+  // hvor mange av de fire som er tent i dag (på vei mot en blå dag).
+  const gs = hentGnistStatus();
+  const beveg = gs.pilarer.bevegelse;
+
   tom(mount);
   mount.append(
     el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, 'Du beveget deg.')),
     el('main', { class: 'innhold' },
-      // Claim-XP-kiste — samme heiende feiring som i Lær (åpner seg selv, teller
-      // opp XP, avdekker nye merker og evt. opplåste økter).
+      // Claim-kiste — samme heiende feiring som i Lær (åpner seg selv og
+      // avdekker nye merker og evt. opplåste økter).
       kisteKort({
-        xp: resultat.xp,
         tittel: delvis ? 'Det teller!' : 'Godt jobba!',
         under: `${aktivitet} · ${varighetMin} min`,
         merker: nye,
         opplaste: resultat.nyeOpplaste || [],
       }),
-      resultat.comeback && el('p', { class: 'ferdighero__comeback', style: 'text-align:center' }, 'Velkommen tilbake — dobbel XP.'),
+      resultat.comeback && el('p', { class: 'ferdighero__comeback', style: 'text-align:center' }, 'Velkommen tilbake — det teller dobbelt i hjertet.'),
       løft && el('div', { class: 'kort loft' },
         el('p', { class: 'hero__eyebrow' }, 'Løftet i dag'),
         volumTall,
@@ -382,11 +383,15 @@ export function visBevegelseFerdig(mount, resultat, { bevegelse, varighetMin, ti
             ikon('trofe', 'ikon ikon--liten'), ` Ny rekord: ${p.navn} (~${p.e1rm} kg)`)),
         ),
       ),
-      resultat.globalOpp && el('div', { class: 'kort levelup' },
-        el('div', { class: 'levelup__glans' }),
-        el('p', { class: 'hero__eyebrow' }, 'Nivå opp!'),
-        el('div', { class: 'levelup__niva' }, `Nivå ${resultat.globalOpp}`),
-        el('p', { class: 'dempet' }, 'Nivået ditt bor på profilikonet — feiringen bor i merkene.'),
+      beveg.iDag.naadd && el('div', { class: 'kort gnistkort' },
+        el('span', { class: 'gnistkort__flamme' }, ikon('flamme')),
+        el('div', { class: 'gnistkort__meta' },
+          el('p', { class: 'hero__eyebrow' }, 'Gnisten er tent!'),
+          el('p', { class: 'gnistkort__tekst' },
+            beveg.streak > 1 ? `${beveg.streak} dager på rad med bevegelse.` : 'Dagens bevegelses-gnist er i boks.'),
+          el('p', { class: 'dempet' },
+            gs.blaa.iDagAlle ? 'Alle gnistene tent — blå dag!' : `${gs.blaa.tentIDag} av ${GNIST_PILARER.length} gnister tent i dag.`),
+        ),
       ),
       el('div', { class: 'kort kort--info' },
         el('p', { class: 'oppmuntring__tittel' }, mom.tekst),
@@ -399,7 +404,8 @@ export function visBevegelseFerdig(mount, resultat, { bevegelse, varighetMin, ti
     ),
   );
   if (volumTall) tallOpp(volumTall, løft.volum, { ms: 1100, format: (n) => `${n.toLocaleString('nb-NO')} kg` });
-  // Første bevegelse på dagen som løftet streaken → «Jeg er dedikert» over skjermen
-  // (spilles etter at kista er avdekket). streakEtter self-gater på dagens flagg.
-  streakEtter(resultat);
+  // Første bevegelse på dagen som løftet streaken → «Jeg er dedikert» over
+  // skjermen; ble dagen komplett blå, spilles blå flamme-feiringen etterpå.
+  // Begge self-gater på dagens flagg.
+  streakEtter(resultat).then(() => blaaEtter());
 }

@@ -1,6 +1,6 @@
 // Smoke-test for Strava-broen (M14): mapping (delt med Edge Functionen),
-// kreditering på enheten (XP + hovedbok), dedupe, soft delete og
-// plan-avhuking. Kjøres med `node scripts/smoke-strava.mjs` — ingen DOM,
+// bokføring på enheten (kreditert-stempel + hovedbok), dedupe, soft delete
+// og plan-avhuking. Kjøres med `node scripts/smoke-strava.mjs` — ingen DOM,
 // localStorage stubbes.
 let feil = 0;
 function sjekk(navn, ok) {
@@ -20,7 +20,6 @@ const { tilLoggRad, intensitetFraPuls, SPORT_TIL_BEVEGELSE } =
   await import('../supabase/functions/strava/mapping.js');
 const { lagreProfil, hentProfil, settLoggRå, hentLogg, leggTilPlan, hentPlan } =
   await import('../js/store.js');
-const { beregnXp } = await import('../js/bevegelse.js');
 const { krediterNye } = await import('../js/strava.js');
 
 // === 1) Mapping ==============================================================
@@ -36,7 +35,7 @@ sjekk('mapping: varighet = avrundet moving_time', lop.data.varighetMin === 31);
 sjekk('mapping: intensitet 4 ved snittpuls 152', lop.data.intensitet === 4);
 sjekk('mapping: dato-kolonnen = lokal dag', lop.dato === '2026-07-09');
 sjekk('mapping: data.dato = ekte UTC', lop.data.dato === '2026-07-09T18:30:00Z');
-sjekk('mapping: xp er null (ukreditert)', lop.data.xp === null);
+sjekk('mapping: xp er null (ubokført-markør)', lop.data.xp === null);
 sjekk('mapping: distanse/puls avrundet', lop.data.distanseM === 5230 && lop.data.snittPuls === 152);
 sjekk('mapping: Soccer → sport', SPORT_TIL_BEVEGELSE.Soccer === 'sport');
 sjekk('mapping: ukjent type → custom', tilLoggRad({ id: 1, sport_type: 'NoeNytt', moving_time: 600 }, 'u').data.bevegelse === 'custom');
@@ -49,7 +48,7 @@ idag.setHours(10, 0, 0, 0);
 const idagIso = idag.toISOString();
 const dag = `${idag.getFullYear()}-${String(idag.getMonth() + 1).padStart(2, '0')}-${String(idag.getDate()).padStart(2, '0')}`;
 
-lagreProfil({ navn: 'Test', globalXp: 100 });
+lagreProfil({ navn: 'Test' });
 leggTilPlan({ dato: dag, modalitet: 'BASE' }); // gammel plan: BASE → walk
 
 const gaatur = {
@@ -68,20 +67,18 @@ settLoggRå([gammel, gaatur]);
 const antall = krediterNye();
 const profil = hentProfil();
 const rad = hentLogg().find((o) => o.id === 'strava-777');
-const ventetXp = beregnXp(30, 'walk', 3);
-sjekk('kreditering: én ny rad kreditert', antall === 1);
-sjekk(`kreditering: rad fikk xp ${ventetXp}`, rad?.xp === ventetXp);
-sjekk('kreditering: globalXp økte tilsvarende', profil.globalXp === 100 + ventetXp);
-sjekk('kreditering: hovedboka husker raden', (profil.stravaKreditert || []).includes('strava-777'));
+sjekk('bokføring: én ny rad bokført', antall === 1);
+sjekk('bokføring: raden stemples som kreditert', rad?.kreditert === true);
+sjekk('bokføring: hovedboka husker raden', (profil.stravaKreditert || []).includes('strava-777'));
 
 // === 3) Plan-avhuking ========================================================
 sjekk('plan: BASE-plan samme dag huket av', hentPlan()[0]?.status === 'gjort');
 
-// === 4) Dedupe (stale kopi med xp: null re-pullet) ===========================
-rad.xp = null; // simuler at en gammel fjernkopi vant flettingen
+// === 4) Dedupe (stale kopi uten kreditert-stempel re-pullet) =================
+delete rad.kreditert; // simuler at en gammel fjernkopi vant flettingen
 settLoggRå(hentLogg());
-krediterNye();
-sjekk('dedupe: hovedboka hindrer dobbel XP', hentProfil().globalXp === 100 + ventetXp);
+const reBokfort = krediterNye();
+sjekk('dedupe: hovedboka hindrer dobbel bokføring', reBokfort === 0);
 
 // === 5) Soft delete ==========================================================
 const slettes = { ...gaatur, id: 'strava-888', slettet: true, xp: 12 };
