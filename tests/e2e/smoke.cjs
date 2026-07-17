@@ -72,8 +72,8 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
   await page.goto(`${BASE}/#/hjem`);
   await page.waitForSelector('.hjemdash', { timeout: 20000 });
   sjekk('Appen booter og tegner #app', (await page.locator('#app > *').count()) > 0);
-  sjekk('Hjem viser den blå flammen', (await page.locator('.blaaflamme').count()) > 0);
-  sjekk('Hjem viser de fire røde gnistene', (await page.locator('.gnistchip').count()) === 4);
+  sjekk('Hjem viser dagsringen', (await page.locator('.dagring').count()) > 0);
+  sjekk('Hjem viser pilar-sjekklista (4 vaner + mening)', (await page.locator('.valgrad').count()) === 5);
   sjekk('Hjem har feed-ikon oppe til venstre', (await page.locator('.hjemtopp__feed').count()) === 1);
 
   // --- 2) Feeden bor på #/feed og rendrer flere kort -------------------------

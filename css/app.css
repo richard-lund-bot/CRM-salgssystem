@@ -323,7 +323,7 @@ body {
 
 .hjemdash__hero { position: relative; overflow: hidden; border-radius: var(--radius-2xl); padding: 26px 22px 30px; background-size: cover; background-position: center; box-shadow: var(--shadow-card); text-align: center; }
 .hjemdash__scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(28,42,33,0.05) 0%, rgba(28,42,33,0.22) 60%, rgba(28,42,33,0.42) 100%); }
-.hjemdash__hilsen, .hjemdash__hero .taktring, .hjemdash__hero .blaaflamme, .hjemdash__taktord { position: relative; z-index: 1; }
+.hjemdash__hilsen, .hjemdash__hero .taktring, .hjemdash__hero .dagring, .hjemdash__hero .dagring__streak { position: relative; z-index: 1; }
 .hjemdash__tittel { font-family: var(--font-display); font-size: 30px; line-height: 1.12; font-weight: 700; color: #fff; text-shadow: 0 1px 12px rgba(20,28,20,0.4); margin: 0; }
 .hjemdash__under { margin: 6px 0 0; color: rgba(255,255,255,0.9); font-size: 15px; text-shadow: 0 1px 8px rgba(20,28,20,0.4); }
 
@@ -345,44 +345,28 @@ body {
 .taktring--pilar .ringfremgang__fyll { stroke-width: 8; }
 
 
-/* Blå flamme — kjernemålingen på Hjem: blue zone-streaken (alle gnistene
-   tent samme dag). Ligger midt i heroen der takt-ringen sto. */
-.blaaflamme {
-  display: flex; flex-direction: column; align-items: center; gap: 2px;
-  margin: 14px auto 4px; text-decoration: none; color: inherit;
-}
-.blaaflamme__ikon { display: grid; place-items: center; }
-.blaaflamme__ikon .ikon {
-  width: 74px; height: 74px; color: var(--blaa-300);
-  filter: drop-shadow(0 6px 18px rgba(46, 143, 224, 0.35));
-  transform-origin: 50% 90%;
-}
-.blaaflamme--tent .blaaflamme__ikon .ikon {
-  color: var(--blaa-500);
-  animation: flamme-liv 2.6s ease-in-out infinite;
-}
-.blaaflamme__midt { display: flex; flex-direction: column; align-items: center; gap: 1px; }
-.blaaflamme__tall { font-family: var(--font-display); font-size: 44px; font-weight: 700; color: #fff; line-height: 1; text-shadow: 0 1px 12px rgba(20,28,20,0.45); }
-.blaaflamme__merkelapp { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.85); }
+/* Dagsring — kjernemålingen på Hjem: én rolig ring som fylles av dagens
+   fremdrift mot de fire vanene. Midten teller hvor mange av fire som er i
+   boks; full ring får en dempet blå tone (alle fire = «hel dag»). */
+.dagring { position: relative; display: block; width: 148px; height: 148px; margin: 18px auto 0; text-decoration: none; }
+.dagring .ringfremgang { display: block; width: 100%; height: 100%; }
+.dagring .ringfremgang__spor { stroke: rgba(255,255,255,0.24); stroke-width: 6; }
+.dagring .ringfremgang__fyll { stroke: var(--gull-300); stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset 0.9s var(--ease-out); }
+.dagring--full .ringfremgang__fyll { stroke: var(--blaa-300); filter: drop-shadow(0 0 5px rgba(127,187,238,0.55)); }
+.dagring__midt { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; }
+.dagring__tall { font-family: var(--font-display); font-size: 38px; font-weight: 700; color: #fff; line-height: 1; text-shadow: 0 1px 12px rgba(20,28,20,0.45); }
+.dagring__merkelapp { font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.82); }
 
-/* De fire røde gnistene: streak-chips per pilar rett under heroen */
-.gnistrad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-.gnistchip {
-  display: flex; flex-direction: column; align-items: center; gap: 1px;
-  padding: 10px 4px 8px; border-radius: var(--radius-lg);
-  background: var(--bg-kort); border: 1px solid var(--kant);
-  box-shadow: var(--shadow-xs); text-decoration: none; color: var(--tekst);
+/* Den blå streaken: diskré frostet pille under ringen, kun når du har en. */
+.dagring__streak {
+  display: inline-flex; align-items: center; gap: 5px; margin-top: 12px;
+  padding: 5px 13px 5px 10px; border-radius: var(--radius-pill);
+  background: rgba(255,255,255,0.16); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; text-shadow: 0 1px 6px rgba(20,28,20,0.4);
 }
-.gnistchip__flamme { display: grid; place-items: center; color: var(--ink-300); }
-.gnistchip__flamme .ikon { width: 20px; height: 20px; transform-origin: 50% 90%; }
-.gnistchip--tent { background: var(--gnist-rod-svak); border-color: var(--coral-200); }
-.gnistchip--tent .gnistchip__flamme { color: var(--gnist-rod); }
-.gnistchip--tent .gnistchip__flamme .ikon { animation: flamme-liv 2.6s ease-in-out infinite; }
-.gnistchip__tall { font-family: var(--font-display); font-size: 19px; font-weight: 700; line-height: 1.15; }
-.gnistchip--tent .gnistchip__tall { color: var(--gnist-rod-dyp); }
-.gnistchip__navn { font-size: 10.5px; color: var(--dempet); }
+.dagring__streak .ikon { width: 15px; height: 15px; color: var(--blaa-300); }
 @media (prefers-reduced-motion: reduce) {
-  .blaaflamme--tent .blaaflamme__ikon .ikon, .gnistchip--tent .gnistchip__flamme .ikon { animation: none; }
+  .dagring .ringfremgang__fyll { transition: none; }
 }
 
 .hjemdash__valgtopp { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
@@ -398,12 +382,9 @@ body {
 .valgrad__sjekk { display: grid; place-items: center; width: 26px; height: 26px; color: var(--dempet); }
 .valgrad__gnist {
   display: inline-flex; align-items: center; gap: 3px; flex: 0 0 auto;
-  padding: 3px 8px 3px 6px; border-radius: var(--radius-pill);
-  background: var(--ink-050); color: var(--dempet);
-  font-family: var(--font-display); font-size: 13px; font-weight: 700;
+  color: var(--dempet); font-family: var(--font-display); font-size: 12.5px; font-weight: 700;
 }
-.valgrad__gnist .ikon { width: 13px; height: 13px; }
-.valgrad__gnist--tent { background: var(--gnist-rod-svak); color: var(--gnist-rod-dyp); }
+.valgrad__gnist .ikon { width: 13px; height: 13px; color: var(--terrakotta); opacity: 0.75; }
 .valgrad--gjort .valgrad__ikon { background: var(--aksent); color: var(--papir-100); }
 .valgrad--gjort .valgrad__sjekk { color: var(--aksent); }
 .valgrad--gjort .valgrad__sjekk .ikon { width: 20px; height: 20px; }
