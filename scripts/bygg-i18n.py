@@ -235,6 +235,16 @@ EN = {
  'Lagre refleksjonen': 'Save the reflection', 'Oppdater': 'Update',
  'Refleksjon lagret': 'Reflection saved', 'Meningsdagbok': 'Meaning journal',
  'Ett steg nærmere': 'One step closer', 'Uke fra': 'Week of', 'Fjern': 'Remove',
+ # Utforsk (M53) + Fargemodus
+ 'Utforsk': 'Explore', 'Kunnskap og inspirasjon for gode år.': 'Knowledge and inspiration for good years.',
+ 'Les etter pilar': 'Read by pillar', 'Kunnskap & inspirasjon': 'Knowledge & inspiration',
+ 'Dagens feed': "Today's feed", 'Spillbar kunnskap — ett kort av gangen': 'Playable knowledge — one card at a time',
+ 'Utforsk kunnskap & inspirasjon': 'Explore knowledge & inspiration', 'Les': 'Read',
+ 'Kunne ikke laste akkurat nå.': 'Could not load right now.',
+ 'Fargemodus': 'Colour mode',
+ 'Lys papir eller skogsgrønn mørk modus. «Auto» følger systemet ditt.':
+   'Light paper or deep-green dark mode. “Auto” follows your system.',
+ 'Auto': 'Auto', 'Lys': 'Light', 'Mørk': 'Dark',
 }
 
 # Kompendium/merke-tekster (lengre) — legg til

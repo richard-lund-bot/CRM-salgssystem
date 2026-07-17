@@ -13,6 +13,7 @@ import {
 import { lesStyrkelogg, settStyrkeloggRå, oktVolum } from './styrke.js';
 import { lesMatlogg, settMatloggRå } from './kosthold.js';
 import { lesSosiallogg, settSosialloggRå } from './sosialt.js';
+import { lesHvorfor, settHvorforRå, lesRefleksjoner, settRefleksjonerRå } from './mening.js';
 
 const AUTH = `${SUPABASE_URL}/auth/v1`;
 const REST = `${SUPABASE_URL}/rest/v1`;
@@ -223,6 +224,15 @@ async function pull() {
     const rader = await rest('sosial_logs?select=data,oppdatert&order=oppdatert.desc');
     settSosialloggRå(flettPerId(lesSosiallogg(), rader, 'dato'));
   } catch (e) { console.warn('Sosiallogg-pull hoppet over', e.message); }
+  // Mening: «Mitt hvorfor» + ukens refleksjon synkes isolert.
+  try {
+    const rader = await rest('mening_logs?select=data,oppdatert&order=oppdatert.desc');
+    settHvorforRå(flettPerId(lesHvorfor(), rader, 'opprettet'));
+  } catch (e) { console.warn('Mening-pull hoppet over', e.message); }
+  try {
+    const rader = await rest('mening_refleksjoner?select=data,oppdatert&order=oppdatert.desc');
+    settRefleksjonerRå(flettPerId(lesRefleksjoner(), rader, 'uke'));
+  } catch (e) { console.warn('Refleksjon-pull hoppet over', e.message); }
 }
 
 async function push() {
@@ -282,6 +292,30 @@ async function push() {
         })),
       });
     } catch (e) { console.warn('Sosiallogg-push hoppet over', e.message); }
+  }
+  const hvorfor = lesHvorfor();
+  if (hvorfor.length) {
+    try {
+      await rest('mening_logs?on_conflict=id', {
+        method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
+        body: hvorfor.map((o) => ({
+          id: o.id, user_id: uid, data: o,
+          oppdatert: o.oppdatert || o.opprettet || new Date().toISOString(),
+        })),
+      });
+    } catch (e) { console.warn('Mening-push hoppet over', e.message); }
+  }
+  const refleksjoner = lesRefleksjoner();
+  if (refleksjoner.length) {
+    try {
+      await rest('mening_refleksjoner?on_conflict=id', {
+        method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
+        body: refleksjoner.map((o) => ({
+          id: o.id || o.uke, user_id: uid, uke: o.uke, data: o,
+          oppdatert: o.oppdatert || o.opprettet || new Date().toISOString(),
+        })),
+      });
+    } catch (e) { console.warn('Refleksjon-push hoppet over', e.message); }
   }
 }
 

@@ -29,7 +29,10 @@ function skrivRå(nokkel, arr) {
   try { localStorage.setItem(nokkel, JSON.stringify(arr)); } catch { /* lagring valgfri */ }
 }
 
-export function lesHvorfor() { return lesRå(LS_HVORFOR); }
+// Normaliserer for synk: hvert innslag trenger en stabil id + oppdatert (LWW).
+export function lesHvorfor() {
+  return lesRå(LS_HVORFOR).map((h) => ({ ...h, oppdatert: h.oppdatert || h.opprettet }));
+}
 /** Skriver hele hvorfor-listen rått (brukes av synk etter fletting). */
 export function settHvorforRå(arr) { skrivRå(LS_HVORFOR, Array.isArray(arr) ? arr : []); }
 export function harHvorfor() { return lesHvorfor().length > 0; }
@@ -42,7 +45,8 @@ export function leggTilHvorfor(tekst) {
   const liste = lesHvorfor();
   if (liste.length >= MAKS_HVORFOR) return null;
   if (liste.some((h) => h.tekst.trim().toLowerCase() === t.toLowerCase())) return null;
-  const ny = { id: `hvorfor-${Date.now().toString(36)}`, tekst: t, opprettet: new Date().toISOString() };
+  const nå = new Date().toISOString();
+  const ny = { id: `hvorfor-${Date.now().toString(36)}`, tekst: t, opprettet: nå, oppdatert: nå };
   liste.push(ny);
   skrivRå(LS_HVORFOR, liste);
   return ny;
@@ -78,7 +82,10 @@ export function ukeStart(ts = Date.now()) {
   return `${man.getFullYear()}-${String(man.getMonth() + 1).padStart(2, '0')}-${String(man.getDate()).padStart(2, '0')}`;
 }
 
-export function lesRefleksjoner() { return lesRå(LS_REFLEKS); }
+// Normaliserer for synk: id = uka (én refleksjon per uke), oppdatert for LWW.
+export function lesRefleksjoner() {
+  return lesRå(LS_REFLEKS).map((r) => ({ ...r, id: r.id || r.uke, oppdatert: r.oppdatert || r.opprettet }));
+}
 /** Skriver hele refleksjonsloggen rått (brukes av synk etter fletting). */
 export function settRefleksjonerRå(arr) { skrivRå(LS_REFLEKS, Array.isArray(arr) ? arr : []); }
 
@@ -90,7 +97,7 @@ export function ukensRefleksjon(uke = ukeStart()) {
 export function settRefleksjon(tekst, uke = ukeStart()) {
   const t = (tekst || '').trim();
   let liste = lesRefleksjoner().filter((r) => r.uke !== uke);
-  if (t) liste.push({ uke, tekst: t, opprettet: new Date().toISOString() });
+  if (t) { const nå = new Date().toISOString(); liste.push({ id: uke, uke, tekst: t, opprettet: nå, oppdatert: nå }); }
   liste.sort((a, b) => (a.uke < b.uke ? 1 : -1)); // nyeste uke først
   skrivRå(LS_REFLEKS, liste);
   return t ? liste[0] : null;

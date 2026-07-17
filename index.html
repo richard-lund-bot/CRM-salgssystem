@@ -10,6 +10,17 @@
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
   <link rel="icon" href="icons/icon-192.png" />
   <link rel="manifest" href="manifest.webmanifest" />
+  <script>
+    /* Fargemodus uten FOUC: sett data-mork før CSS males (auto = systemvalg). */
+    (function () {
+      try {
+        var m = localStorage.getItem('trening.fargemodus') || 'auto';
+        var d = m === 'mork' || (m === 'auto' && window.matchMedia
+          && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (d) document.documentElement.setAttribute('data-mork', '');
+      } catch (e) { /* ignorer */ }
+    })();
+  </script>
   <link rel="stylesheet" href="css/app.css" />
   <title>Takt — Daglige valg, gode år</title>
 </head>

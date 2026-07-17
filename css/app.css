@@ -151,14 +151,13 @@
   --aksent-svak: var(--ink-100); --aksent-kant: var(--ink-200);
 }
 
-/* ==== Skogsgrønn mørk modus (M53) — følger systemets fargevalg ============
-   Takt er temabevisst: varm papir i lys modus, dyp skog i mørk. Vi flipper kun
-   de semantiske flate-/tekst-tokenene + tekst/kant-delen av den gamle
-   fargeskalaen. Faste aksenter (--papir-* brukt som LYS tekst på grønt,
-   --gull-*, --skog-700/800) beholdes med vilje. Gjelder ikke når brukeren har
-   valgt den eksplisitte lyse papir-flaten. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-tema="papir"]) {
+/* ==== Skogsgrønn mørk modus (M53) — data-mork settes av JS/inline-script ===
+   Takt er temabevisst: varm papir i lys modus, dyp skog i mørk. data-mork
+   settes ut fra fargemodus-valget (auto/lys/mørk): «auto» følger systemet.
+   Vi flipper kun de semantiske flate-/tekst-tokenene + tekst/kant-delen av den
+   gamle fargeskalaen; faste aksenter (--papir-* som LYS tekst på grønt, gull,
+   --skog-700/800) beholdes med vilje. Papir-temaet forblir lyst uansett. */
+:root[data-mork]:not([data-tema="papir"]) {
     --bg: #15201A;
     --bg-kort: #1E2D24;
     --bg-kort-2: #283A2E;
@@ -188,12 +187,12 @@
     --shadow-card: 0 8px 26px rgba(0,0,0,0.42);
     color-scheme: dark;
   }
-  /* Dagsfasebildene er lyse/pastell; i mørk modus (der sidetitlene er lyse)
-     dempes de ned så overskriftene leser klart og stemningen blir skogsmørk
-     — som «Naturen»-skjermen i inspoen. */
-  :root:not([data-tema="papir"]) .fanebilde { filter: brightness(0.46) saturate(0.85); }
-  :root:not([data-tema="papir"]) .banner-fade { opacity: 0.4; }
-}
+/* Dagsfasebildene er lyse/pastell; i mørk modus (der sidetitlene er lyse)
+   dempes de ned så overskriftene leser klart og stemningen blir skogsmørk
+   — som «Naturen»-skjermen i inspoen. */
+:root[data-mork]:not([data-tema="papir"]) .fanebilde { filter: brightness(0.46) saturate(0.85); }
+:root[data-mork]:not([data-tema="papir"]) .banner-fade { opacity: 0.4; }
+
 :root[data-tema="gull"] { /* dempet gull */
   --aksent: #B08D2A; --aksent-mork: #8D6F1E; --aksent-lys: #C9A93B;
   --aksent-svak: #F7F0DC; --aksent-kant: #EBDEB6;
@@ -248,7 +247,7 @@ body {
   font-weight: 600;
   font-size: 24px;
   letter-spacing: -0.01em;
-  color: var(--navy-700);
+  color: var(--tekst);
   line-height: 1;
   text-decoration: none;
 }
@@ -361,6 +360,29 @@ body {
 .hjemdash__feedhint { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-radius: var(--radius-lg); border: 1px dashed var(--kant-sterk); color: var(--aksent); font-weight: 600; text-decoration: none; }
 .hjemdash__feedhint > span { flex: 1; }
 .hjemdash__feedhint .ikon { width: 18px; height: 18px; }
+
+/* Utforsk — kuratert oppdagelse */
+.utforsk-under { margin: -4px 2px 4px; color: var(--dempet); font-size: 14.5px; }
+.utforsk-seksjon { margin-top: 2px; }
+.utforsk-seksjontittel { font-family: var(--font-display); font-size: 19px; font-weight: 700; color: var(--tekst); margin: 6px 2px 10px; }
+.utforsk-pilarer { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.utforsk-pilar { display: inline-flex; align-items: center; gap: 7px; padding: 8px 13px 8px 9px; border-radius: 999px; background: var(--aksent-svak); border: 1px solid var(--aksent-kant); color: var(--aksent); font-weight: 600; text-decoration: none; }
+.utforsk-pilar__ikon { display: grid; place-items: center; }
+.utforsk-pilar__ikon .ikon { width: 17px; height: 17px; }
+.utforsk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.utforsk-art { position: relative; display: block; aspect-ratio: 4 / 5; border-radius: var(--radius-lg); overflow: hidden; text-decoration: none; box-shadow: var(--shadow-sm); background: var(--bg-kort-2); }
+.utforsk-art__bilde { position: absolute; inset: 0; background-size: cover; background-position: center; }
+.utforsk-art__skygge { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(28,42,33,0) 30%, rgba(20,28,20,0.72) 100%); }
+.utforsk-art__tekst { position: absolute; left: 0; right: 0; bottom: 0; padding: 12px; display: flex; flex-direction: column; gap: 4px; }
+.utforsk-art__tag { font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gull-300); }
+.utforsk-art__tittel { font-family: var(--font-display); font-size: 15px; line-height: 1.22; font-weight: 700; color: #fff; text-shadow: 0 1px 8px rgba(20,28,20,0.5); }
+.utforsk-feed { display: flex; align-items: center; gap: 12px; margin-top: 10px; text-decoration: none; color: var(--tekst); }
+.utforsk-feed__ikon { display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 44px; border-radius: 13px; background: var(--aksent); color: var(--papir-100); }
+.utforsk-feed__ikon .ikon { width: 22px; height: 22px; }
+.utforsk-feed__midt { flex: 1; display: flex; flex-direction: column; gap: 1px; }
+.utforsk-feed__navn { font-family: var(--font-display); font-size: 16px; font-weight: 600; }
+.utforsk-feed__hint { font-size: 12.5px; color: var(--dempet); }
+.utforsk-feed > .ikon { color: var(--dempet); }
 
 /* Ro-pilar — rolige økter / pust */
 .roliste { display: flex; flex-direction: column; gap: 10px; }
@@ -498,7 +520,7 @@ body {
   transition: background 0.28s ease, color 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
 }
 .chiprad--pille .chip--aktiv {
-  background: hsl(144, 100%, 43%);          /* samme grønn som bryterens --pa */
+  background: var(--aksent);                /* Takt skogsgrønn */
   color: #fff;
   border-color: transparent;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.14), 0 1px 1.5px rgba(0, 0, 0, 0.16);
@@ -1870,7 +1892,7 @@ body.fokusmodus { padding-bottom: 0; }
   --w: 64px; --h: 28px; --pad: 3px;
   --kule: 34px;                    /* bred stadion-dråpe, ~53 % av bredden */
   --av: hsl(218, 9%, 81%);
-  --pa: hsl(144, 100%, 43%);
+  --pa: var(--aksent);
   --dur: 0.5s;
   --fjaer: linear(0 0%, 0.6091 3.69%, 1.0259 7.24%, 1.1733 9.05%, 1.283 10.92%, 1.3562 12.87%, 1.3948 14.95%, 1.4014 16.03%, 1.3999 17.16%, 1.3731 19.64%, 1.3202 22.27%, 1.1394 29.39%, 1.0582 33.17%, 0.9943 37.45%, 0.9734 39.64%, 0.9593 41.92%, 0.9505 45.08%, 0.9517 48.7%, 0.9924 63.02%, 1.0046 71.2%, 1.0061 78.24%, 1 100%);
   appearance: none; -webkit-appearance: none;

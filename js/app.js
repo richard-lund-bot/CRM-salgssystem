@@ -55,6 +55,7 @@ let bib = null;
 const ruter = {
   hjem: () => visHjemDashboard(app), // Hjem er dagens dashbord (M53); feeden flyttet til #/feed
   feed: () => visFeedSkjerm(app), // Dagens feed — nås fra ikon oppe venstre / sveip fra Hjem
+  utforsk: () => visUtforskSkjerm(app), // Kunnskap & inspirasjon (kuratert oppdagelse)
   post: () => visPostSkjerm(app), // dedikert side for ett feed-innlegg (spillbart)
   trening: visTrening, // Min dag-dashbordet bor på Trening-fanen
   kosthold: () => visKostholdSkjerm(app), // Kosthold-pilaren (blue-zones-vaner)
@@ -340,8 +341,8 @@ function visHjemDashboard(mount) {
   );
 
   // --- Feed-hint + sammensetning ---
-  const feedHint = el('a', { class: 'hjemdash__feedhint', href: '#/feed' },
-    ikon('feed'), el('span', {}, 'Åpne dagens feed'), ikon('pilhoyre'));
+  const feedHint = el('a', { class: 'hjemdash__feedhint', href: '#/utforsk' },
+    ikon('sok'), el('span', {}, 'Utforsk kunnskap & inspirasjon'), ikon('pilhoyre'));
 
   tom(mount);
   const scroll = el('div', { class: 'hjemdash-scroll' },
@@ -364,6 +365,60 @@ function visHjemDashboard(mount) {
     ring.sett(takt / 100);
     tallOpp(pst, takt, { format: (n) => `${n}%` });
   }));
+}
+
+// ===========================================================================
+// Utforsk (M53) — kuratert oppdagelse: kunnskap & inspirasjon (artikler),
+// snarveier per pilar, og inngang til den spillbare feeden. Nås fra Hjem-
+// dashbordet og meny-huben (ikke en egen fane).
+// ===========================================================================
+function visUtforskSkjerm(mount) {
+  if (!hentProfil()) { location.hash = '#/hjem'; return; }
+
+  const PILAR_LENKER = [
+    { rute: 'kosthold', ikon: 'eple', navn: 'Mat' },
+    { rute: 'trening', ikon: 'loper', navn: 'Bevegelse' },
+    { rute: 'ro', ikon: 'maane', navn: 'Ro' },
+    { rute: 'sosialt', ikon: 'snakke', navn: 'Sosialt' },
+    { rute: 'mening', ikon: 'kompass', navn: 'Mening' },
+  ];
+  const pilarRad = el('div', { class: 'utforsk-pilarer' },
+    ...PILAR_LENKER.map((p) => el('a', { class: 'utforsk-pilar', href: `#/${p.rute}` },
+      el('span', { class: 'utforsk-pilar__ikon' }, ikon(p.ikon)),
+      el('span', { class: 'utforsk-pilar__navn' }, p.navn))));
+
+  const feedInngang = el('a', { class: 'utforsk-feed', href: '#/feed' },
+    el('span', { class: 'utforsk-feed__ikon' }, ikon('feed')),
+    el('span', { class: 'utforsk-feed__midt' },
+      el('span', { class: 'utforsk-feed__navn' }, 'Dagens feed'),
+      el('span', { class: 'utforsk-feed__hint' }, 'Spillbar kunnskap — ett kort av gangen')),
+    ikon('pilhoyre'));
+
+  const kunnskap = el('div', { class: 'utforsk-grid' }, el('p', { class: 'dempet' }, 'Laster…'));
+
+  skjerm('Utforsk',
+    el('p', { class: 'utforsk-under' }, 'Kunnskap og inspirasjon for gode år.'),
+    el('section', { class: 'kort' }, el('h2', { class: 'kost__tittel' }, 'Les etter pilar'), pilarRad),
+    el('section', { class: 'utforsk-seksjon' },
+      el('h2', { class: 'utforsk-seksjontittel' }, 'Kunnskap & inspirasjon'), kunnskap),
+    el('section', { class: 'kort' }, el('h2', { class: 'kost__tittel' }, 'Dagens feed'), feedInngang),
+  );
+
+  hentSprakJson('artikler').then((data) => {
+    const arr = Array.isArray(data) ? data : (data?.artikler || []);
+    const sortert = arr.slice().sort((a, b) => String(b.dato).localeCompare(String(a.dato)));
+    tom(kunnskap);
+    for (const a of sortert.slice(0, 6)) {
+      const bg = a.bilde ? `background-image:url('bilder/artikler/${a.bilde}.webp')` : '';
+      kunnskap.append(el('a', { class: 'utforsk-art', href: `#/artikkel?id=${encodeURIComponent(a.id)}` },
+        el('span', { class: 'utforsk-art__bilde', style: bg, 'aria-hidden': 'true' }),
+        el('span', { class: 'utforsk-art__skygge', 'aria-hidden': 'true' }),
+        el('span', { class: 'utforsk-art__tekst' },
+          el('span', { class: 'utforsk-art__tag' }, (a.tags && a.tags[0]) || 'Les'),
+          el('span', { class: 'utforsk-art__tittel' }, a.tittel))));
+    }
+    oversettDom(kunnskap);
+  }).catch(() => { tom(kunnskap); kunnskap.append(el('p', { class: 'dempet' }, 'Kunne ikke laste akkurat nå.')); });
 }
 
 // ===========================================================================
@@ -1031,6 +1086,7 @@ function visMeny() {
   fane('Meny', 'Innstillinger og om appen.',
     el('div', { class: 'kort' },
       el('div', { class: 'liste' },
+        lenke('sok', 'Utforsk', '#/utforsk'),
         lenke('kompass', 'Mitt hvorfor', '#/mening'),
         lenke('person', 'Profil', '#/merker'),
         lenke('bok', 'Lær', '#/laer'),
@@ -1212,6 +1268,19 @@ function visInnstillinger() {
         )),
       ),
     ),
+    // Fargemodus: auto (systemvalg) / lys / mørk (skogsgrønn).
+    (() => {
+      const valgtModus = lesFargemodus();
+      return el('div', { class: 'kort' },
+        el('h2', {}, 'Fargemodus'),
+        el('p', { class: 'dempet', style: 'margin-top:-4px' },
+          'Lys papir eller skogsgrønn mørk modus. «Auto» følger systemet ditt.'),
+        el('div', { class: 'chiprad chiprad--pille' },
+          ...[['auto', 'Auto'], ['lys', 'Lys'], ['mork', 'Mørk']].map(([id, navn]) =>
+            chip(navn, { aktiv: valgtModus === id, onClick: () => { bruksFargemodus(id); visInnstillinger(); } })),
+        ),
+      );
+    })(),
     el('div', { class: 'kort' },
       el('h2', {}, 'Lyd og vibrasjon'),
       el('p', { class: 'dempet', style: 'margin-top:-4px' },
@@ -1655,6 +1724,27 @@ export function bruksTema(id) {
   else delete document.documentElement.dataset.tema;
 }
 
+// Fargemodus (M53): auto (systemvalg) / lys / mørk. Setter data-mork på <html>
+// så mørk-blokken i CSS slår inn. Egen LS-nøkkel (som språk) leses også av et
+// inline-script i index.html for å unngå FOUC ved oppstart.
+const LS_FARGEMODUS = 'trening.fargemodus';
+function lesFargemodus() {
+  try { return localStorage.getItem(LS_FARGEMODUS) || 'auto'; } catch { return 'auto'; }
+}
+function bruksFargemodus(modus) {
+  const m = ['auto', 'lys', 'mork'].includes(modus) ? modus : 'auto';
+  try { localStorage.setItem(LS_FARGEMODUS, m); } catch { /* ignorer */ }
+  const systemMork = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (m === 'mork' || (m === 'auto' && systemMork)) document.documentElement.setAttribute('data-mork', '');
+  else document.documentElement.removeAttribute('data-mork');
+}
+// Følg systemets endringer når modus er «auto».
+try {
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if (lesFargemodus() === 'auto') bruksFargemodus('auto');
+  });
+} catch { /* eldre nettlesere */ }
+
 // --- Onboarding ---
 function startOnboarding() {
   document.body.classList.add('fokusmodus');
@@ -1714,6 +1804,7 @@ async function start() {
   settNavger(navger); // pull-to-refresh (banner.js) tegner siden på nytt
   settUlestSjekk(harUlesteVarsler); // uleste-prikk på bjella (banner.js)
   bruksTema(hentProfil()?.innstillinger?.tema);
+  bruksFargemodus(lesFargemodus());
   // Språk: engelsk-modus starter DOM-oversetteren (norsk er standard, ingen
   // oversetting). Observatøren fanger alt som tegnes fra nå av.
   document.documentElement.lang = gjeldendeSprak();
