@@ -108,6 +108,18 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
   }
   sjekk('Alle fanene finnes i baren', (await page.locator('.tabbar__knapp').count()) === FANER.length, `${FANER.length} faner`);
 
+  // --- 4b) Fellesskap-pilaren: hjem-flate + krets-underside ------------------
+  await page.click('.tabbar__knapp[data-rute="sosialt"]');
+  await page.waitForSelector('.kontaktgrid', { timeout: 20000 });
+  sjekk('Fellesskap viser logg-brikkene', (await page.locator('.kontaktchip').count()) === 4);
+  sjekk('Fellesskap viser streak-stripa', (await page.locator('.ukestreak').count()) > 0);
+  await page.goto(BASE + '/#/krets');
+  await page.waitForSelector('.side, .kort, .tomkrets', { timeout: 20000 });
+  sjekk('Din krets-siden åpner', (await hash()).startsWith('#/krets'));
+  // Tilbake til Hjem så språktesten under finner .hjemdash etter reload.
+  await page.goto(BASE + '/#/hjem');
+  await page.waitForSelector('.hjemdash', { timeout: 20000 });
+
   // --- 5) Språkbytte nb↔en (den ene testen som SKAL sjekke tekst) -------------
   // Sett den persistente trening.sprak-nøkkelen (samme som settSprak bruker) —
   // init-scriptet re-seeder profilen ved reload, men rører ikke denne nøkkelen.

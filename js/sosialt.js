@@ -11,10 +11,10 @@ const LS = 'trening.sosiallogg';
 
 // Sosiale blue-zones-vaner (stabile id-er; visningsnavn oversettes av i18n).
 export const SOSIALE_VANER = [
-  { id: 'motte', navn: 'Møtte noen' },
-  { id: 'naere', navn: 'Ringte en du er glad i' },
-  { id: 'maaltid', navn: 'Delte et måltid' },
-  { id: 'fellesskap', navn: 'Ble med på noe' },
+  { id: 'motte', navn: 'Møtte noen', ikon: 'personer' },
+  { id: 'naere', navn: 'Ringte noen', ikon: 'telefon' },
+  { id: 'maaltid', navn: 'Delte et måltid', ikon: 'eple' },
+  { id: 'fellesskap', navn: 'Ble med på noe', ikon: 'snakke' },
 ];
 const VANE = Object.fromEntries(SOSIALE_VANER.map((v) => [v.id, v]));
 
@@ -78,4 +78,41 @@ export function veksleVane(vaneId, dato = isoDag()) {
   const streakEtterVerdi = beregnStreak(aktiveDager(logg), Date.now());
   const streakØkte = streakEtterVerdi > streakFør ? streakEtterVerdi : 0;
   return { aktiv, streakØkte, streak: streakEtterVerdi };
+}
+
+/**
+ * Sikrer at en vane er PÅ for dagen (idempotent — skrur aldri av). Brukes når
+ * en kontakt logges fra et annet sted enn brikkene (f.eks. Din krets), så
+ * dagen teller. Returnerer feiring-resultat: { aktiv, streakØkte, streak }.
+ */
+export function sikreVane(vaneId, dato = isoDag()) {
+  const logg = les();
+  const streakFør = beregnStreak(aktiveDager(logg), Date.now());
+  const dag = hentEllerLagDag(logg, dato);
+  if (!dag.vaner[vaneId]) {
+    dag.vaner[vaneId] = true;
+    dag.oppdatert = new Date().toISOString();
+    skriv(logg);
+  }
+  const streakEtterVerdi = beregnStreak(aktiveDager(logg), Date.now());
+  return { aktiv: true, streakØkte: streakEtterVerdi > streakFør ? streakEtterVerdi : 0, streak: streakEtterVerdi };
+}
+
+/**
+ * «+ Annet» — logg en fri kontakt (fri tekst) for dagen. Lagres i dag.egne og
+ * tenner gnisten via vane-nøkkelen 'annet'. Returnerer { streakØkte, streak }.
+ */
+export function leggTilEgen(tekst, dato = isoDag()) {
+  const t = (tekst || '').trim();
+  if (!t) return null;
+  const logg = les();
+  const streakFør = beregnStreak(aktiveDager(logg), Date.now());
+  const dag = hentEllerLagDag(logg, dato);
+  dag.egne = Array.isArray(dag.egne) ? dag.egne : [];
+  dag.egne.push(t.slice(0, 80));
+  dag.vaner.annet = true;
+  dag.oppdatert = new Date().toISOString();
+  skriv(logg);
+  const streakEtterVerdi = beregnStreak(aktiveDager(logg), Date.now());
+  return { streakØkte: streakEtterVerdi > streakFør ? streakEtterVerdi : 0, streak: streakEtterVerdi };
 }

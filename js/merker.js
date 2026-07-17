@@ -298,7 +298,7 @@ export const MERKE_KATEGORIER = [
   { id: 'streak', navn: 'Streak' },
   { id: 'rytme', navn: 'Ukerytme' },
   { id: 'kosthold', navn: 'Kosthold' },
-  { id: 'sosialt', navn: 'Sosialt' },
+  { id: 'sosialt', navn: 'Fellesskap' },
   { id: 'laering', navn: 'Ferdighetsstier' },
   { id: 'nytt', navn: 'Prøv noe nytt' },
   { id: 'tid', navn: 'Tid i bevegelse' },

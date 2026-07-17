@@ -32,7 +32,7 @@ export const GNIST_PILARER = [
   { id: 'bevegelse', navn: 'Bevegelse', ikon: 'loper', rute: 'trening' },
   { id: 'mat', navn: 'Mat', ikon: 'eple', rute: 'kosthold' },
   { id: 'ro', navn: 'Ro', ikon: 'maane', rute: 'ro' },
-  { id: 'sosialt', navn: 'Sosialt', ikon: 'snakke', rute: 'sosialt' },
+  { id: 'sosialt', navn: 'Fellesskap', ikon: 'personer', rute: 'sosialt' },
 ];
 
 // Lokal ISO-dag (YYYY-MM-DD) — gnistene følger brukerens døgn, ikke UTC.

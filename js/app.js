@@ -9,7 +9,7 @@ import {
   hentProfil, harProfil, lagreProfil, hentLogg, nullstillAlt,
   planForDato,
 } from './store.js';
-import { el, tom, chip, ikon, bryter } from './ui.js';
+import { el, tom, chip, ikon, bryter, visArk } from './ui.js';
 import { APP_VERSION, APP_NAME, APP_TAGLINE } from './config.js';
 import { kjorOnboarding } from './onboarding.js';
 import { visReviewSkjerm, visKjoreSkjerm } from './kjor.js';
@@ -40,7 +40,11 @@ import { varsle } from './toast.js';
 import { visFeedSkjerm, visPostSkjerm } from './feed.js';
 import { gjeldendeSprak, settSprak, startOversetter, oversettDom, hentSprakJson } from './i18n.js';
 import { VANER, dagensInnslag, veksleVane, kostStatus, settNotat } from './kosthold.js';
-import { SOSIALE_VANER, dagensInnslag as sosDagensInnslag, veksleVane as sosVeksleVane, sosialStatus } from './sosialt.js';
+import { SOSIALE_VANER, dagensInnslag as sosDagensInnslag, veksleVane as sosVeksleVane, sosialStatus, lesSosiallogg, leggTilEgen } from './sosialt.js';
+import {
+  lesKrets, leggTilPerson, oppdaterPerson, slettPerson, registrerKontakt, sorterKrets,
+  varmeTekst, dagerSiden, KRETS_EMOJI, RELASJONER, METODER, IGANG_IDEER,
+} from './fellesskap.js';
 import {
   STARTSPORSMAL, lesHvorfor, leggTilHvorfor, slettHvorfor, kanLeggeTil,
   ukensRefleksjon, settRefleksjon, lesRefleksjoner,
@@ -59,7 +63,10 @@ const ruter = {
   trening: visTrening, // Min dag-dashbordet bor på Trening-fanen
   kosthold: () => visKostholdSkjerm(app), // Kosthold-pilaren (blue-zones-vaner)
   ro: () => visRoSkjerm(app), // Ro-pilaren (pust + rolige økter)
-  sosialt: () => visSosialtSkjerm(app), // Sosialt-pilaren (kommer — Fase 5)
+  sosialt: () => visFellesskapSkjerm(app), // Fellesskap-pilaren (relasjoner + kontakt-logg)
+  krets: () => visKretsSkjerm(app), // Din krets — personene du vil holde varmt
+  fremgang: () => visFellesskapFremgang(app), // Se fremgang (Fellesskap)
+  moteplasser: () => visMoteplasserSkjerm(app), // Finn fellesskap i nærheten
   beveg: () => visOkterSkjerm(app), // Treningsbibliotek-fanen er øktbiblioteket
   hurtig: () => visHurtigSkjerm(app),
   loggfor: () => visLoggforSkjerm(app),
@@ -124,8 +131,8 @@ const FANER_DEF = [
     barn: ['beveg', 'ny', 'okter'] },
   { id: 'ro', rute: 'ro', ikon: 'maane', fyll: null, label: 'Ro',
     barn: [] },
-  { id: 'sosialt', rute: 'sosialt', ikon: 'snakke', fyll: null, label: 'Sosialt',
-    barn: [] },
+  { id: 'sosialt', rute: 'sosialt', ikon: 'personer', fyll: null, label: 'Fellesskap',
+    barn: ['krets', 'fremgang', 'moteplasser'] },
 ];
 const FANER = FANER_DEF.map((f) => f.id);
 // Under-rute → eier-fane, utledet av barn-listene.
@@ -359,7 +366,7 @@ const dashScrollTop = () => window.scrollY || document.documentElement.scrollTop
 // og en .hjemdash-beholder for modulene. Brukes av Mat/Bevegelse/Ro/Sosialt så
 // pilarene føles som ett system.
 // ===========================================================================
-function pilarSkall(mount, { navn, tittel, under = null, ring = null }) {
+function pilarSkall(mount, { navn, tittel, under = null, ring = null, streakStripe = null }) {
   const fase = dagsfase(new Date().getHours());
   const topp = el('header', { class: 'hjemtopp' },
     el('a', { class: 'ikonknapp ikonknapp--plain hjemtopp__feed', href: '#/feed', 'aria-label': 'Dagens feed' }, ikon('feed')),
@@ -372,6 +379,19 @@ function pilarSkall(mount, { navn, tittel, under = null, ring = null }) {
       el('h1', { class: 'hjemdash__tittel pilar-hero__tittel' }, tittel),
       under ? el('p', { class: 'hjemdash__under' }, under) : null),
   ];
+  // Streak-stripe (frostet kort nederst i heroen): flamme + «X dager på rad» +
+  // ukesprikker M–S. Fylt prikk = kontakt den dagen, ring rundt = i dag.
+  if (streakStripe) {
+    const s = streakStripe;
+    heroBarn.push(el('a', { class: 'ukestreak', href: s.href || '#/fremgang', 'aria-label': `${s.streak} dager på rad` },
+      el('span', { class: 'ukestreak__flamme' + (s.streak > 0 ? ' ukestreak__flamme--paa' : '') }, ikon('flamme')),
+      el('span', { class: 'ukestreak__txt' },
+        el('b', {}, `${s.streak} ${s.streak === 1 ? 'dag' : 'dager'} på rad`),
+        el('span', { class: 'ukestreak__und' }, s.streak > 0 ? 'Fortsett den gode rytmen.' : 'Én kontakt i dag starter rytmen.')),
+      el('span', { class: 'ukestreak__uke' }, ...s.dager.map((d) => el('span', { class: 'ukestreak__dag' },
+        el('i', { class: 'ukestreak__prikk' + (d.on ? ' ukestreak__prikk--on' : '') + (d.today ? ' ukestreak__prikk--now' : '') }),
+        el('span', { class: 'ukestreak__lab' }, d.label))))));
+  }
   let settRing = null; let pstEl = null;
   if (ring) {
     const r = lagRing(46);
@@ -407,7 +427,7 @@ function byggUtforskSeksjoner() {
     { rute: 'kosthold', ikon: 'eple', navn: 'Mat' },
     { rute: 'trening', ikon: 'loper', navn: 'Bevegelse' },
     { rute: 'ro', ikon: 'maane', navn: 'Ro' },
-    { rute: 'sosialt', ikon: 'personer', navn: 'Sosialt' },
+    { rute: 'sosialt', ikon: 'personer', navn: 'Fellesskap' },
     { rute: 'mening', ikon: 'kompass', navn: 'Mening' },
   ];
   const pilarRad = el('div', { class: 'utforsk-pilarer' },
@@ -563,69 +583,366 @@ function visRoSkjerm(mount) {
 }
 
 // ===========================================================================
-// Sosialt (Fase 5, kommer) — tilhørighet er en av de sterkeste blue-zones-
-// faktorene. Foreløpig en «kommer snart»-flate som holder pilaren synlig i
-// bunnlinja; ekte arrangementer (frivillig.no/kommune/DNT) + nudges bygges senere.
+// Fellesskap (pilar 4) — tilhørighet som daglig praksis. Kjernen i blue zones:
+// en liten fast krets («moai») og en jevn rytme av kontakt slår antall
+// bekjentskaper. Skjermen har tre soner: RYTMEN (hero + streak-stripe),
+// GJØR NOE NÅ (logg dagens kontakt + kom i gang) og HVEM (din krets — «Ta vare
+// på noen»). Alt selvrapportert med ett tapp; kretsen bor lokalt (ingen import
+// av kontakter). Kontakt-logging tenner fellesskaps-gnisten som all annen vane.
 // ===========================================================================
-function visSosialtSkjerm(mount) {
+
+// Ukesprikker til streak-stripa: M–S for inneværende uke, fylt = kontakt.
+function ukestreakDager(nå = Date.now()) {
+  const LAB = ['M', 'T', 'O', 'T', 'F', 'L', 'S'];
+  const aktiv = new Set(lesSosiallogg()
+    .filter((o) => o.vaner && Object.values(o.vaner).some(Boolean))
+    .map((o) => o.dato));
+  const idag = new Date(nå); idag.setHours(0, 0, 0, 0);
+  const man = new Date(idag.getTime() - ((idag.getDay() + 6) % 7) * 86400000);
+  const idagIso = isoDato(idag);
+  return LAB.map((label, i) => {
+    const iso = isoDato(new Date(man.getTime() + i * 86400000));
+    return { label, on: aktiv.has(iso), today: iso === idagIso };
+  });
+}
+
+function visFellesskapSkjerm(mount) {
   const profil = hentProfil();
-  if (!profil) { skjerm('Sosialt', velkommenKort()); return; }
-  const iDag = sosDagensInnslag() || { vaner: {} };
+  if (!profil) { skjerm('Fellesskap', velkommenKort()); return; }
 
-  const tegnStatus = () => {
-    const s = sosialStatus();
-    const gsos = hentGnistStatus().pilarer.sosialt;
-    const stat = (tall, navn) => el('div', { class: 'koststat' },
-      el('span', { class: 'koststat__tall' }, String(tall)),
-      el('span', { class: 'koststat__navn' }, navn));
-    return el('div', { class: 'koststatus' },
-      stat(gsos.streak, 'dager på rad'),
-      stat(`${s.iDagAntall}/${s.antallVaner}`, 'gode valg i dag'),
-      stat(s.ukeAktive, 'aktive dager'));
+  const gsos = hentGnistStatus().pilarer.sosialt;
+  const main = pilarSkall(mount, {
+    navn: 'fellesskap',
+    tittel: 'God kontakt gjør noe med dagen.',
+    under: 'Små øyeblikk sammen gir mer mening, energi og glede.',
+    streakStripe: { streak: gsos.streak, dager: ukestreakDager() },
+  });
+
+  // Merker dagens ukesprikk som tent (uten full redraw) etter en logg.
+  const merkDagensDot = () => {
+    const dot = mount.querySelector('.ukestreak__prikk--now');
+    if (dot) dot.classList.add('ukestreak__prikk--on');
   };
-  let statusBoks = tegnStatus();
 
+  // --- Logg dagens kontakt (brikker + Annet) ---
+  const iDag = () => sosDagensInnslag() || { vaner: {} };
   const chips = SOSIALE_VANER.map((v) => {
-    const c = el('button', { class: 'intchip' + (iDag.vaner?.[v.id] ? ' intchip--valgt' : ''), type: 'button',
+    const på = !!iDag().vaner?.[v.id];
+    // Haken vises via CSS når brikka har --valgt (robust — ingen hidden-attr).
+    const c = el('button', { class: 'kontaktchip' + (på ? ' kontaktchip--valgt' : ''), type: 'button',
       onclick: async () => {
         const res = sosVeksleVane(v.id);
         if (!res) return;
-        c.classList.toggle('intchip--valgt', res.aktiv);
-        if (res.aktiv) { vibrer(); varsle('Godt valg', { ikon: 'hjerte' }); }
-        const ny = tegnStatus(); statusBoks.replaceWith(ny); statusBoks = ny;
+        c.classList.toggle('kontaktchip--valgt', res.aktiv);
+        if (res.aktiv) { vibrer(); varsle('Logget', { ikon: 'hjerte' }); merkDagensDot(); }
         await streakEtter(res);
         await blaaEtter();
-      } }, v.navn);
+      } },
+      el('span', { class: 'kontaktchip__ikon' }, ikon(v.ikon || 'personer')),
+      el('span', { class: 'kontaktchip__navn' }, v.navn),
+      el('span', { class: 'kontaktchip__hake' }, ikon('sjekk')));
     return c;
   });
 
-  const intro = el('section', { class: 'kort' },
-    el('h2', { class: 'kost__tittel' }, 'Tilhørighet holder deg frisk'),
-    el('p', { class: 'dempet' }, 'På Okinawa kalles det «moai» — en fast gjeng du hører til hele livet. Sterke bånd til andre er blant de kraftigste faktorene for et langt liv. Huk av de gode sosiale valgene dine i dag.'),
-    el('div', { class: 'kostchips' }, ...chips));
+  const loggKort = el('section', { class: 'kort' },
+    el('div', { class: 'korthode' },
+      el('div', {},
+        el('h2', { class: 'kost__tittel' }, 'Logg dagens kontakt'),
+        el('p', { class: 'dempet dempet--tett' }, 'Hva gjorde du i dag?')),
+      el('a', { class: 'knapp knapp--liten', href: '#/fremgang' }, 'Se fremgang')),
+    el('div', { class: 'kontaktgrid' }, ...chips),
+    el('div', { class: 'kontaktbunn' },
+      el('button', { class: 'annetknapp', type: 'button', onclick: () => annetArk(merkDagensDot) },
+        ikon('pluss', 'ikon ikon--liten'), 'Annet'),
+      el('a', { class: 'tekstlenke tekstlenke--ikon', href: '#/fremgang' }, ikon('stolper', 'ikon ikon--liten'), 'Vis logg')),
+  );
 
-  const kilderBoks = el('section', { class: 'kort' },
-    el('h2', { class: 'kost__tittel' }, 'Finn møteplasser i nærheten'),
-    el('div', { class: 'roliste sosialkilder' }, el('p', { class: 'dempet' }, 'Laster…')));
+  // --- Ta vare på noen (din krets) ---
+  // Endringer (logg kontakt / legg til person) gir en full re-tegning av
+  // Fellesskap-skjermen — enkelt og alltid korrekt.
+  const reTegnFellesskap = () => visFellesskapSkjerm(mount);
+  const krets = sorterKrets();
+  let taVareInnhold;
+  if (!krets.length) {
+    taVareInnhold = el('div', { class: 'kort tomkrets' },
+      el('span', { class: 'tomkrets__disk' }, ikon('personer')),
+      el('p', { class: 'oppmuntring__tittel' }, 'Legg til noen du vil holde kontakt med'),
+      el('p', { class: 'dempet' }, 'Din krets er de få du bryr deg om — som en «moai». Appen minner deg mykt på hvem det har gått en stund med.'),
+      el('button', { class: 'knapp', type: 'button', onclick: () => personArk(null, reTegnFellesskap) }, 'Legg til en person'));
+  } else {
+    taVareInnhold = el('div', { class: 'kretsrail' },
+      ...krets.slice(0, 6).map((p) => kretsKort(p, reTegnFellesskap, merkDagensDot)),
+      el('button', { class: 'kretskort kretskort--legg', type: 'button', onclick: () => personArk(null, reTegnFellesskap) },
+        el('span', { class: 'kretskort__ava kretskort__ava--legg' }, ikon('pluss')),
+        el('span', { class: 'kretskort__navn' }, 'Legg til')));
+  }
+  const taVare = el('section', {},
+    el('div', { class: 'seksjonshode seksjonshode--flat' },
+      el('h2', { class: 'seksjonstittel' }, 'Ta vare på noen'),
+      krets.length ? el('a', { class: 'seksjonslenke', href: '#/krets' }, 'Se alle', ikon('chevron')) : null),
+    taVareInnhold);
 
-  const s0 = sosialStatus();
-  const main = pilarSkall(mount, {
-    navn: 'sosialt', tittel: 'Vi lever lengre sammen.', under: 'Tilhørighet holder deg frisk.',
-    ring: { pst: s0.antallVaner ? Math.round((s0.iDagAntall / s0.antallVaner) * 100) : 0, merkelapp: 'gode valg i dag' },
+  // --- Kom i gang (lavterskel-ideer) ---
+  const komIGang = el('section', {},
+    el('div', { class: 'seksjonshode seksjonshode--flat' },
+      el('h2', { class: 'seksjonstittel' }, 'Kom i gang')),
+    el('div', { class: 'igangliste' }, ...IGANG_IDEER.map((ide) =>
+      el('button', { class: 'igangkort', type: 'button', onclick: () => iGangArk(ide, merkDagensDot) },
+        el('span', { class: 'igangkort__ikon' }, ikon(ide.ikon)),
+        el('span', { class: 'igangkort__midt' },
+          el('span', { class: 'igangkort__tittel' }, ide.tittel),
+          el('span', { class: 'igangkort__hint' }, ide.hint)),
+        ikon('pilhoyre', 'ikon igangkort__pil')))));
+
+  const moteplass = el('a', { class: 'moteplasslenke', href: '#/moteplasser' },
+    el('span', { class: 'moteplasslenke__ikon' }, ikon('kompass')),
+    el('span', {}, 'Finn fellesskap i nærheten'), ikon('pilhoyre'));
+
+  main.append(loggKort, taVare, komIGang, moteplass);
+}
+
+// Ett personkort i «Ta vare på noen»-railen.
+function kretsKort(p, reTegn, merkDot) {
+  const met = METODER.find((m) => m.id === p.metode) || METODER[1];
+  const handling = el('button', { class: 'kretskort__cta', type: 'button',
+    onclick: () => {
+      // Åpne telefonens egen app (bevarer trykk-gesten), så logg kontakten.
+      if (p.telefon && p.metode === 'ring') location.href = `tel:${p.telefon}`;
+      else if (p.telefon && p.metode === 'melding') location.href = `sms:${p.telefon}`;
+      const res = registrerKontakt(p.id);
+      vibrer(); varsle(`Logget kontakt med ${p.navn}`, { ikon: 'hjerte' });
+      if (merkDot) merkDot();
+      streakEtter(res).then(() => blaaEtter());
+      if (reTegn) reTegn();
+    } }, ikon(met.ikon, 'ikon ikon--liten'), met.navn);
+  return el('div', { class: 'kretskort' },
+    el('button', { class: 'kretskort__topp', type: 'button', 'aria-label': `Rediger ${p.navn}`,
+      onclick: () => personArk(p, reTegn) },
+      el('span', { class: 'kretskort__ava' }, p.emoji || '🧑'),
+      el('span', { class: 'kretskort__navn' }, p.navn),
+      el('span', { class: 'kretskort__varme' }, varmeTekst(p))),
+    handling);
+}
+
+// «+ Annet» — logg en fri kontakt for i dag.
+function annetArk(merkDot) {
+  const felt = el('input', { class: 'sok', type: 'text', maxlength: '80', placeholder: 'F.eks. «kaffe med en kollega»' });
+  const { lukk } = visArk('Logg annen kontakt',
+    el('p', { class: 'dempet' }, 'Skriv kort hva du gjorde — alt som er ekte kontakt teller.'),
+    felt,
+    el('button', { class: 'knapp', type: 'button', onclick: async () => {
+      const res = leggTilEgen(felt.value);
+      if (!res) { varsle('Skriv noe kort først'); return; }
+      lukk(); vibrer(); varsle('Logget', { ikon: 'hjerte' });
+      if (merkDot) merkDot();
+      await streakEtter(res); await blaaEtter();
+    } }, 'Logg kontakt'));
+  requestAnimationFrame(() => felt.focus());
+}
+
+// «Kom i gang»-ark: ferdig åpningsreplikk du kan dele + markere som gjort.
+function iGangArk(ide, merkDot) {
+  const idx = Math.floor(Date.now() / 86400000) % ide.forslag.length;
+  const felt = el('textarea', { class: 'kostnotat', rows: '3', maxlength: '200' });
+  felt.value = ide.forslag[idx];
+  const del = el('button', { class: 'knapp', type: 'button', onclick: async () => {
+    const tekst = felt.value.trim();
+    try {
+      if (navigator.share) await navigator.share({ text: tekst });
+      else { await navigator.clipboard.writeText(tekst); varsle('Kopiert — lim inn i en melding', { ikon: 'sjekk' }); }
+    } catch { /* brukeren avbrøt delingen */ }
+  } }, ikon('dele', 'ikon ikon--liten'), 'Del');
+  const gjort = el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: async () => {
+    const res = leggTilEgen(`${ide.tittel}`);
+    lukk(); vibrer(); varsle('Logget', { ikon: 'hjerte' });
+    if (merkDot) merkDot();
+    if (res) { await streakEtter(res); await blaaEtter(); }
+  } }, 'Marker som gjort');
+  const { lukk } = visArk(ide.tittel,
+    el('p', { class: 'dempet' }, ide.hint + ' Bruk forslaget eller skriv ditt eget.'),
+    felt,
+    el('div', { class: 'knapprad' }, del, gjort));
+}
+
+// ===========================================================================
+// Din krets — administrer personene du vil holde varmt (legg til / rediger).
+// ===========================================================================
+function visKretsSkjerm(mount) {
+  if (!hentProfil()) { location.hash = '#/hjem'; return; }
+  const krets = sorterKrets();
+  const reTegn = () => visKretsSkjerm(mount);
+
+  const rader = krets.map((p) => {
+    const met = METODER.find((m) => m.id === p.metode) || METODER[1];
+    return el('div', { class: 'kretsrad' },
+      el('button', { class: 'kretsrad__midt', type: 'button', onclick: () => personArk(p, reTegn) },
+        el('span', { class: 'kretsrad__ava' }, p.emoji || '🧑'),
+        el('span', { class: 'kretsrad__tekst' },
+          el('span', { class: 'kretsrad__navn' }, p.navn, p.relasjon ? el('span', { class: 'kretsrad__rel' }, ` · ${p.relasjon}`) : null),
+          el('span', { class: 'kretsrad__varme' }, varmeTekst(p)))),
+      el('button', { class: 'kretsrad__cta', type: 'button', 'aria-label': `${met.navn} ${p.navn}`,
+        onclick: () => {
+          if (p.telefon && p.metode === 'ring') location.href = `tel:${p.telefon}`;
+          else if (p.telefon && p.metode === 'melding') location.href = `sms:${p.telefon}`;
+          const res = registrerKontakt(p.id);
+          vibrer(); varsle(`Logget kontakt med ${p.navn}`, { ikon: 'hjerte' });
+          streakEtter(res).then(() => blaaEtter());
+          reTegn();
+        } }, ikon(met.ikon)));
   });
-  main.append(statusBoks, intro, kilderBoks);
 
-  // Kuraterte, ekte norske møteplass-kilder (offline-cachet data, ingen scraping
-  // eller CORS): frivillig.no, DNT, frisklivssentral, kommunekalender + dytt.
+  const innhold = krets.length
+    ? el('div', { class: 'kort' }, el('div', { class: 'liste' }, ...rader))
+    : el('div', { class: 'kort tomkrets' },
+        el('span', { class: 'tomkrets__disk' }, ikon('personer')),
+        el('p', { class: 'oppmuntring__tittel' }, 'Ingen i kretsen ennå'),
+        el('p', { class: 'dempet' }, 'Legg til noen få du vil holde kontakt med. Alt bor på telefonen din — vi henter aldri kontaktlista.'));
+
+  skjerm('Din krets',
+    el('p', { class: 'utforsk-under' }, 'De få du vil holde varmt — som en «moai».'),
+    innhold,
+    el('div', { class: 'knapprad', style: 'margin-top:14px' },
+      el('button', { class: 'knapp', type: 'button', onclick: () => personArk(null, reTegn) },
+        ikon('pluss', 'ikon ikon--liten'), 'Legg til en person')));
+}
+
+// Ark: legg til / rediger en person i kretsen.
+function personArk(person, reTegn) {
+  const erNy = !person;
+  const state = {
+    navn: person?.navn || '', emoji: person?.emoji || '🧑', relasjon: person?.relasjon || null,
+    metode: person?.metode || 'melding', telefon: person?.telefon || '',
+  };
+
+  const navnFelt = el('input', { class: 'sok', type: 'text', maxlength: '40', placeholder: 'Navn', value: state.navn,
+    oninput: (e) => { state.navn = e.target.value; } });
+  const telFelt = el('input', { class: 'sok', type: 'tel', inputmode: 'tel', placeholder: 'Telefon (valgfritt)', value: state.telefon,
+    oninput: (e) => { state.telefon = e.target.value; } });
+
+  const emojiRad = el('div', { class: 'emojirad' }, ...KRETS_EMOJI.map((e) => {
+    const b = el('button', { class: 'emojiknapp' + (e === state.emoji ? ' emojiknapp--valgt' : ''), type: 'button',
+      onclick: () => { state.emoji = e; emojiRad.querySelectorAll('.emojiknapp').forEach((x) => x.classList.remove('emojiknapp--valgt')); b.classList.add('emojiknapp--valgt'); } }, e);
+    return b;
+  }));
+
+  const relRad = el('div', { class: 'chiprad chiprad--pille' },
+    ...RELASJONER.map((r) => chip(r, { aktiv: state.relasjon === r, onClick: () => {
+      state.relasjon = state.relasjon === r ? null : r;
+      relRad.querySelectorAll('.chip').forEach((c, i) => c.classList.toggle('chip--aktiv', RELASJONER[i] === state.relasjon));
+    } })));
+
+  const metRad = el('div', { class: 'chiprad chiprad--pille' },
+    ...METODER.map((m) => chip(m.navn, { aktiv: state.metode === m.id, onClick: () => {
+      state.metode = m.id;
+      metRad.querySelectorAll('.chip').forEach((c, i) => c.classList.toggle('chip--aktiv', METODER[i].id === state.metode));
+    } })));
+
+  const lagre = el('button', { class: 'knapp', type: 'button', onclick: () => {
+    if (!state.navn.trim()) { varsle('Skriv inn et navn'); navnFelt.focus(); return; }
+    if (erNy) leggTilPerson(state); else oppdaterPerson(person.id, state);
+    lukk(); vibrer(); varsle(erNy ? 'Lagt til i kretsen' : 'Lagret', { ikon: 'sjekk' });
+    if (reTegn) reTegn();
+  } }, erNy ? 'Legg til' : 'Lagre');
+
+  const knapper = [lagre];
+  if (!erNy) {
+    knapper.push(el('button', { class: 'knapp knapp--fare knapp--sekundaer', type: 'button', onclick: () => {
+      if (confirm(`Fjerne ${person.navn} fra kretsen?`)) { slettPerson(person.id); lukk(); if (reTegn) reTegn(); }
+    } }, 'Fjern'));
+  }
+
+  visArk(erNy ? 'Legg til en person' : 'Rediger',
+    navnFelt,
+    el('p', { class: 'arklabel' }, 'Bilde'), emojiRad,
+    el('p', { class: 'arklabel' }, 'Relasjon'), relRad,
+    el('p', { class: 'arklabel' }, 'Hvordan holder dere kontakt?'), metRad,
+    telFelt,
+    el('p', { class: 'dempet dempet--tett' }, 'Nummeret lagres bare på telefonen din, og brukes til å åpne ringing/melding.'),
+    el('div', { class: 'knapprad' }, ...knapper));
+  requestAnimationFrame(() => navnFelt.focus());
+
+  function lukk() { document.querySelector('.ark')?.classList.add('ark--lukker'); setTimeout(() => document.querySelector('.ark')?.remove(), 240); }
+}
+
+// ===========================================================================
+// Se fremgang (Fellesskap) — rytmen uten skam: streak, ukesaktivitet, hvor
+// mange ulike personer du har hatt kontakt med, og loggen.
+// ===========================================================================
+function visFellesskapFremgang(mount) {
+  if (!hentProfil()) { location.hash = '#/hjem'; return; }
+  const gsos = hentGnistStatus().pilarer.sosialt;
+  const s = sosialStatus();
+  const krets = lesKrets();
+  const kontaktetSist7 = krets.filter((p) => { const d = dagerSiden(p); return d != null && d <= 7; }).length;
+
+  const stat = (tall, navn) => el('div', { class: 'koststat' },
+    el('span', { class: 'koststat__tall' }, String(tall)),
+    el('span', { class: 'koststat__navn' }, navn));
+  const statusBoks = el('div', { class: 'koststatus' },
+    stat(gsos.streak, 'dager på rad'),
+    stat(s.ukeAktive, 'dager med kontakt (uke)'),
+    stat(kontaktetSist7, 'i kretsen sist uke'));
+
+  // Ukesprikker (samme som stripa) i et kort.
+  const dager = ukestreakDager();
+  const ukeKort = el('section', { class: 'kort' },
+    el('h2', { class: 'kost__tittel' }, 'Denne uka'),
+    el('div', { class: 'ukestreak__uke ukestreak__uke--stor' }, ...dager.map((d) => el('span', { class: 'ukestreak__dag' },
+      el('i', { class: 'ukestreak__prikk' + (d.on ? ' ukestreak__prikk--on' : '') + (d.today ? ' ukestreak__prikk--now' : '') }),
+      el('span', { class: 'ukestreak__lab ukestreak__lab--mork' }, d.label)))),
+    el('p', { class: 'dempet' }, `${s.ukeAktive} av 7 dager med kontakt. Hver dag teller — også de små.`));
+
+  // Kretsens varme: hvem det har gått lengst med.
+  const kalde = sorterKrets(krets).filter((p) => { const d = dagerSiden(p); return d == null || d >= 7; }).slice(0, 4);
+  const varmeKort = krets.length ? el('section', { class: 'kort' },
+    el('div', { class: 'korthode' },
+      el('h2', { class: 'kost__tittel' }, 'Verdt et dult'),
+      el('a', { class: 'knapp knapp--liten', href: '#/krets' }, 'Din krets')),
+    kalde.length
+      ? el('div', { class: 'liste' }, ...kalde.map((p) => el('a', { class: 'listerad', href: '#/krets' },
+          el('span', { class: 'listerad__ikon listerad__ikon--emoji' }, p.emoji || '🧑'),
+          el('span', { class: 'listerad__navn' }, p.navn, el('span', { class: 'kretsrad__rel' }, ` — ${varmeTekst(p).toLowerCase()}`)),
+          el('span', { class: 'listerad__chevron' }, ikon('chevron')))))
+      : el('p', { class: 'dempet' }, 'Fin rytme! Du har vært i kontakt med hele kretsen nylig.')) : null;
+
+  // Logg: siste dager med kontakt.
+  const logg = lesSosiallogg().filter((o) => o.vaner && Object.values(o.vaner).some(Boolean))
+    .sort((a, b) => String(b.dato).localeCompare(String(a.dato))).slice(0, 14);
+  const NAVN = Object.fromEntries(SOSIALE_VANER.map((v) => [v.id, v.navn]));
+  const loggKort = el('section', { class: 'kort' },
+    el('h2', { class: 'kost__tittel' }, 'Logg'),
+    logg.length
+      ? el('div', { class: 'liste' }, ...logg.map((o) => {
+          const deler = [...Object.keys(o.vaner).filter((k) => o.vaner[k]).map((k) => NAVN[k] || 'Annet'), ...(o.egne || [])];
+          return el('div', { class: 'loggrad' },
+            el('span', { class: 'loggrad__dato' }, new Date(`${o.dato}T12:00:00`).toLocaleDateString('nb-NO', { weekday: 'short', day: 'numeric', month: 'short' })),
+            el('span', { class: 'loggrad__tekst' }, [...new Set(deler)].join(' · ')));
+        }))
+      : el('p', { class: 'dempet' }, 'Ingen kontakt logget ennå. Logg dagens på Fellesskap-siden.'));
+
+  skjerm('Fremgang',
+    el('p', { class: 'utforsk-under' }, 'Rytmen din — uten press. Én ekte kontakt om dagen er nok.'),
+    statusBoks, ukeKort, varmeKort, loggKort);
+}
+
+// ===========================================================================
+// Finn fellesskap — kuraterte, ekte norske møteplasser (offline-cachet data,
+// ingen scraping/CORS): frivillig.no, frivilligsentral, DNT, Røde Kors m.fl.
+// ===========================================================================
+function visMoteplasserSkjerm(mount) {
+  if (!hentProfil()) { location.hash = '#/hjem'; return; }
+  const holder = el('div', { class: 'roliste sosialkilder' }, el('p', { class: 'dempet' }, 'Laster…'));
+  skjerm('Finn fellesskap',
+    el('p', { class: 'utforsk-under' }, 'Å bli med i noe fast er en av de sikreste veiene ut av ensomhet. Her er ekte, landsdekkende steder å starte.'),
+    el('section', { class: 'kort' }, holder));
+
   hentSprakJson('arrangement').then((liste) => {
-    const holder = kilderBoks.querySelector('.sosialkilder');
-    if (!holder) return;
     tom(holder);
     for (const a of liste) {
       const midt = el('span', { class: 'rokort__midt' },
         el('span', { class: 'rokort__navn' }, a.navn),
         el('span', { class: 'rokort__meta' }, a.beskrivelse));
-      const ikonBoks = el('span', { class: 'rokort__ikon' }, ikon(a.ikon || 'snakke'));
+      const ikonBoks = el('span', { class: 'rokort__ikon' }, ikon(a.ikon || 'personer'));
       if (a.url) {
         holder.append(el('a', { class: 'rokort', href: a.url, target: '_blank', rel: 'noopener' },
           ikonBoks, midt, ikon('pilhoyre', 'ikon rokort__play')));
@@ -634,7 +951,7 @@ function visSosialtSkjerm(mount) {
       }
     }
     oversettDom(holder);
-  }).catch(() => { const h = kilderBoks.querySelector('.sosialkilder'); if (h) tom(h); });
+  }).catch(() => { tom(holder); holder.append(el('p', { class: 'dempet' }, 'Kunne ikke laste akkurat nå.')); });
 }
 
 // ===========================================================================
