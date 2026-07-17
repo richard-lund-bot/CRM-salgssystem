@@ -397,62 +397,76 @@
  {
   "id": "blue-zones-tallerken",
   "tittel": "The blue zones plate: mostly plants",
-  "undertittel": "The people who live longest don't eat perfectly — they eat mostly plants, often.",
+  "undertittel": "The people who live longest don't eat perfectly — but the research points the same way: mostly plants, often.",
   "tags": ["Nutrition", "Blue zones"],
   "dato": "2026-07-16",
-  "lesetid": 4,
+  "lesetid": 5,
   "avsnitt": [
-   { "p": "In the world's blue zones — Okinawa, Sardinia, Ikaria, Nicoya and Loma Linda — people live unusually long and healthy lives. They don't count calories. The common thread on the plate is simple: mostly plants, little meat, and real food over processed food." },
-   { "h": "Legumes every day" },
-   { "p": "Beans, lentils and chickpeas are the cornerstone of every blue zone. A cup a day brings fullness, fibre and protein without the blood-sugar crash. Dan Buettner, who mapped the zones for National Geographic, calls legumes «the world's best longevity food»." },
-   { "h": "Fill two thirds with plants" },
-   { "p": "Vegetables, whole grains, nuts and fruit make up most of it. Meat is more seasoning than main course — often just a few times a month. Fish a few times a week fits a Nordic kitchen well." },
+   { "p": "In the world's blue zones — Okinawa, Sardinia, Ikaria, Nicoya and Loma Linda — people live unusually long and healthy lives. It isn't about one superfood, but a pattern: mostly plants, little red meat, and real food over processed food. And that pattern points the same way as Norwegian dietary advice and international research." },
+   { "h": "Norwegian advice points the same way" },
+   { "p": "Norway's dietary guidelines and the Nordic Nutrition Recommendations (NNR 2023) advise more vegetables, whole grains and legumes and less red and processed meat — for both health and the environment. A Norwegian modelling study from the University of Bergen (Fadnes et al., PLOS Medicine 2022) estimated that a 20-year-old who swaps a typical Western diet for more legumes, whole grains and nuts could gain roughly 10–13 years of life expectancy; the gain is smaller, but still clear, if you start later in life." },
+   { "h": "Whole grains and greens — the Western picture" },
+   { "p": "Large European studies point the same way. The EPIC study (over half a million Europeans) and Spain's PREDIMED trial link a plant- and Mediterranean-style diet to lower risk of cardiovascular disease. Meta-analyses led by the Norwegian epidemiologist Dagfinn Aune find that around 90 grams of whole grains a day (BMJ, 2016) and up to 800 grams of fruit and vegetables (2017) are associated with lower mortality." },
+   { "h": "The danger of the opposite" },
+   { "p": "It's not only what you add, but what you swap out. A Global Burden of Disease analysis in The Lancet (2019) linked around eleven million deaths a year to dietary risks — especially too little whole grain, fruit and veg, and too much salt and processed meat. The WHO's cancer research agency (IARC, 2015) classifies processed meat as carcinogenic (bowel cancer) and red meat as probably carcinogenic. The point isn't fear, but direction: every lentil stew that replaces the sausage counts." },
    { "h": "Small good choices beat big diets" },
-   { "p": "You don't have to change everything at once. Swap one meal for a lentil stew, add beans to the salad, choose whole grains over white. Repeated small choices are exactly what build good years." }
+   { "p": "You don't have to change everything at once. Swap one meal for a lentil stew, add beans to the salad, choose whole grains over white. Repeated small choices are exactly what the research praises — and what build good years." }
   ],
   "kilder": [
-   { "kilde": "Dan Buettner – «The Blue Zones» (National Geographic, 2008/2012)", "om": "Mapped five areas with unusually many centenarians; legumes and a plant-based diet recur throughout." },
-   { "kilde": "Willett et al. – the EAT-Lancet Commission (2019)", "om": "A mainly plant-based diet is good for both health and the planet." }
+   { "kilde": "Norwegian Directorate of Health / National Council on Nutrition — dietary guidelines; NNR 2023", "om": "Recommends a mainly plant-based diet: more greens, whole grains and legumes, less red and processed meat." },
+   { "kilde": "Fadnes et al., University of Bergen – PLOS Medicine (2022)", "om": "«Food4HealthyLife»: from age 20, a more plant-based diet could add around 10–13 years of life expectancy." },
+   { "kilde": "Aune et al. – BMJ (2016) and Int. J. of Epidemiology (2017)", "om": "Norwegian-led meta-analyses: ~90 g whole grains and up to ~800 g fruit and veg a day are associated with lower mortality." },
+   { "kilde": "PREDIMED (Estruch et al.) – NEJM 2013, retracted and republished 2018", "om": "A Mediterranean diet with olive oil/nuts cut major cardiovascular events by ~30%; results held after re-analysis." },
+   { "kilde": "GBD analysis, The Lancet (2019) and IARC/WHO (2015)", "om": "Dietary risk linked to ~11 million deaths/year; processed meat classified as carcinogenic." }
   ]
  },
  {
   "id": "hara-hachi-bu",
   "tittel": "Hara hachi bu: stop at 80%",
-  "undertittel": "An old Japanese mealtime saying that makes moderation easy.",
+  "undertittel": "An old Japanese mealtime saying — and what the research on satiety and overeating actually says.",
   "tags": ["Nutrition", "Moderation"],
   "dato": "2026-07-15",
-  "lesetid": 3,
+  "lesetid": 4,
   "avsnitt": [
-   { "p": "On Okinawa people say «hara hachi bu» before they eat — a reminder to stop when the stomach is about 80% full. It sounds like a little, but there's a reason: the fullness signal from the stomach to the brain takes about 20 minutes to arrive." },
-   { "h": "Why it works" },
-   { "p": "If you eat slowly and stop a little before you're stuffed, the signal has time to catch up — and you land at just right. Eat fast until you «feel full» and you've usually already eaten too much." },
+   { "p": "On Okinawa people say «hara hachi bu» before they eat — a reminder to stop when the stomach is about 80% full. It's a cultural habit, not a prescription. But it lands on something the research on satiety and overeating confirms: most of us slip into eating too much more easily than too little." },
+   { "h": "The body takes time to say stop" },
+   { "p": "The fullness signal from the stomach to the brain takes about 20 minutes. Eat fast until you «feel full» and you've usually already eaten past just-right. Studies on eating speed find that people who eat more slowly take in less and tend to have lower body weight. Putting the fork down between bites is a simple, measurable trick." },
+   { "h": "The modern food environment makes it hard" },
+   { "p": "A controlled study at the US NIH (Hall et al., Cell Metabolism 2019) let participants eat freely for two weeks. On a diet of ultra-processed food they ate around 500 calories more per day than on unprocessed food — without feeling any fuller, and they gained weight. The food around us is often built to be overeaten; hara hachi bu is a simple counterweight." },
+   { "h": "The danger of chronic overeating" },
+   { "p": "Constantly eating past fullness is one of the main routes to excess weight — and excess weight is in turn a clear risk factor for type 2 diabetes, cardiovascular disease and several cancers (Norwegian Directorate of Health). Moderation isn't about starving, but about avoiding the small daily overdose that builds up over years." },
    { "h": "How to practise" },
-   { "p": "Put the fork down between bites. Use a smaller plate. Ask yourself halfway through: «am I still hungry, or just not quite full?» Moderation isn't starving — it's stopping in time." }
+   { "p": "Put the fork down between bites. Use a smaller plate. Ask yourself halfway through: «am I still hungry, or just not quite full?» Eat with others when you can — conversation slows the pace naturally." }
   ],
   "kilder": [
-   { "kilde": "Craig Willcox et al. – «The Okinawa Program» (2001)", "om": "Describes «hara hachi bu»: eating until about 80% full, as a key to Okinawan longevity." },
-   { "kilde": "Studies on satiety and eating speed", "om": "Satiety signals take ~20 minutes; slower eating lowers total food intake." }
+   { "kilde": "Norwegian Directorate of Health – on overweight and energy balance", "om": "Excess weight raises the risk of type 2 diabetes, cardiovascular disease and several cancers." },
+   { "kilde": "Willcox et al. – «The Okinawa Program» (2001)", "om": "Describes «hara hachi bu» as a cultural satiety habit on Okinawa." },
+   { "kilde": "Studies on eating speed and satiety (incl. Robinson et al., 2014)", "om": "Slower eating is associated with lower energy intake per meal." },
+   { "kilde": "Hall et al., NIH – Cell Metabolism (2019)", "om": "In a controlled trial, an ultra-processed diet led to ~500 kcal/day more intake and weight gain." }
   ]
  },
  {
   "id": "moai-tilhorighet",
   "tittel": "Moai: friendships that last a lifetime",
-  "undertittel": "Strong social ties matter as much for your health as food and exercise.",
+  "undertittel": "Strong social ties aren't just nice — research ranks them alongside food and smoking.",
   "tags": ["Social", "Blue zones"],
   "dato": "2026-07-17",
   "lesetid": 4,
   "avsnitt": [
    { "p": "On Okinawa, children grow up in a “moai” — a small group that stays together for life, through good days and bad. It is no accident that some of the world's oldest people live right here. Belonging is one of the most underrated health factors we have." },
+   { "h": "The Norwegian picture" },
+   { "p": "In the large Norwegian HUNT study (Nord-Trøndelag), low social and cultural participation is associated with higher mortality — taking part in clubs, associations and cultural life appears to protect. And loneliness is not a small group's problem: the Norwegian Institute of Public Health reports that a considerable share of Norwegians feel it." },
    { "h": "Loneliness hits hard" },
-   { "p": "A landmark review by researcher Julianne Holt-Lunstad found that weak social ties raise the risk of early death about as much as smoking 15 cigarettes a day — and more than obesity or physical inactivity. Humans are social animals; we literally get sicker from too much time alone." },
-   { "h": "Face to face beats a screen" },
-   { "p": "It's real, physical contact that counts most: a walk with a friend, a meal around the same table, a chat over the garden fence. Digital ties can supplement, but they don't replace presence. Blue zones people meet often, and they meet for real." },
+   { "p": "A landmark meta-analysis by Julianne Holt-Lunstad (PLoS Medicine, 2010) found that strong social ties are linked to about 50% higher odds of survival over time — and that social isolation and loneliness are independent risk factors for early death, more so than obesity or physical inactivity." },
+   { "h": "A global health problem" },
+   { "p": "In 2023 both the WHO and US health authorities named loneliness a public-health challenge. The US Surgeon General's advisory estimates that social isolation carries a mortality effect on par with smoking up to 15 cigarettes a day. And it's real, physical contact that counts most: a walk with a friend, a meal around the same table, a chat over the garden fence. Digital ties can supplement, but don't replace presence." },
    { "h": "Build your own moai" },
    { "p": "You don't need many. One steady walking partner, one dinner a week, a volunteering role where you meet the same people. Small, repeated meetings build ties that hold — and good years." }
   ],
   "kilder": [
-   { "kilde": "Julianne Holt-Lunstad et al. – «Social Relationships and Mortality Risk» (PLoS Medicine, 2010)", "om": "Meta-analysis: strong social ties are linked to about 50% higher odds of survival over time." },
-   { "kilde": "Dan Buettner – «The Blue Zones» (National Geographic)", "om": "“Moai” on Okinawa and tight communities across all blue zones as a key to longevity." }
+   { "kilde": "The HUNT study (NTNU) and the Norwegian Institute of Public Health", "om": "Low social and cultural participation is associated with higher mortality; loneliness is widespread in Norway." },
+   { "kilde": "Holt-Lunstad et al. – PLoS Medicine (2010), with a 2015 follow-up", "om": "Strong social ties ~50% higher survival; isolation and loneliness are independent mortality risk factors." },
+   { "kilde": "WHO and the US Surgeon General (2023)", "om": "Loneliness recognised as a public-health challenge; isolation compared to smoking up to 15 cigarettes a day." }
   ]
  }
 ]

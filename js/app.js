@@ -513,11 +513,11 @@ const UKEDAG_BOKSTAV = ['M', 'T', 'O', 'T', 'F', 'L', 'S'];
 
 // Blue-zones-prinsippene (delt av Mat-hjem og oppskrift-detalj).
 const BZ_INFO = {
-  planter: { ikon: 'blad', tittel: 'Mest planter', tekst: 'Fyll tallerkenen med grønnsaker, frukt og fullkorn.' },
-  belgvekster: { ikon: 'belg', tittel: 'Belgvekster', tekst: 'Proteinrik og mettende — en hjørnestein i kostholdet.' },
-  fullkorn: { ikon: 'korn', tittel: 'Fullkorn', tekst: 'Rik på fiber som gir jevn energi og holder deg mett lenger.' },
-  moderasjon: { pst: '80%', tittel: '80 % mett', tekst: 'Stopp når du er behagelig mett, ikke stappmett.' },
-  delmaltid: { ikon: 'personer', tittel: 'Del et måltid', tekst: 'Spis sammen med andre. Det gir glede og gode vaner.' },
+  planter: { ikon: 'blad', tittel: 'Mest planter', tekst: 'Fyll tallerkenen med grønnsaker, frukt og fullkorn. Kjernen i både norske kostråd (NNR 2023) og blue zones.' },
+  belgvekster: { ikon: 'belg', tittel: 'Belgvekster', tekst: 'Proteinrik og mettende — en hjørnestein i kostholdet. Knyttet til lavere kolesterol og hjerterisiko.' },
+  fullkorn: { ikon: 'korn', tittel: 'Fullkorn', tekst: 'Rik på fiber som gir jevn energi og metthet. Rundt 90 g om dagen henger sammen med lavere dødelighet (Aune m.fl., 2016).' },
+  moderasjon: { pst: '80%', tittel: '80 % mett', tekst: 'Stopp når du er behagelig mett, ikke stappmett. En enkel motvekt mot å overspise.' },
+  delmaltid: { ikon: 'personer', tittel: 'Del et måltid', tekst: 'Spis sammen med andre. Sterke sosiale bånd henger sammen med lengre liv (Holt-Lunstad, 2010).' },
 };
 
 // Fargeforløp + emoji som bilde-plassholder (vi har ikke matfoto i repoet ennå).
