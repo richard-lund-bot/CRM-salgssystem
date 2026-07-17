@@ -31,7 +31,7 @@ import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, tilfeldigOkt, MODALITET
 import { settBib as settBibOpp, settOkterKilde, erAdminEpost, adminModusPaa, settAdminModus } from './opplasing.js';
 import { fyllInn, tallOpp, REDUSERT } from './animasjon.js';
 import { settLydAv } from './lyd.js';
-import { settHaptikkAv } from './haptikk.js';
+import { settHaptikkAv, vibrer } from './haptikk.js';
 import { regionScores, anbefalingFraRegioner, regionAndelForOkt, REGION_NAVN } from './kroppskart.js';
 import { prefMult, prefNiva, PREF_NIVAER } from './preferanser.js';
 import * as sync from './sync.js';
@@ -40,6 +40,8 @@ import { byggVarsler, merkVarslerSett, varselKort, harUlesteVarsler } from './va
 import { varsle } from './toast.js';
 import { visFeedSkjerm, visPostSkjerm } from './feed.js';
 import { gjeldendeSprak, settSprak, startOversetter, oversettDom } from './i18n.js';
+import { VANER, dagensInnslag, veksleVane, kostStatus, settNotat } from './kosthold.js';
+import { streakEtter } from './feiring.js';
 
 const app = document.getElementById('app');
 let bib = null;
@@ -49,6 +51,7 @@ const ruter = {
   hjem: () => visFeedSkjerm(app), // Hjem er lærings-feeden (M37)
   post: () => visPostSkjerm(app), // dedikert side for ett feed-innlegg (spillbart)
   trening: visTrening, // Min dag-dashbordet bor på Trening-fanen
+  kosthold: () => visKostholdSkjerm(app), // Kosthold-pilaren (blue-zones-vaner)
   beveg: () => visOkterSkjerm(app), // Treningsbibliotek-fanen er øktbiblioteket
   hurtig: () => visHurtigSkjerm(app),
   loggfor: () => visLoggforSkjerm(app),
@@ -102,6 +105,8 @@ const FANER_DEF = [
   { id: 'hjem', rute: 'hjem', ikon: 'hjem', fyll: 'hjemfyll', label: 'Hjem',
     barn: ['post'] }, // dedikert innleggsside hører til Hjem-feeden
   { id: 'trening', rute: 'trening', ikon: 'loper', fyll: 'loperfyll', label: 'Trening',
+    barn: [] },
+  { id: 'kosthold', rute: 'kosthold', ikon: 'eple', fyll: 'eplefyll', label: 'Kosthold',
     barn: [] },
   { id: 'merker', rute: 'merker', ikon: 'person', fyll: 'personfyll', label: 'Profil',
     // Aktivitet-fanen er borte — skjermen eies av Profil. reise/tilpass er gamle lenker.
@@ -211,6 +216,62 @@ function skjerm(tittel, ...innhold) {
 // samme førsteinntrykk som Min dag på alle hovedfanene.
 function fane(tittel, under, ...innhold) {
   fanesideMedTittel(app, { tittel, under }).append(...innhold);
+}
+
+// ===========================================================================
+// Kosthold (Fase 3) — blue-zones-spising som daglige HANDLINGER, ikke tall.
+// Dagens gode vaner hukes av (grønt/belgvekster/fullkorn/fisk/måtehold), gir XP
+// og bygger en egen kosthold-streak (atskilt fra bevegelse). Valgfritt kort
+// måltidsnotat. Gjenbruker XP-nivået, flammefeiringen og «Lær»-artiklene.
+// ===========================================================================
+function visKostholdSkjerm(mount) {
+  const profil = hentProfil();
+  if (!profil) { skjerm('Kosthold', velkommenKort()); return; }
+  const iDag = dagensInnslag() || { vaner: {}, notat: '' };
+
+  const tegnStatus = () => {
+    const s = kostStatus();
+    const stat = (tall, navn) => el('div', { class: 'koststat' },
+      el('span', { class: 'koststat__tall' }, String(tall)),
+      el('span', { class: 'koststat__navn' }, navn));
+    return el('div', { class: 'koststatus' },
+      stat(s.streak, 'dager på rad'),
+      stat(`${s.iDagAntall}/${s.antallVaner}`, 'gode valg i dag'),
+      stat(s.ukeAktive, 'aktive dager'));
+  };
+  let statusBoks = tegnStatus();
+
+  const chips = VANER.map((v) => {
+    const c = el('button', {
+      class: 'intchip' + (iDag.vaner?.[v.id] ? ' intchip--valgt' : ''), type: 'button',
+      onclick: async () => {
+        const res = veksleVane(v.id);
+        if (!res) return;
+        c.classList.toggle('intchip--valgt', res.aktiv);
+        if (res.aktiv) { vibrer(); varsle(`+${res.xp} XP`, { ikon: 'blad' }); }
+        const ny = tegnStatus(); statusBoks.replaceWith(ny); statusBoks = ny;
+        if (res.streakØkte > 0) await streakEtter(res); // flammefeiring, én gang/dag
+      },
+    }, v.navn);
+    return c;
+  });
+
+  const vaneKort = el('section', { class: 'kort' },
+    el('h2', { class: 'kost__tittel' }, 'Gode valg i dag'),
+    el('p', { class: 'dempet' }, 'Blue zones-kjøkkenet: mest planter, litt fisk, og stopp når du er rundt 80 % mett.'),
+    el('div', { class: 'kostchips' }, ...chips));
+
+  const notat = el('textarea', { class: 'kostnotat', rows: '2', placeholder: 'Hva spiste du i dag? (valgfritt)' });
+  notat.value = iDag.notat || '';
+  notat.addEventListener('blur', (e) => settNotat(e.target.value));
+  const notatKort = el('section', { class: 'kort' },
+    el('h2', { class: 'kost__tittel' }, 'Dagens måltider'),
+    notat);
+
+  const laerLenke = el('a', { class: 'kostlenke', href: '#/laer' },
+    ikon('bok', 'ikon ikon--liten'), el('span', {}, 'Lær mer om blue zones-kosthold'));
+
+  fane('Kosthold', 'Mest planter. Litt fisk. Måtehold.', statusBoks, vaneKort, notatKort, laerLenke);
 }
 
 // ===========================================================================

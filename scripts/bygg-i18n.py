@@ -172,6 +172,17 @@ EN = {
  'Hva vil du ha mer av?': 'What do you want more of?',
  'Velg livsområdene du vil se mer av i feeden. Du kan endre når som helst.':
    'Choose the areas of life you want more of in the feed. You can change this anytime.',
+ # Kosthold-pilaren (Fase 3) — daglige blue-zones-vaner
+ 'Grønnsaker': 'Vegetables', 'Belgvekster': 'Legumes', 'Fullkorn': 'Whole grains',
+ 'Fisk': 'Fish', 'Måtehold': 'Moderation',
+ 'Mest planter. Litt fisk. Måtehold.': 'Mostly plants. Some fish. Moderation.',
+ 'Gode valg i dag': 'Good choices today', 'gode valg i dag': 'good choices today',
+ 'dager på rad': 'days in a row', 'aktive dager': 'active days',
+ 'Blue zones-kjøkkenet: mest planter, litt fisk, og stopp når du er rundt 80 % mett.':
+   'The blue zones kitchen: mostly plants, some fish, and stop when you are about 80% full.',
+ 'Dagens måltider': 'Today’s meals',
+ 'Hva spiste du i dag? (valgfritt)': 'What did you eat today? (optional)',
+ 'Lær mer om blue zones-kosthold': 'Learn more about blue zones eating',
 }
 
 # Kompendium/merke-tekster (lengre) — legg til

@@ -209,6 +209,16 @@ body {
 .kort p { margin: 0 0 8px; line-height: 1.5; font-size: 0.9rem; color: var(--tekst-2); }
 .dempet { color: var(--dempet); font-size: 0.85rem; }
 
+/* Kosthold-pilar (Fase 3) — daglige blue-zones-vaner */
+.koststatus { display: flex; gap: 8px; margin: 2px 0 14px; }
+.koststat { flex: 1; background: var(--bg-kort); border: 1px solid var(--kant); border-radius: 16px; padding: 12px 6px; text-align: center; }
+.koststat__tall { display: block; font: 700 1.5rem/1 var(--font-display); color: var(--aksent); }
+.koststat__navn { display: block; margin-top: 3px; font-size: 0.7rem; color: var(--dempet); }
+.kostchips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.kostnotat { width: 100%; box-sizing: border-box; border: 1px solid var(--kant); border-radius: 14px; padding: 10px 12px; font: inherit; color: var(--tekst); background: var(--bg-kort); resize: vertical; }
+.kostnotat:focus { outline: none; border-color: var(--aksent-kant); }
+.kostlenke { display: inline-flex; align-items: center; gap: 6px; margin: 8px 2px 0; color: var(--aksent); font-weight: 600; text-decoration: none; }
+
 /* Ikoner (inline SVG via ui.js) — 2px strek, runde ender, blekk som standard */
 .ikon {
   width: 1.4em; height: 1.4em; display: inline-block; vertical-align: middle;

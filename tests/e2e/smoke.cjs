@@ -45,7 +45,7 @@ function sjekk(navn, ok, ekstra = '') {
   if (!ok) feil.push(navn);
 }
 
-const FANER = ['hjem', 'trening', 'merker', 'beveg', 'laer'];
+const FANER = ['hjem', 'trening', 'kosthold', 'merker', 'beveg', 'laer'];
 
 (async () => {
   const server = lagServer();
@@ -95,7 +95,7 @@ const FANER = ['hjem', 'trening', 'merker', 'beveg', 'laer'];
     const aktiv = await page.locator(`.tabbar__knapp[data-rute="${rute}"]`).evaluate((n) => n.classList.contains('tabbar__knapp--aktiv'));
     sjekk(`Fane «${rute}» navigerer + markeres aktiv`, h.startsWith(`#/${rute}`) && aktiv, h);
   }
-  sjekk('Alle fem faner finnes i baren', (await page.locator('.tabbar__knapp').count()) === FANER.length);
+  sjekk('Alle fanene finnes i baren', (await page.locator('.tabbar__knapp').count()) === FANER.length, `${FANER.length} faner`);
 
   // --- 5) Språkbytte nb↔en (den ene testen som SKAL sjekke tekst) -------------
   // Sett den persistente trening.sprak-nøkkelen (samme som settSprak bruker) —
