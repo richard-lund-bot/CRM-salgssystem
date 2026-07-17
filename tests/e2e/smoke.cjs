@@ -45,7 +45,7 @@ function sjekk(navn, ok, ekstra = '') {
   if (!ok) feil.push(navn);
 }
 
-const FANER = ['hjem', 'trening', 'kosthold', 'merker', 'beveg', 'laer'];
+const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
 
 (async () => {
   const server = lagServer();
@@ -88,7 +88,7 @@ const FANER = ['hjem', 'trening', 'kosthold', 'merker', 'beveg', 'laer'];
   // --- 4) Tab-navigasjon over alle FANER (data-rute, ikke etikett) ------------
   // Naviger i en rekkefølge der hvert trykk er en ANNEN fane (unngår re-tap-
   // reload), og bekreft rute + aktiv-markering.
-  for (const rute of ['beveg', 'laer', 'merker', 'trening', 'hjem']) {
+  for (const rute of ['kosthold', 'trening', 'ro', 'sosialt', 'hjem']) {
     await page.click(`.tabbar__knapp[data-rute="${rute}"]`);
     await page.waitForTimeout(250);
     const h = await hash();
@@ -104,9 +104,9 @@ const FANER = ['hjem', 'trening', 'kosthold', 'merker', 'beveg', 'laer'];
   await page.reload({ waitUntil: 'load' }); // ekte re-boot så språket leses på nytt
   await page.waitForSelector('.fkort', { timeout: 20000 });
   const langAttr = await page.evaluate(() => document.documentElement.lang);
-  const hjemLabel = await page.getAttribute('.tabbar__knapp[data-rute="hjem"]', 'aria-label');
+  const bevegLabel = await page.getAttribute('.tabbar__knapp[data-rute="trening"]', 'aria-label');
   sjekk('Språkbytte setter <html lang="en">', langAttr === 'en', langAttr);
-  sjekk('UI oversettes til engelsk (Hjem→Home)', hjemLabel === 'Home', String(hjemLabel));
+  sjekk('UI oversettes til engelsk (Bevegelse→Movement)', bevegLabel === 'Movement', String(bevegLabel));
 
   await browser.close();
   await new Promise((r) => server.close(r));

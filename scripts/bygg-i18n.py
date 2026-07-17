@@ -189,6 +189,17 @@ EN = {
  'Tre dager på rad': 'Three days in a row', 'Kosthold-streak 3 dager': 'Nutrition streak of 3 days',
  'To uker på rad': 'Two weeks in a row', 'Kosthold-streak 14 dager': 'Nutrition streak of 14 days',
  'Vanen sitter': 'The habit sticks', 'Gode valg 30 dager': 'Good choices for 30 days',
+ # Faneetiketter (5 pilarer) + Ro/Sosialt-flatene
+ 'Feed': 'Feed', 'Mat': 'Food', 'Sosialt': 'Social',
+ 'Pust. Senk skuldrene. Vær her.': 'Breathe. Drop your shoulders. Be here.',
+ 'Pust deg rolig': 'Breathe yourself calm',
+ 'Noen minutter bevisst pust senker stress og roer nervesystemet. Velg en øvelse — den spilles med rolig tempo og lyd.':
+   'A few minutes of conscious breathing lowers stress and calms the nervous system. Pick an exercise — it plays at a calm pace with sound.',
+ 'Vi lever lengre sammen.': 'We live longer together.',
+ 'Fellesskap kommer snart': 'Community coming soon',
+ 'Å være sosial ansikt til ansikt er noe av det som betyr mest for et langt, godt liv. Her kommer ekte møteplasser i nærheten og små dytt til å møtes — vi bygger det stein for stein.':
+   'Being social face to face is one of the things that matters most for a long, good life. Real local gatherings and gentle nudges to meet up are coming — we are building it stone by stone.',
+ 'Les om hvorfor tilhørighet betyr mest': 'Read why belonging matters most',
 }
 
 # Kompendium/merke-tekster (lengre) — legg til

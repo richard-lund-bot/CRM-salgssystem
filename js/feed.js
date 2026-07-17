@@ -1154,6 +1154,9 @@ function byggFeed(mount, scroll, data) {
   bjelle.addEventListener('click', () => åpneVarsler(mount, prikk));
 
   const topp = el('div', { class: 'feedtopp' },
+    // Meny-hub (Profil/Lær/Innstillinger) — feeden har ingen banner-header, så
+    // tannhjulet bor her, ellers ville Profil/Lær vært uten inngang fra feeden.
+    el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/meny', 'aria-label': 'Meny og innstillinger' }, ikon('gir')),
     el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/kalender', 'aria-label': 'Mosjonskalender' }, ikon('kalender')),
     fordeg,
     bjelle,

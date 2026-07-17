@@ -27,7 +27,7 @@ import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
 import { lagFaneside, fanesideMedTittel, settNavger, settUlestSjekk, dagsfase } from './banner.js';
 import { nivaFraTotalXp } from './niva.js';
 import { dagerMedAktivitet, okterHref, beregnStreak } from './bevegelse.js';
-import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN, KATEGORIER, settLaerLenke } from './bibliotek-okter.js';
+import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, aapneOkt, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN, KATEGORIER, settLaerLenke } from './bibliotek-okter.js';
 import { settBib as settBibOpp, settOkterKilde, erAdminEpost, adminModusPaa, settAdminModus } from './opplasing.js';
 import { fyllInn, tallOpp, REDUSERT } from './animasjon.js';
 import { settLydAv } from './lyd.js';
@@ -52,6 +52,8 @@ const ruter = {
   post: () => visPostSkjerm(app), // dedikert side for ett feed-innlegg (spillbart)
   trening: visTrening, // Min dag-dashbordet bor på Trening-fanen
   kosthold: () => visKostholdSkjerm(app), // Kosthold-pilaren (blue-zones-vaner)
+  ro: () => visRoSkjerm(app), // Ro-pilaren (pust + rolige økter)
+  sosialt: () => visSosialtSkjerm(app), // Sosialt-pilaren (kommer — Fase 5)
   beveg: () => visOkterSkjerm(app), // Treningsbibliotek-fanen er øktbiblioteket
   hurtig: () => visHurtigSkjerm(app),
   loggfor: () => visLoggforSkjerm(app),
@@ -101,20 +103,22 @@ const AUTH_RUTER = new Set(['logg-inn', 'bli-medlem']);
 // innstillinger/varsler er bevisst IKKE barn av noen fane: de er egne sider
 // (nås fra tannhjulet/bjella), lyser ingen fane og huskes aldri som fane-mål —
 // ellers ville f.eks. Profil-fanen «låst» seg til Varsler.
+// Bunnlinja = de fem blue-zones-pilarene: Feed · Mat · Bevegelse · Ro · Sosialt.
+// Profil (#/merker) og Lær (#/laer) er IKKE bunnfaner lenger — de er egne sider
+// som nås fra meny-huben (tannhjulet) på samme måte som Innstillinger/Varsler.
 const FANER_DEF = [
-  { id: 'hjem', rute: 'hjem', ikon: 'hjem', fyll: 'hjemfyll', label: 'Hjem',
-    barn: ['post'] }, // dedikert innleggsside hører til Hjem-feeden
-  { id: 'trening', rute: 'trening', ikon: 'loper', fyll: 'loperfyll', label: 'Trening',
+  { id: 'hjem', rute: 'hjem', ikon: 'hjem', fyll: 'hjemfyll', label: 'Feed',
+    barn: ['post'] }, // dedikert innleggsside hører til feeden
+  { id: 'kosthold', rute: 'kosthold', ikon: 'eple', fyll: 'eplefyll', label: 'Mat',
     barn: [] },
-  { id: 'kosthold', rute: 'kosthold', ikon: 'eple', fyll: 'eplefyll', label: 'Kosthold',
+  { id: 'trening', rute: 'trening', ikon: 'loper', fyll: 'loperfyll', label: 'Bevegelse',
+    // Treningsbibliotek (øktbiblioteket) bor under Bevegelse — ett tapp unna via
+    // «Se økter»/«Vis alle».
+    barn: ['beveg', 'ny', 'okter'] },
+  { id: 'ro', rute: 'ro', ikon: 'maane', fyll: null, label: 'Ro',
     barn: [] },
-  { id: 'merker', rute: 'merker', ikon: 'person', fyll: 'personfyll', label: 'Profil',
-    // Aktivitet-fanen er borte — skjermen eies av Profil. reise/tilpass er gamle lenker.
-    barn: ['bibliotek', 'om', 'plan', 'styrke', 'kalender', 'reise', 'tilpass', 'aktivitet', 'historikk'] },
-  { id: 'beveg', rute: 'beveg', ikon: 'vekt', fyll: null, label: 'Treningsbibliotek',
-    barn: ['ny', 'okter'] },
-  { id: 'laer', rute: 'laer', ikon: 'bok', fyll: 'bokfyll', label: 'Lær',
-    barn: ['artikkel', 'sti', 'disiplin', 'seksjon'] },
+  { id: 'sosialt', rute: 'sosialt', ikon: 'snakke', fyll: null, label: 'Sosialt',
+    barn: [] },
 ];
 const FANER = FANER_DEF.map((f) => f.id);
 // Under-rute → eier-fane, utledet av barn-listene.
@@ -272,6 +276,52 @@ function visKostholdSkjerm(mount) {
     ikon('bok', 'ikon ikon--liten'), el('span', {}, 'Lær mer om blue zones-kosthold'));
 
   fane('Kosthold', 'Mest planter. Litt fisk. Måtehold.', statusBoks, vaneKort, notatKort, laerLenke);
+}
+
+// ===========================================================================
+// Ro (Fase 4) — mindfulness/pust som egen pilar. Samler de rolige øktene
+// (pust + restitusjon) og starter dem i den vanlige øktspilleren (kjor.js), så
+// pust, tempo og lyd virker som ellers. Feeden dekker «ro»-pilaren via mind-
+// innleggene; her er de kroppslige øvelsene.
+// ===========================================================================
+const RO_PUST = new Set(['restitusjon-lav-lett', 'restitusjon-medium-lett', 'restitusjon-hoy-lett']);
+function visRoSkjerm(mount) {
+  const profil = hentProfil();
+  if (!profil) { skjerm('Ro', velkommenKort()); return; }
+  const okter = hentOkter()
+    .filter((o) => o.kategori === 'restitusjon')
+    .sort((a, b) => (RO_PUST.has(b.id) - RO_PUST.has(a.id)) || (a.varighetMin - b.varighetMin));
+
+  const intro = el('section', { class: 'kort' },
+    el('h2', { class: 'kost__tittel' }, 'Pust deg rolig'),
+    el('p', { class: 'dempet' }, 'Noen minutter bevisst pust senker stress og roer nervesystemet. Velg en øvelse — den spilles med rolig tempo og lyd.'));
+
+  // Rolige økter/pust skal alltid kunne startes fritt (aldri låst bak «lær
+  // øvelsene først»), så vi sender en ulåst status til aapneOkt.
+  const kort = okter.map((o) => el('button', { class: 'rokort', type: 'button', onclick: () => aapneOkt(o, { laast: false }) },
+    el('span', { class: 'rokort__ikon' }, ikon(RO_PUST.has(o.id) ? 'hjerte' : 'maane')),
+    el('span', { class: 'rokort__midt' },
+      el('span', { class: 'rokort__navn' }, o.navn),
+      el('span', { class: 'rokort__meta' }, `${o.varighetMin} min`)),
+    ikon('play', 'ikon rokort__play')));
+
+  fane('Ro', 'Pust. Senk skuldrene. Vær her.', intro, el('div', { class: 'roliste' }, ...kort));
+}
+
+// ===========================================================================
+// Sosialt (Fase 5, kommer) — tilhørighet er en av de sterkeste blue-zones-
+// faktorene. Foreløpig en «kommer snart»-flate som holder pilaren synlig i
+// bunnlinja; ekte arrangementer (frivillig.no/kommune/DNT) + nudges bygges senere.
+// ===========================================================================
+function visSosialtSkjerm(mount) {
+  const profil = hentProfil();
+  if (!profil) { skjerm('Sosialt', velkommenKort()); return; }
+  const kort = el('section', { class: 'kort kort--info kommerkort' },
+    el('span', { class: 'kommerkort__ikon' }, ikon('snakke')),
+    el('h2', { class: 'kost__tittel' }, 'Fellesskap kommer snart'),
+    el('p', { class: 'dempet' }, 'Å være sosial ansikt til ansikt er noe av det som betyr mest for et langt, godt liv. Her kommer ekte møteplasser i nærheten og små dytt til å møtes — vi bygger det stein for stein.'),
+    el('a', { class: 'kostlenke', href: '#/laer' }, ikon('bok', 'ikon ikon--liten'), el('span', {}, 'Les om hvorfor tilhørighet betyr mest')));
+  fane('Sosialt', 'Vi lever lengre sammen.', kort);
 }
 
 // ===========================================================================
@@ -785,6 +835,8 @@ function visMeny() {
   fane('Meny', 'Innstillinger og om appen.',
     el('div', { class: 'kort' },
       el('div', { class: 'liste' },
+        lenke('person', 'Profil', '#/merker'),
+        lenke('bok', 'Lær', '#/laer'),
         lenke('gir', 'Innstillinger', '#/innstillinger'),
         lenke('info', `Om ${APP_NAME}`, '#/om'),
       ),

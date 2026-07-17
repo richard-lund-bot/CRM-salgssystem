@@ -219,6 +219,18 @@ body {
 .kostnotat:focus { outline: none; border-color: var(--aksent-kant); }
 .kostlenke { display: inline-flex; align-items: center; gap: 6px; margin: 8px 2px 0; color: var(--aksent); font-weight: 600; text-decoration: none; }
 
+/* Ro-pilar — rolige økter / pust */
+.roliste { display: flex; flex-direction: column; gap: 10px; }
+.rokort { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: var(--bg-kort); border: 1px solid var(--kant); border-radius: 16px; padding: 12px 14px; cursor: pointer; }
+.rokort__ikon { display: grid; place-items: center; width: 40px; height: 40px; flex: 0 0 40px; border-radius: 12px; background: var(--aksent-svak); color: var(--aksent); }
+.rokort__midt { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.rokort__navn { font-weight: 600; color: var(--tekst); }
+.rokort__meta { font-size: 0.8rem; color: var(--dempet); }
+.rokort__play { color: var(--aksent); flex: 0 0 auto; }
+/* «Kommer snart»-flate (Sosialt) */
+.kommerkort { text-align: center; }
+.kommerkort__ikon { display: inline-grid; place-items: center; width: 56px; height: 56px; margin: 4px auto 8px; border-radius: 16px; background: var(--aksent-svak); color: var(--aksent); }
+
 /* Ikoner (inline SVG via ui.js) — 2px strek, runde ender, blekk som standard */
 .ikon {
   width: 1.4em; height: 1.4em; display: inline-block; vertical-align: middle;
