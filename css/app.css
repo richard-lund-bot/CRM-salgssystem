@@ -219,6 +219,24 @@ body {
 .kostnotat:focus { outline: none; border-color: var(--aksent-kant); }
 .kostlenke { display: inline-flex; align-items: center; gap: 6px; margin: 8px 2px 0; color: var(--aksent); font-weight: 600; text-decoration: none; }
 
+/* Mening-pilar — «Mitt hvorfor» + ukens refleksjon (motivasjons-spine) */
+.hvorforliste { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.hvorforkort { display: flex; align-items: center; gap: 11px; background: var(--aksent-svak); border: 1px solid var(--aksent-kant); border-radius: 14px; padding: 11px 12px; }
+.hvorforkort__ikon { display: grid; place-items: center; width: 30px; height: 30px; flex: 0 0 30px; border-radius: 9px; background: var(--bg-kort); color: var(--aksent); }
+.hvorforkort__ikon .ikon { width: 17px; height: 17px; }
+.hvorforkort__tekst { flex: 1; font-weight: 600; line-height: 1.35; }
+.hvorforkort__slett { flex: 0 0 auto; display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: none; background: transparent; color: var(--dempet); cursor: pointer; border-radius: 8px; }
+.hvorforkort__slett:active { background: var(--bg-kort-2); }
+.hvorforkort__slett .ikon { width: 16px; height: 16px; }
+.hvorfor__prompter { margin: 4px 0 10px; }
+.chip--dempet { background: transparent; color: var(--dempet); border: 1px dashed var(--kant); font-weight: 500; }
+.hvorfor__inn { margin-top: 2px; }
+.hvorfor__handling { display: flex; justify-content: flex-end; margin-top: 10px; }
+.meningsdagbok { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+.dagbokrad { display: flex; flex-direction: column; gap: 3px; padding-left: 12px; border-left: 2px solid var(--aksent-kant); }
+.dagbokrad__uke { font-size: 0.72rem; color: var(--dempet); font-weight: 600; }
+.dagbokrad__tekst { line-height: 1.4; }
+
 /* Ro-pilar — rolige økter / pust */
 .roliste { display: flex; flex-direction: column; gap: 10px; }
 .rokort { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: var(--bg-kort); border: 1px solid var(--kant); border-radius: 16px; padding: 12px 14px; cursor: pointer; }
@@ -3096,6 +3114,8 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .streakfeiring__enhet { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--tekst-2); }
 .streakfeiring__tittel { position: relative; margin: 6px 0 0; font-family: var(--font-display); font-size: 26px; font-weight: 800; color: var(--teal-900); }
 .streakfeiring__under { position: relative; margin: 8px auto 0; max-width: 26ch; font-size: 15px; color: var(--tekst-2); }
+.streakfeiring__hvorfor { position: relative; margin: 10px auto 0; max-width: 26ch; font-size: 16px; font-weight: 700; line-height: 1.35; color: var(--teal-900); }
+.streakfeiring__hvorfor-merkelapp { display: block; margin-bottom: 3px; font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--aksent); }
 .streakfeiring__bunn { position: relative; margin-top: 26px; width: 100%; max-width: 420px; }
 .streakfeiring__knapp { width: 100%; padding: 15px 20px; border: none; border-radius: var(--radius-pill); background: var(--coral-500); color: #fff; font-family: var(--font-display); font-size: 17px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 18px rgba(255,111,97,0.35); transition: transform 0.12s var(--ease-standard); }
 .streakfeiring__knapp:active { transform: scale(0.975); background: var(--coral-700); }

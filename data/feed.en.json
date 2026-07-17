@@ -1,6 +1,6 @@
 {
  "schemaVersion": "1.0",
- "beskrivelse": "Spillbar lærings-feed (Aha-seed): 112 innlegg med minispill, kilder og fiktive redaksjonelle guider.",
+ "beskrivelse": "Spillbar lærings-feed (Aha-seed): 117 innlegg med minispill, kilder og fiktive redaksjonelle guider.",
  "posters": [
   {
    "id": "P001",
@@ -375,6 +375,17 @@
    "bio": "A fictional Aha guide for breathing, rest and calm.",
    "aksentStart": "#38BDF8",
    "aksentSlutt": "#818CF8"
+  },
+  {
+   "id": "P035",
+   "navn": "Jon",
+   "handle": "@jon.mening",
+   "kategori": "Mind",
+   "dekker": "Purpose, contribution and what matters",
+   "slagord": "Know your why.",
+   "bio": "A fictional Aha guide for purpose and meaning.",
+   "aksentStart": "#F59E0B",
+   "aksentSlutt": "#FB923C"
   }
  ],
  "posts": [
@@ -6489,6 +6500,278 @@
     "comments": 203,
     "saves": 634,
     "shares": 161
+   }
+  },
+  {
+   "id": "POST-113",
+   "rekkefolge": 113,
+   "opprettet": "2026-07-17T15:00:00",
+   "posterId": "P035",
+   "kategori": "Mind",
+   "katId": "mening",
+   "pilar": "mening",
+   "vanskelighet": "Beginner",
+   "estimertSek": 22,
+   "xp": 80,
+   "serie": "Your Why",
+   "underkategori": "Purpose",
+   "tittel": "A sense of purpose is linked to living longer",
+   "hook": "Knowing your 'why' does more than lift a bad day.",
+   "sammendrag": "In the blue zones, older people keep a clear reason to get up — ikigai in Okinawa, plan de vida in Nicoya. Studies link a strong sense of purpose to lower mortality and better health as we age.",
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Purpose is just a nice feeling — it has no measurable link to health.",
+    "options": [
+     "Fact",
+     "Myth"
+    ],
+    "correct_answer": "Myth",
+    "explanation": "Research links a stronger sense of life purpose to lower all-cause mortality and better health outcomes.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Purpose in Life and Mortality",
+    "org": "JAMA Network Open",
+    "url": "https://jamanetwork.com"
+   },
+   "lesMer": {
+    "tittel": "Blue Zones: Purpose",
+    "org": "Blue Zones",
+    "url": "https://www.bluezones.com/2016/11/power-9/"
+   },
+   "tags": [
+    "purpose",
+    "ikigai",
+    "longevity"
+   ],
+   "seed": {
+    "likes": 1388,
+    "comments": 331,
+    "saves": 902,
+    "shares": 241
+   }
+  },
+  {
+   "id": "POST-114",
+   "rekkefolge": 114,
+   "opprettet": "2026-07-17T16:00:00",
+   "posterId": "P035",
+   "kategori": "Mind",
+   "katId": "mening",
+   "pilar": "mening",
+   "vanskelighet": "Beginner",
+   "estimertSek": 22,
+   "xp": 80,
+   "serie": "Your Why",
+   "underkategori": "Contribution",
+   "tittel": "Being needed by others is a quiet longevity booster",
+   "hook": "Purpose often points outward, not inward.",
+   "sammendrag": "Much of blue-zones purpose is about contribution — being useful to family and community. Helping others is tied to better wellbeing, and in Norway it is as close as the nearest dugnad or frivillig.no.",
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "In blue-zones cultures, purpose is most often tied to what?",
+    "options": [
+     "Being useful to family and community",
+     "Owning more things",
+     "Retiring as early as possible",
+     "Working alone"
+    ],
+    "correct_answer": "Being useful to family and community",
+    "explanation": "Contribution and being needed by others is a recurring thread in long-lived communities.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Blue Zones: Purpose",
+    "org": "Blue Zones",
+    "url": "https://www.bluezones.com/2016/11/power-9/"
+   },
+   "lesMer": {
+    "tittel": "Frivillig.no",
+    "org": "Frivillighet Norge",
+    "url": "https://frivillig.no"
+   },
+   "tags": [
+    "contribution",
+    "volunteering",
+    "community"
+   ],
+   "seed": {
+    "likes": 1164,
+    "comments": 268,
+    "saves": 788,
+    "shares": 205
+   }
+  },
+  {
+   "id": "POST-115",
+   "rekkefolge": 115,
+   "opprettet": "2026-07-17T17:00:00",
+   "posterId": "P035",
+   "kategori": "Mind",
+   "katId": "mening",
+   "pilar": "mening",
+   "vanskelighet": "Beginner",
+   "estimertSek": 22,
+   "xp": 80,
+   "serie": "Your Why",
+   "underkategori": "Values",
+   "tittel": "Naming what matters makes daily choices easier",
+   "hook": "A clear why turns willpower into direction.",
+   "sammendrag": "When you can name what you value — health for your family, time in nature, being there for friends — small daily choices stop being a fight. The why does the pulling, not sheer willpower.",
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "A clear sense of what matters turns willpower into ____.",
+    "options": [
+     "direction",
+     "noise",
+     "pressure"
+    ],
+    "correct_answer": "direction",
+    "explanation": "Anchoring habits to personal values makes them self-sustaining rather than forced.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "NIH News in Health",
+    "org": "National Institutes of Health",
+    "url": "https://newsinhealth.nih.gov"
+   },
+   "lesMer": {
+    "tittel": "Blue Zones: Purpose",
+    "org": "Blue Zones",
+    "url": "https://www.bluezones.com/2016/11/power-9/"
+   },
+   "tags": [
+    "values",
+    "motivation",
+    "habits"
+   ],
+   "seed": {
+    "likes": 993,
+    "comments": 214,
+    "saves": 662,
+    "shares": 168
+   }
+  },
+  {
+   "id": "POST-116",
+   "rekkefolge": 116,
+   "opprettet": "2026-07-17T18:00:00",
+   "posterId": "P035",
+   "kategori": "Mind",
+   "katId": "mening",
+   "pilar": "mening",
+   "vanskelighet": "Beginner",
+   "estimertSek": 22,
+   "xp": 80,
+   "serie": "Everyday Meaning",
+   "underkategori": "Reflection",
+   "tittel": "A weekly pause on what mattered strengthens meaning",
+   "hook": "Meaning grows when you notice it.",
+   "sammendrag": "Regularly reflecting on what felt meaningful — even briefly — is tied to greater wellbeing. It is the opposite of endless scrolling: a short, bounded look back that helps the good moments count.",
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "You spend a minute each week noting what felt meaningful. Over time, what tends to happen?",
+    "options": [
+     "A stronger sense of wellbeing",
+     "Nothing measurable",
+     "More stress"
+    ],
+    "correct_answer": "A stronger sense of wellbeing",
+    "explanation": "Brief, regular reflection on meaning is associated with higher wellbeing.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "NIH News in Health",
+    "org": "National Institutes of Health",
+    "url": "https://newsinhealth.nih.gov"
+   },
+   "lesMer": {
+    "tittel": "Psykisk helse og livskvalitet",
+    "org": "Helsenorge",
+    "url": "https://www.helsenorge.no/psykisk-helse/"
+   },
+   "tags": [
+    "reflection",
+    "gratitude",
+    "wellbeing"
+   ],
+   "seed": {
+    "likes": 1077,
+    "comments": 236,
+    "saves": 731,
+    "shares": 182
+   }
+  },
+  {
+   "id": "POST-117",
+   "rekkefolge": 117,
+   "opprettet": "2026-07-17T19:00:00",
+   "posterId": "P035",
+   "kategori": "Mind",
+   "katId": "mening",
+   "pilar": "mening",
+   "vanskelighet": "Beginner",
+   "estimertSek": 22,
+   "xp": 80,
+   "serie": "Everyday Meaning",
+   "underkategori": "The long view",
+   "tittel": "Purpose connects today's small choices to a longer story",
+   "hook": "The best reason to move today may be 20 years away.",
+   "sammendrag": "Blue-zones purpose takes the long view: caring for grandchildren, passing on skills, staying able. Match a few everyday choices to the future they protect.",
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Match each daily choice to what it protects over time.",
+    "options": [
+     {
+      "left": "A short walk today",
+      "right": "Being able to walk later"
+     },
+     {
+      "left": "A shared meal",
+      "right": "Bonds that outlast you"
+     },
+     {
+      "left": "A calm evening",
+      "right": "Steady energy tomorrow"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "A short walk today",
+      "right": "Being able to walk later"
+     },
+     {
+      "left": "A shared meal",
+      "right": "Bonds that outlast you"
+     },
+     {
+      "left": "A calm evening",
+      "right": "Steady energy tomorrow"
+     }
+    ],
+    "explanation": "Small, repeated choices are how a long-term why gets built, day by day.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "Blue Zones: Purpose",
+    "org": "Blue Zones",
+    "url": "https://www.bluezones.com/2016/11/power-9/"
+   },
+   "lesMer": {
+    "tittel": "NIH News in Health",
+    "org": "National Institutes of Health",
+    "url": "https://newsinhealth.nih.gov"
+   },
+   "tags": [
+    "legacy",
+    "long view",
+    "purpose"
+   ],
+   "seed": {
+    "likes": 1211,
+    "comments": 279,
+    "saves": 815,
+    "shares": 219
    }
   }
  ]

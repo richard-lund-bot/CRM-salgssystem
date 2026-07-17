@@ -1,6 +1,6 @@
 {
  "schemaVersion": "1.0",
- "beskrivelse": "Spillbar lærings-feed på norsk (Aha-seed): 112 innlegg med minispill, kilder og fiktive redaksjonelle guider.",
+ "beskrivelse": "Spillbar lærings-feed på norsk (Aha-seed): 117 innlegg med minispill, kilder og fiktive redaksjonelle guider.",
  "posters": [
   {
    "id": "P001",
@@ -375,6 +375,17 @@
    "bio": "En fiktiv Aha-guide for pust, hvile og ro.",
    "aksentStart": "#38BDF8",
    "aksentSlutt": "#818CF8"
+  },
+  {
+   "id": "P035",
+   "navn": "Jon",
+   "handle": "@jon.mening",
+   "kategori": "Mind",
+   "dekker": "Formål, det å bidra og det som betyr noe",
+   "slagord": "Kjenn ditt hvorfor.",
+   "bio": "En fiktiv Aha-guide for formål og mening.",
+   "aksentStart": "#F59E0B",
+   "aksentSlutt": "#FB923C"
   }
  ],
  "posts": [
@@ -6489,6 +6500,278 @@
     "comments": 203,
     "saves": 634,
     "shares": 161
+   }
+  },
+  {
+   "id": "POST-113",
+   "rekkefolge": 113,
+   "opprettet": "2026-07-17T15:00:00",
+   "posterId": "P035",
+   "kategori": "Sinn",
+   "katId": "mening",
+   "pilar": "mening",
+   "vanskelighet": "Beginner",
+   "estimertSek": 22,
+   "xp": 80,
+   "serie": "Ditt hvorfor",
+   "underkategori": "Formål",
+   "tittel": "En følelse av mening henger sammen med å leve lenger",
+   "hook": "Å kjenne ditt «hvorfor» gjør mer enn å løfte en tung dag.",
+   "sammendrag": "I blåsonene har eldre en klar grunn til å stå opp — ikigai på Okinawa, plan de vida i Nicoya. Studier knytter en sterk følelse av mening til lavere dødelighet og bedre helse når vi blir eldre.",
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Mening er bare en fin følelse — den har ingen målbar sammenheng med helse.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Forskning knytter en sterkere følelse av mening i livet til lavere dødelighet av alle årsaker og bedre helse.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Purpose in Life and Mortality",
+    "org": "JAMA Network Open",
+    "url": "https://jamanetwork.com"
+   },
+   "lesMer": {
+    "tittel": "Blue Zones: Purpose",
+    "org": "Blue Zones",
+    "url": "https://www.bluezones.com/2016/11/power-9/"
+   },
+   "tags": [
+    "purpose",
+    "ikigai",
+    "longevity"
+   ],
+   "seed": {
+    "likes": 1388,
+    "comments": 331,
+    "saves": 902,
+    "shares": 241
+   }
+  },
+  {
+   "id": "POST-114",
+   "rekkefolge": 114,
+   "opprettet": "2026-07-17T16:00:00",
+   "posterId": "P035",
+   "kategori": "Sinn",
+   "katId": "mening",
+   "pilar": "mening",
+   "vanskelighet": "Beginner",
+   "estimertSek": 22,
+   "xp": 80,
+   "serie": "Ditt hvorfor",
+   "underkategori": "Å bidra",
+   "tittel": "Å være til nytte for andre er en stille langlevd-forsterker",
+   "hook": "Mening peker ofte utover, ikke innover.",
+   "sammendrag": "Mye av blåsone-meningen handler om å bidra — å være til nytte for familie og fellesskap. Å hjelpe andre henger sammen med bedre trivsel, og i Norge er det så nært som nærmeste dugnad eller frivillig.no.",
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "I blåsone-kulturer er mening oftest knyttet til hva?",
+    "options": [
+     "Å være til nytte for familie og fellesskap",
+     "Å eie flere ting",
+     "Å pensjonere seg så tidlig som mulig",
+     "Å jobbe alene"
+    ],
+    "correct_answer": "Å være til nytte for familie og fellesskap",
+    "explanation": "Å bidra og være til nytte for andre er en gjenganger i samfunn med mange langlevde.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Blue Zones: Purpose",
+    "org": "Blue Zones",
+    "url": "https://www.bluezones.com/2016/11/power-9/"
+   },
+   "lesMer": {
+    "tittel": "Frivillig.no",
+    "org": "Frivillighet Norge",
+    "url": "https://frivillig.no"
+   },
+   "tags": [
+    "contribution",
+    "volunteering",
+    "community"
+   ],
+   "seed": {
+    "likes": 1164,
+    "comments": 268,
+    "saves": 788,
+    "shares": 205
+   }
+  },
+  {
+   "id": "POST-115",
+   "rekkefolge": 115,
+   "opprettet": "2026-07-17T17:00:00",
+   "posterId": "P035",
+   "kategori": "Sinn",
+   "katId": "mening",
+   "pilar": "mening",
+   "vanskelighet": "Beginner",
+   "estimertSek": 22,
+   "xp": 80,
+   "serie": "Ditt hvorfor",
+   "underkategori": "Verdier",
+   "tittel": "Å sette ord på det som betyr noe gjør daglige valg lettere",
+   "hook": "Et tydelig hvorfor gjør viljestyrke om til retning.",
+   "sammendrag": "Når du kan sette ord på det du verdsetter — helse for familien, tid i naturen, å være der for venner — slutter de små daglige valgene å være en kamp. Hvorforet drar lasset, ikke ren viljestyrke.",
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "En tydelig følelse av hva som betyr noe gjør viljestyrke om til ____.",
+    "options": [
+     "retning",
+     "støy",
+     "press"
+    ],
+    "correct_answer": "retning",
+    "explanation": "Å forankre vaner i egne verdier gjør dem selvbærende framfor tvungne.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "NIH News in Health",
+    "org": "National Institutes of Health",
+    "url": "https://newsinhealth.nih.gov"
+   },
+   "lesMer": {
+    "tittel": "Blue Zones: Purpose",
+    "org": "Blue Zones",
+    "url": "https://www.bluezones.com/2016/11/power-9/"
+   },
+   "tags": [
+    "values",
+    "motivation",
+    "habits"
+   ],
+   "seed": {
+    "likes": 993,
+    "comments": 214,
+    "saves": 662,
+    "shares": 168
+   }
+  },
+  {
+   "id": "POST-116",
+   "rekkefolge": 116,
+   "opprettet": "2026-07-17T18:00:00",
+   "posterId": "P035",
+   "kategori": "Sinn",
+   "katId": "mening",
+   "pilar": "mening",
+   "vanskelighet": "Beginner",
+   "estimertSek": 22,
+   "xp": 80,
+   "serie": "Mening i hverdagen",
+   "underkategori": "Refleksjon",
+   "tittel": "En ukentlig pause på det som betydde noe styrker meningen",
+   "hook": "Mening vokser når du legger merke til den.",
+   "sammendrag": "Å reflektere jevnlig over hva som føltes meningsfullt — selv kort — henger sammen med større trivsel. Det er det motsatte av endeløs scrolling: et kort, avgrenset tilbakeblikk som hjelper de gode øyeblikkene å telle.",
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Du bruker ett minutt hver uke på å notere hva som føltes meningsfullt. Over tid, hva pleier å skje?",
+    "options": [
+     "En sterkere følelse av trivsel",
+     "Ingenting målbart",
+     "Mer stress"
+    ],
+    "correct_answer": "En sterkere følelse av trivsel",
+    "explanation": "Kort, jevnlig refleksjon over mening henger sammen med høyere trivsel.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "NIH News in Health",
+    "org": "National Institutes of Health",
+    "url": "https://newsinhealth.nih.gov"
+   },
+   "lesMer": {
+    "tittel": "Psykisk helse og livskvalitet",
+    "org": "Helsenorge",
+    "url": "https://www.helsenorge.no/psykisk-helse/"
+   },
+   "tags": [
+    "reflection",
+    "gratitude",
+    "wellbeing"
+   ],
+   "seed": {
+    "likes": 1077,
+    "comments": 236,
+    "saves": 731,
+    "shares": 182
+   }
+  },
+  {
+   "id": "POST-117",
+   "rekkefolge": 117,
+   "opprettet": "2026-07-17T19:00:00",
+   "posterId": "P035",
+   "kategori": "Sinn",
+   "katId": "mening",
+   "pilar": "mening",
+   "vanskelighet": "Beginner",
+   "estimertSek": 22,
+   "xp": 80,
+   "serie": "Mening i hverdagen",
+   "underkategori": "Det lange perspektivet",
+   "tittel": "Mening kobler dagens små valg til en lengre fortelling",
+   "hook": "Den beste grunnen til å bevege deg i dag kan ligge 20 år fram.",
+   "sammendrag": "Blåsone-mening tar det lange perspektivet: å ta vare på barnebarna, gi videre ferdigheter, holde seg i stand. Koble noen hverdagsvalg til framtiden de beskytter.",
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Koble hvert daglige valg til det det beskytter over tid.",
+    "options": [
+     {
+      "left": "En kort gåtur i dag",
+      "right": "Å kunne gå senere"
+     },
+     {
+      "left": "Et delt måltid",
+      "right": "Bånd som varer"
+     },
+     {
+      "left": "En rolig kveld",
+      "right": "Jevn energi i morgen"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "En kort gåtur i dag",
+      "right": "Å kunne gå senere"
+     },
+     {
+      "left": "Et delt måltid",
+      "right": "Bånd som varer"
+     },
+     {
+      "left": "En rolig kveld",
+      "right": "Jevn energi i morgen"
+     }
+    ],
+    "explanation": "Små, gjentatte valg er måten et langsiktig hvorfor bygges på, dag for dag.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "Blue Zones: Purpose",
+    "org": "Blue Zones",
+    "url": "https://www.bluezones.com/2016/11/power-9/"
+   },
+   "lesMer": {
+    "tittel": "NIH News in Health",
+    "org": "National Institutes of Health",
+    "url": "https://newsinhealth.nih.gov"
+   },
+   "tags": [
+    "legacy",
+    "long view",
+    "purpose"
+   ],
+   "seed": {
+    "likes": 1211,
+    "comments": 279,
+    "saves": 815,
+    "shares": 219
    }
   }
  ],

@@ -42,6 +42,10 @@ import { visFeedSkjerm, visPostSkjerm } from './feed.js';
 import { gjeldendeSprak, settSprak, startOversetter, oversettDom, hentSprakJson } from './i18n.js';
 import { VANER, dagensInnslag, veksleVane, kostStatus, settNotat } from './kosthold.js';
 import { SOSIALE_VANER, dagensInnslag as sosDagensInnslag, veksleVane as sosVeksleVane, sosialStatus } from './sosialt.js';
+import {
+  STARTSPORSMAL, lesHvorfor, leggTilHvorfor, slettHvorfor, kanLeggeTil,
+  ukensRefleksjon, settRefleksjon, lesRefleksjoner,
+} from './mening.js';
 import { streakEtter } from './feiring.js';
 
 const app = document.getElementById('app');
@@ -70,6 +74,7 @@ const ruter = {
   aktivitet: () => visAktivitetSkjerm(app),
   historikk: () => visAktivitetSkjerm(app), // gammel lenke — samme skjerm
   meny: visMeny, // hub bak tannhjulet — snarveier + inngang til innstillinger
+  mening: () => visMeningSkjerm(app), // Mitt hvorfor — meningspilaren (ikke fane)
   varsler: visVarsler,
   innstillinger: visInnstillinger,
   bibliotek: visBibliotek,
@@ -888,6 +893,7 @@ function visMeny() {
   fane('Meny', 'Innstillinger og om appen.',
     el('div', { class: 'kort' },
       el('div', { class: 'liste' },
+        lenke('kompass', 'Mitt hvorfor', '#/mening'),
         lenke('person', 'Profil', '#/merker'),
         lenke('bok', 'Lær', '#/laer'),
         lenke('gir', 'Innstillinger', '#/innstillinger'),
@@ -895,6 +901,91 @@ function visMeny() {
       ),
     ),
   );
+}
+
+// ===========================================================================
+// Mening (Fase 6) — «Mitt hvorfor» som motivasjons-spine, ikke en fane. Her
+// erklærer du 1–3 personlige grunner (ikigai/nordstjerner) som pakker inn hele
+// belønningsloopen: feiringen refererer til ditt hvorfor, og en rolig ukentlig
+// refleksjon bygger en privat meningsdagbok. Nås fra meny-huben og Profil.
+// ===========================================================================
+function visMeningSkjerm(mount) {
+  if (!hentProfil()) { location.hash = '#/hjem'; return; }
+  const tegnPåNytt = () => visMeningSkjerm(mount);
+
+  const hvorfor = lesHvorfor();
+
+  // --- Mine hvorfor ---
+  const hvorforListe = el('div', { class: 'hvorforliste' },
+    ...hvorfor.map((h) => el('div', { class: 'hvorforkort' },
+      el('span', { class: 'hvorforkort__ikon' }, ikon('kompass')),
+      el('span', { class: 'hvorforkort__tekst' }, h.tekst),
+      el('button', {
+        class: 'hvorforkort__slett', type: 'button', 'aria-label': 'Fjern',
+        onclick: () => { slettHvorfor(h.id); tegnPåNytt(); },
+      }, ikon('kryss')),
+    )),
+    hvorfor.length ? null : el('p', { class: 'dempet' }, 'Skriv ned grunnen din — det du kommer tilbake til når dagen er tung.'),
+  );
+
+  const komponerKort = () => {
+    const ta = el('textarea', { class: 'kostnotat hvorfor__inn', rows: '2', maxlength: '120', placeholder: 'Jeg vil …' });
+    const promptRad = el('div', { class: 'chiprad chiprad--pille hvorfor__prompter' },
+      ...STARTSPORSMAL.map((p) => el('button', {
+        class: 'chip chip--dempet', type: 'button',
+        onclick: () => { ta.placeholder = p.sporsmal; ta.focus(); },
+      }, p.sporsmal)));
+    const knapp = el('button', { class: 'knapp', type: 'button',
+      onclick: () => {
+        const ny = leggTilHvorfor(ta.value);
+        if (!ny) { varsle('Skriv noe kort først', { ikon: 'kompass' }); return; }
+        vibrer(); varsle('Lagt til', { ikon: 'kompass' });
+        tegnPåNytt();
+      } }, 'Legg til');
+    return el('section', { class: 'kort' },
+      el('h2', { class: 'kost__tittel' }, hvorfor.length ? 'Legg til et hvorfor til' : 'Skriv ditt hvorfor'),
+      el('p', { class: 'dempet', style: 'margin-top:-4px' }, 'La deg inspirere av et spørsmål — eller skriv helt fritt.'),
+      promptRad, ta, el('div', { class: 'hvorfor__handling' }, knapp));
+  };
+
+  const mineKort = el('section', { class: 'kort' },
+    el('h2', { class: 'kost__tittel' }, 'Mitt hvorfor'),
+    el('p', { class: 'dempet', style: 'margin-top:-4px' },
+      'På Okinawa kaller de det ikigai — grunnen til at du står opp om morgenen. Et tydelig hvorfor er blant de sterkeste kreftene for et langt, godt liv. De små valgene dine peker hit.'),
+    hvorforListe);
+
+  // --- Ukens refleksjon ---
+  const uke = ukensRefleksjon();
+  const refl = el('textarea', { class: 'kostnotat', rows: '3', maxlength: '280',
+    placeholder: 'Hva føltes mest meningsfullt denne uka?' });
+  refl.value = uke?.tekst || '';
+  const reflLagre = el('button', { class: 'knapp', type: 'button',
+    onclick: () => {
+      settRefleksjon(refl.value);
+      vibrer(); varsle('Refleksjon lagret', { ikon: 'blad' });
+      tegnPåNytt();
+    } }, uke ? 'Oppdater' : 'Lagre refleksjonen');
+  const reflKort = el('section', { class: 'kort' },
+    el('h2', { class: 'kost__tittel' }, 'Ukens refleksjon'),
+    el('p', { class: 'dempet', style: 'margin-top:-4px' },
+      'Ett rolig øyeblikk i uka — ikke en oppgave. Hva av det du gjorde betydde noe?'),
+    refl, el('div', { class: 'hvorfor__handling' }, reflLagre));
+
+  // --- Meningsdagbok (tidligere refleksjoner) ---
+  const tidligere = lesRefleksjoner().filter((r) => r.uke !== (uke?.uke));
+  const dagbokKort = tidligere.length ? el('section', { class: 'kort' },
+    el('h2', { class: 'kost__tittel' }, 'Meningsdagbok'),
+    el('div', { class: 'meningsdagbok' },
+      ...tidligere.map((r) => el('div', { class: 'dagbokrad' },
+        el('span', { class: 'dagbokrad__uke' },
+          el('span', { class: 'dagbokrad__merkelapp' }, 'Uke fra'), ' ', r.uke),
+        el('span', { class: 'dagbokrad__tekst' }, r.tekst))))) : null;
+
+  skjerm('Mitt hvorfor',
+    mineKort,
+    kanLeggeTil() ? komponerKort() : el('p', { class: 'dempet', style: 'text-align:center' }, 'Du har nok hvorfor for nå — fjern ett for å bytte.'),
+    reflKort,
+    dagbokKort);
 }
 
 function visInnstillinger() {

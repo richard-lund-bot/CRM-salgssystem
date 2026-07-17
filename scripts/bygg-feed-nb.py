@@ -62,6 +62,9 @@ UNDERKAT = {
     'Legumes': 'Belgvekster', 'Fish & omega-3': 'Fisk og omega-3', 'Vegetables': 'Grønnsaker',
     'Whole grains': 'Fullkorn', 'Mindful eating': 'Bevisst spising', 'Seasonal eating': 'Sesongmat',
     'Breathing': 'Pust', 'Nature & calm': 'Natur og ro', 'Rest': 'Hvile',
+    # Mening-pilaren
+    'Purpose': 'Formål', 'Contribution': 'Å bidra', 'Values': 'Verdier',
+    'Reflection': 'Refleksjon', 'The long view': 'Det lange perspektivet',
 }
 
 SERIE = {
@@ -90,6 +93,7 @@ SERIE = {
     'Your Learning Brain': 'Læringshjernen din',
     # Blue-zones-pilarene
     'Nordic Plate': 'Nordisk tallerken', 'Calm Breath': 'Rolig pust', 'Everyday Calm': 'Ro i hverdagen',
+    'Your Why': 'Ditt hvorfor', 'Everyday Meaning': 'Mening i hverdagen',
 }
 
 POSTER = {
@@ -100,6 +104,7 @@ POSTER = {
     'P005': ('Stjerner, galakser, sorte hull og eksoplaneter', 'Universet er merkeligere enn fiksjon.', 'En fiktiv Aha-guide for det dype universet.'),
     'P033': ('Blåsone-kosthold, belgvekster og den nordiske tallerkenen', 'Små tallerkener, lange år.', 'En fiktiv Aha-guide for blåsone-kosthold i et nordisk kjøkken.'),
     'P034': ('Pust, hvile og hverdagsro', 'Senk pusten, sett roen.', 'En fiktiv Aha-guide for pust, hvile og ro.'),
+    'P035': ('Formål, det å bidra og det som betyr noe', 'Kjenn ditt hvorfor.', 'En fiktiv Aha-guide for formål og mening.'),
 }
 # Resten av posterne får en generisk, men troverdig norsk bio ut fra dekningen.
 
@@ -1055,6 +1060,49 @@ add('POST-112',
  'Hyppig mikro-restitusjon hindrer at stress hoper seg opp, mer pålitelig enn én sen reset.',
  ['Korte, hyppige pauser gjennom dagen', 'Ett langt sammenbrudd sent på kvelden', 'Aldri ta pause', 'Bare fri i helgene'])
 
+# ---- Mening-pilaren: formål/ikigai ----------------------------------------
+add('POST-113',
+ 'En følelse av mening henger sammen med å leve lenger',
+ 'Å kjenne ditt «hvorfor» gjør mer enn å løfte en tung dag.',
+ 'I blåsonene har eldre en klar grunn til å stå opp — ikigai på Okinawa, plan de vida i Nicoya. Studier knytter en sterk følelse av mening til lavere dødelighet og bedre helse når vi blir eldre.',
+ 'Mening er bare en fin følelse — den har ingen målbar sammenheng med helse.',
+ 'Forskning knytter en sterkere følelse av mening i livet til lavere dødelighet av alle årsaker og bedre helse.',
+ ['Fakta', 'Myte'])
+
+add('POST-114',
+ 'Å være til nytte for andre er en stille langlevd-forsterker',
+ 'Mening peker ofte utover, ikke innover.',
+ 'Mye av blåsone-meningen handler om å bidra — å være til nytte for familie og fellesskap. Å hjelpe andre henger sammen med bedre trivsel, og i Norge er det så nært som nærmeste dugnad eller frivillig.no.',
+ 'I blåsone-kulturer er mening oftest knyttet til hva?',
+ 'Å bidra og være til nytte for andre er en gjenganger i samfunn med mange langlevde.',
+ ['Å være til nytte for familie og fellesskap', 'Å eie flere ting', 'Å pensjonere seg så tidlig som mulig', 'Å jobbe alene'])
+
+add('POST-115',
+ 'Å sette ord på det som betyr noe gjør daglige valg lettere',
+ 'Et tydelig hvorfor gjør viljestyrke om til retning.',
+ 'Når du kan sette ord på det du verdsetter — helse for familien, tid i naturen, å være der for venner — slutter de små daglige valgene å være en kamp. Hvorforet drar lasset, ikke ren viljestyrke.',
+ 'En tydelig følelse av hva som betyr noe gjør viljestyrke om til ____.',
+ 'Å forankre vaner i egne verdier gjør dem selvbærende framfor tvungne.',
+ ['retning', 'støy', 'press'])
+
+add('POST-116',
+ 'En ukentlig pause på det som betydde noe styrker meningen',
+ 'Mening vokser når du legger merke til den.',
+ 'Å reflektere jevnlig over hva som føltes meningsfullt — selv kort — henger sammen med større trivsel. Det er det motsatte av endeløs scrolling: et kort, avgrenset tilbakeblikk som hjelper de gode øyeblikkene å telle.',
+ 'Du bruker ett minutt hver uke på å notere hva som føltes meningsfullt. Over tid, hva pleier å skje?',
+ 'Kort, jevnlig refleksjon over mening henger sammen med høyere trivsel.',
+ ['En sterkere følelse av trivsel', 'Ingenting målbart', 'Mer stress'])
+
+add('POST-117',
+ 'Mening kobler dagens små valg til en lengre fortelling',
+ 'Den beste grunnen til å bevege deg i dag kan ligge 20 år fram.',
+ 'Blåsone-mening tar det lange perspektivet: å ta vare på barnebarna, gi videre ferdigheter, holde seg i stand. Koble noen hverdagsvalg til framtiden de beskytter.',
+ 'Koble hvert daglige valg til det det beskytter over tid.',
+ 'Små, gjentatte valg er måten et langsiktig hvorfor bygges på, dag for dag.',
+ [{'left': 'En kort gåtur i dag', 'right': 'Å kunne gå senere'},
+  {'left': 'Et delt måltid', 'right': 'Bånd som varer'},
+  {'left': 'En rolig kveld', 'right': 'Jevn energi i morgen'}])
+
 
 # ---- Bygg nb-datasettet ----------------------------------------------------
 def bygg_options(base_opts, base_ca, gt, nb_opts):
@@ -1100,7 +1148,7 @@ for p in BASE['posts']:
 if mangler:
     raise SystemExit(f'Mangler oversettelse for: {mangler}')
 
-ut = {**BASE, 'sprak': 'nb', 'beskrivelse': 'Spillbar lærings-feed på norsk (Aha-seed): 112 innlegg med minispill, kilder og fiktive redaksjonelle guider.', 'posters': posters_ut, 'posts': posts_ut}
+ut = {**BASE, 'sprak': 'nb', 'beskrivelse': 'Spillbar lærings-feed på norsk (Aha-seed): 117 innlegg med minispill, kilder og fiktive redaksjonelle guider.', 'posters': posters_ut, 'posts': posts_ut}
 json.dump(ut, open('/home/user/CRM-salgssystem/data/feed.json', 'w'), ensure_ascii=False, indent=1)
 print('feed.json (norsk base) skrevet:', len(posts_ut), 'innlegg')
 

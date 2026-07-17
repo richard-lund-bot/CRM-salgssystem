@@ -213,6 +213,28 @@ EN = {
  'Sosial uke': 'A social week', 'Sosiale valg 7 dager': 'Social choices for 7 days',
  'Sosial streak 3 dager': 'Social streak of 3 days', 'Fast moai': 'A steady moai',
  'Sosial streak 14 dager': 'Social streak of 14 days', 'Sosiale valg 30 dager': 'Social choices for 30 days',
+ # Mening-pilaren (Fase 6) — «Mitt hvorfor» + ukens refleksjon
+ 'Mitt hvorfor': 'My why',
+ 'På Okinawa kaller de det ikigai — grunnen til at du står opp om morgenen. Et tydelig hvorfor er blant de sterkeste kreftene for et langt, godt liv. De små valgene dine peker hit.':
+   'On Okinawa they call it ikigai — the reason you get up in the morning. A clear why is among the strongest forces for a long, good life. Your small choices point here.',
+ 'Skriv ned grunnen din — det du kommer tilbake til når dagen er tung.':
+   'Write down your reason — the one you come back to when the day is hard.',
+ 'Skriv ditt hvorfor': 'Write your why', 'Legg til et hvorfor til': 'Add another why',
+ 'La deg inspirere av et spørsmål — eller skriv helt fritt.': 'Let a question inspire you — or write freely.',
+ 'Jeg vil …': 'I want to …', 'Legg til': 'Add',
+ 'Skriv noe kort først': 'Write something short first', 'Lagt til': 'Added',
+ 'Du har nok hvorfor for nå — fjern ett for å bytte.': 'You have enough whys for now — remove one to swap.',
+ 'Hvem vil du være der for?': 'Who do you want to be there for?',
+ 'Hva vil du fortsatt klare om 20 år?': 'What do you still want to be able to do in 20 years?',
+ 'Hva gir mening å bidra med?': 'What feels meaningful to contribute?',
+ 'Hva vil du ha mer av i livet?': 'What do you want more of in life?',
+ 'Ukens refleksjon': "This week's reflection",
+ 'Ett rolig øyeblikk i uka — ikke en oppgave. Hva av det du gjorde betydde noe?':
+   'One calm moment in the week — not a task. What of what you did mattered?',
+ 'Hva føltes mest meningsfullt denne uka?': 'What felt most meaningful this week?',
+ 'Lagre refleksjonen': 'Save the reflection', 'Oppdater': 'Update',
+ 'Refleksjon lagret': 'Reflection saved', 'Meningsdagbok': 'Meaning journal',
+ 'Ett steg nærmere': 'One step closer', 'Uke fra': 'Week of', 'Fjern': 'Remove',
 }
 
 # Kompendium/merke-tekster (lengre) — legg til

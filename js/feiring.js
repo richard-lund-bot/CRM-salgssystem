@@ -14,6 +14,7 @@ import { el, ikon } from './ui.js';
 import { tallOpp, lagKonfetti, lagGnist } from './animasjon.js';
 import { vibrer } from './haptikk.js';
 import { pling } from './lyd.js';
+import { feiringsHvorfor } from './mening.js';
 
 // Maskoten i cheer-posen — egen liten bygger så vi slipper å importere sti.js
 // (som importerer denne modulen tilbake; ville blitt en syklus).
@@ -137,14 +138,22 @@ export function streakFeiring(streak) {
     vibrer('feiring');
     const tall = el('span', { class: 'streakfeiring__tall' }, '0');
     const knapp = el('button', { class: 'streakfeiring__knapp', type: 'button' }, 'Jeg er dedikert');
+    // Meningslinjen pakker inn belønningen: streaken peker mot ditt eget hvorfor
+    // (ikigai). Vises kun når brukeren har erklært et hvorfor — ellers den rene
+    // no-shame-linjen. Dette gjør de ekstrinsiske poengene intrinsisk forankret.
+    const hvorfor = feiringsHvorfor();
     const overlay = el('div', { class: 'streakfeiring', role: 'dialog', 'aria-label': 'Streak økt' },
       el('div', { class: 'streakfeiring__glo' }),
       el('div', { class: 'streakfeiring__flamme' }, ikon('flamme', 'ikon')),
       el('div', { class: 'streakfeiring__teller' },
         tall, el('span', { class: 'streakfeiring__enhet' }, streak === 1 ? 'dag på rad' : 'dager på rad')),
       el('h1', { class: 'streakfeiring__tittel' }, 'Streak!'),
-      el('p', { class: 'streakfeiring__under' },
-        'Du møtte opp i dag. Én dag av gangen — det er slik det bygges.'),
+      hvorfor
+        ? el('p', { class: 'streakfeiring__hvorfor' },
+          el('span', { class: 'streakfeiring__hvorfor-merkelapp' }, 'Ett steg nærmere'),
+          hvorfor)
+        : el('p', { class: 'streakfeiring__under' },
+          'Du møtte opp i dag. Én dag av gangen — det er slik det bygges.'),
       el('div', { class: 'streakfeiring__bunn' }, knapp),
     );
     let ferdig = false;

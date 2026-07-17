@@ -86,6 +86,7 @@ const KATID_PILAR = {
   kosthold: 'kosthold',   // pilar-native mat-innhold
   mind: 'ro',          // mental ro / mindfulness
   ro: 'ro',            // pilar-native ro-innhold
+  mening: 'mening',    // pilar-native formål/ikigai-innhold
   society: 'tilhorighet', // fellesskap / sosialt
   // Resten av dagens allmennkunnskap → nysgjerrig (lærelyst + variasjon).
   science: 'nysgjerrig', history: 'nysgjerrig', nature: 'nysgjerrig',
