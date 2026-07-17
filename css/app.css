@@ -4364,3 +4364,16 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .reviewark__fot { position: sticky; bottom: 0; margin: 6px -18px 0; padding: 12px 18px 2px; background: var(--bg); border-top: 1px solid var(--kant); }
 .reviewark__bekreft { width: 100%; }
 .reviewark__bekreft:disabled { opacity: 0.5; }
+
+/* Ukevelger med pil-navigasjon (‹ Denne uka ›) — ukesplan + legg-i-plan-ark */
+.ukevelger--nav { gap: 2px; padding: 4px 6px; }
+.ukevelger__pil { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; border: none; background: transparent; color: var(--aksent); cursor: pointer; }
+.ukevelger__pil .ikon { width: 16px; height: 16px; }
+.ukevelger__pil--forrige .ikon { transform: rotate(180deg); }
+.ukevelger__pil:disabled { color: var(--kant-sterk); cursor: default; }
+.ukevelger__pil:not(:disabled):active { background: var(--aksent-svak); }
+.ukevelger__navn { min-width: 82px; text-align: center; font-size: 14px; font-weight: 600; color: var(--tekst); }
+.ukesplan-kropp { display: flex; flex-direction: column; gap: 14px; }
+.ukevelger--ark { margin-top: 0; }
+.arkukerad { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.arkukerad .arketikett { margin: 0; }

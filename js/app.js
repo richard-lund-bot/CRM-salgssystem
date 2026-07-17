@@ -825,18 +825,30 @@ function visOppskriftSkjerm(mount) {
     ingrKort, stegKort, bzRad);
 }
 
-// Bunnark: legg en oppskrift i ukesplanen (velg måltid + dag).
+// Bunnark: legg en oppskrift i ukesplanen (velg uke + måltid + dag).
 function leggIUkesplanArk(o) {
   const passer = (o.maaltid && o.maaltid.length) ? MAALTIDER.filter((m) => o.maaltid.includes(m.id)) : MAALTIDER;
   let valgt = passer[0].id;
-  const datoer = ukeDatoer();
+  let offset = 0;
   const idag = matIsoDag();
   let lukkArk = () => {};
 
+  // Ukevelger i arket, så man kan legge retten i en senere uke.
+  const ukeNavn = el('span', { class: 'ukevelger__navn' });
+  const forrige = el('button', { class: 'ukevelger__pil ukevelger__pil--forrige', type: 'button', 'aria-label': 'Forrige uke' }, ikon('chevron', 'ikon'));
+  const neste = el('button', { class: 'ukevelger__pil', type: 'button', 'aria-label': 'Neste uke' }, ikon('chevron', 'ikon'));
+  forrige.addEventListener('click', () => { if (offset > 0) { offset -= 1; tegnDager(); } });
+  neste.addEventListener('click', () => { if (offset < UKE_MAKS_OFFSET) { offset += 1; tegnDager(); } });
+  const ukevelger = el('div', { class: 'ukevelger ukevelger--nav ukevelger--ark' }, forrige, ukeNavn, neste);
+
   const dagRad = el('div', { class: 'arkdager' });
   const tegnDager = () => {
+    const visTs = Date.now() + offset * UKE_MS;
+    ukeNavn.textContent = ukeEtikett(offset, visTs);
+    forrige.disabled = offset <= 0;
+    neste.disabled = offset >= UKE_MAKS_OFFSET;
     tom(dagRad);
-    datoer.forEach((iso, i) => {
+    ukeDatoer(visTs).forEach((iso, i) => {
       const har = maaltidFor(iso)[valgt] === o.id;
       const b = el('button', { class: 'arkdag' + (har ? ' arkdag--valgt' : '') + (iso === idag ? ' arkdag--idag' : ''), type: 'button',
         onclick: () => { settMaaltid(iso, valgt, o.id); vibrer(); varsle('Lagt i ukesplan', { ikon: 'kalender' }); lukkArk(); } },
@@ -856,7 +868,7 @@ function leggIUkesplanArk(o) {
   const { lukk } = visArk('Legg i ukesplan',
     el('p', { class: 'dempet dempet--tett' }, o.navn),
     passer.length > 1 ? segRad : null,
-    el('p', { class: 'arketikett' }, 'Hvilken dag?'),
+    el('div', { class: 'arkukerad' }, el('p', { class: 'arketikett' }, 'Hvilken dag?'), ukevelger),
     dagRad);
   lukkArk = lukk;
 }
@@ -898,20 +910,52 @@ function leggIHandlelisteArk(o) {
 }
 
 // --- Ukesplan --------------------------------------------------------------
+const UKE_MS = 7 * 86400000;
+const UKE_MAKS_OFFSET = 8; // planlegg opptil ~2 måneder fram
+function ukeEtikett(offset, ts) {
+  if (offset === 0) return 'Denne uka';
+  if (offset === 1) return 'Neste uke';
+  return `Uke ${ukenummer(ts)}`;
+}
+
 function visUkesplanSkjerm(mount) {
   if (!hentProfil()) { location.hash = '#/hjem'; return; }
   const main = matSideSkall(mount);
-  const idag = matIsoDag();
-  const datoer = ukeDatoer();
-  const uke = ukenummer();
+  let offset = 0;
+
+  // Ukevelger: ‹ Denne uka ›. Storage er datobasert, så alle uker virker.
+  const navn = el('span', { class: 'ukevelger__navn' });
+  const forrige = el('button', { class: 'ukevelger__pil ukevelger__pil--forrige', type: 'button', 'aria-label': 'Forrige uke' }, ikon('chevron', 'ikon'));
+  const neste = el('button', { class: 'ukevelger__pil', type: 'button', 'aria-label': 'Neste uke' }, ikon('chevron', 'ikon'));
+  forrige.addEventListener('click', () => { if (offset > 0) { offset -= 1; tegnUke(); } });
+  neste.addEventListener('click', () => { if (offset < UKE_MAKS_OFFSET) { offset += 1; tegnUke(); } });
+  const velger = el('div', { class: 'ukevelger ukevelger--nav' }, forrige, navn, neste);
 
   main.append(el('div', { class: 'matside__hode' },
     el('div', {},
       el('h1', { class: 'matside__tittel' }, 'Ukesplan'),
-      el('p', { class: 'matside__under' }, 'Planlegg måltidene dine for en god og balansert uke.')),
-    el('span', { class: 'ukevelger' }, ikon('kalender', 'ikon'), `Uke ${uke}`)));
+      el('p', { class: 'matside__under' }, 'Planlegg måltidene — denne uka og videre fremover.')),
+    velger));
+  const kropp = el('div', { class: 'ukesplan-kropp' });
+  main.append(kropp);
 
-  // Dagsstripe (M–S).
+  function tegnUke() {
+    const visTs = Date.now() + offset * UKE_MS;
+    navn.textContent = ukeEtikett(offset, visTs);
+    forrige.disabled = offset <= 0;
+    neste.disabled = offset >= UKE_MAKS_OFFSET;
+    tom(kropp);
+    kropp.append(...byggUkesplanUke(visTs, tegnUke));
+  }
+  tegnUke();
+}
+
+// Innholdet for én uke (dagsstripe + rader + fot). Skilt ut så ukevelgeren
+// kan tegne uka på nytt uten å bygge hele skjermen.
+function byggUkesplanUke(visTs, tegnUke) {
+  const idag = matIsoDag();
+  const datoer = ukeDatoer(visTs);
+
   const dagstripe = el('div', { class: 'ukedager' }, ...datoer.map((iso, i) => {
     const d = new Date(`${iso}T12:00:00`);
     return el('div', { class: 'ukedag' + (iso === idag ? ' ukedag--idag' : '') },
@@ -919,53 +963,33 @@ function visUkesplanSkjerm(mount) {
       el('span', { class: 'ukedag__nr' }, String(d.getDate())));
   }));
 
-  // Rader (frokost/lunsj/middag): én kolonne per dag.
-  const bygg = () => {
-    const rader = MAALTIDER.map((m) => {
-      const kolonner = datoer.map((iso) => {
-        const rid = maaltidFor(iso)[m.id];
-        const o = rid ? oppskriftMedId(rid) : null;
-        return el('button', { class: 'plandag', type: 'button',
-          onclick: () => planCelleArk(m, iso, tegnRader) },
-          o
-            ? el('span', { class: 'plandag__fyll' }, matBilde(o, 'plandag__bilde'), el('span', { class: 'plandag__navn' }, o.navn))
-            : el('span', { class: 'plandag__tom' }, ikon('pluss', 'ikon')));
-      });
-      return el('div', { class: 'planrad' },
-        el('div', { class: 'planrad__hode' },
-          el('span', { class: 'planrad__disk' }, ikon(m.ikon)),
-          el('span', { class: 'planrad__tittel' }, m.navn),
-          el('span', { class: 'planrad__under' }, m.under)),
-        el('div', { class: 'planrad__spor' }, ...kolonner));
+  const rader = MAALTIDER.map((m) => {
+    const kolonner = datoer.map((iso) => {
+      const rid = maaltidFor(iso)[m.id];
+      const o = rid ? oppskriftMedId(rid) : null;
+      return el('button', { class: 'plandag', type: 'button', onclick: () => planCelleArk(m, iso, tegnUke) },
+        o
+          ? el('span', { class: 'plandag__fyll' }, matBilde(o, 'plandag__bilde'), el('span', { class: 'plandag__navn' }, o.navn))
+          : el('span', { class: 'plandag__tom' }, ikon('pluss', 'ikon')));
     });
-    return rader;
-  };
-  const raderWrap = el('div', { class: 'planrader' }, ...bygg());
-  const tegnRader = () => { tom(raderWrap); raderWrap.append(...bygg()); oppdaterFot(); };
+    return el('div', { class: 'planrad' },
+      el('div', { class: 'planrad__hode' },
+        el('span', { class: 'planrad__disk' }, ikon(m.ikon)),
+        el('span', { class: 'planrad__tittel' }, m.navn),
+        el('span', { class: 'planrad__under' }, m.under)),
+      el('div', { class: 'planrad__spor' }, ...kolonner));
+  });
+  const raderWrap = el('div', { class: 'planrader' }, ...rader);
 
-  // Fot: teller + handlinger + handleliste-lenke.
-  const fotTall = el('span', { class: 'planfot__tall' });
-  const fotTekst = el('span', { class: 'planfot__tekst' });
-  const handleLenke = el('a', { class: 'planhandle', href: '#/handleliste' },
-    el('span', { class: 'planhandle__disk' }, ikon('handlepose', 'ikon')),
-    el('span', { class: 'planhandle__midt' },
-      el('span', { class: 'planhandle__tittel' }, 'Handleliste oppdatert'),
-      el('span', { class: 'planhandle__sub' }),
-      el('span', { class: 'planhandle__note' }, ikon('blad', 'ikon ikon--liten'), el('span', {}, 'Alltid oppdatert med endringene du gjør.'))),
-    ikon('chevron', 'ikon planhandle__chevron'));
-  const oppdaterFot = () => {
-    const ps = planStatus();
-    fotTall.textContent = String(ps.antall);
-    fotTekst.textContent = ps.dager
-      ? `Du har planlagt måltider for ${ps.dager} av 7 dager.`
-      : 'Ingen måltider planlagt ennå.';
-    const hb = byggHandleliste();
-    handleLenke.querySelector('.planhandle__sub').textContent =
-      `${hb.totalVarer} ${hb.totalVarer === 1 ? 'vare' : 'varer'} fra ukesplanen`;
-  };
-
+  // Fot: teller for den viste uka + handlingsknapper + handleliste-lenke
+  // (handlelista dekker inneværende uke, som er den man handler for nå).
+  const ps = planStatus(visTs);
+  const fotTall = el('span', { class: 'planfot__tall' }, String(ps.antall));
+  const fotTekst = el('span', { class: 'planfot__tekst' }, ps.dager
+    ? `Du har planlagt måltider for ${ps.dager} av 7 dager.`
+    : 'Ingen måltider planlagt denne uka ennå.');
   const autofyll = el('button', { class: 'knapp knapp--sekundaer planfot__knapp', type: 'button',
-    onclick: () => { autofyllUke(); vibrer(); varsle('Uka er fylt ut', { ikon: 'hexstjerne' }); tegnRader(); } },
+    onclick: () => { autofyllUke(visTs); vibrer(); varsle('Uka er fylt ut', { ikon: 'hexstjerne' }); tegnUke(); } },
     ikon('hexstjerne', 'ikon'), el('span', {}, 'Autofyll uka'));
   const leggTil = el('a', { class: 'knapp planfot__knapp', href: '#/oppskrifter' },
     ikon('pluss', 'ikon'), el('span', {}, 'Legg til måltid'));
@@ -975,8 +999,16 @@ function visUkesplanSkjerm(mount) {
       fotTekst),
     el('div', { class: 'planfot__knapper' }, leggTil, autofyll));
 
-  main.append(dagstripe, raderWrap, fot, handleLenke);
-  oppdaterFot();
+  const hb = byggHandleliste();
+  const handleLenke = el('a', { class: 'planhandle', href: '#/handleliste' },
+    el('span', { class: 'planhandle__disk' }, ikon('handlepose', 'ikon')),
+    el('span', { class: 'planhandle__midt' },
+      el('span', { class: 'planhandle__tittel' }, 'Handleliste'),
+      el('span', { class: 'planhandle__sub' }, `${hb.totalVarer} ${hb.totalVarer === 1 ? 'vare' : 'varer'} å kjøpe denne uka`),
+      el('span', { class: 'planhandle__note' }, ikon('blad', 'ikon ikon--liten'), el('span', {}, 'Følger måltidene for inneværende uke.'))),
+    ikon('chevron', 'ikon planhandle__chevron'));
+
+  return [dagstripe, raderWrap, fot, handleLenke];
 }
 
 // Bunnark: velg/bytt/fjern oppskrift for én dag + måltid.
