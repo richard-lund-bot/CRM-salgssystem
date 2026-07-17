@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Takt">
+  <rect width="512" height="512" fill="#2C4133"/>
+  <text x="252" y="352" font-family="Georgia, 'Times New Roman', serif" font-size="286"
+        font-weight="700" fill="#F1EAD9" text-anchor="middle">T</text>
+  <circle cx="346" cy="330" r="21" fill="#C06B4A"/>
+</svg>

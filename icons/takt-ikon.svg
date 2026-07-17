@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Takt">
+  <rect width="512" height="512" rx="116" fill="#2C4133"/>
+  <path d="M132 150 L182 104 L224 142 L286 96 L338 140 L392 100" fill="none"
+        stroke="#D9BE7E" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+  <text x="250" y="378" font-family="Georgia, 'Times New Roman', serif" font-size="330"
+        font-weight="700" fill="#F1EAD9" text-anchor="middle">T</text>
+  <circle cx="360" cy="352" r="24" fill="#C06B4A"/>
+</svg>

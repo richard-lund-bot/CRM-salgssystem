@@ -3,12 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#F6F7F8" />
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F4EFE5" />
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#15201A" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Takt" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
-  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="icon" type="image/svg+xml" href="icons/takt-ikon.svg" />
+  <link rel="icon" type="image/png" href="icons/icon-192.png" />
   <link rel="manifest" href="manifest.webmanifest" />
   <script>
     /* Fargemodus uten FOUC: sett data-mork før CSS males (auto = systemvalg). */
@@ -28,9 +30,9 @@
   <!-- Splash: males umiddelbart ved fersk åpning (inline-stil så den vises
        før CSS/JS er lastet); app.js fader den ut når appen er klar. -->
   <div id="splash" class="splash" aria-hidden="true"
-    style="position:fixed;inset:0;z-index:999;background:linear-gradient(180deg,#FFF8F6,#E9F5F3);display:flex;align-items:center;justify-content:center">
-    <img class="splash__bilde" src="icons/brand/splash.webp" alt=""
-      style="width:100%;height:100%;object-fit:cover" />
+    style="position:fixed;inset:0;z-index:999;background:#F4EFE5;display:flex;align-items:center;justify-content:center">
+    <img class="splash__bilde" src="icons/takt-ikon.svg" alt="Takt"
+      style="width:128px;height:128px;filter:drop-shadow(0 10px 30px rgba(44,65,51,0.26))" />
   </div>
   <div id="app">
     <div class="laster">Laster…</div>
