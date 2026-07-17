@@ -315,7 +315,7 @@ body {
    Hjem-dashbord (M53) — DAGENS TAKT-ring, dagens valg, dagens fokus
    =========================================================================== */
 .hjemdash-scroll { min-height: 100%; }
-.hjemtopp { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px 6px; }
+.hjemtopp { display: flex; align-items: center; justify-content: space-between; padding: calc(env(safe-area-inset-top, 0px) + 14px) 18px 6px; }
 .hjemtopp__logo { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: 0.01em; color: var(--tekst); }
 .hjemtopp__logo .wordmark__prikk { color: var(--terrakotta); }
 .hjemtopp__feed { position: relative; }
