@@ -270,6 +270,8 @@ EN.update({
  'Alle fire i dag': 'All four today', 'Alle fire vaner i dag.': 'All four habits today.',
  'Bevegelse, mat, ro og sosialt — alt på plass i dag.': 'Movement, food, calm and social — all in place today.',
  'Streak': 'Streak', 'Godt valg': 'Good choice', 'Alt teller.': 'Everything counts.',
+ 'Fire gode valg. Én dag i takt.': 'Four good choices. One day in rhythm.',
+ 'Les etter pilar': 'Read by pillar',
  'Velkommen tilbake.': 'Welcome back.', 'Fortsett': 'Continue',
 })
 

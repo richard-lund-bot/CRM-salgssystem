@@ -323,7 +323,7 @@ body {
 
 .hjemdash__hero { position: relative; overflow: hidden; border-radius: var(--radius-2xl); padding: 26px 22px 30px; background-size: cover; background-position: center; box-shadow: var(--shadow-card); text-align: center; }
 .hjemdash__scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(28,42,33,0.05) 0%, rgba(28,42,33,0.22) 60%, rgba(28,42,33,0.42) 100%); }
-.hjemdash__hilsen, .hjemdash__hero .taktring, .hjemdash__hero .dagring, .hjemdash__hero .dagring__streak { position: relative; z-index: 1; }
+.hjemdash__hilsen, .hjemdash__hero .taktring, .hjemdash__hero .pilarsti, .hjemdash__hero .itakt { position: relative; z-index: 1; }
 .hjemdash__tittel { font-family: var(--font-display); font-size: 30px; line-height: 1.12; font-weight: 700; color: #fff; text-shadow: 0 1px 12px rgba(20,28,20,0.4); margin: 0; }
 .hjemdash__under { margin: 6px 0 0; color: rgba(255,255,255,0.9); font-size: 15px; text-shadow: 0 1px 8px rgba(20,28,20,0.4); }
 
@@ -345,49 +345,39 @@ body {
 .taktring--pilar .ringfremgang__fyll { stroke-width: 8; }
 
 
-/* Dagsring — kjernemålingen på Hjem: én rolig ring som fylles av dagens
-   fremdrift mot de fire vanene. Midten teller hvor mange av fire som er i
-   boks; full ring får en dempet blå tone (alle fire = «hel dag»). */
-.dagring { position: relative; display: block; width: 148px; height: 148px; margin: 18px auto 0; text-decoration: none; }
-.dagring .ringfremgang { display: block; width: 100%; height: 100%; }
-.dagring .ringfremgang__spor { stroke: rgba(255,255,255,0.24); stroke-width: 6; }
-.dagring .ringfremgang__fyll { stroke: var(--gull-300); stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset 0.9s var(--ease-out); }
-.dagring--full .ringfremgang__fyll { stroke: var(--blaa-300); filter: drop-shadow(0 0 5px rgba(127,187,238,0.55)); }
-.dagring__midt { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; }
-.dagring__tall { font-family: var(--font-display); font-size: 38px; font-weight: 700; color: #fff; line-height: 1; text-shadow: 0 1px 12px rgba(20,28,20,0.45); }
-.dagring__merkelapp { font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.82); }
+/* Fire sammenkoblede pilar-noder (M55) — kjernemålingen i hero-en. Hver node:
+   en disk (fylt mørkegrønn m/ hvitt ikon når vanen er i boks i dag, ellers lys),
+   navn, og en hvit streak-pille. En tynn linje binder de fire sammen. */
+.pilarsti { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 22px; }
+.pilarsti__linje { position: absolute; top: 27px; left: 12.5%; right: 12.5%; height: 2px; background: rgba(255,255,255,0.4); z-index: 0; }
+.pilarnode { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none; }
+.pilarnode__disk {
+  display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%;
+  background: rgba(255,255,255,0.85); color: var(--aksent); box-shadow: 0 4px 14px rgba(20,28,20,0.25);
+}
+.pilarnode__disk .ikon { width: 26px; height: 26px; }
+.pilarnode--gjort .pilarnode__disk { background: var(--aksent); color: #fff; }
+.pilarnode__navn { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: #fff; text-shadow: 0 1px 8px rgba(20,28,20,0.5); }
+.pilarnode__streak {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 3px 9px 3px 7px; border-radius: var(--radius-pill);
+  background: rgba(255,255,255,0.92); color: var(--skog-700);
+  font-family: var(--font-display); font-size: 12px; font-weight: 700; box-shadow: 0 2px 6px rgba(20,28,20,0.18);
+}
+.pilarnode__streak .ikon { width: 12px; height: 12px; color: var(--blaa-500); }
+.pilarnode__streak--tom { visibility: hidden; }
 
-/* Den blå streaken: diskré frostet pille under ringen, kun når du har en. */
-.dagring__streak {
-  display: inline-flex; align-items: center; gap: 5px; margin-top: 12px;
-  padding: 5px 13px 5px 10px; border-radius: var(--radius-pill);
-  background: rgba(255,255,255,0.16); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
-  color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; text-shadow: 0 1px 6px rgba(20,28,20,0.4);
-}
-.dagring__streak .ikon { width: 15px; height: 15px; color: var(--blaa-300); }
-@media (prefers-reduced-motion: reduce) {
-  .dagring .ringfremgang__fyll { transition: none; }
-}
-
-.hjemdash__valgtopp { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
-.hjemdash__valgtopp .dempet { font-size: 12.5px; }
-.valgliste { display: flex; flex-direction: column; margin-top: 10px; }
-.valgrad { display: flex; align-items: center; gap: 13px; padding: 12px 4px; border-bottom: 1px solid var(--kant); text-decoration: none; color: var(--tekst); }
-.valgrad:last-child { border-bottom: none; }
-.valgrad__ikon { display: grid; place-items: center; width: 38px; height: 38px; flex: 0 0 38px; border-radius: 12px; background: var(--aksent-svak); color: var(--aksent); }
-.valgrad__ikon .ikon { width: 19px; height: 19px; }
-.valgrad__midt { flex: 1; display: flex; flex-direction: column; gap: 1px; }
-.valgrad__navn { font-family: var(--font-display); font-size: 16px; font-weight: 600; }
-.valgrad__hint { font-size: 12.5px; color: var(--dempet); }
-.valgrad__sjekk { display: grid; place-items: center; width: 26px; height: 26px; color: var(--dempet); }
-.valgrad__gnist {
-  display: inline-flex; align-items: center; gap: 3px; flex: 0 0 auto;
-  color: var(--dempet); font-family: var(--font-display); font-size: 12.5px; font-weight: 700;
-}
-.valgrad__gnist .ikon { width: 13px; height: 13px; color: var(--terrakotta); opacity: 0.75; }
-.valgrad--gjort .valgrad__ikon { background: var(--aksent); color: var(--papir-100); }
-.valgrad--gjort .valgrad__sjekk { color: var(--aksent); }
-.valgrad--gjort .valgrad__sjekk .ikon { width: 20px; height: 20px; }
+/* «Brace» + i-takt-oppsummering: samler de fire ned til «X dag i takt». Blå
+   med hake når streaken lever (nådefrist), ellers dempet dagsfremdrift. */
+.itakt { display: flex; flex-direction: column; align-items: center; margin-top: 10px; color: rgba(255,255,255,0.45); }
+.itakt--paa { color: var(--blaa-300); }
+.itakt__brace { width: 100%; height: 26px; line-height: 0; }
+.itakt__bracesvg { display: block; width: 100%; height: 100%; }
+.itakt__sum { display: inline-flex; align-items: center; gap: 8px; margin-top: 2px; text-decoration: none; }
+.itakt__hake { display: grid; place-items: center; width: 24px; height: 24px; flex: 0 0 auto; border-radius: 50%; background: var(--blaa-500); color: #fff; box-shadow: 0 2px 8px rgba(46,143,224,0.4); }
+.itakt__hake .ikon { width: 15px; height: 15px; }
+.itakt__tekst { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: #fff; text-shadow: 0 1px 10px rgba(20,28,20,0.5); }
+.itakt:not(.itakt--paa) .itakt__tekst { font-size: 16px; font-weight: 600; color: rgba(255,255,255,0.88); }
 
 .hjemdash__fokus { background: linear-gradient(135deg, var(--skog-700), var(--skog-800)); border: none; color: var(--papir-100); }
 .hjemdash__fokusmerke { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gull-300); }
@@ -395,9 +385,6 @@ body {
    tekst-2-farge — uleselig på det mørkegrønne kortet). */
 .hjemdash__fokus .hjemdash__fokustekst { margin: 8px 0 0; font-family: var(--font-display); font-size: 20px; line-height: 1.3; color: var(--papir-100); }
 
-.hjemdash__feedhint { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-radius: var(--radius-lg); border: 1px dashed var(--kant-sterk); color: var(--aksent); font-weight: 600; text-decoration: none; }
-.hjemdash__feedhint > span { flex: 1; }
-.hjemdash__feedhint .ikon { width: 18px; height: 18px; }
 
 /* Utforsk — kuratert oppdagelse */
 .utforsk-under { margin: -4px 2px 4px; color: var(--dempet); font-size: 14.5px; }

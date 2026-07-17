@@ -232,11 +232,11 @@ function fane(tittel, under, ...innhold) {
 }
 
 // ===========================================================================
-// Hjem (M54) — dagens dashbord med streaken som kjernemåling: den store
-// flammen teller dager på rad der alle fire vanene ble gjort, de fire små
-// per-pilar-streakene under, så «dagens valg» og «dagens fokus». Ingen
-// sjargong i flaten — tall og hverdagsord. Feeden («dagens feed») nås via
-// feed-ikonet oppe til venstre eller ved å sveipe til venstre.
+// Hjem (M55) — dagens dashbord: hero med hilsen, tagline og de fire vanene
+// som sammenkoblede noder (hver med sin streak-pille), samlet av en «brace»
+// ned til «X dag i takt». Deretter «Dagens fokus» og hele Utforsk-innholdet
+// (les etter pilar, kunnskap & inspirasjon, dagens feed) innfelt. Feeden nås
+// via feed-ikonet oppe til venstre eller ved å sveipe til venstre.
 // ===========================================================================
 const HILSEN = { natt: 'God natt', morgen: 'God morgen', formiddag: 'God formiddag', dag: 'God dag', kveld: 'God kveld' };
 const DAGENS_FOKUS = [
@@ -248,11 +248,6 @@ const DAGENS_FOKUS = [
   'Kjenn etter: hva gir mening akkurat nå?',
   'Del et måltid med noen.',
 ];
-function isoIdagLokal(nå = Date.now()) {
-  const d = new Date(nå);
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
-
 function visHjemDashboard(mount) {
   const profil = hentProfil();
   if (!profil) { skjerm(APP_NAME, velkommenKort()); return; }
@@ -260,30 +255,10 @@ function visHjemDashboard(mount) {
   const fase = dagsfase(new Date().getHours());
   const dagsnr = Math.floor(Date.now() / 86400000);
 
-  // --- Dagens gnister (js/gnist.js): terskler per pilar + den blå flammen ---
+  // --- Dagens gnister (js/gnist.js): terskler + streaks per pilar ---
   const gs = hentGnistStatus();
   const blaa = gs.blaa;
-  const reflektert = !!ukensRefleksjon();
-  const harHvorforNaa = lesHvorfor().length > 0;
-
-  // Hint per pilar: nøktern fremdrift mot dagsmålet; haken på raden sier resten.
-  const pilarHint = {
-    bevegelse: (s) => (s.naadd ? 'Ferdig i dag' : `${s.verdi} av ${s.maal} min`),
-    mat: (s) => (s.naadd ? 'Ferdig i dag' : `${s.verdi} av ${s.maal} gode valg`),
-    ro: (s) => (s.naadd ? 'Ferdig i dag' : 'Én rolig økt'),
-    sosialt: (s) => (s.naadd ? 'Ferdig i dag' : 'Ett sosialt valg'),
-  };
-  const valg = [
-    ...GNIST_PILARER.map((p) => ({
-      rute: p.rute, ikon: p.ikon, navn: p.navn,
-      hint: pilarHint[p.id](gs.pilarer[p.id].iDag),
-      gjort: gs.pilarer[p.id].iDag.naadd,
-      streak: gs.pilarer[p.id].streak,
-    })),
-    // Mening er rammen rundt vanene (ukentlig refleksjon) — med i dagens valg,
-    // men bærer ingen streak.
-    { rute: 'mening', ikon: 'kompass', navn: 'Mening', hint: 'Kjenn ditt hvorfor', gjort: reflektert || harHvorforNaa, streak: 0 },
-  ];
+  const total = GNIST_PILARER.length;
 
   // --- Topplinje: feed-ikon (venstre), wordmark, meny (høyre) ---
   const topp = el('header', { class: 'hjemtopp' },
@@ -293,53 +268,47 @@ function visHjemDashboard(mount) {
     el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/meny', 'aria-label': 'Meny' }, ikon('gir')),
   );
 
-  // --- Hilsen + dagsring (dagens fremdrift på tvers av de fire vanene) ---
-  // Én rolig ring fylles av snitt-fremdriften mot dagens fire terskler; midten
-  // teller hvor mange av fire som er i boks. Full ring = alle fire → dempet blå
-  // tone. Den blå streaken bor som en diskré linje under, ikke en stor flamme.
-  const total = GNIST_PILARER.length;
-  const fremdrift = GNIST_PILARER.reduce((sum, p) => {
-    const d = gs.pilarer[p.id].iDag;
-    return sum + Math.min(1, d.verdi / d.maal);
-  }, 0) / total;
-  const ring = lagRing(54);
-  const dagring = el('a', { class: 'dagring' + (blaa.iDagAlle ? ' dagring--full' : ''), href: '#/merker',
-    'aria-label': `${blaa.tentIDag} av ${total} vaner gjort i dag` },
-    ring.svg,
-    el('div', { class: 'dagring__midt' },
-      el('span', { class: 'dagring__tall' }, `${blaa.tentIDag}/${total}`),
-      el('span', { class: 'dagring__merkelapp' }, 'vaner i dag')),
+  // --- Hero (M55): hilsen + tagline + fire sammenkoblede pilar-noder ---
+  // Hver node lyser fylt når vanen er i boks i dag, med sin egen streak-pille
+  // under. En «brace» samler de fire ned til «X dag i takt» (spiller på appnavnet):
+  // blå med hake når streaken lever (nådefrist), ellers dempet dagsfremdrift.
+  const HERO_IKON = { bevegelse: 'loper', mat: 'eple', ro: 'maane', sosialt: 'personer' };
+  const noder = el('div', { class: 'pilarsti' },
+    el('span', { class: 'pilarsti__linje', 'aria-hidden': 'true' }),
+    ...GNIST_PILARER.map((p) => {
+      const st = gs.pilarer[p.id];
+      const gjort = st.iDag.naadd;
+      const streakTekst = `${st.streak} ${st.streak === 1 ? 'dag' : 'dager'}`;
+      return el('a', { class: 'pilarnode' + (gjort ? ' pilarnode--gjort' : ''), href: `#/${p.rute}`,
+        'aria-label': `${p.navn}${gjort ? ' — ferdig i dag' : ''}${st.streak ? `, ${streakTekst} på rad` : ''}` },
+        el('span', { class: 'pilarnode__disk' }, ikon(HERO_IKON[p.id] || p.ikon)),
+        el('span', { class: 'pilarnode__navn' }, p.navn),
+        st.streak >= 1
+          ? el('span', { class: 'pilarnode__streak' }, ikon('flamme'), streakTekst)
+          : el('span', { class: 'pilarnode__streak pilarnode__streak--tom', 'aria-hidden': 'true' }, ikon('flamme'), '0 dag'),
+      );
+    }),
   );
-  // Vises først når du faktisk har en streak (én hel dag) — aldri et påtrengende «0».
-  const streakLinje = blaa.streak >= 1
-    ? el('a', { class: 'dagring__streak', href: '#/merker',
-        'aria-label': `${blaa.streak} ${blaa.streak === 1 ? 'dag' : 'dager'} på rad med alle fire vanene` },
-        ikon('flamme'), el('span', {}, `${blaa.streak} ${blaa.streak === 1 ? 'dag' : 'dager'} på rad`))
-    : null;
+
+  const iTakt = blaa.streak >= 1;
+  const iTaktTekst = iTakt
+    ? `${blaa.streak} ${blaa.streak === 1 ? 'dag' : 'dager'} i takt`
+    : `${blaa.tentIDag} av ${total} i dag`;
+  const braceBoks = el('div', { class: 'itakt' + (iTakt ? ' itakt--paa' : '') },
+    braceSvg(),
+    el('a', { class: 'itakt__sum', href: '#/merker', 'aria-label': iTaktTekst },
+      iTakt ? el('span', { class: 'itakt__hake' }, ikon('sjekk')) : null,
+      el('span', { class: 'itakt__tekst' }, iTaktTekst)),
+  );
+
   const hero = el('section', { class: `hjemdash__hero hjemdash__hero--${fase}`,
     style: `background-image:url('icons/brand/hero-${fase}.webp')` },
     el('div', { class: 'hjemdash__scrim', 'aria-hidden': 'true' }),
     el('div', { class: 'hjemdash__hilsen' },
-      el('h1', { class: 'hjemdash__tittel' }, `${HILSEN[fase]}, ${profil.navn || 'du'}.`)),
-    dagring,
-    streakLinje,
-  );
-
-  // --- Dagens valg (pilar-sjekkliste, hver rad lenker til pilaren) ---
-  const valgRader = valg.map((v) => el('a', { class: 'valgrad' + (v.gjort ? ' valgrad--gjort' : ''), href: `#/${v.rute}` },
-    el('span', { class: 'valgrad__ikon' }, ikon(v.ikon)),
-    el('span', { class: 'valgrad__midt' },
-      el('span', { class: 'valgrad__navn' }, v.navn),
-      el('span', { class: 'valgrad__hint' }, v.hint)),
-    v.streak >= 2 && el('span', { class: 'valgrad__gnist', 'aria-label': `${v.streak} dager på rad` },
-      ikon('flamme'), String(v.streak)),
-    el('span', { class: 'valgrad__sjekk' }, ikon(v.gjort ? 'sjekk' : 'chevron')),
-  ));
-  const dagensValg = el('section', { class: 'kort hjemdash__valg' },
-    el('div', { class: 'hjemdash__valgtopp' },
-      el('h2', { class: 'kost__tittel' }, 'Dagens valg'),
-      el('span', { class: 'dempet' }, 'Små valg. Stor forskjell.')),
-    el('div', { class: 'valgliste' }, ...valgRader),
+      el('h1', { class: 'hjemdash__tittel' }, `${HILSEN[fase]}, ${profil.navn || 'du'}.`),
+      el('p', { class: 'hjemdash__under' }, 'Fire gode valg. Én dag i takt.')),
+    noder,
+    braceBoks,
   );
 
   // --- Dagens fokus ---
@@ -348,14 +317,11 @@ function visHjemDashboard(mount) {
     el('p', { class: 'hjemdash__fokustekst' }, DAGENS_FOKUS[dagsnr % DAGENS_FOKUS.length]),
   );
 
-  // --- Feed-hint + sammensetning ---
-  const feedHint = el('a', { class: 'hjemdash__feedhint', href: '#/utforsk' },
-    ikon('sok'), el('span', {}, 'Utforsk kunnskap & inspirasjon'), ikon('pilhoyre'));
-
   tom(mount);
   const scroll = el('div', { class: 'hjemdash-scroll' },
     topp,
-    el('main', { class: 'innhold hjemdash' }, hero, dagensValg, dagensFokus, feedHint),
+    // Hjem: hero → dagens fokus → hele Utforsk-innholdet innfelt (M55).
+    el('main', { class: 'innhold hjemdash' }, hero, dagensFokus, ...byggUtforskSeksjoner()),
   );
   mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: dashScrollTop }));
 
@@ -367,11 +333,20 @@ function visHjemDashboard(mount) {
     const t = e.changedTouches[0]; const dx = t.clientX - sx; const dy = t.clientY - sy; sx = null;
     if (dx < -60 && Math.abs(dx) > Math.abs(dy) * 1.5) location.hash = '#/feed';
   }, { passive: true });
+}
 
-  // Fyll dagsringen inn (CSS-transisjon på stroke driver glidningen).
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    ring.sett(fremdrift);
-  }));
+// «Brace» som samler de fire pilarene ned mot i-takt-oppsummeringen. Én tynn
+// linje fra ytterste node (12,5 %) til ytterste node (87,5 %) med et lite dropp
+// i midten. preserveAspectRatio=none + viewBox-høyde = CSS-høyde gjør at bare
+// x strekkes (endene lander alltid under ytternodene), mens vector-effect
+// holder streken jevn. Fargen arves fra .itakt (blå når streaken lever).
+function braceSvg() {
+  const wrap = el('div', { class: 'itakt__brace', 'aria-hidden': 'true' });
+  wrap.innerHTML = '<svg viewBox="0 0 320 26" preserveAspectRatio="none" class="itakt__bracesvg">'
+    + '<path d="M40 2 C40 15 96 17 152 18 C157 18.4 159 21 160 25 C161 21 163 18.4 168 18 C224 17 280 15 280 2" '
+    + 'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"/>'
+    + '</svg>';
+  return wrap;
 }
 
 // Hjem-dashbordet og pilarene scroller vinduet (ikke et indre element), så
@@ -423,17 +398,16 @@ function pilarSkall(mount, { navn, tittel, under = null, ring = null }) {
 
 // ===========================================================================
 // Utforsk (M53) — kuratert oppdagelse: kunnskap & inspirasjon (artikler),
-// snarveier per pilar, og inngang til den spillbare feeden. Nås fra Hjem-
-// dashbordet og meny-huben (ikke en egen fane).
+// snarveier per pilar, og inngang til den spillbare feeden. Innholdet bygges
+// av byggUtforskSeksjoner() så det kan gjenbrukes både på egen skjerm (fra
+// meny-huben) og innfelt nederst på Hjem-dashbordet (M55).
 // ===========================================================================
-function visUtforskSkjerm(mount) {
-  if (!hentProfil()) { location.hash = '#/hjem'; return; }
-
+function byggUtforskSeksjoner() {
   const PILAR_LENKER = [
     { rute: 'kosthold', ikon: 'eple', navn: 'Mat' },
     { rute: 'trening', ikon: 'loper', navn: 'Bevegelse' },
     { rute: 'ro', ikon: 'maane', navn: 'Ro' },
-    { rute: 'sosialt', ikon: 'snakke', navn: 'Sosialt' },
+    { rute: 'sosialt', ikon: 'personer', navn: 'Sosialt' },
     { rute: 'mening', ikon: 'kompass', navn: 'Mening' },
   ];
   const pilarRad = el('div', { class: 'utforsk-pilarer' },
@@ -450,14 +424,6 @@ function visUtforskSkjerm(mount) {
 
   const kunnskap = el('div', { class: 'utforsk-grid' }, el('p', { class: 'dempet' }, 'Laster…'));
 
-  skjerm('Utforsk',
-    el('p', { class: 'utforsk-under' }, 'Kunnskap og inspirasjon for gode år.'),
-    el('section', { class: 'kort' }, el('h2', { class: 'kost__tittel' }, 'Les etter pilar'), pilarRad),
-    el('section', { class: 'utforsk-seksjon' },
-      el('h2', { class: 'utforsk-seksjontittel' }, 'Kunnskap & inspirasjon'), kunnskap),
-    el('section', { class: 'kort' }, el('h2', { class: 'kost__tittel' }, 'Dagens feed'), feedInngang),
-  );
-
   hentSprakJson('artikler').then((data) => {
     const arr = Array.isArray(data) ? data : (data?.artikler || []);
     const sortert = arr.slice().sort((a, b) => String(b.dato).localeCompare(String(a.dato)));
@@ -473,6 +439,21 @@ function visUtforskSkjerm(mount) {
     }
     oversettDom(kunnskap);
   }).catch(() => { tom(kunnskap); kunnskap.append(el('p', { class: 'dempet' }, 'Kunne ikke laste akkurat nå.')); });
+
+  return [
+    el('section', { class: 'kort' }, el('h2', { class: 'kost__tittel' }, 'Les etter pilar'), pilarRad),
+    el('section', { class: 'utforsk-seksjon' },
+      el('h2', { class: 'utforsk-seksjontittel' }, 'Kunnskap & inspirasjon'), kunnskap),
+    el('section', { class: 'kort' }, el('h2', { class: 'kost__tittel' }, 'Dagens feed'), feedInngang),
+  ];
+}
+
+function visUtforskSkjerm(mount) {
+  if (!hentProfil()) { location.hash = '#/hjem'; return; }
+  skjerm('Utforsk',
+    el('p', { class: 'utforsk-under' }, 'Kunnskap og inspirasjon for gode år.'),
+    ...byggUtforskSeksjoner(),
+  );
 }
 
 // ===========================================================================

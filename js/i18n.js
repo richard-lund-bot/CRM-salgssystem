@@ -467,6 +467,7 @@ const EN = {
  "Streak": "Streak",
  "Godt valg": "Good choice",
  "Alt teller.": "Everything counts.",
+ "Fire gode valg. Én dag i takt.": "Four good choices. One day in rhythm.",
  "Velkommen tilbake.": "Welcome back.",
  "Fortsett": "Continue",
  "Din aller første bevegelse": "Your very first movement",
