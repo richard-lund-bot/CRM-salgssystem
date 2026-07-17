@@ -127,7 +127,7 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
   await page.goto(BASE + '/#/kosthold');
   await page.waitForSelector('.matvaner', { timeout: 20000 });
   sjekk('Mat-hjem viser de fem matvanene', (await page.locator('.matvane').count()) === 5);
-  sjekk('Mat-hjem viser hero-stripa (streak + matvalg)', (await page.locator('.mathero').count()) === 1);
+  sjekk('Mat-hjem viser streak-stripa (som ro/fellesskap)', (await page.locator('.ukestreak').count()) === 1);
   sjekk('Mat-hjem viser plan- og handlekort', (await page.locator('.matmini').count()) === 2);
   await page.goto(BASE + '/#/oppskrifter');
   await page.waitForSelector('.oppkort', { timeout: 20000 });

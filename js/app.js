@@ -24,7 +24,7 @@ import { lastStier, lastKjeder, lastDisipliner, lastSeksjoner, settBib as settBi
 import { visMerkerSkjerm } from './merker.js';
 import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
 import { lagFaneside, fanesideMedTittel, settNavger, settUlestSjekk, dagsfase, lagPullOppdatering } from './banner.js';
-import { hentGnistStatus, GNIST_PILARER } from './gnist.js';
+import { hentGnistStatus, GNIST_PILARER, hentPilarDager } from './gnist.js';
 import { dagerMedAktivitet, okterHref, beregnStreak } from './bevegelse.js';
 import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, aapneOkt, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN, KATEGORIER, settLaerLenke } from './bibliotek-okter.js';
 import { settBib as settBibOpp, settOkterKilde, erAdminEpost, adminModusPaa, settAdminModus } from './opplasing.js';
@@ -569,6 +569,22 @@ function matSideSkall(mount) {
   return main;
 }
 
+// Ukesprikker (M–S) for en pilar, bygd på de kanoniske gnist-dagene — samme
+// kilde som streaken, så prikkene og «X dager på rad» alltid stemmer. Fylt
+// prikk = pilaren tent den dagen, ring rundt = i dag. Brukes av streak-stripa
+// i pilar-heroen (Mat/Bevegelse/Ro/Fellesskap deler samme header).
+function ukestreakPilar(pilarId, nå = Date.now()) {
+  const LAB = ['M', 'T', 'O', 'T', 'F', 'L', 'S'];
+  const aktiv = hentPilarDager(pilarId, nå);
+  const idag = new Date(nå); idag.setHours(0, 0, 0, 0);
+  const man = new Date(idag.getTime() - ((idag.getDay() + 6) % 7) * 86400000);
+  const idagIso = isoDato(idag);
+  return LAB.map((label, i) => {
+    const iso = isoDato(new Date(man.getTime() + i * 86400000));
+    return { label, on: aktiv.has(iso), today: iso === idagIso };
+  });
+}
+
 // --- Mat-hjem --------------------------------------------------------------
 // Myk orddeling: lange norske vanenavn får et usynlig bindestreks-hint (U+00AD)
 // ved stavelsesgrenser, så de brytes pent («Belg-vekster») i de smale vane-
@@ -591,37 +607,24 @@ function visKostholdSkjerm(mount) {
   const s0 = kostStatus();
   const iDag = () => dagensInnslag() || { vaner: {} };
 
-  // Hero-stripe: to tall — streak (gnist) + dagens matvalg (ring).
-  const heroStreakTall = el('b', {}, String(gm0.streak));
-  const heroStreakLab = el('span', {}, gm0.streak === 1 ? 'dag på rad' : 'dager på rad');
-  const heroValgTall = el('b', {}, `${s0.iDagAntall} av ${VANER.length}`);
-  const gnistFlamme = el('span', { class: 'mathero__gnist' + (gm0.streak > 0 ? ' mathero__gnist--paa' : '') }, ikon('flamme'));
-  const ringSvg = lagRing(52);
-  const heroKort = el('a', { class: 'mathero', href: '#/ukesplan', 'aria-label': 'Se ukesplan' },
-    el('span', { class: 'mathero__celle' }, gnistFlamme,
-      el('span', { class: 'mathero__tekst' }, heroStreakTall, heroStreakLab)),
-    el('span', { class: 'mathero__strek', 'aria-hidden': 'true' }),
-    el('span', { class: 'mathero__celle' },
-      el('span', { class: 'mathero__ring' }, ringSvg.svg),
-      el('span', { class: 'mathero__tekst' }, heroValgTall, el('span', {}, 'matvalg i dag'))),
-    ikon('chevron', 'ikon mathero__chevron'));
-
+  // Samme header som Ro/Fellesskap: streak-stripe med flamme, «X dager på rad»
+  // og ukesprikker M–S. (Dagens matvalg-antall vises i «Logg i dag»-kortet under.)
   const main = pilarSkall(mount, {
     navn: 'mat', tittel: 'Mat som varer.',
     under: 'Mest planter, belgvekster og enkle, gode måltider. Hver dag, sammen.',
-    heroKort,
+    streakStripe: { streak: gm0.streak, dager: ukestreakPilar('mat'), href: '#/ukesplan' },
   });
+  // Tenner dagens ukesprikk etter en logg (uten full redraw), som ro/fellesskap.
+  const merkDagensDot = () => {
+    const dot = mount.querySelector('.ukestreak__prikk--now');
+    if (dot) dot.classList.add('ukestreak__prikk--on');
+  };
 
   // --- Logg i dag (5 matvaner) ---
   const teller = el('span', { class: 'matkort__teller' }, `${s0.iDagAntall} av ${VANER.length} logget`);
   const oppdater = () => {
-    const s = kostStatus(); const g = hentGnistStatus().pilarer.mat;
+    const s = kostStatus();
     teller.textContent = `${s.iDagAntall} av ${VANER.length} logget`;
-    heroValgTall.textContent = `${s.iDagAntall} av ${VANER.length}`;
-    heroStreakTall.textContent = String(g.streak);
-    heroStreakLab.textContent = g.streak === 1 ? 'dag på rad' : 'dager på rad';
-    gnistFlamme.classList.toggle('mathero__gnist--paa', g.streak > 0);
-    ringSvg.sett(s.iDagAntall / VANER.length);
   };
   const chips = VANER.map((v) => {
     const c = el('button', { class: 'matvane' + (iDag().vaner?.[v.id] ? ' matvane--valgt' : ''), type: 'button',
@@ -629,7 +632,7 @@ function visKostholdSkjerm(mount) {
         const res = veksleVane(v.id);
         if (!res) return;
         c.classList.toggle('matvane--valgt', res.aktiv);
-        if (res.aktiv) { vibrer(); varsle('Godt valg', { ikon: v.ikon }); }
+        if (res.aktiv) { vibrer(); varsle('Godt valg', { ikon: v.ikon }); merkDagensDot(); }
         oppdater();
         await streakEtter(res);
         await blaaEtter();
@@ -686,7 +689,6 @@ function visKostholdSkjerm(mount) {
     el('div', { class: 'matprinsipp matprinsipp--tre' }, ...prinsipper.map((p) => prinsippKort(p))));
 
   main.append(loggKort, featKort, miniRad, prinsippRad);
-  requestAnimationFrame(() => requestAnimationFrame(() => ringSvg.sett(s0.iDagAntall / VANER.length)));
 }
 
 // --- Oppskrifter (bla, søk, filtrer) ---------------------------------------
@@ -1922,16 +1924,16 @@ function visTrening() {
   const minutter = logg
     .filter((o) => (o.dato || '').slice(0, 10) === idagIso)
     .reduce((s, o) => s + (o.varighetMin || 0), 0);
-  const maal = DAGSMAAL[profil.varighetsklasse] || 40;
   const planer = planForDato(idagIso);
 
-  // Samme skall som Hjem: «bevegelse.»-header + naturbilde-hero med en ring for
-  // dagens minutter mot dagsmålet. Modulene (plan/anbefaling, statkort, øvelses-
-  // grid) beholder all funksjonalitet.
+  // Samme header som Ro/Fellesskap: «bevegelse.»-header + naturbilde-hero med
+  // streak-stripe (flamme, «X dager på rad», ukesprikker M–S). Modulene (plan/
+  // anbefaling, statkort, øvelses-grid) beholder all funksjonalitet.
+  const gbev = hentGnistStatus().pilarer.bevegelse;
   const main = pilarSkall(app, {
     navn: 'bevegelse', tittel: 'Beveg deg litt hver dag.',
     under: minutter > 0 ? `${minutter} minutter i dag — bra jobba.` : 'Små økter teller.',
-    ring: { pst: Math.min(100, Math.round((minutter / maal) * 100)), merkelapp: 'av dagsmålet' },
+    streakStripe: { streak: gbev.streak, dager: ukestreakPilar('bevegelse'), href: '#/fremgang' },
   });
   main.append(
     el('section', { class: 'kort hjemdash__beveg' },

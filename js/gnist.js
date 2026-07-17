@@ -171,3 +171,9 @@ export function gnistStatus(kilder, nå = Date.now()) {
 export function hentGnistStatus(nå = Date.now()) {
   return gnistStatus({ logg: hentLogg(), matlogg: lesMatlogg(), sosiallogg: lesSosiallogg(), rolog: lesRolog() }, nå);
 }
+
+/** Tente dager for én pilar (leser lagrene selv). Samme kilde som streaken, så
+ *  skjermenes ukesprikker og «X dager på rad» alltid stemmer overens. */
+export function hentPilarDager(pilarId, nå = Date.now()) {
+  return pilarDager({ logg: hentLogg(), matlogg: lesMatlogg(), sosiallogg: lesSosiallogg(), rolog: lesRolog() }, pilarId, nå);
+}

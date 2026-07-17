@@ -4030,25 +4030,6 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .pilar-hero--mat { text-align: left; }
 .pilar-hero--mat .hjemdash__under { max-width: 20em; }
 
-.mathero { display: flex; align-items: center; gap: 14px; margin: 20px 0 2px; text-decoration: none;
-  background: rgba(24,36,28,0.5); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.16); border-radius: var(--radius-lg); padding: 14px 16px; color: #fff; }
-.mathero__celle { display: flex; align-items: center; gap: 11px; flex: 1; min-width: 0; }
-.mathero__strek { width: 1px; align-self: stretch; background: rgba(255,255,255,0.18); flex: 0 0 auto; }
-.mathero__gnist { display: grid; place-items: center; width: 40px; height: 40px; flex: 0 0 auto; border-radius: 50%;
-  background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.6); }
-.mathero__gnist--paa { background: color-mix(in srgb, var(--gnist-rod) 34%, transparent); color: #fff;
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--gnist-rod) 60%, transparent); }
-.mathero__gnist .ikon { width: 20px; height: 20px; }
-.mathero__ring { position: relative; width: 40px; height: 40px; flex: 0 0 auto; }
-.mathero__ring .ringfremgang { width: 100%; height: 100%; }
-.mathero__ring .ringfremgang__spor { stroke: rgba(255,255,255,0.24); }
-.mathero__ring .ringfremgang__fyll { stroke: #fff; stroke-width: 10; }
-.mathero__tekst { display: flex; flex-direction: column; line-height: 1.18; min-width: 0; }
-.mathero__tekst b { font-family: var(--font-display); font-size: 20px; font-weight: 700; }
-.mathero__tekst span { font-size: 12px; color: rgba(255,255,255,0.82); }
-.mathero__chevron { width: 18px; height: 18px; color: rgba(255,255,255,0.7); flex: 0 0 auto; }
-
 /* Kort-hode med teller/handling til høyre */
 .matkort__hode { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 4px; }
 .matkort__hode .kost__tittel { margin: 0; }
