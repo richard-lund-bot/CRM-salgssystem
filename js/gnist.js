@@ -12,6 +12,7 @@
 import { hentLogg } from './store.js';
 import { lesMatlogg } from './kosthold.js';
 import { lesSosiallogg } from './sosialt.js';
+import { lesRolog } from './ro.js';
 import { loggBevegelse } from './bevegelse.js';
 
 const DAG = 86400000;
@@ -57,7 +58,7 @@ function vanerPerDag(logg) {
  * minutter (bevegelse), antall valg (mat/sosialt) eller antall rolige økter (ro).
  */
 export function dagsGnister(kilder, dato) {
-  const { logg = [], matlogg = [], sosiallogg = [] } = kilder || {};
+  const { logg = [], matlogg = [], sosiallogg = [], rolog = [] } = kilder || {};
   let minutter = 0;
   let rolige = 0;
   for (const o of logg) {
@@ -67,11 +68,13 @@ export function dagsGnister(kilder, dato) {
   }
   const mat = vanerPerDag(matlogg).get(dato) || 0;
   const sos = vanerPerDag(sosiallogg).get(dato) || 0;
+  // Ro teller BÅDE avkryssede ro-vaner OG fullførte restitusjonsøkter.
+  const roVerdi = (vanerPerDag(rolog).get(dato) || 0) + rolige;
   const pilar = (verdi, maal) => ({ verdi, maal, naadd: verdi >= maal });
   const ut = {
     bevegelse: pilar(minutter, TERSKLER.bevegelse),
     mat: pilar(mat, TERSKLER.mat),
-    ro: pilar(rolige, TERSKLER.ro),
+    ro: pilar(roVerdi, TERSKLER.ro),
     sosialt: pilar(sos, TERSKLER.sosialt),
   };
   ut.alle = GNIST_PILARER.every((p) => ut[p.id].naadd);
@@ -80,22 +83,28 @@ export function dagsGnister(kilder, dato) {
 
 /** Settet av dager (lokal ISO) der en pilars terskel er nådd. */
 export function pilarDager(kilder, pilarId) {
-  const { logg = [], matlogg = [], sosiallogg = [] } = kilder || {};
+  const { logg = [], matlogg = [], sosiallogg = [], rolog = [] } = kilder || {};
   const dager = new Set();
-  if (pilarId === 'bevegelse' || pilarId === 'ro') {
-    const per = new Map(); // dato → {min, rolige}
+  if (pilarId === 'bevegelse') {
+    const per = new Map(); // dato → minutter
     for (const o of logg) {
       if (o.slettet) continue;
       const t = Date.parse(o.dato);
       if (!Number.isFinite(t)) continue;
       const dato = isoDag(t);
-      const d = per.get(dato) || { min: 0, rolige: 0 };
-      d.min += o.varighetMin || 0;
-      if (loggBevegelse(o) === 'recovery') d.rolige++;
-      per.set(dato, d);
+      per.set(dato, (per.get(dato) || 0) + (o.varighetMin || 0));
     }
-    for (const [dato, d] of per) {
-      if (pilarId === 'bevegelse' ? d.min >= TERSKLER.bevegelse : d.rolige >= TERSKLER.ro) dager.add(dato);
+    for (const [dato, min] of per) if (min >= TERSKLER.bevegelse) dager.add(dato);
+    return dager;
+  }
+  if (pilarId === 'ro') {
+    // Ro tennes av ro-vaner ELLER en fullført restitusjonsøkt samme dag.
+    const per = vanerPerDag(rolog);
+    for (const [dato, antall] of per) if (antall >= TERSKLER.ro) dager.add(dato);
+    for (const o of logg) {
+      if (o.slettet || loggBevegelse(o) !== 'recovery') continue;
+      const t = Date.parse(o.dato);
+      if (Number.isFinite(t)) dager.add(isoDag(t));
     }
     return dager;
   }
@@ -160,5 +169,5 @@ export function gnistStatus(kilder, nå = Date.now()) {
 
 /** Som gnistStatus, men leser lagrene selv (til skjermene). */
 export function hentGnistStatus(nå = Date.now()) {
-  return gnistStatus({ logg: hentLogg(), matlogg: lesMatlogg(), sosiallogg: lesSosiallogg() }, nå);
+  return gnistStatus({ logg: hentLogg(), matlogg: lesMatlogg(), sosiallogg: lesSosiallogg(), rolog: lesRolog() }, nå);
 }

@@ -539,6 +539,66 @@ body {
 .loggrad__dato { flex: 0 0 92px; font-size: 12.5px; font-weight: 600; color: var(--tekst-2); }
 .loggrad__tekst { flex: 1; font-size: 13.5px; color: var(--tekst); }
 
+/* ==========================================================================
+   Ro (pilar 3) — daglige ro-vaner, mikroøkter, mikroøkt-spiller
+   ========================================================================== */
+/* «Hva gjorde du i dag?» — avkryssbare ro-vaner (ikon + navn + sjekk-ring) */
+.rovanegrid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 12px; }
+.rovane { display: flex; align-items: center; gap: 10px; text-align: left; cursor: pointer; color: var(--tekst);
+  background: var(--bg-kort-2, var(--aksent-svak)); border: 1px solid var(--kant); border-radius: 14px; padding: 12px 12px; }
+.rovane:nth-child(5) { grid-column: 1 / -1; }
+.rovane__ikon { display: grid; place-items: center; width: 30px; height: 30px; flex: 0 0 30px; color: var(--aksent); }
+.rovane__ikon .ikon { width: 20px; height: 20px; }
+.rovane__navn { flex: 1; font-size: 13.5px; font-weight: 600; min-width: 0; }
+.rovane__sjekk { flex: 0 0 auto; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--ink-200);
+  display: grid; place-items: center; color: transparent; }
+.rovane__sjekk .ikon { width: 13px; height: 13px; }
+.rovane--valgt { background: color-mix(in srgb, var(--aksent) 12%, var(--bg-kort)); border-color: var(--aksent-kant); }
+.rovane--valgt .rovane__sjekk { background: var(--aksent); border-color: var(--aksent); color: #fff; }
+.roseLogg { display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 12px; padding: 12px;
+  border-radius: 12px; background: var(--aksent-svak); color: var(--aksent); font-weight: 600; font-size: 14px; text-decoration: none; }
+.roseLogg .ikon { width: 16px; height: 16px; }
+
+/* Start på 2 minutter — mikroøkt-kort (horisontal rad) */
+.mikrorad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+.mikrokort { display: flex; flex-direction: column; gap: 10px; text-align: left; cursor: pointer; color: var(--tekst);
+  background: var(--bg-kort); border: 1px solid var(--kant); border-radius: 14px; padding: 13px; box-shadow: var(--shadow-xs); }
+.mikrokort__ikon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px;
+  background: var(--aksent-svak); color: var(--aksent); }
+.mikrokort__ikon .ikon { width: 20px; height: 20px; }
+.mikrokort__navn { font-family: var(--font-display); font-weight: 600; font-size: 13.5px; line-height: 1.2; }
+.mikrokort__bunn { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+.mikrokort__min { font-size: 12px; color: var(--dempet); }
+.mikrokort__play { color: var(--aksent); }
+
+/* Mikroøkt-spiller — rolig fullskjerm-nedtelling */
+.mikro { position: fixed; inset: 0; z-index: 3400; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 18px; text-align: center; padding: 32px 24px calc(32px + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(170deg, var(--navy-700, #11264D), var(--skog-900, #1C2A21));
+  opacity: 0; transition: opacity 0.32s ease; }
+.mikro--pa { opacity: 1; }
+.mikro--ut { opacity: 0; }
+.mikro__lukk { position: absolute; top: calc(env(safe-area-inset-top, 0px) + 14px); right: 16px; width: 40px; height: 40px;
+  border-radius: 50%; border: none; background: rgba(255,255,255,0.14); color: #fff; display: grid; place-items: center; cursor: pointer; }
+.mikro__navn { font-family: var(--font-display); font-size: 26px; font-weight: 600; color: #fff; margin: 0; }
+.mikro__sirkel { position: relative; width: 190px; height: 190px; border-radius: 50%; display: grid; place-items: center;
+  background: radial-gradient(circle, rgba(255,255,255,0.16), rgba(255,255,255,0.04)); }
+.mikro__kjerne { width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,0.9);
+  box-shadow: 0 0 40px rgba(255,255,255,0.35); }
+.mikro__sirkel--pust .mikro__kjerne { animation: mikro-pust calc(var(--pustinn, 4s) + var(--pustut, 6s)) ease-in-out infinite; }
+.mikro__sirkel--rolig .mikro__kjerne { animation: mikro-rolig 8s ease-in-out infinite; }
+@keyframes mikro-pust { 0% { transform: scale(0.62); } 40% { transform: scale(1); } 45% { transform: scale(1); } 100% { transform: scale(0.62); } }
+@keyframes mikro-rolig { 0%, 100% { transform: scale(0.72); } 50% { transform: scale(0.92); } }
+.mikro__fase { font-family: var(--font-display); font-size: 18px; color: rgba(255,255,255,0.92); min-height: 1.2em; letter-spacing: 0.02em; }
+.mikro__tid { font-family: var(--font-display); font-size: 40px; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; line-height: 1; }
+.mikro__instr { max-width: 30ch; margin: 0; color: rgba(255,255,255,0.8); font-size: 15px; line-height: 1.5; }
+.mikro__bunn { margin-top: 8px; width: 100%; max-width: 420px; }
+.mikro .streakfeiring__knapp { background: rgba(255,255,255,0.92); color: var(--skog-900, #1C2A21); box-shadow: none; }
+@media (prefers-reduced-motion: reduce) {
+  .mikro__sirkel--pust .mikro__kjerne, .mikro__sirkel--rolig .mikro__kjerne { animation: none; }
+  .mikro { transition: none; }
+}
+
 /* Ark: emoji-velger + felt-etiketter */
 .arklabel { margin: 4px 0 -4px; font-size: 12.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--dempet); }
 .emojirad { display: flex; flex-wrap: wrap; gap: 7px; }

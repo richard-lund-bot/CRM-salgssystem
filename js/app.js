@@ -46,6 +46,10 @@ import {
   varmeTekst, dagerSiden, KRETS_EMOJI, RELASJONER, METODER, IGANG_IDEER,
 } from './fellesskap.js';
 import {
+  RO_VANER, MIKRO_OKTER, dagensInnslag as roDagensInnslag, veksleVane as roVeksleVane,
+  sikreVane as roSikreVane, roStatus, lesRolog,
+} from './ro.js';
+import {
   STARTSPORSMAL, lesHvorfor, leggTilHvorfor, slettHvorfor, kanLeggeTil,
   ukensRefleksjon, settRefleksjon, lesRefleksjoner,
 } from './mening.js';
@@ -62,7 +66,8 @@ const ruter = {
   post: () => visPostSkjerm(app), // dedikert side for ett feed-innlegg (spillbart)
   trening: visTrening, // Min dag-dashbordet bor på Trening-fanen
   kosthold: () => visKostholdSkjerm(app), // Kosthold-pilaren (blue-zones-vaner)
-  ro: () => visRoSkjerm(app), // Ro-pilaren (pust + rolige økter)
+  ro: () => visRoSkjerm(app), // Ro-pilaren (daglige ro-vaner + økter)
+  rofremgang: () => visRoFremgang(app), // Se logg (Ro)
   sosialt: () => visFellesskapSkjerm(app), // Fellesskap-pilaren (relasjoner + kontakt-logg)
   krets: () => visKretsSkjerm(app), // Din krets — personene du vil holde varmt
   fremgang: () => visFellesskapFremgang(app), // Se fremgang (Fellesskap)
@@ -130,7 +135,7 @@ const FANER_DEF = [
     // «Se økter»/«Vis alle».
     barn: ['beveg', 'ny', 'okter'] },
   { id: 'ro', rute: 'ro', ikon: 'maane', fyll: null, label: 'Ro',
-    barn: [] },
+    barn: ['rofremgang'] },
   { id: 'sosialt', rute: 'sosialt', ikon: 'personer', fyll: null, label: 'Fellesskap',
     barn: ['krets', 'fremgang', 'moteplasser'] },
 ];
@@ -541,45 +546,201 @@ function visKostholdSkjerm(mount) {
 }
 
 // ===========================================================================
-// Ro (Fase 4) — mindfulness/pust som egen pilar. Samler de rolige øktene
-// (pust + restitusjon) og starter dem i den vanlige øktspilleren (kjor.js), så
-// pust, tempo og lyd virker som ellers. Feeden dekker «ro»-pilaren via mind-
-// innleggene; her er de kroppslige øvelsene.
+// Ro (pilar 3) — hvile og nervesystem-ro som daglig praksis. Som Fellesskap:
+// hero med streak-stripe, en «Hva gjorde du i dag?»-avkryssing (ro-vaner), en
+// «Start på 2 minutter»-rad med mikroøkter (egen lett pust-/stillhetsspiller),
+// og «For kvelden» med de lange restitusjonsøktene fra biblioteket. Ro-gnisten
+// tennes av en avkrysset vane ELLER en fullført restitusjonsøkt.
 // ===========================================================================
-const RO_PUST = new Set(['restitusjon-lav-lett', 'restitusjon-medium-lett', 'restitusjon-hoy-lett']);
+
+// Ukesprikker til Ro-stripa (ro-vaner ELLER restitusjonsøkter samme dag).
+function ukestreakRo(nå = Date.now()) {
+  const LAB = ['M', 'T', 'O', 'T', 'F', 'L', 'S'];
+  const aktiv = new Set();
+  for (const o of lesRolog()) if (o.vaner && Object.values(o.vaner).some(Boolean)) aktiv.add(o.dato);
+  for (const o of hentLogg()) if (!o.slettet && loggBevegelseRecovery(o)) { const d = (o.dato || '').slice(0, 10); if (d) aktiv.add(d); }
+  const idag = new Date(nå); idag.setHours(0, 0, 0, 0);
+  const man = new Date(idag.getTime() - ((idag.getDay() + 6) % 7) * 86400000);
+  const idagIso = isoDato(idag);
+  return LAB.map((label, i) => {
+    const iso = isoDato(new Date(man.getTime() + i * 86400000));
+    return { label, on: aktiv.has(iso), today: iso === idagIso };
+  });
+}
+function loggBevegelseRecovery(o) { return (o.bevegelse === 'recovery') || (o.modalitet === 'REST'); }
+
 function visRoSkjerm(mount) {
   const profil = hentProfil();
   if (!profil) { skjerm('Ro', velkommenKort()); return; }
-  const okter = hentOkter()
-    .filter((o) => o.kategori === 'restitusjon')
-    .sort((a, b) => (RO_PUST.has(b.id) - RO_PUST.has(a.id)) || (a.varighetMin - b.varighetMin));
 
   const gro = hentGnistStatus().pilarer.ro;
+  const main = pilarSkall(mount, {
+    navn: 'ro', tittel: 'Ro i dag', under: 'Små pauser roer systemet.',
+    streakStripe: { streak: gro.streak, dager: ukestreakRo(), href: '#/rofremgang' },
+  });
+
+  const merkDagensDot = () => {
+    const dot = mount.querySelector('.ukestreak__prikk--now');
+    if (dot) dot.classList.add('ukestreak__prikk--on');
+  };
+
+  // --- Hva gjorde du i dag? (ro-vaner) ---
+  const iDag = () => roDagensInnslag() || { vaner: {} };
+  const vaneRader = RO_VANER.map((v) => {
+    const på = !!iDag().vaner?.[v.id];
+    const c = el('button', { class: 'rovane' + (på ? ' rovane--valgt' : ''), type: 'button',
+      onclick: async () => {
+        const res = roVeksleVane(v.id);
+        if (!res) return;
+        c.classList.toggle('rovane--valgt', res.aktiv);
+        if (res.aktiv) { vibrer(); varsle('Logget', { ikon: 'maane' }); merkDagensDot(); }
+        await streakEtter(res);
+        await blaaEtter();
+      } },
+      el('span', { class: 'rovane__ikon' }, ikon(v.ikon)),
+      el('span', { class: 'rovane__navn' }, v.navn),
+      el('span', { class: 'rovane__sjekk' }, ikon('sjekk')));
+    return c;
+  });
+  const loggKort = el('section', { class: 'kort' },
+    el('h2', { class: 'kost__tittel' }, 'Hva gjorde du i dag?'),
+    el('p', { class: 'dempet dempet--tett' }, 'Velg det som passet for deg i dag.'),
+    el('div', { class: 'rovanegrid' }, ...vaneRader),
+    el('a', { class: 'roseLogg', href: '#/rofremgang' }, el('span', {}, 'Se logg'), ikon('chevron')));
+
+  // --- Start på 2 minutter (mikroøkter) ---
+  const mikroRad = el('section', {},
+    el('div', { class: 'seksjonshode seksjonshode--flat' },
+      el('h2', { class: 'seksjonstittel' }, 'Start på 2 minutter'),
+      el('a', { class: 'seksjonslenke', href: '#/rofremgang' }, 'Se alle', ikon('chevron'))),
+    el('div', { class: 'mikrorad' }, ...MIKRO_OKTER.map((m) =>
+      el('button', { class: 'mikrokort', type: 'button', onclick: () => visMikroOkt(m, merkDagensDot) },
+        el('span', { class: 'mikrokort__ikon' }, ikon(m.ikon)),
+        el('span', { class: 'mikrokort__navn' }, m.navn),
+        el('span', { class: 'mikrokort__bunn' },
+          el('span', { class: 'mikrokort__min' }, `${m.min} min`),
+          ikon('play', 'ikon mikrokort__play'))))));
+
+  // --- For kvelden (lange restitusjonsøkter fra biblioteket) ---
+  const RO_TAG = {
+    'restitusjon-hoy-intens': 'Dyp avspenning', 'restitusjon-lav-intens': 'Rolig restitusjon',
+    'restitusjon-medium-intens': 'Kroppslig ro', 'restitusjon-hoy-lett': 'Rolig pust',
+    'restitusjon-medium-lett': 'Rolig pust', 'restitusjon-lav-lett': 'Rolig pust',
+  };
+  const kveldsokter = hentOkter().filter((o) => o.kategori === 'restitusjon')
+    .sort((a, b) => b.varighetMin - a.varighetMin).slice(0, 3);
+  const kveldRad = el('section', {},
+    el('div', { class: 'seksjonshode seksjonshode--flat' },
+      el('h2', { class: 'seksjonstittel' }, 'For kvelden'),
+      el('a', { class: 'seksjonslenke', href: '#/okter?kat=restitusjon' }, 'Se alle', ikon('chevron'))),
+    el('div', { class: 'roliste' }, ...kveldsokter.map((o) => el('button', { class: 'rokort', type: 'button', onclick: () => aapneOkt(o, { laast: false }) },
+      el('span', { class: 'rokort__ikon' }, ikon('maane')),
+      el('span', { class: 'rokort__midt' },
+        el('span', { class: 'rokort__navn' }, o.navn),
+        el('span', { class: 'rokort__meta' }, `${o.varighetMin} min · ${RO_TAG[o.id] || 'Restitusjon'}`)),
+      ikon('play', 'ikon rokort__play')))));
+
+  main.append(loggKort, mikroRad, kveldRad);
+}
+
+// ===========================================================================
+// Mikroøkt-spiller — en rolig fullskjerm-nedtelling for «Start på 2 minutter».
+// Pust-varianten viser en pustende ring med «Pust inn / Pust ut»; de andre en
+// rolig sirkel + instruksjon. Fullført huker av den tilhørende ro-vanen.
+// ===========================================================================
+function visMikroOkt(m, merkDot) {
+  slippVaaken();
+  const total = Math.max(30, Math.round(m.min * 60));
+  let igjen = total;
+  let ferdig = false;
+
+  const tid = el('div', { class: 'mikro__tid' }, formatMMSS(igjen));
+  const fase = m.pust ? el('div', { class: 'mikro__fase' }, 'Pust inn') : el('div', { class: 'mikro__fase' }, ' ');
+  const sirkel = el('div', { class: 'mikro__sirkel' + (m.pust ? ' mikro__sirkel--pust' : ' mikro__sirkel--rolig') },
+    el('div', { class: 'mikro__kjerne' }));
+  if (m.pust) sirkel.style.setProperty('--pustinn', `${m.inn}s`);
+  if (m.pust) sirkel.style.setProperty('--pustut', `${m.ut}s`);
+  const knapp = el('button', { class: 'streakfeiring__knapp', type: 'button' }, 'Ferdig');
+
+  const overlay = el('div', { class: 'mikro', role: 'dialog', 'aria-label': m.navn },
+    el('button', { class: 'mikro__lukk', type: 'button', 'aria-label': 'Lukk', onclick: () => avslutt(false) }, ikon('kryss')),
+    el('h1', { class: 'mikro__navn' }, m.navn),
+    sirkel, fase, tid,
+    el('p', { class: 'mikro__instr' }, m.instr),
+    el('div', { class: 'mikro__bunn' }, knapp));
+  knapp.addEventListener('click', () => avslutt(true));
+  document.body.append(overlay);
+  requestAnimationFrame(() => overlay.classList.add('mikro--pa'));
+
+  // Pust-tekst veksler i takt med inn/ut (kun for pust-økter, uten redusert bevegelse).
+  let pustTimer = null;
+  if (m.pust && !REDUSERT()) {
+    let inn = true;
+    fase.textContent = 'Pust inn';
+    const veksle = () => { inn = !inn; fase.textContent = inn ? 'Pust inn' : 'Pust ut'; pustTimer = setTimeout(veksle, (inn ? m.inn : m.ut) * 1000); };
+    pustTimer = setTimeout(veksle, m.inn * 1000);
+  }
+
+  const tikk = setInterval(() => {
+    igjen -= 1;
+    tid.textContent = formatMMSS(Math.max(0, igjen));
+    if (igjen <= 0) avslutt(true);
+  }, 1000);
+
+  async function avslutt(fullfort) {
+    if (ferdig) return; ferdig = true;
+    clearInterval(tikk); if (pustTimer) clearTimeout(pustTimer);
+    overlay.classList.add('mikro--ut');
+    setTimeout(() => overlay.remove(), 320);
+    if (fullfort) {
+      const res = roSikreVane(m.vane);
+      vibrer(); varsle('Godt gjort — det teller.', { ikon: 'maane' });
+      if (merkDot) merkDot();
+      await streakEtter(res); await blaaEtter();
+    }
+  }
+}
+
+function formatMMSS(sek) {
+  const m = Math.floor(sek / 60); const s = sek % 60;
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+
+// Se logg (Ro) — streak, ukesrytme og loggen over rolige valg.
+function visRoFremgang(mount) {
+  if (!hentProfil()) { location.hash = '#/hjem'; return; }
+  const gro = hentGnistStatus().pilarer.ro;
+  const s = roStatus();
   const stat = (tall, navn) => el('div', { class: 'koststat' },
     el('span', { class: 'koststat__tall' }, String(tall)),
     el('span', { class: 'koststat__navn' }, navn));
   const statusBoks = el('div', { class: 'koststatus' },
     stat(gro.streak, 'dager på rad'),
-    stat(gro.iDag.verdi, 'rolige økter i dag'));
+    stat(s.ukeAktive, 'rolige dager (uke)'),
+    stat(s.iDagAntall, 'valg i dag'));
 
-  const intro = el('section', { class: 'kort' },
-    el('h2', { class: 'kost__tittel' }, 'Pust deg rolig'),
-    el('p', { class: 'dempet' }, 'Noen minutter bevisst pust senker stress og roer nervesystemet. Velg en øvelse — den spilles med rolig tempo og lyd.'));
+  const dager = ukestreakRo();
+  const ukeKort = el('section', { class: 'kort' },
+    el('h2', { class: 'kost__tittel' }, 'Denne uka'),
+    el('div', { class: 'ukestreak__uke ukestreak__uke--stor' }, ...dager.map((d) => el('span', { class: 'ukestreak__dag' },
+      el('i', { class: 'ukestreak__prikk' + (d.on ? ' ukestreak__prikk--on' : '') + (d.today ? ' ukestreak__prikk--now' : '') }),
+      el('span', { class: 'ukestreak__lab ukestreak__lab--mork' }, d.label)))),
+    el('p', { class: 'dempet' }, `${s.ukeAktive} av 7 dager med ro. Én liten pause er nok.`));
 
-  // Rolige økter/pust skal alltid kunne startes fritt (aldri låst bak «lær
-  // øvelsene først»), så vi sender en ulåst status til aapneOkt.
-  const kort = okter.map((o) => el('button', { class: 'rokort', type: 'button', onclick: () => aapneOkt(o, { laast: false }) },
-    el('span', { class: 'rokort__ikon' }, ikon(RO_PUST.has(o.id) ? 'hjerte' : 'maane')),
-    el('span', { class: 'rokort__midt' },
-      el('span', { class: 'rokort__navn' }, o.navn),
-      el('span', { class: 'rokort__meta' }, `${o.varighetMin} min`)),
-    ikon('play', 'ikon rokort__play')));
+  const NAVN = Object.fromEntries(RO_VANER.map((v) => [v.id, v.navn]));
+  const logg = lesRolog().filter((o) => o.vaner && Object.values(o.vaner).some(Boolean))
+    .sort((a, b) => String(b.dato).localeCompare(String(a.dato))).slice(0, 14);
+  const loggKort = el('section', { class: 'kort' },
+    el('h2', { class: 'kost__tittel' }, 'Logg'),
+    logg.length
+      ? el('div', { class: 'liste' }, ...logg.map((o) => el('div', { class: 'loggrad' },
+          el('span', { class: 'loggrad__dato' }, new Date(`${o.dato}T12:00:00`).toLocaleDateString('nb-NO', { weekday: 'short', day: 'numeric', month: 'short' })),
+          el('span', { class: 'loggrad__tekst' }, Object.keys(o.vaner).filter((k) => o.vaner[k]).map((k) => NAVN[k] || k).join(' · ')))))
+      : el('p', { class: 'dempet' }, 'Ingen rolige valg logget ennå. Huk av på Ro-siden.'));
 
-  const main = pilarSkall(mount, {
-    navn: 'ro', tittel: 'Pust. Senk skuldrene.', under: 'Vær her — noen rolige minutter.',
-    ring: { pst: gro.iDag.naadd ? 100 : 0, merkelapp: 'av dagsmålet' },
-  });
-  main.append(statusBoks, intro, el('div', { class: 'roliste' }, ...kort));
+  skjerm('Ro-logg',
+    el('p', { class: 'utforsk-under' }, 'Rytmen din — uten press. Én liten pause om dagen er nok.'),
+    statusBoks, ukeKort, loggKort);
 }
 
 // ===========================================================================

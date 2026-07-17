@@ -116,6 +116,13 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
   await page.goto(BASE + '/#/krets');
   await page.waitForSelector('.side, .kort, .tomkrets', { timeout: 20000 });
   sjekk('Din krets-siden åpner', (await hash()).startsWith('#/krets'));
+
+  // --- 4c) Ro-pilaren: daglige ro-vaner + mikroøkter ------------------------
+  await page.goto(BASE + '/#/ro');
+  await page.waitForSelector('.rovanegrid', { timeout: 20000 });
+  sjekk('Ro viser de fem ro-vanene', (await page.locator('.rovane').count()) === 5);
+  sjekk('Ro viser mikroøktene', (await page.locator('.mikrokort').count()) === 3);
+
   // Tilbake til Hjem så språktesten under finner .hjemdash etter reload.
   await page.goto(BASE + '/#/hjem');
   await page.waitForSelector('.hjemdash', { timeout: 20000 });

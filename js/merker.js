@@ -11,6 +11,7 @@ import { blaaDager, hentGnistStatus } from './gnist.js';
 import { regionScores, lagKroppskart } from './kroppskart.js';
 import { lesMatlogg } from './kosthold.js';
 import { lesSosiallogg } from './sosialt.js';
+import { lesRolog } from './ro.js';
 import { fanesideMedTittel } from './banner.js';
 import { REDUSERT } from './animasjon.js';
 
@@ -202,7 +203,7 @@ function byggKontekst(profil, logg, planer) {
   // Blå dager (js/gnist.js): dager der ALLE pilar-gnistene ble tent — grunnlag
   // for Blå flamme-merkene. Lokale ISO-dager stemples til kl. 12 lokal tid så
   // merkedatoene oppfører seg som de andre.
-  const blaaListe = [...blaaDager({ logg: logg || [], matlogg: lesMatlogg(), sosiallogg: lesSosiallogg() })].sort();
+  const blaaListe = [...blaaDager({ logg: logg || [], matlogg: lesMatlogg(), sosiallogg: lesSosiallogg(), rolog: lesRolog() })].sort();
   const blaaDatoListe = [];
   const blaaStreakDatoMap = new Map();
   let blaaRekke = 0;
