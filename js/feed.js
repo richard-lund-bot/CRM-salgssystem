@@ -21,7 +21,7 @@ import { gjeldendeSprak, t, hentSprakJson } from './i18n.js';
 import {
   rangerPoster, lagDwellSporer, registrerInteraksjon,
   harValgtInteresser, kategoriRangScore, storyErSett,
-  PILARER, pillarer, settPillarer, harValgtPillarer,
+  PILARER, pillarer, settPillarer, harValgtPillarer, pilarForKat,
 } from './feed-rang.js';
 
 // Blue-zones-pilarene med visningsnavn (norsk kilde; i18n oversetter til
@@ -31,6 +31,23 @@ const PILAR_NAVN = {
   bevegelse: 'Bevegelse', kosthold: 'Kosthold', tilhorighet: 'Tilhørighet',
   ro: 'Ro', mening: 'Mening', nysgjerrig: 'Nysgjerrig',
 };
+
+// Takt-farge per blue-zones-pilar (M53) — erstatter de gamle knallgradientene.
+// Kortfargen blir MENINGSBÆRENDE: grønn = bevegelse, oliven = mat, dyp
+// blågrønn = ro, terrakotta = sosialt, gull = mening, skog = nysgjerrig. Alle
+// er dempede, jordnære Takt-toner så feeden føles som resten av appen.
+const TAKT_GRAD = {
+  bevegelse: ['#3A5A43', '#557A5C'],
+  kosthold: ['#5E7443', '#849A5B'],
+  ro: ['#2E4A48', '#4C6E66'],
+  tilhorighet: ['#A85C3C', '#C47E52'],
+  mening: ['#997A2E', '#C6A24C'],
+  nysgjerrig: ['#2A3B2F', '#405C46'],
+};
+function taktGrad(katId) {
+  const g = TAKT_GRAD[pilarForKat(katId)] || TAKT_GRAD.nysgjerrig;
+  return { a: g[0], b: g[1] };
+}
 
 const LS_FEED = 'trening.feed'; // per-innlegg-tilstand (spilt/likt/lagret/komm)
 const BATCH = 5; // innlegg per innlastingsrunde (uendelig scroll)
@@ -784,8 +801,8 @@ function lagStoryRad(posts, vert, påSeIFeed) {
         'aria-label': `Story: ${story.navn}`,
         onclick: () => åpneStory(stories, i, vert, { påSett: tegn, påSeIFeed }),
       },
-        el('span', { class: 'storysirkel__ring', style: `background:linear-gradient(45deg, ${story.aksentStart}, ${story.aksentSlutt})` },
-          el('span', { class: 'storysirkel__indre', style: `background:linear-gradient(135deg, ${story.aksentStart}, ${story.aksentSlutt})` },
+        el('span', { class: 'storysirkel__ring', style: `background:linear-gradient(45deg, ${taktGrad(story.katId).a}, ${taktGrad(story.katId).b})` },
+          el('span', { class: 'storysirkel__indre', style: `background:linear-gradient(135deg, ${taktGrad(story.katId).a}, ${taktGrad(story.katId).b})` },
             story.id === 'story-nytt' ? ikon('lyn') : story.navn.slice(0, 1)),
         ),
         el('span', { class: 'storysirkel__navn' }, story.navn),
@@ -862,7 +879,8 @@ function åpneStory(stories, startIdx, vert, { påSett = null, påSeIFeed = null
     const ts = Date.parse(post.opprettet || '') || Date.now();
     registrerInteraksjon(post, 'story'); // story-visning teller mot kategori-affinitet
 
-    flate.style.background = `linear-gradient(170deg, ${guide.aksentStart}, ${guide.aksentSlutt})`;
+    const sgrad = taktGrad(post.katId);
+    flate.style.background = `linear-gradient(170deg, ${sgrad.a}, ${sgrad.b})`;
     tom(flate);
 
     const seg = story.slides.map((_, i) => el('span', { class: 'story__seg' },
@@ -872,7 +890,7 @@ function åpneStory(stories, startIdx, vert, { påSett = null, påSeIFeed = null
     flate.append(
       el('div', { class: 'story__prog' }, ...seg),
       el('div', { class: 'story__hode' },
-        guideAvatar(guide),
+        guideAvatar(guide, taktGrad(post.katId)),
         el('div', { class: 'story__hvem' },
           el('span', { class: 'story__navn' }, story.navn),
           el('span', { class: 'story__tid' }, `${guide.navn} · ${tidSiden(ts)}`),
@@ -933,10 +951,11 @@ function åpneStory(stories, startIdx, vert, { påSett = null, påSeIFeed = null
 // bakgrunn» per innlegg), innhold rett på flaten uten delere, minispillet i
 // mørkt glass, aksjonsrail til høyre og guide + postet-tid nederst.
 // ==========================================================================
-function guideAvatar(poster) {
+function guideAvatar(poster, grad = null) {
+  const g = grad || { a: '#3A5A43', b: '#557A5C' };
   return el('span', {
     class: 'feedavatar',
-    style: `background:linear-gradient(135deg, ${poster.aksentStart}, ${poster.aksentSlutt})`,
+    style: `background:linear-gradient(135deg, ${g.a}, ${g.b})`,
   }, (poster.navn || '?').slice(0, 1));
 }
 
@@ -999,9 +1018,10 @@ function feedKort(post, vert) {
   const spillsone = el('div', { class: 'fkort__spillsone' },
     spilt ? spiltOppsummering(post, spilt) : byggSpill(post));
 
+  const grad = taktGrad(post.katId);
   return el('article', {
-    class: 'fkort', 'data-id': post.id, 'data-kat': post.katId || '',
-    style: `background:linear-gradient(165deg, ${poster.aksentStart}, ${poster.aksentSlutt})`,
+    class: 'fkort', 'data-id': post.id, 'data-kat': post.katId || '', 'data-pilar': pilarForKat(post.katId),
+    style: `background:linear-gradient(165deg, ${grad.a}, ${grad.b})`,
   },
     el('div', { class: 'fkort__hode' },
       el('span', { class: 'fkort__kategori' }, post.underkategori || post.kategori),
@@ -1015,7 +1035,7 @@ function feedKort(post, vert) {
       aksjonsRail(post, vert),
     ),
     el('div', { class: 'fkort__bunn' },
-      guideAvatar(poster),
+      guideAvatar(poster, grad),
       el('div', { class: 'fkort__hvem' },
         el('span', { class: 'fkort__navn' }, poster.navn,
           el('span', { class: 'fkort__handle' }, ` ${poster.handle}`)),
