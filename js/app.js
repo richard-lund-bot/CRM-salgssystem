@@ -49,6 +49,7 @@ import {
   tømAvkrysset, byggHandleliste, handlelisteTekst, handlelisteKilder,
   erFavoritt, veksleFavoritt, VARE_KATEGORIER, isoDag as matIsoDag,
 } from './mat.js';
+import * as husstand from './husstand.js';
 import { SOSIALE_VANER, dagensInnslag as sosDagensInnslag, veksleVane as sosVeksleVane, sosialStatus, lesSosiallogg, leggTilEgen } from './sosialt.js';
 import {
   lesKrets, leggTilPerson, oppdaterPerson, slettPerson, registrerKontakt, sorterKrets,
@@ -1037,16 +1038,48 @@ function planCelleArk(maaltid, iso, etterpå) {
 }
 
 // --- Handleliste -----------------------------------------------------------
+// Delt kollapsbart varegruppe-kort — brukes av både solo- og husstandslista.
+// onToggle(key) veksler avkryssing; fjernbar(v)|bool + onFjern(key) styrer om
+// en vare kan slettes helt.
+function handlegruppeKort(g, { onToggle, fjernbar = false, onFjern = null, tegnPåNytt, startAapen = true }) {
+  const teller = el('span', { class: 'handlegruppe__teller' }, `${g.avkrysset} av ${g.antall}`);
+  const oppdaterTeller = () => { teller.textContent = `${[...kropp.querySelectorAll('.handlevare--av')].length} av ${g.varer.length}`; };
+  const kropp = el('div', { class: 'handlegruppe__kropp' + (startAapen ? '' : ' handlegruppe__kropp--skjul') }, ...g.varer.map((v) => {
+    const kanFjern = typeof fjernbar === 'function' ? fjernbar(v) : fjernbar;
+    const rad = el('button', { class: 'handlevare' + (v.avkrysset ? ' handlevare--av' : ''), type: 'button',
+      onclick: () => { onToggle(v.key); rad.classList.toggle('handlevare--av'); vibrer(); oppdaterTeller(); } },
+      el('span', { class: 'handlevare__boks' }, ikon('sjekk', 'ikon handlevare__hake')),
+      el('span', { class: 'handlevare__navn' }, v.navn),
+      el('span', { class: 'handlevare__mengde' }, v.mengde != null ? `${v.mengde} ${v.enhet}`.trim() : ''),
+      kanFjern ? el('span', { class: 'handlevare__slett', role: 'button', 'aria-label': 'Fjern vare',
+        onclick: (e) => { e.preventDefault(); e.stopPropagation(); onFjern(v.key); vibrer(); tegnPåNytt(); } }, ikon('kryss', 'ikon')) : null);
+    return rad;
+  }));
+  const hode = el('button', { class: 'handlegruppe__hode', type: 'button', 'aria-expanded': String(startAapen),
+    onclick: () => { const skjult = kropp.classList.toggle('handlegruppe__kropp--skjul'); hode.setAttribute('aria-expanded', String(!skjult)); hode.querySelector('.handlegruppe__chevron').classList.toggle('handlegruppe__chevron--lukket', skjult); } },
+    el('span', { class: 'handlegruppe__disk' }, ikon(g.ikon)),
+    el('span', { class: 'handlegruppe__navn' }, g.navn),
+    teller,
+    ikon('chevronsopp', 'ikon handlegruppe__chevron' + (startAapen ? '' : ' handlegruppe__chevron--lukket')));
+  return el('section', { class: 'kort handlegruppe' }, hode, kropp);
+}
+
 function visHandlelisteSkjerm(mount) {
   if (!hentProfil()) { location.hash = '#/hjem'; return; }
+  const params = new URLSearchParams(location.hash.split('?')[1] || '');
+  const inviteKode = params.get('kode');
   const main = matSideSkall(mount);
-  main.append(el('div', { class: 'matside__hode' },
-    el('h1', { class: 'matside__tittel' }, 'Handleliste')));
+  main.append(el('div', { class: 'matside__hode' }, el('h1', { class: 'matside__tittel' }, 'Handleliste')));
 
   const innhold = el('div', {});
-  const tegn = () => { tom(innhold); innhold.append(...byggHandleInnhold(tegn)); };
+  const tegn = () => { tom(innhold); innhold.append(...(husstand.erIHusstand() ? byggHusstandInnhold(tegn) : byggHandleInnhold(tegn))); };
   tegn();
   main.append(innhold);
+
+  // Delt liste: synk ved åpning (pull → flett → push), tegn på nytt om noe endret.
+  if (husstand.erIHusstand()) husstand.synk().then((r) => { if (r && (r.ok || r.borte)) tegn(); });
+  // Invitasjonslenke (#/handleliste?kode=XXXX) → åpne bli-med-arket.
+  if (inviteKode && !husstand.erIHusstand()) husstandArk(tegn, { forhåndskode: inviteKode });
 }
 
 function byggHandleInnhold(tegnPåNytt) {
@@ -1091,35 +1124,11 @@ function byggHandleInnhold(tegnPåNytt) {
       el('h2', { class: 'kost__tittel' }, 'Lista er tom'),
       el('p', { class: 'dempet' }, 'Legg oppskrifter i ukesplanen eller skriv inn en vare over — så fyller lista seg.'),
       el('a', { class: 'knapp', href: '#/ukesplan' }, 'Åpne ukesplan')));
-    return deler;
   }
 
   // Varegrupper (kollapsbare). Egne varer kan slettes helt; resten krysses av.
   for (const g of b.grupper) {
-    const kropp = el('div', { class: 'handlegruppe__kropp' }, ...g.varer.map((v) => {
-      const rad = el('button', { class: 'handlevare' + (v.avkrysset ? ' handlevare--av' : ''), type: 'button',
-        onclick: () => { veksleAvkrysset(v.key); rad.classList.toggle('handlevare--av'); vibrer(); oppdaterTeller(); } },
-        el('span', { class: 'handlevare__boks' }, ikon('sjekk', 'ikon handlevare__hake')),
-        el('span', { class: 'handlevare__navn' }, v.navn),
-        el('span', { class: 'handlevare__mengde' }, v.mengde != null ? `${v.mengde} ${v.enhet}`.trim() : ''),
-        v.egen ? el('span', { class: 'handlevare__slett', role: 'button', 'aria-label': 'Fjern vare',
-          onclick: (e) => { e.preventDefault(); e.stopPropagation(); fjernEgenVare(v.key); vibrer(); tegnPåNytt(); } }, ikon('kryss', 'ikon')) : null);
-      return rad;
-    }));
-    const teller = el('span', { class: 'handlegruppe__teller' }, `${g.avkrysset} av ${g.antall}`);
-    const gruppe = el('section', { class: 'kort handlegruppe' });
-    const hode = el('button', { class: 'handlegruppe__hode', type: 'button', 'aria-expanded': 'true',
-      onclick: () => { const skjult = kropp.classList.toggle('handlegruppe__kropp--skjul'); hode.setAttribute('aria-expanded', String(!skjult)); hode.querySelector('.handlegruppe__chevron').classList.toggle('handlegruppe__chevron--lukket', skjult); } },
-      el('span', { class: 'handlegruppe__disk' }, ikon(g.ikon)),
-      el('span', { class: 'handlegruppe__navn' }, g.navn),
-      teller,
-      ikon('chevronsopp', 'ikon handlegruppe__chevron'));
-    const oppdaterTeller = () => {
-      const av = [...kropp.querySelectorAll('.handlevare--av')].length;
-      teller.textContent = `${av} av ${g.varer.length}`;
-    };
-    gruppe.append(hode, kropp);
-    deler.push(gruppe);
+    deler.push(handlegruppeKort(g, { onToggle: (key) => veksleAvkrysset(key), fjernbar: (v) => v.egen, onFjern: (key) => fjernEgenVare(key), tegnPåNytt }));
   }
 
   // Har hjemme (spiskammer): varene du krysset av i review-arket. Starter
@@ -1157,7 +1166,146 @@ function byggHandleInnhold(tegnPåNytt) {
         ikon('chevron', 'ikon'))))));
   }
 
+  // Del med husstanden — inngang til opprett/bli-med.
+  deler.push(el('section', { class: 'kort husstanddel' },
+    el('span', { class: 'husstanddel__disk' }, ikon('personer')),
+    el('div', { class: 'husstanddel__midt' },
+      el('span', { class: 'husstanddel__tittel' }, 'Del med husstanden'),
+      el('span', { class: 'husstanddel__sub' }, 'Én felles liste alle i huset ser og endrer.')),
+    el('button', { class: 'knapp knapp--sekundaer husstanddel__knapp', type: 'button', onclick: () => husstandArk(tegnPåNytt) }, 'Kom i gang')));
+
   return deler;
+}
+
+// --- Delt husstandsliste (visning + opprett/bli-med) -----------------------
+function byggHusstandInnhold(tegnPåNytt) {
+  const h = husstand.hentHusstand();
+  const b = husstand.byggGrupper();
+  const deler = [];
+
+  // Toppkort: navn + medlemmer + kode + inviter/forlat.
+  const undertekst = el('span', { class: 'husstandtopp__sub' }, 'Delt handleliste');
+  const medlemRad = el('div', { class: 'husstandtopp__medlemmer' });
+  husstand.hentMedlemmer().then((ms) => {
+    tom(medlemRad);
+    for (const m of ms) medlemRad.append(el('span', { class: 'husstandavatar', title: m.navn || '' }, ((m.navn || '?').trim().charAt(0) || '?').toUpperCase()));
+    undertekst.textContent = `Delt · ${ms.length} ${ms.length === 1 ? 'medlem' : 'medlemmer'}`;
+  }).catch(() => {});
+  const inviter = el('button', { class: 'knapp handletopp__del', type: 'button', onclick: () => delHusstand(h) },
+    ikon('dele', 'ikon'), el('span', {}, 'Inviter'));
+  const kodePille = el('button', { class: 'husstandkode', type: 'button', title: 'Kopier kode',
+    onclick: () => { try { navigator.clipboard?.writeText(h.kode); } catch { /* */ } vibrer(); varsle('Kode kopiert', { ikon: 'dele' }); } },
+    el('span', { class: 'husstandkode__lab' }, 'Bli-med-kode'), el('span', { class: 'husstandkode__verdi' }, h.kode));
+  const forlat = el('button', { class: 'husstandtopp__forlat', type: 'button', onclick: () => forlatHusstandBekreft(tegnPåNytt) }, 'Forlat');
+  deler.push(el('section', { class: 'kort husstandtopp' },
+    el('div', { class: 'husstandtopp__hode' },
+      el('span', { class: 'husstandtopp__disk' }, ikon('personer')),
+      el('div', { class: 'husstandtopp__midt' }, el('span', { class: 'husstandtopp__navn' }, h.navn), undertekst),
+      inviter),
+    medlemRad,
+    el('div', { class: 'husstandtopp__bunn' }, kodePille, forlat)));
+
+  // Hurtiglegg-til (→ delt liste).
+  const felt = el('input', { class: 'hurtigadd__felt', type: 'text', placeholder: 'Legg til en vare…', maxlength: '40', enterkeyhint: 'done' });
+  const leggTil = () => { if (!husstand.settVare({ navn: felt.value })) return; felt.value = ''; vibrer(); varsle('Lagt til', { ikon: 'handlepose' }); tegnPåNytt(); };
+  felt.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); leggTil(); } });
+  deler.push(el('section', { class: 'kort hurtigadd' },
+    ikon('handlepose', 'ikon hurtigadd__ikon'), felt,
+    el('button', { class: 'hurtigadd__knapp', type: 'button', 'aria-label': 'Legg til vare', onclick: leggTil }, ikon('pluss', 'ikon'))));
+
+  // Fyll fra ukesplanen min (importer beregnede varer fra din plan).
+  deler.push(el('button', { class: 'knapp knapp--sekundaer husstandfyll', type: 'button',
+    onclick: () => {
+      const n = husstand.importerVarer(byggHandleliste().grupper.flatMap((g) => g.varer.map((v) => ({ navn: v.navn, mengde: v.mengde, enhet: v.enhet, kategori: g.id }))));
+      vibrer(); varsle(n ? `La til ${n} ${n === 1 ? 'vare' : 'varer'}` : 'Alt fra planen er alt med', { ikon: 'kalender' }); tegnPåNytt();
+    } }, ikon('kalender', 'ikon'), el('span', {}, 'Fyll fra ukesplanen min')));
+
+  if (!b.totalVarer) {
+    deler.push(el('section', { class: 'kort handletom' },
+      el('span', { class: 'handletom__disk' }, ikon('handlepose')),
+      el('h2', { class: 'kost__tittel' }, 'Lista er tom ennå'),
+      el('p', { class: 'dempet' }, 'Skriv inn en vare over, eller hent måltidene fra ukesplanen din.')));
+  } else {
+    for (const g of b.grupper) {
+      deler.push(handlegruppeKort(g, { onToggle: (key) => husstand.veksleAvkrysset(key), fjernbar: true, onFjern: (key) => husstand.fjernVare(key), tegnPåNytt }));
+    }
+  }
+  return deler;
+}
+
+// Del bli-med-kode + lenke (Web Share / utklipp).
+function delHusstand(h) {
+  const url = `${location.origin}${location.pathname}#/handleliste?kode=${h.kode}`;
+  const tekst = `Bli med i handlelista «${h.navn}» i Takt.\nKode: ${h.kode}\n${url}`;
+  (async () => {
+    try {
+      if (navigator.share) await navigator.share({ title: 'Delt handleliste', text: tekst });
+      else { await navigator.clipboard.writeText(tekst); varsle('Invitasjon kopiert', { ikon: 'dele' }); }
+    } catch { /* avbrutt */ }
+  })();
+}
+
+function forlatHusstandBekreft(tegn) {
+  const { lukk } = visArk('Forlat husstanden?',
+    el('p', { class: 'dempet dempet--tett' }, 'Du kan bli med igjen senere med koden. Lista blir værende for de andre.'),
+    el('div', { class: 'arkknapper' },
+      el('button', { class: 'knapp knapp--fare', type: 'button', onclick: async () => { await husstand.forlatHusstand(); lukk(); tegn(); varsle('Forlot husstanden'); } }, 'Forlat husstanden'),
+      el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: () => lukk() }, 'Avbryt')));
+}
+
+// Bunnark: opprett en delt liste eller bli med via kode. Krever innlogging.
+function husstandArk(tegn, { forhåndskode = '' } = {}) {
+  if (!sync.erInnlogget()) {
+    visArk('Delt handleliste',
+      el('p', { class: 'dempet dempet--tett' }, 'Logg inn for å dele handlelista med husstanden din — da synker den mellom telefonene deres.'),
+      el('div', { class: 'arkknapper' },
+        el('a', { class: 'knapp', href: '#/logg-inn' }, 'Logg inn'),
+        el('a', { class: 'knapp knapp--sekundaer', href: '#/bli-medlem' }, 'Bli medlem')));
+    return;
+  }
+  let modus = forhåndskode ? 'bli' : 'lag';
+  let lukkArk = () => {};
+  const navnFelt = el('input', { class: 'arkfelt', type: 'text', placeholder: 'Ditt navn (f.eks. Ada)', maxlength: '20' });
+  const husstandsnavnFelt = el('input', { class: 'arkfelt', type: 'text', placeholder: 'Navn på husstanden (f.eks. Hjemme)', maxlength: '30' });
+  const kodeFelt = el('input', { class: 'arkfelt arkfelt--kode', type: 'text', placeholder: 'KODE', maxlength: '6', value: (forhåndskode || '').toUpperCase(), autocapitalize: 'characters' });
+  const feil = el('p', { class: 'arkfeil', hidden: true });
+  const form = el('div', { class: 'husstandform' });
+  const send = el('button', { class: 'knapp husstandform__send', type: 'button' }, el('span', {}, 'Lag delt liste'));
+
+  const seg = el('div', { class: 'arkseg' }, ...[['lag', 'Lag ny'], ['bli', 'Bli med']].map(([id, navn]) => {
+    const b = el('button', { class: 'arksegknapp' + (id === modus ? ' arksegknapp--paa' : ''), type: 'button',
+      onclick: () => { modus = id; [...seg.children].forEach((c) => c.classList.remove('arksegknapp--paa')); b.classList.add('arksegknapp--paa'); tegnForm(); } }, navn);
+    return b;
+  }));
+  function tegnForm() {
+    tom(form); feil.hidden = true;
+    if (modus === 'lag') { form.append(husstandsnavnFelt, navnFelt); send.firstChild.textContent = 'Lag delt liste'; }
+    else { form.append(kodeFelt, navnFelt); send.firstChild.textContent = 'Bli med'; }
+  }
+  send.addEventListener('click', async () => {
+    feil.hidden = true; send.disabled = true;
+    try {
+      if (modus === 'lag') {
+        const start = byggHandleliste().grupper.flatMap((g) => g.varer.map((v) => ({ navn: v.navn, mengde: v.mengde, enhet: v.enhet, kategori: g.id })));
+        await husstand.opprettHusstand({ navn: husstandsnavnFelt.value, medlemsnavn: navnFelt.value, startVarer: start });
+        varsle('Delt liste opprettet', { ikon: 'personer' });
+      } else {
+        if ((kodeFelt.value || '').trim().length < 4) { feil.textContent = 'Skriv inn koden du fikk.'; feil.hidden = false; send.disabled = false; return; }
+        await husstand.bliMed({ kode: kodeFelt.value, medlemsnavn: navnFelt.value });
+        varsle('Du er med i husstanden', { ikon: 'personer' });
+      }
+      lukkArk(); tegn();
+    } catch (e) {
+      feil.textContent = (e && e.message && !/REST|\d{3}/.test(e.message)) ? e.message : 'Fant ingen liste med den koden.';
+      feil.hidden = false; send.disabled = false;
+    }
+  });
+
+  tegnForm();
+  const { lukk } = visArk('Delt handleliste',
+    el('p', { class: 'dempet dempet--tett' }, 'Én felles handleliste for husstanden — alle ser og endrer den samme lista.'),
+    seg, form, feil, send);
+  lukkArk = lukk;
 }
 
 // ===========================================================================
@@ -2992,6 +3140,8 @@ async function start() {
     if (innlogget && !harProfil()) await sync.synk();
     else if (innlogget) sync.synk();
     sync.påStatus(oppdaterSyncMerke);
+    husstand.init(); // delt handleliste: synk ved online/synlig
+    if (husstand.erIHusstand()) husstand.synk();
   } catch (e) {
     console.warn('Sync utilgjengelig', e);
   }

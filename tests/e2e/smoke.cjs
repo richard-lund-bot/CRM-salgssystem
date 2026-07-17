@@ -146,6 +146,11 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
   await page.waitForSelector('.handletopp', { timeout: 20000 });
   sjekk('Handleliste viser personvelger', (await page.locator('.handletopp__stepper').count()) === 1);
   sjekk('Handleliste har hurtiglegg-til', (await page.locator('.hurtigadd__felt').count()) === 1);
+  sjekk('Handleliste tilbyr deling med husstand', (await page.locator('.husstanddel').count()) === 1);
+  await page.locator('.husstanddel__knapp').click();
+  await page.waitForSelector('.ark--apen', { timeout: 5000 });
+  sjekk('Husstand-arket har lag/bli-med + send', (await page.locator('.arkseg .arksegknapp').count()) === 2 && (await page.locator('.husstandform__send').count()) === 1);
+  await page.evaluate(() => document.querySelector('.ark')?.remove());
   // Review-ark: «Legg til i handleliste» spør hva du har fra før
   await page.goto(BASE + '/#/oppskrift?id=bonnegryte-tomat');
   await page.waitForSelector('.oppdetalj__handling', { timeout: 20000 });

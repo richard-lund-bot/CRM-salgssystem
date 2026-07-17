@@ -28,6 +28,7 @@ function slettSesjon() { localStorage.removeItem(LS.sesjon); }
 
 export function erInnlogget() { return !!hentSesjon()?.refresh_token; }
 export function brukerEpost() { return hentSesjon()?.epost || null; }
+export function brukerId() { return hentSesjon()?.uid || null; }
 export function sistSynk() { return localStorage.getItem(LS.sistSynk); }
 
 // --- Lyttere (UI kan abonnere på statusendringer) -------------------------
@@ -163,15 +164,23 @@ export async function sendPassordTilbakestilling(epost) {
 }
 
 // --- REST-hjelper ---------------------------------------------------------
-async function rest(path, { method = 'GET', body, prefer } = {}) {
+export async function rest(path, { method = 'GET', body, prefer } = {}) {
   const token = await gyldigToken();
   if (!token) throw new Error('Ikke innlogget');
   const headers = { ...felles, Authorization: `Bearer ${token}` };
   if (prefer) headers.Prefer = prefer;
   const res = await fetch(`${REST}/${path}`, { method, headers, body: body ? JSON.stringify(body) : undefined });
-  if (!res.ok) throw new Error(`REST ${path} → ${res.status}`);
+  if (!res.ok) {
+    let detalj = ''; try { detalj = (await res.json())?.message || ''; } catch { /* */ }
+    const feil = new Error(detalj || `REST ${path} → ${res.status}`); feil.status = res.status; throw feil;
+  }
   const tekst = await res.text();
   return tekst ? JSON.parse(tekst) : null;
+}
+
+/** Kaller en Postgres-funksjon (RPC). Returnerer parset JSON eller null. */
+export function rpc(fn, args = {}) {
+  return rest(`rpc/${fn}`, { method: 'POST', body: args });
 }
 
 // --- Fletting (rene funksjoner, last-write-wins per rad) -------------------

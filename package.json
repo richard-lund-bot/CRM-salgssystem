@@ -7,10 +7,11 @@
   "scripts": {
     "merge": "node scripts/merge-parts.mjs",
     "validate": "node scripts/validate.mjs",
-    "test": "npm run test:bevegelse && npm run test:gnist && npm run test:merker && npm run test:ovelser && npm run test:sync && npm run test:strava && npm run test:styrke && npm run test:feiring && npm run test:fellesskap && npm run test:ro && npm run test:mat",
+    "test": "npm run test:bevegelse && npm run test:gnist && npm run test:merker && npm run test:ovelser && npm run test:sync && npm run test:strava && npm run test:styrke && npm run test:feiring && npm run test:fellesskap && npm run test:ro && npm run test:mat && npm run test:husstand",
     "test:fellesskap": "node scripts/smoke-fellesskap.mjs",
     "test:ro": "node scripts/smoke-ro.mjs",
     "test:mat": "node scripts/smoke-mat.mjs",
+    "test:husstand": "node scripts/smoke-husstand.mjs",
     "test:bevegelse": "node scripts/smoke-bevegelse.mjs",
     "test:gnist": "node scripts/smoke-gnist.mjs",
     "test:merker": "node scripts/smoke-merker.mjs",

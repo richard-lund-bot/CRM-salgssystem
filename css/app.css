@@ -4377,3 +4377,40 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .ukevelger--ark { margin-top: 0; }
 .arkukerad { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
 .arkukerad .arketikett { margin: 0; }
+
+/* ---- Delt handleliste (husstand) ---- */
+.husstanddel { display: flex; align-items: center; gap: 13px; }
+.husstanddel__disk { display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 auto; border-radius: 50%; background: var(--aksent-svak); color: var(--aksent); }
+.husstanddel__midt { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.husstanddel__tittel { font-family: var(--font-display); font-size: 16px; font-weight: 700; }
+.husstanddel__sub { font-size: 12.5px; color: var(--tekst-2); }
+.husstanddel__knapp { flex: 0 0 auto; padding: 10px 16px; font-size: 13.5px; }
+
+.husstandtopp { display: flex; flex-direction: column; gap: 12px; }
+.husstandtopp__hode { display: flex; align-items: center; gap: 12px; }
+.husstandtopp__disk { display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 auto; border-radius: 50%; background: var(--aksent); color: #fff; }
+.husstandtopp__midt { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.husstandtopp__navn { font-family: var(--font-display); font-size: 17px; font-weight: 700; }
+.husstandtopp__sub { font-size: 12.5px; color: var(--tekst-2); }
+.husstandtopp .handletopp__del { flex: 0 0 auto; padding: 9px 15px; font-size: 13.5px; }
+.husstandtopp__medlemmer { display: flex; flex-wrap: wrap; gap: 6px; min-height: 4px; }
+.husstandavatar { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--aksent-svak); color: var(--aksent); font-family: var(--font-display); font-size: 13px; font-weight: 700; }
+.husstandtopp__bunn { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 2px; border-top: 1px solid var(--kant); }
+.husstandkode { display: inline-flex; align-items: center; gap: 8px; background: var(--bg-kort-2); border: 1px solid var(--kant); border-radius: var(--radius-pill); padding: 7px 14px; cursor: pointer; color: var(--tekst); margin-top: 10px; }
+.husstandkode__lab { font-size: 11px; color: var(--dempet); font-weight: 600; }
+.husstandkode__verdi { font-family: var(--font-display); font-size: 16px; font-weight: 700; letter-spacing: 0.14em; color: var(--aksent); }
+.husstandtopp__forlat { background: none; border: none; color: var(--dempet); font-size: 13px; font-weight: 600; cursor: pointer; padding: 8px; margin-top: 10px; }
+.husstandtopp__forlat:active { color: var(--fare); }
+
+.husstandfyll { width: 100%; justify-content: center; }
+
+.arkknapper { display: flex; flex-direction: column; gap: 10px; }
+.arkknapper .knapp { width: 100%; }
+.husstandform { display: flex; flex-direction: column; gap: 10px; margin: 6px 0 12px; }
+.arkfelt { width: 100%; border: 1px solid var(--kant-sterk); background: var(--bg-kort); border-radius: var(--radius-md); padding: 13px 14px; font-size: 15px; color: var(--tekst); }
+.arkfelt:focus { outline: none; border-color: var(--aksent); }
+.arkfelt--kode { text-transform: uppercase; letter-spacing: 0.22em; font-family: var(--font-display); font-weight: 700; text-align: center; font-size: 20px; }
+.arkfelt--kode::placeholder { letter-spacing: 0.22em; }
+.husstandform__send { width: 100%; }
+.husstandform__send:disabled { opacity: 0.6; }
+.arkfeil { margin: 0 0 8px; color: var(--fare); font-size: 13px; font-weight: 600; }
