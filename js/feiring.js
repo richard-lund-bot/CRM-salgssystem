@@ -185,9 +185,8 @@ export async function streakEtter(res) {
   }
 }
 
-// --- Blå flamme-feiring (blue zone-dagen) ----------------------------------
-// Når ALLE de røde gnistene tennes samme dag, blir dagen blå — det feires én
-// gang per dag, samme device-lokale gating som streak-feiringen.
+// --- Full dag-feiring (alle fire vanene samme dag) --------------------------
+// Feires én gang per dag, samme device-lokale gating som streak-feiringen.
 const BLAA_FLAGG = (iso) => `takt.blaaFeiret.${iso}`;
 function blaaFeiretIdag() {
   try { return localStorage.getItem(BLAA_FLAGG(isoIdag())) === '1'; } catch { return false; }
@@ -197,28 +196,29 @@ function settBlaaFeiret() {
 }
 
 /**
- * Fullskjerm blå flamme-feiring: den røde gnist-estetikken i blue zone-blått,
- * med den blå streaken som teller. Resolver når brukeren bekrefter.
+ * Fullskjerm feiring når alle fire vanene er gjort samme dag: samme scene som
+ * streak-feiringen, i blått, med hoved-streaken som teller. Resolver når
+ * brukeren bekrefter.
  */
 export function blaaFeiring(streak) {
   return new Promise((resolve) => {
     if (typeof document === 'undefined') { resolve(); return; }
     vibrer('feiring');
     const tall = el('span', { class: 'streakfeiring__tall' }, '0');
-    const knapp = el('button', { class: 'streakfeiring__knapp streakfeiring__knapp--blaa', type: 'button' }, 'Jeg lever blue zone');
+    const knapp = el('button', { class: 'streakfeiring__knapp streakfeiring__knapp--blaa', type: 'button' }, 'Fortsett');
     const hvorfor = feiringsHvorfor();
-    const overlay = el('div', { class: 'streakfeiring streakfeiring--blaa', role: 'dialog', 'aria-label': 'Blå dag' },
+    const overlay = el('div', { class: 'streakfeiring streakfeiring--blaa', role: 'dialog', 'aria-label': 'Alle fire vaner i dag' },
       el('div', { class: 'streakfeiring__glo' }),
       el('div', { class: 'streakfeiring__flamme' }, ikon('flamme', 'ikon')),
       el('div', { class: 'streakfeiring__teller' },
-        tall, el('span', { class: 'streakfeiring__enhet' }, streak === 1 ? 'blå dag' : 'blå dager på rad')),
-      el('h1', { class: 'streakfeiring__tittel' }, 'Blå flamme!'),
+        tall, el('span', { class: 'streakfeiring__enhet' }, streak === 1 ? 'dag på rad' : 'dager på rad')),
+      el('h1', { class: 'streakfeiring__tittel' }, 'Alle fire i dag'),
       hvorfor
         ? el('p', { class: 'streakfeiring__hvorfor' },
           el('span', { class: 'streakfeiring__hvorfor-merkelapp' }, 'Ett steg nærmere'),
           hvorfor)
         : el('p', { class: 'streakfeiring__under' },
-          'Alle gnistene tent i dag — en ekte blue zone-dag.'),
+          'Bevegelse, mat, ro og sosialt — alt på plass i dag.'),
       el('div', { class: 'streakfeiring__bunn' }, knapp),
     );
     let ferdig = false;
@@ -240,9 +240,9 @@ export function blaaFeiring(streak) {
 }
 
 /**
- * Spiller blå flamme-feiringen dersom dagen nettopp ble komplett blå (alle
- * gnistene tent) og den ikke alt er feiret i dag. Kalles etter enhver
- * registrering som kan ha tent en gnist. Resolver alltid.
+ * Spiller full dag-feiringen dersom alle fire vanene nettopp kom på plass og
+ * den ikke alt er feiret i dag. Kalles etter enhver registrering som kan ha
+ * fullført en vane. Resolver alltid.
  */
 export async function blaaEtter() {
   const gs = hentGnistStatus();

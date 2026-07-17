@@ -302,7 +302,7 @@ export const MERKE_KATEGORIER = [
   { id: 'laering', navn: 'Ferdighetsstier' },
   { id: 'nytt', navn: 'Prøv noe nytt' },
   { id: 'tid', navn: 'Tid i bevegelse' },
-  { id: 'blaflamme', navn: 'Blå flamme' },
+  { id: 'blaflamme', navn: 'Hele dager' },
   { id: 'oyeblikk', navn: 'Store øyeblikk' },
   { id: 'dognet', navn: 'Døgnet rundt' },
   { id: 'ekstra', navn: 'Litt av hvert' },
@@ -367,11 +367,11 @@ export const MERKER = {
     teller('tid-100t', '100 timer', '100 timer i bevegelse', 'trofe', 'indigo', 6000, (c) => c.minutter, (c) => c.minutterDato(6000)),
   ],
   blaflamme: [
-    teller('blaa-1', 'Første blå dag', 'Alle gnistene tent samme dag', 'flamme', 'teal', 1, (c) => c.blaaDagerAntall, (c) => c.blaaDagerDato(1)),
-    teller('blaa-3', 'Tre blå på rad', 'Blå flamme 3 dager på rad', 'flamme', 'blaa', 3, (c) => c.blaaStreak, (c) => c.blaaStreakDato(3)),
-    teller('blaa-7', 'Blå uke', 'Blå flamme 7 dager på rad', 'flamme', 'lilla', 7, (c) => c.blaaStreak, (c) => c.blaaStreakDato(7)),
-    teller('blaa-14', 'To blå uker', 'Blå flamme 14 dager på rad', 'flamme', 'indigo', 14, (c) => c.blaaStreak, (c) => c.blaaStreakDato(14)),
-    teller('blaa-30', 'Blue zone-måneden', 'Blå flamme 30 dager på rad', 'trofe', 'gul', 30, (c) => c.blaaStreak, (c) => c.blaaStreakDato(30)),
+    teller('blaa-1', 'Første hele dag', 'Alle fire vanene på samme dag', 'flamme', 'teal', 1, (c) => c.blaaDagerAntall, (c) => c.blaaDagerDato(1)),
+    teller('blaa-3', '3 hele dager', 'Alle fire vanene 3 dager på rad', 'flamme', 'blaa', 3, (c) => c.blaaStreak, (c) => c.blaaStreakDato(3)),
+    teller('blaa-7', '7 hele dager', 'Alle fire vanene 7 dager på rad', 'flamme', 'lilla', 7, (c) => c.blaaStreak, (c) => c.blaaStreakDato(7)),
+    teller('blaa-14', '14 hele dager', 'Alle fire vanene 14 dager på rad', 'flamme', 'indigo', 14, (c) => c.blaaStreak, (c) => c.blaaStreakDato(14)),
+    teller('blaa-30', '30 hele dager', 'Alle fire vanene 30 dager på rad', 'trofe', 'gul', 30, (c) => c.blaaStreak, (c) => c.blaaStreakDato(30)),
   ],
   oyeblikk: [
     oyeblikk('okt-45', 'Langøkta', 'Én bevegelse på 45 minutter eller mer', 'fjell', 'oransje', 'min45'),
@@ -471,16 +471,15 @@ export function visMerkerSkjerm(mount) {
   const gs = hentGnistStatus();
   const oppnadd = merker.filter((m) => m.oppnadd).length;
 
-  // Blå flamme-heroen: kjernemålingen — hvor lenge du har streaket blue
-  // zone-dagene, og hvor langt dagens flamme er kommet.
+  // Hovedstreaken øverst: dager på rad med alle fire vanene, i klartekst.
   const hero = el('div', { class: 'kort merkehero' },
     el('span', { class: 'merkehero__flamme' + (gs.blaa.iDagAlle ? ' merkehero__flamme--tent' : '') }, ikon('flamme')),
     el('div', { class: 'merkehero__meta' },
-      el('span', { class: 'merkehero__tittel' }, 'Blå flamme'),
+      el('span', { class: 'merkehero__tittel' },
+        `${gs.blaa.streak} ${gs.blaa.streak === 1 ? 'dag' : 'dager'} på rad`),
       el('span', { class: 'merkehero__sub' },
-        `${gs.blaa.streak} ${gs.blaa.streak === 1 ? 'blå dag' : 'blå dager'} på rad · ${gs.blaa.totaltBlaa} totalt`),
-      el('span', { class: 'merkehero__sub' },
-        gs.blaa.iDagAlle ? 'Alle gnistene tent i dag!' : `${gs.blaa.tentIDag} av 4 gnister tent i dag · ${oppnadd} av ${merker.length} merker`),
+        `${gs.blaa.tentIDag} av 4 vaner i dag · ${gs.blaa.totaltBlaa} hele dager totalt`),
+      el('span', { class: 'merkehero__sub' }, `${oppnadd} av ${merker.length} merker`),
     ),
   );
 
@@ -534,7 +533,7 @@ export function visMerkerSkjerm(mount) {
     ),
   );
 
-  fanesideMedTittel(mount, { tittel: 'Profil', under: 'Flammen din, treningen din og merkene dine — samlet.' })
+  fanesideMedTittel(mount, { tittel: 'Profil', under: 'Vanene dine, treningen din og merkene dine — samlet.' })
     .append(hero, treningsomrade, ...MERKE_KATEGORIER.map(bolk));
 
   // Kommer man fra «restitusjonsbehov»-lenka på Min dag, scroll widgeten inn.

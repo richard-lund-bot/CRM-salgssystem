@@ -29,10 +29,10 @@ export const TERSKLER = {
 // Pilarene som bærer en rød gnist. Mening er bevisst IKKE med: den er rammen
 // rundt vanene (ukentlig refleksjon), ikke en daglig terskel som kan «tennes».
 export const GNIST_PILARER = [
-  { id: 'bevegelse', navn: 'Bevegelse', ikon: 'loper', rute: 'trening', terskelTekst: '10 min bevegelse' },
-  { id: 'mat', navn: 'Mat', ikon: 'eple', rute: 'kosthold', terskelTekst: '3 gode matvalg' },
-  { id: 'ro', navn: 'Ro', ikon: 'maane', rute: 'ro', terskelTekst: 'Én rolig økt' },
-  { id: 'sosialt', navn: 'Sosialt', ikon: 'snakke', rute: 'sosialt', terskelTekst: 'Ett sosialt valg' },
+  { id: 'bevegelse', navn: 'Bevegelse', ikon: 'loper', rute: 'trening' },
+  { id: 'mat', navn: 'Mat', ikon: 'eple', rute: 'kosthold' },
+  { id: 'ro', navn: 'Ro', ikon: 'maane', rute: 'ro' },
+  { id: 'sosialt', navn: 'Sosialt', ikon: 'snakke', rute: 'sosialt' },
 ];
 
 // Lokal ISO-dag (YYYY-MM-DD) — gnistene følger brukerens døgn, ikke UTC.

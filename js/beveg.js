@@ -319,7 +319,7 @@ export function visLoggforSkjerm(mount) {
           ),
         ),
         el('p', { class: 'dempet', style: 'text-align:center' },
-          'Alt teller — hvert minutt bygger dagens gnist.'),
+          'Alt teller.'),
         el('div', { class: 'fast-bunn' },
           el('button', {
             class: 'knapp', type: 'button',
@@ -356,8 +356,8 @@ export function visBevegelseFerdig(mount, resultat, { bevegelse, varighetMin, ti
   const volumTall = løft && el('div', { class: 'loft__tall' }, '0 kg');
   const aktivitet = tittel || BEVEGELSE_NAVN[bevegelse] || 'Bevegelse';
 
-  // Dagens gnist-status etter registreringen: er bevegelses-gnisten tent, og
-  // hvor mange av de fire som er tent i dag (på vei mot en blå dag).
+  // Streak-status etter registreringen: er dagens bevegelsesmål nådd, og hvor
+  // mange av de fire vanene som er gjort i dag.
   const gs = hentGnistStatus();
   const beveg = gs.pilarer.bevegelse;
 
@@ -373,7 +373,7 @@ export function visBevegelseFerdig(mount, resultat, { bevegelse, varighetMin, ti
         merker: nye,
         opplaste: resultat.nyeOpplaste || [],
       }),
-      resultat.comeback && el('p', { class: 'ferdighero__comeback', style: 'text-align:center' }, 'Velkommen tilbake — det teller dobbelt i hjertet.'),
+      resultat.comeback && el('p', { class: 'ferdighero__comeback', style: 'text-align:center' }, 'Velkommen tilbake.'),
       løft && el('div', { class: 'kort loft' },
         el('p', { class: 'hero__eyebrow' }, 'Løftet i dag'),
         volumTall,
@@ -386,11 +386,11 @@ export function visBevegelseFerdig(mount, resultat, { bevegelse, varighetMin, ti
       beveg.iDag.naadd && el('div', { class: 'kort gnistkort' },
         el('span', { class: 'gnistkort__flamme' }, ikon('flamme')),
         el('div', { class: 'gnistkort__meta' },
-          el('p', { class: 'hero__eyebrow' }, 'Gnisten er tent!'),
+          el('p', { class: 'hero__eyebrow' }, 'Streak'),
           el('p', { class: 'gnistkort__tekst' },
-            beveg.streak > 1 ? `${beveg.streak} dager på rad med bevegelse.` : 'Dagens bevegelses-gnist er i boks.'),
+            `${beveg.streak} ${beveg.streak === 1 ? 'dag' : 'dager'} på rad`),
           el('p', { class: 'dempet' },
-            gs.blaa.iDagAlle ? 'Alle gnistene tent — blå dag!' : `${gs.blaa.tentIDag} av ${GNIST_PILARER.length} gnister tent i dag.`),
+            gs.blaa.iDagAlle ? 'Alle fire vaner i dag.' : `${gs.blaa.tentIDag} av ${GNIST_PILARER.length} vaner i dag.`),
         ),
       ),
       el('div', { class: 'kort kort--info' },

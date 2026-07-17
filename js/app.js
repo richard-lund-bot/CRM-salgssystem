@@ -232,10 +232,11 @@ function fane(tittel, under, ...innhold) {
 }
 
 // ===========================================================================
-// Hjem (M54) — dagens dashbord med den BLÅ FLAMMEN som kjernemåling: hvor
-// mange blue zone-dager på rad (alle gnistene tent), de fire røde gnist-
-// streakene per pilar, «dagens valg» og «dagens fokus». Feeden («dagens
-// feed») nås via feed-ikonet oppe til venstre eller ved å sveipe til venstre.
+// Hjem (M54) — dagens dashbord med streaken som kjernemåling: den store
+// flammen teller dager på rad der alle fire vanene ble gjort, de fire små
+// per-pilar-streakene under, så «dagens valg» og «dagens fokus». Ingen
+// sjargong i flaten — tall og hverdagsord. Feeden («dagens feed») nås via
+// feed-ikonet oppe til venstre eller ved å sveipe til venstre.
 // ===========================================================================
 const HILSEN = { natt: 'God natt', morgen: 'God morgen', formiddag: 'God formiddag', dag: 'God dag', kveld: 'God kveld' };
 const DAGENS_FOKUS = [
@@ -265,12 +266,12 @@ function visHjemDashboard(mount) {
   const reflektert = !!ukensRefleksjon();
   const harHvorforNaa = lesHvorfor().length > 0;
 
-  // Hint per pilar: tent → kvittering; ellers hvor langt igjen til terskelen.
+  // Hint per pilar: nøktern fremdrift mot dagsmålet; haken på raden sier resten.
   const pilarHint = {
-    bevegelse: (s) => (s.naadd ? 'Gnist tent — godt jobba' : `${s.verdi} av ${s.maal} min bevegelse`),
-    mat: (s) => (s.naadd ? 'Gnist tent — godt jobba' : `${s.verdi} av ${s.maal} gode valg`),
-    ro: (s) => (s.naadd ? 'Gnist tent — godt jobba' : 'Én rolig økt tenner gnisten'),
-    sosialt: (s) => (s.naadd ? 'Gnist tent — godt jobba' : 'Ett godt valg tenner gnisten'),
+    bevegelse: (s) => (s.naadd ? 'Ferdig i dag' : `${s.verdi} av ${s.maal} min`),
+    mat: (s) => (s.naadd ? 'Ferdig i dag' : `${s.verdi} av ${s.maal} gode valg`),
+    ro: (s) => (s.naadd ? 'Ferdig i dag' : 'Én rolig økt'),
+    sosialt: (s) => (s.naadd ? 'Ferdig i dag' : 'Ett sosialt valg'),
   };
   const valg = [
     ...GNIST_PILARER.map((p) => ({
@@ -280,12 +281,11 @@ function visHjemDashboard(mount) {
       streak: gs.pilarer[p.id].streak,
     })),
     // Mening er rammen rundt vanene (ukentlig refleksjon) — med i dagens valg,
-    // men bærer ingen gnist.
+    // men bærer ingen streak.
     { rute: 'mening', ikon: 'kompass', navn: 'Mening', hint: 'Kjenn ditt hvorfor', gjort: reflektert || harHvorforNaa, streak: 0 },
   ];
-  const taktOrd = blaa.iDagAlle ? 'Blå dag — alle gnistene tent!'
-    : blaa.tentIDag >= 2 ? 'God fremdrift!'
-      : blaa.tentIDag > 0 ? 'Godt i gang.' : 'Ny dag, nye gnister.';
+  // Ren status, ingen slagord: hvor mange av de fire vanene som er gjort i dag.
+  const taktOrd = `${blaa.tentIDag} av ${GNIST_PILARER.length} vaner i dag`;
 
   // --- Topplinje: feed-ikon (venstre), wordmark, meny (høyre) ---
   const topp = el('header', { class: 'hjemtopp' },
@@ -295,45 +295,34 @@ function visHjemDashboard(mount) {
     el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/meny', 'aria-label': 'Meny' }, ikon('gir')),
   );
 
-  // --- Hilsen + BLÅ FLAMME (kjernemålingen, på dagsfase-bilde) ---
+  // --- Hilsen + hovedstreaken (dager der alle fire vanene ble gjort) ---
   const blaaTall = el('span', { class: 'blaaflamme__tall' }, '0');
   const flammeBoks = el('a', { class: 'blaaflamme' + (blaa.iDagAlle ? ' blaaflamme--tent' : ''), href: '#/merker',
-    'aria-label': `Blå flamme: ${blaa.streak} ${blaa.streak === 1 ? 'blå dag' : 'blå dager'} på rad` },
+    'aria-label': `${blaa.streak} ${blaa.streak === 1 ? 'dag' : 'dager'} på rad med alle fire vanene` },
     el('span', { class: 'blaaflamme__ikon' }, ikon('flamme')),
     el('div', { class: 'blaaflamme__midt' },
       blaaTall,
-      el('span', { class: 'blaaflamme__merkelapp' }, blaa.streak === 1 ? 'blå dag på rad' : 'blå dager på rad')),
+      el('span', { class: 'blaaflamme__merkelapp' }, blaa.streak === 1 ? 'dag på rad' : 'dager på rad')),
   );
   const hero = el('section', { class: `hjemdash__hero hjemdash__hero--${fase}`,
     style: `background-image:url('icons/brand/hero-${fase}.webp')` },
     el('div', { class: 'hjemdash__scrim', 'aria-hidden': 'true' }),
     el('div', { class: 'hjemdash__hilsen' },
-      el('h1', { class: 'hjemdash__tittel' }, `${HILSEN[fase]}, ${profil.navn || 'du'}.`),
-      el('p', { class: 'hjemdash__under' }, 'Streak de gode vanene.')),
+      el('h1', { class: 'hjemdash__tittel' }, `${HILSEN[fase]}, ${profil.navn || 'du'}.`)),
     flammeBoks,
     el('p', { class: 'hjemdash__taktord' }, taktOrd),
   );
 
-  // --- De fire røde gnistene (streak per pilar, lenker til pilaren) ---
+  // --- Streak per pilar (flamme + dager på rad, lenker til pilaren) ---
   const gnistrad = el('div', { class: 'gnistrad' },
     ...GNIST_PILARER.map((p) => {
       const st = gs.pilarer[p.id];
       return el('a', { class: 'gnistchip' + (st.iDag.naadd ? ' gnistchip--tent' : ''), href: `#/${p.rute}`,
-        'aria-label': `${p.navn}: ${st.streak} ${st.streak === 1 ? 'dag' : 'dager'} på rad${st.iDag.naadd ? ' — tent i dag' : ''}` },
+        'aria-label': `${p.navn}: ${st.streak} ${st.streak === 1 ? 'dag' : 'dager'} på rad${st.iDag.naadd ? ' — ferdig i dag' : ''}` },
         el('span', { class: 'gnistchip__flamme' }, ikon('flamme')),
         el('span', { class: 'gnistchip__tall' }, String(st.streak)),
         el('span', { class: 'gnistchip__navn' }, p.navn));
     }));
-
-  // --- Nøkkelbrikker: dagens gnister + blå totaler ---
-  const brikke = (tall, navn) => el('div', { class: 'taktbrikke' },
-    el('span', { class: 'taktbrikke__tall' }, tall),
-    el('span', { class: 'taktbrikke__navn' }, navn));
-  const brikker = el('div', { class: 'taktbrikker' },
-    brikke(`${blaa.tentIDag}/${GNIST_PILARER.length}`, 'gnister i dag'),
-    brikke(String(blaa.streak), 'blå på rad'),
-    brikke(String(blaa.totaltBlaa), 'blå dager totalt'),
-  );
 
   // --- Dagens valg (pilar-sjekkliste, hver rad lenker til pilaren) ---
   const valgRader = valg.map((v) => el('a', { class: 'valgrad' + (v.gjort ? ' valgrad--gjort' : ''), href: `#/${v.rute}` },
@@ -365,7 +354,7 @@ function visHjemDashboard(mount) {
   tom(mount);
   const scroll = el('div', { class: 'hjemdash-scroll' },
     topp,
-    el('main', { class: 'innhold hjemdash' }, hero, gnistrad, brikker, dagensValg, dagensFokus, feedHint),
+    el('main', { class: 'innhold hjemdash' }, hero, gnistrad, dagensValg, dagensFokus, feedHint),
   );
   mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: dashScrollTop }));
 
@@ -504,8 +493,8 @@ function visKostholdSkjerm(mount) {
       el('span', { class: 'koststat__tall' }, String(tall)),
       el('span', { class: 'koststat__navn' }, navn));
     return el('div', { class: 'koststatus' },
-      stat(gm.streak, 'dagers gnist-streak'),
-      stat(`${s.iDagAntall}/${gm.iDag.maal}`, 'mot dagens gnist'),
+      stat(gm.streak, 'dager på rad'),
+      stat(`${s.iDagAntall}/${gm.iDag.maal}`, 'gode valg i dag'),
       stat(s.ukeAktive, 'aktive dager'));
   };
   let statusBoks = tegnStatus();
@@ -544,7 +533,7 @@ function visKostholdSkjerm(mount) {
   const gm0 = hentGnistStatus().pilarer.mat;
   const main = pilarSkall(mount, {
     navn: 'mat', tittel: 'Mest planter. Litt fisk.', under: 'Måtehold — stopp ved 80 %.',
-    ring: { pst: Math.min(100, Math.round((gm0.iDag.verdi / gm0.iDag.maal) * 100)), merkelapp: 'mot dagens gnist' },
+    ring: { pst: Math.min(100, Math.round((gm0.iDag.verdi / gm0.iDag.maal) * 100)), merkelapp: 'av dagsmålet' },
   });
   main.append(statusBoks, vaneKort, notatKort, laerLenke);
 }
@@ -568,12 +557,12 @@ function visRoSkjerm(mount) {
     el('span', { class: 'koststat__tall' }, String(tall)),
     el('span', { class: 'koststat__navn' }, navn));
   const statusBoks = el('div', { class: 'koststatus' },
-    stat(gro.streak, 'dagers gnist-streak'),
-    stat(gro.iDag.naadd ? 'Tent' : 'Ikke ennå', 'dagens gnist'));
+    stat(gro.streak, 'dager på rad'),
+    stat(gro.iDag.verdi, 'rolige økter i dag'));
 
   const intro = el('section', { class: 'kort' },
     el('h2', { class: 'kost__tittel' }, 'Pust deg rolig'),
-    el('p', { class: 'dempet' }, 'Noen minutter bevisst pust senker stress og roer nervesystemet. Én fullført rolig økt tenner ro-gnisten for dagen. Velg en øvelse — den spilles med rolig tempo og lyd.'));
+    el('p', { class: 'dempet' }, 'Noen minutter bevisst pust senker stress og roer nervesystemet. Velg en øvelse — den spilles med rolig tempo og lyd.'));
 
   // Rolige økter/pust skal alltid kunne startes fritt (aldri låst bak «lær
   // øvelsene først»), så vi sender en ulåst status til aapneOkt.
@@ -586,7 +575,7 @@ function visRoSkjerm(mount) {
 
   const main = pilarSkall(mount, {
     navn: 'ro', tittel: 'Pust. Senk skuldrene.', under: 'Vær her — noen rolige minutter.',
-    ring: { pst: gro.iDag.naadd ? 100 : 0, merkelapp: 'dagens gnist' },
+    ring: { pst: gro.iDag.naadd ? 100 : 0, merkelapp: 'av dagsmålet' },
   });
   main.append(statusBoks, intro, el('div', { class: 'roliste' }, ...kort));
 }
@@ -608,7 +597,7 @@ function visSosialtSkjerm(mount) {
       el('span', { class: 'koststat__tall' }, String(tall)),
       el('span', { class: 'koststat__navn' }, navn));
     return el('div', { class: 'koststatus' },
-      stat(gsos.streak, 'dagers gnist-streak'),
+      stat(gsos.streak, 'dager på rad'),
       stat(`${s.iDagAntall}/${s.antallVaner}`, 'gode valg i dag'),
       stat(s.ukeAktive, 'aktive dager'));
   };
@@ -1020,12 +1009,12 @@ function statKortRad(profil, logg, glass = false) {
       ),
     ),
     el('a', { class: 'statkort', href: '#/merker' },
-      el('span', { class: 'statkort__label' }, 'Gnist-streak'),
+      el('span', { class: 'statkort__label' }, 'Dager på rad'),
       el('div', { class: 'statkort__midt' },
         gnistTall,
         el('span', { class: 'statkort__ikon statkort__ikon--gnist' + (beveg.iDag.naadd ? ' statkort__ikon--tent' : '') }, ikon('flamme')),
       ),
-      el('span', { class: 'statkort__sub' }, beveg.iDag.naadd ? 'tent i dag' : `${beveg.iDag.verdi}/${beveg.iDag.maal} min til gnist`),
+      el('span', { class: 'statkort__sub' }, beveg.iDag.naadd ? `${beveg.iDag.maal} min nådd i dag` : `${beveg.iDag.verdi} av ${beveg.iDag.maal} min i dag`),
       el('div', { class: 'xpbar statkort__bar' }, gnistBar),
     ),
   );
