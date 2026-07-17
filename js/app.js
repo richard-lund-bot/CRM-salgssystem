@@ -570,6 +570,19 @@ function matSideSkall(mount) {
 }
 
 // --- Mat-hjem --------------------------------------------------------------
+// Myk orddeling: lange norske vanenavn får et usynlig bindestreks-hint (U+00AD)
+// ved stavelsesgrenser, så de brytes pent («Belg-vekster») i de smale vane-
+// brikkene i stedet for å flyte over. Bindestreken vises kun når ordet faktisk
+// må brytes — ellers usynlig. Virker i alle nettlesere (i motsetning til
+// hyphens:auto, som mangler norsk ordbok i mange miljøer).
+const MYK = '­';
+function mykOrddeling(navn) {
+  return navn
+    .replace(/grønnsaker/g, `grønn${MYK}saker`)
+    .replace(/Belgvekster/g, `Belg${MYK}vekster`)
+    .replace(/Fullkorn/g, `Full${MYK}korn`);
+}
+
 function visKostholdSkjerm(mount) {
   const profil = hentProfil();
   if (!profil) { skjerm('Mat', velkommenKort()); return; }
@@ -623,7 +636,7 @@ function visKostholdSkjerm(mount) {
       } },
       el('span', { class: 'matvane__badge' }, ikon('sjekk', 'ikon matvane__hake')),
       el('span', { class: 'matvane__ikon' }, ikon(v.ikon)),
-      el('span', { class: 'matvane__navn' }, v.navn));
+      el('span', { class: 'matvane__navn' }, mykOrddeling(v.navn)));
     return c;
   });
   const loggKort = el('section', { class: 'kort matkort' },

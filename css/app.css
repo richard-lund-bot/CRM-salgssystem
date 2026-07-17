@@ -4054,17 +4054,17 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .matkort__hode .kost__tittel { margin: 0; }
 .matkort__teller { font-size: 12.5px; color: var(--dempet); font-weight: 600; }
 
-/* Logg i dag — 5 høye vane-brikker */
-.matvaner { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 12px; }
-.matvane { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 8px;
-  min-height: 96px; padding: 12px 6px 12px; text-align: center; cursor: pointer; color: var(--tekst);
+/* Logg i dag — 5 vane-brikker (minmax(0,1fr) så lange ord ikke sprenger raden) */
+.matvaner { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 7px; margin-top: 12px; }
+.matvane { position: relative; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 8px;
+  min-height: 96px; padding: 12px 5px; text-align: center; cursor: pointer; color: var(--tekst);
   background: var(--bg-kort-2); border: 1px solid var(--kant); border-radius: var(--radius-md); }
 .matvane__badge { position: absolute; top: 7px; right: 7px; width: 20px; height: 20px; border-radius: 50%;
   display: grid; place-items: center; background: rgba(255,255,255,0.25); color: transparent; opacity: 0; transition: opacity 0.15s; }
 .matvane__hake { width: 12px; height: 12px; }
 .matvane__ikon { display: grid; place-items: center; width: 34px; height: 34px; color: var(--aksent); }
 .matvane__ikon .ikon { width: 24px; height: 24px; }
-.matvane__navn { font-size: 12px; font-weight: 600; line-height: 1.2; }
+.matvane__navn { font-size: 11.5px; font-weight: 600; line-height: 1.2; max-width: 100%; overflow-wrap: break-word; hyphens: auto; }
 .matvane--valgt { background: var(--aksent); border-color: var(--aksent); color: #fff; box-shadow: var(--shadow-action); }
 .matvane--valgt .matvane__ikon { color: #fff; }
 .matvane--valgt .matvane__badge { opacity: 1; color: #fff; background: rgba(255,255,255,0.25); }
