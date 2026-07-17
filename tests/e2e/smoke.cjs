@@ -64,12 +64,17 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
 
   const hash = () => page.evaluate(() => location.hash);
 
-  // --- 1) Boot: appen tegner, splash ryddet ----------------------------------
+  // --- 1) Boot: Hjem-dashbordet tegner (M53 — hjem er ikke lenger feeden) -----
   await page.goto(`${BASE}/#/hjem`);
-  await page.waitForSelector('.fkort', { timeout: 20000 });
+  await page.waitForSelector('.hjemdash', { timeout: 20000 });
   sjekk('Appen booter og tegner #app', (await page.locator('#app > *').count()) > 0);
+  sjekk('Hjem viser DAGENS TAKT-ring', (await page.locator('.taktring').count()) > 0);
+  sjekk('Hjem har feed-ikon oppe til venstre', (await page.locator('.hjemtopp__feed').count()) === 1);
 
-  // --- 2) Feeden rendrer flere kort ------------------------------------------
+  // --- 2) Feeden bor på #/feed og rendrer flere kort -------------------------
+  await page.click('.hjemtopp__feed');
+  await page.waitForSelector('.fkort', { timeout: 20000 });
+  sjekk('Feed-ikonet åpner #/feed', (await hash()).startsWith('#/feed'));
   const antKort = await page.locator('.fkort').count();
   sjekk('Feeden rendrer flere kort', antKort >= 3, `${antKort} kort`);
 
@@ -102,7 +107,7 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
   // init-scriptet re-seeder profilen ved reload, men rører ikke denne nøkkelen.
   await page.evaluate(() => localStorage.setItem('trening.sprak', 'en'));
   await page.reload({ waitUntil: 'load' }); // ekte re-boot så språket leses på nytt
-  await page.waitForSelector('.fkort', { timeout: 20000 });
+  await page.waitForSelector('.hjemdash', { timeout: 20000 });
   const langAttr = await page.evaluate(() => document.documentElement.lang);
   const bevegLabel = await page.getAttribute('.tabbar__knapp[data-rute="trening"]', 'aria-label');
   sjekk('Språkbytte setter <html lang="en">', langAttr === 'en', langAttr);

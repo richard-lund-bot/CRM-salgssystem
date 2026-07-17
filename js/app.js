@@ -29,7 +29,7 @@ import { nivaFraTotalXp } from './niva.js';
 import { dagerMedAktivitet, okterHref, beregnStreak } from './bevegelse.js';
 import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, aapneOkt, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN, KATEGORIER, settLaerLenke } from './bibliotek-okter.js';
 import { settBib as settBibOpp, settOkterKilde, erAdminEpost, adminModusPaa, settAdminModus } from './opplasing.js';
-import { fyllInn, tallOpp, REDUSERT } from './animasjon.js';
+import { fyllInn, tallOpp, REDUSERT, lagRing } from './animasjon.js';
 import { settLydAv } from './lyd.js';
 import { settHaptikkAv, vibrer } from './haptikk.js';
 import { regionScores, anbefalingFraRegioner, regionAndelForOkt, REGION_NAVN } from './kroppskart.js';
@@ -53,7 +53,8 @@ let bib = null;
 
 // --- Ruter (hash-basert) ---
 const ruter = {
-  hjem: () => visFeedSkjerm(app), // Hjem er lærings-feeden (M37)
+  hjem: () => visHjemDashboard(app), // Hjem er dagens dashbord (M53); feeden flyttet til #/feed
+  feed: () => visFeedSkjerm(app), // Dagens feed — nås fra ikon oppe venstre / sveip fra Hjem
   post: () => visPostSkjerm(app), // dedikert side for ett feed-innlegg (spillbart)
   trening: visTrening, // Min dag-dashbordet bor på Trening-fanen
   kosthold: () => visKostholdSkjerm(app), // Kosthold-pilaren (blue-zones-vaner)
@@ -113,8 +114,8 @@ const AUTH_RUTER = new Set(['logg-inn', 'bli-medlem']);
 // Profil (#/merker) og Lær (#/laer) er IKKE bunnfaner lenger — de er egne sider
 // som nås fra meny-huben (tannhjulet) på samme måte som Innstillinger/Varsler.
 const FANER_DEF = [
-  { id: 'hjem', rute: 'hjem', ikon: 'hjem', fyll: 'hjemfyll', label: 'Feed',
-    barn: ['post'] }, // dedikert innleggsside hører til feeden
+  { id: 'hjem', rute: 'hjem', ikon: 'hjem', fyll: 'hjemfyll', label: 'Hjem',
+    barn: ['feed', 'post'] }, // feeden (dagens feed) + innleggsside hører til Hjem
   { id: 'kosthold', rute: 'kosthold', ikon: 'eple', fyll: 'eplefyll', label: 'Mat',
     barn: [] },
   { id: 'trening', rute: 'trening', ikon: 'loper', fyll: 'loperfyll', label: 'Bevegelse',
@@ -142,7 +143,9 @@ const aktivScroller = () => document.querySelector('.hjem-scroll') || document.s
 // dit du var. Bare skjermer som beholder bunnbaren huskes (ikke fokus-flow).
 function oppdaterFaneMinne(rute) {
   const fane = faneForRute(rute);
-  if (FANER.includes(fane) && !FOKUS.has(rute)) faneMinne[fane] = location.hash;
+  // Feeden er Hjem-fanens sveip/ikon-destinasjon, ikke dens «hjemsted»: et trykk
+  // på Hjem-fanen skal alltid lande på dashbordet (#/hjem), ikke gjenåpne feeden.
+  if (FANER.includes(fane) && !FOKUS.has(rute) && rute !== 'feed') faneMinne[fane] = location.hash;
   document.querySelectorAll('.tabbar__knapp').forEach((a) => {
     if (faneMinne[a.dataset.rute]) a.href = faneMinne[a.dataset.rute];
   });
@@ -226,6 +229,141 @@ function skjerm(tittel, ...innhold) {
 // samme førsteinntrykk som Min dag på alle hovedfanene.
 function fane(tittel, under, ...innhold) {
   fanesideMedTittel(app, { tittel, under }).append(...innhold);
+}
+
+// ===========================================================================
+// Hjem (M53) — dagens dashbord. Erstatter feeden som hjem: hilsen, DAGENS TAKT-
+// ring (dagens rytme på tvers av pilarene), pilar-brikker, «dagens valg» og
+// «dagens fokus». Feeden («dagens feed») nås via feed-ikonet oppe til venstre
+// eller ved å sveipe til venstre fra hjem-skjermen.
+// ===========================================================================
+const HILSEN = { natt: 'God natt', morgen: 'God morgen', formiddag: 'God formiddag', dag: 'God dag', kveld: 'God kveld' };
+const DAGENS_FOKUS = [
+  'Ta en gåtur ute i naturen i dag.',
+  'Spis noe grønt til hvert måltid.',
+  'Ring en du er glad i.',
+  'Ta fem rolige pust før du står opp.',
+  'Stopp ved 80 % metthet i dag.',
+  'Kjenn etter: hva gir mening akkurat nå?',
+  'Del et måltid med noen.',
+];
+function isoIdagLokal(nå = Date.now()) {
+  const d = new Date(nå);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function visHjemDashboard(mount) {
+  const profil = hentProfil();
+  if (!profil) { skjerm(APP_NAME, velkommenKort()); return; }
+
+  const fase = dagsfase(new Date().getHours());
+  const iDag = isoIdagLokal();
+  const dagsnr = Math.floor(Date.now() / 86400000);
+
+  // --- Dagens signaler per pilar ---
+  const bevegDag = hentLogg().some((o) => (o.dato || '').slice(0, 10) === iDag);
+  const kost = kostStatus();
+  const sos = sosialStatus();
+  const reflektert = !!ukensRefleksjon();
+  const harHvorforNaa = lesHvorfor().length > 0;
+
+  const valg = [
+    { rute: 'trening', ikon: 'loper', navn: 'Bevegelse', hint: 'Beveg deg litt', gjort: bevegDag },
+    { rute: 'kosthold', ikon: 'eple', navn: 'Mat', hint: 'Mest planter, litt fisk', gjort: kost.iDagAntall > 0 },
+    { rute: 'ro', ikon: 'maane', navn: 'Ro', hint: 'Pust, senk skuldrene', gjort: false },
+    { rute: 'sosialt', ikon: 'snakke', navn: 'Sosialt', hint: 'Ta kontakt med noen', gjort: sos.iDagAntall > 0 },
+    { rute: 'mening', ikon: 'kompass', navn: 'Mening', hint: 'Kjenn ditt hvorfor', gjort: reflektert || harHvorforNaa },
+  ];
+  // DAGENS TAKT — granulær: snitt av pilarenes dags-fyllingsgrad.
+  const grader = [
+    bevegDag ? 1 : 0,
+    kost.antallVaner ? kost.iDagAntall / kost.antallVaner : 0,
+    sos.antallVaner ? sos.iDagAntall / sos.antallVaner : 0,
+    reflektert ? 1 : (harHvorforNaa ? 0.5 : 0),
+  ];
+  const takt = Math.round((grader.reduce((a, b) => a + b, 0) / grader.length) * 100);
+  const gjortAntall = valg.filter((v) => v.gjort).length;
+  const taktOrd = takt >= 80 ? 'Sterk rytme!' : takt >= 50 ? 'God fremdrift!' : takt > 0 ? 'Godt i gang.' : 'Ny dag, ny takt.';
+
+  // --- Topplinje: feed-ikon (venstre), wordmark, meny (høyre) ---
+  const topp = el('header', { class: 'hjemtopp' },
+    el('a', { class: 'ikonknapp ikonknapp--plain hjemtopp__feed', href: '#/feed', 'aria-label': 'Dagens feed' },
+      ikon('feed')),
+    el('span', { class: 'hjemtopp__logo' }, APP_NAME.toLowerCase(), el('span', { class: 'wordmark__prikk' }, '.')),
+    el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/meny', 'aria-label': 'Meny' }, ikon('gir')),
+  );
+
+  // --- Hilsen + DAGENS TAKT-ring (på dagsfase-bilde) ---
+  const pst = el('span', { class: 'taktring__pst' }, '0%');
+  const ring = lagRing(52);
+  const ringBoks = el('div', { class: 'taktring' }, ring.svg,
+    el('div', { class: 'taktring__midt' }, pst, el('span', { class: 'taktring__merkelapp' }, 'Dagens takt')));
+  const hero = el('section', { class: `hjemdash__hero hjemdash__hero--${fase}`,
+    style: `background-image:url('icons/brand/hero-${fase}.webp')` },
+    el('div', { class: 'hjemdash__scrim', 'aria-hidden': 'true' }),
+    el('div', { class: 'hjemdash__hilsen' },
+      el('h1', { class: 'hjemdash__tittel' }, `${HILSEN[fase]}, ${profil.navn || 'du'}.`),
+      el('p', { class: 'hjemdash__under' }, 'God rytme i dag!')),
+    ringBoks,
+    el('p', { class: 'hjemdash__taktord' }, taktOrd),
+  );
+
+  // --- Tre nøkkelbrikker ---
+  const brikke = (tall, navn) => el('div', { class: 'taktbrikke' },
+    el('span', { class: 'taktbrikke__tall' }, tall),
+    el('span', { class: 'taktbrikke__navn' }, navn));
+  const brikker = el('div', { class: 'taktbrikker' },
+    brikke(`${gjortAntall}/5`, 'pilarer i dag'),
+    brikke(`${kost.iDagAntall}/${kost.antallVaner}`, 'mat i dag'),
+    brikke(`${sos.iDagAntall}/${sos.antallVaner}`, 'sosialt i dag'),
+  );
+
+  // --- Dagens valg (pilar-sjekkliste, hver rad lenker til pilaren) ---
+  const valgRader = valg.map((v) => el('a', { class: 'valgrad' + (v.gjort ? ' valgrad--gjort' : ''), href: `#/${v.rute}` },
+    el('span', { class: 'valgrad__ikon' }, ikon(v.ikon)),
+    el('span', { class: 'valgrad__midt' },
+      el('span', { class: 'valgrad__navn' }, v.navn),
+      el('span', { class: 'valgrad__hint' }, v.hint)),
+    el('span', { class: 'valgrad__sjekk' }, ikon(v.gjort ? 'sjekk' : 'chevron')),
+  ));
+  const dagensValg = el('section', { class: 'kort hjemdash__valg' },
+    el('div', { class: 'hjemdash__valgtopp' },
+      el('h2', { class: 'kost__tittel' }, 'Dagens valg'),
+      el('span', { class: 'dempet' }, 'Små valg. Stor forskjell.')),
+    el('div', { class: 'valgliste' }, ...valgRader),
+  );
+
+  // --- Dagens fokus ---
+  const dagensFokus = el('section', { class: 'kort hjemdash__fokus' },
+    el('span', { class: 'hjemdash__fokusmerke' }, 'Dagens fokus'),
+    el('p', { class: 'hjemdash__fokustekst' }, DAGENS_FOKUS[dagsnr % DAGENS_FOKUS.length]),
+  );
+
+  // --- Feed-hint + sammensetning ---
+  const feedHint = el('a', { class: 'hjemdash__feedhint', href: '#/feed' },
+    ikon('feed'), el('span', {}, 'Åpne dagens feed'), ikon('pilhoyre'));
+
+  tom(mount);
+  const scroll = el('div', { class: 'hjemdash-scroll' },
+    topp,
+    el('main', { class: 'innhold hjemdash' }, hero, brikker, dagensValg, dagensFokus, feedHint),
+  );
+  mount.append(scroll);
+
+  // Sveip til venstre → dagens feed (uten å stjele vertikal scroll).
+  let sx = null; let sy = null;
+  scroll.addEventListener('touchstart', (e) => { const t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; }, { passive: true });
+  scroll.addEventListener('touchend', (e) => {
+    if (sx == null) return;
+    const t = e.changedTouches[0]; const dx = t.clientX - sx; const dy = t.clientY - sy; sx = null;
+    if (dx < -60 && Math.abs(dx) > Math.abs(dy) * 1.5) location.hash = '#/feed';
+  }, { passive: true });
+
+  // Animer ring + prosent inn.
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    ring.sett(takt / 100);
+    tallOpp(pst, takt, { format: (n) => `${n}%` });
+  }));
 }
 
 // ===========================================================================

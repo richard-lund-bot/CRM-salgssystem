@@ -37,20 +37,34 @@
   --gray-050: #F6F7F8; --gray-100: #EFF1F3;
   --varm-600: #E8853D; --varm-100: #FDF1E7; /* PR/hold-aksent (fra widgets-guiden) */
 
-  /* Typografi */
-  --font-display: 'Fredoka', 'Mova Rounded', system-ui, sans-serif;
+  /* ==== Takt-palett (M53) — editorial blue-zones: varm papir, skogsgrønn,
+     gull-aksent, jordnære toner. Lys modus er standard; skogsgrønn dark mode
+     nedenfor. ==== */
+  --skog-900: #1C2A21; --skog-800: #26372B; --skog-700: #2F4A38;
+  --skog-600: #3A5A43; --skog-500: #4B6E53; --skog-300: #8DA391;
+  --skog-100: #E7ECE3; --skog-050: #F1F4EE;
+  --papir-100: #FBF8F1; --papir-200: #F4EFE5; --papir-300: #EDE6D8; --papir-400: #E5DCCB;
+  --blekk-900: #202C24; --blekk-700: #3B4A40; --blekk-500: #66756B;
+  --gull-600: #B08A34; --gull-500: #C6A24C; --gull-300: #E0C883; --gull-100: #F3EAD2;
+  --terrakotta: #C06B4A; --sand: #D8B98A; --sage: #97A791;
+
+  /* Typografi — Takt: editorial serif-overskrifter, Inter til brødtekst.
+     Serifen er en offline system-stack (ingen ny asset); Fredoka beholdes som
+     valgfri rund aksent via --font-rund der noe skal føles leken. */
+  --font-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, 'Times New Roman', serif;
+  --font-rund: 'Fredoka', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   /* Radius — myke, runde former */
   --radius-xs: 6px; --radius-sm: 10px; --radius-md: 14px;
   --radius-lg: 18px; --radius-xl: 24px; --radius-2xl: 32px; --radius-pill: 999px;
 
-  /* Elevasjon — myk, diffus, navy-tonet, lav opasitet */
-  --shadow-xs: 0 1px 2px rgba(17, 38, 77, 0.05);
-  --shadow-sm: 0 2px 8px rgba(17, 38, 77, 0.05);
-  --shadow-md: 0 6px 20px rgba(17, 38, 77, 0.07);
-  --shadow-card: 0 6px 24px rgba(17, 38, 77, 0.06);
-  --shadow-action: 0 8px 20px rgba(0, 131, 130, 0.24);
+  /* Elevasjon — myk, diffus, varm/jordtonet skygge (Takt) */
+  --shadow-xs: 0 1px 2px rgba(44, 38, 24, 0.05);
+  --shadow-sm: 0 2px 8px rgba(44, 38, 24, 0.06);
+  --shadow-md: 0 6px 20px rgba(44, 38, 24, 0.08);
+  --shadow-card: 0 8px 26px rgba(44, 38, 24, 0.07);
+  --shadow-action: 0 8px 20px rgba(47, 74, 56, 0.22);
 
   /* Bevegelse — energisk og leken (Duolingo-ish); egen rolig tier for wellness/pust.
      Easinger hentet fra animation-principles (joy-delight/css-native), delt overalt. */
@@ -65,31 +79,45 @@
   --press: 0.95; --lift: -2px;                            /* felles trykk-primitiv */
 
   /* ==== Aksentvariabler (temaene overstyrer kun disse) ==== */
-  --aksent: var(--teal-600);        /* primærhandling */
-  --aksent-mork: var(--teal-700);   /* hover/press */
-  --aksent-lys: var(--teal-500);    /* data: ringer, søyler, statistikk */
-  --aksent-svak: var(--teal-100);   /* valgt/myk flate */
-  --aksent-kant: var(--teal-200);   /* kant på valgt flate */
+  --aksent: var(--skog-700);        /* primærhandling — skogsgrønn */
+  --aksent-mork: var(--skog-800);   /* hover/press */
+  --aksent-lys: var(--gull-500);    /* data: ringer, søyler, statistikk — gull */
+  --aksent-svak: var(--skog-100);   /* valgt/myk flate */
+  --aksent-kant: #D3DCCB;           /* kant på valgt flate */
 
-  /* ==== Semantiske aliaser (arves av alle komponentflater) ==== */
-  --bg: var(--gray-050);
-  --bg-kort: #ffffff;
-  --bg-kort-2: var(--gray-100);
-  --tekst: var(--ink-800);
-  --tekst-2: var(--ink-600);
-  --dempet: var(--ink-400);
-  --kant: #E9ECEF;          /* hårlinje */
-  --kant-sterk: #DDE2E7;
-  --fare: var(--coral-700);
+  /* ==== Semantiske aliaser (arves av alle komponentflater) — Takt papir ==== */
+  --bg: var(--papir-200);           /* varm papirflate */
+  --bg-kort: var(--papir-100);      /* kort — lysere krem */
+  --bg-kort-2: var(--papir-300);
+  --tekst: var(--blekk-900);        /* skogsblekk */
+  --tekst-2: var(--blekk-700);
+  --dempet: var(--blekk-500);
+  --kant: #E7DFCF;          /* varm hårlinje */
+  --kant-sterk: #DBD1BD;
+  --fare: var(--terrakotta);
   --radius: var(--radius-lg);
   --skygge: var(--shadow-sm);
   --tabbar-h: 74px; /* klaring for den flytende glass-baren */
   font-size: 16px;
 }
 
+/* ==== Bro: gammel Mova-fargeskala → Takt-toner ============================
+   Mange komponenter refererer teal/navy/ink direkte (58 steder). I stedet for
+   å jage hver enkelt, peker vi hele den gamle skalaen til Takt-ekvivalenter,
+   så alt skifter til skog/gull/blekk i ett grep. (Temaene setter --aksent selv
+   og påvirkes ikke.) */
+:root {
+  --teal-900: #1C2A21; --teal-700: #2F4A38; --teal-600: #3A5A43;
+  --teal-500: #4B6E53; --teal-400: #5B7E62; --teal-300: #8DA391;
+  --teal-200: #CFDAC6; --teal-100: #E7ECE3; --teal-050: #F1F4EE;
+  --navy-700: #26372B; --navy-600: #3A5A43; --navy-500: #4B6E53;
+  --ink-900: #202C24; --ink-800: #2B382F; --ink-700: #3B4A40; --ink-600: #4E5D53;
+  --ink-400: #66756B; --ink-300: #93A197; --ink-200: #C7CFC4; --ink-100: #E5EAE1;
+}
+
 /* ==========================================================================
-   Temaer — belønningsstigen (M6). Alle er nå Mova-avledet: lys base,
-   ulik aksent. data-tema settes på <html>; ingen mørke flater lenger.
+   Temaer — belønningsstigen (M6). Takt: lys papir-base som standard,
+   ulik aksent. data-tema settes på <html>.
    ========================================================================== */
 :root[data-tema="mork"] { /* «Marine» — dyp navy aksent */
   --aksent: var(--navy-700); --aksent-mork: #0A1730; --aksent-lys: var(--navy-500);
@@ -236,6 +264,59 @@ body {
 .dagbokrad { display: flex; flex-direction: column; gap: 3px; padding-left: 12px; border-left: 2px solid var(--aksent-kant); }
 .dagbokrad__uke { font-size: 0.72rem; color: var(--dempet); font-weight: 600; }
 .dagbokrad__tekst { line-height: 1.4; }
+
+/* ===========================================================================
+   Hjem-dashbord (M53) — DAGENS TAKT-ring, dagens valg, dagens fokus
+   =========================================================================== */
+.hjemdash-scroll { min-height: 100%; }
+.hjemtopp { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px 6px; }
+.hjemtopp__logo { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: 0.01em; color: var(--tekst); }
+.hjemtopp__logo .wordmark__prikk { color: var(--terrakotta); }
+.hjemtopp__feed { position: relative; }
+.hjemdash { padding: 4px 18px calc(var(--tabbar-h) + 20px); display: flex; flex-direction: column; gap: 16px; }
+
+.hjemdash__hero { position: relative; overflow: hidden; border-radius: var(--radius-2xl); padding: 26px 22px 30px; background-size: cover; background-position: center; box-shadow: var(--shadow-card); text-align: center; }
+.hjemdash__scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(28,42,33,0.05) 0%, rgba(28,42,33,0.22) 60%, rgba(28,42,33,0.42) 100%); }
+.hjemdash__hilsen, .hjemdash__hero .taktring, .hjemdash__taktord { position: relative; z-index: 1; }
+.hjemdash__tittel { font-family: var(--font-display); font-size: 30px; line-height: 1.12; font-weight: 700; color: #fff; text-shadow: 0 1px 12px rgba(20,28,20,0.4); margin: 0; }
+.hjemdash__under { margin: 6px 0 0; color: rgba(255,255,255,0.9); font-size: 15px; text-shadow: 0 1px 8px rgba(20,28,20,0.4); }
+
+.taktring { position: relative; width: 190px; height: 190px; margin: 20px auto 4px; }
+.taktring .ringfremgang { width: 100%; height: 100%; }
+.taktring .ringfremgang__spor { stroke: rgba(255,255,255,0.28); }
+.taktring .ringfremgang__fyll { stroke: var(--gull-300); stroke-width: 7; }
+.taktring__midt { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+.taktring__pst { font-family: var(--font-display); font-size: 46px; font-weight: 700; color: #fff; line-height: 1; text-shadow: 0 1px 12px rgba(20,28,20,0.45); }
+.taktring__merkelapp { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.85); }
+.hjemdash__taktord { margin: 8px 0 0; font-family: var(--font-display); font-size: 17px; color: #fff; text-shadow: 0 1px 10px rgba(20,28,20,0.45); }
+
+.taktbrikker { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.taktbrikke { background: var(--bg-kort); border: 1px solid var(--kant); border-radius: var(--radius-lg); padding: 14px 8px; text-align: center; box-shadow: var(--shadow-xs); }
+.taktbrikke__tall { display: block; font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--aksent); }
+.taktbrikke__navn { display: block; margin-top: 2px; font-size: 11.5px; color: var(--dempet); }
+
+.hjemdash__valgtopp { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.hjemdash__valgtopp .dempet { font-size: 12.5px; }
+.valgliste { display: flex; flex-direction: column; margin-top: 10px; }
+.valgrad { display: flex; align-items: center; gap: 13px; padding: 12px 4px; border-bottom: 1px solid var(--kant); text-decoration: none; color: var(--tekst); }
+.valgrad:last-child { border-bottom: none; }
+.valgrad__ikon { display: grid; place-items: center; width: 38px; height: 38px; flex: 0 0 38px; border-radius: 12px; background: var(--aksent-svak); color: var(--aksent); }
+.valgrad__ikon .ikon { width: 19px; height: 19px; }
+.valgrad__midt { flex: 1; display: flex; flex-direction: column; gap: 1px; }
+.valgrad__navn { font-family: var(--font-display); font-size: 16px; font-weight: 600; }
+.valgrad__hint { font-size: 12.5px; color: var(--dempet); }
+.valgrad__sjekk { display: grid; place-items: center; width: 26px; height: 26px; color: var(--dempet); }
+.valgrad--gjort .valgrad__ikon { background: var(--aksent); color: var(--papir-100); }
+.valgrad--gjort .valgrad__sjekk { color: var(--aksent); }
+.valgrad--gjort .valgrad__sjekk .ikon { width: 20px; height: 20px; }
+
+.hjemdash__fokus { background: linear-gradient(135deg, var(--skog-700), var(--skog-800)); border: none; color: var(--papir-100); }
+.hjemdash__fokusmerke { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gull-300); }
+.hjemdash__fokustekst { margin: 8px 0 0; font-family: var(--font-display); font-size: 20px; line-height: 1.3; color: var(--papir-100); }
+
+.hjemdash__feedhint { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-radius: var(--radius-lg); border: 1px dashed var(--kant-sterk); color: var(--aksent); font-weight: 600; text-decoration: none; }
+.hjemdash__feedhint > span { flex: 1; }
+.hjemdash__feedhint .ikon { width: 18px; height: 18px; }
 
 /* Ro-pilar — rolige økter / pust */
 .roliste { display: flex; flex-direction: column; gap: 10px; }
