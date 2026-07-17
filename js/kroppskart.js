@@ -171,11 +171,12 @@ export function anbefalingFraRegioner(s) {
 }
 
 // --- SVG-hjelper -----------------------------------------------------------
-/** Farge på en 0..1-skala: teal (frisk) → gul → coral (nylig trent). */
+/** Farge på en 0..1-skala: skogsgrønn (frisk) → gull → terrakotta (nylig
+ *  trent) — Takt-jordtoner (M53). */
 export function fargeForScore(s) {
-  const teal = [11, 166, 159], gul = [249, 205, 85], koral = [255, 111, 97];
+  const skog = [75, 110, 83], gull = [198, 162, 76], terra = [192, 107, 74];
   const k = Math.min(1, Math.max(0, s));
-  const [a, b, t] = k < 0.5 ? [teal, gul, k / 0.5] : [gul, koral, (k - 0.5) / 0.5];
+  const [a, b, t] = k < 0.5 ? [skog, gull, k / 0.5] : [gull, terra, (k - 0.5) / 0.5];
   const c = a.map((x, i) => Math.round(x + (b[i] - x) * t));
   return `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
 }

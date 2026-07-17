@@ -150,6 +150,50 @@
   --aksent: var(--ink-700); --aksent-mork: var(--ink-900); --aksent-lys: var(--ink-600);
   --aksent-svak: var(--ink-100); --aksent-kant: var(--ink-200);
 }
+
+/* ==== Skogsgrønn mørk modus (M53) — følger systemets fargevalg ============
+   Takt er temabevisst: varm papir i lys modus, dyp skog i mørk. Vi flipper kun
+   de semantiske flate-/tekst-tokenene + tekst/kant-delen av den gamle
+   fargeskalaen. Faste aksenter (--papir-* brukt som LYS tekst på grønt,
+   --gull-*, --skog-700/800) beholdes med vilje. Gjelder ikke når brukeren har
+   valgt den eksplisitte lyse papir-flaten. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="papir"]) {
+    --bg: #15201A;
+    --bg-kort: #1E2D24;
+    --bg-kort-2: #283A2E;
+    --tekst: #ECE7DA;
+    --tekst-2: #C4CDBE;
+    --dempet: #8C988B;
+    --kant: #2C3D31;
+    --kant-sterk: #394C3E;
+    --aksent: #5E8A66;
+    --aksent-mork: #7AA681;
+    --aksent-lys: var(--gull-500);
+    --aksent-svak: #25382B;
+    --aksent-kant: #35492F;
+    /* Legacy-bro: tekst/kant-toner → lyse; flate-toner → mørke */
+    --teal-900: #ECE7DA; --teal-700: #83AE88; --teal-600: #6E9A73;
+    --teal-500: #5E8A64; --teal-400: #6E9A73; --teal-300: #557A5C;
+    --teal-200: #33482F; --teal-100: #25382B; --teal-050: #1E2D24;
+    --navy-700: #283A2E; --navy-600: #33482F; --navy-500: #557A5C;
+    --ink-900: #ECE7DA; --ink-800: #E4DFD2; --ink-700: #CBD3C6;
+    --ink-600: #AEB8A9; --ink-400: #8C988B; --ink-300: #6C786D;
+    --ink-200: #394C3E; --ink-100: #2C3D31; --ink-050: #1E2D24;
+    /* Dypere skygger på mørk flate */
+    --skygge: 0 2px 10px rgba(0,0,0,0.35);
+    --shadow-xs: 0 1px 2px rgba(0,0,0,0.3);
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.32);
+    --shadow-md: 0 6px 20px rgba(0,0,0,0.4);
+    --shadow-card: 0 8px 26px rgba(0,0,0,0.42);
+    color-scheme: dark;
+  }
+  /* Dagsfasebildene er lyse/pastell; i mørk modus (der sidetitlene er lyse)
+     dempes de ned så overskriftene leser klart og stemningen blir skogsmørk
+     — som «Naturen»-skjermen i inspoen. */
+  :root:not([data-tema="papir"]) .fanebilde { filter: brightness(0.46) saturate(0.85); }
+  :root:not([data-tema="papir"]) .banner-fade { opacity: 0.4; }
+}
 :root[data-tema="gull"] { /* dempet gull */
   --aksent: #B08D2A; --aksent-mork: #8D6F1E; --aksent-lys: #C9A93B;
   --aksent-svak: #F7F0DC; --aksent-kant: #EBDEB6;
@@ -773,14 +817,16 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
   position: absolute; left: 9px; right: 6px; bottom: 7px; z-index: 1;
   font-family: var(--font-display); font-weight: 600; font-size: 12.5px; line-height: 1.15;
 }
-.movflis--lime { background: linear-gradient(180deg, #CFE063, #77B54A); }
-.movflis--koral { background: linear-gradient(180deg, #FF9A7B, #E8503F); }
-.movflis--teal { background: linear-gradient(180deg, #66D3CA, #1FA89F); }
-.movflis--blaa { background: linear-gradient(180deg, #6C8FE4, #2F4EB5); }
-.movflis--lilla { background: linear-gradient(180deg, #BC9BF4, #8250EE); }
-.movflis--oransje { background: linear-gradient(180deg, #F8B067, #E07A24); }
-.movflis--gul { background: linear-gradient(180deg, #F9CD55, #E99A26); }
-.movflis--indigo { background: linear-gradient(180deg, #97A1F3, #545ED4); }
+/* Merke-/nivåmedaljonger — Takt jordtoner (M53): dempet variasjon innen
+   skog/sage/terrakotta/gull/oker, i stedet for de gamle neon-gradientene. */
+.movflis--lime { background: linear-gradient(180deg, #93AB63, #6E8A43); }
+.movflis--koral { background: linear-gradient(180deg, #C98A6A, #A85C3C); }
+.movflis--teal { background: linear-gradient(180deg, #5E8465, #3A5A43); }
+.movflis--blaa { background: linear-gradient(180deg, #6F9A8E, #436E63); }
+.movflis--lilla { background: linear-gradient(180deg, #AB8CA1, #7E5E76); }
+.movflis--oransje { background: linear-gradient(180deg, #D2A462, #B57C3A); }
+.movflis--gul { background: linear-gradient(180deg, #E1C985, #C6A24C); }
+.movflis--indigo { background: linear-gradient(180deg, #85989F, #556E78); }
 
 /* EncouragementBanner — lavmælt dult på fersken-flate. Aldri høylytt. */
 .oppmuntring {
@@ -1765,9 +1811,9 @@ body.fokusmodus { padding-bottom: 0; }
 }
 .typeniva__navn { font-size: 12.5px; font-weight: 600; }
 .typeniva__sub { font-size: 11px; color: var(--dempet); }
-.typeniva--koral .ringfremgang__fyll { stroke: #E8503F; }
-.typeniva--blaa .ringfremgang__fyll { stroke: #2F4EB5; }
-.typeniva--teal .ringfremgang__fyll { stroke: #1FA89F; }
+.typeniva--koral .ringfremgang__fyll { stroke: #A85C3C; }
+.typeniva--blaa .ringfremgang__fyll { stroke: #436E63; }
+.typeniva--teal .ringfremgang__fyll { stroke: #4B6E53; }
 
 /* Restitusjons-kroppskart (M17) på Min dag. */
 .restitusjonskort__hode { display: flex; align-items: flex-start; gap: 12px; }
@@ -1793,10 +1839,10 @@ body.fokusmodus { padding-bottom: 0; }
 .kroppskart { display: block; width: 100%; max-width: 340px; margin: 8px auto 4px; }
 .kroppskart__base { fill: var(--ink-100); }
 .kroppskart__etikett { fill: var(--tekst-2); }
-.kroppskart__region { fill: #0BA69F; stroke: var(--bg-kort); stroke-width: 1.5; transition: fill 0.45s ease; }
+.kroppskart__region { fill: #4B6E53; stroke: var(--bg-kort); stroke-width: 1.5; transition: fill 0.45s ease; }
 
 .kroppskart-forklaring { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--dempet); margin-top: 4px; }
-.kroppskart-forklaring__skala { flex: 1; height: 8px; border-radius: 4px; background: linear-gradient(90deg, #0BA69F, #F9CD55, #FF6F61); }
+.kroppskart-forklaring__skala { flex: 1; height: 8px; border-radius: 4px; background: linear-gradient(90deg, #4B6E53, #C6A24C, #C06B4A); }
 
 /* Blå, understreket tekstlenke i brødtekst (f.eks. «restitusjonsbehov»). */
 .tekstlenke { color: #2F4EB5; text-decoration: underline; font-weight: 600; }
