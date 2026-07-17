@@ -245,6 +245,16 @@ EN = {
  'Lys papir eller skogsgrønn mørk modus. «Auto» følger systemet ditt.':
    'Light paper or deep-green dark mode. “Auto” follows your system.',
  'Auto': 'Auto', 'Lys': 'Light', 'Mørk': 'Dark',
+ # Pilar-hero (M53) — samme skall som Hjem
+ 'Mest planter. Litt fisk.': 'Mostly plants. Some fish.',
+ 'Måtehold — stopp ved 80 %.': 'Moderation — stop at 80%.',
+ 'Vi lever lengre sammen.': 'We live longer together.',
+ 'Tilhørighet holder deg frisk.': 'Belonging keeps you well.',
+ 'Pust. Senk skuldrene.': 'Breathe. Drop your shoulders.',
+ 'Vær her — noen rolige minutter.': 'Be here — a few calm minutes.',
+ 'Beveg deg litt hver dag.': 'Move a little every day.',
+ 'Små økter teller.': 'Small sessions count.',
+ 'av dagsmålet': 'of daily goal', 'gode valg i dag': 'good choices today',
 }
 
 # Kompendium/merke-tekster (lengre) — legg til

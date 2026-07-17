@@ -368,6 +368,48 @@ function visHjemDashboard(mount) {
 }
 
 // ===========================================================================
+// Felles pilar-skall (M53) — samme stil som Hjem-dashbordet: hjemtopp-header
+// med «<pilar>.»-logo, naturbilde-hero med serif-tittel + valgfri dags-ring,
+// og en .hjemdash-beholder for modulene. Brukes av Mat/Bevegelse/Ro/Sosialt så
+// pilarene føles som ett system.
+// ===========================================================================
+function pilarSkall(mount, { navn, tittel, under = null, ring = null }) {
+  const fase = dagsfase(new Date().getHours());
+  const topp = el('header', { class: 'hjemtopp' },
+    el('a', { class: 'ikonknapp ikonknapp--plain hjemtopp__feed', href: '#/feed', 'aria-label': 'Dagens feed' }, ikon('feed')),
+    el('span', { class: 'hjemtopp__logo' }, navn, el('span', { class: 'wordmark__prikk' }, '.')),
+    el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/meny', 'aria-label': 'Meny' }, ikon('gir')),
+  );
+  const heroBarn = [
+    el('div', { class: 'hjemdash__scrim', 'aria-hidden': 'true' }),
+    el('div', { class: 'hjemdash__hilsen' },
+      el('h1', { class: 'hjemdash__tittel pilar-hero__tittel' }, tittel),
+      under ? el('p', { class: 'hjemdash__under' }, under) : null),
+  ];
+  let settRing = null; let pstEl = null;
+  if (ring) {
+    const r = lagRing(46);
+    pstEl = el('span', { class: 'taktring__pst' }, '0%');
+    heroBarn.push(el('div', { class: 'taktring taktring--pilar' }, r.svg,
+      el('div', { class: 'taktring__midt' }, pstEl,
+        el('span', { class: 'taktring__merkelapp' }, ring.merkelapp || 'I dag'))));
+    settRing = r.sett;
+  }
+  const hero = el('section', {
+    class: `hjemdash__hero hjemdash__hero--${fase} pilar-hero`,
+    style: `background-image:url('icons/brand/hero-${fase}.webp')`,
+  }, ...heroBarn);
+  tom(mount);
+  const main = el('main', { class: 'innhold hjemdash' }, hero);
+  mount.append(el('div', { class: 'hjemdash-scroll' }, topp, main));
+  if (settRing) requestAnimationFrame(() => requestAnimationFrame(() => {
+    settRing((ring.pst || 0) / 100);
+    tallOpp(pstEl, ring.pst || 0, { format: (n) => `${n}%` });
+  }));
+  return main;
+}
+
+// ===========================================================================
 // Utforsk (M53) — kuratert oppdagelse: kunnskap & inspirasjon (artikler),
 // snarveier per pilar, og inngang til den spillbare feeden. Nås fra Hjem-
 // dashbordet og meny-huben (ikke en egen fane).
@@ -474,7 +516,12 @@ function visKostholdSkjerm(mount) {
   const laerLenke = el('a', { class: 'kostlenke', href: '#/laer' },
     ikon('bok', 'ikon ikon--liten'), el('span', {}, 'Lær mer om blue zones-kosthold'));
 
-  fane('Kosthold', 'Mest planter. Litt fisk. Måtehold.', statusBoks, vaneKort, notatKort, laerLenke);
+  const s0 = kostStatus();
+  const main = pilarSkall(mount, {
+    navn: 'mat', tittel: 'Mest planter. Litt fisk.', under: 'Måtehold — stopp ved 80 %.',
+    ring: { pst: s0.antallVaner ? Math.round((s0.iDagAntall / s0.antallVaner) * 100) : 0, merkelapp: 'gode valg i dag' },
+  });
+  main.append(statusBoks, vaneKort, notatKort, laerLenke);
 }
 
 // ===========================================================================
@@ -504,7 +551,10 @@ function visRoSkjerm(mount) {
       el('span', { class: 'rokort__meta' }, `${o.varighetMin} min`)),
     ikon('play', 'ikon rokort__play')));
 
-  fane('Ro', 'Pust. Senk skuldrene. Vær her.', intro, el('div', { class: 'roliste' }, ...kort));
+  const main = pilarSkall(mount, {
+    navn: 'ro', tittel: 'Pust. Senk skuldrene.', under: 'Vær her — noen rolige minutter.',
+  });
+  main.append(intro, el('div', { class: 'roliste' }, ...kort));
 }
 
 // ===========================================================================
@@ -551,7 +601,12 @@ function visSosialtSkjerm(mount) {
     el('h2', { class: 'kost__tittel' }, 'Finn møteplasser i nærheten'),
     el('div', { class: 'roliste sosialkilder' }, el('p', { class: 'dempet' }, 'Laster…')));
 
-  fane('Sosialt', 'Vi lever lengre sammen.', statusBoks, intro, kilderBoks);
+  const s0 = sosialStatus();
+  const main = pilarSkall(mount, {
+    navn: 'sosialt', tittel: 'Vi lever lengre sammen.', under: 'Tilhørighet holder deg frisk.',
+    ring: { pst: s0.antallVaner ? Math.round((s0.iDagAntall / s0.antallVaner) * 100) : 0, merkelapp: 'gode valg i dag' },
+  });
+  main.append(statusBoks, intro, kilderBoks);
 
   // Kuraterte, ekte norske møteplass-kilder (offline-cachet data, ingen scraping
   // eller CORS): frivillig.no, DNT, frisklivssentral, kommunekalender + dytt.
@@ -602,16 +657,26 @@ function visTrening() {
   }
   const logg = hentLogg();
   const nå = Date.now();
+  const idagIso = isoDato(new Date(nå));
+  const minutter = logg
+    .filter((o) => (o.dato || '').slice(0, 10) === idagIso)
+    .reduce((s, o) => s + (o.varighetMin || 0), 0);
+  const maal = DAGSMAAL[profil.varighetsklasse] || 40;
+  const planer = planForDato(idagIso);
 
-  // Faneside-skallet (banner.js) låser body, legger dagsfasebildet bak
-  // innholdet og gir pull-to-refresh — hjem fyller på med hero og grid.
-  const scroll = lagFaneside(app);
-  scroll.append(
-    heroVelkomst(profil, logg, nå),
-    el('main', { class: 'innhold' },
-      seksjonsHode(),
-      bevegelsesGrid(),
-    ),
+  // Samme skall som Hjem: «bevegelse.»-header + naturbilde-hero med en ring for
+  // dagens minutter mot dagsmålet. Modulene (plan/anbefaling, statkort, øvelses-
+  // grid) beholder all funksjonalitet.
+  const main = pilarSkall(app, {
+    navn: 'bevegelse', tittel: 'Beveg deg litt hver dag.',
+    under: minutter > 0 ? `${minutter} minutter i dag — bra jobba.` : 'Små økter teller.',
+    ring: { pst: Math.min(100, Math.round((minutter / maal) * 100)), merkelapp: 'av dagsmålet' },
+  });
+  main.append(
+    el('section', { class: 'kort hjemdash__beveg' },
+      planer.length ? heroPlanBoks(planer[0]) : heroAnbefalBoks(logg, profil)),
+    statKortRad(profil, logg),
+    el('section', {}, seksjonsHode(), bevegelsesGrid()),
   );
 }
 
