@@ -230,6 +230,11 @@ body {
 /* «Kommer snart»-flate (Sosialt) */
 .kommerkort { text-align: center; }
 .kommerkort__ikon { display: inline-grid; place-items: center; width: 56px; height: 56px; margin: 4px auto 8px; border-radius: 16px; background: var(--aksent-svak); color: var(--aksent); }
+/* Sosialt — kuraterte møteplass-kilder (lengre beskrivelser) */
+.rokort--flat { cursor: default; }
+.sosialkilder .rokort { align-items: flex-start; }
+.sosialkilder .rokort__ikon { margin-top: 1px; }
+.sosialkilder .rokort__meta { white-space: normal; line-height: 1.35; }
 
 /* Ikoner (inline SVG via ui.js) — 2px strek, runde ender, blekk som standard */
 .ikon {

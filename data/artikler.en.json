@@ -433,5 +433,26 @@
    { "kilde": "Craig Willcox et al. – «The Okinawa Program» (2001)", "om": "Describes «hara hachi bu»: eating until about 80% full, as a key to Okinawan longevity." },
    { "kilde": "Studies on satiety and eating speed", "om": "Satiety signals take ~20 minutes; slower eating lowers total food intake." }
   ]
+ },
+ {
+  "id": "moai-tilhorighet",
+  "tittel": "Moai: friendships that last a lifetime",
+  "undertittel": "Strong social ties matter as much for your health as food and exercise.",
+  "tags": ["Social", "Blue zones"],
+  "dato": "2026-07-17",
+  "lesetid": 4,
+  "avsnitt": [
+   { "p": "On Okinawa, children grow up in a “moai” — a small group that stays together for life, through good days and bad. It is no accident that some of the world's oldest people live right here. Belonging is one of the most underrated health factors we have." },
+   { "h": "Loneliness hits hard" },
+   { "p": "A landmark review by researcher Julianne Holt-Lunstad found that weak social ties raise the risk of early death about as much as smoking 15 cigarettes a day — and more than obesity or physical inactivity. Humans are social animals; we literally get sicker from too much time alone." },
+   { "h": "Face to face beats a screen" },
+   { "p": "It's real, physical contact that counts most: a walk with a friend, a meal around the same table, a chat over the garden fence. Digital ties can supplement, but they don't replace presence. Blue zones people meet often, and they meet for real." },
+   { "h": "Build your own moai" },
+   { "p": "You don't need many. One steady walking partner, one dinner a week, a volunteering role where you meet the same people. Small, repeated meetings build ties that hold — and good years." }
+  ],
+  "kilder": [
+   { "kilde": "Julianne Holt-Lunstad et al. – «Social Relationships and Mortality Risk» (PLoS Medicine, 2010)", "om": "Meta-analysis: strong social ties are linked to about 50% higher odds of survival over time." },
+   { "kilde": "Dan Buettner – «The Blue Zones» (National Geographic)", "om": "“Moai” on Okinawa and tight communities across all blue zones as a key to longevity." }
+  ]
  }
 ]

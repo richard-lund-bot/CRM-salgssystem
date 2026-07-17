@@ -1,0 +1,37 @@
+[
+ {
+  "id": "frivillig",
+  "navn": "Frivillig.no",
+  "beskrivelse": "Finn frivillige oppdrag i nærheten — en av de enkleste måtene å møte folk på tvers av generasjoner.",
+  "ikon": "hjerte",
+  "url": "https://frivillig.no"
+ },
+ {
+  "id": "dnt",
+  "navn": "DNT — fellesturer",
+  "beskrivelse": "Den Norske Turistforening arrangerer turer og turgrupper for alle nivåer. Bevegelse og fellesskap i ett.",
+  "ikon": "fjell",
+  "url": "https://www.dnt.no/aktiviteter/"
+ },
+ {
+  "id": "frisklivssentral",
+  "navn": "Frisklivssentralen",
+  "beskrivelse": "Kommunale grupper for gåturer, trening og matlaging — gratis og sosialt. Finnes i de fleste kommuner.",
+  "ikon": "sko",
+  "url": "https://www.helsenorge.no/hjelpetilbud-i-kommunene/frisklivssentral/"
+ },
+ {
+  "id": "kommune",
+  "navn": "Hva skjer i kommunen",
+  "beskrivelse": "Sjekk kommunens arrangementskalender og biblioteket — konserter, kurs, temakvelder og møteplasser rett i nabolaget.",
+  "ikon": "kalender",
+  "url": ""
+ },
+ {
+  "id": "maaltid",
+  "navn": "Del et måltid",
+  "beskrivelse": "Blue zones-menneskene spiser sjelden alene. Inviter en nabo, en venn eller familien til et enkelt måltid denne uka.",
+  "ikon": "snakke",
+  "url": ""
+ }
+]

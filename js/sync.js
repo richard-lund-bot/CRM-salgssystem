@@ -12,6 +12,7 @@ import {
 } from './store.js';
 import { lesStyrkelogg, settStyrkeloggRå, oktVolum } from './styrke.js';
 import { lesMatlogg, settMatloggRå } from './kosthold.js';
+import { lesSosiallogg, settSosialloggRå } from './sosialt.js';
 
 const AUTH = `${SUPABASE_URL}/auth/v1`;
 const REST = `${SUPABASE_URL}/rest/v1`;
@@ -217,6 +218,11 @@ async function pull() {
     const rader = await rest('meal_logs?select=data,oppdatert&order=oppdatert.desc');
     settMatloggRå(flettPerId(lesMatlogg(), rader, 'dato'));
   } catch (e) { console.warn('Måltidslogg-pull hoppet over', e.message); }
+  // Sosiallogg (tilhørighet) synkes isolert, samme mønster.
+  try {
+    const rader = await rest('sosial_logs?select=data,oppdatert&order=oppdatert.desc');
+    settSosialloggRå(flettPerId(lesSosiallogg(), rader, 'dato'));
+  } catch (e) { console.warn('Sosiallogg-pull hoppet over', e.message); }
 }
 
 async function push() {
@@ -263,6 +269,19 @@ async function push() {
         })),
       });
     } catch (e) { console.warn('Måltidslogg-push hoppet over', e.message); }
+  }
+  const sosiallogg = lesSosiallogg();
+  if (sosiallogg.length) {
+    try {
+      await rest('sosial_logs?on_conflict=id', {
+        method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
+        body: sosiallogg.map((o) => ({
+          id: o.id, user_id: uid, dato: (o.dato || '').slice(0, 10),
+          antall: Object.values(o.vaner || {}).filter(Boolean).length,
+          data: o, oppdatert: o.oppdatert || o.dato || new Date().toISOString(),
+        })),
+      });
+    } catch (e) { console.warn('Sosiallogg-push hoppet over', e.message); }
   }
 }
 

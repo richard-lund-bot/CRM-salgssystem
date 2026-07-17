@@ -10,6 +10,7 @@ import { loggBevegelse, NIVATYPE_NAVN } from './bevegelse.js';
 import { oktMedId } from './bibliotek-okter.js';
 import { regionScores, lagKroppskart } from './kroppskart.js';
 import { lesMatlogg } from './kosthold.js';
+import { lesSosiallogg } from './sosialt.js';
 import { fanesideMedTittel } from './banner.js';
 import { fyllInn, lagRing, REDUSERT } from './animasjon.js';
 
@@ -186,6 +187,22 @@ function byggKontekst(profil, logg, planer) {
   }
   const kostMaksStreak = Math.max(0, ...kostStreakDato.keys());
 
+  // Sosialt (egen sosiallogg): aktive dager (≥1 sosialt valg) + sosial-streak.
+  const sosDager = [...new Set(
+    (lesSosiallogg() || [])
+      .filter((o) => o.vaner && Object.values(o.vaner).some(Boolean))
+      .map((o) => dagsStart(Date.parse(o.dato) || 0))
+      .filter((t) => t > 0),
+  )].sort((a, b) => a - b);
+  const sosDagerDato = sosDager.map((t) => new Date(t).toISOString());
+  const sosStreakDato = new Map();
+  let sosRekke = 0;
+  for (let i = 0; i < sosDager.length; i++) {
+    sosRekke = i > 0 && sosDager[i] - sosDager[i - 1] === DAG ? sosRekke + 1 : 1;
+    if (!sosStreakDato.has(sosRekke)) sosStreakDato.set(sosRekke, new Date(sosDager[i]).toISOString());
+  }
+  const sosMaksStreak = Math.max(0, ...sosStreakDato.keys());
+
   // Enhet-/seksjon-fullført: avledes av uteksaminering (3★ pr. enhet). En enhet
   // er fullført når den har en 3★-graduation-rad; en seksjon når alle enhetene
   // er uteksaminert. Datoen er da 3★ først ble nådd. Krever injisert struktur.
@@ -242,6 +259,10 @@ function byggKontekst(profil, logg, planer) {
     kostDagerDato: (n) => kostDagerDato[n - 1] || null,
     kostStreak: kostMaksStreak,
     kostStreakDato: (n) => kostStreakDato.get(n) || null,
+    sosDager: sosDager.length,
+    sosDagerDato: (n) => sosDagerDato[n - 1] || null,
+    sosStreak: sosMaksStreak,
+    sosStreakDato: (n) => sosStreakDato.get(n) || null,
     niva: nivaFraTotalXp(profil?.globalXp || 0).niva,
   };
 }
@@ -260,6 +281,7 @@ export const MERKE_KATEGORIER = [
   { id: 'streak', navn: 'Streak' },
   { id: 'rytme', navn: 'Ukerytme' },
   { id: 'kosthold', navn: 'Kosthold' },
+  { id: 'sosialt', navn: 'Sosialt' },
   { id: 'laering', navn: 'Ferdighetsstier' },
   { id: 'nytt', navn: 'Prøv noe nytt' },
   { id: 'tid', navn: 'Tid i bevegelse' },
@@ -295,6 +317,13 @@ export const MERKER = {
     teller('kost-streak-3', 'Tre dager på rad', 'Kosthold-streak 3 dager', 'flamme', 'koral', 3, (c) => c.kostStreak, (c) => c.kostStreakDato(3)),
     teller('kost-streak-14', 'To uker på rad', 'Kosthold-streak 14 dager', 'flamme', 'gul', 14, (c) => c.kostStreak, (c) => c.kostStreakDato(14)),
     teller('kost-30', 'Vanen sitter', 'Gode valg 30 dager', 'trofe', 'indigo', 30, (c) => c.kostDager, (c) => c.kostDagerDato(30)),
+  ],
+  sosialt: [
+    teller('sos-1', 'Første møte', 'Ditt første sosiale valg', 'snakke', 'lime', 1, (c) => c.sosDager, (c) => c.sosDagerDato(1)),
+    teller('sos-7', 'Sosial uke', 'Sosiale valg 7 dager', 'snakke', 'teal', 7, (c) => c.sosDager, (c) => c.sosDagerDato(7)),
+    teller('sos-streak-3', 'Tre dager på rad', 'Sosial streak 3 dager', 'hjerte', 'koral', 3, (c) => c.sosStreak, (c) => c.sosStreakDato(3)),
+    teller('sos-streak-14', 'Fast moai', 'Sosial streak 14 dager', 'hjerte', 'gul', 14, (c) => c.sosStreak, (c) => c.sosStreakDato(14)),
+    teller('sos-30', 'Tilhørighet', 'Sosiale valg 30 dager', 'trofe', 'indigo', 30, (c) => c.sosDager, (c) => c.sosDagerDato(30)),
   ],
   laering: [
     teller('laer-1', 'Første trinn', 'Lærte din første øvelses-teknikk', 'stjerne', 'lime', 1, (c) => c.laerAntall, (c) => c.laerDato(1)),

@@ -39,8 +39,9 @@ import { krediterNye, stravaKort } from './strava.js';
 import { byggVarsler, merkVarslerSett, varselKort, harUlesteVarsler } from './varsler.js';
 import { varsle } from './toast.js';
 import { visFeedSkjerm, visPostSkjerm } from './feed.js';
-import { gjeldendeSprak, settSprak, startOversetter, oversettDom } from './i18n.js';
+import { gjeldendeSprak, settSprak, startOversetter, oversettDom, hentSprakJson } from './i18n.js';
 import { VANER, dagensInnslag, veksleVane, kostStatus, settNotat } from './kosthold.js';
+import { SOSIALE_VANER, dagensInnslag as sosDagensInnslag, veksleVane as sosVeksleVane, sosialStatus } from './sosialt.js';
 import { streakEtter } from './feiring.js';
 
 const app = document.getElementById('app');
@@ -316,12 +317,64 @@ function visRoSkjerm(mount) {
 function visSosialtSkjerm(mount) {
   const profil = hentProfil();
   if (!profil) { skjerm('Sosialt', velkommenKort()); return; }
-  const kort = el('section', { class: 'kort kort--info kommerkort' },
-    el('span', { class: 'kommerkort__ikon' }, ikon('snakke')),
-    el('h2', { class: 'kost__tittel' }, 'Fellesskap kommer snart'),
-    el('p', { class: 'dempet' }, 'Å være sosial ansikt til ansikt er noe av det som betyr mest for et langt, godt liv. Her kommer ekte møteplasser i nærheten og små dytt til å møtes — vi bygger det stein for stein.'),
-    el('a', { class: 'kostlenke', href: '#/laer' }, ikon('bok', 'ikon ikon--liten'), el('span', {}, 'Les om hvorfor tilhørighet betyr mest')));
-  fane('Sosialt', 'Vi lever lengre sammen.', kort);
+  const iDag = sosDagensInnslag() || { vaner: {} };
+
+  const tegnStatus = () => {
+    const s = sosialStatus();
+    const stat = (tall, navn) => el('div', { class: 'koststat' },
+      el('span', { class: 'koststat__tall' }, String(tall)),
+      el('span', { class: 'koststat__navn' }, navn));
+    return el('div', { class: 'koststatus' },
+      stat(s.streak, 'dager på rad'),
+      stat(`${s.iDagAntall}/${s.antallVaner}`, 'gode valg i dag'),
+      stat(s.ukeAktive, 'aktive dager'));
+  };
+  let statusBoks = tegnStatus();
+
+  const chips = SOSIALE_VANER.map((v) => {
+    const c = el('button', { class: 'intchip' + (iDag.vaner?.[v.id] ? ' intchip--valgt' : ''), type: 'button',
+      onclick: async () => {
+        const res = sosVeksleVane(v.id);
+        if (!res) return;
+        c.classList.toggle('intchip--valgt', res.aktiv);
+        if (res.aktiv) { vibrer(); varsle(`+${res.xp} XP`, { ikon: 'hjerte' }); }
+        const ny = tegnStatus(); statusBoks.replaceWith(ny); statusBoks = ny;
+        if (res.streakØkte > 0) await streakEtter(res);
+      } }, v.navn);
+    return c;
+  });
+
+  const intro = el('section', { class: 'kort' },
+    el('h2', { class: 'kost__tittel' }, 'Tilhørighet holder deg frisk'),
+    el('p', { class: 'dempet' }, 'På Okinawa kalles det «moai» — en fast gjeng du hører til hele livet. Sterke bånd til andre er blant de kraftigste faktorene for et langt liv. Huk av de gode sosiale valgene dine i dag.'),
+    el('div', { class: 'kostchips' }, ...chips));
+
+  const kilderBoks = el('section', { class: 'kort' },
+    el('h2', { class: 'kost__tittel' }, 'Finn møteplasser i nærheten'),
+    el('div', { class: 'roliste sosialkilder' }, el('p', { class: 'dempet' }, 'Laster…')));
+
+  fane('Sosialt', 'Vi lever lengre sammen.', statusBoks, intro, kilderBoks);
+
+  // Kuraterte, ekte norske møteplass-kilder (offline-cachet data, ingen scraping
+  // eller CORS): frivillig.no, DNT, frisklivssentral, kommunekalender + dytt.
+  hentSprakJson('arrangement').then((liste) => {
+    const holder = kilderBoks.querySelector('.sosialkilder');
+    if (!holder) return;
+    tom(holder);
+    for (const a of liste) {
+      const midt = el('span', { class: 'rokort__midt' },
+        el('span', { class: 'rokort__navn' }, a.navn),
+        el('span', { class: 'rokort__meta' }, a.beskrivelse));
+      const ikonBoks = el('span', { class: 'rokort__ikon' }, ikon(a.ikon || 'snakke'));
+      if (a.url) {
+        holder.append(el('a', { class: 'rokort', href: a.url, target: '_blank', rel: 'noopener' },
+          ikonBoks, midt, ikon('pilhoyre', 'ikon rokort__play')));
+      } else {
+        holder.append(el('div', { class: 'rokort rokort--flat' }, ikonBoks, midt));
+      }
+    }
+    oversettDom(holder);
+  }).catch(() => { const h = kilderBoks.querySelector('.sosialkilder'); if (h) tom(h); });
 }
 
 // ===========================================================================

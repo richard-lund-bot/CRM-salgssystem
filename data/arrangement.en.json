@@ -1,0 +1,37 @@
+[
+ {
+  "id": "frivillig",
+  "navn": "Frivillig.no",
+  "beskrivelse": "Find volunteering near you — one of the easiest ways to meet people across generations (Norwegian site).",
+  "ikon": "hjerte",
+  "url": "https://frivillig.no"
+ },
+ {
+  "id": "dnt",
+  "navn": "DNT — group hikes",
+  "beskrivelse": "The Norwegian Trekking Association runs hikes and walking groups for every level. Movement and community in one.",
+  "ikon": "fjell",
+  "url": "https://www.dnt.no/aktiviteter/"
+ },
+ {
+  "id": "frisklivssentral",
+  "navn": "The Healthy Life Centre",
+  "beskrivelse": "Municipal groups for walks, exercise and cooking — free and social. Found in most Norwegian municipalities.",
+  "ikon": "sko",
+  "url": "https://www.helsenorge.no/hjelpetilbud-i-kommunene/frisklivssentral/"
+ },
+ {
+  "id": "kommune",
+  "navn": "What's on locally",
+  "beskrivelse": "Check your municipality's event calendar and the library — concerts, courses, talks and gathering places right in the neighbourhood.",
+  "ikon": "kalender",
+  "url": ""
+ },
+ {
+  "id": "maaltid",
+  "navn": "Share a meal",
+  "beskrivelse": "Blue zones people rarely eat alone. Invite a neighbour, a friend or family to a simple meal this week.",
+  "ikon": "snakke",
+  "url": ""
+ }
+]

@@ -224,5 +224,26 @@
    { "kilde": "Craig Willcox m.fl. – «The Okinawa Program» (2001)", "om": "Beskriver «hara hachi bu»: å spise til man er rundt 80 % mett, som en nøkkel til lang levetid på Okinawa." },
    { "kilde": "Studier på metthet og spisetempo", "om": "Metthetssignaler bruker ~20 minutter; saktere spising gir lavere totalt matinntak." }
   ]
+ },
+ {
+  "id": "moai-tilhorighet",
+  "tittel": "Moai: vennskap som varer et helt liv",
+  "undertittel": "Sterke sosiale bånd er like viktig for helsa som kosthold og trening.",
+  "tags": ["Sosialt", "Blue zones"],
+  "dato": "2026-07-17",
+  "lesetid": 4,
+  "avsnitt": [
+   { "p": "På Okinawa vokser barn opp i en «moai» — en liten gruppe som følger hverandre gjennom hele livet, i gode og vonde dager. Det er ikke tilfeldig at nettopp her lever noen av verdens eldste mennesker. Tilhørighet er en av de mest undervurderte helsefaktorene vi har." },
+   { "h": "Ensomhet slår hardt" },
+   { "p": "En kjent gjennomgang av forskeren Julianne Holt-Lunstad viste at svake sosiale bånd øker risikoen for tidlig død omtrent like mye som å røyke 15 sigaretter om dagen — og mer enn fedme og fysisk inaktivitet. Mennesker er flokkdyr; vi blir bokstavelig talt sykere av å være alene for mye." },
+   { "h": "Ansikt til ansikt slår skjerm" },
+   { "p": "Det er den ekte, fysiske kontakten som teller mest: en tur med en venn, et måltid rundt samme bord, en prat over hagegjerdet. Digitale bånd kan supplere, men de erstatter ikke nærvær. Blue zones-menneskene møtes ofte, og de møtes på ordentlig." },
+   { "h": "Bygg din egen moai" },
+   { "p": "Du trenger ikke mange. Én fast turkamerat, en middag i uka, et frivillig oppdrag der du møter de samme folkene. Små, gjentatte møter bygger bånd som bærer — og gode år." }
+  ],
+  "kilder": [
+   { "kilde": "Julianne Holt-Lunstad m.fl. – «Social Relationships and Mortality Risk» (PLoS Medicine, 2010)", "om": "Meta-analyse: sterke sosiale bånd henger sammen med ~50 % høyere sannsynlighet for å overleve over tid." },
+   { "kilde": "Dan Buettner – «The Blue Zones» (National Geographic)", "om": "«Moai» på Okinawa og tette lokalsamfunn i alle blue zones som en nøkkel til lang levetid." }
+  ]
  }
 ]

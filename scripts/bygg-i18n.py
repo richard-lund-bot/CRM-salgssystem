@@ -200,6 +200,19 @@ EN = {
  'Å være sosial ansikt til ansikt er noe av det som betyr mest for et langt, godt liv. Her kommer ekte møteplasser i nærheten og små dytt til å møtes — vi bygger det stein for stein.':
    'Being social face to face is one of the things that matters most for a long, good life. Real local gatherings and gentle nudges to meet up are coming — we are building it stone by stone.',
  'Les om hvorfor tilhørighet betyr mest': 'Read why belonging matters most',
+ # Sosialt-pilaren (Fase 5)
+ 'Møtte noen': 'Met someone', 'Ringte en du er glad i': 'Called a loved one',
+ 'Delte et måltid': 'Shared a meal', 'Ble med på noe': 'Joined something',
+ 'Tilhørighet holder deg frisk': 'Belonging keeps you well',
+ 'Finn møteplasser i nærheten': 'Find gathering places near you',
+ 'Laster…': 'Loading…',
+ 'På Okinawa kalles det «moai» — en fast gjeng du hører til hele livet. Sterke bånd til andre er blant de kraftigste faktorene for et langt liv. Huk av de gode sosiale valgene dine i dag.':
+   'On Okinawa they call it “moai” — a fixed group you belong to for life. Strong ties to others are among the most powerful factors for a long life. Tick off your good social choices today.',
+ # Sosialt-merker
+ 'Første møte': 'First connection', 'Ditt første sosiale valg': 'Your first social choice',
+ 'Sosial uke': 'A social week', 'Sosiale valg 7 dager': 'Social choices for 7 days',
+ 'Sosial streak 3 dager': 'Social streak of 3 days', 'Fast moai': 'A steady moai',
+ 'Sosial streak 14 dager': 'Social streak of 14 days', 'Sosiale valg 30 dager': 'Social choices for 30 days',
 }
 
 # Kompendium/merke-tekster (lengre) — legg til
