@@ -83,7 +83,9 @@ export function settInteresser(katIder) {
 export const PILARER = ['bevegelse', 'kosthold', 'tilhorighet', 'ro', 'mening', 'nysgjerrig'];
 const KATID_PILAR = {
   health: 'bevegelse', // kropp/aktivitet/helse
+  kosthold: 'kosthold',   // pilar-native mat-innhold
   mind: 'ro',          // mental ro / mindfulness
+  ro: 'ro',            // pilar-native ro-innhold
   society: 'tilhorighet', // fellesskap / sosialt
   // Resten av dagens allmennkunnskap → nysgjerrig (lærelyst + variasjon).
   science: 'nysgjerrig', history: 'nysgjerrig', nature: 'nysgjerrig',

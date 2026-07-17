@@ -58,6 +58,10 @@ UNDERKAT = {
     'Strength': 'Styrke', 'Stress': 'Stress', 'Sun safety': 'Solbeskyttelse',
     'Time & longitude': 'Tid og lengdegrad', 'Vaccines': 'Vaksiner', 'Vikings': 'Vikinger',
     'Volcanoes': 'Vulkaner',
+    # Blue-zones-pilarene: Mat (kosthold) og Ro (ro)
+    'Legumes': 'Belgvekster', 'Fish & omega-3': 'Fisk og omega-3', 'Vegetables': 'Grønnsaker',
+    'Whole grains': 'Fullkorn', 'Mindful eating': 'Bevisst spising', 'Seasonal eating': 'Sesongmat',
+    'Breathing': 'Pust', 'Nature & calm': 'Natur og ro', 'Rest': 'Hvile',
 }
 
 SERIE = {
@@ -84,6 +88,8 @@ SERIE = {
     'Trust the Screen?': 'Stol på skjermen?', 'Turning Points': 'Vendepunkter',
     'Weather Systems': 'Værsystemer', 'Why Places Work': 'Hvorfor steder fungerer',
     'Your Learning Brain': 'Læringshjernen din',
+    # Blue-zones-pilarene
+    'Nordic Plate': 'Nordisk tallerken', 'Calm Breath': 'Rolig pust', 'Everyday Calm': 'Ro i hverdagen',
 }
 
 POSTER = {
@@ -92,6 +98,8 @@ POSTER = {
     'P003': ('Geologi, klima og jordsystemer', 'Jorda er alltid i bevegelse.', 'En fiktiv Aha-guide for kreftene som former planeten vår.'),
     'P004': ('Planeter, måner og banemekanikk', 'Se opp. Så se nærmere.', 'En fiktiv Aha-guide for planeter, måner og kosmisk bevegelse.'),
     'P005': ('Stjerner, galakser, sorte hull og eksoplaneter', 'Universet er merkeligere enn fiksjon.', 'En fiktiv Aha-guide for det dype universet.'),
+    'P033': ('Blåsone-kosthold, belgvekster og den nordiske tallerkenen', 'Små tallerkener, lange år.', 'En fiktiv Aha-guide for blåsone-kosthold i et nordisk kjøkken.'),
+    'P034': ('Pust, hvile og hverdagsro', 'Senk pusten, sett roen.', 'En fiktiv Aha-guide for pust, hvile og ro.'),
 }
 # Resten av posterne får en generisk, men troverdig norsk bio ut fra dekningen.
 
@@ -948,6 +956,105 @@ add('POST-100',
  'Et raskt, tynt og surt trekk tyder ofte på undertrekking, selv om smak og utstyr varierer.',
  ['Øk trekket med finere kvern eller lengre kontakttid', 'Bruk mye kortere kontakttid', 'Fjern alt vannet', 'Frys koppen mens du trekker'])
 
+# ---- Blue-zones-pilarene: Mat (kosthold) og Ro (ro) ------------------------
+add('POST-101',
+ 'En kopp bønner om dagen er et blåsone-kjennetegn',
+ 'Verdens mest langlevde spiser belgvekster nesten daglig.',
+ 'I blåsonene gjør bønner, linser og erter mye av jobben: rikelig med protein og fiber, jevn energi og lav pris. Rundt en kopp om dagen er en enkel vane du også kan bygge på en nordisk tallerken.',
+ 'Du må ha kjøtt til hvert måltid for å få nok protein.',
+ 'Belgvekster, fullkorn, meieri og fisk dekker lett proteinbehovet — bønner er en proteinbærebjelke i blåsonene.',
+ ['Fakta', 'Myte'])
+
+add('POST-102',
+ 'Fet fisk to ganger i uka gir mat til hjertet og hjernen',
+ 'Norskekysten byr på en av de enkleste langlevd-matene.',
+ 'Laks, makrell, sild og ørret er rike på omega-3-fett knyttet til hjerte- og hjernehelse. Norske råd er fisk til middag to–tre ganger i uka, noe av det fet fisk.',
+ 'Hvilken vanlig norsk matvare er den enkleste kilden til omega-3?',
+ 'Fet fisk er den rikeste vanlige kostkilden til marine omega-3-fettsyrer.',
+ ['Fet fisk som makrell eller laks', 'Hvit ris', 'Kokte poteter', 'Sukkertøy'])
+
+add('POST-103',
+ 'Halve tallerkenen grønt er en tommelfingerregel verdt å holde',
+ 'Den billigste helseoppgraderingen er som regel grønnere, ikke dyrere.',
+ 'Norske råd — «fem om dagen» — er fem never grønnsaker, frukt og bær hver dag. Fyller du halve tallerkenen med grønnsaker, faller resten av måltidet på plass.',
+ 'Norske kostråd er å spise minst fem never grønnsaker, frukt og ____ hver dag.',
+ '«Fem om dagen» teller grønnsaker, frukt og bær — rundt 500 g til sammen.',
+ ['bær', 'godteri', 'fløte'])
+
+add('POST-104',
+ 'Fullkorn holder energien jevn lenger',
+ 'Ikke alt brød gjør det samme med ettermiddagen din.',
+ 'Fullkornsbrød, havre og bygg gir fiber som bremser fordøyelsen og jevner ut blodsukkeret. «Brødskala’n» hjelper deg å finne de groveste, mest fullkornsrike brødene.',
+ 'Fullkornsbrød og loff påvirker blodsukkeret helt likt.',
+ 'Fiber i fullkorn bremser glukoseopptaket og gir jevnere energi enn raffinert korn.',
+ ['Fakta', 'Myte'])
+
+add('POST-105',
+ 'På Okinawa slutter de å spise ved 80 % metthet — med vilje',
+ 'Ett gammelt måltidsuttrykk er verdt å låne.',
+ '«Hara hachi bu» er okinawansk vane med å spise til du er rundt 80 % mett, og så stoppe. Fordi metthetssignalene henger etter, betyr det å spise sakte og ta en pause ofte at du spiser mindre uten å føle deg snytt.',
+ 'Du spiser sakte og stopper ved «behagelig mett» framfor «stappmett». Hva følger som regel over uker?',
+ 'Metthetssignaler bruker rundt 20 minutter; en pause ved 80 % hjelper deg å matche inntaket til reell sult.',
+ ['Lettere porsjonskontroll uten slanking', 'Umiddelbar vektøkning', 'Tap av all matlyst'])
+
+add('POST-106',
+ 'Å spise med de nordiske sesongene gir variasjon og kortreist mat',
+ 'Kalenderen er en overraskende god handleliste.',
+ 'Rotgrønnsaker om vinteren, bær og grønt om sommeren — å spise i sesong holder måltidene varierte, ferske og ofte billigere. Koble noen nordiske råvarer til når de er på sitt beste.',
+ 'Koble hver nordiske matvare til sin typiske sesong.',
+ 'Sesongmat følger det som vokser og lagres godt gjennom det nordiske året.',
+ [{'left': 'Rotgrønnsaker', 'right': 'Høst og vinter'},
+  {'left': 'Bær', 'right': 'Sensommer'},
+  {'left': 'Ferske erter', 'right': 'Førsommer'}])
+
+add('POST-107',
+ 'Boks-pust er en firetakts reset for et travelt hode',
+ 'En firkant du kan tegne med pusten.',
+ 'Boks-pust — pust inn 4, hold 4, pust ut 4, hold 4 — brukes av alt fra sykepleiere til marinemannskap for å roe nervesystemet. Noen rolige runder kan senke stressfølelsen på minutter.',
+ 'Hvor lang er hver av de fire fasene i boks-pust?',
+ 'Like lange innpust, hold, utpust og hold senker pusten og roer aktiveringen.',
+ ['Like lange, rundt fire sekunder hver', 'Tilfeldige lengder', 'Bare innpusten teller', 'Femten minutter hver'])
+
+add('POST-108',
+ 'Dobbel innpust og lang utpust løfter humøret raskest',
+ 'Kroppen kan denne allerede — det er et sukk.',
+ 'I en Stanford-studie ga fem minutter om dagen med «syklisk sukk» — to innpust gjennom nesa, så en lang, rolig utpust — bedre humør og lavere pustefrekvens enn både mindfulness-meditasjon og annen pusteøvelse.',
+ 'Du gjør fem minutter syklisk sukk daglig i en måned. Ut fra studien, hva er sannsynlig effekt?',
+ 'Den lange utpusten øker parasympatisk «hvile»-aktivitet; studien fant bedre humør og lavere pustefrekvens.',
+ ['Bedre humør og roligere pust', 'Høyere hvilepuls', 'Ingen endring i det hele tatt'])
+
+add('POST-109',
+ 'Rundt seks pust i minuttet er rolighetens søte punkt',
+ 'Sakte nok, og hjerte og pust begynner å følge hverandre.',
+ 'Koherent pust betyr å senke til omtrent seks pust i minuttet — rundt fem sekunder inn, fem sekunder ut. I dette tempoet stiger hjerteratevariabiliteten, og mange kjenner seg merkbart roligere.',
+ 'Koherent pust senker deg til omtrent ____ pust i minuttet.',
+ '~6 pust/min (5 s inn, 5 s ut) øker hjerteratevariabiliteten knyttet til ro.',
+ ['seks', 'tretti', 'seksti'])
+
+add('POST-110',
+ 'Tjue minutter i naturen senker stresset målbart',
+ 'Friluftsliv er ikke bare hyggelig — det er fysiologi.',
+ 'Å tilbringe rundt tjue minutter i naturlige omgivelser er nok til å senke stresshormonnivået i studier. I Norge gjør friluftslivet dette til en av de enkleste ro-vanene å holde hele året.',
+ 'Du trenger en lang villmarkstur for å få naturens roende effekt.',
+ 'Selv en kort «naturdose» på 20 minutter i en park senker kortisol — ingen ekspedisjon nødvendig.',
+ ['Fakta', 'Myte'])
+
+add('POST-111',
+ 'En nedtrappingsrutine forteller kroppen at det er tid for søvn',
+ 'Søvnen starter før hodet treffer puta.',
+ 'Dempet lys, avstand til skjermer og lavere tempo den siste timen hjelper melatoninet å stige og kroppen å skifte mot søvn. En fast rekkefølge av steg trener signalet over tid.',
+ 'Sett en enkel kveldsnedtrapping i fornuftig rekkefølge.',
+ 'Mindre lys og stimuli lar melatoninet stige og letter overgangen til søvn.',
+ ['Demp lyset en time før leggetid', 'Legg vekk skjermene', 'Gjør noe rolig og stille', 'Sovner lettere'])
+
+add('POST-112',
+ 'Korte pauser slår ett langt sammenbrudd på slutten av dagen',
+ 'Hvile virker bedre i små, hyppige doser.',
+ 'Noen ekte pauser gjennom dagen — et rolig pust, et blikk ut vinduet, en kort gåtur — hindrer stresset i å hope seg opp. Liten, jevnlig restitusjon er lettere å holde enn å spare alt til kvelden.',
+ 'Hvilken type hvile holder best dagsstresset fra å bygge seg opp?',
+ 'Hyppig mikro-restitusjon hindrer at stress hoper seg opp, mer pålitelig enn én sen reset.',
+ ['Korte, hyppige pauser gjennom dagen', 'Ett langt sammenbrudd sent på kvelden', 'Aldri ta pause', 'Bare fri i helgene'])
+
 
 # ---- Bygg nb-datasettet ----------------------------------------------------
 def bygg_options(base_opts, base_ca, gt, nb_opts):
@@ -993,7 +1100,7 @@ for p in BASE['posts']:
 if mangler:
     raise SystemExit(f'Mangler oversettelse for: {mangler}')
 
-ut = {**BASE, 'sprak': 'nb', 'beskrivelse': 'Spillbar lærings-feed på norsk (Aha-seed): 100 innlegg med minispill, kilder og fiktive redaksjonelle guider.', 'posters': posters_ut, 'posts': posts_ut}
+ut = {**BASE, 'sprak': 'nb', 'beskrivelse': 'Spillbar lærings-feed på norsk (Aha-seed): 112 innlegg med minispill, kilder og fiktive redaksjonelle guider.', 'posters': posters_ut, 'posts': posts_ut}
 json.dump(ut, open('/home/user/CRM-salgssystem/data/feed.json', 'w'), ensure_ascii=False, indent=1)
 print('feed.json (norsk base) skrevet:', len(posts_ut), 'innlegg')
 

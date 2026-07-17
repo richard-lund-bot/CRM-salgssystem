@@ -1,6 +1,6 @@
 {
  "schemaVersion": "1.0",
- "beskrivelse": "Spillbar lærings-feed på norsk (Aha-seed): 100 innlegg med minispill, kilder og fiktive redaksjonelle guider.",
+ "beskrivelse": "Spillbar lærings-feed på norsk (Aha-seed): 112 innlegg med minispill, kilder og fiktive redaksjonelle guider.",
  "posters": [
   {
    "id": "P001",
@@ -353,6 +353,28 @@
    "bio": "En fiktiv Aha-guide for transport, machines and movement.",
    "aksentStart": "#2563EB",
    "aksentSlutt": "#F97316"
+  },
+  {
+   "id": "P033",
+   "navn": "Åse",
+   "handle": "@aase.mat",
+   "kategori": "Health",
+   "dekker": "Blåsone-kosthold, belgvekster og den nordiske tallerkenen",
+   "slagord": "Små tallerkener, lange år.",
+   "bio": "En fiktiv Aha-guide for blåsone-kosthold i et nordisk kjøkken.",
+   "aksentStart": "#22C55E",
+   "aksentSlutt": "#84CC16"
+  },
+  {
+   "id": "P034",
+   "navn": "Vera",
+   "handle": "@vera.ro",
+   "kategori": "Mind",
+   "dekker": "Pust, hvile og hverdagsro",
+   "slagord": "Senk pusten, sett roen.",
+   "bio": "En fiktiv Aha-guide for pust, hvile og ro.",
+   "aksentStart": "#38BDF8",
+   "aksentSlutt": "#818CF8"
   }
  ],
  "posts": [
@@ -5840,6 +5862,634 @@
     "shares": 354
    },
    "katId": "everyday"
+  },
+  {
+   "id": "POST-101",
+   "rekkefolge": 101,
+   "opprettet": "2026-07-17T09:00:00",
+   "posterId": "P033",
+   "kategori": "Helse",
+   "katId": "kosthold",
+   "pilar": "kosthold",
+   "serie": "Nordisk tallerken",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "underkategori": "Belgvekster",
+   "tittel": "En kopp bønner om dagen er et blåsone-kjennetegn",
+   "hook": "Verdens mest langlevde spiser belgvekster nesten daglig.",
+   "sammendrag": "I blåsonene gjør bønner, linser og erter mye av jobben: rikelig med protein og fiber, jevn energi og lav pris. Rundt en kopp om dagen er en enkel vane du også kan bygge på en nordisk tallerken.",
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Du må ha kjøtt til hvert måltid for å få nok protein.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Belgvekster, fullkorn, meieri og fisk dekker lett proteinbehovet — bønner er en proteinbærebjelke i blåsonene.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Blue Zones Food Guidelines",
+    "org": "Blue Zones",
+    "url": "https://www.bluezones.com/recipes/food-guidelines/"
+   },
+   "lesMer": {
+    "tittel": "Kostrådene og næringsstoffer",
+    "org": "Helsedirektoratet",
+    "url": "https://www.helsedirektoratet.no/faglige-rad/kostradene-og-naeringsstoffer"
+   },
+   "tags": [
+    "legumes",
+    "protein",
+    "fibre"
+   ],
+   "seed": {
+    "likes": 1180,
+    "comments": 274,
+    "saves": 812,
+    "shares": 196
+   }
+  },
+  {
+   "id": "POST-102",
+   "rekkefolge": 102,
+   "opprettet": "2026-07-17T10:00:00",
+   "posterId": "P033",
+   "kategori": "Helse",
+   "katId": "kosthold",
+   "pilar": "kosthold",
+   "serie": "Nordisk tallerken",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "underkategori": "Fisk og omega-3",
+   "tittel": "Fet fisk to ganger i uka gir mat til hjertet og hjernen",
+   "hook": "Norskekysten byr på en av de enkleste langlevd-matene.",
+   "sammendrag": "Laks, makrell, sild og ørret er rike på omega-3-fett knyttet til hjerte- og hjernehelse. Norske råd er fisk til middag to–tre ganger i uka, noe av det fet fisk.",
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Hvilken vanlig norsk matvare er den enkleste kilden til omega-3?",
+    "options": [
+     "Fet fisk som makrell eller laks",
+     "Hvit ris",
+     "Kokte poteter",
+     "Sukkertøy"
+    ],
+    "correct_answer": "Fet fisk som makrell eller laks",
+    "explanation": "Fet fisk er den rikeste vanlige kostkilden til marine omega-3-fettsyrer.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "Kostrådene og næringsstoffer",
+    "org": "Helsedirektoratet",
+    "url": "https://www.helsedirektoratet.no/faglige-rad/kostradene-og-naeringsstoffer"
+   },
+   "lesMer": {
+    "tittel": "Kosthold og ernæring",
+    "org": "Helsenorge",
+    "url": "https://www.helsenorge.no/kosthold-og-ernaring/"
+   },
+   "tags": [
+    "fish",
+    "omega-3",
+    "heart"
+   ],
+   "seed": {
+    "likes": 1042,
+    "comments": 233,
+    "saves": 701,
+    "shares": 171
+   }
+  },
+  {
+   "id": "POST-103",
+   "rekkefolge": 103,
+   "opprettet": "2026-07-17T11:00:00",
+   "posterId": "P033",
+   "kategori": "Helse",
+   "katId": "kosthold",
+   "pilar": "kosthold",
+   "serie": "Nordisk tallerken",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "underkategori": "Grønnsaker",
+   "tittel": "Halve tallerkenen grønt er en tommelfingerregel verdt å holde",
+   "hook": "Den billigste helseoppgraderingen er som regel grønnere, ikke dyrere.",
+   "sammendrag": "Norske råd — «fem om dagen» — er fem never grønnsaker, frukt og bær hver dag. Fyller du halve tallerkenen med grønnsaker, faller resten av måltidet på plass.",
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "Norske kostråd er å spise minst fem never grønnsaker, frukt og ____ hver dag.",
+    "options": [
+     "bær",
+     "godteri",
+     "fløte"
+    ],
+    "correct_answer": "bær",
+    "explanation": "«Fem om dagen» teller grønnsaker, frukt og bær — rundt 500 g til sammen.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "Kostrådene og næringsstoffer",
+    "org": "Helsedirektoratet",
+    "url": "https://www.helsedirektoratet.no/faglige-rad/kostradene-og-naeringsstoffer"
+   },
+   "lesMer": {
+    "tittel": "Kosthold og ernæring",
+    "org": "Helsenorge",
+    "url": "https://www.helsenorge.no/kosthold-og-ernaring/"
+   },
+   "tags": [
+    "vegetables",
+    "fem om dagen",
+    "fibre"
+   ],
+   "seed": {
+    "likes": 966,
+    "comments": 205,
+    "saves": 640,
+    "shares": 154
+   }
+  },
+  {
+   "id": "POST-104",
+   "rekkefolge": 104,
+   "opprettet": "2026-07-17T12:00:00",
+   "posterId": "P033",
+   "kategori": "Helse",
+   "katId": "kosthold",
+   "pilar": "kosthold",
+   "serie": "Nordisk tallerken",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "underkategori": "Fullkorn",
+   "tittel": "Fullkorn holder energien jevn lenger",
+   "hook": "Ikke alt brød gjør det samme med ettermiddagen din.",
+   "sammendrag": "Fullkornsbrød, havre og bygg gir fiber som bremser fordøyelsen og jevner ut blodsukkeret. «Brødskala’n» hjelper deg å finne de groveste, mest fullkornsrike brødene.",
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Fullkornsbrød og loff påvirker blodsukkeret helt likt.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Fiber i fullkorn bremser glukoseopptaket og gir jevnere energi enn raffinert korn.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Kostrådene og næringsstoffer",
+    "org": "Helsedirektoratet",
+    "url": "https://www.helsedirektoratet.no/faglige-rad/kostradene-og-naeringsstoffer"
+   },
+   "lesMer": {
+    "tittel": "Kosthold og ernæring",
+    "org": "Helsenorge",
+    "url": "https://www.helsenorge.no/kosthold-og-ernaring/"
+   },
+   "tags": [
+    "whole grains",
+    "fibre",
+    "blood sugar"
+   ],
+   "seed": {
+    "likes": 889,
+    "comments": 188,
+    "saves": 596,
+    "shares": 142
+   }
+  },
+  {
+   "id": "POST-105",
+   "rekkefolge": 105,
+   "opprettet": "2026-07-17T13:00:00",
+   "posterId": "P033",
+   "kategori": "Helse",
+   "katId": "kosthold",
+   "pilar": "kosthold",
+   "serie": "Nordisk tallerken",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "underkategori": "Bevisst spising",
+   "tittel": "På Okinawa slutter de å spise ved 80 % metthet — med vilje",
+   "hook": "Ett gammelt måltidsuttrykk er verdt å låne.",
+   "sammendrag": "«Hara hachi bu» er okinawansk vane med å spise til du er rundt 80 % mett, og så stoppe. Fordi metthetssignalene henger etter, betyr det å spise sakte og ta en pause ofte at du spiser mindre uten å føle deg snytt.",
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Du spiser sakte og stopper ved «behagelig mett» framfor «stappmett». Hva følger som regel over uker?",
+    "options": [
+     "Lettere porsjonskontroll uten slanking",
+     "Umiddelbar vektøkning",
+     "Tap av all matlyst"
+    ],
+    "correct_answer": "Lettere porsjonskontroll uten slanking",
+    "explanation": "Metthetssignaler bruker rundt 20 minutter; en pause ved 80 % hjelper deg å matche inntaket til reell sult.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Blue Zones Food Guidelines",
+    "org": "Blue Zones",
+    "url": "https://www.bluezones.com/recipes/food-guidelines/"
+   },
+   "lesMer": {
+    "tittel": "NIH News in Health",
+    "org": "National Institutes of Health",
+    "url": "https://newsinhealth.nih.gov"
+   },
+   "tags": [
+    "mindful eating",
+    "portions",
+    "longevity"
+   ],
+   "seed": {
+    "likes": 1305,
+    "comments": 312,
+    "saves": 840,
+    "shares": 224
+   }
+  },
+  {
+   "id": "POST-106",
+   "rekkefolge": 106,
+   "opprettet": "2026-07-17T14:00:00",
+   "posterId": "P033",
+   "kategori": "Helse",
+   "katId": "kosthold",
+   "pilar": "kosthold",
+   "serie": "Nordisk tallerken",
+   "vanskelighet": "Beginner",
+   "estimertSek": 20,
+   "xp": 80,
+   "underkategori": "Sesongmat",
+   "tittel": "Å spise med de nordiske sesongene gir variasjon og kortreist mat",
+   "hook": "Kalenderen er en overraskende god handleliste.",
+   "sammendrag": "Rotgrønnsaker om vinteren, bær og grønt om sommeren — å spise i sesong holder måltidene varierte, ferske og ofte billigere. Koble noen nordiske råvarer til når de er på sitt beste.",
+   "spill": {
+    "game_type": "Match the Terms",
+    "prompt": "Koble hver nordiske matvare til sin typiske sesong.",
+    "options": [
+     {
+      "left": "Rotgrønnsaker",
+      "right": "Høst og vinter"
+     },
+     {
+      "left": "Bær",
+      "right": "Sensommer"
+     },
+     {
+      "left": "Ferske erter",
+      "right": "Førsommer"
+     }
+    ],
+    "correct_answer": [
+     {
+      "left": "Rotgrønnsaker",
+      "right": "Høst og vinter"
+     },
+     {
+      "left": "Bær",
+      "right": "Sensommer"
+     },
+     {
+      "left": "Ferske erter",
+      "right": "Førsommer"
+     }
+    ],
+    "explanation": "Sesongmat følger det som vokser og lagres godt gjennom det nordiske året.",
+    "interaction": "connect_pairs"
+   },
+   "kilde": {
+    "tittel": "Kosthold og ernæring",
+    "org": "Helsenorge",
+    "url": "https://www.helsenorge.no/kosthold-og-ernaring/"
+   },
+   "lesMer": {
+    "tittel": "Kostrådene og næringsstoffer",
+    "org": "Helsedirektoratet",
+    "url": "https://www.helsedirektoratet.no/faglige-rad/kostradene-og-naeringsstoffer"
+   },
+   "tags": [
+    "seasonal",
+    "local",
+    "variety"
+   ],
+   "seed": {
+    "likes": 812,
+    "comments": 176,
+    "saves": 548,
+    "shares": 133
+   }
+  },
+  {
+   "id": "POST-107",
+   "rekkefolge": 107,
+   "opprettet": "2026-07-17T15:00:00",
+   "posterId": "P034",
+   "kategori": "Sinn",
+   "katId": "ro",
+   "pilar": "ro",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "serie": "Rolig pust",
+   "underkategori": "Pust",
+   "tittel": "Boks-pust er en firetakts reset for et travelt hode",
+   "hook": "En firkant du kan tegne med pusten.",
+   "sammendrag": "Boks-pust — pust inn 4, hold 4, pust ut 4, hold 4 — brukes av alt fra sykepleiere til marinemannskap for å roe nervesystemet. Noen rolige runder kan senke stressfølelsen på minutter.",
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Hvor lang er hver av de fire fasene i boks-pust?",
+    "options": [
+     "Like lange, rundt fire sekunder hver",
+     "Tilfeldige lengder",
+     "Bare innpusten teller",
+     "Femten minutter hver"
+    ],
+    "correct_answer": "Like lange, rundt fire sekunder hver",
+    "explanation": "Like lange innpust, hold, utpust og hold senker pusten og roer aktiveringen.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "NIH News in Health",
+    "org": "National Institutes of Health",
+    "url": "https://newsinhealth.nih.gov"
+   },
+   "lesMer": {
+    "tittel": "Psykisk helse og livskvalitet",
+    "org": "Helsenorge",
+    "url": "https://www.helsenorge.no/psykisk-helse/"
+   },
+   "tags": [
+    "breathing",
+    "stress",
+    "calm"
+   ],
+   "seed": {
+    "likes": 1121,
+    "comments": 246,
+    "saves": 770,
+    "shares": 188
+   }
+  },
+  {
+   "id": "POST-108",
+   "rekkefolge": 108,
+   "opprettet": "2026-07-17T16:00:00",
+   "posterId": "P034",
+   "kategori": "Sinn",
+   "katId": "ro",
+   "pilar": "ro",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "serie": "Rolig pust",
+   "underkategori": "Pust",
+   "tittel": "Dobbel innpust og lang utpust løfter humøret raskest",
+   "hook": "Kroppen kan denne allerede — det er et sukk.",
+   "sammendrag": "I en Stanford-studie ga fem minutter om dagen med «syklisk sukk» — to innpust gjennom nesa, så en lang, rolig utpust — bedre humør og lavere pustefrekvens enn både mindfulness-meditasjon og annen pusteøvelse.",
+   "spill": {
+    "game_type": "Predict What Happened",
+    "prompt": "Du gjør fem minutter syklisk sukk daglig i en måned. Ut fra studien, hva er sannsynlig effekt?",
+    "options": [
+     "Bedre humør og roligere pust",
+     "Høyere hvilepuls",
+     "Ingen endring i det hele tatt"
+    ],
+    "correct_answer": "Bedre humør og roligere pust",
+    "explanation": "Den lange utpusten øker parasympatisk «hvile»-aktivitet; studien fant bedre humør og lavere pustefrekvens.",
+    "interaction": "tap_prediction"
+   },
+   "kilde": {
+    "tittel": "Cyclic sighing and mood",
+    "org": "Stanford Medicine",
+    "url": "https://med.stanford.edu"
+   },
+   "lesMer": {
+    "tittel": "NIH News in Health",
+    "org": "National Institutes of Health",
+    "url": "https://newsinhealth.nih.gov"
+   },
+   "tags": [
+    "breathing",
+    "mood",
+    "science"
+   ],
+   "seed": {
+    "likes": 1420,
+    "comments": 338,
+    "saves": 905,
+    "shares": 246
+   }
+  },
+  {
+   "id": "POST-109",
+   "rekkefolge": 109,
+   "opprettet": "2026-07-17T17:00:00",
+   "posterId": "P034",
+   "kategori": "Sinn",
+   "katId": "ro",
+   "pilar": "ro",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "serie": "Rolig pust",
+   "underkategori": "Pust",
+   "tittel": "Rundt seks pust i minuttet er rolighetens søte punkt",
+   "hook": "Sakte nok, og hjerte og pust begynner å følge hverandre.",
+   "sammendrag": "Koherent pust betyr å senke til omtrent seks pust i minuttet — rundt fem sekunder inn, fem sekunder ut. I dette tempoet stiger hjerteratevariabiliteten, og mange kjenner seg merkbart roligere.",
+   "spill": {
+    "game_type": "Fill the Gap",
+    "prompt": "Koherent pust senker deg til omtrent ____ pust i minuttet.",
+    "options": [
+     "seks",
+     "tretti",
+     "seksti"
+    ],
+    "correct_answer": "seks",
+    "explanation": "~6 pust/min (5 s inn, 5 s ut) øker hjerteratevariabiliteten knyttet til ro.",
+    "interaction": "tap_word_chip"
+   },
+   "kilde": {
+    "tittel": "NIH News in Health",
+    "org": "National Institutes of Health",
+    "url": "https://newsinhealth.nih.gov"
+   },
+   "lesMer": {
+    "tittel": "Psykisk helse og livskvalitet",
+    "org": "Helsenorge",
+    "url": "https://www.helsenorge.no/psykisk-helse/"
+   },
+   "tags": [
+    "breathing",
+    "HRV",
+    "calm"
+   ],
+   "seed": {
+    "likes": 980,
+    "comments": 212,
+    "saves": 648,
+    "shares": 159
+   }
+  },
+  {
+   "id": "POST-110",
+   "rekkefolge": 110,
+   "opprettet": "2026-07-17T18:00:00",
+   "posterId": "P034",
+   "kategori": "Sinn",
+   "katId": "ro",
+   "pilar": "ro",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "serie": "Ro i hverdagen",
+   "underkategori": "Natur og ro",
+   "tittel": "Tjue minutter i naturen senker stresset målbart",
+   "hook": "Friluftsliv er ikke bare hyggelig — det er fysiologi.",
+   "sammendrag": "Å tilbringe rundt tjue minutter i naturlige omgivelser er nok til å senke stresshormonnivået i studier. I Norge gjør friluftslivet dette til en av de enkleste ro-vanene å holde hele året.",
+   "spill": {
+    "game_type": "Fact or Myth",
+    "prompt": "Du trenger en lang villmarkstur for å få naturens roende effekt.",
+    "options": [
+     "Fakta",
+     "Myte"
+    ],
+    "correct_answer": "Myte",
+    "explanation": "Selv en kort «naturdose» på 20 minutter i en park senker kortisol — ingen ekspedisjon nødvendig.",
+    "interaction": "swipe_or_tap"
+   },
+   "kilde": {
+    "tittel": "Friluftsliv og helse",
+    "org": "Den Norske Turistforening",
+    "url": "https://www.dnt.no"
+   },
+   "lesMer": {
+    "tittel": "NIH News in Health",
+    "org": "National Institutes of Health",
+    "url": "https://newsinhealth.nih.gov"
+   },
+   "tags": [
+    "nature",
+    "friluftsliv",
+    "stress"
+   ],
+   "seed": {
+    "likes": 1266,
+    "comments": 288,
+    "saves": 842,
+    "shares": 231
+   }
+  },
+  {
+   "id": "POST-111",
+   "rekkefolge": 111,
+   "opprettet": "2026-07-17T19:00:00",
+   "posterId": "P034",
+   "kategori": "Sinn",
+   "katId": "ro",
+   "pilar": "ro",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "serie": "Ro i hverdagen",
+   "underkategori": "Hvile",
+   "tittel": "En nedtrappingsrutine forteller kroppen at det er tid for søvn",
+   "hook": "Søvnen starter før hodet treffer puta.",
+   "sammendrag": "Dempet lys, avstand til skjermer og lavere tempo den siste timen hjelper melatoninet å stige og kroppen å skifte mot søvn. En fast rekkefølge av steg trener signalet over tid.",
+   "spill": {
+    "game_type": "Order the Events",
+    "prompt": "Sett en enkel kveldsnedtrapping i fornuftig rekkefølge.",
+    "options": [
+     "Demp lyset en time før leggetid",
+     "Legg vekk skjermene",
+     "Gjør noe rolig og stille",
+     "Sovner lettere"
+    ],
+    "correct_answer": [
+     "Demp lyset en time før leggetid",
+     "Legg vekk skjermene",
+     "Gjør noe rolig og stille",
+     "Sovner lettere"
+    ],
+    "explanation": "Mindre lys og stimuli lar melatoninet stige og letter overgangen til søvn.",
+    "interaction": "drag_to_reorder"
+   },
+   "kilde": {
+    "tittel": "The Benefits of Slumber",
+    "org": "NIH News in Health",
+    "url": "https://newsinhealth.nih.gov/2013/04/benefits-slumber"
+   },
+   "lesMer": {
+    "tittel": "Søvn og søvnproblemer",
+    "org": "Helsenorge",
+    "url": "https://www.helsenorge.no/sovn/"
+   },
+   "tags": [
+    "sleep",
+    "rest",
+    "routine"
+   ],
+   "seed": {
+    "likes": 1034,
+    "comments": 224,
+    "saves": 712,
+    "shares": 177
+   }
+  },
+  {
+   "id": "POST-112",
+   "rekkefolge": 112,
+   "opprettet": "2026-07-17T20:00:00",
+   "posterId": "P034",
+   "kategori": "Sinn",
+   "katId": "ro",
+   "pilar": "ro",
+   "vanskelighet": "Beginner",
+   "estimertSek": 25,
+   "xp": 80,
+   "serie": "Ro i hverdagen",
+   "underkategori": "Hvile",
+   "tittel": "Korte pauser slår ett langt sammenbrudd på slutten av dagen",
+   "hook": "Hvile virker bedre i små, hyppige doser.",
+   "sammendrag": "Noen ekte pauser gjennom dagen — et rolig pust, et blikk ut vinduet, en kort gåtur — hindrer stresset i å hope seg opp. Liten, jevnlig restitusjon er lettere å holde enn å spare alt til kvelden.",
+   "spill": {
+    "game_type": "Correct Answer",
+    "prompt": "Hvilken type hvile holder best dagsstresset fra å bygge seg opp?",
+    "options": [
+     "Korte, hyppige pauser gjennom dagen",
+     "Ett langt sammenbrudd sent på kvelden",
+     "Aldri ta pause",
+     "Bare fri i helgene"
+    ],
+    "correct_answer": "Korte, hyppige pauser gjennom dagen",
+    "explanation": "Hyppig mikro-restitusjon hindrer at stress hoper seg opp, mer pålitelig enn én sen reset.",
+    "interaction": "tap_one"
+   },
+   "kilde": {
+    "tittel": "NIH News in Health",
+    "org": "National Institutes of Health",
+    "url": "https://newsinhealth.nih.gov"
+   },
+   "lesMer": {
+    "tittel": "Psykisk helse og livskvalitet",
+    "org": "Helsenorge",
+    "url": "https://www.helsenorge.no/psykisk-helse/"
+   },
+   "tags": [
+    "rest",
+    "stress",
+    "recovery"
+   ],
+   "seed": {
+    "likes": 947,
+    "comments": 203,
+    "saves": 634,
+    "shares": 161
+   }
   }
  ],
  "sprak": "nb"
