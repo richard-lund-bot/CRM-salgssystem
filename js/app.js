@@ -24,7 +24,7 @@ import { visLoggInnSkjerm, visRegistrerSkjerm, settEtterInnlogget } from './medl
 import { lastStier, lastKjeder, lastDisipliner, lastSeksjoner, settBib as settBibSti, visStiSkjerm, visDisiplinSkjerm, visSeksjonSkjerm, laerLenke } from './sti.js';
 import { visMerkerSkjerm } from './merker.js';
 import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
-import { lagFaneside, fanesideMedTittel, settNavger, settUlestSjekk, dagsfase } from './banner.js';
+import { lagFaneside, fanesideMedTittel, settNavger, settUlestSjekk, dagsfase, lagPullOppdatering } from './banner.js';
 import { nivaFraTotalXp } from './niva.js';
 import { dagerMedAktivitet, okterHref, beregnStreak } from './bevegelse.js';
 import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, aapneOkt, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN, KATEGORIER, settLaerLenke } from './bibliotek-okter.js';
@@ -349,7 +349,7 @@ function visHjemDashboard(mount) {
     topp,
     el('main', { class: 'innhold hjemdash' }, hero, brikker, dagensValg, dagensFokus, feedHint),
   );
-  mount.append(scroll);
+  mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: dashScrollTop }));
 
   // Sveip til venstre → dagens feed (uten å stjele vertikal scroll).
   let sx = null; let sy = null;
@@ -366,6 +366,10 @@ function visHjemDashboard(mount) {
     tallOpp(pst, takt, { format: (n) => `${n}%` });
   }));
 }
+
+// Hjem-dashbordet og pilarene scroller vinduet (ikke et indre element), så
+// pull-to-refresh leser vindus-scrollen.
+const dashScrollTop = () => window.scrollY || document.documentElement.scrollTop || 0;
 
 // ===========================================================================
 // Felles pilar-skall (M53) — samme stil som Hjem-dashbordet: hjemtopp-header
@@ -401,7 +405,8 @@ function pilarSkall(mount, { navn, tittel, under = null, ring = null }) {
   }, ...heroBarn);
   tom(mount);
   const main = el('main', { class: 'innhold hjemdash' }, hero);
-  mount.append(el('div', { class: 'hjemdash-scroll' }, topp, main));
+  const scroll = el('div', { class: 'hjemdash-scroll' }, topp, main);
+  mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: dashScrollTop }));
   if (settRing) requestAnimationFrame(() => requestAnimationFrame(() => {
     settRing((ring.pst || 0) / 100);
     tallOpp(pstEl, ring.pst || 0, { format: (n) => `${n}%` });

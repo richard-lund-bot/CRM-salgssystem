@@ -239,7 +239,12 @@ export function fanesideMedTittel(mount, { tittel, under = null, hoyre = null, d
 // Pull-to-refresh: dra ned fra toppen og en gjennomsiktig snurre-sirkel
 // glir ut fra bak banneret. Slipp forbi terskelen → den spinner mens vi
 // sjekker etter ny app-versjon, synker skydata og tegner skjermen på nytt.
-function lagPullOppdatering(scroll) {
+export function lagPullOppdatering(scroll, opts = {}) {
+  // Hjem-dashbordet og pilarene scroller vinduet (ikke et indre element) og har
+  // .hjemtopp-header i stedet for .hjembanner — derfor er scroll-posisjonen og
+  // header-bunnen parametriserbare. Fanesidene bruker standardene (indre scroll
+  // + .hjembanner).
+  const lesScrollTop = opts.scrollTopFn || (() => scroll.scrollTop);
   const spinn = el('div', { class: 'pullspinn', 'aria-hidden': 'true' },
     el('i', { class: 'pullspinn__ring' }));
   let startY = null;
@@ -247,12 +252,12 @@ function lagPullOppdatering(scroll) {
   let opptatt = false;
 
   const bannerBunn = () => {
-    const banner = document.querySelector('.hjembanner');
-    return banner ? banner.getBoundingClientRect().bottom : 90;
+    const topp = document.querySelector('.hjemtopp') || document.querySelector('.hjembanner');
+    return topp ? topp.getBoundingClientRect().bottom : 90;
   };
 
   scroll.addEventListener('touchstart', (ev) => {
-    if (opptatt || scroll.scrollTop > 0) { startY = null; return; }
+    if (opptatt || lesScrollTop() > 0) { startY = null; return; }
     startY = ev.touches[0].clientY;
     dratt = 0;
   }, { passive: true });
@@ -260,7 +265,7 @@ function lagPullOppdatering(scroll) {
   scroll.addEventListener('touchmove', (ev) => {
     if (startY == null || opptatt) return;
     const dy = ev.touches[0].clientY - startY;
-    if (dy <= 0 || scroll.scrollTop > 0) { dratt = 0; spinn.style.opacity = '0'; return; }
+    if (dy <= 0 || lesScrollTop() > 0) { dratt = 0; spinn.style.opacity = '0'; return; }
     dratt = dy;
     spinn.style.opacity = String(Math.min(1, dy / 70));
     spinn.style.top = `${bannerBunn() - 46 + Math.min(1, dy / 130) * 72}px`;
