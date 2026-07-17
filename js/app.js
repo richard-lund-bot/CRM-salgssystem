@@ -39,7 +39,15 @@ import { byggVarsler, merkVarslerSett, varselKort, harUlesteVarsler } from './va
 import { varsle } from './toast.js';
 import { visFeedSkjerm, visPostSkjerm } from './feed.js';
 import { gjeldendeSprak, settSprak, startOversetter, oversettDom, hentSprakJson } from './i18n.js';
-import { VANER, dagensInnslag, veksleVane, kostStatus, settNotat } from './kosthold.js';
+import { VANER, dagensInnslag, veksleVane, kostStatus } from './kosthold.js';
+import {
+  lastOppskrifter, alleOppskrifter, oppskriftMedId, oppskriftIngredienser, MAALTIDER,
+  oppskriftTags, OPPSKRIFT_FILTRE, filtrerOppskrifter, dagensOppskrift,
+  lesMatplan, maaltidFor, settMaaltid, autofyllUke, planStatus, ukeDatoer, ukenummer, mandagFor,
+  lesHandleliste, settPersoner, leggOppskriftIHandle, fjernOppskriftFraHandle, veksleAvkrysset,
+  leggEgenVare, tømAvkrysset, byggHandleliste, handlelisteTekst, handlelisteKilder,
+  erFavoritt, veksleFavoritt, VARE_KATEGORIER, isoDag as matIsoDag,
+} from './mat.js';
 import { SOSIALE_VANER, dagensInnslag as sosDagensInnslag, veksleVane as sosVeksleVane, sosialStatus, lesSosiallogg, leggTilEgen } from './sosialt.js';
 import {
   lesKrets, leggTilPerson, oppdaterPerson, slettPerson, registrerKontakt, sorterKrets,
@@ -65,7 +73,11 @@ const ruter = {
   utforsk: () => visUtforskSkjerm(app), // Kunnskap & inspirasjon (kuratert oppdagelse)
   post: () => visPostSkjerm(app), // dedikert side for ett feed-innlegg (spillbart)
   trening: visTrening, // Min dag-dashbordet bor på Trening-fanen
-  kosthold: () => visKostholdSkjerm(app), // Kosthold-pilaren (blue-zones-vaner)
+  kosthold: () => visKostholdSkjerm(app), // Mat-pilaren: hjem (vaner + oppskrifter + plan/handle)
+  oppskrifter: () => visOppskrifterSkjerm(app), // Bla i oppskrifter (søk + filtre)
+  oppskrift: () => visOppskriftSkjerm(app), // Oppskrift-detalj (#/oppskrift?id=)
+  ukesplan: () => visUkesplanSkjerm(app), // Ukesplan (måltider per dag)
+  handleliste: () => visHandlelisteSkjerm(app), // Handleliste (avledet av plan)
   ro: () => visRoSkjerm(app), // Ro-pilaren (daglige ro-vaner + økter)
   rofremgang: () => visRoFremgang(app), // Se logg (Ro)
   sosialt: () => visFellesskapSkjerm(app), // Fellesskap-pilaren (relasjoner + kontakt-logg)
@@ -106,7 +118,7 @@ const ruter = {
 // Skjermene med egen tilbake-header er fokusmodus (skjuler tab-baren).
 // «sti» (ferdighetsreisen) er bevisst IKKE fokus: bunnbaren blir stående helt
 // til man går inn i en leksjon/kamp (som er egne fullskjerm-overlegg).
-const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel', 'post', 'logg-inn', 'bli-medlem']);
+const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel', 'oppskrift', 'post', 'logg-inn', 'bli-medlem']);
 
 // Medlemssidene (auth). Uinnloggede sendes hit; innloggede slippes forbi.
 const AUTH_RUTER = new Set(['logg-inn', 'bli-medlem']);
@@ -129,7 +141,7 @@ const FANER_DEF = [
   { id: 'hjem', rute: 'hjem', ikon: 'hjem', fyll: 'hjemfyll', label: 'Hjem',
     barn: ['feed', 'post'] }, // feeden (dagens feed) + innleggsside hører til Hjem
   { id: 'kosthold', rute: 'kosthold', ikon: 'eple', fyll: 'eplefyll', label: 'Mat',
-    barn: [] },
+    barn: ['oppskrifter', 'oppskrift', 'ukesplan', 'handleliste'] },
   { id: 'trening', rute: 'trening', ikon: 'loper', fyll: 'loperfyll', label: 'Bevegelse',
     // Treningsbibliotek (øktbiblioteket) bor under Bevegelse — ett tapp unna via
     // «Se økter»/«Vis alle».
@@ -371,7 +383,7 @@ const dashScrollTop = () => window.scrollY || document.documentElement.scrollTop
 // og en .hjemdash-beholder for modulene. Brukes av Mat/Bevegelse/Ro/Sosialt så
 // pilarene føles som ett system.
 // ===========================================================================
-function pilarSkall(mount, { navn, tittel, under = null, ring = null, streakStripe = null }) {
+function pilarSkall(mount, { navn, tittel, under = null, ring = null, streakStripe = null, heroKort = null }) {
   const fase = dagsfase(new Date().getHours());
   const topp = el('header', { class: 'hjemtopp' },
     el('a', { class: 'ikonknapp ikonknapp--plain hjemtopp__feed', href: '#/feed', 'aria-label': 'Dagens feed' }, ikon('feed')),
@@ -397,6 +409,9 @@ function pilarSkall(mount, { navn, tittel, under = null, ring = null, streakStri
         el('i', { class: 'ukestreak__prikk' + (d.on ? ' ukestreak__prikk--on' : '') + (d.today ? ' ukestreak__prikk--now' : '') }),
         el('span', { class: 'ukestreak__lab' }, d.label))))));
   }
+  // Fritt hero-kort (frostet strip nederst i heroen) — brukes av Mat-hjem for
+  // sin egen to-tall-stripe (streak + dagens matvalg).
+  if (heroKort) heroBarn.push(heroKort);
   let settRing = null; let pstEl = null;
   if (ring) {
     const r = lagRing(46);
@@ -407,7 +422,7 @@ function pilarSkall(mount, { navn, tittel, under = null, ring = null, streakStri
     settRing = r.sett;
   }
   const hero = el('section', {
-    class: `hjemdash__hero hjemdash__hero--${fase} pilar-hero`,
+    class: `hjemdash__hero hjemdash__hero--${fase} pilar-hero pilar-hero--${navn}`,
     style: `background-image:url('icons/brand/hero-${fase}.webp')`,
   }, ...heroBarn);
   tom(mount);
@@ -482,67 +497,561 @@ function visUtforskSkjerm(mount) {
 }
 
 // ===========================================================================
-// Kosthold (Fase 3) — blue-zones-spising som daglige HANDLINGER, ikke tall.
-// Dagens gode vaner hukes av (grønt/belgvekster/fullkorn/fisk/måtehold); tre
-// gode valg tenner mat-gnisten (js/gnist.js) og bygger mat-streaken (atskilt
-// fra bevegelse). Valgfritt kort måltidsnotat. Gjenbruker flammefeiringen og
-// «Lær»-artiklene.
+// Mat (pilar 2) — blue-zones-spising bundet sammen: daglige matvaner («Logg i
+// dag») driver mat-gnisten og -streaken; oppskrifter kan legges i en ukesplan
+// og/eller handleliste; handlelista utledes av ukesplanen (js/mat.js). Fem
+// skjermer: Mat-hjem, Oppskrifter, Oppskrift-detalj, Ukesplan, Handleliste.
+// Ingen kalorier — bare handlinger og enkle, gode måltider.
 // ===========================================================================
+const UKEDAG_KORT = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
+const UKEDAG_BOKSTAV = ['M', 'T', 'O', 'T', 'F', 'L', 'S'];
+
+// Blue-zones-prinsippene (delt av Mat-hjem og oppskrift-detalj).
+const BZ_INFO = {
+  planter: { ikon: 'blad', tittel: 'Mest planter', tekst: 'Fyll tallerkenen med grønnsaker, frukt og fullkorn.' },
+  belgvekster: { ikon: 'belg', tittel: 'Belgvekster', tekst: 'Proteinrik og mettende — en hjørnestein i kostholdet.' },
+  fullkorn: { ikon: 'korn', tittel: 'Fullkorn', tekst: 'Rik på fiber som gir jevn energi og holder deg mett lenger.' },
+  moderasjon: { pst: '80%', tittel: '80 % mett', tekst: 'Stopp når du er behagelig mett, ikke stappmett.' },
+  delmaltid: { ikon: 'personer', tittel: 'Del et måltid', tekst: 'Spis sammen med andre. Det gir glede og gode vaner.' },
+};
+
+// Fargeforløp + emoji som bilde-plassholder (vi har ikke matfoto i repoet ennå).
+function matBilde(o, klasse = '') {
+  return el('span', { class: `matbilde matbilde--${(o && o.farge) || 'lime'}${klasse ? ` ${klasse}` : ''}`, 'aria-hidden': 'true' },
+    el('span', { class: 'matbilde__emoji' }, (o && o.emoji) || '🍽️'));
+}
+function matPille(t) {
+  return el('span', { class: 'matpille' }, ikon(t.ikon, 'ikon matpille__ikon'), el('span', {}, t.navn));
+}
+function prinsippKort(p, klasse = '') {
+  return el('div', { class: `matprinsipp__kort${klasse ? ` ${klasse}` : ''}` },
+    el('span', { class: 'matprinsipp__disk' }, p.pst ? el('span', { class: 'matprinsipp__pst' }, p.pst) : ikon(p.ikon)),
+    el('div', { class: 'matprinsipp__midt' },
+      el('span', { class: 'matprinsipp__tittel' }, p.tittel),
+      el('span', { class: 'matprinsipp__tekst' }, p.tekst)));
+}
+// «3 middager, 1 lunsj» av en {frokost,lunsj,middag}-telling.
+function beskrivPlan(perType) {
+  const NAVN = { middag: ['middag', 'middager'], lunsj: ['lunsj', 'lunsjer'], frokost: ['frokost', 'frokoster'] };
+  const deler = [];
+  for (const k of ['middag', 'lunsj', 'frokost']) {
+    const n = perType[k] || 0;
+    if (n) deler.push(`${n} ${NAVN[k][n === 1 ? 0 : 1]}`);
+  }
+  return deler.join(', ');
+}
+// Ingredienslinje til detalj: «150 g tørre grønne linser», «2 gulrøtter».
+// Navnet får liten forbokstav siden det står inne i en setning (mengde først).
+function ingredienstekst(ing) {
+  const enhet = (ing.enhet && ing.enhet !== 'stk') ? `${ing.enhet} ` : '';
+  const mengde = ing.mengde != null ? `${ing.mengde} ` : '';
+  const navn = ing.navn ? ing.navn.charAt(0).toLowerCase() + ing.navn.slice(1) : '';
+  return `${mengde}${enhet}${navn}`.trim();
+}
+
+// Fane-skall for Mat-undersidene: samme topplinje som pilar-heroene (feed ·
+// mat. · meny), men uten hero — en ren side med stor tittel under.
+function matSideSkall(mount) {
+  const topp = el('header', { class: 'hjemtopp' },
+    el('a', { class: 'ikonknapp ikonknapp--plain hjemtopp__feed', href: '#/feed', 'aria-label': 'Dagens feed' }, ikon('feed')),
+    el('span', { class: 'hjemtopp__logo' }, 'mat', el('span', { class: 'wordmark__prikk' }, '.')),
+    el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/meny', 'aria-label': 'Meny' }, ikon('gir')),
+  );
+  tom(mount);
+  const main = el('main', { class: 'innhold matside' });
+  const scroll = el('div', { class: 'hjemdash-scroll' }, topp, main);
+  mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: dashScrollTop }));
+  return main;
+}
+
+// --- Mat-hjem --------------------------------------------------------------
 function visKostholdSkjerm(mount) {
   const profil = hentProfil();
-  if (!profil) { skjerm('Kosthold', velkommenKort()); return; }
-  const iDag = dagensInnslag() || { vaner: {}, notat: '' };
+  if (!profil) { skjerm('Mat', velkommenKort()); return; }
 
-  const tegnStatus = () => {
-    const s = kostStatus();
-    const gm = hentGnistStatus().pilarer.mat;
-    const stat = (tall, navn) => el('div', { class: 'koststat' },
-      el('span', { class: 'koststat__tall' }, String(tall)),
-      el('span', { class: 'koststat__navn' }, navn));
-    return el('div', { class: 'koststatus' },
-      stat(gm.streak, 'dager på rad'),
-      stat(`${s.iDagAntall}/${gm.iDag.maal}`, 'gode valg i dag'),
-      stat(s.ukeAktive, 'aktive dager'));
+  const gm0 = hentGnistStatus().pilarer.mat;
+  const s0 = kostStatus();
+  const iDag = () => dagensInnslag() || { vaner: {} };
+
+  // Hero-stripe: to tall — streak (gnist) + dagens matvalg (ring).
+  const heroStreakTall = el('b', {}, String(gm0.streak));
+  const heroStreakLab = el('span', {}, gm0.streak === 1 ? 'dag på rad' : 'dager på rad');
+  const heroValgTall = el('b', {}, `${s0.iDagAntall} av ${VANER.length}`);
+  const gnistFlamme = el('span', { class: 'mathero__gnist' + (gm0.streak > 0 ? ' mathero__gnist--paa' : '') }, ikon('flamme'));
+  const ringSvg = lagRing(52);
+  const heroKort = el('a', { class: 'mathero', href: '#/ukesplan', 'aria-label': 'Se ukesplan' },
+    el('span', { class: 'mathero__celle' }, gnistFlamme,
+      el('span', { class: 'mathero__tekst' }, heroStreakTall, heroStreakLab)),
+    el('span', { class: 'mathero__strek', 'aria-hidden': 'true' }),
+    el('span', { class: 'mathero__celle' },
+      el('span', { class: 'mathero__ring' }, ringSvg.svg),
+      el('span', { class: 'mathero__tekst' }, heroValgTall, el('span', {}, 'matvalg i dag'))),
+    ikon('chevron', 'ikon mathero__chevron'));
+
+  const main = pilarSkall(mount, {
+    navn: 'mat', tittel: 'Mat som varer.',
+    under: 'Mest planter, belgvekster og enkle, gode måltider. Hver dag, sammen.',
+    heroKort,
+  });
+
+  // --- Logg i dag (5 matvaner) ---
+  const teller = el('span', { class: 'matkort__teller' }, `${s0.iDagAntall} av ${VANER.length} logget`);
+  const oppdater = () => {
+    const s = kostStatus(); const g = hentGnistStatus().pilarer.mat;
+    teller.textContent = `${s.iDagAntall} av ${VANER.length} logget`;
+    heroValgTall.textContent = `${s.iDagAntall} av ${VANER.length}`;
+    heroStreakTall.textContent = String(g.streak);
+    heroStreakLab.textContent = g.streak === 1 ? 'dag på rad' : 'dager på rad';
+    gnistFlamme.classList.toggle('mathero__gnist--paa', g.streak > 0);
+    ringSvg.sett(s.iDagAntall / VANER.length);
   };
-  let statusBoks = tegnStatus();
-
   const chips = VANER.map((v) => {
-    const c = el('button', {
-      class: 'intchip' + (iDag.vaner?.[v.id] ? ' intchip--valgt' : ''), type: 'button',
+    const c = el('button', { class: 'matvane' + (iDag().vaner?.[v.id] ? ' matvane--valgt' : ''), type: 'button',
       onclick: async () => {
         const res = veksleVane(v.id);
         if (!res) return;
-        c.classList.toggle('intchip--valgt', res.aktiv);
-        if (res.aktiv) { vibrer(); varsle('Godt valg', { ikon: 'blad' }); }
-        const ny = tegnStatus(); statusBoks.replaceWith(ny); statusBoks = ny;
-        await streakEtter(res); // flammefeiring, én gang/dag
-        await blaaEtter();      // ble dagen komplett blå → blå flamme-feiring
-      },
-    }, v.navn);
+        c.classList.toggle('matvane--valgt', res.aktiv);
+        if (res.aktiv) { vibrer(); varsle('Godt valg', { ikon: v.ikon }); }
+        oppdater();
+        await streakEtter(res);
+        await blaaEtter();
+      } },
+      el('span', { class: 'matvane__badge' }, ikon('sjekk', 'ikon matvane__hake')),
+      el('span', { class: 'matvane__ikon' }, ikon(v.ikon)),
+      el('span', { class: 'matvane__navn' }, v.navn));
     return c;
   });
+  const loggKort = el('section', { class: 'kort matkort' },
+    el('div', { class: 'matkort__hode' }, el('h2', { class: 'kost__tittel' }, 'Logg i dag'), teller),
+    el('div', { class: 'matvaner' }, ...chips),
+    el('p', { class: 'matlogg__hint' }, ikon('blad', 'ikon ikon--liten'),
+      el('span', {}, 'Små valg, stor forskjell. Du gjør det bra!')));
 
-  const vaneKort = el('section', { class: 'kort' },
-    el('h2', { class: 'kost__tittel' }, 'Gode valg i dag'),
-    el('p', { class: 'dempet' }, 'Blue zones-kjøkkenet: mest planter, litt fisk, og stopp når du er rundt 80 % mett.'),
-    el('div', { class: 'kostchips' }, ...chips));
+  // --- For deg i kveld (dagens oppskrift) ---
+  const featur = dagensOppskrift();
+  const featKort = featur ? (() => {
+    const merke = el('button', { class: 'ikonknapp ikonknapp--plain matfeat__merke' + (erFavoritt(featur.id) ? ' er-fav' : ''),
+      type: 'button', 'aria-label': 'Lagre',
+      onclick: () => { const på = veksleFavoritt(featur.id); merke.classList.toggle('er-fav', på); vibrer(); } }, ikon('bokmerke'));
+    return el('section', { class: 'kort matkort' },
+      el('div', { class: 'matkort__hode' }, el('h2', { class: 'kost__tittel' }, 'For deg i kveld'), merke),
+      el('a', { class: 'matfeat', href: `#/oppskrift?id=${featur.id}` },
+        matBilde(featur, 'matfeat__bilde'),
+        el('span', { class: 'matfeat__innhold' },
+          el('span', { class: 'matmeta matmeta--pille' }, ikon('klokke', 'ikon matmeta__ikon'), `${featur.tidMin} min`),
+          el('span', { class: 'matfeat__navn' }, featur.navn),
+          el('span', { class: 'matfeat__kort' }, featur.kort || featur.beskrivelse),
+          el('span', { class: 'matfeat__cta' }, 'Se oppskrift', ikon('chevron', 'ikon')))));
+  })() : null;
 
-  const notat = el('textarea', { class: 'kostnotat', rows: '2', placeholder: 'Hva spiste du i dag? (valgfritt)' });
-  notat.value = iDag.notat || '';
-  notat.addEventListener('blur', (e) => settNotat(e.target.value));
-  const notatKort = el('section', { class: 'kort' },
-    el('h2', { class: 'kost__tittel' }, 'Dagens måltider'),
-    notat);
+  // --- Ukesplan + Handleliste (to halvkort) ---
+  const ps = planStatus();
+  const hb = byggHandleliste();
+  const ukeKort = el('a', { class: 'matmini', href: '#/ukesplan' },
+    el('div', { class: 'matmini__hode' }, el('span', { class: 'matmini__tittel' }, 'Ukesplan'), ikon('kalender', 'ikon matmini__ikon')),
+    el('span', { class: 'matmini__tall' }, String(ps.antall)),
+    el('span', { class: 'matmini__lab' }, ps.antall === 1 ? 'måltid planlagt' : 'måltider planlagt'),
+    el('span', { class: 'matmini__sub' }, beskrivPlan(ps.perType) || 'Ingen ennå'));
+  const handleKort = el('a', { class: 'matmini', href: '#/handleliste' },
+    el('div', { class: 'matmini__hode' }, el('span', { class: 'matmini__tittel' }, 'Handleliste'), ikon('handlepose', 'ikon matmini__ikon')),
+    el('span', { class: 'matmini__tall' }, String(hb.totalVarer)),
+    el('span', { class: 'matmini__lab' }, hb.totalVarer === 1 ? 'vare å kjøpe' : 'varer å kjøpe'),
+    el('span', { class: 'matmini__sub' }, hb.grupper.slice(0, 3).map((g) => g.navn).join(', ') || 'Tom liste'));
+  const miniRad = el('div', { class: 'matminirad' }, ukeKort, handleKort);
 
-  const laerLenke = el('a', { class: 'kostlenke', href: '#/laer' },
-    ikon('bok', 'ikon ikon--liten'), el('span', {}, 'Lær mer om blue zones-kosthold'));
+  // --- Blue Zones-prinsipper ---
+  const prinsipper = ['planter', 'moderasjon', 'delmaltid'].map((k) => BZ_INFO[k]);
+  const prinsippRad = el('section', { class: 'oppseksjon' },
+    el('div', { class: 'seksjonshode seksjonshode--flat' },
+      el('h2', { class: 'seksjonstittel' }, 'Blue Zones-prinsipper'),
+      el('a', { class: 'seksjonslenke', href: '#/laer' }, 'Se alle', ikon('chevron'))),
+    el('div', { class: 'matprinsipp matprinsipp--tre' }, ...prinsipper.map((p) => prinsippKort(p))));
 
-  const gm0 = hentGnistStatus().pilarer.mat;
-  const main = pilarSkall(mount, {
-    navn: 'mat', tittel: 'Mest planter. Litt fisk.', under: 'Måtehold — stopp ved 80 %.',
-    ring: { pst: Math.min(100, Math.round((gm0.iDag.verdi / gm0.iDag.maal) * 100)), merkelapp: 'av dagsmålet' },
+  main.append(loggKort, featKort, miniRad, prinsippRad);
+  requestAnimationFrame(() => requestAnimationFrame(() => ringSvg.sett(s0.iDagAntall / VANER.length)));
+}
+
+// --- Oppskrifter (bla, søk, filtrer) ---------------------------------------
+function oppskriftKort(o, stor = false) {
+  const merke = el('button', { class: 'oppkort__hjerte' + (erFavoritt(o.id) ? ' oppkort__hjerte--paa' : ''),
+    type: 'button', 'aria-label': 'Lagre',
+    onclick: (e) => { e.preventDefault(); e.stopPropagation(); const på = veksleFavoritt(o.id); merke.classList.toggle('oppkort__hjerte--paa', på); vibrer(); } },
+    ikon('hjerte'));
+  return el('a', { class: 'oppkort' + (stor ? ' oppkort--stor' : ''), href: `#/oppskrift?id=${o.id}` },
+    el('span', { class: 'oppkort__bilde' }, matBilde(o),
+      el('span', { class: 'oppkort__tid' }, ikon('klokke', 'ikon'), `${o.tidMin} min`), merke),
+    el('span', { class: 'oppkort__navn' }, o.navn),
+    el('span', { class: 'oppkort__kort' }, o.kort || o.beskrivelse),
+    el('span', { class: 'matpiller' }, ...oppskriftTags(o, stor ? 2 : 1).map(matPille)));
+}
+function visOppskrifterSkjerm(mount) {
+  if (!hentProfil()) { location.hash = '#/hjem'; return; }
+  const main = matSideSkall(mount);
+
+  let sok = '';
+  const aktive = new Set();
+
+  // Søkefelt + (dekorativt) filterikon.
+  const sokefelt = el('input', { class: 'oppsok__felt', type: 'search', placeholder: 'Søk etter oppskrifter',
+    oninput: (e) => { sok = e.target.value; tegn(); } });
+  const sokRad = el('div', { class: 'oppsok' },
+    ikon('sok', 'ikon oppsok__ikon'), sokefelt, ikon('filter', 'ikon oppsok__filter'));
+
+  const filterRad = el('div', { class: 'oppfiltre' }, ...OPPSKRIFT_FILTRE.map((f) => {
+    const c = el('button', { class: 'oppfilter', type: 'button',
+      onclick: () => { if (aktive.has(f.id)) aktive.delete(f.id); else aktive.add(f.id); c.classList.toggle('oppfilter--paa'); tegn(); } },
+      ikon(f.ikon, 'ikon oppfilter__ikon'), el('span', {}, f.navn));
+    return c;
+  }));
+
+  // Kuratert (vises uten søk/filter): For deg · Enkle hverdagsretter · Blue Zones.
+  const alle = alleOppskrifter();
+  const anbefalte = alle.filter((o) => (o.maaltid || []).includes('middag')).slice(0, 2);
+  const enkle = alle.filter((o) => (o.tidMin || 99) <= 20).slice(0, 6);
+  const bzKort = ['belgvekster', 'fullkorn', 'planter', 'delmaltid'].map((k) => BZ_INFO[k]);
+  const seksjon = (tittel, href, ...barn) => el('section', { class: 'oppseksjon' },
+    el('div', { class: 'seksjonshode seksjonshode--flat' },
+      el('h2', { class: 'seksjonstittel' }, tittel),
+      href ? el('a', { class: 'seksjonslenke', href }, 'Se alle', ikon('chevron')) : null),
+    ...barn);
+  const kuratert = el('div', { class: 'oppkuratert' },
+    seksjon('For deg', null, el('div', { class: 'oppdeg' }, ...anbefalte.map((o) => oppskriftKort(o, true)))),
+    seksjon('Enkle hverdagsretter', null, el('div', { class: 'opprad' }, ...enkle.map((o) => oppskriftKort(o)))),
+    seksjon('Blue Zones-inspirert', '#/laer',
+      el('div', { class: 'opprad opprad--bz' }, ...bzKort.map((p) => el('a', { class: 'oppbz', href: '#/laer' },
+        el('span', { class: 'oppbz__disk' }, ikon(p.ikon)),
+        el('span', { class: 'oppbz__tittel' }, p.tittel),
+        el('span', { class: 'oppbz__tekst' }, p.tekst.split('.')[0] + '.'))))));
+
+  const resultat = el('div', { class: 'oppresultat' });
+
+  function tegn() {
+    if (sok.trim() || aktive.size) {
+      const treff = filtrerOppskrifter(sok, [...aktive]);
+      tom(resultat);
+      resultat.append(
+        el('p', { class: 'dempet oppresultat__teller' }, `${treff.length} ${treff.length === 1 ? 'oppskrift' : 'oppskrifter'}`),
+        treff.length
+          ? el('div', { class: 'oppgrid' }, ...treff.map((o) => oppskriftKort(o)))
+          : el('p', { class: 'dempet' }, 'Ingen treff. Prøv et annet søk eller filter.'));
+      kuratert.hidden = true; resultat.hidden = false;
+    } else {
+      kuratert.hidden = false; resultat.hidden = true;
+    }
+  }
+
+  main.append(sokRad, filterRad, kuratert, resultat);
+  tegn();
+}
+
+// --- Oppskrift-detalj ------------------------------------------------------
+function visOppskriftSkjerm(mount) {
+  if (!hentProfil()) { location.hash = '#/hjem'; return; }
+  const params = new URLSearchParams(location.hash.split('?')[1] || '');
+  const o = oppskriftMedId(params.get('id') || '');
+  if (!o) { location.hash = '#/oppskrifter'; return; }
+
+  const merke = el('button', { class: 'ikonknapp ikonknapp--plain' + (erFavoritt(o.id) ? ' er-fav' : ''),
+    type: 'button', 'aria-label': 'Lagre',
+    onclick: () => { const på = veksleFavoritt(o.id); merke.classList.toggle('er-fav', på); vibrer(); varsle(på ? 'Lagret' : 'Fjernet', { ikon: 'bokmerke' }); } },
+    ikon('bokmerke'));
+
+  tom(mount);
+  const topp = el('header', { class: 'hjemtopp hjemtopp--detalj' },
+    el('button', { class: 'ikonknapp ikonknapp--plain', type: 'button', 'aria-label': 'Tilbake', onclick: () => history.back() }, ikon('pilvenstre')),
+    el('span', { class: 'hjemtopp__logo' }, 'mat', el('span', { class: 'wordmark__prikk' }, '.')),
+    merke);
+  const main = el('main', { class: 'innhold oppdetalj' });
+  mount.append(el('div', { class: 'hjemdash-scroll' }, topp, main));
+
+  // Meta-chips (tid, porsjoner, første tag).
+  const metaChips = [
+    el('span', { class: 'matmeta matmeta--pille' }, ikon('klokke', 'ikon matmeta__ikon'), `${o.tidMin} min`),
+    el('span', { class: 'matmeta matmeta--pille' }, ikon('personer', 'ikon matmeta__ikon'), `${o.porsjoner} porsjoner`),
+    ...oppskriftTags(o, 1).map((t) => el('span', { class: 'matmeta matmeta--pille' }, ikon(t.ikon, 'ikon matmeta__ikon'), t.navn)),
+  ];
+
+  // Handlingsknapper.
+  const planKnapp = el('button', { class: 'knapp oppdetalj__handling', type: 'button',
+    onclick: () => leggIUkesplanArk(o) }, ikon('kalender', 'ikon'), el('span', {}, 'Legg i ukesplan'));
+  const handleKnapp = el('button', { class: 'knapp knapp--sekundaer oppdetalj__handling', type: 'button',
+    onclick: () => { leggOppskriftIHandle(o.id); vibrer(); varsle('Lagt i handlelista', { ikon: 'handlepose' }); } },
+    ikon('handlepose', 'ikon'), el('span', {}, 'Legg til i handleliste'));
+
+  // Ingredienser (2-kolonner) + valgfri dressing.
+  const ingRad = (ing) => el('label', { class: 'oppingr__rad' },
+    el('input', { type: 'checkbox', class: 'oppingr__boks' }),
+    el('span', { class: 'oppingr__hake', 'aria-hidden': 'true' }, ikon('sjekk', 'ikon')),
+    el('span', { class: 'oppingr__navn' }, ingredienstekst(ing)));
+  const dressing = el('div', { class: 'oppingr oppingr--dressing oppingr--skjul' }, ...(o.dressing || []).map(ingRad));
+  const dressingKnapp = (o.dressing && o.dressing.length) ? (() => {
+    const b = el('button', { class: 'oppingr__mer', type: 'button', 'aria-expanded': 'false' },
+      el('span', {}, 'Vis dressing'), ikon('chevronned', 'ikon oppingr__merikon'));
+    b.addEventListener('click', () => {
+      const skjult = dressing.classList.toggle('oppingr--skjul');
+      b.setAttribute('aria-expanded', String(!skjult));
+      b.firstChild.textContent = skjult ? 'Vis dressing' : 'Skjul dressing';
+      b.querySelector('.oppingr__merikon').classList.toggle('oppingr__merikon--opp', !skjult);
+    });
+    return b;
+  })() : null;
+  const ingrKort = el('section', { class: 'kort oppdetalj__kort' },
+    el('div', { class: 'matkort__hode' }, el('h2', { class: 'kost__tittel' }, 'Ingredienser'),
+      el('span', { class: 'oppdetalj__porsjoner' }, `${o.porsjoner} porsjoner`)),
+    el('div', { class: 'oppingr' }, ...o.ingredienser.map(ingRad)),
+    dressing, dressingKnapp);
+
+  // Slik gjør du.
+  const stegKort = el('section', { class: 'kort oppdetalj__kort' },
+    el('h2', { class: 'kost__tittel' }, 'Slik gjør du'),
+    el('ol', { class: 'oppsteg' }, ...o.steg.map((s, i) => el('li', { class: 'oppsteg__rad' },
+      el('span', { class: 'oppsteg__nr' }, String(i + 1)),
+      el('span', { class: 'oppsteg__tekst' }, s)))));
+
+  // Blue Zones-prinsipper for denne retten.
+  const bz = (o.blueZones || []).map((k) => BZ_INFO[k]).filter(Boolean).slice(0, 3);
+  const bzRad = bz.length ? el('div', { class: 'matprinsipp matprinsipp--kompakt' }, ...bz.map((p) => prinsippKort(p, 'matprinsipp__kort--kompakt'))) : null;
+
+  main.append(
+    el('div', { class: 'oppdetalj__bilde' }, matBilde(o, 'matbilde--hero')),
+    el('h1', { class: 'oppdetalj__navn' }, o.navn),
+    el('div', { class: 'oppdetalj__meta' }, ...metaChips),
+    el('p', { class: 'oppdetalj__beskrivelse' }, o.beskrivelse),
+    el('div', { class: 'oppdetalj__handlinger' }, planKnapp, handleKnapp),
+    ingrKort, stegKort, bzRad);
+}
+
+// Bunnark: legg en oppskrift i ukesplanen (velg måltid + dag).
+function leggIUkesplanArk(o) {
+  const passer = (o.maaltid && o.maaltid.length) ? MAALTIDER.filter((m) => o.maaltid.includes(m.id)) : MAALTIDER;
+  let valgt = passer[0].id;
+  const datoer = ukeDatoer();
+  const idag = matIsoDag();
+  let lukkArk = () => {};
+
+  const dagRad = el('div', { class: 'arkdager' });
+  const tegnDager = () => {
+    tom(dagRad);
+    datoer.forEach((iso, i) => {
+      const har = maaltidFor(iso)[valgt] === o.id;
+      const b = el('button', { class: 'arkdag' + (har ? ' arkdag--valgt' : '') + (iso === idag ? ' arkdag--idag' : ''), type: 'button',
+        onclick: () => { settMaaltid(iso, valgt, o.id); vibrer(); varsle('Lagt i ukesplan', { ikon: 'kalender' }); lukkArk(); } },
+        el('span', { class: 'arkdag__lab' }, UKEDAG_KORT[i]),
+        el('span', { class: 'arkdag__nr' }, String(new Date(`${iso}T12:00:00`).getDate())));
+      dagRad.append(b);
+    });
+  };
+  const segRad = el('div', { class: 'arkseg' });
+  passer.forEach((m) => {
+    const b = el('button', { class: 'arksegknapp' + (m.id === valgt ? ' arksegknapp--paa' : ''), type: 'button',
+      onclick: () => { valgt = m.id; [...segRad.children].forEach((c) => c.classList.remove('arksegknapp--paa')); b.classList.add('arksegknapp--paa'); tegnDager(); } },
+      m.navn);
+    segRad.append(b);
   });
-  main.append(statusBoks, vaneKort, notatKort, laerLenke);
+  tegnDager();
+  const { lukk } = visArk('Legg i ukesplan',
+    el('p', { class: 'dempet dempet--tett' }, o.navn),
+    passer.length > 1 ? segRad : null,
+    el('p', { class: 'arketikett' }, 'Hvilken dag?'),
+    dagRad);
+  lukkArk = lukk;
+}
+
+// --- Ukesplan --------------------------------------------------------------
+function visUkesplanSkjerm(mount) {
+  if (!hentProfil()) { location.hash = '#/hjem'; return; }
+  const main = matSideSkall(mount);
+  const idag = matIsoDag();
+  const datoer = ukeDatoer();
+  const uke = ukenummer();
+
+  main.append(el('div', { class: 'matside__hode' },
+    el('div', {},
+      el('h1', { class: 'matside__tittel' }, 'Ukesplan'),
+      el('p', { class: 'matside__under' }, 'Planlegg måltidene dine for en god og balansert uke.')),
+    el('span', { class: 'ukevelger' }, ikon('kalender', 'ikon'), `Uke ${uke}`)));
+
+  // Dagsstripe (M–S).
+  const dagstripe = el('div', { class: 'ukedager' }, ...datoer.map((iso, i) => {
+    const d = new Date(`${iso}T12:00:00`);
+    return el('div', { class: 'ukedag' + (iso === idag ? ' ukedag--idag' : '') },
+      el('span', { class: 'ukedag__lab' }, UKEDAG_BOKSTAV[i]),
+      el('span', { class: 'ukedag__nr' }, String(d.getDate())));
+  }));
+
+  // Rader (frokost/lunsj/middag): én kolonne per dag.
+  const bygg = () => {
+    const rader = MAALTIDER.map((m) => {
+      const kolonner = datoer.map((iso) => {
+        const rid = maaltidFor(iso)[m.id];
+        const o = rid ? oppskriftMedId(rid) : null;
+        return el('button', { class: 'plandag', type: 'button',
+          onclick: () => planCelleArk(m, iso, tegnRader) },
+          o
+            ? el('span', { class: 'plandag__fyll' }, matBilde(o, 'plandag__bilde'), el('span', { class: 'plandag__navn' }, o.navn))
+            : el('span', { class: 'plandag__tom' }, ikon('pluss', 'ikon')));
+      });
+      return el('div', { class: 'planrad' },
+        el('div', { class: 'planrad__hode' },
+          el('span', { class: 'planrad__disk' }, ikon(m.ikon)),
+          el('span', { class: 'planrad__tittel' }, m.navn),
+          el('span', { class: 'planrad__under' }, m.under)),
+        el('div', { class: 'planrad__spor' }, ...kolonner));
+    });
+    return rader;
+  };
+  const raderWrap = el('div', { class: 'planrader' }, ...bygg());
+  const tegnRader = () => { tom(raderWrap); raderWrap.append(...bygg()); oppdaterFot(); };
+
+  // Fot: teller + handlinger + handleliste-lenke.
+  const fotTall = el('span', { class: 'planfot__tall' });
+  const fotTekst = el('span', { class: 'planfot__tekst' });
+  const handleLenke = el('a', { class: 'planhandle', href: '#/handleliste' },
+    el('span', { class: 'planhandle__disk' }, ikon('handlepose', 'ikon')),
+    el('span', { class: 'planhandle__midt' },
+      el('span', { class: 'planhandle__tittel' }, 'Handleliste oppdatert'),
+      el('span', { class: 'planhandle__sub' }),
+      el('span', { class: 'planhandle__note' }, ikon('blad', 'ikon ikon--liten'), el('span', {}, 'Alltid oppdatert med endringene du gjør.'))),
+    ikon('chevron', 'ikon planhandle__chevron'));
+  const oppdaterFot = () => {
+    const ps = planStatus();
+    fotTall.textContent = String(ps.antall);
+    fotTekst.textContent = ps.dager
+      ? `Du har planlagt måltider for ${ps.dager} av 7 dager.`
+      : 'Ingen måltider planlagt ennå.';
+    const hb = byggHandleliste();
+    handleLenke.querySelector('.planhandle__sub').textContent =
+      `${hb.totalVarer} ${hb.totalVarer === 1 ? 'vare' : 'varer'} fra ukesplanen`;
+  };
+
+  const autofyll = el('button', { class: 'knapp knapp--sekundaer planfot__knapp', type: 'button',
+    onclick: () => { autofyllUke(); vibrer(); varsle('Uka er fylt ut', { ikon: 'hexstjerne' }); tegnRader(); } },
+    ikon('hexstjerne', 'ikon'), el('span', {}, 'Autofyll uka'));
+  const leggTil = el('a', { class: 'knapp planfot__knapp', href: '#/oppskrifter' },
+    ikon('pluss', 'ikon'), el('span', {}, 'Legg til måltid'));
+  const fot = el('section', { class: 'kort planfot' },
+    el('div', { class: 'planfot__sum' },
+      el('span', { class: 'planfot__badge' }, fotTall, el('span', { class: 'planfot__badgelab' }, 'måltider planlagt')),
+      fotTekst),
+    el('div', { class: 'planfot__knapper' }, leggTil, autofyll));
+
+  main.append(dagstripe, raderWrap, fot, handleLenke);
+  oppdaterFot();
+}
+
+// Bunnark: velg/bytt/fjern oppskrift for én dag + måltid.
+function planCelleArk(maaltid, iso, etterpå) {
+  const kand = alleOppskrifter().filter((o) => (o.maaltid || []).includes(maaltid.id));
+  const naa = maaltidFor(iso)[maaltid.id];
+  const d = new Date(`${iso}T12:00:00`);
+  const dagNavn = d.toLocaleDateString('nb-NO', { weekday: 'long', day: 'numeric', month: 'long' });
+  let lukkArk = () => {};
+
+  const liste = el('div', { class: 'arkvalg' }, ...kand.map((o) => el('button', {
+    class: 'arkvalg__rad' + (o.id === naa ? ' arkvalg__rad--valgt' : ''), type: 'button',
+    onclick: () => { settMaaltid(iso, maaltid.id, o.id); vibrer(); etterpå(); lukkArk(); } },
+    matBilde(o, 'arkvalg__bilde'),
+    el('span', { class: 'arkvalg__midt' },
+      el('span', { class: 'arkvalg__navn' }, o.navn),
+      el('span', { class: 'arkvalg__meta' }, `${o.tidMin} min`)),
+    o.id === naa ? ikon('sjekk', 'ikon arkvalg__hake') : null)));
+
+  const fjern = naa ? el('button', { class: 'knapp knapp--sekundaer', type: 'button',
+    onclick: () => { settMaaltid(iso, maaltid.id, null); vibrer(); etterpå(); lukkArk(); } },
+    ikon('minus', 'ikon'), el('span', {}, 'Fjern fra denne dagen')) : null;
+
+  const { lukk } = visArk(`${maaltid.navn} · ${dagNavn}`, liste, fjern);
+  lukkArk = lukk;
+}
+
+// --- Handleliste -----------------------------------------------------------
+function visHandlelisteSkjerm(mount) {
+  if (!hentProfil()) { location.hash = '#/hjem'; return; }
+  const main = matSideSkall(mount);
+  main.append(el('div', { class: 'matside__hode' },
+    el('h1', { class: 'matside__tittel' }, 'Handleliste')));
+
+  const innhold = el('div', {});
+  const tegn = () => { tom(innhold); innhold.append(...byggHandleInnhold(tegn)); };
+  tegn();
+  main.append(innhold);
+}
+
+function byggHandleInnhold(tegnPåNytt) {
+  const b = byggHandleliste();
+
+  // Toppkort: personer + stepper + del.
+  const personTall = el('span', { class: 'handletopp__tall' }, String(b.personer));
+  const stepper = (retning) => el('button', { class: 'handletopp__steg', type: 'button', 'aria-label': retning > 0 ? 'Flere' : 'Færre',
+    onclick: () => { settPersoner(b.personer + retning); vibrer(); tegnPåNytt(); } }, ikon(retning > 0 ? 'pluss' : 'minus', 'ikon'));
+  const del = el('button', { class: 'knapp handletopp__del', type: 'button',
+    onclick: async () => {
+      const tekst = handlelisteTekst();
+      try {
+        if (navigator.share) await navigator.share({ title: 'Handleliste', text: tekst });
+        else { await navigator.clipboard.writeText(tekst); varsle('Kopiert', { ikon: 'dele' }); }
+      } catch { /* avbrutt */ }
+    } }, ikon('dele', 'ikon'), el('span', {}, 'Del liste'));
+  const toppKort = el('section', { class: 'kort handletopp' },
+    el('span', { class: 'handletopp__disk' }, ikon('personer')),
+    el('div', { class: 'handletopp__midt' },
+      el('span', { class: 'handletopp__navn' }, `For ${b.personer} ${b.personer === 1 ? 'person' : 'personer'}`),
+      el('span', { class: 'handletopp__sub' }, beskrivPlan(b.perType) || 'Ingen måltider planlagt')),
+    el('div', { class: 'handletopp__stepper' }, stepper(-1), personTall, stepper(1)),
+    del);
+
+  const deler = [toppKort];
+
+  if (!b.totalVarer) {
+    deler.push(el('section', { class: 'kort handletom' },
+      el('span', { class: 'handletom__disk' }, ikon('handlepose')),
+      el('h2', { class: 'kost__tittel' }, 'Lista er tom'),
+      el('p', { class: 'dempet' }, 'Legg oppskrifter i ukesplanen, så fyller handlelista seg selv.'),
+      el('a', { class: 'knapp', href: '#/ukesplan' }, 'Åpne ukesplan')));
+    return deler;
+  }
+
+  // Varegrupper (kollapsbare).
+  for (const g of b.grupper) {
+    const kropp = el('div', { class: 'handlegruppe__kropp' }, ...g.varer.map((v) => {
+      const rad = el('button', { class: 'handlevare' + (v.avkrysset ? ' handlevare--av' : ''), type: 'button',
+        onclick: () => { veksleAvkrysset(v.key); rad.classList.toggle('handlevare--av'); vibrer(); oppdaterTeller(); } },
+        el('span', { class: 'handlevare__boks' }, ikon('sjekk', 'ikon handlevare__hake')),
+        el('span', { class: 'handlevare__navn' }, v.navn),
+        el('span', { class: 'handlevare__mengde' }, v.mengde != null ? `${v.mengde} ${v.enhet}`.trim() : ''));
+      return rad;
+    }));
+    const teller = el('span', { class: 'handlegruppe__teller' }, `${g.avkrysset} av ${g.antall}`);
+    const gruppe = el('section', { class: 'kort handlegruppe' });
+    const hode = el('button', { class: 'handlegruppe__hode', type: 'button', 'aria-expanded': 'true',
+      onclick: () => { const skjult = kropp.classList.toggle('handlegruppe__kropp--skjul'); hode.setAttribute('aria-expanded', String(!skjult)); hode.querySelector('.handlegruppe__chevron').classList.toggle('handlegruppe__chevron--lukket', skjult); } },
+      el('span', { class: 'handlegruppe__disk' }, ikon(g.ikon)),
+      el('span', { class: 'handlegruppe__navn' }, g.navn),
+      teller,
+      ikon('chevronsopp', 'ikon handlegruppe__chevron'));
+    const oppdaterTeller = () => {
+      const av = [...kropp.querySelectorAll('.handlevare--av')].length;
+      teller.textContent = `${av} av ${g.varer.length}`;
+    };
+    gruppe.append(hode, kropp);
+    deler.push(gruppe);
+  }
+
+  // Fra oppskrifter (kildene lista bygges på).
+  const kildeIder = [...new Set(handlelisteKilder())];
+  const kilder = kildeIder.map((id) => oppskriftMedId(id)).filter(Boolean).slice(0, 6);
+  if (kilder.length) {
+    deler.push(el('section', { class: 'kort handlekilder' },
+      el('h2', { class: 'kost__tittel' }, 'Fra oppskrifter'),
+      el('div', { class: 'handlekilder__liste' }, ...kilder.map((o) => el('a', { class: 'handlekilde', href: `#/oppskrift?id=${o.id}` },
+        matBilde(o, 'handlekilde__bilde'),
+        el('span', { class: 'handlekilde__midt' },
+          el('span', { class: 'handlekilde__navn' }, o.navn),
+          el('span', { class: 'handlekilde__meta' }, `${o.ingredienser.length} varer`)),
+        ikon('chevron', 'ikon'))))));
+  }
+
+  return deler;
 }
 
 // ===========================================================================
@@ -2334,7 +2843,7 @@ function skjulSplash() {
 // --- Oppstart ---
 async function start() {
   try {
-    [bib] = await Promise.all([lastBibliotek(), lastOkter(), lastOvelsesinfo(), lastArtikler(), lastStier(), lastKjeder(), lastDisipliner(), lastSeksjoner()]);
+    [bib] = await Promise.all([lastBibliotek(), lastOkter(), lastOvelsesinfo(), lastArtikler(), lastStier(), lastKjeder(), lastDisipliner(), lastSeksjoner(), lastOppskrifter()]);
   } catch (e) {
     skjulSplash();
     tom(app);

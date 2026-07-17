@@ -1,0 +1,250 @@
+[
+  {
+    "id": "bonnegryte-tomat",
+    "navn": "Bønnegryte med tomat og urter",
+    "emoji": "🍲",
+    "farge": "koral",
+    "tidMin": 25,
+    "porsjoner": 4,
+    "maaltid": ["middag"],
+    "tags": ["plantebasert", "fiber", "billig"],
+    "kort": "En mettende og smakfull gryte med hvite bønner, tomat og friske urter.",
+    "beskrivelse": "En mettende og smakfull gryte med hvite bønner, tomat og friske urter. Perfekt hverdagsmiddag som varmer.",
+    "ingredienser": [
+      { "navn": "Hvite bønner (hermetisk)", "mengde": 2, "enhet": "boks", "kategori": "belgvekster" },
+      { "navn": "Hermetiske tomater", "mengde": 2, "enhet": "boks", "kategori": "annet" },
+      { "navn": "Løk", "mengde": 1, "enhet": "stk", "kategori": "grønnsaker" },
+      { "navn": "Hvitløk", "mengde": 2, "enhet": "fedd", "kategori": "grønnsaker" },
+      { "navn": "Gulrøtter", "mengde": 2, "enhet": "stk", "kategori": "grønnsaker" },
+      { "navn": "Frisk persille", "mengde": 1, "enhet": "bunt", "kategori": "grønnsaker" },
+      { "navn": "Olivenolje", "mengde": 2, "enhet": "ss", "kategori": "annet" }
+    ],
+    "steg": [
+      "Finhakk løk og hvitløk, og kutt gulrøttene i biter.",
+      "Fres løk, hvitløk og gulrot i olivenolje til det mykner.",
+      "Ha i tomat og bønner, og la det putre i 15 minutter.",
+      "Smak til med salt og pepper, og topp med frisk persille."
+    ],
+    "blueZones": ["planter", "belgvekster", "delmaltid"]
+  },
+  {
+    "id": "ovnsbakt-laks-byggryn",
+    "navn": "Ovnsbakt laks med byggryn og grønnsaker",
+    "emoji": "🐟",
+    "farge": "teal",
+    "tidMin": 30,
+    "porsjoner": 4,
+    "maaltid": ["middag"],
+    "tags": ["protein", "omega3"],
+    "kort": "Saftig laks, ovnsbakte grønnsaker og næringsrike byggryn med sitron og urter.",
+    "beskrivelse": "Saftig laks, ovnsbakte grønnsaker og næringsrike byggryn med sitron og urter. En balansert middag med omega-3 og fullkorn.",
+    "ingredienser": [
+      { "navn": "Laksefilet", "mengde": 4, "enhet": "stk", "kategori": "kjøl" },
+      { "navn": "Byggryn", "mengde": 3, "enhet": "dl", "kategori": "korn" },
+      { "navn": "Søtpotet", "mengde": 1, "enhet": "stk", "kategori": "grønnsaker" },
+      { "navn": "Brokkoli", "mengde": 1, "enhet": "stk", "kategori": "grønnsaker" },
+      { "navn": "Sitron", "mengde": 1, "enhet": "stk", "kategori": "grønnsaker" },
+      { "navn": "Olivenolje", "mengde": 2, "enhet": "ss", "kategori": "annet" }
+    ],
+    "steg": [
+      "Kok byggryn etter anvisning på pakken, ca. 25 minutter.",
+      "Kutt søtpotet og brokkoli i biter, vend i olje og bak på 200 °C i 20 minutter.",
+      "Legg laksen på brettet de siste 12 minuttene, med sitron over.",
+      "Server byggryn med grønnsaker og laks, og press over litt sitron."
+    ],
+    "blueZones": ["fullkorn", "planter"]
+  },
+  {
+    "id": "linsesalat-ovnsbakte",
+    "navn": "Linsesalat med ovnsbakte grønnsaker",
+    "emoji": "🥗",
+    "farge": "lime",
+    "tidMin": 25,
+    "porsjoner": 4,
+    "maaltid": ["lunsj", "middag"],
+    "tags": ["plantebasert", "fiber"],
+    "kort": "En mettende og fargerik salat med ovnsbakte grønnsaker, linser og en frisk yoghurtdressing.",
+    "beskrivelse": "En mettende og fargerik salat med ovnsbakte grønnsaker, linser og en frisk yoghurtdressing. Perfekt som lunsj eller lett middag.",
+    "ingredienser": [
+      { "navn": "Tørre grønne linser", "mengde": 150, "enhet": "g", "kategori": "belgvekster" },
+      { "navn": "Gulrøtter", "mengde": 2, "enhet": "stk", "kategori": "grønnsaker" },
+      { "navn": "Rødbete", "mengde": 1, "enhet": "stk", "kategori": "grønnsaker" },
+      { "navn": "Søtpotet", "mengde": 1, "enhet": "stk", "kategori": "grønnsaker" },
+      { "navn": "Rødløk", "mengde": 1, "enhet": "stk", "kategori": "grønnsaker" },
+      { "navn": "Grønnkål", "mengde": 1, "enhet": "håndfull", "kategori": "grønnsaker" },
+      { "navn": "Gresskarkjerner", "mengde": 2, "enhet": "ss", "kategori": "annet" },
+      { "navn": "Olivenolje", "mengde": 2, "enhet": "ss", "kategori": "annet" },
+      { "navn": "Tørket timian", "mengde": 1, "enhet": "ts", "kategori": "annet" },
+      { "navn": "Spisskummen", "mengde": 1, "enhet": "ts", "kategori": "annet" },
+      { "navn": "Havsalt", "mengde": 1, "enhet": "klype", "kategori": "annet" },
+      { "navn": "Pepper", "mengde": 1, "enhet": "klype", "kategori": "annet" }
+    ],
+    "dressing": [
+      { "navn": "Yoghurt naturell", "mengde": 1, "enhet": "dl", "kategori": "kjøl" },
+      { "navn": "Sitron", "mengde": 1, "enhet": "stk", "kategori": "grønnsaker" },
+      { "navn": "Hvitløk", "mengde": 1, "enhet": "fedd", "kategori": "grønnsaker" }
+    ],
+    "steg": [
+      "Skyll linsene og kok dem møre i lettsaltet vann, ca. 20 minutter. Sil av vannet.",
+      "Skrell og kutt grønnsakene i biter. Vend med olivenolje, timian, salt og pepper.",
+      "Bak grønnsakene på 200 °C i 25–30 minutter, til de er møre og gyldne.",
+      "Bland linser, grønnsaker og grønnkål. Topp med dressing og gresskarkjerner."
+    ],
+    "blueZones": ["planter", "fullkorn", "delmaltid"]
+  },
+  {
+    "id": "rask-linsegryte-spinat",
+    "navn": "Rask linsegryte med spinat",
+    "emoji": "🍛",
+    "farge": "oransje",
+    "tidMin": 20,
+    "porsjoner": 4,
+    "maaltid": ["middag"],
+    "tags": ["plantebasert", "fiber", "billig"],
+    "kort": "Mettende, krydret og full av smak.",
+    "beskrivelse": "Mettende, krydret og full av smak — en rask hverdagsgryte med røde linser og spinat.",
+    "ingredienser": [
+      { "navn": "Røde linser", "mengde": 3, "enhet": "dl", "kategori": "belgvekster" },
+      { "navn": "Spinat", "mengde": 1, "enhet": "pose", "kategori": "grønnsaker" },
+      { "navn": "Hermetiske tomater", "mengde": 1, "enhet": "boks", "kategori": "annet" },
+      { "navn": "Løk", "mengde": 1, "enhet": "stk", "kategori": "grønnsaker" },
+      { "navn": "Hvitløk", "mengde": 2, "enhet": "fedd", "kategori": "grønnsaker" },
+      { "navn": "Karri", "mengde": 1, "enhet": "ss", "kategori": "annet" }
+    ],
+    "steg": [
+      "Fres løk og hvitløk i litt olje, og rør inn karri.",
+      "Ha i linser, tomat og 3 dl vann. La koke i 12–15 minutter.",
+      "Rør inn spinaten til slutt til den faller sammen.",
+      "Smak til med salt, og server gjerne med en klatt yoghurt."
+    ],
+    "blueZones": ["planter", "belgvekster"]
+  },
+  {
+    "id": "pasta-brokkoli-tomat",
+    "navn": "Pasta med brokkoli og soltørket tomat",
+    "emoji": "🍝",
+    "farge": "gul",
+    "tidMin": 15,
+    "porsjoner": 4,
+    "maaltid": ["middag"],
+    "tags": ["vegetar", "billig"],
+    "kort": "Enkel one-pot rett med masse smak.",
+    "beskrivelse": "Enkel one-pot rett med brokkoli, soltørket tomat og fullkornspasta — full av smak på et kvarter.",
+    "ingredienser": [
+      { "navn": "Fullkornspasta", "mengde": 400, "enhet": "g", "kategori": "korn" },
+      { "navn": "Brokkoli", "mengde": 1, "enhet": "stk", "kategori": "grønnsaker" },
+      { "navn": "Soltørket tomat", "mengde": 1, "enhet": "glass", "kategori": "annet" },
+      { "navn": "Hvitløk", "mengde": 2, "enhet": "fedd", "kategori": "grønnsaker" },
+      { "navn": "Parmesan", "mengde": 1, "enhet": "stk", "kategori": "kjøl" }
+    ],
+    "steg": [
+      "Kok pastaen etter anvisning, og ha i brokkolibuketter de siste 4 minuttene.",
+      "Fres hvitløk og soltørket tomat i litt av oljen fra glasset.",
+      "Vend pasta og brokkoli sammen med tomatblandingen.",
+      "Topp med revet parmesan og litt pepper."
+    ],
+    "blueZones": ["fullkorn", "planter"]
+  },
+  {
+    "id": "kikertsalat-sitron-feta",
+    "navn": "Kikertsalat med sitron og feta",
+    "emoji": "🥙",
+    "farge": "teal",
+    "tidMin": 20,
+    "porsjoner": 4,
+    "maaltid": ["lunsj"],
+    "tags": ["fiber", "vegetar"],
+    "kort": "Frisk, syrlig og perfekt som lunsj.",
+    "beskrivelse": "Frisk, syrlig og perfekt som lunsj — kikerter, sprø grønnsaker, sitron og feta.",
+    "ingredienser": [
+      { "navn": "Kikerter (hermetisk)", "mengde": 2, "enhet": "boks", "kategori": "belgvekster" },
+      { "navn": "Cherrytomater", "mengde": 1, "enhet": "eske", "kategori": "grønnsaker" },
+      { "navn": "Agurk", "mengde": 1, "enhet": "stk", "kategori": "grønnsaker" },
+      { "navn": "Rødløk", "mengde": 1, "enhet": "stk", "kategori": "grønnsaker" },
+      { "navn": "Sitron", "mengde": 1, "enhet": "stk", "kategori": "grønnsaker" },
+      { "navn": "Feta", "mengde": 1, "enhet": "pk", "kategori": "kjøl" }
+    ],
+    "steg": [
+      "Skyll og sil kikertene, og ha dem i en bolle.",
+      "Kutt tomater, agurk og rødløk, og bland inn.",
+      "Vend med sitronsaft, olivenolje, salt og pepper.",
+      "Smuldre over feta rett før servering."
+    ],
+    "blueZones": ["planter", "belgvekster"]
+  },
+  {
+    "id": "havregrot-baer",
+    "navn": "Havregrøt med bær",
+    "emoji": "🥣",
+    "farge": "lilla",
+    "tidMin": 10,
+    "porsjoner": 2,
+    "maaltid": ["frokost"],
+    "tags": ["fiber", "billig", "vegetar"],
+    "kort": "En god start på dagen.",
+    "beskrivelse": "En god start på dagen — kremet havregrøt toppet med friske bær og litt honning.",
+    "ingredienser": [
+      { "navn": "Havregryn", "mengde": 3, "enhet": "dl", "kategori": "korn" },
+      { "navn": "Melk eller havredrikk", "mengde": 5, "enhet": "dl", "kategori": "kjøl" },
+      { "navn": "Blåbær", "mengde": 1, "enhet": "kurv", "kategori": "grønnsaker" },
+      { "navn": "Honning", "mengde": 1, "enhet": "ss", "kategori": "annet" }
+    ],
+    "steg": [
+      "Kok havregryn og melk under omrøring i 4–5 minutter.",
+      "La grøten hvile et minutt så den tykner.",
+      "Topp med friske bær og litt honning."
+    ],
+    "blueZones": ["fullkorn"]
+  },
+  {
+    "id": "quinoasalat-gronnsaker",
+    "navn": "Quinoasalat med grønnsaker",
+    "emoji": "🥗",
+    "farge": "lime",
+    "tidMin": 20,
+    "porsjoner": 4,
+    "maaltid": ["lunsj"],
+    "tags": ["plantebasert", "fiber"],
+    "kort": "Lett, fargerik og god å ha med.",
+    "beskrivelse": "Lett, fargerik og god å ha med på jobb — quinoa, sprø grønnsaker og urter.",
+    "ingredienser": [
+      { "navn": "Quinoa", "mengde": 3, "enhet": "dl", "kategori": "korn" },
+      { "navn": "Paprika", "mengde": 1, "enhet": "stk", "kategori": "grønnsaker" },
+      { "navn": "Agurk", "mengde": 1, "enhet": "stk", "kategori": "grønnsaker" },
+      { "navn": "Vårløk", "mengde": 1, "enhet": "bunt", "kategori": "grønnsaker" },
+      { "navn": "Sitron", "mengde": 1, "enhet": "stk", "kategori": "grønnsaker" },
+      { "navn": "Frisk mynte", "mengde": 1, "enhet": "bunt", "kategori": "grønnsaker" }
+    ],
+    "steg": [
+      "Kok quinoa etter anvisning, og avkjøl litt.",
+      "Kutt paprika, agurk og vårløk i biter.",
+      "Bland alt sammen med sitronsaft, olje og urter."
+    ],
+    "blueZones": ["fullkorn", "planter"]
+  },
+  {
+    "id": "bonnesalat-feta",
+    "navn": "Bønnesalat med feta",
+    "emoji": "🫘",
+    "farge": "koral",
+    "tidMin": 15,
+    "porsjoner": 4,
+    "maaltid": ["lunsj"],
+    "tags": ["fiber", "vegetar", "billig"],
+    "kort": "Rask, mettende og proteinrik.",
+    "beskrivelse": "Rask, mettende og proteinrik salat med blandede bønner, tomat og feta.",
+    "ingredienser": [
+      { "navn": "Blandede bønner (hermetisk)", "mengde": 2, "enhet": "boks", "kategori": "belgvekster" },
+      { "navn": "Cherrytomater", "mengde": 1, "enhet": "eske", "kategori": "grønnsaker" },
+      { "navn": "Rødløk", "mengde": 1, "enhet": "stk", "kategori": "grønnsaker" },
+      { "navn": "Frisk basilikum", "mengde": 1, "enhet": "bunt", "kategori": "grønnsaker" },
+      { "navn": "Feta", "mengde": 1, "enhet": "pk", "kategori": "kjøl" }
+    ],
+    "steg": [
+      "Skyll og sil bønnene.",
+      "Kutt tomater og rødløk, og bland med bønnene.",
+      "Vend med olje og eddik, og smuldre over feta og basilikum."
+    ],
+    "blueZones": ["planter", "belgvekster"]
+  }
+]

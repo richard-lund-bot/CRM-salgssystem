@@ -9,13 +9,15 @@ import { beregnStreak } from './bevegelse.js';
 
 const LS = 'trening.matlogg';
 
-// Blue-zones-vaner (stabile id-er; visningsnavn oversettes av i18n).
+// Blue-zones-vaner (stabile id-er; visningsnavn oversettes av i18n). «Logg i
+// dag» på Mat-hjem. Eldre logger med id-ene 'fisk'/'moderasjon' teller fortsatt
+// mot dagen (gnisten teller enhver avkrysset vane), så streaks brytes ikke.
 export const VANER = [
-  { id: 'gront', navn: 'Grønnsaker' },
-  { id: 'belg', navn: 'Belgvekster' },
-  { id: 'fullkorn', navn: 'Fullkorn' },
-  { id: 'fisk', navn: 'Fisk' },
-  { id: 'moderasjon', navn: 'Måtehold' },
+  { id: 'gront', navn: 'Spiste grønnsaker', ikon: 'blad' },
+  { id: 'belg', navn: 'Belgvekster', ikon: 'belg' },
+  { id: 'fullkorn', navn: 'Fullkorn', ikon: 'korn' },
+  { id: 'hjemme', navn: 'Lagde mat hjemme', ikon: 'gryte' },
+  { id: 'rolig', navn: 'Spiste rolig', ikon: 'lotus' },
 ];
 const VANE = Object.fromEntries(VANER.map((v) => [v.id, v]));
 

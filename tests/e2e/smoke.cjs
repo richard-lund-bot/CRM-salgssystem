@@ -123,6 +123,25 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
   sjekk('Ro viser de fem ro-vanene', (await page.locator('.rovane').count()) === 5);
   sjekk('Ro viser mikroøktene', (await page.locator('.mikrokort').count()) === 3);
 
+  // --- 4d) Mat-pilaren: hjem + oppskrifter + ukesplan + handleliste ----------
+  await page.goto(BASE + '/#/kosthold');
+  await page.waitForSelector('.matvaner', { timeout: 20000 });
+  sjekk('Mat-hjem viser de fem matvanene', (await page.locator('.matvane').count()) === 5);
+  sjekk('Mat-hjem viser hero-stripa (streak + matvalg)', (await page.locator('.mathero').count()) === 1);
+  sjekk('Mat-hjem viser plan- og handlekort', (await page.locator('.matmini').count()) === 2);
+  await page.goto(BASE + '/#/oppskrifter');
+  await page.waitForSelector('.oppkort', { timeout: 20000 });
+  sjekk('Oppskrifter viser kort og filtre', (await page.locator('.oppkort').count()) > 0 && (await page.locator('.oppfilter').count()) === 6);
+  await page.goto(BASE + '/#/oppskrift?id=linsesalat-ovnsbakte');
+  await page.waitForSelector('.oppdetalj', { timeout: 20000 });
+  sjekk('Oppskrift-detalj viser steg og handlinger', (await page.locator('.oppsteg__rad').count()) === 4 && (await page.locator('.oppdetalj__handling').count()) === 2);
+  await page.goto(BASE + '/#/ukesplan');
+  await page.waitForSelector('.planrader', { timeout: 20000 });
+  sjekk('Ukesplan viser tre måltidsrader', (await page.locator('.planrad').count()) === 3);
+  await page.goto(BASE + '/#/handleliste');
+  await page.waitForSelector('.handletopp', { timeout: 20000 });
+  sjekk('Handleliste viser personvelger', (await page.locator('.handletopp__stepper').count()) === 1);
+
   // Tilbake til Hjem så språktesten under finner .hjemdash etter reload.
   await page.goto(BASE + '/#/hjem');
   await page.waitForSelector('.hjemdash', { timeout: 20000 });
