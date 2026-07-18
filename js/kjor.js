@@ -21,6 +21,14 @@ let gjeldendeOkt = null;
 let aktivInterval = null;
 let vedSynlig = null; // kalles når appen kommer i forgrunnen igjen
 
+// Hvor «tilbake» fra review skal gå: siden man åpnet økta FRA (Bevegelse-hjem,
+// favoritter, Ro, biblioteket …). Settes ved hvert åpningspunkt (settOpprinnelse)
+// fordi router-flyten via #/okter?start=X kollapser forrigeHash, så vi kan ikke
+// utlede opprinnelsen etterpå. Uten en opprinnelse faller vi tilbake til
+// biblioteket (som før).
+let reviewOpprinnelse = null;
+export function settOpprinnelse(hash) { reviewOpprinnelse = hash || null; }
+
 export function settØkt(o) { gjeldendeOkt = o; }
 
 function stoppTimer() {
@@ -70,7 +78,7 @@ export function visReviewSkjerm(mount) {
 
   monter(mount,
     tilbakeTopp(okt.navn, `${okt.varighetMin} min${okt.utstyr?.length ? ' · ' + okt.utstyr.join(', ') : ''}`,
-      () => { location.hash = okt.kategori ? `#/okter?kat=${okt.kategori}` : '#/okter'; }),
+      () => { location.hash = reviewOpprinnelse || (okt.kategori ? `#/okter?kat=${okt.kategori}` : '#/okter'); }),
     el('main', { class: 'innhold' },
       okt.beskrivelse && el('p', { class: 'dempet' }, okt.beskrivelse),
       ...okt.blokker.map((blk) => blokkSeksjon(blk)),

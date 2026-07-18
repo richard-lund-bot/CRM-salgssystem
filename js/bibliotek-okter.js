@@ -3,7 +3,7 @@
 // 2 intensiteter); et trykk konverterer bibliotekøkta til spillerformatet og
 // går rett til review → kjøring. Kildene står på hver økt.
 import { el, tom, chip, ikon } from './ui.js';
-import { settØkt } from './kjor.js';
+import { settØkt, settOpprinnelse } from './kjor.js';
 import { BEVEGELSER, KATEGORI_TIL_BEVEGELSE } from './bevegelse.js';
 import { lagFaneside } from './banner.js';
 import { lagArtikkelStripe } from './laer.js';
@@ -95,21 +95,28 @@ export function tilSpillerOkt(o, planId = null) {
   };
 }
 
-/** Åpner en økt: låst + ikke-admin → vis låst-ark; ellers start (review). */
+/** Åpner en økt: låst + ikke-admin → vis låst-ark; ellers start (review).
+ *  «Tilbake» fra review skal føre hit tilbake (biblioteket, Ro, favoritter …),
+ *  så vi fanger gjeldende side som opprinnelse før vi bytter til review. */
 export function aapneOkt(o, l = oktLast(o)) {
   if (l.laast && !erAdmin()) { visLastArk(o, l); return; }
+  settOpprinnelse(location.hash);
   settØkt(tilSpillerOkt(o));
   location.hash = '#/review';
 }
 
-/** Starter en bibliotekøkt: sett som gjeldende og gå til review. */
+/** Starter en bibliotekøkt: sett som gjeldende og gå til review. Kalles via
+ *  #/okter?start=<id> — den lenken er en forbigående kommando, ikke en ekte
+ *  side, så vi ERSTATTER den i historikken (location.replace). Da fører både
+ *  vår egen tilbake-knapp OG enhetens tilbake-gest til siden man kom fra, ikke
+ *  til biblioteket. Opprinnelsen settes av knappen som lenker hit. */
 export function startOkt(oktId, planId = null) {
   const o = oktMedId(oktId);
-  if (!o) { location.hash = '#/okter'; return; }
+  if (!o) { location.replace('#/okter'); return; }
   const l = oktLast(o);
-  if (l.laast && !erAdmin()) { location.hash = '#/okter'; setTimeout(() => visLastArk(o, l), 30); return; }
+  if (l.laast && !erAdmin()) { location.replace('#/okter'); setTimeout(() => visLastArk(o, l), 30); return; }
   settØkt(tilSpillerOkt(o, planId));
-  location.hash = '#/review';
+  location.replace('#/review');
 }
 
 /** Tilfeldig økt («Overrask meg») — enkel/middels skill. Uten admin foreslås

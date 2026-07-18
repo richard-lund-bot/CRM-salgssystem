@@ -12,7 +12,7 @@ import {
 import { el, tom, chip, ikon, bryter, visArk } from './ui.js';
 import { APP_VERSION, APP_NAME, APP_TAGLINE } from './config.js';
 import { kjorOnboarding } from './onboarding.js';
-import { visReviewSkjerm, visKjoreSkjerm } from './kjor.js';
+import { visReviewSkjerm, visKjoreSkjerm, settOpprinnelse } from './kjor.js';
 import { settBib as settBibHist, visAktivitetSkjerm } from './historikk.js';
 import { visHurtigSkjerm, visLoggforSkjerm, aktivHurtig, registrerOgLogg } from './beveg.js';
 import { slippVaaken } from './vaakenlaas.js';
@@ -213,6 +213,12 @@ function navger() {
   // redraws (samme hash, f.eks. etter synk) rører den ikke.
   const byttet = location.hash !== forrigeHash;
   if (byttet && forrigeHash) scrollMinne.set(forrigeHash, aktivScroller().scrollTop);
+  // #/okter?start=X er en «start denne økta»-kommando, ikke en egen side: den
+  // sender rett videre til review. «Tilbake» fra review skal føre til siden man
+  // kom FRA (Bevegelse-hjem, favoritter, plan …), ikke til biblioteket. Router-
+  // flyten kollapser forrigeHash når startOkt bytter hash, så vi fanger
+  // opprinnelsen HER — mens forrigeHash fortsatt peker på avreisesiden.
+  if (rute === 'okter' && /[?&]start=/.test(location.hash)) settOpprinnelse(forrigeHash || '#/trening');
   // Et åpent bunnark hører til siden man forlot — lukk det ved ekte navigasjon
   // så det ikke blir hengende som et usynlig overlegg på neste skjerm.
   if (byttet) document.querySelector('.ark')?.remove();

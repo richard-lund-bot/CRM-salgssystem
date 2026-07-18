@@ -120,6 +120,15 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
   const bevEtter = await page.locator('.bevrad__tittel').first().textContent();
   sjekk('Bevegelse-filter bytter anbefalinger', bevFør !== bevEtter, `${bevFør}→${bevEtter}`);
   sjekk('Se alle peker til øktbiblioteket', (await page.locator('.bevutforsk .seksjonslenke[href="#/okter"]').count()) > 0);
+  // Starter man en økt fra Bevegelse-hjem, skal «tilbake» fra review føre HIT
+  // tilbake — ikke til biblioteket. (#/okter?start=X er bare en kommando; en
+  // restitusjonsøkt er alltid ulåst, så review nås uten admin/Lær-seeding.)
+  await page.evaluate(() => { location.hash = '#/okter?start=restitusjon-medium-intens'; });
+  await page.waitForSelector('.topp--kjor', { timeout: 20000 });
+  sjekk('Økt fra Bevegelse-hjem åpner review', (await hash()) === '#/review');
+  await page.locator('.topp--kjor .topp__tilbake').click();
+  await page.waitForSelector('.bevfilter', { timeout: 20000 });
+  sjekk('Tilbake fra review fører til Bevegelse-hjem (ikke biblioteket)', (await hash()) === '#/trening');
   await page.locator('.bevchip', { hasText: 'Hverdag' }).click();
   await page.waitForTimeout(200);
   sjekk('Hverdag viser hjemmeaktiviteter (halv vekt)', (await page.locator('.bevrad__vekt').count()) === 3);
