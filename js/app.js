@@ -829,7 +829,6 @@ function visKostholdSkjerm(mount) {
   // og ukesprikker M–S. (Dagens matvalg-antall vises i «Logg i dag»-kortet under.)
   const main = pilarSkall(mount, {
     navn: 'mat', tittel: 'Mat som varer.',
-    under: 'Mest planter, belgvekster og enkle, gode måltider. Hver dag, sammen.',
     streakStripe: { streak: gm0.streak, dager: ukestreakPilar('mat'), href: '#/ukesplan' },
   });
   // Tenner dagens ukesprikk etter en logg (uten full redraw), som ro/fellesskap.
@@ -1571,7 +1570,7 @@ function visRoSkjerm(mount) {
 
   const gro = hentGnistStatus().pilarer.ro;
   const main = pilarSkall(mount, {
-    navn: 'ro', tittel: 'Ro i dag', under: 'Små pauser roer systemet.',
+    navn: 'ro', tittel: 'Ro i dag',
     streakStripe: { streak: gro.streak, dager: ukestreakRo(), href: '#/rofremgang' },
   });
 
@@ -1771,7 +1770,6 @@ function visFellesskapSkjerm(mount) {
   const main = pilarSkall(mount, {
     navn: 'fellesskap',
     tittel: 'God kontakt gjør noe med dagen.',
-    under: 'Små øyeblikk sammen gir mer mening, energi og glede.',
     streakStripe: { streak: gsos.streak, dager: ukestreakDager() },
   });
 
