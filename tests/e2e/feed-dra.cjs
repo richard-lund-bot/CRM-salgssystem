@@ -1,4 +1,6 @@
-// Touch-test for Instagram-stil dra fra Hjem til feeden. Egen fil fordi den
+// Touch-test for sveip mellom hovedsidene: Instagram-stil dra Hjem→feed, samt
+// strip-sveip (feed ← Hjem ← Mat ← Bevegelse ← Ro ← Fellesskap) og at et
+// horisontalt filter-felt scroller i stedet for å navigere. Egen fil fordi den
 // trenger en touch-kontekst (hasTouch) som hoved-røyktesten ikke bruker.
 // Kjøres med `npm run e2e:feed` (samme E2E_CHROMIUM-mekanikk som smoke.cjs).
 const http = require('node:http');
@@ -102,6 +104,43 @@ async function dra(page, xs, x2, y = 400) {
   });
   await page.waitForTimeout(500);
   sjekk('Vertikal dra åpner IKKE feeden', (await hash()) === '#/hjem', await hash());
+
+  // 4) Strip-sveip mellom bunnbar-sidene (feed ← Hjem ← Mat ← Bevegelse ← Ro ←
+  //    Fellesskap). Sveip på et ikke-scrollende område (y=200).
+  const sveip = async (rute, xs, x2) => {
+    await page.goto(`${BASE}/#/${rute}`);
+    await page.reload();
+    await page.waitForSelector('.hjemtopp, .feedtopp', { timeout: 20000 });
+    await page.waitForTimeout(700);
+    await page.evaluate(({ xs, x2 }) => {
+      const y = 200;
+      const el = document.elementFromPoint(195, y) || document.getElementById('app');
+      const mk = (x) => new Touch({ identifier: 1, target: el, clientX: x, clientY: y });
+      const ev = (type, x) => { const t = mk(x); el.dispatchEvent(new TouchEvent(type, { cancelable: true, bubbles: true, touches: type === 'touchend' ? [] : [t], changedTouches: [t] })); };
+      ev('touchstart', xs); for (let i = 1; i <= 8; i++) ev('touchmove', xs + (x2 - xs) * i / 8); ev('touchend', x2);
+    }, { xs, x2 });
+    await page.waitForTimeout(700);
+  };
+  await sveip('hjem', 350, 40); sjekk('Hjem → sveip venstre → Mat', (await hash()) === '#/kosthold', await hash());
+  await sveip('trening', 350, 40); sjekk('Bevegelse → sveip venstre → Ro', (await hash()) === '#/ro', await hash());
+  await sveip('trening', 40, 350); sjekk('Bevegelse → sveip høyre → Mat', (await hash()) === '#/kosthold', await hash());
+  await sveip('sosialt', 40, 350); sjekk('Fellesskap → sveip høyre → Ro', (await hash()) === '#/ro', await hash());
+  await sveip('feed', 350, 40); sjekk('Feed → sveip venstre → Hjem', (await hash()) === '#/hjem', await hash());
+
+  // 5) Sveip på det horisontale filter-brikke-feltet skal SCROLLE brikkene, ikke
+  //    navigere (ellers kapres karusellene). y≈430 treffer .bevfilter.
+  await page.goto(`${BASE}/#/trening`);
+  await page.reload();
+  await page.waitForSelector('.bevfilter', { timeout: 20000 });
+  await page.waitForTimeout(700);
+  await page.evaluate(() => {
+    const y = 430; const el = document.elementFromPoint(195, y);
+    const mk = (x) => new Touch({ identifier: 1, target: el, clientX: x, clientY: y });
+    const ev = (type, x) => { const t = mk(x); el.dispatchEvent(new TouchEvent(type, { cancelable: true, bubbles: true, touches: type === 'touchend' ? [] : [t], changedTouches: [t] })); };
+    ev('touchstart', 350); for (let i = 1; i <= 8; i++) ev('touchmove', 350 - 310 * i / 8); ev('touchend', 40);
+  });
+  await page.waitForTimeout(500);
+  sjekk('Sveip på filter-brikkene navigerer IKKE (scroller karusellen)', (await hash()) === '#/trening', await hash());
 
   await ctx.close();
   await browser.close();
