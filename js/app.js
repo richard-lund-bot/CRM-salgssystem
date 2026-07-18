@@ -234,7 +234,7 @@ function navger() {
   // så det ikke blir hengende som et usynlig overlegg på neste skjerm.
   if (byttet) document.querySelector('.ark')?.remove();
   document.body.classList.toggle('fokusmodus', FOKUS.has(rute));
-  document.body.classList.remove('fane-laast', 'dash-laast'); // settes på nytt av skjermene
+  document.body.classList.remove('fane-laast', 'dash-laast', 'enkeltside'); // settes på nytt av skjermene
   // Slide-over: feed/varsler glir inn som paneler i stedet for et umiddelbart
   // sidebytte. Feed ligger til venstre, varsler til høyre; på vei UT av et panel
   // kommer hovedappen tilbake fra motsatt side.
@@ -291,6 +291,10 @@ function oppdaterNav(rute) {
 
 function skjerm(tittel, ...innhold) {
   tom(app);
+  // Korte enkeltsider (Om, Utforsk, …) fyller skjermen: innholdet strekkes og
+  // midtstilles vertikalt når det er kortere enn viewporten, så bunnen aldri
+  // blir et tomt bakgrunnsfelt over den flytende bunnbaren.
+  document.body.classList.add('enkeltside');
   app.append(
     el('header', { class: 'topp' }, el('h1', { class: 'topp__tittel' }, tittel)),
     el('main', { class: 'innhold' }, ...innhold),
@@ -2975,6 +2979,7 @@ function kompassBudKort(modul, { hero = false } = {}) {
 
 function visMeningSkjerm(mount) {
   if (!hentProfil()) { location.hash = '#/hjem'; return; }
+  document.body.classList.add('enkeltside'); // fyll skjermen (samme som skjerm())
   const k = lesKompass();
   // Et utkast med redigerer-flagg betyr at brukeren står midt i en redigering
   // av et eksisterende kompass — flyten vises da oppå det (avbrytbar).

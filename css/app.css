@@ -929,6 +929,19 @@ body.fane-laast #app { height: 100%; }
 body.dash-laast { height: 100dvh; overflow: hidden; padding-bottom: 0; }
 body.dash-laast #app { height: 100%; }
 body.fane-laast .hjembanner { position: fixed; top: 0; left: 0; right: 0; }
+/* Enkeltsider (skjerm()/Mitt kompass): normal vindusscroll, men #app fyller
+   minst hele viewporten som en flex-kolonne. Fast topp + innhold som strekkes,
+   så et kort innhold midtstilles vertikalt i stedet for å etterlate et tomt
+   bakgrunnsfelt nederst. `safe center` faller tilbake til topp når innholdet er
+   høyere enn skjermen (ingen klipping av lange sider). */
+body.enkeltside { padding-bottom: 0; }
+body.enkeltside #app { min-height: 100dvh; display: flex; flex-direction: column; }
+body.enkeltside .topp { flex: 0 0 auto; }
+body.enkeltside .innhold {
+  flex: 1 1 auto;
+  justify-content: safe center;
+  padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 16px);
+}
 .hjem-scroll {
   height: 100%;
   min-height: 0;
@@ -2147,6 +2160,12 @@ body.fokusmodus { padding-bottom: 0; }
    Sidemargen (25px) flukter med profilikonet i banneret, som i biblioteket.
    ========================================================================== */
 .side { position: relative; z-index: 1; --side-marg: 25px; }
+/* Fanesider (Meny/Profil/Lær/Aktivitet) fyller skjermen: .side strekkes til
+   scrollflatens høyde, tittelen blir stående øverst, og innholdet under den
+   midtstilles vertikalt når det er kortere enn skjermen (ingen tom bunn). Er
+   innholdet høyere, faller `safe center` tilbake til topp og siden scroller. */
+body.fane-laast .side { display: flex; flex-direction: column; min-height: 100%; }
+body.fane-laast .side__innhold { flex: 1 1 auto; justify-content: safe center; }
 .sidehero { padding: 12px var(--side-marg) 16px; }
 .sidehero__tittel {
   margin: 0; font-family: var(--font-display); font-weight: 600;
