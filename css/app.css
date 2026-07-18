@@ -319,7 +319,19 @@ body {
 /* ===========================================================================
    Hjem-dashbord (M53) — DAGENS TAKT-ring, dagens valg, dagens fokus
    =========================================================================== */
-.hjemdash-scroll { min-height: 100%; }
+/* Fast topp + indre scroll: headeren (.hjemtopp) står stille mens innholdet
+   (.innhold) scroller og rubber-band-er. Slik skjer overscroll-bouncen på
+   content, aldri på headeren — samme prinsipp som fanesidenes .hjem-scroll. */
+.hjemdash-scroll { height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+.hjemdash-scroll > .hjemtopp { flex: 0 0 auto; }
+.hjemdash-scroll > .innhold {
+  flex: 1 1 auto; min-height: 0;
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
+/* Innholdet er selv en flex-kolonne; når det blir en scrollflate må barna
+   beholde sin naturlige høyde (ellers krymper de for å passe og klippes). */
+.hjemdash-scroll > .innhold > * { flex-shrink: 0; }
 .hjemtopp { display: flex; align-items: center; justify-content: space-between; padding: calc(env(safe-area-inset-top, 0px) + 14px) 18px 6px; }
 .hjemtopp__logo { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: 0.01em; color: var(--tekst); }
 .hjemtopp__logo .wordmark__prikk { color: var(--terrakotta); }
@@ -785,6 +797,10 @@ body {
    overskroll glir bildet frem fra bak headeren. */
 body.fane-laast { height: 100dvh; overflow: hidden; padding-bottom: 0; }
 body.fane-laast #app { height: 100%; }
+/* Pilar-/Hjem-/matsidene låser body på samme vis, så .hjemdash-scroll blir en
+   ekte indre scrollflate (fast .hjemtopp, content bouncer). */
+body.dash-laast { height: 100dvh; overflow: hidden; padding-bottom: 0; }
+body.dash-laast #app { height: 100%; }
 body.fane-laast .hjembanner { position: fixed; top: 0; left: 0; right: 0; }
 .hjem-scroll {
   height: 100%;

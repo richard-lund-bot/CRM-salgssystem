@@ -163,7 +163,7 @@ const faneMinne = Object.fromEntries(FANER_DEF.map((f) => [f.id, `#/${f.rute}`])
 const scrollMinne = new Map();
 let forrigeHash = '';
 // Fanesidene scroller et indre .hjem-scroll; reise-/vanlige skjermer scroller vinduet.
-const aktivScroller = () => document.querySelector('.hjem-scroll') || document.scrollingElement || document.documentElement;
+const aktivScroller = () => document.querySelector('.hjem-scroll') || document.querySelector('.hjemdash-scroll > .innhold') || document.scrollingElement || document.documentElement;
 
 // Husk hvor fanen var, og speil minnet inn i fane-lenkene så et trykk går rett
 // dit du var. Bare skjermer som beholder bunnbaren huskes (ikke fokus-flow).
@@ -216,7 +216,7 @@ function navger() {
   // så det ikke blir hengende som et usynlig overlegg på neste skjerm.
   if (byttet) document.querySelector('.ark')?.remove();
   document.body.classList.toggle('fokusmodus', FOKUS.has(rute));
-  document.body.classList.remove('fane-laast'); // settes på nytt av fanesidene
+  document.body.classList.remove('fane-laast', 'dash-laast'); // settes på nytt av skjermene
   // Navigasjon vekker en kompakt bar: den vokser tilbake til full størrelse
   // mens linsen glir til ny fane (som Instagram). Å bli stående krympet ga
   // også et origin-hopp når strekk-animasjonen byttet transform-origin.
@@ -350,7 +350,8 @@ function visHjemDashboard(mount) {
   // Hjem: hero → dagens fokus → hele Utforsk-innholdet innfelt (M55).
   const hjemMain = el('main', { class: 'innhold hjemdash' }, hero, dagensFokus, ...byggUtforskSeksjoner());
   const scroll = el('div', { class: 'hjemdash-scroll' }, topp, hjemMain);
-  mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: dashScrollTop, innhold: hjemMain }));
+  document.body.classList.add('dash-laast');
+  mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: () => hjemMain.scrollTop, innhold: hjemMain }));
 
   // Sveip til venstre → dagens feed (uten å stjele vertikal scroll).
   let sx = null; let sy = null;
@@ -376,9 +377,6 @@ function braceSvg() {
   return wrap;
 }
 
-// Hjem-dashbordet og pilarene scroller vinduet (ikke et indre element), så
-// pull-to-refresh leser vindus-scrollen.
-const dashScrollTop = () => window.scrollY || document.documentElement.scrollTop || 0;
 
 // ===========================================================================
 // Felles pilar-skall (M53) — samme stil som Hjem-dashbordet: hjemtopp-header
@@ -431,7 +429,8 @@ function pilarSkall(mount, { navn, tittel, under = null, ring = null, streakStri
   tom(mount);
   const main = el('main', { class: 'innhold hjemdash' }, hero);
   const scroll = el('div', { class: 'hjemdash-scroll' }, topp, main);
-  mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: dashScrollTop, innhold: main }));
+  document.body.classList.add('dash-laast');
+  mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: () => main.scrollTop, innhold: main }));
   if (settRing) requestAnimationFrame(() => requestAnimationFrame(() => {
     settRing((ring.pst || 0) / 100);
     tallOpp(pstEl, ring.pst || 0, { format: (n) => `${n}%` });
@@ -550,7 +549,8 @@ function matSideSkall(mount) {
   tom(mount);
   const main = el('main', { class: 'innhold matside' });
   const scroll = el('div', { class: 'hjemdash-scroll' }, topp, main);
-  mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: dashScrollTop, innhold: main }));
+  document.body.classList.add('dash-laast');
+  mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: () => main.scrollTop, innhold: main }));
   return main;
 }
 
