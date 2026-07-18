@@ -355,6 +355,11 @@ body.sideglir { overflow: hidden; }
    stil). Full skjerm, ugjennomsiktig, over bunnbaren. Transform settes i JS. */
 .feedpeek { position: fixed; inset: 0; z-index: 1500; background: var(--bg); overflow: hidden; will-change: transform; }
 .feedpeek .feedscroll { height: 100%; overflow: hidden; }
+/* Side-peek (nabo-fane under en drag): ligger UNDER bunnbaren (z 20) så pillen
+   blir synlig oppå og kan gli mens man drar. Innholdet er et statisk øyeblikks-
+   bilde — ingen scroll. */
+.feedpeek--side { z-index: 5; }
+.feedpeek--side .hjemdash-scroll > .innhold, .feedpeek--side .hjem-scroll { overflow: hidden; }
 /* Fullskjerm: innholdet strekker seg helt til bunnen (bak den flytende
    bunnbaren) — ingen reservert bunn-stripe. Bare safe-area-klaring mot
    hjemindikatoren. */

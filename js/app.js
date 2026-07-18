@@ -426,7 +426,33 @@ function visHjemDashboard(mount) {
 // gesten (preventDefault) så nettleserens tilbake-sveip ikke slår inn — det er
 // «tilbake-bug-en» som oppsto fordi appen kjører som nettside.
 const SVEIP_STRIP = ['feed', 'hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
+// Render-funksjon per hovedside (til dra-peeken). Feeden har sin egen (byggFeedPeek).
+const SIDE_RENDER = {
+  hjem: visHjemDashboard, kosthold: visKostholdSkjerm, trening: visTrening,
+  ro: visRoSkjerm, sosialt: visFellesskapSkjerm,
+};
 
+// Render en hovedside inn i et løsrevet peek-lag (uten å røre den levende #app).
+// Skjermene setter body-klasser (dash-laast osv.) — vi gjenoppretter dem etterpå.
+// Peeken er et statisk øyeblikksbilde (ikke-interaktivt); den ekte siden tegnes
+// når man slipper.
+function byggSidePeek(rute) {
+  if (rute === 'feed') return byggFeedPeek();
+  const wrap = el('div', { class: 'feedpeek feedpeek--side', 'aria-hidden': 'true' });
+  const førBody = document.body.className;
+  try { (SIDE_RENDER[rute] || SIDE_RENDER.hjem)(wrap); } catch { /* tom peek ved feil */ }
+  document.body.className = førBody;
+  return wrap;
+}
+
+// Instagram-stil drag mellom hovedsidene, montert én gang på #app. Stripa er
+// feed ← Hjem ← Mat ← Bevegelse ← Ro ← Fellesskap. En horisontal dra FØLGER
+// fingeren: gjeldende side skyves til side mens nabosiden (en peek) dras inn fra
+// motsatt kant. Er feeden involvert glir bunnbaren bort med sidene; mellom to
+// faner blir bunnbaren stående mens PILLEN glir mot mål-fanen. Slipp forbi
+// terskelen fullfører (ruten tegnes uten å doble slide); ellers spretter alt
+// tilbake. Vi eier den horisontale gesten (preventDefault) så nettleserens
+// tilbake-sveip ikke slår inn.
 function settOppSideSveip() {
   const bredde = () => window.innerWidth || document.documentElement.clientWidth;
   const naaRute = () => (location.hash.replace('#/', '') || 'hjem').split('?')[0];
@@ -434,7 +460,6 @@ function settOppSideSveip() {
     const i = SVEIP_STRIP.indexOf(rute);
     return { v: i > 0 ? SVEIP_STRIP[i - 1] : null, h: (i >= 0 && i < SVEIP_STRIP.length - 1) ? SVEIP_STRIP[i + 1] : null };
   };
-  // Ikke kapre en horisontal scroller (filterbrikker, karuseller, story-rad …).
   const iHscroller = (node) => {
     for (let n = node; n && n !== app; n = n.parentElement) {
       if (n.nodeType !== 1) continue;
@@ -443,46 +468,67 @@ function settOppSideSveip() {
     }
     return false;
   };
+  const tabbar = () => document.querySelector('.tabbar');
+  const linse = () => document.querySelector('.tabbar__linse');
+  const knappSenter = (r) => { const b = document.querySelector(`.tabbar__knapp[data-rute="${faneForRute(r)}"]`); return b ? b.offsetLeft + b.offsetWidth / 2 : null; };
 
-  let sx = null; let sy = null; let retning = null; let aktiv = false; let feedModus = false; let peek = null; let hoppOver = false;
+  let sx = null; let sy = null; let retning = null; let aktiv = false; let hoppOver = false;
+  let peek = null; let mål = null; let dir = 0; let feedInne = false; let linseFra = null; let linseTil = null;
 
-  const settFeedPos = (x) => {
-    const dx = Math.max(0, Math.min(bredde(), x));
-    app.style.transform = `translateX(${dx}px)`;
-    if (peek) peek.style.transform = `translateX(${dx - bredde()}px)`;
-  };
-  const ryddFeed = () => {
-    app.style.transition = ''; app.style.transform = '';
-    peek?.remove(); peek = null;
-    document.body.classList.remove('sideglir');
-  };
-  const animerFeed = (fullfor) => {
+  const settPos = (dxRaw) => {
     const W = bredde();
-    app.style.transition = 'transform 0.34s var(--ease-out)';
-    if (peek) peek.style.transition = 'transform 0.34s var(--ease-out)';
+    const dx = dir > 0 ? Math.max(0, Math.min(W, dxRaw)) : Math.min(0, Math.max(-W, dxRaw));
+    app.style.transform = `translateX(${dx}px)`;
+    if (peek) peek.style.transform = `translateX(${dx - dir * W}px)`; // peek starter på -dir*W, glir mot 0
+    if (feedInne) {
+      const bar = tabbar(); if (bar) bar.style.transform = `translateX(${dx}px)`;   // bunnbaren glir bort med sidene
+    } else if (linseFra != null && linseTil != null) {
+      const p = Math.min(1, Math.abs(dx) / W);
+      const ind = linse(); if (ind) ind.style.transform = `translateX(${linseFra + (linseTil - linseFra) * p}px) translateX(-50%)`; // pillen glir mot mål-fanen
+    }
+  };
+  const rensTransform = () => {
+    app.style.transition = ''; app.style.transform = '';
+    const bar = tabbar(); if (bar) { bar.style.transition = ''; bar.style.transform = ''; }
+    const ind = linse(); if (ind) ind.style.transition = '';
+    document.body.classList.remove('sideglir');
+    flyttTabIndikator();
+  };
+  const rydd = () => { peek?.remove(); peek = null; rensTransform(); };
+  const animer = (fullfor) => {
+    const W = bredde();
+    const tr = 'transform 0.36s var(--ease-out)';
+    app.style.transition = tr;
+    if (peek) peek.style.transition = tr;
+    const bar = tabbar(); const ind = linse();
+    if (bar && feedInne) bar.style.transition = tr;
+    if (ind && !feedInne) ind.style.transition = tr;
     if (fullfor) {
-      app.style.transform = `translateX(${W}px)`;
+      app.style.transform = `translateX(${dir * W}px)`;
       if (peek) peek.style.transform = 'translateX(0)';
+      if (bar && feedInne) bar.style.transform = `translateX(${dir * W}px)`;
+      if (ind && !feedInne && linseTil != null) ind.style.transform = `translateX(${linseTil}px) translateX(-50%)`;
       setTimeout(() => {
-        // Peeken dekker skjermen. Nullstill #app FØR vi navigerer, så den ekte
-        // feeden tegnes på plass (translateX 0) under peeken, og fjern peeken når
-        // feeden er der (ingen flash).
+        // Peeken dekker mål-siden. Nullstill #app FØR navigasjon, så den ekte
+        // siden tegnes på plass (translateX 0) under peeken; fjern peeken etter.
         app.style.transition = ''; app.style.transform = '';
-        _droppSlide = true;
-        location.hash = '#/feed';
-        setTimeout(() => { peek?.remove(); peek = null; document.body.classList.remove('sideglir'); }, 120);
-      }, 340);
+        _droppSlide = true;               // peeken viste alt siden glidende inn
+        location.hash = '#/' + mål;
+        setTimeout(() => { peek?.remove(); peek = null; rensTransform(); }, 130);
+      }, 360);
     } else {
       app.style.transform = 'translateX(0)';
-      if (peek) peek.style.transform = `translateX(${-W}px)`;
-      setTimeout(ryddFeed, 340);
+      if (peek) peek.style.transform = `translateX(${-dir * W}px)`;
+      if (bar && feedInne) bar.style.transform = 'translateX(0)';
+      if (ind && !feedInne && linseFra != null) ind.style.transform = `translateX(${linseFra}px) translateX(-50%)`;
+      setTimeout(rydd, 360);
     }
   };
 
   app.addEventListener('touchstart', (e) => {
     if (e.touches.length !== 1 || !SVEIP_STRIP.includes(naaRute())) { sx = null; return; }
     const t = e.touches[0]; sx = t.clientX; sy = t.clientY;
-    retning = null; aktiv = false; feedModus = false;
+    retning = null; aktiv = false; feedInne = false; peek = null; mål = null; dir = 0; linseFra = linseTil = null;
     hoppOver = iHscroller(e.target);
     app.style.transition = '';
   }, { passive: true });
@@ -495,27 +541,26 @@ function settOppSideSveip() {
       if (Math.abs(dx) <= Math.abs(dy) * 1.3) { retning = 'v'; return; } // vertikal → la scroll skje
       retning = 'h';
       aktiv = true; // vi eier den horisontale gesten (blokkerer nettleser-tilbake)
-      // Hjem → feed følger fingeren med en peek (feeden ligger til venstre).
-      if (naaRute() === 'hjem' && dx > 0) {
-        feedModus = true;
-        peek = byggFeedPeek();
-        peek.style.transform = `translateX(${-bredde()}px)`;
+      const cur = naaRute(); const nab = naboer(cur);
+      dir = dx > 0 ? 1 : -1;
+      mål = dir > 0 ? nab.v : nab.h; // dra høyre → venstre-nabo; dra venstre → høyre-nabo
+      if (mål) {
+        feedInne = (cur === 'feed' || mål === 'feed');
+        peek = byggSidePeek(mål);
+        peek.style.transform = `translateX(${-dir * bredde()}px)`;
         document.body.appendChild(peek);
         document.body.classList.add('sideglir');
+        if (!feedInne) { linseFra = knappSenter(cur); linseTil = knappSenter(mål); }
       }
     }
-    if (aktiv) { e.preventDefault(); if (feedModus) settFeedPos(dx); }
+    if (aktiv) { e.preventDefault(); if (mål) settPos(dx); }
   }, { passive: false });
 
   const slutt = (e) => {
     if (!aktiv) { sx = null; return; }
     const t = e.changedTouches[0]; const dx = t.clientX - sx; sx = null; aktiv = false;
-    if (feedModus) { feedModus = false; animerFeed(dx > bredde() * 0.3); return; }
-    // Terskel-sveip mellom nabosidene (rute-slide i riktig retning).
-    const nab = naboer(naaRute());
-    const terskel = bredde() * 0.22;
-    if (dx > terskel && nab.v) { _nesteSlide = 'side-inn-venstre'; location.hash = '#/' + nab.v; }
-    else if (dx < -terskel && nab.h) { _nesteSlide = 'side-inn-hoyre'; location.hash = '#/' + nab.h; }
+    if (!mål) return; // eide gesten (blokkerte tilbake), men ingen nabo å gå til
+    animer(Math.abs(dx) > bredde() * 0.3); // forbi ~30 % → fullfør, ellers sprett tilbake
   };
   app.addEventListener('touchend', slutt, { passive: true });
   app.addEventListener('touchcancel', slutt, { passive: true });
@@ -2148,7 +2193,7 @@ function gjortIDag(id) {
   return hentLogg().filter((o) => !o.slettet && (o.dato || '').slice(0, 10) === iso && o.oktId === id).length;
 }
 
-function visTrening() {
+function visTrening(mount = app) {
   const profil = hentProfil();
   if (!profil) {
     skjerm(APP_NAME, velkommenKort());
@@ -2158,7 +2203,7 @@ function visTrening() {
   const gbev = hentGnistStatus().pilarer.bevegelse;
   // Header som Ro/Fellesskap: naturbilde-hero + streak-stripe. Under: to
   // minuttkort, «Utforsk bevegelse» (filtrerte anbefalinger) og rask tilgang.
-  const main = pilarSkall(app, {
+  const main = pilarSkall(mount, {
     navn: 'bevegelse', tittel: 'Finn noe som passer i dag.',
     streakStripe: { streak: gbev.streak, dager: ukestreakPilar('bevegelse'), href: '#/fremgang' },
   });
@@ -2169,7 +2214,7 @@ function visTrening() {
     const ny = minuttKortRad(hentProfil(), hentLogg());
     minRad.replaceWith(ny);
     minRad = ny;
-    const dot = app.querySelector('.ukestreak__prikk--now');
+    const dot = mount.querySelector('.ukestreak__prikk--now');
     if (dot) dot.classList.add('ukestreak__prikk--on');
   };
   main.append(
