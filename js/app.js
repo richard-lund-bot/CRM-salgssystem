@@ -452,13 +452,6 @@ function pilarSkall(mount, { navn, tittel, under = null, ring = null, streakStri
 // meny-huben) og innfelt nederst på Hjem-dashbordet (M55).
 // ===========================================================================
 function byggUtforskSeksjoner() {
-  const feedInngang = el('a', { class: 'utforsk-feed', href: '#/feed' },
-    el('span', { class: 'utforsk-feed__ikon' }, ikon('feed')),
-    el('span', { class: 'utforsk-feed__midt' },
-      el('span', { class: 'utforsk-feed__navn' }, 'Dagens feed'),
-      el('span', { class: 'utforsk-feed__hint' }, 'Spillbar kunnskap — ett kort av gangen')),
-    ikon('pilhoyre'));
-
   const kunnskap = el('div', { class: 'utforsk-grid' }, el('p', { class: 'dempet' }, 'Laster…'));
 
   hentSprakJson('artikler').then((data) => {
@@ -480,7 +473,6 @@ function byggUtforskSeksjoner() {
   return [
     el('section', { class: 'utforsk-seksjon' },
       el('h2', { class: 'utforsk-seksjontittel' }, 'Kunnskap & inspirasjon'), kunnskap),
-    el('section', { class: 'kort' }, el('h2', { class: 'kost__tittel' }, 'Dagens feed'), feedInngang),
   ];
 }
 
@@ -1927,29 +1919,81 @@ function vekslOktFav(id) {
   return i < 0; // true = ble favoritt nå
 }
 
-// Hverdagsaktivitet — husarbeid, hage og annet som også ER bevegelse. Teller
-// med halv vekt (lettere/ujevn intensitet), og logges via «Gjort» (ingen guidet
-// timer). Halv vekt gir et ærlig, men motiverende bidrag: en halvtimes hagearbeid
-// ≈ 15 min bevegelse.
-const HVERDAG_VEKT = 0.5;
-const HVERDAGSAKTIVITETER = [
-  { id: 'hv-rydde', navn: 'Rydde og sortere', varighetMin: 20, ikon: 'hjem', beskrivelse: 'Rydd et rom, sorter og sett på plass — kroppen jobber mer enn du tror.' },
-  { id: 'hv-stovsug', navn: 'Støvsuge huset', varighetMin: 25, ikon: 'hjem', beskrivelse: 'Frem og tilbake, opp og ned trapper — god allsidig bevegelse.' },
-  { id: 'hv-gulvvask', navn: 'Vaske gulv', varighetMin: 20, ikon: 'hjem', beskrivelse: 'Moppe eller skure — bøy, strekk og gå.' },
-  { id: 'hv-vindu', navn: 'Vaske vinduer', varighetMin: 20, ikon: 'hjem', beskrivelse: 'Store sirkler for skuldre og armer.' },
-  { id: 'hv-hage', navn: 'Hagearbeid', varighetMin: 30, ikon: 'blad', beskrivelse: 'Grave, plante og luke — variert og god utebevegelse.' },
-  { id: 'hv-luke', navn: 'Luke ugress', varighetMin: 20, ikon: 'blad', beskrivelse: 'Huk deg ned, reis deg opp — bein og kjerne i sving.' },
-  { id: 'hv-plen', navn: 'Klippe plenen', varighetMin: 30, ikon: 'blad', beskrivelse: 'Skyv, gå og snu — jevn kondisjon i egen hage.' },
-  { id: 'hv-loov', navn: 'Rake løv', varighetMin: 25, ikon: 'blad', beskrivelse: 'Dra, samle og bær — rytmisk helkroppsarbeid.' },
-  { id: 'hv-snomake', navn: 'Måke snø', varighetMin: 20, ikon: 'hjem', beskrivelse: 'Løft og kast — intens økt, ta pauser ved behov.' },
-  { id: 'hv-ved', navn: 'Bære og stable ved', varighetMin: 20, ikon: 'hjem', beskrivelse: 'Løft, bær og bøy — naturlig styrke.' },
-  { id: 'hv-handle', navn: 'Handle til fots', varighetMin: 25, ikon: 'loper', beskrivelse: 'Gå til butikken og bær varene hjem.' },
-  { id: 'hv-varer', navn: 'Bære inn varer', varighetMin: 15, ikon: 'hjem', beskrivelse: 'Opp trappene med posene — kort og effektivt.' },
-  { id: 'hv-lek', navn: 'Aktiv lek med barna', varighetMin: 25, ikon: 'personer', beskrivelse: 'Løp, hopp og bær — lek som teller.' },
-  { id: 'hv-mobler', navn: 'Flytte om på møbler', varighetMin: 20, ikon: 'hjem', beskrivelse: 'Skyv, løft og bær — tung, variert innsats.' },
-  { id: 'hv-vaskbil', navn: 'Vaske bilen for hånd', varighetMin: 25, ikon: 'hjem', beskrivelse: 'Skrubb, bøy og strekk rundt hele bilen.' },
-].map((a) => ({ ...a, kategori: 'hverdag', bevegelse: 'walk', hverdag: true }));
-const hverdagKreditt = (min) => Math.max(1, Math.round(min * HVERDAG_VEKT));
+// Hverdagsbevegelse — husarbeid, hage, pendling og annet dagligliv som også ER
+// bevegelse. Logges via «Gjort» (ingen guidet timer). Hver aktivitet har et
+// intensitetsnivå som gir multiplikatoren mot bevegelse-minuttene: lett (rolig,
+// mye stillestående), moderat (jevn innsats) og hard (tung, får opp pulsen).
+// Selv «hard» hverdagsbevegelse er ujevn og delvis stillestående, så en antatt
+// standardøkt (HVERDAG_BOUT) ganges ned — et ærlig, men motiverende bidrag.
+const HVERDAG_NIVAA = { lett: 0.3, moderat: 0.6, hard: 1.0 };
+const HVERDAG_NIVAANAVN = { lett: 'Lett', moderat: 'Moderat', hard: 'Hard' };
+const HVERDAG_BOUT = 20; // antatt lengde på én «Gjort»-økt (min) før multiplikator
+const hverdagKreditt = (a) => Math.max(1, Math.round((a.varighetMin || HVERDAG_BOUT) * (HVERDAG_NIVAA[a.nivaa] ?? 0.6)));
+
+// Underkategorier for hverdagsbevegelse (vises som et eget filter når «Hverdag»
+// er valgt hovedgruppe). Rekkefølgen = chip-rekkefølgen. Hver aktivitet: [navn, nivå].
+const HVERDAG_UNDER = [
+  { id: 'hjemme', navn: 'Hjemme', ikon: 'hjem', aktiviteter: [
+    ['Rydde rom', 'lett'], ['Generell husrydding', 'moderat'], ['Støvsuge', 'moderat'],
+    ['Vaske gulv', 'moderat'], ['Vaske bad', 'moderat'], ['Vaske vinduer', 'moderat'],
+    ['Tørke støv', 'lett'], ['Skifte sengetøy', 'moderat'], ['Bære og sortere klær', 'moderat'],
+    ['Henge opp klær', 'lett'], ['Brette klær', 'lett'], ['Oppvask og kjøkkenrydding', 'lett'],
+    ['Lage mat', 'lett'], ['Storrydde kjøkken', 'moderat'], ['Pakke eller organisere', 'moderat'],
+    ['Flytte møbler', 'hard'], ['Bære ting mellom etasjer', 'hard'], ['Gå i trapper hjemme', 'moderat'],
+  ] },
+  { id: 'utehage', navn: 'Ute og hage', ikon: 'tre', aktiviteter: [
+    ['Luke', 'moderat'], ['Plante', 'moderat'], ['Grave', 'hard'], ['Rake', 'moderat'],
+    ['Klippe plen', 'moderat'], ['Trim busker eller hekk', 'moderat'], ['Vanne', 'lett'],
+    ['Bære jord eller planter', 'hard'], ['Stable ved', 'hard'], ['Hugge eller kløyve ved', 'hard'],
+    ['Måke snø', 'hard'], ['Koste ute', 'moderat'], ['Vaske terrasse', 'moderat'],
+    ['Vaske bil', 'moderat'], ['Male eller olje', 'moderat'], ['Rense takrenner', 'moderat'],
+    ['Bære avfall', 'moderat'], ['Generelt vedlikehold ute', 'moderat'],
+  ] },
+  { id: 'pafarten', navn: 'På farten', ikon: 'sko', aktiviteter: [
+    ['Gå til butikk', 'moderat'], ['Gå til jobb eller skole', 'moderat'], ['Sykle til et ærend', 'moderat'],
+    ['Gå til kollektivtransport', 'moderat'], ['Gå mellom møter', 'lett'], ['Ta trappene', 'moderat'],
+    ['Handle dagligvarer', 'lett'], ['Bære handleposer', 'moderat'], ['Gå på kjøpesenter', 'lett'],
+    ['Hente eller levere noe', 'lett'], ['Parkere et stykke unna', 'lett'], ['Gå tur med hund', 'moderat'],
+    ['Trille sykkel eller barnevogn', 'moderat'], ['Bære bagasje', 'moderat'],
+  ] },
+  { id: 'familie', navn: 'Familie og omsorg', ikon: 'personer', aktiviteter: [
+    ['Leke aktivt med barn', 'moderat'], ['Leke ute', 'moderat'], ['Leke på gulvet', 'lett'],
+    ['Bære barn', 'moderat'], ['Trilletur', 'moderat'], ['Følge barn til skole eller barnehage', 'moderat'],
+    ['Bade eller stelle barn', 'lett'], ['Rydde leker', 'lett'], ['Bygge, grave eller ake sammen', 'moderat'],
+    ['Familietur', 'moderat'], ['Leke med kjæledyr', 'moderat'], ['Omsorgsarbeid med mye bevegelse', 'moderat'],
+  ] },
+  { id: 'arbeid', navn: 'Arbeid', ikon: 'vekt', aktiviteter: [
+    ['Aktiv arbeidsdag', 'moderat'], ['Stå på jobb', 'lett'], ['Gå mye på jobb', 'moderat'],
+    ['Gå i trapper på jobb', 'moderat'], ['Bære varer', 'hard'], ['Fylle på hyller', 'moderat'],
+    ['Lagerarbeid', 'moderat'], ['Renholdsarbeid', 'moderat'], ['Håndverksarbeid', 'moderat'],
+    ['Hage- eller utearbeid', 'moderat'], ['Pleie- og omsorgsarbeid', 'moderat'], ['Montering', 'moderat'],
+    ['Aktiv møte- eller messedag', 'lett'], ['Pendling til fots eller sykkel', 'moderat'],
+  ] },
+  { id: 'prosjekt', navn: 'Prosjekter og fritid', ikon: 'penn', aktiviteter: [
+    ['Male', 'moderat'], ['Pusse opp', 'moderat'], ['Montere møbler', 'moderat'], ['Reparere', 'moderat'],
+    ['Bygge', 'moderat'], ['Flytte', 'hard'], ['Pakke ut', 'moderat'], ['Organisere bod', 'moderat'],
+    ['Vaske eller vedlikeholde sykkel', 'lett'], ['Fiske fra land', 'lett'], ['Plukke bær eller sopp', 'moderat'],
+    ['Fotografering på tur', 'lett'], ['Danse hjemme', 'moderat'], ['Shopping eller loppemarked', 'lett'],
+    ['Frivillig arbeid', 'moderat'], ['Arrangement med mye ståing og gåing', 'lett'],
+    ['Annen hverdagsbevegelse', 'moderat'],
+  ] },
+];
+
+// Slug for stabile id-er (favoritter/logg lagres på id). Æ/Ø/Å normaliseres.
+const hvSlug = (s) => s.toLowerCase()
+  .replace(/æ/g, 'ae').replace(/ø/g, 'o').replace(/å/g, 'a')
+  .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+// Flat liste (samme rolle som før): brukt av finnBevegelse/favoritter/«Gjort».
+const HVERDAGSAKTIVITETER = HVERDAG_UNDER.flatMap((u) => u.aktiviteter.map(([navn, nivaa]) => ({
+  id: `hv-${u.id}-${hvSlug(navn)}`,
+  navn, nivaa,
+  varighetMin: HVERDAG_BOUT,
+  ikon: u.ikon,
+  underkategori: u.id,
+  underNavn: u.navn,
+  kategori: 'hverdag', bevegelse: 'walk', hverdag: true,
+})));
 
 // Finn en økt (bibliotek) ELLER en hverdagsaktivitet på id.
 function finnBevegelse(id) {
@@ -2071,24 +2115,36 @@ function utforskBevegelse(profil, logg, oppdaterStatus) {
   const scores = regionScores(logg);
   const skaar = skaarOkter(scores, profil);
   let valgt = BEV_GRUPPER[0].id;
+  let valgtUnder = HVERDAG_UNDER[0].id; // valgt underkategori når «Hverdag» er på
 
+  const hverdagGruppe = BEV_GRUPPER.find((g) => g.id === 'hverdag');
   const chipsRad = el('div', { class: 'bevfilter' });
+  const underRad = el('div', { class: 'bevfilter bevfilter--under', hidden: true }); // underkategori-filter
   const liste = el('div', { class: 'bevanbef' });
 
-  const forslagFor = (g) => {
-    // Hverdag fylles med hjemmeaktiviteter (roterer med datoen for variasjon);
-    // de andre gruppene henter de tre høyest scorede bibliotekøktene.
-    if (g.id === 'hverdag') {
-      const start = new Date().getDate() % HVERDAGSAKTIVITETER.length;
-      return HVERDAGSAKTIVITETER.slice(start).concat(HVERDAGSAKTIVITETER.slice(0, start)).slice(0, 3);
-    }
-    return skaar.filter((s) => g.kats.includes(s.okt.kategori)).slice(0, 3).map((s) => s.okt);
+  const tegnUnderChips = () => {
+    tom(underRad);
+    HVERDAG_UNDER.forEach((u) => {
+      const chip = el('button', { class: 'bevchip bevchip--liten' + (u.id === valgtUnder ? ' bevchip--paa' : ''), type: 'button',
+        onclick: () => { valgtUnder = u.id; tegnUnderChips(); tegnListe(); } },
+        el('span', {}, u.navn));
+      underRad.append(chip);
+    });
   };
 
   const tegnListe = () => {
-    const g = BEV_GRUPPER.find((x) => x.id === valgt);
-    const okter = forslagFor(g);
     tom(liste);
+    if (valgt === 'hverdag') {
+      // Hverdag: vis underkategori-filteret og HELE den valgte underkategorien.
+      underRad.hidden = false;
+      HVERDAGSAKTIVITETER.filter((a) => a.underkategori === valgtUnder)
+        .forEach((a) => liste.append(bevAnbefRad(a, hverdagGruppe, oppdaterStatus)));
+      return;
+    }
+    // Andre grupper: de tre høyest scorede bibliotekøktene i gruppen.
+    underRad.hidden = true;
+    const g = BEV_GRUPPER.find((x) => x.id === valgt);
+    const okter = skaar.filter((s) => g.kats.includes(s.okt.kategori)).slice(0, 3).map((s) => s.okt);
     if (!okter.length) { liste.append(el('p', { class: 'dempet dempet--tett' }, 'Ingen forslag akkurat nå.')); return; }
     okter.forEach((okt) => liste.append(bevAnbefRad(okt, g, oppdaterStatus)));
   };
@@ -2099,6 +2155,7 @@ function utforskBevegelse(profil, logg, oppdaterStatus) {
       el('span', { class: 'bevchip__ikon' }, ikon(g.ikon)), el('span', {}, g.navn));
     chipsRad.append(chip);
   });
+  tegnUnderChips();
   tegnListe();
 
   return el('section', { class: 'bevutforsk' },
@@ -2106,15 +2163,16 @@ function utforskBevegelse(profil, logg, oppdaterStatus) {
       el('h2', { class: 'seksjonstittel' }, 'Utforsk bevegelse'),
       el('a', { class: 'seksjonslenke', href: '#/okter' }, 'Se alle', ikon('chevron'))),
     chipsRad,
+    underRad,
     liste);
 }
 
 // Én rad: miniatyr + tittel/meta/beskrivelse + Start/Gjort/bokmerke. Fungerer
-// både for bibliotekøkter og hverdagsaktiviteter (sistnevnte: halv vekt, ingen
-// guidet timer). «Gjort» kan trykkes flere ganger og teller opp (×N).
+// både for bibliotekøkter og hverdagsaktiviteter (sistnevnte: intensitetsvektet
+// kreditt, ingen guidet timer). «Gjort» kan trykkes flere ganger og teller opp (×N).
 function bevAnbefRad(okt, gruppe, oppdaterStatus) {
   const hverdag = !!okt.hverdag;
-  const kreditt = hverdag ? hverdagKreditt(okt.varighetMin) : okt.varighetMin;
+  const kreditt = hverdag ? hverdagKreditt(okt) : okt.varighetMin;
   const desc = (okt.beskrivelse || '').split(/(?<=[.!?])\s/)[0];
 
   const bokmerke = el('button', { class: 'bevrad__merke' + (erOktFav(okt.id) ? ' bevrad__merke--paa' : ''),
@@ -2141,9 +2199,16 @@ function bevAnbefRad(okt, gruppe, oppdaterStatus) {
   tegnGjort();
 
   const meta = el('p', { class: 'bevrad__meta' });
-  meta.append(`${okt.varighetMin} min`, el('span', { class: 'bevrad__prikk' }, '·'));
-  if (hverdag) meta.append(el('span', { class: 'bevrad__vekt' }, `teller ${kreditt} min`));
-  else meta.append(ikon(gruppe.ikon, 'ikon ikon--liten'), gruppe.navn);
+  if (hverdag) {
+    // Intensitetsnivå (lett/moderat/hard) + kreditterte minutter — nivået er
+    // multiplikatoren brukeren ser: derfor teller «Lett» mindre enn «Hard».
+    meta.append(
+      el('span', { class: `bevrad__nivaa bevrad__nivaa--${okt.nivaa}` }, HVERDAG_NIVAANAVN[okt.nivaa] || 'Moderat'),
+      el('span', { class: 'bevrad__prikk' }, '·'),
+      el('span', { class: 'bevrad__vekt' }, `teller ${kreditt} min`));
+  } else {
+    meta.append(`${okt.varighetMin} min`, el('span', { class: 'bevrad__prikk' }, '·'), ikon(gruppe.ikon, 'ikon ikon--liten'), gruppe.navn);
+  }
 
   return el('div', { class: 'bevrad' },
     oktMiniatyr(okt, gruppe),

@@ -4487,6 +4487,18 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .bevrad__gjort--paa { background: var(--aksent); border-color: var(--aksent); color: #fff; }
 .bevrad__gjort--paa .ikon { color: #fff; }
 .bevrad__vekt { color: var(--aksent); font-weight: 600; }
+/* Underkategori-filter — vises under hovedfilteret når «Hverdag» er valgt. */
+.bevfilter--under { margin-top: 5px; padding-top: 0; padding-bottom: 6px; }
+.bevfilter--under[hidden] { display: none; }
+.bevchip--liten { padding: 7px 13px; font-size: 13px; }
+/* Intensitetsmerke på hverdagsrader — nivået ER multiplikatoren (0,3/0,6/1,0). */
+.bevrad__nivaa { font-weight: 700; font-size: 11.5px; padding: 1px 8px; border-radius: var(--radius-pill); }
+.bevrad__nivaa--lett { color: #4E7A57; background: color-mix(in srgb, #4E7A57 15%, transparent); }
+.bevrad__nivaa--moderat { color: #937527; background: color-mix(in srgb, #937527 16%, transparent); }
+.bevrad__nivaa--hard { color: #A85C3C; background: color-mix(in srgb, #A85C3C 16%, transparent); }
+:root[data-mork] .bevrad__nivaa--lett { color: #86B08B; }
+:root[data-mork] .bevrad__nivaa--moderat { color: #D4B65A; }
+:root[data-mork] .bevrad__nivaa--hard { color: #D68A6A; }
 .bevmini--lime { background: linear-gradient(180deg, #93AB63, #6E8A43); }
 .bevmini--koral { background: linear-gradient(180deg, #C98A6A, #A85C3C); }
 .bevmini--teal { background: linear-gradient(180deg, #5E8465, #3A5A43); }
