@@ -473,7 +473,7 @@ function settOppSideSveip() {
   const knappSenter = (r) => { const b = document.querySelector(`.tabbar__knapp[data-rute="${faneForRute(r)}"]`); return b ? b.offsetLeft + b.offsetWidth / 2 : null; };
 
   let sx = null; let sy = null; let retning = null; let aktiv = false; let hoppOver = false;
-  let peek = null; let mål = null; let dir = 0; let feedInne = false; let linseFra = null; let linseTil = null;
+  let peek = null; let mål = null; let dir = 0; let feedInne = false; let barFolgerPeek = false; let linseFra = null; let linseTil = null;
 
   const settPos = (dxRaw) => {
     const W = bredde();
@@ -481,15 +481,17 @@ function settOppSideSveip() {
     app.style.transform = `translateX(${dx}px)`;
     if (peek) peek.style.transform = `translateX(${dx - dir * W}px)`; // peek starter på -dir*W, glir mot 0
     if (feedInne) {
-      const bar = tabbar(); if (bar) bar.style.transform = `translateX(${dx}px)`;   // bunnbaren glir bort med sidene
+      // Bunnbaren glir i takt med siden den hører til: med #app (Hjem→feed) eller
+      // med peeken (feed→Hjem — da må baren vises mens den glir inn).
+      const bar = tabbar(); if (bar) bar.style.transform = `translateX(${barFolgerPeek ? (dx - dir * W) : dx}px)`;
     } else if (linseFra != null && linseTil != null) {
       const p = Math.min(1, Math.abs(dx) / W);
-      const ind = linse(); if (ind) ind.style.transform = `translateX(${linseFra + (linseTil - linseFra) * p}px) translateX(-50%)`; // pillen glir mot mål-fanen
+      const ind = linse(); if (ind) ind.style.transform = `translateX(${linseFra + (linseTil - linseFra) * p}px) translateX(-50%)`; // pillen følger fingeren mot mål-fanen
     }
   };
   const rensTransform = () => {
     app.style.transition = ''; app.style.transform = '';
-    const bar = tabbar(); if (bar) { bar.style.transition = ''; bar.style.transform = ''; }
+    const bar = tabbar(); if (bar) { bar.style.transition = ''; bar.style.transform = ''; bar.classList.remove('tabbar--drag'); }
     const ind = linse(); if (ind) ind.style.transition = '';
     document.body.classList.remove('sideglir');
     flyttTabIndikator();
@@ -506,7 +508,8 @@ function settOppSideSveip() {
     if (fullfor) {
       app.style.transform = `translateX(${dir * W}px)`;
       if (peek) peek.style.transform = 'translateX(0)';
-      if (bar && feedInne) bar.style.transform = `translateX(${dir * W}px)`;
+      // Baren enten glir bort med #app (Hjem→feed) eller lander på plass med mål-siden (feed→Hjem).
+      if (bar && feedInne) bar.style.transform = `translateX(${barFolgerPeek ? 0 : dir * W}px)`;
       if (ind && !feedInne && linseTil != null) ind.style.transform = `translateX(${linseTil}px) translateX(-50%)`;
       setTimeout(() => {
         // Peeken dekker mål-siden. Nullstill #app FØR navigasjon, så den ekte
@@ -519,7 +522,7 @@ function settOppSideSveip() {
     } else {
       app.style.transform = 'translateX(0)';
       if (peek) peek.style.transform = `translateX(${-dir * W}px)`;
-      if (bar && feedInne) bar.style.transform = 'translateX(0)';
+      if (bar && feedInne) bar.style.transform = `translateX(${barFolgerPeek ? -dir * W : 0}px)`;
       if (ind && !feedInne && linseFra != null) ind.style.transform = `translateX(${linseFra}px) translateX(-50%)`;
       setTimeout(rydd, 360);
     }
@@ -528,7 +531,7 @@ function settOppSideSveip() {
   app.addEventListener('touchstart', (e) => {
     if (e.touches.length !== 1 || !SVEIP_STRIP.includes(naaRute())) { sx = null; return; }
     const t = e.touches[0]; sx = t.clientX; sy = t.clientY;
-    retning = null; aktiv = false; feedInne = false; peek = null; mål = null; dir = 0; linseFra = linseTil = null;
+    retning = null; aktiv = false; feedInne = false; barFolgerPeek = false; peek = null; mål = null; dir = 0; linseFra = linseTil = null;
     hoppOver = iHscroller(e.target);
     app.style.transition = '';
   }, { passive: true });
@@ -550,7 +553,19 @@ function settOppSideSveip() {
         peek.style.transform = `translateX(${-dir * bredde()}px)`;
         document.body.appendChild(peek);
         document.body.classList.add('sideglir');
-        if (!feedInne) { linseFra = knappSenter(cur); linseTil = knappSenter(mål); }
+        const bar = tabbar(); const ind = linse();
+        // Slå AV bar-/pill-transisjonen under draget så de følger fingeren 1:1
+        // (ellers «henger de etter» pga. sin egen glide-transisjon).
+        if (feedInne) {
+          barFolgerPeek = (cur === 'feed'); // feed→Hjem: baren følger peeken og må vises
+          if (bar) {
+            bar.style.transition = 'none';
+            if (barFolgerPeek) { bar.classList.add('tabbar--drag'); bar.style.transform = `translateX(${bredde()}px)`; }
+          }
+        } else {
+          linseFra = knappSenter(cur); linseTil = knappSenter(mål);
+          if (ind) ind.style.transition = 'none';
+        }
       }
     }
     if (aktiv) { e.preventDefault(); if (mål) settPos(dx); }

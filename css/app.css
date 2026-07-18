@@ -363,7 +363,7 @@ body.sideglir { overflow: hidden; }
 /* Fullskjerm: innholdet strekker seg helt til bunnen (bak den flytende
    bunnbaren) — ingen reservert bunn-stripe. Bare safe-area-klaring mot
    hjemindikatoren. */
-.hjemdash { padding: 4px 18px env(safe-area-inset-bottom); display: flex; flex-direction: column; gap: 16px; }
+.hjemdash { padding: 4px 18px 0; display: flex; flex-direction: column; gap: 16px; }
 
 .hjemdash__hero { position: relative; overflow: hidden; border-radius: var(--radius-2xl); padding: 26px 22px 30px; background-size: cover; background-position: center; box-shadow: var(--shadow-card); text-align: center; }
 .hjemdash__scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(28,42,33,0.05) 0%, rgba(28,42,33,0.22) 60%, rgba(28,42,33,0.42) 100%); }
@@ -838,8 +838,8 @@ body.fane-laast .hjembanner { position: fixed; top: 0; left: 0; right: 0; }
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
-  /* Fullskjerm: innhold helt til bunnen (bak den flytende bunnbaren). */
-  padding-bottom: env(safe-area-inset-bottom);
+  /* Fullskjerm: innhold helt til bunnkanten (bak den flytende bunnbaren). */
+  padding-bottom: 0;
 }
 /* Faneside-skallet: plass til det faste banneret øverst, og dagsfasebildet
    absolutt bak innholdet (samme proporsjoner/maske som på Min dag). */
@@ -1279,6 +1279,9 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 
 /* Fokusmodus: skjul tab-bar under onboarding/review/kjøring */
 .fokusmodus .tabbar { display: none; }
+/* Under et feed→Hjem-drag må baren vises (og gli inn) selv om vi ennå står på
+   feeden (fokusmodus). */
+.fokusmodus .tabbar--drag { display: flex; }
 body.fokusmodus { padding-bottom: 0; }
 .topp--kjor { display: flex; align-items: flex-start; gap: 10px; }
 
@@ -4154,7 +4157,7 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .matprinsipp--kompakt { grid-template-columns: 1fr; margin-top: 4px; }
 
 /* ---- Mat-undersider (ren side, ikke hero) ---- */
-.matside { padding: 4px 18px env(safe-area-inset-bottom); display: flex; flex-direction: column; gap: 14px; }
+.matside { padding: 4px 18px 0; display: flex; flex-direction: column; gap: 14px; }
 .matside__hode { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin: 6px 0 2px; }
 .matside__tittel { font-family: var(--font-display); font-size: 34px; font-weight: 700; line-height: 1.08; margin: 0; color: var(--tekst); }
 .matside__under { margin: 8px 0 0; font-size: 14.5px; color: var(--tekst-2); line-height: 1.4; max-width: 22em; }
