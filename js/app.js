@@ -573,11 +573,14 @@ function settOppSideSveip() {
   let sx = null; let sy = null; let retning = null; let aktiv = false; let hoppOver = false;
   let peek = null; let mål = null; let dir = 0; let feedInne = false; let barFolgerPeek = false; let linseFra = null; let linseTil = null;
 
-  // Logo-krysstoning i takt med draget (fane→fane): det gamle ordet toner ut
-  // og det nye inn med samme fremdrift som fingeren og pillen i bunnbaren, så
-  // byttet synes I bevegelsen — ikke først når man lander på siden. Ved slipp
-  // fullfører (eller reverserer) toningen i samme glid som resten. Feed-drag
-  // trenger det ikke: feed-peeken dekker headeren / bærer sin egen kopi.
+  // Logo-toning i takt med draget (fane→fane): «fade-through» — det gamle
+  // ordet er tonet HELT ut idet draget når terskelen (~30 %, samme punkt som
+  // fullfører navigasjonen), og det nye er helt inne ved ~60 %. Slik synes
+  // byttet i selve bevegelsen, uten at to ord ligger grøtete oppå hverandre,
+  // og terskelen kjennes som «vippepunktet» også visuelt. Ved slipp fullfører
+  // (eller reverserer) toningen i samme glid som resten. Feed-drag trenger
+  // det ikke: feed-peeken dekker headeren / bærer sin egen kopi.
+  const DRA_TERSKEL = 0.3; // samme som fullfør-terskelen i slutt()
   let logoDra = null;
   const startLogoDra = (målLogo) => {
     const boks = document.querySelector('.hjemtopp--fast:not(.hjemtopp--skjult) .hjemtopp__logoboks');
@@ -585,14 +588,17 @@ function settOppSideSveip() {
     if (!boks || !gammel || !målLogo || gammel.dataset.logo === målLogo) return null;
     boks.querySelectorAll('.hjemtopp__logo').forEach((n) => { if (n !== gammel) n.remove(); }); // evt. rester fra tap-bytte/avbrutt dra
     const ny = lagHovedtoppLogo(målLogo);
+    // --dra: eget kompositor-lag (will-change) så opasiteten glir jevnt
+    // uten tekst-repaint per frame.
+    gammel.classList.add('hjemtopp__logo--dra'); ny.classList.add('hjemtopp__logo--dra');
     gammel.style.transition = 'none'; ny.style.transition = 'none'; ny.style.opacity = '0';
     boks.append(ny);
     return { gammel, ny };
   };
   const settLogoDra = (p) => {
     if (!logoDra) return;
-    logoDra.gammel.style.opacity = String(1 - p);
-    logoDra.ny.style.opacity = String(p);
+    logoDra.gammel.style.opacity = String(Math.max(0, 1 - p / DRA_TERSKEL));
+    logoDra.ny.style.opacity = String(Math.min(1, Math.max(0, (p - DRA_TERSKEL) / DRA_TERSKEL)));
   };
   const slippLogoDra = (h, fullfor) => {
     if (!h) return;
@@ -604,8 +610,10 @@ function settOppSideSveip() {
   };
   const ferdigLogoDra = (h, fullfor) => {
     if (!h) return;
-    if (fullfor) { h.gammel.remove(); h.ny.removeAttribute('style'); }
-    else { h.ny.remove(); h.gammel.removeAttribute('style'); }
+    const igjen = fullfor ? h.ny : h.gammel;
+    (fullfor ? h.gammel : h.ny).remove();
+    igjen.removeAttribute('style');
+    igjen.classList.remove('hjemtopp__logo--dra');
   };
 
   const settPos = (dxRaw) => {

@@ -433,12 +433,15 @@ body {
 .hjemtopp-plass { flex: 0 0 auto; height: var(--hovedtopp-h, calc(env(safe-area-inset-top, 0px) + 60px)); }
 /* Header-kopi i en sveipe-peek (fra feeden): glir inn sammen med peek-laget. */
 .hjemtopp--peek { position: absolute; top: 0; left: 0; right: 0; }
-/* Logo-krysstoning: gammelt og nytt ord deler samme grid-celle, det gamle
-   toner ut mens det nye toner inn. */
+/* Logo-toning: gammelt og nytt ord deler samme grid-celle. «Fade-through»:
+   det gamle toner ut først, så toner det nye inn — to ord ligger aldri
+   grøtete oppå hverandre. --dra (under fane-sveip) gir ordene sitt eget
+   kompositor-lag så opasiteten glir jevnt uten tekst-repaint per frame. */
 .hjemtopp__logoboks { position: relative; display: grid; justify-items: center; align-items: center; }
 .hjemtopp__logoboks .hjemtopp__logo { grid-area: 1 / 1; }
-.hjemtopp__logo--ut { animation: hjemlogo-ut 0.3s ease forwards; }
-.hjemtopp__logo--inn { animation: hjemlogo-inn 0.3s ease; }
+.hjemtopp__logo--dra { will-change: opacity; }
+.hjemtopp__logo--ut { animation: hjemlogo-ut 0.22s ease forwards; will-change: opacity; }
+.hjemtopp__logo--inn { animation: hjemlogo-inn 0.26s ease 0.1s backwards; will-change: opacity; }
 @keyframes hjemlogo-ut { to { opacity: 0; } }
 @keyframes hjemlogo-inn { from { opacity: 0; } }
 /* Venstre gruppe (feed + tannhjul) og høyre gruppe (profil + varsler). Like
