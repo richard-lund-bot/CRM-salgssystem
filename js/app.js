@@ -347,12 +347,10 @@ function visHjemDashboard(mount) {
   );
 
   tom(mount);
-  const scroll = el('div', { class: 'hjemdash-scroll' },
-    topp,
-    // Hjem: hero → dagens fokus → hele Utforsk-innholdet innfelt (M55).
-    el('main', { class: 'innhold hjemdash' }, hero, dagensFokus, ...byggUtforskSeksjoner()),
-  );
-  mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: dashScrollTop }));
+  // Hjem: hero → dagens fokus → hele Utforsk-innholdet innfelt (M55).
+  const hjemMain = el('main', { class: 'innhold hjemdash' }, hero, dagensFokus, ...byggUtforskSeksjoner());
+  const scroll = el('div', { class: 'hjemdash-scroll' }, topp, hjemMain);
+  mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: dashScrollTop, innhold: hjemMain }));
 
   // Sveip til venstre → dagens feed (uten å stjele vertikal scroll).
   let sx = null; let sy = null;
@@ -433,7 +431,7 @@ function pilarSkall(mount, { navn, tittel, under = null, ring = null, streakStri
   tom(mount);
   const main = el('main', { class: 'innhold hjemdash' }, hero);
   const scroll = el('div', { class: 'hjemdash-scroll' }, topp, main);
-  mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: dashScrollTop }));
+  mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: dashScrollTop, innhold: main }));
   if (settRing) requestAnimationFrame(() => requestAnimationFrame(() => {
     settRing((ring.pst || 0) / 100);
     tallOpp(pstEl, ring.pst || 0, { format: (n) => `${n}%` });
@@ -448,18 +446,6 @@ function pilarSkall(mount, { navn, tittel, under = null, ring = null, streakStri
 // meny-huben) og innfelt nederst på Hjem-dashbordet (M55).
 // ===========================================================================
 function byggUtforskSeksjoner() {
-  const PILAR_LENKER = [
-    { rute: 'kosthold', ikon: 'eple', navn: 'Mat' },
-    { rute: 'trening', ikon: 'loper', navn: 'Bevegelse' },
-    { rute: 'ro', ikon: 'maane', navn: 'Ro' },
-    { rute: 'sosialt', ikon: 'personer', navn: 'Fellesskap' },
-    { rute: 'mening', ikon: 'kompass', navn: 'Mening' },
-  ];
-  const pilarRad = el('div', { class: 'utforsk-pilarer' },
-    ...PILAR_LENKER.map((p) => el('a', { class: 'utforsk-pilar', href: `#/${p.rute}` },
-      el('span', { class: 'utforsk-pilar__ikon' }, ikon(p.ikon)),
-      el('span', { class: 'utforsk-pilar__navn' }, p.navn))));
-
   const feedInngang = el('a', { class: 'utforsk-feed', href: '#/feed' },
     el('span', { class: 'utforsk-feed__ikon' }, ikon('feed')),
     el('span', { class: 'utforsk-feed__midt' },
@@ -486,7 +472,6 @@ function byggUtforskSeksjoner() {
   }).catch(() => { tom(kunnskap); kunnskap.append(el('p', { class: 'dempet' }, 'Kunne ikke laste akkurat nå.')); });
 
   return [
-    el('section', { class: 'kort' }, el('h2', { class: 'kost__tittel' }, 'Les etter pilar'), pilarRad),
     el('section', { class: 'utforsk-seksjon' },
       el('h2', { class: 'utforsk-seksjontittel' }, 'Kunnskap & inspirasjon'), kunnskap),
     el('section', { class: 'kort' }, el('h2', { class: 'kost__tittel' }, 'Dagens feed'), feedInngang),
@@ -565,7 +550,7 @@ function matSideSkall(mount) {
   tom(mount);
   const main = el('main', { class: 'innhold matside' });
   const scroll = el('div', { class: 'hjemdash-scroll' }, topp, main);
-  mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: dashScrollTop }));
+  mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: dashScrollTop, innhold: main }));
   return main;
 }
 
@@ -3110,7 +3095,18 @@ function skjulSplash() {
 }
 
 // --- Oppstart ---
+// Ingen zoom noe sted i appen. Viewport-metaen (user-scalable=no) og
+// touch-action: manipulation dekker dobbelttrykk-zoom, men iOS Safari zoomer
+// fortsatt på pinch med mindre gesture-hendelsene stoppes eksplisitt.
+function hindreZoom() {
+  const stopp = (e) => e.preventDefault();
+  document.addEventListener('gesturestart', stopp, { passive: false });
+  document.addEventListener('gesturechange', stopp, { passive: false });
+  document.addEventListener('gestureend', stopp, { passive: false });
+}
+
 async function start() {
+  hindreZoom();
   try {
     [bib] = await Promise.all([lastBibliotek(), lastOkter(), lastOvelsesinfo(), lastArtikler(), lastStier(), lastKjeder(), lastDisipliner(), lastSeksjoner(), lastOppskrifter()]);
   } catch (e) {

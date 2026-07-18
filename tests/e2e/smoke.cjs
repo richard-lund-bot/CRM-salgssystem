@@ -74,7 +74,7 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
   sjekk('Appen booter og tegner #app', (await page.locator('#app > *').count()) > 0);
   sjekk('Hjem viser de fire pilar-nodene', (await page.locator('.pilarsti .pilarnode').count()) === 4);
   sjekk('Hjem viser i-takt-oppsummeringen', (await page.locator('.itakt').count()) > 0);
-  sjekk('Hjem feller inn Utforsk (les etter pilar)', (await page.locator('.utforsk-pilarer').count()) > 0);
+  sjekk('Hjem feller inn Utforsk (kunnskap + feed)', (await page.locator('.utforsk-feed').count()) > 0);
   sjekk('Hjem har feed-ikon oppe til venstre', (await page.locator('.hjemtopp__feed').count()) === 1);
 
   // --- 2) Feeden bor på #/feed og rendrer flere kort -------------------------

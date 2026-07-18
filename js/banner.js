@@ -245,6 +245,10 @@ export function lagPullOppdatering(scroll, opts = {}) {
   // header-bunnen parametriserbare. Fanesidene bruker standardene (indre scroll
   // + .hjembanner).
   const lesScrollTop = opts.scrollTopFn || (() => scroll.scrollTop);
+  // Elementet som dyttes ned for å gi plass til reload-animasjonen. På pilarene
+  // er det innholdet under den lille topp-baren (main); på fanesidene hele
+  // scrollflata (headeren ligger fast utenfor).
+  const innhold = opts.innhold || scroll;
   const spinn = el('div', { class: 'pullspinn', 'aria-hidden': 'true' },
     el('i', { class: 'pullspinn__ring' }));
   let startY = null;
@@ -254,6 +258,12 @@ export function lagPullOppdatering(scroll, opts = {}) {
   const bannerBunn = () => {
     const topp = document.querySelector('.hjemtopp') || document.querySelector('.hjembanner');
     return topp ? topp.getBoundingClientRect().bottom : 90;
+  };
+  // Myk motstand: fingeren drar langt, innholdet gir gradvis etter (maks ~96px).
+  const gietter = (dy) => Math.min(96, dy * 0.55);
+  const settSkyv = (px, myk) => {
+    innhold.style.transition = myk ? 'transform 0.32s var(--ease-out)' : 'none';
+    innhold.style.transform = px ? `translateY(${px}px)` : '';
   };
 
   scroll.addEventListener('touchstart', (ev) => {
@@ -265,12 +275,16 @@ export function lagPullOppdatering(scroll, opts = {}) {
   scroll.addEventListener('touchmove', (ev) => {
     if (startY == null || opptatt) return;
     const dy = ev.touches[0].clientY - startY;
-    if (dy <= 0 || lesScrollTop() > 0) { dratt = 0; spinn.style.opacity = '0'; return; }
+    if (dy <= 0 || lesScrollTop() > 0) { dratt = 0; settSkyv(0, false); spinn.style.opacity = '0'; return; }
+    // Vi eier topp-gesten: stopp nettleserens egen scroll/bounce her så
+    // innholdet vårt kan gli ned og åpne plass til spinneren.
+    ev.preventDefault();
     dratt = dy;
+    settSkyv(gietter(dy), false);
     spinn.style.opacity = String(Math.min(1, dy / 70));
-    spinn.style.top = `${bannerBunn() - 46 + Math.min(1, dy / 130) * 72}px`;
+    spinn.style.top = `${bannerBunn() + 6 + Math.min(1, dy / 130) * 44}px`;
     spinn.style.setProperty('--vri', `${Math.round(dy * 1.6)}deg`);
-  }, { passive: true });
+  }, { passive: false });
 
   const slipp = () => {
     if (startY == null || opptatt) return;
@@ -278,9 +292,13 @@ export function lagPullOppdatering(scroll, opts = {}) {
     if (dratt >= 110) {
       opptatt = true;
       spinn.classList.add('pullspinn--aktiv');
-      spinn.style.top = `${bannerBunn() + 16}px`;
+      spinn.style.top = `${bannerBunn() + 22}px`;
+      // Hold innholdet litt nede mens vi oppdaterer, så spinneren har plass.
+      // Den nye tegningen (oppdaterSide → navger) nullstiller transformen.
+      settSkyv(60, true);
       oppdaterSide();
     } else {
+      settSkyv(0, true);
       spinn.style.opacity = '0';
     }
   };

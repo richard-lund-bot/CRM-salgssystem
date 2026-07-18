@@ -210,7 +210,12 @@ html, body {
   color: var(--tekst);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
-  overscroll-behavior-y: none;
+  /* «contain» beholder rubber-band-bounce (viktig overalt i appen) men hindrer
+     scroll-chaining og nettleserens egen pull-to-refresh i å slå inn. */
+  overscroll-behavior-y: contain;
+  /* Ingen zoom noe sted: manipulation dreper dobbelttrykk-zoom (pinch stoppes
+     av viewport-metaen + gesturestart-vakten i js). */
+  touch-action: manipulation;
 }
 
 body {
