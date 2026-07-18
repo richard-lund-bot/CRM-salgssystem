@@ -255,7 +255,12 @@ function navger() {
   if (rute !== 'kjor' && rute !== 'hurtig') slippVaaken(); // timer-skjermene eier låsen
 
   const tegn = () => {
+    _hovedtoppAktiv = false;
     (ruter[rute] || ruter.hjem)();
+    // Den faste headeren vises bare på sider som ba om den under tegningen —
+    // øvrige ruter (feed, detaljsider, fokus-flow) skjuler den.
+    document.body.classList.toggle('har-hovedtopp', _hovedtoppAktiv);
+    document.querySelector('.hjemtopp--fast')?.classList.toggle('hjemtopp--skjult', !_hovedtoppAktiv);
     oppdaterNav(rute);
     oppdaterFaneMinne(rute);
     oversettDom(app); // engelsk-modus: oversett den nettopp tegnede skjermen
@@ -319,18 +324,72 @@ function lagVarselknapp() {
 // Standard hovedapp-header (Hjem + alle pilarsidene): feed helt til venstre,
 // tannhjul innenfor, wordmark sentrert, og profil + varsler helt til høyre.
 // Feed glir inn fra venstre og varsler fra høyre (slide-over via ruteren).
-function lagHovedtopp(logoTekst) {
-  return el('header', { class: 'hjemtopp' },
+// Headeren er PERSISTENT: ett fast eksemplar ligger utenfor #app og står
+// stille når sidene bytter eller glir — bare logoen krysstoner til den nye
+// pilarens navn, så det er kun innholdet som «hopper» per side. Sidene
+// reserverer høyden med en .hjemtopp-plass i scroll-skallet sitt.
+function lagHovedtoppLogo(logoTekst) {
+  return el('span', { class: 'hjemtopp__logo', 'data-logo': logoTekst },
+    logoTekst, el('span', { class: 'wordmark__prikk' }, '.'));
+}
+function byggHovedtopp(logoTekst, klasse = '') {
+  return el('header', { class: 'hjemtopp' + klasse },
     el('div', { class: 'hjemtopp__side hjemtopp__side--v' },
       el('a', { class: 'ikonknapp ikonknapp--plain hjemtopp__feed', href: '#/feed', 'aria-label': 'Dagens feed' }, ikon('feed')),
       el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/meny', 'aria-label': 'Meny' }, ikon('gir')),
     ),
-    el('span', { class: 'hjemtopp__logo' }, logoTekst, el('span', { class: 'wordmark__prikk' }, '.')),
+    el('span', { class: 'hjemtopp__logoboks' }, lagHovedtoppLogo(logoTekst)),
     el('div', { class: 'hjemtopp__side hjemtopp__side--h' },
       el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/merker', 'aria-label': 'Profil' }, ikon('person')),
       lagVarselknapp(),
     ),
   );
+}
+
+// Sørger for at den faste headeren finnes og vises, og krysstoner logoen når
+// teksten byttet (pilar → pilar). Kalles av sidene under tegning; ruteren
+// skjuler headeren igjen for ruter som ikke ba om den i samme tegning.
+let _hovedtoppAktiv = false;
+function settHovedtopp(logoTekst) {
+  _hovedtoppAktiv = true;
+  let fast = document.querySelector('.hjemtopp--fast');
+  if (!fast) {
+    fast = byggHovedtopp(logoTekst, ' hjemtopp--fast');
+    document.body.prepend(fast);
+    // Plassholder-høyden (--hovedtopp-h) måles fra det ekte elementet: nå
+    // (synkront), etter fontlasting og ved resize/rotasjon.
+    const mål = () => { const h = fast.offsetHeight; if (h) document.documentElement.style.setProperty('--hovedtopp-h', `${h}px`); };
+    mål();
+    document.fonts?.ready?.then(mål).catch(() => {});
+    window.addEventListener('resize', mål);
+  } else {
+    // Ulest-status kan ha endret seg siden forrige tegning — fersk varselknapp.
+    fast.querySelector('.hjemtopp__varsler')?.replaceWith(lagVarselknapp());
+    const boks = fast.querySelector('.hjemtopp__logoboks');
+    const gjeldende = boks.querySelector('.hjemtopp__logo:not(.hjemtopp__logo--ut)');
+    if (gjeldende && gjeldende.dataset.logo !== logoTekst) {
+      const ny = lagHovedtoppLogo(logoTekst);
+      boks.querySelectorAll('.hjemtopp__logo--ut').forEach((n) => n.remove()); // maks én utgående om gangen
+      if (REDUSERT()) gjeldende.remove();
+      else {
+        gjeldende.classList.add('hjemtopp__logo--ut');
+        ny.classList.add('hjemtopp__logo--inn');
+        setTimeout(() => gjeldende.remove(), 400);
+      }
+      boks.append(ny);
+    }
+  }
+  fast.classList.remove('hjemtopp--skjult');
+  document.body.classList.add('har-hovedtopp');
+  oversettDom(fast); // engelsk modus: logo og aria-labels følger språket
+}
+
+// Sidene kaller denne der headeren før lå i scroll-skallet: oppdaterer den
+// faste headeren (kun for den levende appen — aldri for sveipe-peeks, som
+// sender live=false) og returnerer plassholderen som reserverer høyden dens.
+function lagHovedtopp(logoTekst, live = true) {
+  if (live) settHovedtopp(logoTekst);
+  return el('div', { class: 'hjemtopp-plass', 'aria-hidden': 'true' });
 }
 
 // ===========================================================================
@@ -363,7 +422,7 @@ function visHjemDashboard(mount) {
   const total = GNIST_PILARER.length;
 
   // --- Topplinje: feed · tannhjul (venstre) · wordmark · profil · varsler (høyre) ---
-  const topp = lagHovedtopp(APP_NAME.toLowerCase());
+  const topp = lagHovedtopp(APP_NAME.toLowerCase(), mount === app);
 
   // --- Hero (M55): hilsen + tagline + fire sammenkoblede pilar-noder ---
   // Hver node lyser fylt når vanen er i boks i dag, med sin egen streak-pille
@@ -472,6 +531,13 @@ function byggSidePeek(rute) {
   const førBody = document.body.className;
   try { (SIDE_RENDER[rute] || SIDE_RENDER.hjem)(wrap); } catch { /* tom peek ved feil */ }
   document.body.className = førBody;
+  // Kommer man fra en side uten den faste headeren (feeden), glir en ikke-
+  // interaktiv header-kopi inn med peeken; ellers står den ekte headeren
+  // stille over både siden og peeken mens innholdet glir.
+  if (!document.body.classList.contains('har-hovedtopp')) {
+    const logo = { hjem: APP_NAME.toLowerCase(), kosthold: 'mat', trening: 'bevegelse', ro: 'ro', sosialt: 'fellesskap' }[rute];
+    if (logo) wrap.append(byggHovedtopp(logo, ' hjemtopp--peek'));
+  }
   return wrap;
 }
 
@@ -635,7 +701,7 @@ function braceSvg() {
 // ===========================================================================
 function pilarSkall(mount, { navn, ring = null, streakStripe = null, heroKort = null }) {
   const fase = dagsfase(new Date().getHours());
-  const topp = lagHovedtopp(navn);
+  const topp = lagHovedtopp(navn, mount === app);
   const heroBarn = [
     el('div', { class: 'hjemdash__scrim', 'aria-hidden': 'true' }),
   ];
@@ -782,7 +848,7 @@ function ingredienstekst(ing) {
 // Fane-skall for Mat-undersidene: samme topplinje som pilar-heroene, men uten
 // hero — en ren side med stor tittel under.
 function matSideSkall(mount) {
-  const topp = lagHovedtopp('mat');
+  const topp = lagHovedtopp('mat', mount === app);
   tom(mount);
   const main = el('main', { class: 'innhold matside' });
   const scroll = el('div', { class: 'hjemdash-scroll' }, topp, main);

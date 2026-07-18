@@ -423,6 +423,24 @@ body {
 .hjemtopp__logo { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: 0.01em; color: var(--tekst); }
 .hjemtopp__logo .wordmark__prikk { color: var(--terrakotta); }
 .hjemtopp__feed { position: relative; }
+/* Fast hovedtopp: ett persistent eksemplar utenfor #app som står stille når
+   sidene bytter eller glir — kun innholdet «hopper» per side, og bare logoen
+   krysstoner mellom «takt.», «mat.», «bevegelse.», «ro.» og «fellesskap.».
+   Sidene reserverer høyden med .hjemtopp-plass i scroll-skallet sitt.
+   z-index 10: over side-peeks (5), under bunnbaren (20) og feed-peeken (1500). */
+.hjemtopp--fast { position: fixed; top: 0; left: 0; right: 0; z-index: 10; }
+.hjemtopp--skjult { display: none; }
+.hjemtopp-plass { flex: 0 0 auto; height: var(--hovedtopp-h, calc(env(safe-area-inset-top, 0px) + 60px)); }
+/* Header-kopi i en sveipe-peek (fra feeden): glir inn sammen med peek-laget. */
+.hjemtopp--peek { position: absolute; top: 0; left: 0; right: 0; }
+/* Logo-krysstoning: gammelt og nytt ord deler samme grid-celle, det gamle
+   toner ut mens det nye toner inn. */
+.hjemtopp__logoboks { position: relative; display: grid; justify-items: center; align-items: center; }
+.hjemtopp__logoboks .hjemtopp__logo { grid-area: 1 / 1; }
+.hjemtopp__logo--ut { animation: hjemlogo-ut 0.3s ease forwards; }
+.hjemtopp__logo--inn { animation: hjemlogo-inn 0.3s ease; }
+@keyframes hjemlogo-ut { to { opacity: 0; } }
+@keyframes hjemlogo-inn { from { opacity: 0; } }
 /* Venstre gruppe (feed + tannhjul) og høyre gruppe (profil + varsler). Like
    brede sider holder wordmarket sentrert. */
 .hjemtopp__side { display: flex; align-items: center; gap: 2px; }
