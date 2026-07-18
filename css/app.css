@@ -336,6 +336,20 @@ body {
 .hjemtopp__logo { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: 0.01em; color: var(--tekst); }
 .hjemtopp__logo .wordmark__prikk { color: var(--terrakotta); }
 .hjemtopp__feed { position: relative; }
+/* Venstre gruppe (feed + tannhjul) og høyre gruppe (profil + varsler). Like
+   brede sider holder wordmarket sentrert. */
+.hjemtopp__side { display: flex; align-items: center; gap: 2px; }
+.hjemtopp__varsler { position: relative; }
+
+/* Slide-over: feeden glir inn fra venstre, varsler fra høyre (og hovedappen
+   tilbake fra motsatt side). #app translateres; body klippes mens det glir så
+   et panel som starter utenfor kanten ikke gir en kort horisontal scroll. */
+@keyframes side-inn-venstre { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+@keyframes side-inn-hoyre { from { transform: translateX(100%); } to { transform: translateX(0); } }
+.side-inn-venstre { animation: side-inn-venstre 0.3s var(--ease-out); }
+.side-inn-hoyre { animation: side-inn-hoyre 0.3s var(--ease-out); }
+body.sideglir { overflow: hidden; }
+@media (prefers-reduced-motion: reduce) { .side-inn-venstre, .side-inn-hoyre { animation: none; } }
 .hjemdash { padding: 4px 18px calc(var(--tabbar-h) + 20px); display: flex; flex-direction: column; gap: 16px; }
 
 .hjemdash__hero { position: relative; overflow: hidden; border-radius: var(--radius-2xl); padding: 26px 22px 30px; background-size: cover; background-position: center; box-shadow: var(--shadow-card); text-align: center; }
@@ -3554,6 +3568,9 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
   display: flex; align-items: center; justify-content: space-between;
   gap: 8px; padding: 4px 12px 6px; background: var(--bg);
 }
+/* Sentrer «For deg»: en spacer til venstre balanserer feed-knappen til høyre. */
+.feedtopp__spacer { flex: 0 0 40px; }
+.feedtopp__tilbake { flex: 0 0 auto; }
 
 /* Pull-to-refresh-kropp: alt under headeren dras ned ved pull, og spinneren
    (som ligger like over kroppens topp, gjemt bak den ugjennomsiktige headeren)

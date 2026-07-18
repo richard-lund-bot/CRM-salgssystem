@@ -121,7 +121,12 @@ const ruter = {
 // Skjermene med egen tilbake-header er fokusmodus (skjuler tab-baren).
 // «sti» (ferdighetsreisen) er bevisst IKKE fokus: bunnbaren blir stående helt
 // til man går inn i en leksjon/kamp (som er egne fullskjerm-overlegg).
-const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel', 'oppskrift', 'post', 'logg-inn', 'bli-medlem', 'beveg-favoritter']);
+const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel', 'oppskrift', 'post', 'logg-inn', 'bli-medlem', 'beveg-favoritter', 'feed', 'varsler']);
+
+// Paneler som glir inn over hovedappen (slide-over): feeden kommer fra venstre
+// (feed-ikonet ligger til venstre), varsler fra høyre (bjella ligger til høyre).
+const SLIDE_VENSTRE = new Set(['feed']);   // panelet ligger til venstre for appen
+const SLIDE_HOYRE = new Set(['varsler']);  // panelet ligger til høyre for appen
 
 // Medlemssidene (auth). Uinnloggede sendes hit; innloggede slippes forbi.
 const AUTH_RUTER = new Set(['logg-inn', 'bli-medlem']);
@@ -224,6 +229,17 @@ function navger() {
   if (byttet) document.querySelector('.ark')?.remove();
   document.body.classList.toggle('fokusmodus', FOKUS.has(rute));
   document.body.classList.remove('fane-laast', 'dash-laast'); // settes på nytt av skjermene
+  // Slide-over: feed/varsler glir inn som paneler i stedet for et umiddelbart
+  // sidebytte. Feed ligger til venstre, varsler til høyre; på vei UT av et panel
+  // kommer hovedappen tilbake fra motsatt side.
+  const forrigeRute = (forrigeHash.replace('#/', '') || 'hjem').split('?')[0];
+  let slideKlasse = '';
+  if (byttet && !REDUSERT()) {
+    if (SLIDE_VENSTRE.has(rute)) slideKlasse = 'side-inn-venstre';
+    else if (SLIDE_HOYRE.has(rute)) slideKlasse = 'side-inn-hoyre';
+    else if (SLIDE_VENSTRE.has(forrigeRute)) slideKlasse = 'side-inn-hoyre';
+    else if (SLIDE_HOYRE.has(forrigeRute)) slideKlasse = 'side-inn-venstre';
+  }
   // Navigasjon vekker en kompakt bar: den vokser tilbake til full størrelse
   // mens linsen glir til ny fane (som Instagram). Å bli stående krympet ga
   // også et origin-hopp når strekk-animasjonen byttet transform-origin.
@@ -236,11 +252,23 @@ function navger() {
     oppdaterFaneMinne(rute);
     oversettDom(app); // engelsk-modus: oversett den nettopp tegnede skjermen
     if (byttet) gjenopprettScroll(location.hash);
+    // Restart slide-animasjonen (fjern → tvungen reflow → legg på). Body klippes
+    // mens panelet glir (så et panel som starter utenfor kanten ikke gir en kort
+    // horisontal scroll), og ryddes når animasjonen er ferdig.
+    app.classList.remove('side-inn-venstre', 'side-inn-hoyre');
+    document.body.classList.remove('sideglir');
+    if (slideKlasse) {
+      void app.offsetWidth;
+      app.classList.add(slideKlasse);
+      document.body.classList.add('sideglir');
+      app.addEventListener('animationend', () => {
+        app.classList.remove('side-inn-venstre', 'side-inn-hoyre');
+        document.body.classList.remove('sideglir');
+      }, { once: true });
+    }
   };
-  // Sidebytte skal være umiddelbart — ingen skjermanimasjon på innholdet.
-  // Det eneste som beveger seg ved navigasjon er slideren i tab-baren nederst,
-  // som glir til aktiv fane via sin egen CSS-transisjon (oppdaterNav →
-  // flyttTabIndikator inne i tegn()).
+  // Sidebytte er ellers umiddelbart — det eneste som beveger seg er slideren i
+  // tab-baren nederst (oppdaterNav → flyttTabIndikator) og feed/varsler-panelene.
   tegn();
   forrigeHash = location.hash;
 }
@@ -267,12 +295,38 @@ function fane(tittel, under, ...innhold) {
   fanesideMedTittel(app, { tittel, under }).append(...innhold);
 }
 
+// Varsler-knapp med uleste-prikk. Lenker til #/varsler, som glir inn som et
+// panel fra høyre (slide-over, se ruteren).
+function lagVarselknapp() {
+  const b = el('a', { class: 'ikonknapp ikonknapp--plain hjemtopp__varsler', href: '#/varsler',
+    'aria-label': harUlesteVarsler() ? 'Varsler — nye' : 'Varsler' }, ikon('bjelle'));
+  if (harUlesteVarsler()) b.append(el('i', { class: 'varselprikk' }));
+  return b;
+}
+
+// Standard hovedapp-header (Hjem + alle pilarsidene): feed helt til venstre,
+// tannhjul innenfor, wordmark sentrert, og profil + varsler helt til høyre.
+// Feed glir inn fra venstre og varsler fra høyre (slide-over via ruteren).
+function lagHovedtopp(logoTekst) {
+  return el('header', { class: 'hjemtopp' },
+    el('div', { class: 'hjemtopp__side hjemtopp__side--v' },
+      el('a', { class: 'ikonknapp ikonknapp--plain hjemtopp__feed', href: '#/feed', 'aria-label': 'Dagens feed' }, ikon('feed')),
+      el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/meny', 'aria-label': 'Meny' }, ikon('gir')),
+    ),
+    el('span', { class: 'hjemtopp__logo' }, logoTekst, el('span', { class: 'wordmark__prikk' }, '.')),
+    el('div', { class: 'hjemtopp__side hjemtopp__side--h' },
+      el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/merker', 'aria-label': 'Profil' }, ikon('person')),
+      lagVarselknapp(),
+    ),
+  );
+}
+
 // ===========================================================================
 // Hjem (M55) — dagens dashbord: hero med hilsen, tagline og de fire vanene
 // som sammenkoblede noder (hver med sin streak-pille), samlet av en «brace»
 // ned til «X dag i takt». Deretter «Dagens fokus» og hele Utforsk-innholdet
-// (les etter pilar, kunnskap & inspirasjon, dagens feed) innfelt. Feeden nås
-// via feed-ikonet oppe til venstre eller ved å sveipe til venstre.
+// (kunnskap & inspirasjon) innfelt. Feeden nås via feed-ikonet oppe til
+// venstre eller ved å sveipe til høyre.
 // ===========================================================================
 const HILSEN = { natt: 'God natt', morgen: 'God morgen', formiddag: 'God formiddag', dag: 'God dag', kveld: 'God kveld' };
 const DAGENS_FOKUS = [
@@ -296,13 +350,8 @@ function visHjemDashboard(mount) {
   const blaa = gs.blaa;
   const total = GNIST_PILARER.length;
 
-  // --- Topplinje: feed-ikon (venstre), wordmark, meny (høyre) ---
-  const topp = el('header', { class: 'hjemtopp' },
-    el('a', { class: 'ikonknapp ikonknapp--plain hjemtopp__feed', href: '#/feed', 'aria-label': 'Dagens feed' },
-      ikon('feed')),
-    el('span', { class: 'hjemtopp__logo' }, APP_NAME.toLowerCase(), el('span', { class: 'wordmark__prikk' }, '.')),
-    el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/meny', 'aria-label': 'Meny' }, ikon('gir')),
-  );
+  // --- Topplinje: feed · tannhjul (venstre) · wordmark · profil · varsler (høyre) ---
+  const topp = lagHovedtopp(APP_NAME.toLowerCase());
 
   // --- Hero (M55): hilsen + tagline + fire sammenkoblede pilar-noder ---
   // Hver node lyser fylt når vanen er i boks i dag, med sin egen streak-pille
@@ -360,13 +409,13 @@ function visHjemDashboard(mount) {
   document.body.classList.add('dash-laast');
   mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: () => hjemMain.scrollTop, innhold: hjemMain }));
 
-  // Sveip til venstre → dagens feed (uten å stjele vertikal scroll).
+  // Sveip til høyre → dagens feed glir inn fra venstre (uten å stjele vertikal scroll).
   let sx = null; let sy = null;
   scroll.addEventListener('touchstart', (e) => { const t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; }, { passive: true });
   scroll.addEventListener('touchend', (e) => {
     if (sx == null) return;
     const t = e.changedTouches[0]; const dx = t.clientX - sx; const dy = t.clientY - sy; sx = null;
-    if (dx < -60 && Math.abs(dx) > Math.abs(dy) * 1.5) location.hash = '#/feed';
+    if (dx > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) location.hash = '#/feed';
   }, { passive: true });
 }
 
@@ -393,11 +442,7 @@ function braceSvg() {
 // ===========================================================================
 function pilarSkall(mount, { navn, tittel, under = null, ring = null, streakStripe = null, heroKort = null }) {
   const fase = dagsfase(new Date().getHours());
-  const topp = el('header', { class: 'hjemtopp' },
-    el('a', { class: 'ikonknapp ikonknapp--plain hjemtopp__feed', href: '#/feed', 'aria-label': 'Dagens feed' }, ikon('feed')),
-    el('span', { class: 'hjemtopp__logo' }, navn, el('span', { class: 'wordmark__prikk' }, '.')),
-    el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/meny', 'aria-label': 'Meny' }, ikon('gir')),
-  );
+  const topp = lagHovedtopp(navn);
   const heroBarn = [
     el('div', { class: 'hjemdash__scrim', 'aria-hidden': 'true' }),
     el('div', { class: 'hjemdash__hilsen' },
@@ -537,14 +582,10 @@ function ingredienstekst(ing) {
   return `${mengde}${enhet}${navn}`.trim();
 }
 
-// Fane-skall for Mat-undersidene: samme topplinje som pilar-heroene (feed ·
-// mat. · meny), men uten hero — en ren side med stor tittel under.
+// Fane-skall for Mat-undersidene: samme topplinje som pilar-heroene, men uten
+// hero — en ren side med stor tittel under.
 function matSideSkall(mount) {
-  const topp = el('header', { class: 'hjemtopp' },
-    el('a', { class: 'ikonknapp ikonknapp--plain hjemtopp__feed', href: '#/feed', 'aria-label': 'Dagens feed' }, ikon('feed')),
-    el('span', { class: 'hjemtopp__logo' }, 'mat', el('span', { class: 'wordmark__prikk' }, '.')),
-    el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/meny', 'aria-label': 'Meny' }, ikon('gir')),
-  );
+  const topp = lagHovedtopp('mat');
   tom(mount);
   const main = el('main', { class: 'innhold matside' });
   const scroll = el('div', { class: 'hjemdash-scroll' }, topp, main);
@@ -2676,8 +2717,24 @@ function visVarsler() {
         el('a', { class: 'knapp', href: '#/beveg' }, 'Finn en økt'),
       );
 
-  skjerm('Varsler', innhold);
+  // Varsler er et panel som glir inn fra høyre — egen tilbake-header (‹) som
+  // fører tilbake til hovedappen (og glir ut igjen).
+  tom(app);
+  app.append(
+    el('header', { class: 'topp topp--kjor' },
+      el('button', { class: 'topp__tilbake', type: 'button', 'aria-label': 'Tilbake', onclick: tilbakeTilApp }, '‹'),
+      el('div', {}, el('h1', { class: 'topp__tittel' }, 'Varsler')),
+    ),
+    el('main', { class: 'innhold' }, innhold),
+  );
   merkVarslerSett(feed[0]?.ts); // alt som vises nå (feeden er nyeste-først) regnes som sett
+}
+
+// Tilbake fra et slide-over-panel (varsler): bruk historikken hvis vi kom fra
+// appen (bevarer scroll + gir riktig slide-retning), ellers naviger til Hjem.
+function tilbakeTilApp() {
+  if (history.length > 1) history.back();
+  else location.hash = '#/hjem';
 }
 
 // Meny-hub bak tannhjulet: bare en liste med snarveier. «Innstillinger» her er

@@ -14,7 +14,7 @@ import { varsle } from './toast.js';
 import { pling } from './lyd.js';
 import { vibrer } from './haptikk.js';
 import { REDUSERT } from './animasjon.js';
-import { byggVarsler, varselKort, merkVarslerSett, harUlesteVarsler, tidSiden } from './varsler.js';
+import { tidSiden } from './varsler.js';
 import { gjeldendeSprak, t, hentSprakJson } from './i18n.js';
 import {
   rangerPoster, lagDwellSporer, registrerInteraksjon,
@@ -628,52 +628,8 @@ function åpnePanel(panel, bakteppe = null) {
   }));
 }
 
-// --- Varsler: fullbredde skyveside gruppert per dag (I dag / I går / …) -----
-function dagGruppe(ts, nå = new Date()) {
-  const start = new Date(nå); start.setHours(0, 0, 0, 0);
-  if (ts >= start.getTime()) return 'I dag';
-  if (ts >= start.getTime() - 86400000) return 'I går';
-  if (ts >= start.getTime() - 7 * 86400000) return 'Siste 7 dager';
-  return 'Tidligere';
-}
-
-function åpneVarsler(vert, påLukket) {
-  const feed = byggVarsler();
-  const innhold = el('div', { class: 'skyvepanel__innhold' });
-  if (!feed.length) {
-    innhold.append(el('div', { class: 'kort tomstyrke' },
-      el('span', { class: 'tomstyrke__disk' }, ikon('bjelle')),
-      el('p', { class: 'oppmuntring__tittel' }, 'Ingen varsler ennå'),
-      el('p', { class: 'dempet' }, 'Fullfør en økt eller spill i feeden, så dukker det opp her.'),
-    ));
-  } else {
-    let forrigeGruppe = null;
-    for (const v of feed) {
-      const gruppe = dagGruppe(v.ts);
-      if (gruppe !== forrigeGruppe) {
-        forrigeGruppe = gruppe;
-        innhold.append(el('h2', { class: 'skyvepanel__dag' }, gruppe));
-      }
-      innhold.append(varselKort(v));
-    }
-  }
-
-  const panel = el('div', { class: 'skyvepanel', role: 'dialog', 'aria-label': 'Varsler' },
-    el('header', { class: 'skyvepanel__topp' },
-      el('button', {
-        class: 'ikonknapp ikonknapp--plain', type: 'button', 'aria-label': 'Tilbake',
-        onclick: () => lukk(),
-      }, ikon('chevron', 'ikon ikon--flip')),
-      el('h1', { class: 'skyvepanel__tittel' }, 'Varsler'),
-    ),
-    innhold,
-  );
-  const lukk = () => { lukkPanel(panel); påLukket?.(); };
-  skyvGest(panel, lukk);
-  vert.append(panel);
-  åpnePanel(panel);
-  merkVarslerSett(feed[0]?.ts); // alt som vises nå regnes som sett
-}
+// Varsler bor nå i hovedappen (#/varsler, glir inn fra høyre) — feeden viser
+// dem ikke lenger, så det gamle skyvepanelet her er fjernet.
 
 // --- Kommentarer: halvside som skyver inn fra høyre --------------------------
 // Fellesskapskommentarer finnes ikke ennå (seed-tallet vises som kontekst);
@@ -1028,10 +984,12 @@ function feedKort(post, vert) {
 }
 
 // ==========================================================================
-// Selve feeden (#/hjem): slank topplinje (kalender · «For deg»-dropdown ·
-// bjelle) som scroller forbi med resten av innholdet (ikke fast), story-rad
-// med nyhetsprototypen, fullbredde innlegg uten delere, og batch-innlasting
-// ved scroll. Ingen banner, ikke noe bakgrunnsbilde — innholdet ER siden.
+// Selve feeden (#/feed): slank topplinje (sentrert «For deg»-dropdown +
+// feed-knapp til høyre som glir tilbake til appen) som scroller forbi med
+// resten av innholdet (ikke fast), story-rad med nyhetsprototypen, fullbredde
+// innlegg uten delere, og batch-innlasting ved scroll. Ingen banner, ikke noe
+// bakgrunnsbilde — innholdet ER siden. Feeden er et slide-over-panel (fokus-
+// modus: ingen bunnbar).
 // ==========================================================================
 export function visFeedSkjerm(mount) {
   document.body.classList.add('fane-laast'); // egen scrollflate, som fanesidene
@@ -1089,6 +1047,13 @@ function tilbakeTilFeed() {
   else location.hash = '#/hjem';
 }
 
+// Tilbake fra feed-panelet til hovedappen: bruk historikken (bevarer scroll +
+// gir riktig slide-retning), ellers naviger til Hjem.
+function tilbakeTilHovedapp() {
+  if (history.length > 1) history.back();
+  else location.hash = '#/hjem';
+}
+
 // Øktfrø for utforsknings-jitteren: stabilt mens man scroller, varierer mellom
 // besøk (Math.random er tilgjengelig i nettleseren; endres ikke under scroll).
 let _feedFro = 1;
@@ -1105,7 +1070,7 @@ function byggFeed(mount, scroll, data) {
   const dwell = lagDwellSporer();
   mount.__dwell = dwell;
 
-  // --- Topplinje: kalender · «For deg» med dropdown · bjelle ----------------
+  // --- Topplinje: «For deg» sentrert · feed-knapp (tilbake) til høyre --------
   let filter = 'alle';
   const fordegTekst = el('span', { class: 'fordeg__tekst' }, 'For deg');
   const drop = el('div', { class: 'feeddrop', hidden: true });
@@ -1144,24 +1109,19 @@ function byggFeed(mount, scroll, data) {
     if (!drop.hidden && !drop.contains(ev.target) && !fordeg.contains(ev.target)) drop.hidden = true;
   });
 
-  const bjelle = el('button', {
-    class: 'ikonknapp ikonknapp--plain ikonknapp--bjelle', type: 'button',
-    'aria-label': harUlesteVarsler() ? 'Varsler — nye' : 'Varsler',
-  }, ikon('bjelle'));
-  const prikk = () => {
-    bjelle.querySelector('.varselprikk')?.remove();
-    if (harUlesteVarsler()) bjelle.append(el('i', { class: 'varselprikk' }));
-  };
-  prikk();
-  bjelle.addEventListener('click', () => åpneVarsler(mount, prikk));
+  // Feeden er et panel over hovedappen: eneste header-knapp er feed-knappen til
+  // HØYRE, som glir panelet tilbake til appen. «For deg» sentreres med en
+  // spacer til venstre. Ingen andre ikoner (tannhjul/kalender/varsler bor i
+  // hovedappens header).
+  const tilbake = el('button', {
+    class: 'ikonknapp ikonknapp--plain feedtopp__tilbake', type: 'button',
+    'aria-label': t('Tilbake til appen'), onclick: tilbakeTilHovedapp,
+  }, ikon('feed'));
 
   const topp = el('div', { class: 'feedtopp' },
-    // Meny-hub (Profil/Lær/Innstillinger) — feeden har ingen banner-header, så
-    // tannhjulet bor her, ellers ville Profil/Lær vært uten inngang fra feeden.
-    el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/meny', 'aria-label': 'Meny og innstillinger' }, ikon('gir')),
-    el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/kalender', 'aria-label': 'Mosjonskalender' }, ikon('kalender')),
+    el('span', { class: 'feedtopp__spacer', 'aria-hidden': 'true' }),
     fordeg,
-    bjelle,
+    tilbake,
     drop,
   );
 

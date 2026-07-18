@@ -78,12 +78,24 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
   sjekk('Dagens feed-modulen er fjernet fra Hjem', (await page.locator('.utforsk-feed').count()) === 0);
   sjekk('Hjem har feed-ikon oppe til venstre', (await page.locator('.hjemtopp__feed').count()) === 1);
 
-  // --- 2) Feeden bor på #/feed og rendrer flere kort -------------------------
+  // --- 2) Feeden bor på #/feed (slide-over) og rendrer flere kort ------------
   await page.click('.hjemtopp__feed');
   await page.waitForSelector('.fkort', { timeout: 20000 });
   sjekk('Feed-ikonet åpner #/feed', (await hash()).startsWith('#/feed'));
   const antKort = await page.locator('.fkort').count();
   sjekk('Feeden rendrer flere kort', antKort >= 3, `${antKort} kort`);
+  // Feeden er et panel: ingen bunnbar, kun feed-knappen (tilbake) i headeren.
+  sjekk('Feeden skjuler bunnbaren', !(await page.locator('.tabbar').isVisible()));
+  sjekk('Feed-header har kun tilbake-knapp', (await page.locator('.feedtopp__tilbake').count()) === 1
+    && (await page.locator('.feedtopp .ikonknapp').count()) === 1);
+  // Tilbake-knappen glir panelet tilbake til hovedappen.
+  await page.click('.feedtopp__tilbake');
+  await page.waitForSelector('.tabbar__knapp', { timeout: 20000 });
+  sjekk('Feed-knappen fører tilbake til hovedappen', !(await hash()).startsWith('#/feed'));
+  // Hovedapp-header: profil + varsler til høyre.
+  sjekk('Hovedapp-header har profil + varsler til høyre', (await page.locator('.hjemtopp__side--h .hjemtopp__varsler').count()) === 1);
+  await page.goto(BASE + '/#/hjem');
+  await page.waitForSelector('.tabbar__knapp', { timeout: 20000 });
 
   // --- 3) Service worker registrerer + precachen fylles ----------------------
   const sw = await page.evaluate(async () => {
