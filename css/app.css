@@ -390,18 +390,8 @@ body {
 /* Det jeg vil bevare — små fliser */
 .bevareflis { display: inline-flex; align-items: center; background: var(--bg-kort-2); border: 1px solid var(--kant); border-radius: var(--radius-pill); padding: 7px 13px; font-size: 0.85rem; font-weight: 600; color: var(--tekst-2); }
 
-/* Kompassbudskap i pilarsidene — én stille linje, aldri et ropende kort */
-.kompassbud { display: flex; align-items: center; gap: 10px; background: var(--aksent-svak); border: 1px solid var(--aksent-kant); border-radius: var(--radius-md); padding: 11px 14px; text-decoration: none; color: var(--tekst-2); }
-.kompassbud__ikon { display: grid; place-items: center; flex: 0 0 auto; color: var(--aksent); }
-.kompassbud__ikon .ikon { width: 16px; height: 16px; }
-.kompassbud__tekst { font-size: 0.88rem; line-height: 1.4; }
-/* Hero-variant: samme stille linje, men bakt inn i pilar-headeren over
-   hero-bildet — frostet glass så teksten leses mot det mørke motivet. */
-.kompassbud--hero { position: relative; z-index: 1; margin: 12px auto 0; max-width: 460px;
-  background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.24); color: #fff;
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-.kompassbud--hero .kompassbud__ikon { color: #fff; }
-.kompassbud--hero .kompassbud__tekst { color: rgba(255,255,255,0.96); text-shadow: 0 1px 6px rgba(20,28,20,0.35); }
+/* (Kompassbudskapet i pilar-heroene styles som .kompasshero i hjemdash-delen —
+   samme tekststil som Hjem-taglinen, med kompasset som sentrert deler.) */
 
 /* Hjem: kompassmerket fokus (mørkegrønt kort → gull-ikon) + tilbakekomstkortet */
 .hjemdash__fokus { position: relative; }
@@ -484,6 +474,15 @@ body.sideglir { overflow: hidden; }
 .taktring--pilar { width: 148px; height: 148px; margin: 16px auto 2px; }
 .taktring--pilar .taktring__pst { font-size: 34px; }
 .taktring--pilar .ringfremgang__fyll { stroke-width: 8; }
+
+/* Kompasset i pilar-heroen: budskapssetningen i samme stil som Hjem-taglinen
+   («Fire gode valg. Én dag i takt.»), og kompasset som en sentrert deler —
+   tynn strek · kompass · tynn strek — mellom setningen og streak-stripa. */
+.kompasshero { position: relative; z-index: 1; display: block; text-decoration: none; color: inherit; }
+.kompasshero__setning { margin: 6px auto 0; max-width: 30em; }
+.kompasshero__deler { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 14px; color: rgba(255,255,255,0.9); }
+.kompasshero__strek { flex: 0 0 auto; width: 42px; height: 1px; background: rgba(255,255,255,0.45); }
+.kompasshero__ikon { width: 18px; height: 18px; flex: 0 0 auto; filter: drop-shadow(0 1px 6px rgba(20,28,20,0.4)); }
 
 
 /* Fire sammenkoblede pilar-noder (M55) — kjernemålingen i hero-en. Hver node:

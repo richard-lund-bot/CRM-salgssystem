@@ -641,11 +641,13 @@ function pilarSkall(mount, { navn, tittel, under = null, ring = null, streakStri
       el('h1', { class: 'hjemdash__tittel pilar-hero__tittel' }, tittel),
       under ? el('p', { class: 'hjemdash__under' }, under) : null),
   ];
-  // Kompass-kommentar bakt inn i headeren: budskapsmotoren snakker direkte til
-  // pilaren du står på (frekvens-/dimensjonsstyrt). Har den ingenting relevant å
-  // si, blir det et tomt fragment — ingen fyll. Fellesskap → 'sosialt'-modulen.
+  // Kompasset bakt inn i headeren: budskapsmotoren snakker direkte til pilaren
+  // du står på (frekvens-/dimensjonsstyrt) — setningen i samme stil som Hjem-
+  // taglinen, med kompasset som sentrert deler ned mot streak-stripa. Har den
+  // ingenting relevant å si, blir det et tomt fragment — ingen fyll.
+  // Fellesskap → 'sosialt'-modulen.
   const kompassModul = { fellesskap: 'sosialt' }[navn] || navn;
-  heroBarn.push(kompassBudKort(kompassModul, { hero: true }));
+  heroBarn.push(kompassBudKort(kompassModul));
   // Streak-stripe (frostet kort nederst i heroen): flamme + «X dager på rad» +
   // ukesprikker M–S. Fylt prikk = kontakt den dagen, ring rundt = i dag.
   if (streakStripe) {
@@ -2966,15 +2968,20 @@ function visMeny() {
 // «akkurat nå», ukens refleksjon og full kontroll (rediger/pause/slett).
 // Retning, ikke press. Personlig, ikke påtrengende.
 // ===========================================================================
-// Diskret kompasslinje til pilarsidene — vises bare når budskapsmotoren har
-// noe relevant å si (dimensjons-, tone- og frekvensstyrt). Har ikke appen et
-// godt budskap, vises ingenting: tomt fragment i stedet for fyll-motivasjon.
-function kompassBudKort(modul, { hero = false } = {}) {
+// Kompasset i pilar-heroene — vises bare når budskapsmotoren har noe relevant
+// å si (dimensjons-, tone- og frekvensstyrt). Setningen skrives i samme stil
+// som taglinen på Hjem («Fire gode valg. Én dag i takt.»), og kompasset står
+// som en sentrert deler mellom setningen og streak-stripa under. Har ikke
+// appen et godt budskap, vises ingenting: tomt fragment i stedet for fyll.
+function kompassBudKort(modul) {
   const bud = kompassBudskap(modul);
   if (!bud) return document.createDocumentFragment();
-  return el('a', { class: 'kompassbud' + (hero ? ' kompassbud--hero' : ''), href: '#/mening' },
-    el('span', { class: 'kompassbud__ikon' }, ikon('kompass')),
-    el('span', { class: 'kompassbud__tekst' }, bud.tekst));
+  return el('a', { class: 'kompasshero', href: '#/mening', 'aria-label': 'Mitt kompass' },
+    el('p', { class: 'hjemdash__under kompasshero__setning' }, bud.tekst),
+    el('span', { class: 'kompasshero__deler', 'aria-hidden': 'true' },
+      el('i', { class: 'kompasshero__strek' }),
+      ikon('kompass', 'ikon kompasshero__ikon'),
+      el('i', { class: 'kompasshero__strek' })));
 }
 
 function visMeningSkjerm(mount) {
