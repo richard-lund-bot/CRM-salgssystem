@@ -3888,10 +3888,9 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .fkort {
   width: 100%; border-radius: var(--radius-2xl); color: #fff;
   padding: 18px 14px 14px;
-  /* Ett innlegg fyller skjermen (Reels-stil). dvh følger nettleser-chromet på
-     mobil, og vi trekker fra hjemindikatoren så byline-linjen ikke havner under
-     den — resten av kortet strekkes helt til bunnkanten, aldri et beige felt. */
-  min-height: calc(100dvh - env(safe-area-inset-bottom));
+  /* Ett innlegg fyller hele skjermen (Reels-stil): kortet strekkes helt til
+     bunnkanten, aldri et beige felt. dvh følger nettleser-chromet på mobil. */
+  min-height: 100dvh;
   display: flex; flex-direction: column;
   box-shadow: var(--shadow-card);
 }
