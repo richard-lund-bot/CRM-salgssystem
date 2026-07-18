@@ -89,6 +89,7 @@ export function pilarDager(kilder, pilarId) {
     const per = new Map(); // dato → minutter
     for (const o of logg) {
       if (o.slettet) continue;
+      if (loggBevegelse(o) === 'recovery') continue; // restitusjon/pust teller under Ro, ikke bevegelse
       const t = Date.parse(o.dato);
       if (!Number.isFinite(t)) continue;
       const dato = isoDag(t);
@@ -153,6 +154,7 @@ export function bevegelseStreak(kilder, nå = Date.now()) {
   const minPerDag = new Map();
   for (const o of (kilder.logg || [])) {
     if (o.slettet) continue;
+    if (loggBevegelse(o) === 'recovery') continue; // restitusjon/pust hører til Ro
     const t = Date.parse(o.dato);
     if (!Number.isFinite(t)) continue;
     const d = isoDag(t);

@@ -1901,7 +1901,7 @@ const DAGSMAAL = { mikro: 10, kort: 20, standard: 40, lang: 60 };
 // Bevegelsesgrupper for «Utforsk bevegelse» — hvert filter samler flere
 // øktkategorier. Rekkefølgen = chip-rekkefølgen (horisontalt scrollende).
 const BEV_GRUPPER = [
-  { id: 'rolig', navn: 'Rolig', ikon: 'blad', farge: 'teal', kats: ['restitusjon', 'yoga', 'toying'] },
+  { id: 'rolig', navn: 'Rolig', ikon: 'blad', farge: 'teal', kats: ['yoga', 'toying'] },
   { id: 'hverdag', navn: 'Hverdag', ikon: 'loper', farge: 'lime', kats: ['gatur', 'hverdag'] },
   { id: 'kondisjon', navn: 'Kondisjon', ikon: 'hjerte', farge: 'koral', kats: ['lop', 'sykkel', 'hiit'] },
   { id: 'styrke', navn: 'Styrke', ikon: 'vekt', farge: 'blaa', kats: ['styrke', 'kroppsvekt'] },
@@ -1993,7 +1993,9 @@ const UKE_MAAL_MIN = 150; // WHO/Helsedirektoratet: minst 150 min moderat i uka
 function minuttKortRad(profil, logg) {
   const nå = Date.now();
   const idagIso = isoDato(new Date(nå));
-  const minutter = logg.filter((o) => (o.dato || '').slice(0, 10) === idagIso).reduce((s, o) => s + (o.varighetMin || 0), 0);
+  // Restitusjon/pust (recovery) teller under Ro, ikke som bevegelse-minutter.
+  const erBevegelse = (o) => !loggBevegelseRecovery(o);
+  const minutter = logg.filter((o) => (o.dato || '').slice(0, 10) === idagIso && erBevegelse(o)).reduce((s, o) => s + (o.varighetMin || 0), 0);
   const maal = DAGSMAAL[profil.varighetsklasse] || 40;
   const beveg = hentGnistStatus().pilarer.bevegelse;
   const sMaal = beveg.iDag.maal;
@@ -2003,7 +2005,7 @@ function minuttKortRad(profil, logg) {
   const man = new Date(idag0.getTime() - ((idag0.getDay() + 6) % 7) * 86400000);
   const manIso = isoDato(man);
   const sonIso = isoDato(new Date(man.getTime() + 6 * 86400000));
-  const ukeMin = logg.filter((o) => { const d = (o.dato || '').slice(0, 10); return d >= manIso && d <= sonIso; }).reduce((s, o) => s + (o.varighetMin || 0), 0);
+  const ukeMin = logg.filter((o) => { const d = (o.dato || '').slice(0, 10); return d >= manIso && d <= sonIso && erBevegelse(o); }).reduce((s, o) => s + (o.varighetMin || 0), 0);
 
   // Takt-linje (pace) for uka: du trenger 1 min trening per 67,2 min klokketid
   // for å nå 150 på søndag. Den stiplede «skyggen» viser hvor du bør være akkurat
