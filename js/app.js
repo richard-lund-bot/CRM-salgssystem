@@ -628,18 +628,16 @@ function braceSvg() {
 
 // ===========================================================================
 // Felles pilar-skall (M53) — samme stil som Hjem-dashbordet: hjemtopp-header
-// med «<pilar>.»-logo, naturbilde-hero med serif-tittel + valgfri dags-ring,
-// og en .hjemdash-beholder for modulene. Brukes av Mat/Bevegelse/Ro/Sosialt så
-// pilarene føles som ett system.
+// med «<pilar>.»-logo (selve tittelen), naturbilde-hero med kompass-setningen
+// + valgfri dags-ring, og en .hjemdash-beholder for modulene. Ingen egen
+// hero-tittel — headeren er tittelen, kompasset er setningen. Brukes av
+// Mat/Bevegelse/Ro/Sosialt så pilarene føles som ett system.
 // ===========================================================================
-function pilarSkall(mount, { navn, tittel, under = null, ring = null, streakStripe = null, heroKort = null }) {
+function pilarSkall(mount, { navn, ring = null, streakStripe = null, heroKort = null }) {
   const fase = dagsfase(new Date().getHours());
   const topp = lagHovedtopp(navn);
   const heroBarn = [
     el('div', { class: 'hjemdash__scrim', 'aria-hidden': 'true' }),
-    el('div', { class: 'hjemdash__hilsen' },
-      el('h1', { class: 'hjemdash__tittel pilar-hero__tittel' }, tittel),
-      under ? el('p', { class: 'hjemdash__under' }, under) : null),
   ];
   // Kompasset bakt inn i headeren: budskapsmotoren snakker direkte til pilaren
   // du står på (frekvens-/dimensjonsstyrt) — setningen i samme stil som Hjem-
@@ -834,7 +832,7 @@ function visKostholdSkjerm(mount) {
   // Samme header som Ro/Fellesskap: streak-stripe med flamme, «X dager på rad»
   // og ukesprikker M–S. (Dagens matvalg-antall vises i «Logg i dag»-kortet under.)
   const main = pilarSkall(mount, {
-    navn: 'mat', tittel: 'Mat som varer.',
+    navn: 'mat',
     streakStripe: { streak: gm0.streak, dager: ukestreakPilar('mat'), href: '#/ukesplan' },
   });
   // Tenner dagens ukesprikk etter en logg (uten full redraw), som ro/fellesskap.
@@ -1576,7 +1574,7 @@ function visRoSkjerm(mount) {
 
   const gro = hentGnistStatus().pilarer.ro;
   const main = pilarSkall(mount, {
-    navn: 'ro', tittel: 'Ro i dag',
+    navn: 'ro',
     streakStripe: { streak: gro.streak, dager: ukestreakRo(), href: '#/rofremgang' },
   });
 
@@ -1775,7 +1773,6 @@ function visFellesskapSkjerm(mount) {
   const gsos = hentGnistStatus().pilarer.sosialt;
   const main = pilarSkall(mount, {
     navn: 'fellesskap',
-    tittel: 'God kontakt gjør noe med dagen.',
     streakStripe: { streak: gsos.streak, dager: ukestreakDager() },
   });
 
@@ -2254,7 +2251,7 @@ function visTrening(mount = app) {
   // Header som Ro/Fellesskap: naturbilde-hero + streak-stripe. Under: to
   // minuttkort, «Utforsk bevegelse» (filtrerte anbefalinger) og rask tilgang.
   const main = pilarSkall(mount, {
-    navn: 'bevegelse', tittel: 'Finn noe som passer i dag.',
+    navn: 'bevegelse',
     streakStripe: { streak: gbev.streak, dager: ukestreakPilar('bevegelse'), href: '#/fremgang' },
   });
   // «Gjort» logger uten full sidetegning: oppdaterer minuttkortene og tenner

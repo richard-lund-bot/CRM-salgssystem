@@ -467,10 +467,10 @@ body.sideglir { overflow: hidden; }
 .taktring__merkelapp { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.85); }
 .hjemdash__taktord { margin: 8px 0 0; font-family: var(--font-display); font-size: 17px; color: #fff; text-shadow: 0 1px 10px rgba(20,28,20,0.45); }
 
-/* Pilar-hero: samme stil som Hjem, men mer kompakt (ingen hilsen) og en mindre
-   dags-ring. Brukes av Mat/Bevegelse/Ro/Sosialt via pilarSkall(). */
+/* Pilar-hero: samme stil som Hjem, men mer kompakt (ingen egen tittel —
+   headerens «<pilar>.»-logo er tittelen) og en mindre dags-ring. Brukes av
+   Mat/Bevegelse/Ro/Sosialt via pilarSkall(). */
 .pilar-hero { padding: 24px 20px 26px; }
-.pilar-hero .hjemdash__tittel { font-size: 26px; }
 .taktring--pilar { width: 148px; height: 148px; margin: 16px auto 2px; }
 .taktring--pilar .taktring__pst { font-size: 34px; }
 .taktring--pilar .ringfremgang__fyll { stroke-width: 8; }
@@ -4208,12 +4208,6 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .matmeta { display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; font-weight: 600; color: var(--tekst-2); }
 .matmeta__ikon { width: 14px; height: 14px; color: var(--dempet); }
 .matmeta--pille { background: var(--bg-kort-2); border-radius: var(--radius-pill); padding: 6px 11px; }
-
-/* ---- Mat-hjem: venstrestilt hero + mørk to-tall-stripe ---- */
-.pilar-hero--mat { text-align: left; }
-.pilar-hero--mat .hjemdash__under { max-width: 20em; }
-.pilar-hero--bevegelse { text-align: left; }
-.pilar-hero--bevegelse .hjemdash__tittel { max-width: 11em; }
 
 /* Kort-hode med teller/handling til høyre */
 .matkort__hode { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 4px; }

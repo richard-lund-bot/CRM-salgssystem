@@ -192,7 +192,6 @@ EN = {
  # Faneetiketter (5 pilarer) + Ro/Fellesskap-flatene
  'Feed': 'Feed', 'Mat': 'Food', 'Sosialt': 'Social', 'Fellesskap': 'Belonging', 'fellesskap': 'belonging',
  # Fellesskap (pilar 4) — hjem, logg, krets, kom i gang
- 'God kontakt gjør noe med dagen.': 'Good connection changes the day.',
  'Små øyeblikk sammen gir mer mening, energi og glede.': 'Small moments together bring more meaning, energy and joy.',
  'Logg dagens kontakt': 'Log today’s connection', 'Hva gjorde du i dag?': 'What did you do today?',
  'Se fremgang': 'See progress', 'Annet': 'Other', 'Vis logg': 'Show log', 'Logget': 'Logged',
@@ -231,7 +230,7 @@ EN = {
  'Pust. Senk skuldrene. Vær her.': 'Breathe. Drop your shoulders. Be here.',
  'Pust deg rolig': 'Breathe yourself calm',
  # Ro (pilar 3) — daglige ro-vaner, mikroøkter, kveldsøkter
- 'Ro i dag': 'Calm today', 'Små pauser roer systemet.': 'Small pauses calm the system.',
+ 'Små pauser roer systemet.': 'Small pauses calm the system.',
  'Velg det som passet for deg i dag.': 'Pick whatever suited you today.',
  'Pustet rolig': 'Breathed calmly', 'Var uten skjerm': 'Was screen-free', 'Ba / mediterte': 'Prayed / meditated',
  'Tok en liten pause': 'Took a short break', 'Var ute i naturen': 'Was out in nature',
