@@ -752,7 +752,11 @@ export const BUDSKAPSMODULER = Object.keys(BUDSKAPSBIBLIOTEK);
 // over er kuraterte, men porten står som siste skanse også for framtidige maler.
 const FORBUDT = /\b(sviktet|skuffet|lovet deg selv|dårlig samvittighet|på etterskudd|taper|mister alt|siste sjanse)\b/i;
 
-function lesBudskapslogg() { return lesRå(LS_BUDSKAP, []); }
+// Visningsloggen renser seg selv: rader som peker på mal-ID-er som ikke
+// lenger finnes (bibliotekbytte/oppdatering), filtreres bort ved lesing —
+// gammel logg kan dermed aldri blokkere eller fryse dagens valg.
+const KJENTE_MALER = new Set(BUDSKAPSMALER.map((m) => m.id));
+function lesBudskapslogg() { return lesRå(LS_BUDSKAP, []).filter((r) => KJENTE_MALER.has(r.mal)); }
 function skrivBudskapslogg(logg) { skrivRå(LS_BUDSKAP, logg.slice(-240)); }
 
 /**

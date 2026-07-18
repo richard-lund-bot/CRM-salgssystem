@@ -17,7 +17,7 @@ const {
   lesKompass, lagreKompass, settKompassPause, slettKompass, settDenneTiden,
   kompassBudskap, kompassForklaring, refleksjonsSporsmal, feiringsHvorfor,
   leggTilHvorfor, trengerRefleksjon, settRefleksjon, ukeStart, harKompass,
-  DIMENSJONER, BUDSKAPSMALER, BUDSKAPSMODULER,
+  DIMENSJONER, BUDSKAPSMALER, BUDSKAPSMODULER, isoDag,
 } = await import('../js/mening.js');
 
 let feil = 0;
@@ -77,6 +77,15 @@ sjekk(seksDager.size >= 4, `bevegelse varierer over seks dager (${seksDager.size
 let tomme = 0;
 for (let d = 0; d < 30; d++) if (!kompassBudskap('ro', anker + d * 86400000)) tomme++;
 sjekk(tomme === 0, 'ro gir budskap 30 dager på rad (fallback når alt er i hvile)');
+
+// Gammel visningslogg (utdaterte mal-ID-er fra tidligere bibliotek) renses ved
+// lesing og skal verken blokkere dagens budskap eller bli liggende.
+_store.set('takt.kompassbudskap', JSON.stringify([{ mal: 'beveg-naerhet', modul: 'bevegelse', dato: isoDag(anker) }]));
+const fersk = kompassBudskap('bevegelse', anker);
+sjekk(!!fersk && fersk.id.startsWith('bevegelse-'), 'utdaterte logg-rader blokkerer ikke dagens budskap');
+sjekk(!JSON.parse(_store.get('takt.kompassbudskap')).some((r) => r.mal === 'beveg-naerhet'),
+  'utdaterte logg-rader ryddes bort ved neste skriving');
+sjekk(kompassBudskap('bevegelse', anker)?.id === fersk.id, 'dagens valg står stabilt etter rydding');
 
 // Direkte-nivå: kompasslinjen brukes bare med eksplisitt samtykke.
 _store.delete('takt.kompassbudskap');
