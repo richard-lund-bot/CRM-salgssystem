@@ -25,7 +25,8 @@
     "test:ovelser": "node scripts/smoke-ovelser.mjs",
     "test:styrke": "node scripts/smoke-styrke.mjs",
     "test:feiring": "node scripts/smoke-feiring.mjs",
-    "e2e": "node tests/e2e/smoke.cjs"
+    "e2e": "node tests/e2e/smoke.cjs",
+    "e2e:feed": "node tests/e2e/feed-dra.cjs"
   },
   "devDependencies": {
     "playwright": "^1.48.0"

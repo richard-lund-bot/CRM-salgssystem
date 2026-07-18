@@ -37,7 +37,7 @@ import * as sync from './sync.js';
 import { krediterNye, stravaKort } from './strava.js';
 import { byggVarsler, merkVarslerSett, varselKort, harUlesteVarsler } from './varsler.js';
 import { varsle } from './toast.js';
-import { visFeedSkjerm, visPostSkjerm } from './feed.js';
+import { visFeedSkjerm, visPostSkjerm, lastFeed, byggFeedPeek } from './feed.js';
 import { gjeldendeSprak, settSprak, startOversetter, oversettDom, hentSprakJson } from './i18n.js';
 import { VANER, dagensInnslag, veksleVane, kostStatus } from './kosthold.js';
 import {
@@ -168,6 +168,7 @@ const faneForRute = (rute) => FANE_AV_RUTE[rute] || rute;
 const faneMinne = Object.fromEntries(FANER_DEF.map((f) => [f.id, `#/${f.rute}`]));
 const scrollMinne = new Map();
 let forrigeHash = '';
+let _droppSlide = false; // settes av feed-dra-gesten så rute-slide ikke dobles
 // Fanesidene scroller et indre .hjem-scroll; reise-/vanlige skjermer scroller vinduet.
 const aktivScroller = () => document.querySelector('.hjem-scroll') || document.querySelector('.hjemdash-scroll > .innhold') || document.scrollingElement || document.documentElement;
 
@@ -234,12 +235,13 @@ function navger() {
   // kommer hovedappen tilbake fra motsatt side.
   const forrigeRute = (forrigeHash.replace('#/', '') || 'hjem').split('?')[0];
   let slideKlasse = '';
-  if (byttet && !REDUSERT()) {
+  if (byttet && !REDUSERT() && !_droppSlide) {
     if (SLIDE_VENSTRE.has(rute)) slideKlasse = 'side-inn-venstre';
     else if (SLIDE_HOYRE.has(rute)) slideKlasse = 'side-inn-hoyre';
     else if (SLIDE_VENSTRE.has(forrigeRute)) slideKlasse = 'side-inn-hoyre';
     else if (SLIDE_HOYRE.has(forrigeRute)) slideKlasse = 'side-inn-venstre';
   }
+  _droppSlide = false; // engangsflagg: dra-gesten har alt vist panelet glidende inn
   // Navigasjon vekker en kompakt bar: den vokser tilbake til full størrelse
   // mens linsen glir til ny fane (som Instagram). Å bli stående krympet ga
   // også et origin-hopp når strekk-animasjonen byttet transform-origin.
@@ -409,14 +411,85 @@ function visHjemDashboard(mount) {
   document.body.classList.add('dash-laast');
   mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: () => hjemMain.scrollTop, innhold: hjemMain }));
 
-  // Sveip til høyre → dagens feed glir inn fra venstre (uten å stjele vertikal scroll).
-  let sx = null; let sy = null;
-  scroll.addEventListener('touchstart', (e) => { const t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; }, { passive: true });
-  scroll.addEventListener('touchend', (e) => {
-    if (sx == null) return;
-    const t = e.changedTouches[0]; const dx = t.clientX - sx; const dy = t.clientY - sy; sx = null;
-    if (dx > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) location.hash = '#/feed';
+  // Forhåndslast feed-data så dra-peeken kan vise ekte kort med en gang.
+  lastFeed().catch(() => {});
+  // Dra til høyre → feeden dras inn fra venstre (Instagram-stil, følger fingeren).
+  settOppFeedDrag(scroll);
+}
+
+// Instagram-stil dra fra Hjem til feeden: en horisontal dra mot høyre skyver
+// Hjem ut til høyre mens en feed-peek dras inn fra venstre — følger fingeren.
+// Slipper man forbi terskelen, fullføres overgangen og #/feed tegnes (uten å
+// doble rute-slide); ellers spretter alt tilbake. Vertikal scroll røres ikke.
+function settOppFeedDrag(scroll) {
+  const bredde = () => window.innerWidth || document.documentElement.clientWidth;
+  let startX = null; let startY = null; let retning = null; let aktiv = false; let peek = null;
+
+  const settPos = (x) => {
+    const dx = Math.max(0, Math.min(bredde(), x));
+    app.style.transform = `translateX(${dx}px)`;
+    if (peek) peek.style.transform = `translateX(${dx - bredde()}px)`;
+  };
+  const rydd = () => {
+    app.style.transition = ''; app.style.transform = '';
+    peek?.remove(); peek = null;
+    document.body.classList.remove('sideglir');
+  };
+  const animer = (fullfor) => {
+    const W = bredde();
+    app.style.transition = 'transform 0.34s var(--ease-out)';
+    if (peek) peek.style.transition = 'transform 0.34s var(--ease-out)';
+    if (fullfor) {
+      app.style.transform = `translateX(${W}px)`;
+      if (peek) peek.style.transform = 'translateX(0)';
+      setTimeout(() => {
+        // Feeden er dratt helt inn — peeken dekker skjermen. Nullstill #app FØR
+        // vi navigerer, så den ekte feeden tegnes på plass (translateX 0) under
+        // peeken, og fjern peeken når feeden er på plass (ingen flash).
+        app.style.transition = ''; app.style.transform = '';
+        _droppSlide = true;       // peeken viste alt feeden glidende inn
+        location.hash = '#/feed'; // tegn den ekte feeden i #app (uten rute-slide)
+        setTimeout(() => { peek?.remove(); peek = null; document.body.classList.remove('sideglir'); }, 120);
+      }, 340);
+    } else {
+      app.style.transform = 'translateX(0)';
+      if (peek) peek.style.transform = `translateX(${-W}px)`;
+      setTimeout(rydd, 340);
+    }
+  };
+
+  scroll.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) { startX = null; return; }
+    const t = e.touches[0]; startX = t.clientX; startY = t.clientY; retning = null; aktiv = false;
+    app.style.transition = '';
   }, { passive: true });
+
+  scroll.addEventListener('touchmove', (e) => {
+    if (startX == null) return;
+    const t = e.touches[0]; const dx = t.clientX - startX; const dy = t.clientY - startY;
+    if (retning === null) {
+      if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+      // Bare en tydelig dra mot HØYRE åpner feeden; ellers er det vanlig scroll.
+      retning = (dx > 0 && Math.abs(dx) > Math.abs(dy) * 1.3) ? 'h' : 'v';
+      if (retning === 'h') {
+        aktiv = true;
+        peek = byggFeedPeek();
+        peek.style.transform = `translateX(${-bredde()}px)`;
+        document.body.appendChild(peek);
+        document.body.classList.add('sideglir');
+      }
+    }
+    if (aktiv) { e.preventDefault(); settPos(dx); }
+  }, { passive: false });
+
+  const slutt = (e) => {
+    if (!aktiv) { startX = null; return; }
+    const t = e.changedTouches[0]; const dx = t.clientX - startX; startX = null; aktiv = false;
+    // Fullfør hvis dratt forbi ~30 % av skjermen (ellers sprett tilbake).
+    animer(dx > bredde() * 0.3);
+  };
+  scroll.addEventListener('touchend', slutt, { passive: true });
+  scroll.addEventListener('touchcancel', slutt, { passive: true });
 }
 
 // «Brace» som samler de fire pilarene ned mot i-takt-oppsummeringen. Én tynn

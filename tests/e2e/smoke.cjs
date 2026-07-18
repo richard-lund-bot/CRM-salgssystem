@@ -79,6 +79,8 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
   sjekk('Hjem har feed-ikon oppe til venstre', (await page.locator('.hjemtopp__feed').count()) === 1);
 
   // --- 2) Feeden bor på #/feed (slide-over) og rendrer flere kort ------------
+  // (Instagram-dra-gesten fra Hjem verifiseres i egen touch-test — krever
+  // touch-kontekst som denne røyktesten ikke bruker.)
   await page.click('.hjemtopp__feed');
   await page.waitForSelector('.fkort', { timeout: 20000 });
   sjekk('Feed-ikonet åpner #/feed', (await hash()).startsWith('#/feed'));

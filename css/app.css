@@ -346,10 +346,15 @@ body {
    et panel som starter utenfor kanten ikke gir en kort horisontal scroll. */
 @keyframes side-inn-venstre { from { transform: translateX(-100%); } to { transform: translateX(0); } }
 @keyframes side-inn-hoyre { from { transform: translateX(100%); } to { transform: translateX(0); } }
-.side-inn-venstre { animation: side-inn-venstre 0.3s var(--ease-out); }
-.side-inn-hoyre { animation: side-inn-hoyre 0.3s var(--ease-out); }
+.side-inn-venstre { animation: side-inn-venstre 0.5s var(--ease-out); }
+.side-inn-hoyre { animation: side-inn-hoyre 0.5s var(--ease-out); }
 body.sideglir { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) { .side-inn-venstre, .side-inn-hoyre { animation: none; } }
+
+/* Feed-peek: laget som ligger til venstre og dras inn med fingeren (Instagram-
+   stil). Full skjerm, ugjennomsiktig, over bunnbaren. Transform settes i JS. */
+.feedpeek { position: fixed; inset: 0; z-index: 1500; background: var(--bg); overflow: hidden; will-change: transform; }
+.feedpeek .feedscroll { height: 100%; overflow: hidden; }
 .hjemdash { padding: 4px 18px calc(var(--tabbar-h) + 20px); display: flex; flex-direction: column; gap: 16px; }
 
 .hjemdash__hero { position: relative; overflow: hidden; border-radius: var(--radius-2xl); padding: 26px 22px 30px; background-size: cover; background-position: center; box-shadow: var(--shadow-card); text-align: center; }
@@ -3557,7 +3562,9 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
    ========================================================================== */
 /* Egen scrollflate uten banner og bakgrunnsbilde — innholdet ER siden.
    Ingen sidepadding: kortene skal ta 100 % av skjermbredden. */
-.feedscroll { background: var(--bg); padding: calc(env(safe-area-inset-top) + 8px) 0 0; }
+/* Bunn-clearance: feeden har ingen bunnbar lenger, så siste kort trenger luft
+   over hjemindikatoren/safe-arean (ellers blir bunnen avskåret). */
+.feedscroll { background: var(--bg); padding: calc(env(safe-area-inset-top) + 8px) 0 calc(env(safe-area-inset-bottom) + 24px); }
 .feedscroll__laster { padding: 20px 16px; }
 
 /* Topplinje: kalender · For deg ˅ · bjelle — ligger i scrollflaten og

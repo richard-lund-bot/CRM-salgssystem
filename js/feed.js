@@ -983,6 +983,25 @@ function feedKort(post, vert) {
   );
 }
 
+// Lettvekts «peek» av feeden til dra-gesten (Instagram-stil, hovedapp → feed):
+// topplinja + de første kortene, uten dwell/observers/batch. Bygges fra data
+// som alt er lastet (_feed); er den ikke lastet ennå, blir peeken bare bakgrunn
+// (dra-en virker fortsatt, feeden fylles inn ved neste dra). Ikke-interaktiv —
+// den ekte feeden tegnes når man slipper.
+export function byggFeedPeek() {
+  const topp = el('div', { class: 'feedtopp' },
+    el('span', { class: 'feedtopp__spacer', 'aria-hidden': 'true' }),
+    el('button', { class: 'fordeg', type: 'button', tabindex: '-1' },
+      el('span', { class: 'fordeg__tekst' }, 'For deg'),
+      ikon('chevronned', 'ikon fordeg__pil')),
+    el('button', { class: 'ikonknapp ikonknapp--plain feedtopp__tilbake', type: 'button', tabindex: '-1' }, ikon('feed')),
+  );
+  const scroll = el('div', { class: 'hjem-scroll feedscroll' }, topp);
+  const posts = (_feed?.posts || []).slice(0, 3);
+  if (posts.length) scroll.append(el('div', { class: 'feedliste' }, ...posts.map((p) => feedKort(p, scroll))));
+  return el('div', { class: 'feedpeek', 'aria-hidden': 'true' }, scroll);
+}
+
 // ==========================================================================
 // Selve feeden (#/feed): slank topplinje (sentrert «For deg»-dropdown +
 // feed-knapp til høyre som glir tilbake til appen) som scroller forbi med
@@ -1011,6 +1030,8 @@ export function visFeedSkjerm(mount) {
   });
 
   mount.append(scroll);
+  // Sikkerhetsnett: rydd en eventuell dra-peek når den ekte feeden er på plass.
+  requestAnimationFrame(() => document.querySelectorAll('.feedpeek').forEach((p) => p.remove()));
 }
 
 // ==========================================================================
