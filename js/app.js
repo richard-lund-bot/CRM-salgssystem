@@ -1902,7 +1902,7 @@ const DAGSMAAL = { mikro: 10, kort: 20, standard: 40, lang: 60 };
 // øktkategorier. Rekkefølgen = chip-rekkefølgen (horisontalt scrollende).
 const BEV_GRUPPER = [
   { id: 'rolig', navn: 'Rolig', ikon: 'blad', farge: 'teal', kats: ['restitusjon', 'yoga', 'toying'] },
-  { id: 'hverdag', navn: 'Hverdag', ikon: 'loper', farge: 'lime', kats: ['gatur'] },
+  { id: 'hverdag', navn: 'Hverdag', ikon: 'loper', farge: 'lime', kats: ['gatur', 'hverdag'] },
   { id: 'kondisjon', navn: 'Kondisjon', ikon: 'hjerte', farge: 'koral', kats: ['lop', 'sykkel', 'hiit'] },
   { id: 'styrke', navn: 'Styrke', ikon: 'vekt', farge: 'blaa', kats: ['styrke', 'kroppsvekt'] },
   { id: 'mobilitet', navn: 'Mobilitet', ikon: 'yoga', farge: 'lilla', kats: ['mobilitet', 'toying'] },
@@ -1921,6 +1921,40 @@ function vekslOktFav(id) {
   return i < 0; // true = ble favoritt nå
 }
 
+// Hverdagsaktivitet — husarbeid, hage og annet som også ER bevegelse. Teller
+// med halv vekt (lettere/ujevn intensitet), og logges via «Gjort» (ingen guidet
+// timer). Halv vekt gir et ærlig, men motiverende bidrag: en halvtimes hagearbeid
+// ≈ 15 min bevegelse.
+const HVERDAG_VEKT = 0.5;
+const HVERDAGSAKTIVITETER = [
+  { id: 'hv-rydde', navn: 'Rydde og sortere', varighetMin: 20, ikon: 'hjem', beskrivelse: 'Rydd et rom, sorter og sett på plass — kroppen jobber mer enn du tror.' },
+  { id: 'hv-stovsug', navn: 'Støvsuge huset', varighetMin: 25, ikon: 'hjem', beskrivelse: 'Frem og tilbake, opp og ned trapper — god allsidig bevegelse.' },
+  { id: 'hv-gulvvask', navn: 'Vaske gulv', varighetMin: 20, ikon: 'hjem', beskrivelse: 'Moppe eller skure — bøy, strekk og gå.' },
+  { id: 'hv-vindu', navn: 'Vaske vinduer', varighetMin: 20, ikon: 'hjem', beskrivelse: 'Store sirkler for skuldre og armer.' },
+  { id: 'hv-hage', navn: 'Hagearbeid', varighetMin: 30, ikon: 'blad', beskrivelse: 'Grave, plante og luke — variert og god utebevegelse.' },
+  { id: 'hv-luke', navn: 'Luke ugress', varighetMin: 20, ikon: 'blad', beskrivelse: 'Huk deg ned, reis deg opp — bein og kjerne i sving.' },
+  { id: 'hv-plen', navn: 'Klippe plenen', varighetMin: 30, ikon: 'blad', beskrivelse: 'Skyv, gå og snu — jevn kondisjon i egen hage.' },
+  { id: 'hv-loov', navn: 'Rake løv', varighetMin: 25, ikon: 'blad', beskrivelse: 'Dra, samle og bær — rytmisk helkroppsarbeid.' },
+  { id: 'hv-snomake', navn: 'Måke snø', varighetMin: 20, ikon: 'hjem', beskrivelse: 'Løft og kast — intens økt, ta pauser ved behov.' },
+  { id: 'hv-ved', navn: 'Bære og stable ved', varighetMin: 20, ikon: 'hjem', beskrivelse: 'Løft, bær og bøy — naturlig styrke.' },
+  { id: 'hv-handle', navn: 'Handle til fots', varighetMin: 25, ikon: 'loper', beskrivelse: 'Gå til butikken og bær varene hjem.' },
+  { id: 'hv-varer', navn: 'Bære inn varer', varighetMin: 15, ikon: 'hjem', beskrivelse: 'Opp trappene med posene — kort og effektivt.' },
+  { id: 'hv-lek', navn: 'Aktiv lek med barna', varighetMin: 25, ikon: 'personer', beskrivelse: 'Løp, hopp og bær — lek som teller.' },
+  { id: 'hv-mobler', navn: 'Flytte om på møbler', varighetMin: 20, ikon: 'hjem', beskrivelse: 'Skyv, løft og bær — tung, variert innsats.' },
+  { id: 'hv-vaskbil', navn: 'Vaske bilen for hånd', varighetMin: 25, ikon: 'hjem', beskrivelse: 'Skrubb, bøy og strekk rundt hele bilen.' },
+].map((a) => ({ ...a, kategori: 'hverdag', bevegelse: 'walk', hverdag: true }));
+const hverdagKreditt = (min) => Math.max(1, Math.round(min * HVERDAG_VEKT));
+
+// Finn en økt (bibliotek) ELLER en hverdagsaktivitet på id.
+function finnBevegelse(id) {
+  return oktMedId(id) || HVERDAGSAKTIVITETER.find((a) => a.id === id) || null;
+}
+// Hvor mange ganger en økt/aktivitet er logget i dag (for «Gjort ×N»).
+function gjortIDag(id) {
+  const iso = isoDato(new Date());
+  return hentLogg().filter((o) => !o.slettet && (o.dato || '').slice(0, 10) === iso && o.oktId === id).length;
+}
+
 function visTrening() {
   const profil = hentProfil();
   if (!profil) {
@@ -1935,9 +1969,19 @@ function visTrening() {
     navn: 'bevegelse', tittel: 'Finn noe som passer i dag.',
     streakStripe: { streak: gbev.streak, dager: ukestreakPilar('bevegelse'), href: '#/fremgang' },
   });
+  // «Gjort» logger uten full sidetegning: oppdaterer minuttkortene og tenner
+  // dagens streak-prikk på stedet (så filter og scroll ikke hopper).
+  let minRad = minuttKortRad(profil, logg);
+  const oppdaterStatus = () => {
+    const ny = minuttKortRad(hentProfil(), hentLogg());
+    minRad.replaceWith(ny);
+    minRad = ny;
+    const dot = app.querySelector('.ukestreak__prikk--now');
+    if (dot) dot.classList.add('ukestreak__prikk--on');
+  };
   main.append(
-    minuttKortRad(profil, logg),
-    utforskBevegelse(profil, logg),
+    minRad,
+    utforskBevegelse(profil, hentLogg(), oppdaterStatus),
     raskTilgang(),
   );
 }
@@ -1985,7 +2029,7 @@ function minuttKortRad(profil, logg) {
 
 // «Utforsk bevegelse»: horisontalt scrollende gruppefilter + de tre mest
 // anbefalte øktene i valgt gruppe (scoret av restitusjon/preferanser).
-function utforskBevegelse(profil, logg) {
+function utforskBevegelse(profil, logg, oppdaterStatus) {
   const scores = regionScores(logg);
   const skaar = skaarOkter(scores, profil);
   let valgt = BEV_GRUPPER[0].id;
@@ -1993,12 +2037,22 @@ function utforskBevegelse(profil, logg) {
   const chipsRad = el('div', { class: 'bevfilter' });
   const liste = el('div', { class: 'bevanbef' });
 
+  const forslagFor = (g) => {
+    // Hverdag fylles med hjemmeaktiviteter (roterer med datoen for variasjon);
+    // de andre gruppene henter de tre høyest scorede bibliotekøktene.
+    if (g.id === 'hverdag') {
+      const start = new Date().getDate() % HVERDAGSAKTIVITETER.length;
+      return HVERDAGSAKTIVITETER.slice(start).concat(HVERDAGSAKTIVITETER.slice(0, start)).slice(0, 3);
+    }
+    return skaar.filter((s) => g.kats.includes(s.okt.kategori)).slice(0, 3).map((s) => s.okt);
+  };
+
   const tegnListe = () => {
     const g = BEV_GRUPPER.find((x) => x.id === valgt);
-    const okter = skaar.filter((s) => g.kats.includes(s.okt.kategori)).slice(0, 3).map((s) => s.okt);
+    const okter = forslagFor(g);
     tom(liste);
     if (!okter.length) { liste.append(el('p', { class: 'dempet dempet--tett' }, 'Ingen forslag akkurat nå.')); return; }
-    okter.forEach((okt) => liste.append(bevAnbefRad(okt, g)));
+    okter.forEach((okt) => liste.append(bevAnbefRad(okt, g, oppdaterStatus)));
   };
 
   BEV_GRUPPER.forEach((g) => {
@@ -2017,9 +2071,14 @@ function utforskBevegelse(profil, logg) {
     liste);
 }
 
-// Én anbefalt-økt-rad: miniatyr + tittel/meta/beskrivelse + Start/Gjort/bokmerke.
-function bevAnbefRad(okt, gruppe) {
+// Én rad: miniatyr + tittel/meta/beskrivelse + Start/Gjort/bokmerke. Fungerer
+// både for bibliotekøkter og hverdagsaktiviteter (sistnevnte: halv vekt, ingen
+// guidet timer). «Gjort» kan trykkes flere ganger og teller opp (×N).
+function bevAnbefRad(okt, gruppe, oppdaterStatus) {
+  const hverdag = !!okt.hverdag;
+  const kreditt = hverdag ? hverdagKreditt(okt.varighetMin) : okt.varighetMin;
   const desc = (okt.beskrivelse || '').split(/(?<=[.!?])\s/)[0];
+
   const bokmerke = el('button', { class: 'bevrad__merke' + (erOktFav(okt.id) ? ' bevrad__merke--paa' : ''),
     type: 'button', 'aria-label': 'Lagre', onclick: () => {
       const på = vekslOktFav(okt.id);
@@ -2027,30 +2086,43 @@ function bevAnbefRad(okt, gruppe) {
       vibrer(); varsle(på ? 'Lagret' : 'Fjernet', { ikon: 'bokmerke' });
     } }, ikon('bokmerke'));
 
-  const gjort = el('button', { class: 'knapp knapp--sekundaer knapp--liten bevrad__knapp', type: 'button',
-    onclick: () => {
-      registrerOgLogg({ bevegelse: okt.bevegelse, varighetMin: okt.varighetMin, tittel: okt.navn, kilde: 'manuell', ekstra: { oktId: okt.id } });
-      vibrer(); varsle('Logget — bra jobba!', { ikon: 'sjekk' });
-      navger(); // tegn siden på nytt så minutter/streak/prikker oppdateres
-    } }, ikon('sjekk', 'ikon'), el('span', {}, 'Gjort'));
+  const gjortTekst = el('span', {});
+  const gjort = el('button', { class: 'knapp knapp--sekundaer knapp--liten bevrad__knapp bevrad__gjort', type: 'button' },
+    ikon('sjekk', 'ikon'), gjortTekst);
+  const tegnGjort = () => {
+    const n = gjortIDag(okt.id);
+    gjortTekst.textContent = n > 0 ? `Gjort · ${n}×` : 'Gjort';
+    gjort.classList.toggle('bevrad__gjort--paa', n > 0);
+  };
+  gjort.addEventListener('click', () => {
+    registrerOgLogg({ bevegelse: okt.bevegelse || 'walk', varighetMin: kreditt, tittel: okt.navn, kilde: 'manuell', ekstra: { oktId: okt.id } });
+    vibrer(); varsle(`Logget · ${kreditt} min bevegelse`, { ikon: 'sjekk' });
+    tegnGjort();
+    if (oppdaterStatus) oppdaterStatus();
+  });
+  tegnGjort();
+
+  const meta = el('p', { class: 'bevrad__meta' });
+  meta.append(`${okt.varighetMin} min`, el('span', { class: 'bevrad__prikk' }, '·'));
+  if (hverdag) meta.append(el('span', { class: 'bevrad__vekt' }, `teller ${kreditt} min`));
+  else meta.append(ikon(gruppe.ikon, 'ikon ikon--liten'), gruppe.navn);
 
   return el('div', { class: 'bevrad' },
     oktMiniatyr(okt, gruppe),
     el('div', { class: 'bevrad__midt' },
       el('h3', { class: 'bevrad__tittel' }, okt.navn),
-      el('p', { class: 'bevrad__meta' }, `${okt.varighetMin} min`,
-        el('span', { class: 'bevrad__prikk' }, '·'), ikon(gruppe.ikon, 'ikon ikon--liten'), gruppe.navn),
+      meta,
       desc ? el('p', { class: 'bevrad__desk' }, desc) : null),
     el('div', { class: 'bevrad__hoyre' },
-      el('a', { class: 'knapp knapp--sekundaer knapp--liten bevrad__knapp', href: `#/okter?start=${okt.id}` }, 'Start'),
+      hverdag ? null : el('a', { class: 'knapp knapp--sekundaer knapp--liten bevrad__knapp', href: `#/okter?start=${okt.id}` }, 'Start'),
       gjort,
       bokmerke));
 }
 
-// Miniatyr uten foto: gruppens farge + øktas kategori-ikon (variasjon per rad).
+// Miniatyr uten foto: gruppens farge + øktas eget/kategori-ikon (variasjon per rad).
 function oktMiniatyr(okt, gruppe) {
   return el('span', { class: `bevmini bevmini--${gruppe.farge}`, 'aria-hidden': 'true' },
-    ikon(KAT_IKON[okt.kategori] || gruppe.ikon, 'bevmini__ikon'));
+    ikon(okt.ikon || KAT_IKON[okt.kategori] || gruppe.ikon, 'bevmini__ikon'));
 }
 
 // Rask tilgang: fire snarveier (timer, logg, favoritter, planlegg).
@@ -2077,12 +2149,12 @@ function visOktFavoritter(mount) {
     el('span', { class: 'hjemtopp__logo' }, 'Favoritter'),
     el('span', { style: 'width:40px' }));
   const main = el('main', { class: 'innhold matside' });
-  const okter = lesOktFav().map((id) => oktMedId(id)).filter(Boolean);
+  const okter = lesOktFav().map((id) => finnBevegelse(id)).filter(Boolean);
   if (!okter.length) {
     main.append(el('div', { class: 'kort kort--info' },
       el('h2', {}, 'Ingen favoritter ennå'),
       el('p', { class: 'dempet' }, 'Trykk bokmerket på en økt for å lagre den her.'),
-      el('a', { class: 'knapp', href: '#/bevegelse' }, 'Utforsk bevegelse')));
+      el('a', { class: 'knapp', href: '#/trening' }, 'Utforsk bevegelse')));
   } else {
     main.append(el('div', { class: 'bevanbef' }, ...okter.map((okt) => bevAnbefRad(okt, gruppeForKat(okt.kategori)))));
   }

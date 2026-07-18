@@ -4465,9 +4465,15 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
   overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 .bevrad__hoyre { flex: 0 0 auto; display: flex; flex-direction: column; align-items: stretch; gap: 7px; padding: 14px 14px 14px 0; justify-content: center; }
 .bevrad__knapp { justify-content: center; white-space: nowrap; gap: 5px; }
-.bevrad__merke { align-self: center; width: 32px; height: 30px; display: grid; place-items: center; border: none; background: transparent; color: var(--dempet); cursor: pointer; }
+.bevrad__merke { align-self: center; width: 32px; height: 30px; display: grid; place-items: center; border: none; background: transparent; color: var(--dempet); cursor: pointer; transition: transform 0.12s var(--ease-out); }
 .bevrad__merke .ikon { width: 19px; height: 19px; }
 .bevrad__merke--paa { color: var(--aksent); }
+.bevrad__merke--paa .ikon { fill: currentColor; }        /* fylt bokmerke = lagret */
+.bevrad__merke:active { transform: scale(0.86); }
+/* «Gjort» markeres tydelig når den er logget i dag (og teller ×N). */
+.bevrad__gjort--paa { background: var(--aksent); border-color: var(--aksent); color: #fff; }
+.bevrad__gjort--paa .ikon { color: #fff; }
+.bevrad__vekt { color: var(--aksent); font-weight: 600; }
 .bevmini--lime { background: linear-gradient(180deg, #93AB63, #6E8A43); }
 .bevmini--koral { background: linear-gradient(180deg, #C98A6A, #A85C3C); }
 .bevmini--teal { background: linear-gradient(180deg, #5E8465, #3A5A43); }
