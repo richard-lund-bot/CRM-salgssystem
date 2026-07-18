@@ -1362,6 +1362,9 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
     0px 3px 6px 0px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 8%), transparent);
   opacity: 0; z-index: 0; pointer-events: none;
   transition: transform 0.25s var(--ease-bounce), opacity 0.2s ease;
+  /* Eget kompositor-lag: gliden fortsetter jevnt selv når sidetegningen
+     blokkerer hovedtråden (fanetrykk tegner den nye siden midt i gliden). */
+  will-change: transform;
 }
 /* Mot ytterfanene ville sprett-easingen svinge pillen forbi målet og utenfor
    kapselen — dit glir den med rett easing i stedet (klasse fra flyttTabIndikator),

@@ -174,6 +174,7 @@ const scrollMinne = new Map();
 let forrigeHash = '';
 let _droppSlide = false; // settes av feed-dra-gesten så rute-slide ikke dobles
 let _nesteSlide = '';    // settes av side-sveipen: tvungen slide-retning på neste navigasjon
+let _tegnNr = 0;         // token for utsatte tegninger (fanetrykk): nyeste vinner
 // Fanesidene scroller et indre .hjem-scroll; reise-/vanlige skjermer scroller vinduet.
 const aktivScroller = () => document.querySelector('.hjem-scroll') || document.querySelector('.hjemdash-scroll > .innhold') || document.scrollingElement || document.documentElement;
 
@@ -233,8 +234,6 @@ function navger() {
   // Et åpent bunnark hører til siden man forlot — lukk det ved ekte navigasjon
   // så det ikke blir hengende som et usynlig overlegg på neste skjerm.
   if (byttet) document.querySelector('.ark')?.remove();
-  document.body.classList.toggle('fokusmodus', FOKUS.has(rute));
-  document.body.classList.remove('fane-laast', 'dash-laast', 'enkeltside'); // settes på nytt av skjermene
   // Slide-over: feed/varsler glir inn som paneler i stedet for et umiddelbart
   // sidebytte. Feed ligger til venstre, varsler til høyre; på vei UT av et panel
   // kommer hovedappen tilbake fra motsatt side.
@@ -255,6 +254,10 @@ function navger() {
   if (rute !== 'kjor' && rute !== 'hurtig') slippVaaken(); // timer-skjermene eier låsen
 
   const tegn = () => {
+    // Kroppsklasser ryddes her (ikke før en evt. utsatt tegning): den gamle
+    // siden skal stå urørt helt til den nye faktisk tegnes.
+    document.body.classList.toggle('fokusmodus', FOKUS.has(rute));
+    document.body.classList.remove('fane-laast', 'dash-laast', 'enkeltside'); // settes på nytt av skjermene
     _hovedtoppAktiv = false;
     (ruter[rute] || ruter.hjem)();
     // Den faste headeren vises bare på sider som ba om den under tegningen —
@@ -282,7 +285,20 @@ function navger() {
   };
   // Sidebytte er ellers umiddelbart — det eneste som beveger seg er slideren i
   // tab-baren nederst (oppdaterNav → flyttTabIndikator) og feed/varsler-panelene.
-  tegn();
+  // Fanetrykk mellom hovedsider (ingen slide): pillen og logo-toningen kickes
+  // FØR den tunge sidetegningen, som utsettes to frames — første frame maler
+  // animasjonsstarten (composited), så lander innholdsbyttet mens de glir.
+  // Ellers blokkerer tegningen hovedtråden akkurat idet animasjonene skulle
+  // startet, og både pill og logo «hakker». Token-vakten dropper en ventende
+  // tegning hvis en nyere navigasjon har rukket å ta over.
+  const minTegn = ++_tegnNr;
+  if (byttet && !slideKlasse && LOGO_FOR_RUTE[rute] && !REDUSERT()) {
+    oppdaterNav(rute);
+    settHovedtopp(LOGO_FOR_RUTE[rute]);
+    requestAnimationFrame(() => requestAnimationFrame(() => { if (minTegn === _tegnNr) tegn(); }));
+  } else {
+    tegn();
+  }
   forrigeHash = location.hash;
 }
 
