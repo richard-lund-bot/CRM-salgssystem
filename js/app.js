@@ -1997,7 +1997,7 @@ function minuttKortRad(profil, logg) {
   const maal = DAGSMAAL[profil.varighetsklasse] || 40;
   const beveg = hentGnistStatus().pilarer.bevegelse;
   const sMaal = beveg.iDag.maal;
-  const sVerdi = Math.min(beveg.iDag.verdi, sMaal);
+  const streakTrygg = minutter >= sMaal; // streak-gulvet nådd i dag
   // Ukesminutter man–søn (samme uke som streak-prikkene).
   const idag0 = new Date(nå); idag0.setHours(0, 0, 0, 0);
   const man = new Date(idag0.getTime() - ((idag0.getDay() + 6) % 7) * 86400000);
@@ -2013,7 +2013,7 @@ function minuttKortRad(profil, logg) {
 
   const tallEls = [];
   const barEls = [];
-  const kort = (label, verdi, mal, cap, klasse, pace) => {
+  const kort = (label, verdi, mal, cap, klasse, pace, enhet) => {
     const t = el('b', { class: 'minkort__tall' }, '0');
     const b = el('i', { class: 'minkort__fyll' + (klasse ? ` ${klasse}` : '') });
     tallEls.push([t, verdi]);
@@ -2037,15 +2037,18 @@ function minuttKortRad(profil, logg) {
     }
     return el('section', { class: 'kort minkort' },
       el('span', { class: 'minkort__label' }, label),
-      el('div', { class: 'minkort__verdi' }, t, el('span', { class: 'minkort__enhet' }, `/ ${mal} min`)),
+      el('div', { class: 'minkort__verdi' }, t, el('span', { class: 'minkort__enhet' }, enhet || `/ ${mal} min`)),
       barOmr,
       capEl);
   };
 
+  // Tallet viser alltid faktiske minutter trent i dag; streak-kortet dropper
+  // «/10» når gulvet er nådd (ellers ser «40 / 10» rart ut).
   const rad = el('div', { class: 'minkort-rad minkort-rad--tre' },
-    kort('I dag', minutter, maal, 'ditt dagsmål'),
+    kort('I dag', minutter, maal, minutter >= maal ? 'dagsmålet er nådd' : 'ditt dagsmål'),
     kort('Denne uka', ukeMin, UKE_MAAL_MIN, 'WHO-minimum', null, true),
-    kort('Streak', sVerdi, sMaal, 'holder streaken', 'minkort__fyll--gnist'));
+    kort('Streak', minutter, sMaal, streakTrygg ? 'streaken er trygg' : 'holder streaken',
+      'minkort__fyll--gnist', false, streakTrygg ? 'min i dag' : `/ ${sMaal} min`));
 
   requestAnimationFrame(() => requestAnimationFrame(() => {
     barEls.forEach(([b, pst]) => fyllInn(b, 'width', `${pst}%`));
