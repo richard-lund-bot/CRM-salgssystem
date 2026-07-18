@@ -255,12 +255,16 @@ export function lagPullOppdatering(scroll, opts = {}) {
   let dratt = 0;
   let opptatt = false;
 
+  const SPINN = 34; // .pullspinn er 34×34
+  const HOLD = 64;  // hvor langt innholdet holdes nede mens siden oppdateres
   const bannerBunn = () => {
     const topp = document.querySelector('.hjemtopp') || document.querySelector('.hjembanner');
     return topp ? topp.getBoundingClientRect().bottom : 90;
   };
   // Myk motstand: fingeren drar langt, innholdet gir gradvis etter (maks ~96px).
   const gietter = (dy) => Math.min(96, dy * 0.55);
+  // Spinneren midtstilles i gapet som åpner seg mellom header og content.
+  const senterTop = (gap) => Math.round(bannerBunn() + gap / 2 - SPINN / 2);
   const settSkyv = (px, myk) => {
     innhold.style.transition = myk ? 'transform 0.32s var(--ease-out)' : 'none';
     innhold.style.transform = px ? `translateY(${px}px)` : '';
@@ -280,9 +284,10 @@ export function lagPullOppdatering(scroll, opts = {}) {
     // innholdet vårt kan gli ned og åpne plass til spinneren.
     ev.preventDefault();
     dratt = dy;
-    settSkyv(gietter(dy), false);
+    const skyv = gietter(dy);
+    settSkyv(skyv, false);
     spinn.style.opacity = String(Math.min(1, dy / 70));
-    spinn.style.top = `${bannerBunn() + 6 + Math.min(1, dy / 130) * 44}px`;
+    spinn.style.top = `${senterTop(skyv)}px`;
     spinn.style.setProperty('--vri', `${Math.round(dy * 1.6)}deg`);
   }, { passive: false });
 
@@ -292,10 +297,10 @@ export function lagPullOppdatering(scroll, opts = {}) {
     if (dratt >= 110) {
       opptatt = true;
       spinn.classList.add('pullspinn--aktiv');
-      spinn.style.top = `${bannerBunn() + 22}px`;
-      // Hold innholdet litt nede mens vi oppdaterer, så spinneren har plass.
+      // Hold innholdet nede mens vi oppdaterer, med spinneren midt i gapet.
       // Den nye tegningen (oppdaterSide → navger) nullstiller transformen.
-      settSkyv(60, true);
+      settSkyv(HOLD, true);
+      spinn.style.top = `${senterTop(HOLD)}px`;
       oppdaterSide();
     } else {
       settSkyv(0, true);

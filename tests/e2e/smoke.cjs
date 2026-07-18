@@ -123,6 +123,9 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
   await page.goto(BASE + '/#/beveg-favoritter');
   await page.waitForTimeout(300);
   sjekk('Øktfavoritt-skjermen tegnes', (await page.locator('.hjemtopp--detalj').count()) > 0);
+  // Tilbake til en fane-side (favorittsiden skjuler tab-baren) for testene under.
+  await page.goto(BASE + '/#/hjem');
+  await page.waitForSelector('.tabbar__knapp', { timeout: 20000 });
 
   // --- 4b) Fellesskap-pilaren: hjem-flate + krets-underside ------------------
   await page.click('.tabbar__knapp[data-rute="sosialt"]');
