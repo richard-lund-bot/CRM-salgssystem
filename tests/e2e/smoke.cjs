@@ -111,7 +111,7 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
   // --- 4a2) Bevegelse-hjem (redesign): minuttkort + filtre + anbefalinger -----
   await page.goto(BASE + '/#/trening');
   await page.waitForSelector('.bevfilter', { timeout: 20000 });
-  sjekk('Bevegelse viser to minuttkort', (await page.locator('.minkort').count()) === 2);
+  sjekk('Bevegelse viser tre måltkort (dag/uke/streak)', (await page.locator('.minkort').count()) === 3);
   sjekk('Bevegelse har fem gruppefiltre', (await page.locator('.bevchip').count()) === 5);
   sjekk('Bevegelse viser tre anbefalte økter', (await page.locator('.bevrad').count()) === 3);
   const bevFør = await page.locator('.bevrad__tittel').first().textContent();

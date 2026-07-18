@@ -4427,6 +4427,14 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
    horisontale gruppefiltre + anbefalte økter, og rask tilgang.
    =========================================================================== */
 .minkort-rad { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+/* Tre kompakte mål på rad (dagsmål · ukesminimum · streak-gulv). */
+.minkort-rad--tre { grid-template-columns: repeat(3, 1fr); gap: 9px; }
+.minkort-rad--tre .minkort { padding: 13px 11px 12px; gap: 7px; }
+.minkort-rad--tre .minkort__label { font-size: 12px; }
+.minkort-rad--tre .minkort__verdi { gap: 4px; }
+.minkort-rad--tre .minkort__tall { font-size: 22px; }
+.minkort-rad--tre .minkort__enhet { font-size: 10.5px; }
+.minkort__cap { font-size: 10.5px; color: var(--dempet); line-height: 1.2; }
 .minkort { padding: 15px 16px 13px; display: flex; flex-direction: column; gap: 9px; }
 .minkort__label { font-size: 13px; font-weight: 600; color: var(--tekst); }
 .minkort__verdi { display: flex; align-items: baseline; gap: 6px; }

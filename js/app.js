@@ -1986,44 +1986,48 @@ function visTrening() {
   );
 }
 
-// To minuttvisere: dagens minutter mot dagsmålet, og minutter mot streak-
-// terskelen (gnisten) som holder rekka i live.
+// Tre mål under headeren: (1) personlig dagsmål, (2) ukesmål = WHO-minimumet
+// (150 min/uke moderat aktivitet — presisert som minimum), og (3) det daglige
+// streak-gulvet som holder rekka i live.
+const UKE_MAAL_MIN = 150; // WHO/Helsedirektoratet: minst 150 min moderat i uka
 function minuttKortRad(profil, logg) {
-  const idagIso = isoDato(new Date());
+  const nå = Date.now();
+  const idagIso = isoDato(new Date(nå));
   const minutter = logg.filter((o) => (o.dato || '').slice(0, 10) === idagIso).reduce((s, o) => s + (o.varighetMin || 0), 0);
   const maal = DAGSMAAL[profil.varighetsklasse] || 40;
   const beveg = hentGnistStatus().pilarer.bevegelse;
   const sMaal = beveg.iDag.maal;
   const sVerdi = Math.min(beveg.iDag.verdi, sMaal);
-  const minSub = minutter >= maal ? 'Dagsmålet er nådd — alt videre er bonus.'
-    : minutter >= maal * 0.5 ? 'Halvveis til dagsmålet ditt.'
-      : minutter > 0 ? 'Godt i gang — litt til teller.'
-        : 'Litt bevegelse i dag gjør susen.';
-  const sSub = beveg.iDag.naadd ? 'Streaken er trygg i dag.' : `Fullfør ${sMaal} min for å holde streaken.`;
+  // Ukesminutter man–søn (samme uke som streak-prikkene).
+  const idag0 = new Date(nå); idag0.setHours(0, 0, 0, 0);
+  const man = new Date(idag0.getTime() - ((idag0.getDay() + 6) % 7) * 86400000);
+  const manIso = isoDato(man);
+  const sonIso = isoDato(new Date(man.getTime() + 6 * 86400000));
+  const ukeMin = logg.filter((o) => { const d = (o.dato || '').slice(0, 10); return d >= manIso && d <= sonIso; }).reduce((s, o) => s + (o.varighetMin || 0), 0);
 
-  const minTall = el('b', { class: 'minkort__tall' }, '0');
-  const sTall = el('b', { class: 'minkort__tall' }, '0');
-  const minBar = el('i', { class: 'minkort__fyll' });
-  const sBar = el('i', { class: 'minkort__fyll minkort__fyll--gnist' });
+  const tallEls = [];
+  const barEls = [];
+  const kort = (label, verdi, mal, cap, klasse) => {
+    const t = el('b', { class: 'minkort__tall' }, '0');
+    const b = el('i', { class: 'minkort__fyll' + (klasse ? ` ${klasse}` : '') });
+    tallEls.push([t, verdi]);
+    barEls.push([b, Math.min(100, Math.round((verdi / mal) * 100))]);
+    return el('section', { class: 'kort minkort' },
+      el('span', { class: 'minkort__label' }, label),
+      el('div', { class: 'minkort__verdi' }, t, el('span', { class: 'minkort__enhet' }, `/ ${mal} min`)),
+      el('div', { class: 'minkort__bar' }, b),
+      el('span', { class: 'minkort__cap' }, cap));
+  };
 
-  const kort = (label, tallEl, enhet, barEl, sub, ikonNavn, gnist) => el('section', { class: 'kort minkort' },
-    el('span', { class: 'minkort__label' }, label),
-    el('div', { class: 'minkort__verdi' }, tallEl, el('span', { class: 'minkort__enhet' }, enhet)),
-    el('div', { class: 'minkort__bar' }, barEl),
-    el('div', { class: 'minkort__fot' },
-      el('span', { class: 'minkort__sub' }, sub),
-      el('span', { class: 'minkort__ikon' + (gnist ? ' minkort__ikon--gnist' : '') }, ikon(ikonNavn))));
-
-  const rad = el('div', { class: 'minkort-rad' },
-    kort('Minutter i dag', minTall, `/ ${maal} min`, minBar, minSub, 'stoppeklokke', false),
-    kort('Teller til streak', sTall, `/ ${sMaal} min`, sBar, sSub, 'flamme', true));
+  const rad = el('div', { class: 'minkort-rad minkort-rad--tre' },
+    kort('I dag', minutter, maal, 'ditt dagsmål'),
+    kort('Denne uka', ukeMin, UKE_MAAL_MIN, 'WHO-minimum'),
+    kort('Streak', sVerdi, sMaal, 'holder streaken', 'minkort__fyll--gnist'));
 
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    fyllInn(minBar, 'width', `${Math.min(100, Math.round((minutter / maal) * 100))}%`);
-    fyllInn(sBar, 'width', `${Math.min(100, Math.round((sVerdi / sMaal) * 100))}%`);
+    barEls.forEach(([b, pst]) => fyllInn(b, 'width', `${pst}%`));
   }));
-  tallOpp(minTall, minutter, { ms: 600 });
-  tallOpp(sTall, sVerdi, { ms: 600 });
+  tallEls.forEach(([t, v]) => tallOpp(t, v, { ms: 600 }));
   return rad;
 }
 
