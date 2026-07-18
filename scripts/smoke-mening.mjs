@@ -17,6 +17,7 @@ const {
   lesKompass, lagreKompass, settKompassPause, slettKompass, settDenneTiden,
   kompassBudskap, kompassForklaring, refleksjonsSporsmal, feiringsHvorfor,
   leggTilHvorfor, trengerRefleksjon, settRefleksjon, ukeStart, harKompass,
+  DIMENSJONER, BUDSKAPSMALER, BUDSKAPSMODULER,
 } = await import('../js/mening.js');
 
 let feil = 0;
@@ -47,15 +48,35 @@ sjekk(lagreKompass({ valg, setning: '' }) === null, 'tom setning avvises');
 const k2 = lagreKompass({ valg, setning: 'Min egen formulering.', linje: 'Min linje' });
 sjekk(k2.versjon === 2 && k2.historikk.length === 1 && k2.historikk[0].setning === fs[0].tekst, 'redigering bevarer forrige formulering i historikken');
 
-// --- Budskapsmotoren: relevans, nivå og frekvens -----------------------------
+// --- Budskapsmotoren: full dekning, relevans, nivå og ferskhet ---------------
+// Bibliotekdekning: hver modul har varianter for ALLE ti dimensjonene, minst
+// to per kombinasjon — slik at enhver motivasjonsprofil møter alle pilarene.
+let hull = [];
+for (const modul of BUDSKAPSMODULER) {
+  for (const d of DIMENSJONER) {
+    const n = BUDSKAPSMALER.filter((m) => m.modul === modul && m.dim === d.id && m.niva === 'subtil').length;
+    if (n < 2) hull.push(`${modul}×${d.id}(${n})`);
+  }
+}
+sjekk(hull.length === 0, 'alle moduler dekker alle 10 dimensjoner med ≥2 varianter', hull.join(', '));
+sjekk(BUDSKAPSMALER.length >= 180, `stort bibliotek (${BUDSKAPSMALER.length} maler)`);
+
 const bud1 = kompassBudskap('start', anker);
 sjekk(!!bud1 && typeof bud1.tekst === 'string', 'aktivt kompass → startbudskap finnes');
 sjekk(kompassBudskap('start', anker)?.id === bud1.id, 'samme dag → samme budskap (stabil gjenvisning)');
-const budRo = kompassBudskap('ro', anker);
-sjekk(budRo === null || budRo.dim !== 'frihet' || true, 'ro-budskap følger dimensjonene'); // ro krever indre_ro/naerhet blant toppene
-const bud3 = kompassBudskap('mat', anker);
-sjekk(bud3 === null, 'maks to personlige budskap per dag — aldri i alle moduler');
-sjekk(kompassBudskap('start', anker + 86400000)?.id !== undefined || true, 'neste dag kan gi nytt budskap');
+sjekk(BUDSKAPSMODULER.every((m) => kompassBudskap(m, anker) !== null),
+  'alle pilarer får budskap samme dag (Bevegelse/Ro/Mat/Fellesskap m.fl.)');
+
+// Ferskhet: samme modul over seks dager gir stor variasjon.
+const seksDager = new Set();
+for (let d = 0; d < 6; d++) { const b = kompassBudskap('bevegelse', anker + d * 86400000); if (b) seksDager.add(b.tekst); }
+sjekk(seksDager.size >= 4, `bevegelse varierer over seks dager (${seksDager.size} ulike)`);
+
+// Aldri tom side: selv når hele utvalget har vært vist, faller motoren
+// tilbake til malen som har hvilt lengst.
+let tomme = 0;
+for (let d = 0; d < 30; d++) if (!kompassBudskap('ro', anker + d * 86400000)) tomme++;
+sjekk(tomme === 0, 'ro gir budskap 30 dager på rad (fallback når alt er i hvile)');
 
 // Direkte-nivå: kompasslinjen brukes bare med eksplisitt samtykke.
 _store.delete('takt.kompassbudskap');
@@ -89,6 +110,8 @@ const kVet = lagreKompass({ valg: {}, setning: 'Akkurat nå handler det mest om 
 sjekk(!!kVet && toppDimensjoner(kVet)[0]?.id === 'indre_ro', '«vet ikke»-kompass: denne tiden bærer dimensjonene');
 _store.delete('takt.kompassbudskap');
 sjekk(kompassBudskap('ro', anker)?.dim === 'indre_ro', '«vet ikke»-kompass gir likevel relevante budskap');
+sjekk(BUDSKAPSMODULER.every((m) => kompassBudskap(m, anker) !== null),
+  '«vet ikke»-kompass dekker også alle pilarene');
 
 // --- Legacy «egne ord» (bakoverkompatibilitet) -------------------------------
 slettKompass();
