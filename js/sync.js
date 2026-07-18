@@ -13,7 +13,7 @@ import {
 import { lesStyrkelogg, settStyrkeloggRå, oktVolum } from './styrke.js';
 import { lesMatlogg, settMatloggRå } from './kosthold.js';
 import { lesSosiallogg, settSosialloggRå } from './sosialt.js';
-import { lesHvorfor, settHvorforRå, lesRefleksjoner, settRefleksjonerRå } from './mening.js';
+import { lesHvorfor, settHvorforRå, lesRefleksjoner, settRefleksjonerRå, lesKompass, settKompassRå } from './mening.js';
 
 const AUTH = `${SUPABASE_URL}/auth/v1`;
 const REST = `${SUPABASE_URL}/rest/v1`;
@@ -242,6 +242,16 @@ async function pull() {
     const rader = await rest('mening_refleksjoner?select=data,oppdatert&order=oppdatert.desc');
     settRefleksjonerRå(flettPerId(lesRefleksjoner(), rader, 'uke'));
   } catch (e) { console.warn('Refleksjon-pull hoppet over', e.message); }
+  // Kompasset (whyProfile): én rad per bruker, LWW på oppdatert. Endres aldri
+  // i det skjulte — vi flytter bare hele det godkjente objektet mellom enheter.
+  try {
+    const rader = await rest('mening_kompass?select=data,oppdatert&limit=1');
+    const fjern = rader?.[0];
+    const lokal = lesKompass();
+    if (fjern?.data?.setning && (!lokal || (fjern.data.oppdatert || fjern.oppdatert || '') > (lokal.oppdatert || ''))) {
+      settKompassRå(fjern.data);
+    }
+  } catch (e) { console.warn('Kompass-pull hoppet over', e.message); }
 }
 
 async function push() {
@@ -325,6 +335,15 @@ async function push() {
         })),
       });
     } catch (e) { console.warn('Refleksjon-push hoppet over', e.message); }
+  }
+  const kompass = lesKompass();
+  if (kompass) {
+    try {
+      await rest('mening_kompass?on_conflict=user_id', {
+        method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
+        body: [{ user_id: uid, data: kompass, oppdatert: kompass.oppdatert || new Date().toISOString() }],
+      });
+    } catch (e) { console.warn('Kompass-push hoppet over', e.message); }
   }
 }
 

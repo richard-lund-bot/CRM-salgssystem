@@ -7,7 +7,8 @@
   "scripts": {
     "merge": "node scripts/merge-parts.mjs",
     "validate": "node scripts/validate.mjs",
-    "test": "npm run test:bevegelse && npm run test:gnist && npm run test:merker && npm run test:ovelser && npm run test:sync && npm run test:strava && npm run test:styrke && npm run test:feiring && npm run test:fellesskap && npm run test:ro && npm run test:mat && npm run test:husstand",
+    "test": "npm run test:bevegelse && npm run test:gnist && npm run test:merker && npm run test:ovelser && npm run test:sync && npm run test:strava && npm run test:styrke && npm run test:feiring && npm run test:fellesskap && npm run test:ro && npm run test:mat && npm run test:husstand && npm run test:mening",
+    "test:mening": "node scripts/smoke-mening.mjs",
     "test:fellesskap": "node scripts/smoke-fellesskap.mjs",
     "test:ro": "node scripts/smoke-ro.mjs",
     "test:mat": "node scripts/smoke-mat.mjs",

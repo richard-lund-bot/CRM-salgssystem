@@ -61,7 +61,10 @@ import {
 } from './ro.js';
 import {
   STARTSPORSMAL, lesHvorfor, leggTilHvorfor, slettHvorfor, kanLeggeTil,
-  ukensRefleksjon, settRefleksjon, lesRefleksjoner,
+  ukensRefleksjon, settRefleksjon, lesRefleksjoner, refleksjonsSporsmal,
+  lesKompass, lagreKompass, settKompassPause, slettKompass, settDenneTiden, denneTidenBorSes,
+  INNGANGER, PERSONVALG, EVNEVALG, FOLELSESVALG, IDENTITETSVALG, HVERDAGSVALG, TONER, TIDSVALG,
+  regnDimensjoner, toppDimensjoner, lagFormuleringer, lagKompassLinje, kompassForklaring, kompassBudskap,
 } from './mening.js';
 import { streakEtter, blaaEtter } from './feiring.js';
 
@@ -102,7 +105,8 @@ const ruter = {
   aktivitet: () => visAktivitetSkjerm(app),
   historikk: () => visAktivitetSkjerm(app), // gammel lenke — samme skjerm
   meny: visMeny, // hub bak tannhjulet — snarveier + inngang til innstillinger
-  mening: () => visMeningSkjerm(app), // Mitt hvorfor — meningspilaren (ikke fane)
+  mening: () => visMeningSkjerm(app), // Mitt kompass — meningspilaren (ikke fane)
+  kompass: () => visMeningSkjerm(app), // alias — samme skjerm
   varsler: visVarsler,
   innstillinger: visInnstillinger,
   bibliotek: visBibliotek,
@@ -400,15 +404,37 @@ function visHjemDashboard(mount) {
     braceBoks,
   );
 
-  // --- Dagens fokus ---
+  // --- Dagens fokus — kompassbevisst: har kompasset et relevant budskap for
+  // Start (frekvensstyrt, subtilt som standard), brukes det i stedet for den
+  // generiske rotasjonen. Retning, aldri press.
+  const bud = kompassBudskap('start');
   const dagensFokus = el('section', { class: 'kort hjemdash__fokus' },
-    el('span', { class: 'hjemdash__fokusmerke' }, 'Dagens fokus'),
-    el('p', { class: 'hjemdash__fokustekst' }, DAGENS_FOKUS[dagsnr % DAGENS_FOKUS.length]),
+    el('span', { class: 'hjemdash__fokusmerke' }, bud ? 'Retningen din' : 'Dagens fokus'),
+    el('p', { class: 'hjemdash__fokustekst' }, bud ? bud.tekst : DAGENS_FOKUS[dagsnr % DAGENS_FOKUS.length]),
+    bud ? el('a', { class: 'hjemdash__fokuskompass', href: '#/mening', 'aria-label': 'Mitt kompass' }, ikon('kompass')) : null,
   );
 
+  // --- Tilbakekomst («Du trenger ikke ta igjen noe. Du kan begynne der du er.»)
+  // Vises når alle gnistene er slukket og ingenting er logget i dag — men bare
+  // for brukere som HAR en historikk (aldri som velkomst). Ingen tapte streaks
+  // som hovedbudskap; heller: hva ville hjelpe mest nå?
+  const harHistorikk = hentLogg().length > 0 || gs.blaa.totaltBlaa > 0;
+  const faltUt = harHistorikk && gs.blaa.tentIDag === 0
+    && GNIST_PILARER.every((p) => gs.pilarer[p.id].streak === 0);
+  const tilbakeKort = faltUt ? el('section', { class: 'kort tilbakekort' },
+    el('span', { class: 'tilbakekort__merke' }, 'Begynn der du er'),
+    el('p', { class: 'tilbakekort__tekst' },
+      kompassBudskap('tilbakekomst')?.tekst || 'Du trenger ikke ta igjen noe. Du kan begynne der du er.'),
+    el('p', { class: 'dempet dempet--tett' }, 'Hva ville hjulpet mest nå?'),
+    el('div', { class: 'chiprad chiprad--pille tilbakekort__valg' },
+      el('a', { class: 'chip', href: '#/trening' }, 'Litt mer energi'),
+      el('a', { class: 'chip', href: '#/ro' }, 'Et roligere hode'),
+      el('a', { class: 'chip', href: '#/beveg' }, 'Bare noe enkelt'),
+      el('a', { class: 'chip', href: '#/sosialt' }, 'Menneskene mine'))) : null;
+
   tom(mount);
-  // Hjem: hero → dagens fokus → hele Utforsk-innholdet innfelt (M55).
-  const hjemMain = el('main', { class: 'innhold hjemdash' }, hero, dagensFokus, ...byggUtforskSeksjoner());
+  // Hjem: hero → (tilbakekomst) → dagens fokus → hele Utforsk-innholdet innfelt (M55).
+  const hjemMain = el('main', { class: 'innhold hjemdash' }, hero, tilbakeKort, dagensFokus, ...byggUtforskSeksjoner());
   const scroll = el('div', { class: 'hjemdash-scroll' }, topp, hjemMain);
   document.body.classList.add('dash-laast');
   mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: () => hjemMain.scrollTop, innhold: hjemMain }));
@@ -875,7 +901,7 @@ function visKostholdSkjerm(mount) {
       el('a', { class: 'seksjonslenke', href: '#/laer' }, 'Se alle', ikon('chevron'))),
     el('div', { class: 'matprinsipp matprinsipp--tre' }, ...prinsipper.map((p) => prinsippKort(p))));
 
-  main.append(loggKort, featKort, miniRad, prinsippRad);
+  main.append(loggKort, kompassBudKort('mat'), featKort, miniRad, prinsippRad);
 }
 
 // --- Oppskrifter (bla, søk, filtrer) ---------------------------------------
@@ -1605,7 +1631,7 @@ function visRoSkjerm(mount) {
         el('span', { class: 'rokort__meta' }, `${o.varighetMin} min · ${RO_TAG[o.id] || 'Restitusjon'}`)),
       ikon('play', 'ikon rokort__play')))));
 
-  main.append(loggKort, mikroRad, kveldRad);
+  main.append(loggKort, kompassBudKort('ro'), mikroRad, kveldRad);
 }
 
 // ===========================================================================
@@ -1824,7 +1850,7 @@ function visFellesskapSkjerm(mount) {
     el('span', { class: 'moteplasslenke__ikon' }, ikon('kompass')),
     el('span', {}, 'Finn fellesskap i nærheten'), ikon('pilhoyre'));
 
-  main.append(loggKort, taVare, komIGang, moteplass);
+  main.append(loggKort, kompassBudKort('sosialt'), taVare, komIGang, moteplass);
 }
 
 // Ett personkort i «Ta vare på noen»-railen.
@@ -2234,6 +2260,7 @@ function visTrening(mount = app) {
   };
   main.append(
     minRad,
+    kompassBudKort('bevegelse'),
     utforskBevegelse(profil, hentLogg(), oppdaterStatus),
     raskTilgang(),
   );
@@ -2915,7 +2942,7 @@ function visMeny() {
     el('div', { class: 'kort' },
       el('div', { class: 'liste' },
         lenke('sok', 'Utforsk', '#/utforsk'),
-        lenke('kompass', 'Mitt hvorfor', '#/mening'),
+        lenke('kompass', 'Mitt kompass', '#/mening'),
         lenke('person', 'Profil', '#/merker'),
         lenke('bok', 'Lær', '#/laer'),
         lenke('gir', 'Innstillinger', '#/innstillinger'),
@@ -2926,72 +2953,430 @@ function visMeny() {
 }
 
 // ===========================================================================
-// Mening (Fase 6) — «Mitt hvorfor» som motivasjons-spine, ikke en fane. Her
-// erklærer du 1–3 personlige grunner (ikigai/nordstjerner) som pakker inn hele
-// belønningsloopen: feiringen refererer til ditt hvorfor, og en rolig ukentlig
-// refleksjon bygger en privat meningsdagbok. Nås fra meny-huben og Profil.
+// Mening — «Mitt kompass» (systemdesign 1.0): ikke et stort tekstfelt, men et
+// stille personaliseringslag under hele TAKT. Ingen kompass → en rolig femstegs
+// oppsettsflyt (progressiv avsløring, brukbart resultat selv om man stopper
+// tidlig). Kompass → resultatsiden med kompasskortet, «det jeg vil bevare»,
+// «akkurat nå», ukens refleksjon og full kontroll (rediger/pause/slett).
+// Retning, ikke press. Personlig, ikke påtrengende.
 // ===========================================================================
+// Diskret kompasslinje til pilarsidene — vises bare når budskapsmotoren har
+// noe relevant å si (dimensjons-, tone- og frekvensstyrt). Har ikke appen et
+// godt budskap, vises ingenting: tomt fragment i stedet for fyll-motivasjon.
+function kompassBudKort(modul) {
+  const bud = kompassBudskap(modul);
+  if (!bud) return document.createDocumentFragment();
+  return el('a', { class: 'kompassbud', href: '#/mening' },
+    el('span', { class: 'kompassbud__ikon' }, ikon('kompass')),
+    el('span', { class: 'kompassbud__tekst' }, bud.tekst));
+}
+
 function visMeningSkjerm(mount) {
   if (!hentProfil()) { location.hash = '#/hjem'; return; }
-  const tegnPåNytt = () => visMeningSkjerm(mount);
+  const k = lesKompass();
+  // Et utkast med redigerer-flagg betyr at brukeren står midt i en redigering
+  // av et eksisterende kompass — flyten vises da oppå det (avbrytbar).
+  if (k && !lesKompassUtkast().redigerer) visKompassSide(mount, k);
+  else visKompassOppsett(mount);
+}
 
-  const hvorfor = lesHvorfor();
+// --- Oppsettsutkast: lagres lokalt etter hvert steg, så en avbrutt flyt kan
+// plukkes opp igjen — men ingen ferdig livsfortelling presenteres uten at
+// brukeren selv har godkjent formuleringen (steg 4–5).
+const LS_KOMPASS_UTKAST = 'takt.kompassUtkast';
+function lesKompassUtkast() {
+  try { return JSON.parse(localStorage.getItem(LS_KOMPASS_UTKAST) || 'null') || { steg: 1 }; } catch { return { steg: 1 }; }
+}
+function skrivKompassUtkast(u) { try { localStorage.setItem(LS_KOMPASS_UTKAST, JSON.stringify(u)); } catch { /* valgfri */ } }
+function slettKompassUtkast() { try { localStorage.removeItem(LS_KOMPASS_UTKAST); } catch { /* valgfri */ } }
 
-  // --- Mine hvorfor ---
-  const hvorforListe = el('div', { class: 'hvorforliste' },
-    ...hvorfor.map((h) => el('div', { class: 'hvorforkort' },
-      el('span', { class: 'hvorforkort__ikon' }, ikon('kompass')),
-      el('span', { class: 'hvorforkort__tekst' }, h.tekst),
-      el('button', {
-        class: 'hvorforkort__slett', type: 'button', 'aria-label': 'Fjern',
-        onclick: () => { slettHvorfor(h.id); tegnPåNytt(); },
-      }, ikon('kryss')),
-    )),
-    hvorfor.length ? null : el('p', { class: 'dempet' }, 'Skriv ned grunnen din — det du kommer tilbake til når dagen er tung.'),
-  );
+// Valgbibliotekene per steg-2-gruppe: spørsmål, hint og tak per inngang.
+const KOMPASS_GRUPPER = {
+  personer: { sporsmal: 'Hvem vil du ha mer overskudd til?', hint: 'Velg dem som gjør retningen personlig. Dette brukes varsomt — aldri for å gi dårlig samvittighet.', valg: PERSONVALG, maks: 3 },
+  evner: { sporsmal: 'Hva vil du kunne gjøre?', hint: 'Velg det du vil bevare eller få mer av.', valg: EVNEVALG, maks: 4 },
+  folelser: { sporsmal: 'Hvordan vil du at livet skal kjennes?', hint: 'Velg opptil tre. Ordene hjelper TAKT å finne riktig tone og riktige forslag.', valg: FOLELSESVALG, maks: 3 },
+  identiteter: { sporsmal: 'Hvem ønsker du å være?', hint: 'Én stabil retning er nok — uten perfeksjonskrav.', valg: IDENTITETSVALG, maks: 2 },
+  hverdag: { sporsmal: 'Hva gjør en vanlig dag god?', hint: 'Små opplevelser teller like mye som store.', valg: HVERDAGSVALG, maks: 4 },
+};
+// Hvilke grupper steg 2 konkretiserer, per inngang fra steg 1.
+const KOMPASS_STEG2 = {
+  mennesker: ['personer', 'evner'],
+  livet: ['evner'],
+  folelse: ['folelser'],
+  identitet: ['identiteter'],
+  smaating: ['hverdag'],
+};
 
-  const komponerKort = () => {
-    const ta = el('textarea', { class: 'kostnotat hvorfor__inn', rows: '2', maxlength: '120', placeholder: 'Jeg vil …' });
-    const promptRad = el('div', { class: 'chiprad chiprad--pille hvorfor__prompter' },
-      ...STARTSPORSMAL.map((p) => el('button', {
-        class: 'chip chip--dempet', type: 'button',
-        onclick: () => { ta.placeholder = p.sporsmal; ta.focus(); },
-      }, p.sporsmal)));
-    const knapp = el('button', { class: 'knapp', type: 'button',
-      onclick: () => {
-        const ny = leggTilHvorfor(ta.value);
-        if (!ny) { varsle('Skriv noe kort først', { ikon: 'kompass' }); return; }
-        vibrer(); varsle('Lagt til', { ikon: 'kompass' });
-        tegnPåNytt();
-      } }, 'Legg til');
-    return el('section', { class: 'kort' },
-      el('h2', { class: 'kost__tittel' }, hvorfor.length ? 'Legg til et hvorfor til' : 'Skriv ditt hvorfor'),
-      el('p', { class: 'dempet', style: 'margin-top:-4px' }, 'La deg inspirere av et spørsmål — eller skriv helt fritt.'),
-      promptRad, ta, el('div', { class: 'hvorfor__handling' }, knapp));
+function visKompassOppsett(mount) {
+  let utkast = lesKompassUtkast();
+  const lagreOgTegn = (endring = {}) => {
+    utkast = { ...utkast, ...endring };
+    skrivKompassUtkast(utkast);
+    tegnSteg();
   };
 
-  const mineKort = el('section', { class: 'kort' },
-    el('h2', { class: 'kost__tittel' }, 'Mitt hvorfor'),
-    el('p', { class: 'dempet', style: 'margin-top:-4px' },
-      'På Okinawa kaller de det ikigai — grunnen til at du står opp om morgenen. Et tydelig hvorfor er blant de sterkeste kreftene for et langt, godt liv. De små valgene dine peker hit.'),
-    hvorforListe);
+  const skall = (stegNr, ...innhold) => {
+    tom(mount);
+    mount.append(
+      el('header', { class: 'topp topp--kompass' },
+        el('h1', { class: 'topp__tittel' }, 'Mitt kompass'),
+        utkast.redigerer ? el('button', { class: 'kompass-avbryt', type: 'button',
+          onclick: () => { slettKompassUtkast(); visMeningSkjerm(mount); } }, 'Avbryt') : null,
+        stegNr ? el('span', { class: 'kompass-fremdrift' }, `${stegNr} av 5`) : null),
+      el('main', { class: 'innhold' }, ...innhold),
+    );
+  };
 
-  // --- Ukens refleksjon ---
+  // Flervalg-chips for en gruppe (personer/evner/…): toggler i utkastet.
+  const chipVelger = (gruppeId, overSporsmal) => {
+    const g = KOMPASS_GRUPPER[gruppeId];
+    const valgte = () => new Set(utkast[gruppeId] || []);
+    const rad = el('div', { class: 'kompass-chips' },
+      ...g.valg.map((v) => {
+        const c = el('button', { class: 'chip' + (valgte().has(v.id) ? ' chip--aktiv' : ''), type: 'button',
+          onclick: () => {
+            const s = valgte();
+            if (s.has(v.id)) s.delete(v.id);
+            else {
+              if (s.size >= g.maks) { varsle(`Velg maks ${g.maks}`, { ikon: 'kompass' }); return; }
+              s.add(v.id);
+              vibrer();
+            }
+            utkast[gruppeId] = [...s];
+            skrivKompassUtkast(utkast);
+            c.classList.toggle('chip--aktiv', s.has(v.id));
+            oppdaterPrevu();
+          } }, v.tekst);
+        return c;
+      }));
+    return el('div', { class: 'kompassgruppe' },
+      el('h2', { class: 'kost__tittel' }, overSporsmal || g.sporsmal),
+      el('p', { class: 'dempet dempet--tett' }, g.hint),
+      rad);
+  };
+
+  // Løpende forhåndsvisning — viser verdien av valgene uten at det blir skjema.
+  let prevu = null;
+  const byggPrevu = () => {
+    const dims = regnDimensjoner(utkast).filter((d) => d.score >= 0.45).slice(0, 3);
+    if (!dims.length) return el('div', { class: 'kompassprevu kompassprevu--tom' });
+    return el('div', { class: 'kompassprevu' },
+      el('span', { class: 'kompassprevu__merke' }, 'Kompasset begynner å ta form'),
+      el('p', { class: 'kompassprevu__tekst' }, lagKompassLinje(utkast)),
+      el('span', { class: 'kompassprevu__dims' }, dims.map((d) => d.navn).join(' · ')));
+  };
+  const oppdaterPrevu = () => {
+    if (!prevu) return;
+    const ny = byggPrevu();
+    prevu.replaceWith(ny);
+    prevu = ny;
+  };
+
+  const navRad = (tilbakeSteg, videreTekst, videreFn) => el('div', { class: 'kompassnav' },
+    tilbakeSteg ? el('button', { class: 'knapp knapp--sekundaer', type: 'button',
+      onclick: () => lagreOgTegn({ steg: tilbakeSteg }) }, 'Tilbake') : el('span'),
+    el('button', { class: 'knapp', type: 'button', onclick: videreFn }, videreTekst));
+
+  // --- Steg 1: Velg inngang — «Hva trekker deg fremover akkurat nå?» ---
+  function steg1() {
+    const kortListe = el('div', { class: 'valgliste' },
+      ...INNGANGER.map((i) => el('button', {
+        class: 'valgkort' + (utkast.inngang === i.id ? ' valgkort--valgt' : ''), type: 'button',
+        onclick: () => { vibrer(); lagreOgTegn({ inngang: i.id }); },
+      },
+        el('span', { class: 'valgkort__disk' }, ikon(i.ikon)),
+        el('span', { class: 'valgkort__tekst' },
+          el('span', { class: 'valgkort__navn' }, i.navn),
+          el('span', { class: 'valgkort__hint' }, i.hint)),
+        el('span', { class: 'valgkort__radio', 'aria-hidden': 'true' }),
+      )));
+    skall(1,
+      el('section', {},
+        el('h2', { class: 'kompass-sporsmal' }, 'Hva trekker deg fremover?'),
+        el('p', { class: 'dempet' }, 'Velg det som kjennes nærmest akkurat nå. Du kan endre dette senere.'),
+        kortListe,
+        el('p', { class: 'dempet kompass-fotnote' }, 'Du kan velge flere senere. Vi begynner med én retning.'),
+        el('button', { class: 'knapp' + (utkast.inngang ? '' : ' knapp--av'), type: 'button',
+          onclick: () => lagreOgTegn({ steg: 2 }) }, 'Fortsett'),
+        el('button', { class: 'kompass-vetikke', type: 'button',
+          onclick: () => lagreOgTegn({ steg: 'vetikke' }) }, 'Jeg vet ikke helt'),
+      ));
+  }
+
+  // --- Alternativ inngang: «Jeg vet ikke helt» → situasjonsvalg. Appen lager
+  // et midlertidig kompass for «denne tiden» og inviterer til å utdype senere.
+  // Ingen skal møte en blank side og føle at de må skrive en livsfilosofi.
+  function stegVetikke() {
+    skall(null,
+      el('section', {},
+        el('h2', { class: 'kompass-sporsmal' }, 'Hva ville hjulpet mest nå?'),
+        el('p', { class: 'dempet' }, 'Helt greit å ikke vite. Velg det som ligner mest, så lager vi en retning for denne tiden — du kan utdype når du vil.'),
+        el('div', { class: 'valgliste' },
+          ...TIDSVALG.map((t) => el('button', { class: 'valgkort', type: 'button',
+            onclick: () => {
+              vibrer();
+              lagreKompass({
+                valg: {},
+                setning: `Akkurat nå handler det mest om ${t.frase}.`,
+                linje: t.tekst,
+                tone: 'varm', personnivaa: 'subtil',
+                denneTiden: { id: t.id, tekst: t.tekst, satt: new Date().toISOString() },
+              });
+              slettKompassUtkast();
+              varsle('Kompasset ditt er klart', { ikon: 'kompass' });
+              visMeningSkjerm(mount);
+            } },
+            el('span', { class: 'valgkort__tekst' }, el('span', { class: 'valgkort__navn' }, t.tekst)),
+            el('span', { class: 'valgkort__radio', 'aria-hidden': 'true' })))),
+        el('button', { class: 'kompass-vetikke', type: 'button', onclick: () => lagreOgTegn({ steg: 1 }) }, 'Tilbake til retningene'),
+      ));
+  }
+
+  // --- Steg 2: Gjør det konkret — grupper avhengig av inngangen ---
+  function steg2() {
+    const grupper = KOMPASS_STEG2[utkast.inngang] || ['evner'];
+    const innhold = grupper.map((g) => chipVelger(g,
+      utkast.inngang === 'mennesker' && g === 'evner' ? 'Hva vil du kunne gjøre sammen med dem?' : null));
+    prevu = byggPrevu();
+    skall(2,
+      el('section', {},
+        ...innhold,
+        prevu,
+        navRad(1, 'Videre', () => {
+          const noeValgt = grupper.some((g) => (utkast[g] || []).length);
+          if (!noeValgt) { varsle('Velg minst én ting', { ikon: 'kompass' }); return; }
+          lagreOgTegn({ steg: 3 });
+        })));
+  }
+
+  // --- Steg 3: Livsfølelse, identitet og tone (det som ikke alt er valgt) ---
+  function steg3() {
+    const alt2 = KOMPASS_STEG2[utkast.inngang] || [];
+    const deler = [];
+    if (!alt2.includes('folelser')) deler.push(chipVelger('folelser'));
+    if (!alt2.includes('identiteter')) deler.push(chipVelger('identiteter'));
+    const toneRad = el('div', { class: 'kompass-chips' },
+      ...TONER.map((t) => {
+        const c = el('button', { class: 'chip' + ((utkast.tone || 'varm') === t.id ? ' chip--aktiv' : ''), type: 'button',
+          onclick: () => {
+            utkast.tone = t.id;
+            skrivKompassUtkast(utkast);
+            toneRad.querySelectorAll('.chip').forEach((x) => x.classList.toggle('chip--aktiv', x === c));
+            toneEks.textContent = t.eksempel;
+          } }, t.navn);
+        return c;
+      }));
+    const toneEks = el('p', { class: 'dempet dempet--tett kompass-toneeks' },
+      (TONER.find((t) => t.id === (utkast.tone || 'varm')) || TONER[0]).eksempel);
+    prevu = byggPrevu();
+    skall(3,
+      el('section', {},
+        ...deler,
+        el('div', { class: 'kompassgruppe' },
+          el('h2', { class: 'kost__tittel' }, 'Hvordan vil du helst bli møtt?'),
+          el('p', { class: 'dempet dempet--tett' }, 'Tonen styrer språket i appen — aldri hvilke verdier den tillegger deg.'),
+          toneRad, toneEks),
+        prevu,
+        navRad(2, 'Lag forslag', () => lagreOgTegn({ steg: 4 }))));
+  }
+
+  // --- Steg 4: Velg formulering — tre måter å si det samme på. Malbasert
+  // (regelstyrt MVP) så kvalitet, tone og personvern er forutsigbart; brukeren
+  // kan redigere hvert ord før lagring. Målet er gjenkjennelse, ikke fasit.
+  function steg4() {
+    const forslag = lagFormuleringer(utkast);
+    let valgtId = utkast.formulering || forslag[0].id;
+    const gjeldendeTekst = () => (utkast.setning && utkast.formulering === valgtId)
+      ? utkast.setning
+      : (forslag.find((f) => f.id === valgtId)?.tekst || forslag[0].tekst);
+
+    const ta = el('textarea', { class: 'kostnotat kompass-rediger', rows: '3', maxlength: '200' });
+    ta.value = gjeldendeTekst();
+    ta.addEventListener('input', () => {
+      utkast.setning = ta.value;
+      utkast.formulering = valgtId;
+      skrivKompassUtkast(utkast);
+    });
+
+    const kortForslag = forslag.map((f) => {
+      const kort = el('button', { class: 'formulering' + (valgtId === f.id ? ' formulering--valgt' : ''), type: 'button',
+        onclick: () => {
+          valgtId = f.id;
+          utkast.formulering = f.id;
+          utkast.setning = f.tekst;
+          skrivKompassUtkast(utkast);
+          kortForslag.forEach((x) => x.classList.toggle('formulering--valgt', x === kort));
+          ta.value = f.tekst;
+          vibrer();
+        } },
+        el('span', { class: 'formulering__merke' }, f.navn),
+        el('span', { class: 'formulering__tekst' }, f.tekst));
+      return kort;
+    });
+
+    skall(4,
+      el('section', {},
+        el('h2', { class: 'kompass-sporsmal' }, 'Tre måter å si det samme på'),
+        el('p', { class: 'dempet' }, 'Velg den som føles mest som deg. Du kan redigere hvert ord før du lagrer.'),
+        el('div', { class: 'formuleringsliste' }, ...kortForslag),
+        el('div', { class: 'kompassgruppe' },
+          el('h2', { class: 'kost__tittel' }, 'Med dine egne ord'),
+          ta),
+        navRad(3, 'Videre', () => {
+          if (!(ta.value || '').trim()) { varsle('Velg eller skriv en formulering', { ikon: 'kompass' }); return; }
+          utkast.setning = ta.value;
+          utkast.formulering = valgtId;
+          lagreOgTegn({ steg: 5 });
+        })));
+  }
+
+  // --- Steg 5: Lagre kompass og grenser — kompasslinje + hvor direkte appen
+  // kan være. Et eksplisitt samtykke til personaliseringsnivå, ikke en skjult
+  // innstilling.
+  function steg5() {
+    const linjeInn = el('input', { class: 'kostnotat kompass-linjeinn', type: 'text', maxlength: '48',
+      value: utkast.linje || lagKompassLinje(utkast) });
+    linjeInn.addEventListener('input', () => { utkast.linje = linjeInn.value; skrivKompassUtkast(utkast); });
+
+    const NIVAER = [
+      { id: 'subtil', navn: 'Subtilt', hint: 'Appen hinter bare om retning — aldri om hvem. Standard.' },
+      { id: 'tematisk', navn: 'Tematisk', hint: '«For mer overskudd til dem som betyr mest.»' },
+      { id: 'direkte', navn: 'Direkte', hint: 'Dine egne ord — på kompass-siden og ved sjeldne milepæler.' },
+    ];
+    let nivaa = utkast.personnivaa || 'subtil';
+    const nivaaHint = el('p', { class: 'dempet dempet--tett kompass-toneeks' }, NIVAER.find((n) => n.id === nivaa).hint);
+    const nivaaRad = el('div', { class: 'kompass-chips' },
+      ...NIVAER.map((n) => {
+        const c = el('button', { class: 'chip' + (nivaa === n.id ? ' chip--aktiv' : ''), type: 'button',
+          onclick: () => {
+            nivaa = n.id;
+            utkast.personnivaa = n.id;
+            skrivKompassUtkast(utkast);
+            nivaaRad.querySelectorAll('.chip').forEach((x) => x.classList.toggle('chip--aktiv', x === c));
+            nivaaHint.textContent = n.hint;
+          } }, n.navn);
+        return c;
+      }));
+
+    skall(5,
+      el('section', {},
+        el('h2', { class: 'kompass-sporsmal' }, 'Kompasset ditt'),
+        el('div', { class: 'kompasskort kompasskort--prevu' },
+          el('span', { class: 'kompasskort__linje' }, (utkast.linje || lagKompassLinje(utkast))),
+          el('p', { class: 'kompasskort__setning' }, utkast.setning || '')),
+        el('div', { class: 'kompassgruppe' },
+          el('h2', { class: 'kost__tittel' }, 'Kort påminnelse i resten av appen'),
+          el('p', { class: 'dempet dempet--tett' }, 'Én linje som kan dukke opp der den er relevant — aldri oftere enn én gang i uka.'),
+          linjeInn),
+        el('div', { class: 'kompassgruppe' },
+          el('h2', { class: 'kost__tittel' }, 'Hvor personlig kan appen være?'),
+          nivaaRad, nivaaHint),
+        navRad(4, 'Lagre kompasset', () => {
+          const k = lagreKompass({
+            valg: {
+              inngang: utkast.inngang || null,
+              personer: utkast.personer || [], evner: utkast.evner || [],
+              folelser: utkast.folelser || [], identiteter: utkast.identiteter || [],
+              hverdag: utkast.hverdag || [],
+            },
+            setning: utkast.setning,
+            linje: linjeInn.value,
+            tone: utkast.tone || 'varm',
+            personnivaa: nivaa,
+          });
+          if (!k) { varsle('Skriv en formulering først', { ikon: 'kompass' }); return; }
+          slettKompassUtkast();
+          vibrer('feiring');
+          varsle('Kompasset ditt er lagret', { ikon: 'kompass' });
+          visMeningSkjerm(mount);
+        })));
+  }
+
+  function tegnSteg() {
+    if (utkast.steg === 'vetikke') stegVetikke();
+    else if (utkast.steg === 2) steg2();
+    else if (utkast.steg === 3) steg3();
+    else if (utkast.steg === 4) steg4();
+    else if (utkast.steg === 5) steg5();
+    else steg1();
+  }
+  tegnSteg();
+}
+
+// --- Resultatsiden: kompasset i bruk — siden er ikke lenger et skjema.
+// Kompasskortet endres sjelden; «Akkurat nå» kan justeres ofte; refleksjonen
+// kan foreslå, men aldri automatisk endre kompasset.
+function visKompassSide(mount, k) {
+  const tegnPåNytt = () => visMeningSkjerm(mount);
+  const paused = k.status === 'pause';
+  const dims = toppDimensjoner(k, 3);
+
+  // --- Kompasskortet (mørkegrønt) ---
+  const kompassKort = el('section', { class: 'kompasskort' + (paused ? ' kompasskort--pause' : '') },
+    el('span', { class: 'kompasskort__linje' }, k.linje),
+    el('p', { class: 'kompasskort__setning' }, k.setning),
+    dims.length ? el('span', { class: 'kompasskort__dims' }, dims.map((d) => d.navn).join(' · ')) : null,
+    paused ? el('span', { class: 'kompasskort__pausemerke' }, 'På pause') : null,
+  );
+
+  // Rediger/pause/slett — alltid tilgjengelig fra samme side (personvernmodellen).
+  const handlingsRad = el('div', { class: 'kompasshandlinger' },
+    el('button', { class: 'kompasshandling', type: 'button',
+      onclick: () => {
+        skrivKompassUtkast({
+          redigerer: true, steg: 1, inngang: k.valg?.inngang || null,
+          personer: k.valg?.personer || [], evner: k.valg?.evner || [],
+          folelser: k.valg?.folelser || [], identiteter: k.valg?.identiteter || [],
+          hverdag: k.valg?.hverdag || [],
+          tone: k.tone, personnivaa: k.personnivaa,
+          setning: k.setning, linje: k.linje, formulering: 'egen',
+        });
+        visMeningSkjerm(mount);
+      } }, ikon('penn'), 'Rediger'),
+    el('button', { class: 'kompasshandling', type: 'button',
+      onclick: () => { settKompassPause(!paused); varsle(paused ? 'Kompasset er i gang igjen' : 'Kompasset er satt på pause', { ikon: 'kompass' }); tegnPåNytt(); } },
+      ikon(paused ? 'play' : 'pause'), paused ? 'Fortsett' : 'Pause'),
+    el('button', { class: 'kompasshandling kompasshandling--fare', type: 'button',
+      onclick: () => {
+        if (!confirm('Slette kompasset? Egne ord og refleksjoner beholdes.')) return;
+        slettKompass();
+        slettKompassUtkast();
+        varsle('Kompasset er slettet', { ikon: 'kompass' });
+        tegnPåNytt();
+      } }, ikon('kryss'), 'Slett'),
+  );
+
+  // --- Det jeg vil bevare (valgte evner) ---
+  const evner = (k.valg?.evner || []).map((id) => EVNEVALG.find((e) => e.id === id)).filter(Boolean);
+  const bevareKort = evner.length ? el('section', { class: 'kort' },
+    el('h2', { class: 'kost__tittel' }, 'Det jeg vil bevare'),
+    el('div', { class: 'kompass-chips' }, ...evner.map((e) => el('span', { class: 'bevareflis' }, e.tekst)))) : null;
+
+  // --- Akkurat nå («denne tiden» — justeres ofte, omskriver aldri kjernen) ---
+  const dt = k.denneTiden;
+  const borSes = denneTidenBorSes();
+  const tidChips = el('div', { class: 'kompass-chips' },
+    ...TIDSVALG.map((t) => el('button', { class: 'chip' + (dt?.id === t.id ? ' chip--aktiv' : ''), type: 'button',
+      onclick: () => { settDenneTiden(dt?.id === t.id ? null : t.id); vibrer(); tegnPåNytt(); } }, t.tekst)));
+  const naaKort = el('section', { class: 'kort' },
+    el('h2', { class: 'kost__tittel' }, 'Akkurat nå'),
+    el('p', { class: 'dempet dempet--tett' }, borSes
+      ? 'Er dette fortsatt retningen din? Det er en stund siden du valgte den.'
+      : 'Denne tiden handler mest om …'),
+    tidChips);
+
+  // --- Ukens refleksjon — dynamisk spørsmål fra kompassets toppdimensjoner ---
   const uke = ukensRefleksjon();
-  const refl = el('textarea', { class: 'kostnotat', rows: '3', maxlength: '280',
-    placeholder: 'Hva føltes mest meningsfullt denne uka?' });
+  const refl = el('textarea', { class: 'kostnotat', rows: '3', maxlength: '280', placeholder: 'Skriv noen få ord …' });
   refl.value = uke?.tekst || '';
-  const reflLagre = el('button', { class: 'knapp', type: 'button',
-    onclick: () => {
-      settRefleksjon(refl.value);
-      vibrer(); varsle('Refleksjon lagret', { ikon: 'blad' });
-      tegnPåNytt();
-    } }, uke ? 'Oppdater' : 'Lagre refleksjonen');
   const reflKort = el('section', { class: 'kort' },
     el('h2', { class: 'kost__tittel' }, 'Ukens refleksjon'),
-    el('p', { class: 'dempet', style: 'margin-top:-4px' },
-      'Ett rolig øyeblikk i uka — ikke en oppgave. Hva av det du gjorde betydde noe?'),
-    refl, el('div', { class: 'hvorfor__handling' }, reflLagre));
+    el('p', { class: 'dempet dempet--tett' }, refleksjonsSporsmal()),
+    refl,
+    el('div', { class: 'hvorfor__handling' },
+      el('button', { class: 'knapp knapp--liten', type: 'button',
+        onclick: () => { settRefleksjon(refl.value); vibrer(); varsle('Refleksjon lagret', { ikon: 'blad' }); tegnPåNytt(); } },
+        uke ? 'Oppdater' : 'Lagre refleksjonen')));
 
   // --- Meningsdagbok (tidligere refleksjoner) ---
   const tidligere = lesRefleksjoner().filter((r) => r.uke !== (uke?.uke));
@@ -3003,11 +3388,49 @@ function visMeningSkjerm(mount) {
           el('span', { class: 'dagbokrad__merkelapp' }, 'Uke fra'), ' ', r.uke),
         el('span', { class: 'dagbokrad__tekst' }, r.tekst))))) : null;
 
-  skjerm('Mitt hvorfor',
-    mineKort,
-    kanLeggeTil() ? komponerKort() : el('p', { class: 'dempet', style: 'text-align:center' }, 'Du har nok hvorfor for nå — fjern ett for å bytte.'),
+  // --- Mine egne ord (frie formuleringer — legacy «Mitt hvorfor») ---
+  const hvorfor = lesHvorfor();
+  const egneOrdListe = el('div', { class: 'hvorforliste' },
+    ...hvorfor.map((h) => el('div', { class: 'hvorforkort' },
+      el('span', { class: 'hvorforkort__ikon' }, ikon('kompass')),
+      el('span', { class: 'hvorforkort__tekst' }, h.tekst),
+      el('button', { class: 'hvorforkort__slett', type: 'button', 'aria-label': 'Fjern',
+        onclick: () => { slettHvorfor(h.id); tegnPåNytt(); } }, ikon('kryss')))));
+  const egenInn = el('textarea', { class: 'kostnotat hvorfor__inn', rows: '2', maxlength: '120', placeholder: 'Jeg vil …' });
+  const egnePrompter = el('div', { class: 'chiprad chiprad--pille hvorfor__prompter' },
+    ...STARTSPORSMAL.map((p) => el('button', { class: 'chip chip--dempet', type: 'button',
+      onclick: () => { egenInn.placeholder = p.sporsmal; egenInn.focus(); } }, p.sporsmal)));
+  const egneOrdKort = el('section', { class: 'kort' },
+    el('h2', { class: 'kost__tittel' }, 'Mine egne ord'),
+    el('p', { class: 'dempet dempet--tett' }, 'Frie formuleringer du vil ta vare på — de endrer aldri kompasset uten at du gjør det selv.'),
+    hvorfor.length ? egneOrdListe : null,
+    kanLeggeTil() ? el('div', {}, egnePrompter, egenInn,
+      el('div', { class: 'hvorfor__handling' },
+        el('button', { class: 'knapp knapp--liten', type: 'button',
+          onclick: () => {
+            const ny = leggTilHvorfor(egenInn.value);
+            if (!ny) { varsle('Skriv noe kort først', { ikon: 'kompass' }); return; }
+            vibrer(); varsle('Lagt til', { ikon: 'kompass' });
+            tegnPåNytt();
+          } }, 'Legg til')))
+      : el('p', { class: 'dempet' }, 'Du har nok egne ord for nå — fjern ett for å bytte.'));
+
+  // --- Hvorfor ser jeg dette? (forklarbarhet + etisk standard) ---
+  const forklaringKort = el('section', { class: 'kort kort--info' },
+    el('h2', { class: 'kost__tittel' }, 'Slik brukes kompasset'),
+    el('p', { class: 'dempet' }, kompassForklaring(k)),
+    el('p', { class: 'dempet' }, 'Kompasset endres aldri i det skjulte, og en litt mindre personlig melding er alltid bedre enn en presis en som oppleves invaderende.'));
+
+  skjerm('Mitt kompass',
+    kompassKort,
+    handlingsRad,
+    paused ? el('p', { class: 'dempet', style: 'text-align:center' }, 'Kompasset er på pause — appen bruker det ikke i budskap før du fortsetter.') : null,
+    bevareKort,
+    naaKort,
     reflKort,
-    dagbokKort);
+    dagbokKort,
+    egneOrdKort,
+    forklaringKort);
 }
 
 function visInnstillinger() {
