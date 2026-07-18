@@ -515,6 +515,8 @@ function visHjemDashboard(mount) {
 // gesten (preventDefault) så nettleserens tilbake-sveip ikke slår inn — det er
 // «tilbake-bug-en» som oppsto fordi appen kjører som nettside.
 const SVEIP_STRIP = ['feed', 'hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
+// Logo-ordet i den faste hovedtoppen per hovedside (feed har ingen hovedtopp).
+const LOGO_FOR_RUTE = { hjem: APP_NAME.toLowerCase(), kosthold: 'mat', trening: 'bevegelse', ro: 'ro', sosialt: 'fellesskap' };
 // Render-funksjon per hovedside (til dra-peeken). Feeden har sin egen (byggFeedPeek).
 const SIDE_RENDER = {
   hjem: visHjemDashboard, kosthold: visKostholdSkjerm, trening: visTrening,
@@ -535,7 +537,7 @@ function byggSidePeek(rute) {
   // interaktiv header-kopi inn med peeken; ellers står den ekte headeren
   // stille over både siden og peeken mens innholdet glir.
   if (!document.body.classList.contains('har-hovedtopp')) {
-    const logo = { hjem: APP_NAME.toLowerCase(), kosthold: 'mat', trening: 'bevegelse', ro: 'ro', sosialt: 'fellesskap' }[rute];
+    const logo = LOGO_FOR_RUTE[rute];
     if (logo) wrap.append(byggHovedtopp(logo, ' hjemtopp--peek'));
   }
   return wrap;
@@ -571,6 +573,41 @@ function settOppSideSveip() {
   let sx = null; let sy = null; let retning = null; let aktiv = false; let hoppOver = false;
   let peek = null; let mål = null; let dir = 0; let feedInne = false; let barFolgerPeek = false; let linseFra = null; let linseTil = null;
 
+  // Logo-krysstoning i takt med draget (fane→fane): det gamle ordet toner ut
+  // og det nye inn med samme fremdrift som fingeren og pillen i bunnbaren, så
+  // byttet synes I bevegelsen — ikke først når man lander på siden. Ved slipp
+  // fullfører (eller reverserer) toningen i samme glid som resten. Feed-drag
+  // trenger det ikke: feed-peeken dekker headeren / bærer sin egen kopi.
+  let logoDra = null;
+  const startLogoDra = (målLogo) => {
+    const boks = document.querySelector('.hjemtopp--fast:not(.hjemtopp--skjult) .hjemtopp__logoboks');
+    const gammel = boks?.querySelector('.hjemtopp__logo:not(.hjemtopp__logo--ut)');
+    if (!boks || !gammel || !målLogo || gammel.dataset.logo === målLogo) return null;
+    boks.querySelectorAll('.hjemtopp__logo').forEach((n) => { if (n !== gammel) n.remove(); }); // evt. rester fra tap-bytte/avbrutt dra
+    const ny = lagHovedtoppLogo(målLogo);
+    gammel.style.transition = 'none'; ny.style.transition = 'none'; ny.style.opacity = '0';
+    boks.append(ny);
+    return { gammel, ny };
+  };
+  const settLogoDra = (p) => {
+    if (!logoDra) return;
+    logoDra.gammel.style.opacity = String(1 - p);
+    logoDra.ny.style.opacity = String(p);
+  };
+  const slippLogoDra = (h, fullfor) => {
+    if (!h) return;
+    const tr = REDUSERT() ? 'none' : 'opacity 0.36s var(--ease-out)';
+    h.gammel.style.transition = tr; h.ny.style.transition = tr;
+    void h.ny.offsetWidth; // reflow så transisjonen gjelder fra dra-verdien
+    h.gammel.style.opacity = fullfor ? '0' : '1';
+    h.ny.style.opacity = fullfor ? '1' : '0';
+  };
+  const ferdigLogoDra = (h, fullfor) => {
+    if (!h) return;
+    if (fullfor) { h.gammel.remove(); h.ny.removeAttribute('style'); }
+    else { h.ny.remove(); h.gammel.removeAttribute('style'); }
+  };
+
   const settPos = (dxRaw) => {
     const W = bredde();
     const dx = dir > 0 ? Math.max(0, Math.min(W, dxRaw)) : Math.min(0, Math.max(-W, dxRaw));
@@ -584,6 +621,7 @@ function settOppSideSveip() {
       const p = Math.min(1, Math.abs(dx) / W);
       const ind = linse(); if (ind) ind.style.transform = `translateX(${linseFra + (linseTil - linseFra) * p}px) translateX(-50%)`; // pillen følger fingeren mot mål-fanen
     }
+    settLogoDra(Math.min(1, Math.abs(dx) / W)); // logoen toner i samme takt som pillen
   };
   const rensTransform = () => {
     app.style.transition = ''; app.style.transform = '';
@@ -601,6 +639,8 @@ function settOppSideSveip() {
     const bar = tabbar(); const ind = linse();
     if (bar && feedInne) bar.style.transition = tr;
     if (ind && !feedInne) ind.style.transition = tr;
+    const hLogo = logoDra; logoDra = null;
+    slippLogoDra(hLogo, fullfor); // toningen fullfører/reverserer i samme glid
     if (fullfor) {
       app.style.transform = `translateX(${dir * W}px)`;
       if (peek) peek.style.transform = 'translateX(0)';
@@ -610,6 +650,7 @@ function settOppSideSveip() {
       setTimeout(() => {
         // Peeken dekker mål-siden. Nullstill #app FØR navigasjon, så den ekte
         // siden tegnes på plass (translateX 0) under peeken; fjern peeken etter.
+        ferdigLogoDra(hLogo, true); // én logo igjen FØR settHovedtopp sammenligner
         app.style.transition = ''; app.style.transform = '';
         _droppSlide = true;               // peeken viste alt siden glidende inn
         location.hash = '#/' + mål;
@@ -620,7 +661,7 @@ function settOppSideSveip() {
       if (peek) peek.style.transform = `translateX(${-dir * W}px)`;
       if (bar && feedInne) bar.style.transform = `translateX(${barFolgerPeek ? -dir * W : 0}px)`;
       if (ind && !feedInne && linseFra != null) ind.style.transform = `translateX(${linseFra}px) translateX(-50%)`;
-      setTimeout(rydd, 360);
+      setTimeout(() => { ferdigLogoDra(hLogo, false); rydd(); }, 360);
     }
   };
 
@@ -628,6 +669,7 @@ function settOppSideSveip() {
     if (e.touches.length !== 1 || !SVEIP_STRIP.includes(naaRute())) { sx = null; return; }
     const t = e.touches[0]; sx = t.clientX; sy = t.clientY;
     retning = null; aktiv = false; feedInne = false; barFolgerPeek = false; peek = null; mål = null; dir = 0; linseFra = linseTil = null;
+    if (logoDra) { ferdigLogoDra(logoDra, false); logoDra = null; } // hengende dra-toning → tilbakestill
     hoppOver = iHscroller(e.target);
     app.style.transition = '';
   }, { passive: true });
@@ -661,6 +703,7 @@ function settOppSideSveip() {
         } else {
           linseFra = knappSenter(cur); linseTil = knappSenter(mål);
           if (ind) ind.style.transition = 'none';
+          logoDra = startLogoDra(LOGO_FOR_RUTE[mål]);
         }
       }
     }
