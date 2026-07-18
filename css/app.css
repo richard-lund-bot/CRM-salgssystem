@@ -395,6 +395,13 @@ body {
 .kompassbud__ikon { display: grid; place-items: center; flex: 0 0 auto; color: var(--aksent); }
 .kompassbud__ikon .ikon { width: 16px; height: 16px; }
 .kompassbud__tekst { font-size: 0.88rem; line-height: 1.4; }
+/* Hero-variant: samme stille linje, men bakt inn i pilar-headeren over
+   hero-bildet — frostet glass så teksten leses mot det mørke motivet. */
+.kompassbud--hero { position: relative; z-index: 1; margin: 12px auto 0; max-width: 460px;
+  background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.24); color: #fff;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.kompassbud--hero .kompassbud__ikon { color: #fff; }
+.kompassbud--hero .kompassbud__tekst { color: rgba(255,255,255,0.96); text-shadow: 0 1px 6px rgba(20,28,20,0.35); }
 
 /* Hjem: kompassmerket fokus (mørkegrønt kort → gull-ikon) + tilbakekomstkortet */
 .hjemdash__fokus { position: relative; }

@@ -637,6 +637,11 @@ function pilarSkall(mount, { navn, tittel, under = null, ring = null, streakStri
       el('h1', { class: 'hjemdash__tittel pilar-hero__tittel' }, tittel),
       under ? el('p', { class: 'hjemdash__under' }, under) : null),
   ];
+  // Kompass-kommentar bakt inn i headeren: budskapsmotoren snakker direkte til
+  // pilaren du står på (frekvens-/dimensjonsstyrt). Har den ingenting relevant å
+  // si, blir det et tomt fragment — ingen fyll. Fellesskap → 'sosialt'-modulen.
+  const kompassModul = { fellesskap: 'sosialt' }[navn] || navn;
+  heroBarn.push(kompassBudKort(kompassModul, { hero: true }));
   // Streak-stripe (frostet kort nederst i heroen): flamme + «X dager på rad» +
   // ukesprikker M–S. Fylt prikk = kontakt den dagen, ring rundt = i dag.
   if (streakStripe) {
@@ -901,7 +906,7 @@ function visKostholdSkjerm(mount) {
       el('a', { class: 'seksjonslenke', href: '#/laer' }, 'Se alle', ikon('chevron'))),
     el('div', { class: 'matprinsipp matprinsipp--tre' }, ...prinsipper.map((p) => prinsippKort(p))));
 
-  main.append(loggKort, kompassBudKort('mat'), featKort, miniRad, prinsippRad);
+  main.append(loggKort, featKort, miniRad, prinsippRad);
 }
 
 // --- Oppskrifter (bla, søk, filtrer) ---------------------------------------
@@ -1631,7 +1636,7 @@ function visRoSkjerm(mount) {
         el('span', { class: 'rokort__meta' }, `${o.varighetMin} min · ${RO_TAG[o.id] || 'Restitusjon'}`)),
       ikon('play', 'ikon rokort__play')))));
 
-  main.append(loggKort, kompassBudKort('ro'), mikroRad, kveldRad);
+  main.append(loggKort, mikroRad, kveldRad);
 }
 
 // ===========================================================================
@@ -1850,7 +1855,7 @@ function visFellesskapSkjerm(mount) {
     el('span', { class: 'moteplasslenke__ikon' }, ikon('kompass')),
     el('span', {}, 'Finn fellesskap i nærheten'), ikon('pilhoyre'));
 
-  main.append(loggKort, kompassBudKort('sosialt'), taVare, komIGang, moteplass);
+  main.append(loggKort, taVare, komIGang, moteplass);
 }
 
 // Ett personkort i «Ta vare på noen»-railen.
@@ -2260,7 +2265,6 @@ function visTrening(mount = app) {
   };
   main.append(
     minRad,
-    kompassBudKort('bevegelse'),
     utforskBevegelse(profil, hentLogg(), oppdaterStatus),
     raskTilgang(),
   );
@@ -2963,10 +2967,10 @@ function visMeny() {
 // Diskret kompasslinje til pilarsidene — vises bare når budskapsmotoren har
 // noe relevant å si (dimensjons-, tone- og frekvensstyrt). Har ikke appen et
 // godt budskap, vises ingenting: tomt fragment i stedet for fyll-motivasjon.
-function kompassBudKort(modul) {
+function kompassBudKort(modul, { hero = false } = {}) {
   const bud = kompassBudskap(modul);
   if (!bud) return document.createDocumentFragment();
-  return el('a', { class: 'kompassbud', href: '#/mening' },
+  return el('a', { class: 'kompassbud' + (hero ? ' kompassbud--hero' : ''), href: '#/mening' },
     el('span', { class: 'kompassbud__ikon' }, ikon('kompass')),
     el('span', { class: 'kompassbud__tekst' }, bud.tekst));
 }
