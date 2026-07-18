@@ -108,6 +108,22 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
   }
   sjekk('Alle fanene finnes i baren', (await page.locator('.tabbar__knapp').count()) === FANER.length, `${FANER.length} faner`);
 
+  // --- 4a2) Bevegelse-hjem (redesign): minuttkort + filtre + anbefalinger -----
+  await page.goto(BASE + '/#/trening');
+  await page.waitForSelector('.bevfilter', { timeout: 20000 });
+  sjekk('Bevegelse viser to minuttkort', (await page.locator('.minkort').count()) === 2);
+  sjekk('Bevegelse har fem gruppefiltre', (await page.locator('.bevchip').count()) === 5);
+  sjekk('Bevegelse viser tre anbefalte økter', (await page.locator('.bevrad').count()) === 3);
+  const bevFør = await page.locator('.bevrad__tittel').first().textContent();
+  await page.locator('.bevchip', { hasText: 'Styrke' }).click();
+  await page.waitForTimeout(200);
+  const bevEtter = await page.locator('.bevrad__tittel').first().textContent();
+  sjekk('Bevegelse-filter bytter anbefalinger', bevFør !== bevEtter, `${bevFør}→${bevEtter}`);
+  sjekk('Se alle peker til øktbiblioteket', (await page.locator('.bevutforsk .seksjonslenke[href="#/okter"]').count()) > 0);
+  await page.goto(BASE + '/#/beveg-favoritter');
+  await page.waitForTimeout(300);
+  sjekk('Øktfavoritt-skjermen tegnes', (await page.locator('.hjemtopp--detalj').count()) > 0);
+
   // --- 4b) Fellesskap-pilaren: hjem-flate + krets-underside ------------------
   await page.click('.tabbar__knapp[data-rute="sosialt"]');
   await page.waitForSelector('.kontaktgrid', { timeout: 20000 });

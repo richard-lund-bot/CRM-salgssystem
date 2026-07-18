@@ -14,7 +14,7 @@ import { APP_VERSION, APP_NAME, APP_TAGLINE } from './config.js';
 import { kjorOnboarding } from './onboarding.js';
 import { visReviewSkjerm, visKjoreSkjerm } from './kjor.js';
 import { settBib as settBibHist, visAktivitetSkjerm } from './historikk.js';
-import { visHurtigSkjerm, visLoggforSkjerm, aktivHurtig } from './beveg.js';
+import { visHurtigSkjerm, visLoggforSkjerm, aktivHurtig, registrerOgLogg } from './beveg.js';
 import { slippVaaken } from './vaakenlaas.js';
 import { lastOvelsesinfo, settBib as settBibOvelse, visOvelseSkjerm, ovelseInfo } from './ovelse.js';
 import { alleØvelser, tonnasje, muskelVolum, lagLinjegraf } from './styrke.js';
@@ -87,6 +87,7 @@ const ruter = {
   fremgang: () => visFellesskapFremgang(app), // Se fremgang (Fellesskap)
   moteplasser: () => visMoteplasserSkjerm(app), // Finn fellesskap i nærheten
   beveg: () => visOkterSkjerm(app), // Treningsbibliotek-fanen er øktbiblioteket
+  'beveg-favoritter': () => visOktFavoritter(app), // Bokmerkede økter
   hurtig: () => visHurtigSkjerm(app),
   loggfor: () => visLoggforSkjerm(app),
   merker: () => visMerkerSkjerm(app),
@@ -120,7 +121,7 @@ const ruter = {
 // Skjermene med egen tilbake-header er fokusmodus (skjuler tab-baren).
 // «sti» (ferdighetsreisen) er bevisst IKKE fokus: bunnbaren blir stående helt
 // til man går inn i en leksjon/kamp (som er egne fullskjerm-overlegg).
-const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel', 'oppskrift', 'post', 'logg-inn', 'bli-medlem']);
+const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel', 'oppskrift', 'post', 'logg-inn', 'bli-medlem', 'beveg-favoritter']);
 
 // Medlemssidene (auth). Uinnloggede sendes hit; innloggede slippes forbi.
 const AUTH_RUTER = new Set(['logg-inn', 'bli-medlem']);
@@ -1897,6 +1898,29 @@ function isoDato(d) {
 // Dagsmål i minutter, avledet av foretrukket varighetsklasse.
 const DAGSMAAL = { mikro: 10, kort: 20, standard: 40, lang: 60 };
 
+// Bevegelsesgrupper for «Utforsk bevegelse» — hvert filter samler flere
+// øktkategorier. Rekkefølgen = chip-rekkefølgen (horisontalt scrollende).
+const BEV_GRUPPER = [
+  { id: 'rolig', navn: 'Rolig', ikon: 'blad', farge: 'teal', kats: ['restitusjon', 'yoga', 'toying'] },
+  { id: 'hverdag', navn: 'Hverdag', ikon: 'loper', farge: 'lime', kats: ['gatur'] },
+  { id: 'kondisjon', navn: 'Kondisjon', ikon: 'hjerte', farge: 'koral', kats: ['lop', 'sykkel', 'hiit'] },
+  { id: 'styrke', navn: 'Styrke', ikon: 'vekt', farge: 'blaa', kats: ['styrke', 'kroppsvekt'] },
+  { id: 'mobilitet', navn: 'Mobilitet', ikon: 'yoga', farge: 'lilla', kats: ['mobilitet', 'toying'] },
+];
+const gruppeForKat = (kat) => BEV_GRUPPER.find((g) => g.kats.includes(kat)) || BEV_GRUPPER[0];
+
+// Øktfavoritter (bokmerker) — egen liste, atskilt fra oppskrift-favorittene.
+const OKTFAV_LS = 'trening.oktfavoritter';
+function lesOktFav() { try { return JSON.parse(localStorage.getItem(OKTFAV_LS)) || []; } catch { return []; } }
+function erOktFav(id) { return lesOktFav().includes(id); }
+function vekslOktFav(id) {
+  const liste = lesOktFav();
+  const i = liste.indexOf(id);
+  if (i >= 0) liste.splice(i, 1); else liste.push(id);
+  localStorage.setItem(OKTFAV_LS, JSON.stringify(liste));
+  return i < 0; // true = ble favoritt nå
+}
+
 function visTrening() {
   const profil = hentProfil();
   if (!profil) {
@@ -1904,28 +1928,167 @@ function visTrening() {
     return;
   }
   const logg = hentLogg();
-  const nå = Date.now();
-  const idagIso = isoDato(new Date(nå));
-  const minutter = logg
-    .filter((o) => (o.dato || '').slice(0, 10) === idagIso)
-    .reduce((s, o) => s + (o.varighetMin || 0), 0);
-  const planer = planForDato(idagIso);
-
-  // Samme header som Ro/Fellesskap: «bevegelse.»-header + naturbilde-hero med
-  // streak-stripe (flamme, «X dager på rad», ukesprikker M–S). Modulene (plan/
-  // anbefaling, statkort, øvelses-grid) beholder all funksjonalitet.
   const gbev = hentGnistStatus().pilarer.bevegelse;
+  // Header som Ro/Fellesskap: naturbilde-hero + streak-stripe. Under: to
+  // minuttkort, «Utforsk bevegelse» (filtrerte anbefalinger) og rask tilgang.
   const main = pilarSkall(app, {
-    navn: 'bevegelse', tittel: 'Beveg deg litt hver dag.',
-    under: minutter > 0 ? `${minutter} minutter i dag — bra jobba.` : 'Små økter teller.',
+    navn: 'bevegelse', tittel: 'Finn noe som passer i dag.',
     streakStripe: { streak: gbev.streak, dager: ukestreakPilar('bevegelse'), href: '#/fremgang' },
   });
   main.append(
-    el('section', { class: 'kort hjemdash__beveg' },
-      planer.length ? heroPlanBoks(planer[0]) : heroAnbefalBoks(logg, profil)),
-    statKortRad(profil, logg),
-    el('section', {}, seksjonsHode(), bevegelsesGrid()),
+    minuttKortRad(profil, logg),
+    utforskBevegelse(profil, logg),
+    raskTilgang(),
   );
+}
+
+// To minuttvisere: dagens minutter mot dagsmålet, og minutter mot streak-
+// terskelen (gnisten) som holder rekka i live.
+function minuttKortRad(profil, logg) {
+  const idagIso = isoDato(new Date());
+  const minutter = logg.filter((o) => (o.dato || '').slice(0, 10) === idagIso).reduce((s, o) => s + (o.varighetMin || 0), 0);
+  const maal = DAGSMAAL[profil.varighetsklasse] || 40;
+  const beveg = hentGnistStatus().pilarer.bevegelse;
+  const sMaal = beveg.iDag.maal;
+  const sVerdi = Math.min(beveg.iDag.verdi, sMaal);
+  const minSub = minutter >= maal ? 'Dagsmålet er nådd — alt videre er bonus.'
+    : minutter >= maal * 0.5 ? 'Halvveis til dagsmålet ditt.'
+      : minutter > 0 ? 'Godt i gang — litt til teller.'
+        : 'Litt bevegelse i dag gjør susen.';
+  const sSub = beveg.iDag.naadd ? 'Streaken er trygg i dag.' : `Fullfør ${sMaal} min for å holde streaken.`;
+
+  const minTall = el('b', { class: 'minkort__tall' }, '0');
+  const sTall = el('b', { class: 'minkort__tall' }, '0');
+  const minBar = el('i', { class: 'minkort__fyll' });
+  const sBar = el('i', { class: 'minkort__fyll minkort__fyll--gnist' });
+
+  const kort = (label, tallEl, enhet, barEl, sub, ikonNavn, gnist) => el('section', { class: 'kort minkort' },
+    el('span', { class: 'minkort__label' }, label),
+    el('div', { class: 'minkort__verdi' }, tallEl, el('span', { class: 'minkort__enhet' }, enhet)),
+    el('div', { class: 'minkort__bar' }, barEl),
+    el('div', { class: 'minkort__fot' },
+      el('span', { class: 'minkort__sub' }, sub),
+      el('span', { class: 'minkort__ikon' + (gnist ? ' minkort__ikon--gnist' : '') }, ikon(ikonNavn))));
+
+  const rad = el('div', { class: 'minkort-rad' },
+    kort('Minutter i dag', minTall, `/ ${maal} min`, minBar, minSub, 'stoppeklokke', false),
+    kort('Teller til streak', sTall, `/ ${sMaal} min`, sBar, sSub, 'flamme', true));
+
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    fyllInn(minBar, 'width', `${Math.min(100, Math.round((minutter / maal) * 100))}%`);
+    fyllInn(sBar, 'width', `${Math.min(100, Math.round((sVerdi / sMaal) * 100))}%`);
+  }));
+  tallOpp(minTall, minutter, { ms: 600 });
+  tallOpp(sTall, sVerdi, { ms: 600 });
+  return rad;
+}
+
+// «Utforsk bevegelse»: horisontalt scrollende gruppefilter + de tre mest
+// anbefalte øktene i valgt gruppe (scoret av restitusjon/preferanser).
+function utforskBevegelse(profil, logg) {
+  const scores = regionScores(logg);
+  const skaar = skaarOkter(scores, profil);
+  let valgt = BEV_GRUPPER[0].id;
+
+  const chipsRad = el('div', { class: 'bevfilter' });
+  const liste = el('div', { class: 'bevanbef' });
+
+  const tegnListe = () => {
+    const g = BEV_GRUPPER.find((x) => x.id === valgt);
+    const okter = skaar.filter((s) => g.kats.includes(s.okt.kategori)).slice(0, 3).map((s) => s.okt);
+    tom(liste);
+    if (!okter.length) { liste.append(el('p', { class: 'dempet dempet--tett' }, 'Ingen forslag akkurat nå.')); return; }
+    okter.forEach((okt) => liste.append(bevAnbefRad(okt, g)));
+  };
+
+  BEV_GRUPPER.forEach((g) => {
+    const chip = el('button', { class: 'bevchip' + (g.id === valgt ? ' bevchip--paa' : ''), type: 'button',
+      onclick: () => { valgt = g.id; [...chipsRad.children].forEach((c) => c.classList.remove('bevchip--paa')); chip.classList.add('bevchip--paa'); tegnListe(); } },
+      el('span', { class: 'bevchip__ikon' }, ikon(g.ikon)), el('span', {}, g.navn));
+    chipsRad.append(chip);
+  });
+  tegnListe();
+
+  return el('section', { class: 'bevutforsk' },
+    el('div', { class: 'seksjonshode seksjonshode--flat' },
+      el('h2', { class: 'seksjonstittel' }, 'Utforsk bevegelse'),
+      el('a', { class: 'seksjonslenke', href: '#/okter' }, 'Se alle', ikon('chevron'))),
+    chipsRad,
+    liste);
+}
+
+// Én anbefalt-økt-rad: miniatyr + tittel/meta/beskrivelse + Start/Gjort/bokmerke.
+function bevAnbefRad(okt, gruppe) {
+  const desc = (okt.beskrivelse || '').split(/(?<=[.!?])\s/)[0];
+  const bokmerke = el('button', { class: 'bevrad__merke' + (erOktFav(okt.id) ? ' bevrad__merke--paa' : ''),
+    type: 'button', 'aria-label': 'Lagre', onclick: () => {
+      const på = vekslOktFav(okt.id);
+      bokmerke.classList.toggle('bevrad__merke--paa', på);
+      vibrer(); varsle(på ? 'Lagret' : 'Fjernet', { ikon: 'bokmerke' });
+    } }, ikon('bokmerke'));
+
+  const gjort = el('button', { class: 'knapp knapp--sekundaer knapp--liten bevrad__knapp', type: 'button',
+    onclick: () => {
+      registrerOgLogg({ bevegelse: okt.bevegelse, varighetMin: okt.varighetMin, tittel: okt.navn, kilde: 'manuell', ekstra: { oktId: okt.id } });
+      vibrer(); varsle('Logget — bra jobba!', { ikon: 'sjekk' });
+      navger(); // tegn siden på nytt så minutter/streak/prikker oppdateres
+    } }, ikon('sjekk', 'ikon'), el('span', {}, 'Gjort'));
+
+  return el('div', { class: 'bevrad' },
+    oktMiniatyr(okt, gruppe),
+    el('div', { class: 'bevrad__midt' },
+      el('h3', { class: 'bevrad__tittel' }, okt.navn),
+      el('p', { class: 'bevrad__meta' }, `${okt.varighetMin} min`,
+        el('span', { class: 'bevrad__prikk' }, '·'), ikon(gruppe.ikon, 'ikon ikon--liten'), gruppe.navn),
+      desc ? el('p', { class: 'bevrad__desk' }, desc) : null),
+    el('div', { class: 'bevrad__hoyre' },
+      el('a', { class: 'knapp knapp--sekundaer knapp--liten bevrad__knapp', href: `#/okter?start=${okt.id}` }, 'Start'),
+      gjort,
+      bokmerke));
+}
+
+// Miniatyr uten foto: gruppens farge + øktas kategori-ikon (variasjon per rad).
+function oktMiniatyr(okt, gruppe) {
+  return el('span', { class: `bevmini bevmini--${gruppe.farge}`, 'aria-hidden': 'true' },
+    ikon(KAT_IKON[okt.kategori] || gruppe.ikon, 'bevmini__ikon'));
+}
+
+// Rask tilgang: fire snarveier (timer, logg, favoritter, planlegg).
+function raskTilgang() {
+  const kort = (ikonNavn, tittel, sub, href) => el('a', { class: 'rasktkort', href },
+    el('span', { class: 'rasktkort__ikon' }, ikon(ikonNavn)),
+    el('span', { class: 'rasktkort__tittel' }, tittel),
+    el('span', { class: 'rasktkort__sub' }, sub));
+  return el('section', { class: 'bevutforsk' },
+    el('div', { class: 'seksjonshode seksjonshode--flat' }, el('h2', { class: 'seksjonstittel' }, 'Rask tilgang')),
+    el('div', { class: 'rasktrad' },
+      kort('stoppeklokke', 'Start timer', 'Kom i gang nå.', '#/hurtig'),
+      kort('penn', 'Logg aktivitet', 'Noter økt eller tur.', '#/loggfor'),
+      kort('hjerte', 'Se favoritter', 'Dine lagrede økter.', '#/beveg-favoritter'),
+      kort('kalender', 'Planlegg uke', 'Få oversikt.', '#/kalender')));
+}
+
+// Favorittskjerm: øktene man har bokmerket (fra «Se favoritter»/bokmerke-knappen).
+function visOktFavoritter(mount) {
+  if (!hentProfil()) { location.hash = '#/hjem'; return; }
+  tom(mount);
+  const topp = el('header', { class: 'hjemtopp hjemtopp--detalj' },
+    el('button', { class: 'ikonknapp ikonknapp--plain', type: 'button', 'aria-label': 'Tilbake', onclick: () => history.back() }, ikon('pilvenstre')),
+    el('span', { class: 'hjemtopp__logo' }, 'Favoritter'),
+    el('span', { style: 'width:40px' }));
+  const main = el('main', { class: 'innhold matside' });
+  const okter = lesOktFav().map((id) => oktMedId(id)).filter(Boolean);
+  if (!okter.length) {
+    main.append(el('div', { class: 'kort kort--info' },
+      el('h2', {}, 'Ingen favoritter ennå'),
+      el('p', { class: 'dempet' }, 'Trykk bokmerket på en økt for å lagre den her.'),
+      el('a', { class: 'knapp', href: '#/bevegelse' }, 'Utforsk bevegelse')));
+  } else {
+    main.append(el('div', { class: 'bevanbef' }, ...okter.map((okt) => bevAnbefRad(okt, gruppeForKat(okt.kategori)))));
+  }
+  const scroll = el('div', { class: 'hjemdash-scroll' }, topp, main);
+  document.body.classList.add('dash-laast');
+  mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: () => main.scrollTop, innhold: main }));
 }
 
 const KAT_IKON = Object.fromEntries(KATEGORIER.map((k) => [k.id, k.ikon]));
@@ -2247,48 +2410,6 @@ function statKortRad(profil, logg, glass = false) {
   return rad;
 }
 
-// «Velg bevegelse» — fargede fliser rett på underlaget. Starter med profilens
-// foretrukne varighet; «Vis alle» går til Beveg med hele flyten.
-const HJEM_FLISER = [
-  ['walk', 'Gåtur', 'loper', 'lime'],
-  ['run', 'Løp', 'lyn', 'koral'],
-  ['yoga', 'Yoga', 'yoga', 'teal'],
-  ['strength', 'Styrke', 'vekt', 'blaa'],
-  ['stretch', 'Tøying', 'blad', 'lilla'],
-  ['bike', 'Sykkel', 'sykkel', 'oransje'],
-  ['sport', 'Sport', 'ball', 'gul'],
-];
-
-function seksjonsHode() {
-  return el('div', { class: 'seksjonshode' },
-    el('h2', { class: 'seksjonstittel' }, 'Velg bevegelse'),
-    el('a', { class: 'seksjonslenke', href: '#/beveg' }, 'Vis alle', ikon('chevron')),
-  );
-}
-
-function bevegelsesGrid() {
-  // Flisinnhold: lite ikon øverst, navn nederst — og samme ikon stort og
-  // utvasket bak i hjørnet, delvis utenfor kanten.
-  const flisInnhold = (ikonNavn, navn) => [
-    el('span', { class: 'movflis__bak' }, ikon(ikonNavn)),
-    el('span', { class: 'movflis__ikon' }, ikon(ikonNavn)),
-    el('span', { class: 'movflis__navn' }, navn),
-  ];
-  // Flisene åpner øktbibliotekets kategoriside (sport logges manuelt).
-  const flis = (id, navn, ikonNavn, farge) => el('a', {
-    class: `movflis movflis--${farge}`,
-    href: okterHref(id),
-  }, ...flisInnhold(ikonNavn, navn));
-  const overrask = el('button', {
-    class: 'movflis movflis--indigo', type: 'button',
-    onclick: () => {
-      const o = tilfeldigOkt();
-      location.hash = o ? `#/okter?start=${o.id}` : '#/okter';
-    },
-  }, ...flisInnhold('terning', 'Overrask meg'));
-  const grid = el('div', { class: 'movgrid' }, ...HJEM_FLISER.map((f) => flis(...f)), overrask);
-  return grid; // fliser vises umiddelbart — ingen inngangsanimasjon ved sidebytte
-}
 
 // Streak (sammenhengende dager med bevegelse) bor nå i js/bevegelse.js —
 // beregnStreak deles med feiringslaget (streak-økning → «Jeg er dedikert»).
