@@ -140,6 +140,41 @@ export function gnistStreak(kilder, pilarId, nå = Date.now()) {
   return streakFraDager(pilarDager(kilder, pilarId), nå);
 }
 
+// Bevegelse: minst 150 min moderat aktivitet per FULLFØRT uke (WHO-minimum).
+const UKE_TERSKEL_BEVEGELSE = 150;
+
+/**
+ * Bevegelses-streak med ukesport: en tent dag krever ≥10 min (som ellers), OG
+ * streaken nullstilles hvis en FULLFØRT uke (man–søn) lå under 150 min. Den
+ * inneværende, ufullførte uka gjelder ikke — den kan ikke «feiles» ennå.
+ */
+export function bevegelseStreak(kilder, nå = Date.now()) {
+  const tent = pilarDager(kilder, 'bevegelse');
+  const minPerDag = new Map();
+  for (const o of (kilder.logg || [])) {
+    if (o.slettet) continue;
+    const t = Date.parse(o.dato);
+    if (!Number.isFinite(t)) continue;
+    const d = isoDag(t);
+    minPerDag.set(d, (minPerDag.get(d) || 0) + (o.varighetMin || 0));
+  }
+  const mandagAv = (ts) => { const d = new Date(ts); d.setHours(0, 0, 0, 0); return d.getTime() - ((d.getDay() + 6) % 7) * DAG; };
+  const ukeSum = (mandagTs) => { let s = 0; for (let i = 0; i < 7; i++) s += minPerDag.get(isoDag(mandagTs + i * DAG)) || 0; return s; };
+  const denneMandag = mandagAv(nå);
+
+  let t = nå;
+  if (!tent.has(isoDag(t))) t -= DAG; // nådefrist: dagens gnist kan fortsatt komme
+  let streak = 0;
+  while (tent.has(isoDag(t))) {
+    const mandag = mandagAv(t);
+    // Krysser vi inn i en FULLFØRT uke som lå under 150 min → streaken er brutt.
+    if (mandag < denneMandag && ukeSum(mandag) < UKE_TERSKEL_BEVEGELSE) break;
+    streak += 1;
+    t -= DAG;
+  }
+  return streak;
+}
+
 /** Den blå flammen: sammenhengende blå dager (alle gnistene tent). */
 export function blaaStreak(kilder, nå = Date.now()) {
   return streakFraDager(blaaDager(kilder), nå);
@@ -153,7 +188,8 @@ export function gnistStatus(kilder, nå = Date.now()) {
   const iDag = dagsGnister(kilder, isoDag(nå));
   const pilarer = {};
   for (const p of GNIST_PILARER) {
-    pilarer[p.id] = { streak: gnistStreak(kilder, p.id, nå), iDag: iDag[p.id] };
+    const streak = p.id === 'bevegelse' ? bevegelseStreak(kilder, nå) : gnistStreak(kilder, p.id, nå);
+    pilarer[p.id] = { streak, iDag: iDag[p.id] };
   }
   const alleBlaa = blaaDager(kilder);
   return {
