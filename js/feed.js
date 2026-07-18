@@ -984,10 +984,11 @@ function feedKort(post, vert) {
 }
 
 // Lettvekts «peek» av feeden til dra-gesten (Instagram-stil, hovedapp → feed):
-// topplinja + de første kortene, uten dwell/observers/batch. Bygges fra data
-// som alt er lastet (_feed); er den ikke lastet ennå, blir peeken bare bakgrunn
-// (dra-en virker fortsatt, feeden fylles inn ved neste dra). Ikke-interaktiv —
-// den ekte feeden tegnes når man slipper.
+// topplinje + story-rad + de første kortene, uten dwell/observers/batch. Story-
+// raden må være med (samme struktur som ekte feed: feedpull > story-rad + liste)
+// slik at layouten er identisk — ellers hopper innholdet ned når den ekte feeden
+// tegnes og story-raden dukker opp. Bygges fra data som alt er lastet (_feed);
+// er den ikke lastet ennå, blir peeken bare bakgrunn. Ikke-interaktiv.
 export function byggFeedPeek() {
   const topp = el('div', { class: 'feedtopp' },
     el('span', { class: 'feedtopp__spacer', 'aria-hidden': 'true' }),
@@ -997,8 +998,12 @@ export function byggFeedPeek() {
     el('button', { class: 'ikonknapp ikonknapp--plain feedtopp__tilbake', type: 'button', tabindex: '-1' }, ikon('feed')),
   );
   const scroll = el('div', { class: 'hjem-scroll feedscroll' }, topp);
-  const posts = (_feed?.posts || []).slice(0, 3);
-  if (posts.length) scroll.append(el('div', { class: 'feedliste' }, ...posts.map((p) => feedKort(p, scroll))));
+  const alle = _feed?.posts || [];
+  if (alle.length) {
+    const storyRad = lagStoryRad(alle, scroll, () => {});
+    const liste = el('div', { class: 'feedliste' }, ...alle.slice(0, 3).map((p) => feedKort(p, scroll)));
+    scroll.append(el('div', { class: 'feedpull' }, storyRad, liste));
+  }
   return el('div', { class: 'feedpeek', 'aria-hidden': 'true' }, scroll);
 }
 
