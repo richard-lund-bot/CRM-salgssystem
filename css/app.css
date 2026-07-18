@@ -3562,9 +3562,14 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
    ========================================================================== */
 /* Egen scrollflate uten banner og bakgrunnsbilde — innholdet ER siden.
    Ingen sidepadding: kortene skal ta 100 % av skjermbredden. */
-/* Bunn-clearance: feeden har ingen bunnbar lenger, så siste kort trenger luft
-   over hjemindikatoren/safe-arean (ellers blir bunnen avskåret). */
-.feedscroll { background: var(--bg); padding: calc(env(safe-area-inset-top) + 8px) 0 calc(env(safe-area-inset-bottom) + 24px); }
+.feedscroll { background: var(--bg); padding: calc(env(safe-area-inset-top) + 8px) 0 0; }
+/* Siste post går helt til bunnen av siden: ingen cream-glipe under, firkantet
+   bunn mot skjermkanten. Clearance over hjemindikatoren (safe-area + luft)
+   ligger som innvendig bunn-padding, så innholdet ikke blir avskåret. */
+.feedliste .fkort:last-child {
+  border-bottom-left-radius: 0; border-bottom-right-radius: 0;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 24px);
+}
 .feedscroll__laster { padding: 20px 16px; }
 
 /* Topplinje: kalender · For deg ˅ · bjelle — ligger i scrollflaten og

@@ -3,7 +3,7 @@
 //   - navigasjon/HTML: network-first med cache-fallback (fersk UI når nett finnes)
 //   - data/JS/CSS/ikoner: cache-first (raskt, fungerer offline)
 // Bump CACHE_VERSION for å rulle ut ny cache.
-const CACHE_VERSION = 'takt-m79-5.33.0';
+const CACHE_VERSION = 'takt-m80-5.34.0';
 const SKALL = [
   './',
   './index.html',
