@@ -9,7 +9,7 @@
 // merkene): ingenting lagres, ingenting kan «mistes», og sync trenger aldri
 // noe nytt. Rene funksjoner over `kilder = { logg, matlogg, sosiallogg }` så
 // motoren kan røyk-testes uten nettleser; hentGnistStatus() leser lagrene.
-import { hentLogg } from './store.js';
+import { hentLogg, hentProfil } from './store.js';
 import { lesMatlogg } from './kosthold.js';
 import { lesSosiallogg } from './sosialt.js';
 import { lesRolog } from './ro.js';
@@ -161,6 +161,9 @@ export function bevegelseStreak(kilder, nå = Date.now()) {
   const mandagAv = (ts) => { const d = new Date(ts); d.setHours(0, 0, 0, 0); return d.getTime() - ((d.getDay() + 6) % 7) * DAG; };
   const ukeSum = (mandagTs) => { let s = 0; for (let i = 0; i < 7; i++) s += minPerDag.get(isoDag(mandagTs + i * DAG)) || 0; return s; };
   const denneMandag = mandagAv(nå);
+  // Fripass på registreringsuka: man melder seg gjerne inn midt i uka eller i
+  // helga, så den første, delvise uka skal ikke kunne bryte streaken.
+  const regMandag = kilder.registrert ? mandagAv(kilder.registrert) : -Infinity;
 
   let t = nå;
   if (!tent.has(isoDag(t))) t -= DAG; // nådefrist: dagens gnist kan fortsatt komme
@@ -168,7 +171,8 @@ export function bevegelseStreak(kilder, nå = Date.now()) {
   while (tent.has(isoDag(t))) {
     const mandag = mandagAv(t);
     // Krysser vi inn i en FULLFØRT uke som lå under 150 min → streaken er brutt.
-    if (mandag < denneMandag && ukeSum(mandag) < UKE_TERSKEL_BEVEGELSE) break;
+    // Registreringsuka er fritatt (delvis uke — man melder seg inn midt i uka).
+    if (mandag < denneMandag && mandag !== regMandag && ukeSum(mandag) < UKE_TERSKEL_BEVEGELSE) break;
     streak += 1;
     t -= DAG;
   }
@@ -205,7 +209,8 @@ export function gnistStatus(kilder, nå = Date.now()) {
 
 /** Som gnistStatus, men leser lagrene selv (til skjermene). */
 export function hentGnistStatus(nå = Date.now()) {
-  return gnistStatus({ logg: hentLogg(), matlogg: lesMatlogg(), sosiallogg: lesSosiallogg(), rolog: lesRolog() }, nå);
+  const registrert = Date.parse(hentProfil()?.opprettet || '') || undefined;
+  return gnistStatus({ logg: hentLogg(), matlogg: lesMatlogg(), sosiallogg: lesSosiallogg(), rolog: lesRolog(), registrert }, nå);
 }
 
 /** Tente dager for én pilar (leser lagrene selv). Samme kilde som streaken, så

@@ -4435,6 +4435,11 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .minkort-rad--tre .minkort__tall { font-size: 22px; }
 .minkort-rad--tre .minkort__enhet { font-size: 10.5px; }
 .minkort__cap { font-size: 10.5px; color: var(--dempet); line-height: 1.2; }
+/* Takt-«skygge»: stiplet loddrett linje der du bør være akkurat nå for å nå 150. */
+.minkort__barwrap { position: relative; }
+.minkort__pace { position: absolute; top: -3px; height: 13px; width: 0; margin-left: -1px; left: 0;
+  border-left: 2px dashed color-mix(in srgb, var(--tekst) 52%, transparent);
+  z-index: 2; pointer-events: none; transition: left 0.8s var(--ease-out); }
 .minkort { padding: 15px 16px 13px; display: flex; flex-direction: column; gap: 9px; }
 .minkort__label { font-size: 13px; font-weight: 600; color: var(--tekst); }
 .minkort__verdi { display: flex; align-items: baseline; gap: 6px; }

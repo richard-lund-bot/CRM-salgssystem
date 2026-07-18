@@ -2005,23 +2005,46 @@ function minuttKortRad(profil, logg) {
   const sonIso = isoDato(new Date(man.getTime() + 6 * 86400000));
   const ukeMin = logg.filter((o) => { const d = (o.dato || '').slice(0, 10); return d >= manIso && d <= sonIso; }).reduce((s, o) => s + (o.varighetMin || 0), 0);
 
+  // Takt-linje (pace) for uka: du trenger 1 min trening per 67,2 min klokketid
+  // for å nå 150 på søndag. Den stiplede «skyggen» viser hvor du bør være akkurat
+  // nå — ligger fyllet foran den, er du i forkant.
+  const paceMandag = man.getTime();
+  const paceFrac = () => Math.min(1, Math.max(0, (Date.now() - paceMandag) / (7 * 86400000)));
+
   const tallEls = [];
   const barEls = [];
-  const kort = (label, verdi, mal, cap, klasse) => {
+  const kort = (label, verdi, mal, cap, klasse, pace) => {
     const t = el('b', { class: 'minkort__tall' }, '0');
     const b = el('i', { class: 'minkort__fyll' + (klasse ? ` ${klasse}` : '') });
     tallEls.push([t, verdi]);
     barEls.push([b, Math.min(100, Math.round((verdi / mal) * 100))]);
+    const capEl = el('span', { class: 'minkort__cap' }, cap);
+    let barOmr;
+    if (pace) {
+      const paceEl = el('i', { class: 'minkort__pace', 'aria-hidden': 'true' });
+      barOmr = el('div', { class: 'minkort__barwrap' }, el('div', { class: 'minkort__bar' }, b), paceEl);
+      const settPace = () => {
+        const f = paceFrac();
+        paceEl.style.left = `${(f * 100).toFixed(1)}%`;
+        const skal = Math.round(mal * f);
+        capEl.textContent = verdi >= skal ? 'i forkant av takta' : `${skal - verdi} min bak takta`;
+      };
+      settPace();
+      // Oppdater hvert minutt; rydder seg selv når kortet forsvinner (sidebytte).
+      const iv = setInterval(() => { if (!document.contains(paceEl)) { clearInterval(iv); return; } settPace(); }, 60000);
+    } else {
+      barOmr = el('div', { class: 'minkort__bar' }, b);
+    }
     return el('section', { class: 'kort minkort' },
       el('span', { class: 'minkort__label' }, label),
       el('div', { class: 'minkort__verdi' }, t, el('span', { class: 'minkort__enhet' }, `/ ${mal} min`)),
-      el('div', { class: 'minkort__bar' }, b),
-      el('span', { class: 'minkort__cap' }, cap));
+      barOmr,
+      capEl);
   };
 
   const rad = el('div', { class: 'minkort-rad minkort-rad--tre' },
     kort('I dag', minutter, maal, 'ditt dagsmål'),
-    kort('Denne uka', ukeMin, UKE_MAAL_MIN, 'WHO-minimum'),
+    kort('Denne uka', ukeMin, UKE_MAAL_MIN, 'WHO-minimum', null, true),
     kort('Streak', sVerdi, sMaal, 'holder streaken', 'minkort__fyll--gnist'));
 
   requestAnimationFrame(() => requestAnimationFrame(() => {
