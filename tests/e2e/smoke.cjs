@@ -45,7 +45,7 @@ function sjekk(navn, ok, ekstra = '') {
   if (!ok) feil.push(navn);
 }
 
-const FANER = ['kosthold', 'trening', 'hjem', 'ro', 'sosialt']; // bunnbarens rekkefølge
+const FANER = ['kosthold', 'trening', 'hjem', 'sosialt', 'ro']; // bunnbarens rekkefølge
 
 (async () => {
   const server = lagServer();
@@ -115,8 +115,8 @@ const FANER = ['kosthold', 'trening', 'hjem', 'ro', 'sosialt']; // bunnbarens re
     sjekk(`Fane «${rute}» navigerer + markeres aktiv`, h.startsWith(`#/${rute}`) && aktiv, h);
   }
   sjekk('Alle fanene finnes i baren', (await page.locator('.tabbar__knapp').count()) === FANER.length, `${FANER.length} faner`);
-  // Klassisk bunnbar: Hjem hevet i midten (Mat · Bevegelse · Hjem · Ro ·
-  // Fellesskap), og alle faner med synlig etikett.
+  // Klassisk bunnbar: Hjem hevet i midten (Mat · Bevegelse · Hjem ·
+  // Fellesskap · Ro), og alle faner med synlig etikett.
   sjekk('Hjem står i midten av baren som hevet sirkel',
     await page.locator('.tabbar__knapp:nth-child(3)').evaluate((n) => n.dataset.rute === 'hjem' && n.classList.contains('tabbar__knapp--stor')));
   sjekk('Fanene har synlige etiketter', (await page.locator('.tabbar__tekst').count()) === FANER.length);

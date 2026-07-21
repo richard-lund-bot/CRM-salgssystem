@@ -109,8 +109,8 @@ async function dra(page, xs, x2, y = 400) {
   await page.waitForTimeout(500);
   sjekk('Vertikal dra navigerer IKKE', (await hash()) === '#/hjem', await hash());
 
-  // 4) Strip-sveip mellom bunnbar-sidene (Mat ← Bevegelse ← Hjem ← Ro ←
-  //    Fellesskap). Sveip på et ikke-scrollende område (y=200).
+  // 4) Strip-sveip mellom bunnbar-sidene (Mat ← Bevegelse ← Hjem ←
+  //    Fellesskap ← Ro). Sveip på et ikke-scrollende område (y=200).
   const sveip = async (rute, xs, x2) => {
     await page.goto(`${BASE}/#/${rute}`);
     await page.reload();
@@ -125,10 +125,10 @@ async function dra(page, xs, x2, y = 400) {
     }, { xs, x2 });
     await page.waitForTimeout(700);
   };
-  await sveip('hjem', 350, 40); sjekk('Hjem → sveip venstre → Ro', (await hash()) === '#/ro', await hash());
+  await sveip('hjem', 350, 40); sjekk('Hjem → sveip venstre → Fellesskap', (await hash()) === '#/sosialt', await hash());
   await sveip('trening', 350, 40); sjekk('Bevegelse → sveip venstre → Hjem', (await hash()) === '#/hjem', await hash());
   await sveip('trening', 40, 350); sjekk('Bevegelse → sveip høyre → Mat', (await hash()) === '#/kosthold', await hash());
-  await sveip('sosialt', 40, 350); sjekk('Fellesskap → sveip høyre → Ro', (await hash()) === '#/ro', await hash());
+  await sveip('sosialt', 40, 350); sjekk('Fellesskap → sveip høyre → Hjem', (await hash()) === '#/hjem', await hash());
   await sveip('kosthold', 40, 350); sjekk('Mat → sveip høyre → blir stående (ytterst)', (await hash()) === '#/kosthold', await hash());
   await sveip('feed', 350, 40); sjekk('Feed (direkte lenke) sveiper ikke — ute av stripa', (await hash()) === '#/feed', await hash());
 

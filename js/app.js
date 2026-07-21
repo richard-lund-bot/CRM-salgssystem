@@ -153,7 +153,7 @@ const AUTH_RUTER = new Set(['logg-inn', 'bli-medlem']);
 // (nås fra tannhjulet/bjella), lyser ingen fane og huskes aldri som fane-mål —
 // ellers ville f.eks. Profil-fanen «låst» seg til Varsler.
 // Bunnlinja = Hjem (Takt) i midten som hevet sirkel, med pilar-modulene rundt:
-// Mat · Bevegelse · Hjem · Ro · Fellesskap.
+// Mat · Bevegelse · Hjem · Fellesskap · Ro.
 // Profil (#/merker) og Lær (#/laer) er IKKE bunnfaner lenger — de er egne sider
 // som nås fra meny-huben (tannhjulet) på samme måte som Innstillinger/Varsler.
 const FANER_DEF = [
@@ -165,10 +165,10 @@ const FANER_DEF = [
     barn: ['beveg', 'ny', 'okter'] },
   { id: 'hjem', rute: 'hjem', ikon: 'hjem', fyll: 'hjemfyll', label: 'Hjem',
     barn: ['feed', 'post'] }, // feeden (dagens feed) + innleggsside hører til Hjem
-  { id: 'ro', rute: 'ro', ikon: 'maane', fyll: null, label: 'Ro',
-    barn: ['rofremgang'] },
   { id: 'sosialt', rute: 'sosialt', ikon: 'personer', fyll: null, label: 'Fellesskap',
     barn: ['krets', 'fremgang', 'moteplasser'] },
+  { id: 'ro', rute: 'ro', ikon: 'maane', fyll: null, label: 'Ro',
+    barn: ['rofremgang'] },
 ];
 const FANER = FANER_DEF.map((f) => f.id);
 // Under-rute → eier-fane, utledet av barn-listene.
@@ -520,14 +520,14 @@ function visHjemDashboard(mount) {
 }
 
 // Sveip mellom hovedsidene (Instagram-stil), montert én gang på #app. Stripa
-// følger bunnbarens rekkefølge (Mat ← Bevegelse ← Hjem ← Ro ← Fellesskap): en
+// følger bunnbarens rekkefølge (Mat ← Bevegelse ← Hjem ← Fellesskap ← Ro): en
 // horisontal dra mot HØYRE går ett hakk til venstre i stripa, mot VENSTRE ett
 // hakk til høyre. Byttene glir over med rute-slide når du slipper forbi
 // terskelen. Vi eier den horisontale gesten (preventDefault) så nettleserens
 // tilbake-sveip ikke slår inn — det er «tilbake-bug-en» som oppsto fordi appen
 // kjører som nettside. Med feeden synlig (VIS_FEED) ligger den ytterst til
 // venstre og dras inn med en peek (feeden er «kameraet»).
-const SVEIP_STRIP = [...(VIS_FEED ? ['feed'] : []), 'kosthold', 'trening', 'hjem', 'ro', 'sosialt'];
+const SVEIP_STRIP = [...(VIS_FEED ? ['feed'] : []), 'kosthold', 'trening', 'hjem', 'sosialt', 'ro'];
 // Logo-ordet i den faste hovedtoppen per hovedside (feed har ingen hovedtopp).
 const LOGO_FOR_RUTE = { hjem: APP_NAME.toLowerCase(), kosthold: 'mat', trening: 'bevegelse', ro: 'ro', sosialt: 'fellesskap' };
 // Render-funksjon per hovedside (til dra-peeken). Feeden har sin egen (byggFeedPeek).
