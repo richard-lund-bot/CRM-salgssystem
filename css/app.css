@@ -100,7 +100,7 @@
   --fare: var(--terrakotta);
   --radius: var(--radius-lg);
   --skygge: var(--shadow-sm);
-  --tabbar-h: 88px; /* hele bunnbarens høyde (12 + ikon/etikett-knapp 52 + 24) */
+  --tabbar-h: 84px; /* hele bunnbarens høyde (8 + ikon/etikett-knapp 52 + 24) */
   /* iOS 26-spøkelses-chromen (se settOppViewportVakt i js/app.js): --vp-gap
      og --safe-bunn-kjent settes av vakta og brukes i dag kun som diagnostikk
      (Vindusmål på Om-siden) — baren er konstant høy uten safe-area-polstring,
@@ -1293,10 +1293,10 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
      bottom: 0; html.vp-kort farger i stedet lerretet under i barens farge,
      så stripen ned til den fysiske bunnkanten ser ut som en del av baren. */
   bottom: 0;
-  /* 12/24px + knappens 6px gir 18px luft over ikonet og 30px under
+  /* 8/24px + knappens 6px gir 14px luft over ikonet og 30px under
      etiketten. Ingen safe-area-polstring — baren står helt nede ved den
      fysiske bunnkanten og hjem-indikatoren flyter over barflaten. */
-  padding: 12px 8px 24px;
+  padding: 8px 8px 24px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   align-items: center;
