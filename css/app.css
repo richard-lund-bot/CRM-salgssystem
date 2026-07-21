@@ -511,11 +511,11 @@ body.sideglir { overflow: hidden; }
 .kompasshero { position: relative; z-index: 1; display: block; text-decoration: none; color: inherit; }
 /* Fast plass til to tekstlinjer uansett budskap (0/1/2 linjer) — hero-høyden
    skal være identisk på tvers av pilar-sidene og fra dag til dag. Én linje
-   ankres nederst, mot deleren. */
+   sentreres vertikalt i feltet. */
 .kompasshero__setning {
   margin: 6px auto 0; max-width: 30em;
   line-height: 1.45; min-height: 2.9em;
-  display: grid; align-content: end;
+  display: grid; align-content: center;
 }
 .kompasshero__deler { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 14px; color: rgba(255,255,255,0.9); }
 .kompasshero__strek { flex: 0 0 auto; width: 42px; height: 1px; background: rgba(255,255,255,0.45); }
