@@ -586,6 +586,48 @@ function byggSidePeek(rute) {
   return wrap;
 }
 
+// --- Logo-toning i den faste headeren (delt mellom sveip og fanetrykk) -----
+// «Fade-through» i takt med draget (fane→fane): det gamle ordet er tonet HELT
+// ut idet draget når terskelen (~30 %, samme punkt som fullfører
+// navigasjonen), og det nye er helt inne ved ~60 %. Slik synes byttet i selve
+// bevegelsen, uten at to ord ligger grøtete oppå hverandre. Ved slipp (eller
+// ved fanetrykk-glid) fullfører toningen som transisjon i samme glid som
+// sidene. Feed-drag trenger det ikke: feed-peeken dekker headeren.
+const DRA_TERSKEL = 0.3; // samme som fullfør-terskelen i sveipens slutt()
+function startLogoDra(målLogo) {
+  const boks = document.querySelector('.hjemtopp--fast:not(.hjemtopp--skjult) .hjemtopp__logoboks');
+  const gammel = boks?.querySelector('.hjemtopp__logo:not(.hjemtopp__logo--ut)');
+  if (!boks || !gammel || !målLogo || gammel.dataset.logo === målLogo) return null;
+  boks.querySelectorAll('.hjemtopp__logo').forEach((n) => { if (n !== gammel) n.remove(); }); // evt. rester fra tap-bytte/avbrutt dra
+  const ny = lagHovedtoppLogo(målLogo);
+  // --dra: eget kompositor-lag (will-change) så opasiteten glir jevnt
+  // uten tekst-repaint per frame.
+  gammel.classList.add('hjemtopp__logo--dra'); ny.classList.add('hjemtopp__logo--dra');
+  gammel.style.transition = 'none'; ny.style.transition = 'none'; ny.style.opacity = '0';
+  boks.append(ny);
+  return { gammel, ny };
+}
+function settLogoDra(h, p) {
+  if (!h) return;
+  h.gammel.style.opacity = String(Math.max(0, 1 - p / DRA_TERSKEL));
+  h.ny.style.opacity = String(Math.min(1, Math.max(0, (p - DRA_TERSKEL) / DRA_TERSKEL)));
+}
+function slippLogoDra(h, fullfor) {
+  if (!h) return;
+  const tr = REDUSERT() ? 'none' : 'opacity 0.36s var(--ease-out)';
+  h.gammel.style.transition = tr; h.ny.style.transition = tr;
+  void h.ny.offsetWidth; // reflow så transisjonen gjelder fra dra-verdien
+  h.gammel.style.opacity = fullfor ? '0' : '1';
+  h.ny.style.opacity = fullfor ? '1' : '0';
+}
+function ferdigLogoDra(h, fullfor) {
+  if (!h) return;
+  const igjen = fullfor ? h.ny : h.gammel;
+  (fullfor ? h.gammel : h.ny).remove();
+  igjen.removeAttribute('style');
+  igjen.classList.remove('hjemtopp__logo--dra');
+}
+
 // Instagram-stil drag mellom hovedsidene, montert én gang på #app. Stripa
 // følger bunnbarens rekkefølge. En horisontal dra FØLGER fingeren: gjeldende
 // side skyves til side mens nabosiden (en peek) dras inn fra motsatt kant.
@@ -613,49 +655,7 @@ function settOppSideSveip() {
 
   let sx = null; let sy = null; let retning = null; let aktiv = false; let hoppOver = false;
   let peek = null; let mål = null; let dir = 0; let feedInne = false; let barFolgerPeek = false;
-
-  // Logo-toning i takt med draget (fane→fane): «fade-through» — det gamle
-  // ordet er tonet HELT ut idet draget når terskelen (~30 %, samme punkt som
-  // fullfører navigasjonen), og det nye er helt inne ved ~60 %. Slik synes
-  // byttet i selve bevegelsen, uten at to ord ligger grøtete oppå hverandre,
-  // og terskelen kjennes som «vippepunktet» også visuelt. Ved slipp fullfører
-  // (eller reverserer) toningen i samme glid som resten. Feed-drag trenger
-  // det ikke: feed-peeken dekker headeren / bærer sin egen kopi.
-  const DRA_TERSKEL = 0.3; // samme som fullfør-terskelen i slutt()
   let logoDra = null;
-  const startLogoDra = (målLogo) => {
-    const boks = document.querySelector('.hjemtopp--fast:not(.hjemtopp--skjult) .hjemtopp__logoboks');
-    const gammel = boks?.querySelector('.hjemtopp__logo:not(.hjemtopp__logo--ut)');
-    if (!boks || !gammel || !målLogo || gammel.dataset.logo === målLogo) return null;
-    boks.querySelectorAll('.hjemtopp__logo').forEach((n) => { if (n !== gammel) n.remove(); }); // evt. rester fra tap-bytte/avbrutt dra
-    const ny = lagHovedtoppLogo(målLogo);
-    // --dra: eget kompositor-lag (will-change) så opasiteten glir jevnt
-    // uten tekst-repaint per frame.
-    gammel.classList.add('hjemtopp__logo--dra'); ny.classList.add('hjemtopp__logo--dra');
-    gammel.style.transition = 'none'; ny.style.transition = 'none'; ny.style.opacity = '0';
-    boks.append(ny);
-    return { gammel, ny };
-  };
-  const settLogoDra = (p) => {
-    if (!logoDra) return;
-    logoDra.gammel.style.opacity = String(Math.max(0, 1 - p / DRA_TERSKEL));
-    logoDra.ny.style.opacity = String(Math.min(1, Math.max(0, (p - DRA_TERSKEL) / DRA_TERSKEL)));
-  };
-  const slippLogoDra = (h, fullfor) => {
-    if (!h) return;
-    const tr = REDUSERT() ? 'none' : 'opacity 0.36s var(--ease-out)';
-    h.gammel.style.transition = tr; h.ny.style.transition = tr;
-    void h.ny.offsetWidth; // reflow så transisjonen gjelder fra dra-verdien
-    h.gammel.style.opacity = fullfor ? '0' : '1';
-    h.ny.style.opacity = fullfor ? '1' : '0';
-  };
-  const ferdigLogoDra = (h, fullfor) => {
-    if (!h) return;
-    const igjen = fullfor ? h.ny : h.gammel;
-    (fullfor ? h.gammel : h.ny).remove();
-    igjen.removeAttribute('style');
-    igjen.classList.remove('hjemtopp__logo--dra');
-  };
 
   const settPos = (dxRaw) => {
     const W = bredde();
@@ -667,7 +667,7 @@ function settOppSideSveip() {
       // med peeken (feed→Hjem — da må baren vises mens den glir inn).
       const bar = tabbar(); if (bar) bar.style.transform = `translateX(${barFolgerPeek ? (dx - dir * W) : dx}px)`;
     }
-    settLogoDra(Math.min(1, Math.abs(dx) / W)); // logoen toner i takt med draget
+    settLogoDra(logoDra, Math.min(1, Math.abs(dx) / W)); // logoen toner i takt med draget
   };
   const rensTransform = () => {
     app.style.transition = ''; app.style.transform = '';
@@ -757,6 +757,59 @@ function settOppSideSveip() {
   };
   app.addEventListener('touchend', slutt, { passive: true });
   app.addEventListener('touchcancel', slutt, { passive: true });
+}
+
+// Fanetrykk mellom hovedsidene glir med SAMME løp som et fullført sveip: mål-
+// siden bygges som peek og glir inn over den gamle mens logoen toner i takt,
+// og den tunge sidetegningen skjer først ETTER animasjonen, skjult bak peeken.
+// Det er derfor sveipen alltid er glatt — hovedtråden er ledig mens det
+// animerer — og fanetrykkene får nå nøyaktig samme garanti. (Å tegne først og
+// animere etterpå hakket uansett: bildedekoding, async-seksjoner og synk
+// lander alltid i frames-ene rett etter en tegning.)
+let _faneGlir = false;
+function spillFaneBytte(målHref) {
+  if (_faneGlir) return true; // sluk trykk midt i en pågående glid
+  if (REDUSERT()) return false;
+  const cur = (location.hash.replace('#/', '') || 'hjem').split('?')[0];
+  const målRute = målHref.replace('#/', '').split('?')[0];
+  // Bare rene hovedsider kan bygges som peek; dyplenkede fane-minner (f.eks.
+  // en oppskrift) navigerer vanlig i stedet.
+  if (!SIDE_RENDER[målRute]) return false;
+  const fra = SVEIP_STRIP.indexOf(faneForRute(cur));
+  const til = SVEIP_STRIP.indexOf(målRute);
+  if (fra < 0 || til < 0 || fra === til) return false;
+  const dir = til > fra ? -1 : 1; // mål til høyre i stripa → sidene glir mot venstre
+  let peek;
+  try { peek = byggSidePeek(målRute); } catch { return false; }
+  _faneGlir = true;
+  oppdaterNav(målRute); // aktiv fane lyser med en gang
+  const startHash = location.hash;
+  const W = window.innerWidth || document.documentElement.clientWidth;
+  peek.style.transform = `translateX(${-dir * W}px)`;
+  document.body.appendChild(peek);
+  document.body.classList.add('sideglir');
+  const hLogo = startLogoDra(LOGO_FOR_RUTE[målRute]);
+  const tr = 'transform 0.36s var(--ease-out)';
+  requestAnimationFrame(() => {
+    app.style.transition = tr; peek.style.transition = tr;
+    app.style.transform = `translateX(${dir * W}px)`;
+    peek.style.transform = 'translateX(0)';
+    slippLogoDra(hLogo, true); // toningen fullfører i samme glid som sidene
+  });
+  const rydd = () => { peek.remove(); document.body.classList.remove('sideglir'); _faneGlir = false; };
+  setTimeout(() => {
+    // Peeken dekker mål-siden. Nullstill #app FØR navigasjon, så den ekte
+    // siden tegnes på plass (translateX 0) under peeken; fjern peeken etter.
+    ferdigLogoDra(hLogo, true); // én logo igjen FØR settHovedtopp sammenligner
+    app.style.transition = ''; app.style.transform = '';
+    // Tok en annen navigasjon (lenke/sveip/tilbake) over midt i gliden, skal
+    // vi IKKE dra brukeren tilbake hit — rydd stille og gi opp committen.
+    if (location.hash !== startHash) { rydd(); oppdaterNav((location.hash.replace('#/', '') || 'hjem').split('?')[0]); return; }
+    _droppSlide = true; // peeken viste alt siden glidende inn
+    location.hash = målHref;
+    setTimeout(rydd, 130);
+  }, 370);
+  return true;
 }
 
 // «Brace» som samler de fire pilarene ned mot i-takt-oppsummeringen. Én tynn
@@ -4063,18 +4116,23 @@ function byggTabbar() {
 
 // Trykk på fanen man ALLEREDE står i → tilbakestill fanen til førstesiden
 // (rot), scroll til topp, spill reload-animasjonen (samme spinner som pull-to-
-// refresh på Min dag) og last innholdet på nytt. Et trykk på en ANNEN fane
-// beholder per-fane-minnet (går dit man var). Vi lytter i fangst-fasen så vi
-// rekker å avbryte hash-navigasjonen før den skjer.
+// refresh på Min dag) og last innholdet på nytt. Trykk på en ANNEN fane glir
+// dit med sveipens peek-løp (spillFaneBytte) der det lar seg gjøre — ellers
+// vanlig hash-navigasjon (dyplenkede fane-minner, redusert bevegelse). Vi
+// lytter i fangst-fasen så vi rekker å avbryte hash-navigasjonen.
 function settOppReTapp(nav) {
   nav.addEventListener('click', (ev) => {
     const knapp = ev.target.closest('.tabbar__knapp');
     if (!knapp) return;
     const tab = knapp.dataset.rute;
     const naaRute = (location.hash.replace('#/', '') || 'hjem').split('?')[0];
-    if (faneForRute(naaRute) !== tab) return; // annen fane → vanlig navigasjon
-    ev.preventDefault();
-    refreshFane(tab);
+    if (faneForRute(naaRute) === tab) {
+      ev.preventDefault();
+      refreshFane(tab);
+      return;
+    }
+    const href = knapp.getAttribute('href') || `#/${tab}`;
+    if (spillFaneBytte(href)) ev.preventDefault();
   }, true);
 }
 

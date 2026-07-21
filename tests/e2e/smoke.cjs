@@ -106,10 +106,12 @@ const FANER = ['kosthold', 'trening', 'hjem', 'sosialt', 'ro']; // bunnbarens re
 
   // --- 4) Tab-navigasjon over alle FANER (data-rute, ikke etikett) ------------
   // Naviger i en rekkefølge der hvert trykk er en ANNEN fane (unngår re-tap-
-  // reload), og bekreft rute + aktiv-markering.
+  // reload), og bekreft rute + aktiv-markering. Fanetrykk glir dit med
+  // sveipens peek-løp (~370ms før hash committes) — vent på hash-byttet.
   for (const rute of ['kosthold', 'trening', 'ro', 'sosialt', 'hjem']) {
     await page.click(`.tabbar__knapp[data-rute="${rute}"]`);
-    await page.waitForTimeout(250);
+    await page.waitForFunction((r) => location.hash.startsWith(`#/${r}`), rute, { timeout: 8000 }).catch(() => {});
+    await page.waitForTimeout(300); // la peek-opprydding + tegning sette seg
     const h = await hash();
     const aktiv = await page.locator(`.tabbar__knapp[data-rute="${rute}"]`).evaluate((n) => n.classList.contains('tabbar__knapp--aktiv'));
     sjekk(`Fane «${rute}» navigerer + markeres aktiv`, h.startsWith(`#/${rute}`) && aktiv, h);
@@ -165,6 +167,10 @@ const FANER = ['kosthold', 'trening', 'hjem', 'sosialt', 'ro']; // bunnbarens re
 
   // --- 4b) Fellesskap-pilaren: hjem-flate + krets-underside ------------------
   await page.click('.tabbar__knapp[data-rute="sosialt"]');
+  // Fanetrykk glir dit (~370ms) — vent på commit så peek-kopien er ryddet før
+  // tellingene under (peeken inneholder de samme elementene).
+  await page.waitForFunction(() => location.hash.startsWith('#/sosialt'), null, { timeout: 8000 }).catch(() => {});
+  await page.waitForTimeout(300);
   await page.waitForSelector('.kontaktgrid', { timeout: 20000 });
   sjekk('Fellesskap viser logg-brikkene', (await page.locator('.kontaktchip').count()) === 4);
   sjekk('Fellesskap viser streak-stripa', (await page.locator('.ukestreak').count()) > 0);
