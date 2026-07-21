@@ -447,10 +447,10 @@ body {
 .hjemtopp__logoboks { position: relative; display: grid; justify-items: center; align-items: center; }
 .hjemtopp__logoboks .hjemtopp__logo { grid-area: 1 / 1; }
 .hjemtopp__logo--dra { will-change: opacity; }
-.hjemtopp__logo--ut { animation: hjemlogo-ut 0.22s ease forwards; will-change: opacity; }
-.hjemtopp__logo--inn { animation: hjemlogo-inn 0.26s ease 0.1s backwards; will-change: opacity; }
-@keyframes hjemlogo-ut { to { opacity: 0; } }
-@keyframes hjemlogo-inn { from { opacity: 0; } }
+/* --ut er nå kun en markør for den utgående logoen (settHovedtopp/startLogoDra
+   velger levende logo via :not(--ut)) — selve toningen drives som transisjon
+   i JS, samme oppskrift for fanetrykk og sveip. */
+.hjemtopp__logo--ut { will-change: opacity; }
 /* Venstre gruppe (tannhjul, evt. feed) og høyre gruppe (profil + varsler).
    Sidene deler restbredden likt (flex: 1) så wordmarket står sentrert selv om
    gruppene har ulikt antall ikoner. */

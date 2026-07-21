@@ -382,13 +382,31 @@ function settHovedtopp(logoTekst) {
     if (gjeldende && gjeldende.dataset.logo !== logoTekst) {
       const ny = lagHovedtoppLogo(logoTekst);
       boks.querySelectorAll('.hjemtopp__logo--ut').forEach((n) => n.remove()); // maks én utgående om gangen
-      if (REDUSERT()) gjeldende.remove();
-      else {
-        gjeldende.classList.add('hjemtopp__logo--ut');
-        ny.classList.add('hjemtopp__logo--inn');
-        setTimeout(() => gjeldende.remove(), 400);
+      if (REDUSERT()) {
+        gjeldende.replaceWith(ny);
+      } else {
+        // Krysstoning som kompositor-TRANSISJON — samme oppskrift som sveipe-
+        // slippet (slippLogoDra), og derfor like glatt: begge logoene får eget
+        // lag (--dra/will-change), og begge endepunktene committes FØR den
+        // tunge sidetegningen blokkerer hovedtråden, så kompositoren kjører
+        // toningen videre upåvirket. De gamle CSS-animasjonene hakket ved
+        // fanetrykk: innkommende logo hadde 0,1s delay og rakk aldri å starte
+        // før blokken — da fantes ingenting å kjøre videre på.
+        gjeldende.classList.add('hjemtopp__logo--ut', 'hjemtopp__logo--dra');
+        ny.classList.add('hjemtopp__logo--dra');
+        gjeldende.style.transition = 'none'; ny.style.transition = 'none';
+        ny.style.opacity = '0';
+        boks.append(ny);
+        void ny.offsetWidth; // committ startverdiene før transisjonen slås på
+        const tr = 'opacity 0.36s var(--ease-out)';
+        gjeldende.style.transition = tr; ny.style.transition = tr;
+        gjeldende.style.opacity = '0'; ny.style.opacity = '1';
+        setTimeout(() => {
+          gjeldende.remove();
+          ny.removeAttribute('style');
+          ny.classList.remove('hjemtopp__logo--dra');
+        }, 400);
       }
-      boks.append(ny);
     }
   }
   fast.classList.remove('hjemtopp--skjult');
