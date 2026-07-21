@@ -376,13 +376,13 @@ function spillLogoFade() {
   if (!par || !par.ny.isConnected) return;
   const { gammel, ny } = par;
   void ny.offsetWidth; // committ startverdiene før transisjonen slås på
-  const tr = 'opacity 0.36s var(--ease-out)';
+  const tr = `opacity ${GLID_S} var(--ease-out)`;
   if (gammel.isConnected) { gammel.style.transition = tr; gammel.style.opacity = '0'; }
   ny.style.transition = tr; ny.style.opacity = '1';
   setTimeout(() => {
     gammel.remove();
     if (ny.isConnected) { ny.removeAttribute('style'); ny.classList.remove('hjemtopp__logo--dra'); }
-  }, 400);
+  }, GLID_MS + 40);
 }
 function settHovedtopp(logoTekst) {
   _hovedtoppAktiv = true;
@@ -586,6 +586,11 @@ function byggSidePeek(rute) {
   return wrap;
 }
 
+// Felles tempo for side-glidene (sveip-slipp, fanetrykk og logo-toningen som
+// følger dem) — én konstant så alt beveger seg i samme rolige takt.
+const GLID_MS = 520;
+const GLID_S = `${GLID_MS / 1000}s`;
+
 // --- Logo-toning i den faste headeren (delt mellom sveip og fanetrykk) -----
 // «Fade-through» i takt med draget (fane→fane): det gamle ordet er tonet HELT
 // ut idet draget når terskelen (~30 %, samme punkt som fullfører
@@ -614,7 +619,7 @@ function settLogoDra(h, p) {
 }
 function slippLogoDra(h, fullfor) {
   if (!h) return;
-  const tr = REDUSERT() ? 'none' : 'opacity 0.36s var(--ease-out)';
+  const tr = REDUSERT() ? 'none' : `opacity ${GLID_S} var(--ease-out)`;
   h.gammel.style.transition = tr; h.ny.style.transition = tr;
   void h.ny.offsetWidth; // reflow så transisjonen gjelder fra dra-verdien
   h.gammel.style.opacity = fullfor ? '0' : '1';
@@ -677,7 +682,7 @@ function settOppSideSveip() {
   const rydd = () => { peek?.remove(); peek = null; rensTransform(); };
   const animer = (fullfor) => {
     const W = bredde();
-    const tr = 'transform 0.36s var(--ease-out)';
+    const tr = `transform ${GLID_S} var(--ease-out)`;
     app.style.transition = tr;
     if (peek) peek.style.transition = tr;
     const bar = tabbar();
@@ -697,12 +702,12 @@ function settOppSideSveip() {
         _droppSlide = true;               // peeken viste alt siden glidende inn
         location.hash = '#/' + mål;
         setTimeout(() => { peek?.remove(); peek = null; rensTransform(); }, 130);
-      }, 360);
+      }, GLID_MS);
     } else {
       app.style.transform = 'translateX(0)';
       if (peek) peek.style.transform = `translateX(${-dir * W}px)`;
       if (bar && feedInne) bar.style.transform = `translateX(${barFolgerPeek ? -dir * W : 0}px)`;
-      setTimeout(() => { ferdigLogoDra(hLogo, false); rydd(); }, 360);
+      setTimeout(() => { ferdigLogoDra(hLogo, false); rydd(); }, GLID_MS);
     }
   };
 
@@ -789,7 +794,7 @@ function spillFaneBytte(målHref) {
   document.body.appendChild(peek);
   document.body.classList.add('sideglir');
   const hLogo = startLogoDra(LOGO_FOR_RUTE[målRute]);
-  const tr = 'transform 0.36s var(--ease-out)';
+  const tr = `transform ${GLID_S} var(--ease-out)`;
   requestAnimationFrame(() => {
     app.style.transition = tr; peek.style.transition = tr;
     app.style.transform = `translateX(${dir * W}px)`;
@@ -808,7 +813,7 @@ function spillFaneBytte(målHref) {
     _droppSlide = true; // peeken viste alt siden glidende inn
     location.hash = målHref;
     setTimeout(rydd, 130);
-  }, 370);
+  }, GLID_MS + 10);
   return true;
 }
 
