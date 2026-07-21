@@ -3083,16 +3083,17 @@ function visMeny() {
 // «akkurat nå», ukens refleksjon og full kontroll (rediger/pause/slett).
 // Retning, ikke press. Personlig, ikke påtrengende.
 // ===========================================================================
-// Kompasset i pilar-heroene — vises bare når budskapsmotoren har noe relevant
-// å si (dimensjons-, tone- og frekvensstyrt). Setningen skrives i samme stil
-// som taglinen på Hjem («Fire gode valg. Én dag i takt.»), og kompasset står
-// som en sentrert deler mellom setningen og streak-stripa under. Har ikke
-// appen et godt budskap, vises ingenting: tomt fragment i stedet for fyll.
+// Kompasset i pilar-heroene. Setningen skrives i samme stil som taglinen på
+// Hjem («Fire gode valg. Én dag i takt.»), og kompasset står som en sentrert
+// deler mellom setningen og streak-stripa under. Blokken tegnes ALLTID med
+// plass til to tekstlinjer (CSS-min-høyde på setningen), også når budskaps-
+// motoren er stille — ellers hopper hero-høyden mellom pilar-sidene alt etter
+// om budskapet er borte, én eller to linjer langt. Stille dager viser bare
+// deleren over et rolig, tomt felt.
 function kompassBudKort(modul) {
   const bud = kompassBudskap(modul);
-  if (!bud) return document.createDocumentFragment();
-  return el('a', { class: 'kompasshero', href: '#/mening', 'aria-label': 'Mitt kompass' },
-    el('p', { class: 'hjemdash__under kompasshero__setning' }, bud.tekst),
+  return el('a', { class: 'kompasshero' + (bud ? '' : ' kompasshero--stille'), href: '#/mening', 'aria-label': 'Mitt kompass' },
+    el('p', { class: 'hjemdash__under kompasshero__setning' }, bud ? bud.tekst : ''),
     el('span', { class: 'kompasshero__deler', 'aria-hidden': 'true' },
       el('i', { class: 'kompasshero__strek' }),
       ikon('kompass', 'ikon kompasshero__ikon'),

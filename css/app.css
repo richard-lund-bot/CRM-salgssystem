@@ -509,7 +509,14 @@ body.sideglir { overflow: hidden; }
    («Fire gode valg. Én dag i takt.»), og kompasset som en sentrert deler —
    tynn strek · kompass · tynn strek — mellom setningen og streak-stripa. */
 .kompasshero { position: relative; z-index: 1; display: block; text-decoration: none; color: inherit; }
-.kompasshero__setning { margin: 6px auto 0; max-width: 30em; }
+/* Fast plass til to tekstlinjer uansett budskap (0/1/2 linjer) — hero-høyden
+   skal være identisk på tvers av pilar-sidene og fra dag til dag. Én linje
+   ankres nederst, mot deleren. */
+.kompasshero__setning {
+  margin: 6px auto 0; max-width: 30em;
+  line-height: 1.45; min-height: 2.9em;
+  display: grid; align-content: end;
+}
 .kompasshero__deler { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 14px; color: rgba(255,255,255,0.9); }
 .kompasshero__strek { flex: 0 0 auto; width: 42px; height: 1px; background: rgba(255,255,255,0.45); }
 .kompasshero__ikon { width: 18px; height: 18px; flex: 0 0 auto; filter: drop-shadow(0 1px 6px rgba(20,28,20,0.4)); }
