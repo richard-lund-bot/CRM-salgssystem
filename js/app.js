@@ -277,22 +277,24 @@ function navger() {
       }, { once: true });
     }
   };
-  // Sidebytte er ellers umiddelbart — det eneste som beveger seg er
-  // feed/varsler-panelene og logo-krysstoningen i den faste headeren.
-  // Fanetrykk mellom hovedsider (ingen slide): aktiv-markeringen og
-  // logo-toningen kickes FØR den tunge sidetegningen, som utsettes to frames —
-  // første frame maler animasjonsstarten (composited), så lander innholdsbyttet
-  // mens logoen toner. Ellers blokkerer tegningen hovedtråden akkurat idet
-  // animasjonen skulle startet, og logoen «hakker». Token-vakten dropper en
-  // ventende tegning hvis en nyere navigasjon har rukket å ta over.
+  // Sidebytte er umiddelbart — det eneste som beveger seg er feed/varsler-
+  // panelene og logo-krysstoningen i den faste headeren. Toningen spilles
+  // ETTER at den nye sidens første frame er malt: settHovedtopp forbereder
+  // bare paret (ny logo ligger usynlig) mens _logoFadeUtsatt står på, den
+  // tunge tegningen får blokkere hovedtråden ferdig, og først to frames
+  // senere ruller toningen — på en rolig hovedtråd, akkurat som ved sveip
+  // (der tegningen skjer etter animasjonen, bak peeken). Å starte toningen
+  // FØR tegningen (uansett teknikk) hakket: blokken traff alltid midt i.
+  // Token-vakten dropper avspillingen hvis en nyere navigasjon tar over.
   const minTegn = ++_tegnNr;
+  _logoFadeUtsatt = true;
   if (byttet && !slideKlasse && LOGO_FOR_RUTE[rute] && !REDUSERT()) {
     oppdaterNav(rute);
-    settHovedtopp(LOGO_FOR_RUTE[rute]);
-    requestAnimationFrame(() => requestAnimationFrame(() => { if (minTegn === _tegnNr) tegn(); }));
-  } else {
-    tegn();
+    settHovedtopp(LOGO_FOR_RUTE[rute]); // forbered paret før tegningen
   }
+  tegn();
+  _logoFadeUtsatt = false;
+  requestAnimationFrame(() => requestAnimationFrame(() => { if (minTegn === _tegnNr) spillLogoFade(); }));
   forrigeHash = location.hash;
   // Sidetegningen kan ha endret lås-tilstanden (fane-/dash-laast) — la
   // viewport-vakta måle på nytt (og evt. dytte) med ferske kroppsklasser.
@@ -362,6 +364,26 @@ function byggHovedtopp(logoTekst, klasse = '') {
 // teksten byttet (pilar → pilar). Kalles av sidene under tegning; ruteren
 // skjuler headeren igjen for ruter som ikke ba om den i samme tegning.
 let _hovedtoppAktiv = false;
+// Krysstoningens avspilling er skilt fra forberedelsen: settHovedtopp legger
+// den nye logoen usynlig oppå (paret lagres her), og spillLogoFade ruller
+// transisjonen — enten straks, eller (ved navigasjon) først etter at den nye
+// sidens første frame er malt, så toningen aldri hakkes av sidetegningen.
+let _logoFadeUtsatt = false;
+let _ventendeLogoFade = null;
+function spillLogoFade() {
+  const par = _ventendeLogoFade;
+  _ventendeLogoFade = null;
+  if (!par || !par.ny.isConnected) return;
+  const { gammel, ny } = par;
+  void ny.offsetWidth; // committ startverdiene før transisjonen slås på
+  const tr = 'opacity 0.36s var(--ease-out)';
+  if (gammel.isConnected) { gammel.style.transition = tr; gammel.style.opacity = '0'; }
+  ny.style.transition = tr; ny.style.opacity = '1';
+  setTimeout(() => {
+    gammel.remove();
+    if (ny.isConnected) { ny.removeAttribute('style'); ny.classList.remove('hjemtopp__logo--dra'); }
+  }, 400);
+}
 function settHovedtopp(logoTekst) {
   _hovedtoppAktiv = true;
   let fast = document.querySelector('.hjemtopp--fast');
@@ -385,27 +407,17 @@ function settHovedtopp(logoTekst) {
       if (REDUSERT()) {
         gjeldende.replaceWith(ny);
       } else {
-        // Krysstoning som kompositor-TRANSISJON — samme oppskrift som sveipe-
-        // slippet (slippLogoDra), og derfor like glatt: begge logoene får eget
-        // lag (--dra/will-change), og begge endepunktene committes FØR den
-        // tunge sidetegningen blokkerer hovedtråden, så kompositoren kjører
-        // toningen videre upåvirket. De gamle CSS-animasjonene hakket ved
-        // fanetrykk: innkommende logo hadde 0,1s delay og rakk aldri å starte
-        // før blokken — da fantes ingenting å kjøre videre på.
+        // Forbered krysstoningen (ny logo ligger usynlig oppå): selve
+        // avspillingen skjer i spillLogoFade — umiddelbart her, eller (ved
+        // navigasjon, _logoFadeUtsatt) først etter at den nye sidens første
+        // frame er malt, så toningen aldri konkurrerer med sidetegningen.
         gjeldende.classList.add('hjemtopp__logo--ut', 'hjemtopp__logo--dra');
         ny.classList.add('hjemtopp__logo--dra');
         gjeldende.style.transition = 'none'; ny.style.transition = 'none';
         ny.style.opacity = '0';
         boks.append(ny);
-        void ny.offsetWidth; // committ startverdiene før transisjonen slås på
-        const tr = 'opacity 0.36s var(--ease-out)';
-        gjeldende.style.transition = tr; ny.style.transition = tr;
-        gjeldende.style.opacity = '0'; ny.style.opacity = '1';
-        setTimeout(() => {
-          gjeldende.remove();
-          ny.removeAttribute('style');
-          ny.classList.remove('hjemtopp__logo--dra');
-        }, 400);
+        _ventendeLogoFade = { gammel: gjeldende, ny };
+        if (!_logoFadeUtsatt) spillLogoFade();
       }
     }
   }
