@@ -3902,7 +3902,7 @@ function byggVinduskort() {
       ut.push(`bunnbar: topp ${Math.round(r.top)} → bunn ${Math.round(r.bottom)} (vindu ${window.innerHeight})`);
     }
     const rotStil = getComputedStyle(document.documentElement);
-    ut.push(`vp-gap: ${_vpGap}px · safe-bunn-kjent: ${rotStil.getPropertyValue('--safe-bunn-kjent').trim() || '–'}`);
+    ut.push(`vp-gap: ${_vpGap}px · dytt: ${_vpDytt} · safe-bunn-kjent: ${rotStil.getPropertyValue('--safe-bunn-kjent').trim() || '–'}`);
     ut.push(navigator.userAgent);
     return ut;
   };
@@ -3934,13 +3934,35 @@ function byggVinduskort() {
 // stripen under ser ut som en forlengelse av den — og husker siste kjente
 // safe-area-bunn (--safe-bunn-kjent) så bar-polstringen ikke kollapser.
 // Fokus-sider (feed/kjøring, uten bar) beholder vanlig lerret.
-let _vpGap = 0; // leses av Vindusmål-kortet på Om-siden
+let _vpGap = 0; let _vpDytt = 0; // leses av Vindusmål-kortet på Om-siden
 function settOppViewportVakt() {
   const rot = document.documentElement;
   const probe = el('div', { 'aria-hidden': 'true',
     style: 'position:fixed;visibility:hidden;pointer-events:none;height:0;padding-bottom:env(safe-area-inset-bottom)' });
   document.body.append(probe);
   let planlagt = false;
+  // Mikro-dytt: chromen «gjemmer seg» når dokumentet scroller (enkeltsidene
+  // vipper tilstanden frisk av seg selv), men de LÅSTE sidene kan aldri
+  // scrolle dokumentet — der blir spøkelses-chromen stående fra kald start.
+  // Kuren er det gamle Safari-trikset: gjør dokumentet så vidt scrollbart i
+  // ett blunk, dytt det 1px og tilbake, og mål på nytt. Maks tre forsøk per
+  // episode så et evt. uvirksomt dytt ikke løper løpsk; lerret-masken
+  // (html.vp-kort) dekker uansett mens tilstanden består.
+  let dyttForsok = 0; let dytter = false;
+  const dyttDokument = () => {
+    if (dytter) return;
+    dytter = true;
+    const forMin = document.body.style.minHeight;
+    document.body.style.minHeight = 'calc(100% + 2px)';
+    requestAnimationFrame(() => {
+      const s = document.scrollingElement || document.documentElement;
+      s.scrollTop = 1;
+      s.scrollTop = 0;
+      document.body.style.minHeight = forMin;
+      dytter = false;
+      be(); // mål på nytt — vippet tilstanden?
+    });
+  };
   const mål = () => {
     planlagt = false;
     // Husk den ekte safe-area-bunnen fra en frisk tilstand (34pt o.l.) — i
@@ -3957,6 +3979,12 @@ function settOppViewportVakt() {
     _vpGap = gap;
     rot.style.setProperty('--vp-gap', `${gap}px`); // diagnostikk (Vindusmål)
     rot.classList.toggle('vp-kort', gap > 0 && !document.body.classList.contains('fokusmodus'));
+    if (gap > 0) {
+      const laast = document.body.classList.contains('fane-laast') || document.body.classList.contains('dash-laast');
+      if (laast && dyttForsok < 3) { dyttForsok += 1; _vpDytt += 1; dyttDokument(); }
+    } else {
+      dyttForsok = 0; // frisk tilstand → neste episode får nye forsøk
+    }
   };
   const be = () => { if (!planlagt) { planlagt = true; requestAnimationFrame(mål); } };
   window.addEventListener('resize', be);
