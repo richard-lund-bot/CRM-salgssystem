@@ -45,7 +45,7 @@ function sjekk(navn, ok, ekstra = '') {
   if (!ok) feil.push(navn);
 }
 
-const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
+const FANER = ['kosthold', 'trening', 'hjem', 'ro', 'sosialt']; // bunnbarens rekkefølge
 
 (async () => {
   const server = lagServer();
@@ -76,26 +76,19 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
   sjekk('Hjem viser i-takt-oppsummeringen', (await page.locator('.itakt').count()) > 0);
   sjekk('Hjem feller inn Utforsk (kunnskap & inspirasjon)', (await page.locator('.utforsk-seksjon').count()) > 0);
   sjekk('Dagens feed-modulen er fjernet fra Hjem', (await page.locator('.utforsk-feed').count()) === 0);
-  sjekk('Hjem har feed-ikon oppe til venstre', (await page.locator('.hjemtopp__feed').count()) === 1);
-
-  // --- 2) Feeden bor på #/feed (slide-over) og rendrer flere kort ------------
-  // (Instagram-dra-gesten fra Hjem verifiseres i egen touch-test — krever
-  // touch-kontekst som denne røyktesten ikke bruker.)
-  await page.click('.hjemtopp__feed');
-  await page.waitForSelector('.fkort', { timeout: 20000 });
-  sjekk('Feed-ikonet åpner #/feed', (await hash()).startsWith('#/feed'));
-  const antKort = await page.locator('.fkort').count();
-  sjekk('Feeden rendrer flere kort', antKort >= 3, `${antKort} kort`);
-  // Feeden er et panel: ingen bunnbar, kun feed-knappen (tilbake) i headeren.
-  sjekk('Feeden skjuler bunnbaren', !(await page.locator('.tabbar').isVisible()));
-  sjekk('Feed-header har kun tilbake-knapp', (await page.locator('.feedtopp__tilbake').count()) === 1
-    && (await page.locator('.feedtopp .ikonknapp').count()) === 1);
-  // Tilbake-knappen glir panelet tilbake til hovedappen.
-  await page.click('.feedtopp__tilbake');
-  await page.waitForSelector('.tabbar__knapp', { timeout: 20000 });
-  sjekk('Feed-knappen fører tilbake til hovedappen', !(await hash()).startsWith('#/feed'));
+  sjekk('Feed-ikonet er skjult fra headeren (VIS_FEED av)', (await page.locator('.hjemtopp__feed').count()) === 0);
   // Hovedapp-header: profil + varsler til høyre.
   sjekk('Hovedapp-header har profil + varsler til høyre', (await page.locator('.hjemtopp__side--h .hjemtopp__varsler').count()) === 1);
+
+  // --- 2) Feeden er SKJULT fra grensesnittet, men koden lever videre ----------
+  // (VIS_FEED i js/app.js gater ikon/sveip/forhåndslasting; ruten #/feed er
+  // bevisst beholdt så funksjonen kan vurderes via direkte lenke. Får feeden
+  // bli med videre: flipp flagget og gjenopprett klikk-testene fra git.)
+  await page.goto(`${BASE}/#/feed`);
+  await page.waitForSelector('.fkort', { timeout: 20000 });
+  const antKort = await page.locator('.fkort').count();
+  sjekk('Direkte #/feed-lenke rendrer fortsatt feeden', antKort >= 3, `${antKort} kort`);
+  sjekk('Feeden skjuler bunnbaren', !(await page.locator('.tabbar').isVisible()));
   await page.goto(BASE + '/#/hjem');
   await page.waitForSelector('.tabbar__knapp', { timeout: 20000 });
 
@@ -122,6 +115,11 @@ const FANER = ['hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
     sjekk(`Fane «${rute}» navigerer + markeres aktiv`, h.startsWith(`#/${rute}`) && aktiv, h);
   }
   sjekk('Alle fanene finnes i baren', (await page.locator('.tabbar__knapp').count()) === FANER.length, `${FANER.length} faner`);
+  // Klassisk bunnbar: Hjem hevet i midten (Mat · Bevegelse · Hjem · Ro ·
+  // Fellesskap), og alle faner med synlig etikett.
+  sjekk('Hjem står i midten av baren som hevet sirkel',
+    await page.locator('.tabbar__knapp:nth-child(3)').evaluate((n) => n.dataset.rute === 'hjem' && n.classList.contains('tabbar__knapp--stor')));
+  sjekk('Fanene har synlige etiketter', (await page.locator('.tabbar__tekst').count()) === FANER.length);
 
   // --- 4a2) Bevegelse-hjem (redesign): minuttkort + filtre + anbefalinger -----
   await page.goto(BASE + '/#/trening');

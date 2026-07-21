@@ -127,6 +127,12 @@ const ruter = {
 // til man går inn i en leksjon/kamp (som er egne fullskjerm-overlegg).
 const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel', 'oppskrift', 'post', 'logg-inn', 'bli-medlem', 'beveg-favoritter', 'feed', 'varsler']);
 
+// Feed-funksjonen (M38) er SKJULT fra grensesnittet inntil videre — vi vurderer
+// om den passer i appens image. Koden, dataene og ruten (#/feed, #/post)
+// beholdes urørt; direkte lenker virker fortsatt. Flipp til true for å få
+// tilbake feed-ikonet i headeren, Hjem-sveipen og forhåndslastingen.
+const VIS_FEED = false;
+
 // Paneler som glir inn over hovedappen (slide-over): feeden kommer fra venstre
 // (feed-ikonet ligger til venstre), varsler fra høyre (bjella ligger til høyre).
 const SLIDE_VENSTRE = new Set(['feed']);   // panelet ligger til venstre for appen
@@ -146,18 +152,19 @@ const AUTH_RUTER = new Set(['logg-inn', 'bli-medlem']);
 // innstillinger/varsler er bevisst IKKE barn av noen fane: de er egne sider
 // (nås fra tannhjulet/bjella), lyser ingen fane og huskes aldri som fane-mål —
 // ellers ville f.eks. Profil-fanen «låst» seg til Varsler.
-// Bunnlinja = de fem blue-zones-pilarene: Feed · Mat · Bevegelse · Ro · Sosialt.
+// Bunnlinja = Hjem (Takt) i midten som hevet sirkel, med pilar-modulene rundt:
+// Mat · Bevegelse · Hjem · Ro · Fellesskap.
 // Profil (#/merker) og Lær (#/laer) er IKKE bunnfaner lenger — de er egne sider
 // som nås fra meny-huben (tannhjulet) på samme måte som Innstillinger/Varsler.
 const FANER_DEF = [
-  { id: 'hjem', rute: 'hjem', ikon: 'hjem', fyll: 'hjemfyll', label: 'Hjem',
-    barn: ['feed', 'post'] }, // feeden (dagens feed) + innleggsside hører til Hjem
   { id: 'kosthold', rute: 'kosthold', ikon: 'eple', fyll: 'eplefyll', label: 'Mat',
     barn: ['oppskrifter', 'oppskrift', 'ukesplan', 'handleliste'] },
   { id: 'trening', rute: 'trening', ikon: 'loper', fyll: 'loperfyll', label: 'Bevegelse',
     // Treningsbibliotek (øktbiblioteket) bor under Bevegelse — ett tapp unna via
     // «Se økter»/«Vis alle».
     barn: ['beveg', 'ny', 'okter'] },
+  { id: 'hjem', rute: 'hjem', ikon: 'hjem', fyll: 'hjemfyll', label: 'Hjem',
+    barn: ['feed', 'post'] }, // feeden (dagens feed) + innleggsside hører til Hjem
   { id: 'ro', rute: 'ro', ikon: 'maane', fyll: null, label: 'Ro',
     barn: ['rofremgang'] },
   { id: 'sosialt', rute: 'sosialt', ikon: 'personer', fyll: null, label: 'Fellesskap',
@@ -192,18 +199,9 @@ function oppdaterFaneMinne(rute) {
 
 // Gjenopprett scroll for en hash (default topp). Re-apply etter layout og litt
 // senere for skjermer som fyller innhold async (f.eks. seksjon henter JSON).
-// Scroll-hendelsene dette utløser er programmatiske: krymp-lytteren
-// (settOppTabKrymp) må ikke tolke dem som «scroll ned» og krympe baren —
-// et fanebytte skal ALLTID vise baren i full størrelse, uansett hvor dypt
-// fanen sto. Derfor dempes krympingen et lite vindu rundt gjenopprettingen.
-let krympStilleTil = 0;
 function gjenopprettScroll(hash) {
   const y = scrollMinne.get(hash) || 0;
   const sett = () => { const s = aktivScroller(); if (s) s.scrollTop = y; };
-  // Bare dype gjenopprettinger utløser scroll-ned-hendelser som må dempes;
-  // y=0 (fersk side / til toppen) fyrer ingen eller en ufarlig opp-hendelse,
-  // og skal ikke stjele brukerens første ekte scroll.
-  if (y > 0) krympStilleTil = performance.now() + 250; // dekker sett() nå + rAF + 120ms
   sett();
   if (y > 0) { requestAnimationFrame(sett); setTimeout(sett, 120); }
 }
@@ -247,10 +245,6 @@ function navger() {
     else if (SLIDE_HOYRE.has(forrigeRute)) slideKlasse = 'side-inn-venstre';
   }
   _droppSlide = false; _nesteSlide = ''; // engangsflagg
-  // Navigasjon vekker en kompakt bar: den vokser tilbake til full størrelse
-  // mens linsen glir til ny fane (som Instagram). Å bli stående krympet ga
-  // også et origin-hopp når strekk-animasjonen byttet transform-origin.
-  vekkTabbar();
   if (rute !== 'kjor' && rute !== 'hurtig') slippVaaken(); // timer-skjermene eier låsen
 
   const tegn = () => {
@@ -283,14 +277,14 @@ function navger() {
       }, { once: true });
     }
   };
-  // Sidebytte er ellers umiddelbart — det eneste som beveger seg er slideren i
-  // tab-baren nederst (oppdaterNav → flyttTabIndikator) og feed/varsler-panelene.
-  // Fanetrykk mellom hovedsider (ingen slide): pillen og logo-toningen kickes
-  // FØR den tunge sidetegningen, som utsettes to frames — første frame maler
-  // animasjonsstarten (composited), så lander innholdsbyttet mens de glir.
-  // Ellers blokkerer tegningen hovedtråden akkurat idet animasjonene skulle
-  // startet, og både pill og logo «hakker». Token-vakten dropper en ventende
-  // tegning hvis en nyere navigasjon har rukket å ta over.
+  // Sidebytte er ellers umiddelbart — det eneste som beveger seg er
+  // feed/varsler-panelene og logo-krysstoningen i den faste headeren.
+  // Fanetrykk mellom hovedsider (ingen slide): aktiv-markeringen og
+  // logo-toningen kickes FØR den tunge sidetegningen, som utsettes to frames —
+  // første frame maler animasjonsstarten (composited), så lander innholdsbyttet
+  // mens logoen toner. Ellers blokkerer tegningen hovedtråden akkurat idet
+  // animasjonen skulle startet, og logoen «hakker». Token-vakten dropper en
+  // ventende tegning hvis en nyere navigasjon har rukket å ta over.
   const minTegn = ++_tegnNr;
   if (byttet && !slideKlasse && LOGO_FOR_RUTE[rute] && !REDUSERT()) {
     oppdaterNav(rute);
@@ -307,7 +301,6 @@ function oppdaterNav(rute) {
   document.querySelectorAll('.tabbar__knapp').forEach((b) => {
     b.classList.toggle('tabbar__knapp--aktiv', b.dataset.rute === tabRute);
   });
-  flyttTabIndikator();
 }
 
 function skjerm(tittel, ...innhold) {
@@ -351,7 +344,7 @@ function lagHovedtoppLogo(logoTekst) {
 function byggHovedtopp(logoTekst, klasse = '') {
   return el('header', { class: 'hjemtopp' + klasse },
     el('div', { class: 'hjemtopp__side hjemtopp__side--v' },
-      el('a', { class: 'ikonknapp ikonknapp--plain hjemtopp__feed', href: '#/feed', 'aria-label': 'Dagens feed' }, ikon('feed')),
+      VIS_FEED ? el('a', { class: 'ikonknapp ikonknapp--plain hjemtopp__feed', href: '#/feed', 'aria-label': 'Dagens feed' }, ikon('feed')) : null,
       el('a', { class: 'ikonknapp ikonknapp--plain', href: '#/meny', 'aria-label': 'Meny' }, ikon('gir')),
     ),
     el('span', { class: 'hjemtopp__logoboks' }, lagHovedtoppLogo(logoTekst)),
@@ -519,18 +512,19 @@ function visHjemDashboard(mount) {
   mount.append(scroll, lagPullOppdatering(scroll, { scrollTopFn: () => hjemMain.scrollTop, innhold: hjemMain }));
 
   // Forhåndslast feed-data så dra-peeken kan vise ekte kort med en gang.
-  lastFeed().catch(() => {});
+  if (VIS_FEED) lastFeed().catch(() => {});
   // (Sveip mellom sidene håndteres globalt av settOppSideSveip på #app.)
 }
 
-// Sveip mellom hovedsidene (Instagram-stil), montert én gang på #app. Stripa er
-// feed ← Hjem ← Mat ← Bevegelse ← Ro ← Fellesskap: en horisontal dra mot HØYRE
-// går ett hakk til venstre i stripa, mot VENSTRE ett hakk til høyre. Hjem→feed
-// følger fingeren med en peek (feeden er «kameraet»); de øvrige byttene glir
-// over med rute-slide når du slipper forbi terskelen. Vi eier den horisontale
-// gesten (preventDefault) så nettleserens tilbake-sveip ikke slår inn — det er
-// «tilbake-bug-en» som oppsto fordi appen kjører som nettside.
-const SVEIP_STRIP = ['feed', 'hjem', 'kosthold', 'trening', 'ro', 'sosialt'];
+// Sveip mellom hovedsidene (Instagram-stil), montert én gang på #app. Stripa
+// følger bunnbarens rekkefølge (Mat ← Bevegelse ← Hjem ← Ro ← Fellesskap): en
+// horisontal dra mot HØYRE går ett hakk til venstre i stripa, mot VENSTRE ett
+// hakk til høyre. Byttene glir over med rute-slide når du slipper forbi
+// terskelen. Vi eier den horisontale gesten (preventDefault) så nettleserens
+// tilbake-sveip ikke slår inn — det er «tilbake-bug-en» som oppsto fordi appen
+// kjører som nettside. Med feeden synlig (VIS_FEED) ligger den ytterst til
+// venstre og dras inn med en peek (feeden er «kameraet»).
+const SVEIP_STRIP = [...(VIS_FEED ? ['feed'] : []), 'kosthold', 'trening', 'hjem', 'ro', 'sosialt'];
 // Logo-ordet i den faste hovedtoppen per hovedside (feed har ingen hovedtopp).
 const LOGO_FOR_RUTE = { hjem: APP_NAME.toLowerCase(), kosthold: 'mat', trening: 'bevegelse', ro: 'ro', sosialt: 'fellesskap' };
 // Render-funksjon per hovedside (til dra-peeken). Feeden har sin egen (byggFeedPeek).
@@ -559,11 +553,11 @@ function byggSidePeek(rute) {
   return wrap;
 }
 
-// Instagram-stil drag mellom hovedsidene, montert én gang på #app. Stripa er
-// feed ← Hjem ← Mat ← Bevegelse ← Ro ← Fellesskap. En horisontal dra FØLGER
-// fingeren: gjeldende side skyves til side mens nabosiden (en peek) dras inn fra
-// motsatt kant. Er feeden involvert glir bunnbaren bort med sidene; mellom to
-// faner blir bunnbaren stående mens PILLEN glir mot mål-fanen. Slipp forbi
+// Instagram-stil drag mellom hovedsidene, montert én gang på #app. Stripa
+// følger bunnbarens rekkefølge. En horisontal dra FØLGER fingeren: gjeldende
+// side skyves til side mens nabosiden (en peek) dras inn fra motsatt kant.
+// Mellom to faner står bunnbaren stille (aktiv fane markeres ved slipp); er
+// feeden involvert (VIS_FEED) glir bunnbaren bort med sidene. Slipp forbi
 // terskelen fullfører (ruten tegnes uten å doble slide); ellers spretter alt
 // tilbake. Vi eier den horisontale gesten (preventDefault) så nettleserens
 // tilbake-sveip ikke slår inn.
@@ -583,11 +577,9 @@ function settOppSideSveip() {
     return false;
   };
   const tabbar = () => document.querySelector('.tabbar');
-  const linse = () => document.querySelector('.tabbar__linse');
-  const knappSenter = (r) => { const b = document.querySelector(`.tabbar__knapp[data-rute="${faneForRute(r)}"]`); return b ? b.offsetLeft + b.offsetWidth / 2 : null; };
 
   let sx = null; let sy = null; let retning = null; let aktiv = false; let hoppOver = false;
-  let peek = null; let mål = null; let dir = 0; let feedInne = false; let barFolgerPeek = false; let linseFra = null; let linseTil = null;
+  let peek = null; let mål = null; let dir = 0; let feedInne = false; let barFolgerPeek = false;
 
   // Logo-toning i takt med draget (fane→fane): «fade-through» — det gamle
   // ordet er tonet HELT ut idet draget når terskelen (~30 %, samme punkt som
@@ -641,18 +633,13 @@ function settOppSideSveip() {
       // Bunnbaren glir i takt med siden den hører til: med #app (Hjem→feed) eller
       // med peeken (feed→Hjem — da må baren vises mens den glir inn).
       const bar = tabbar(); if (bar) bar.style.transform = `translateX(${barFolgerPeek ? (dx - dir * W) : dx}px)`;
-    } else if (linseFra != null && linseTil != null) {
-      const p = Math.min(1, Math.abs(dx) / W);
-      const ind = linse(); if (ind) ind.style.transform = `translateX(${linseFra + (linseTil - linseFra) * p}px) translateX(-50%)`; // pillen følger fingeren mot mål-fanen
     }
-    settLogoDra(Math.min(1, Math.abs(dx) / W)); // logoen toner i samme takt som pillen
+    settLogoDra(Math.min(1, Math.abs(dx) / W)); // logoen toner i takt med draget
   };
   const rensTransform = () => {
     app.style.transition = ''; app.style.transform = '';
     const bar = tabbar(); if (bar) { bar.style.transition = ''; bar.style.transform = ''; bar.classList.remove('tabbar--drag'); }
-    const ind = linse(); if (ind) ind.style.transition = '';
     document.body.classList.remove('sideglir');
-    flyttTabIndikator();
   };
   const rydd = () => { peek?.remove(); peek = null; rensTransform(); };
   const animer = (fullfor) => {
@@ -660,9 +647,8 @@ function settOppSideSveip() {
     const tr = 'transform 0.36s var(--ease-out)';
     app.style.transition = tr;
     if (peek) peek.style.transition = tr;
-    const bar = tabbar(); const ind = linse();
+    const bar = tabbar();
     if (bar && feedInne) bar.style.transition = tr;
-    if (ind && !feedInne) ind.style.transition = tr;
     const hLogo = logoDra; logoDra = null;
     slippLogoDra(hLogo, fullfor); // toningen fullfører/reverserer i samme glid
     if (fullfor) {
@@ -670,7 +656,6 @@ function settOppSideSveip() {
       if (peek) peek.style.transform = 'translateX(0)';
       // Baren enten glir bort med #app (Hjem→feed) eller lander på plass med mål-siden (feed→Hjem).
       if (bar && feedInne) bar.style.transform = `translateX(${barFolgerPeek ? 0 : dir * W}px)`;
-      if (ind && !feedInne && linseTil != null) ind.style.transform = `translateX(${linseTil}px) translateX(-50%)`;
       setTimeout(() => {
         // Peeken dekker mål-siden. Nullstill #app FØR navigasjon, så den ekte
         // siden tegnes på plass (translateX 0) under peeken; fjern peeken etter.
@@ -684,7 +669,6 @@ function settOppSideSveip() {
       app.style.transform = 'translateX(0)';
       if (peek) peek.style.transform = `translateX(${-dir * W}px)`;
       if (bar && feedInne) bar.style.transform = `translateX(${barFolgerPeek ? -dir * W : 0}px)`;
-      if (ind && !feedInne && linseFra != null) ind.style.transform = `translateX(${linseFra}px) translateX(-50%)`;
       setTimeout(() => { ferdigLogoDra(hLogo, false); rydd(); }, 360);
     }
   };
@@ -692,7 +676,7 @@ function settOppSideSveip() {
   app.addEventListener('touchstart', (e) => {
     if (e.touches.length !== 1 || !SVEIP_STRIP.includes(naaRute())) { sx = null; return; }
     const t = e.touches[0]; sx = t.clientX; sy = t.clientY;
-    retning = null; aktiv = false; feedInne = false; barFolgerPeek = false; peek = null; mål = null; dir = 0; linseFra = linseTil = null;
+    retning = null; aktiv = false; feedInne = false; barFolgerPeek = false; peek = null; mål = null; dir = 0;
     if (logoDra) { ferdigLogoDra(logoDra, false); logoDra = null; } // hengende dra-toning → tilbakestill
     hoppOver = iHscroller(e.target);
     app.style.transition = '';
@@ -715,9 +699,9 @@ function settOppSideSveip() {
         peek.style.transform = `translateX(${-dir * bredde()}px)`;
         document.body.appendChild(peek);
         document.body.classList.add('sideglir');
-        const bar = tabbar(); const ind = linse();
-        // Slå AV bar-/pill-transisjonen under draget så de følger fingeren 1:1
-        // (ellers «henger de etter» pga. sin egen glide-transisjon).
+        const bar = tabbar();
+        // Slå AV bar-transisjonen under et feed-drag så den følger fingeren 1:1
+        // (ellers «henger den etter» pga. sin egen glide-transisjon).
         if (feedInne) {
           barFolgerPeek = (cur === 'feed'); // feed→Hjem: baren følger peeken og må vises
           if (bar) {
@@ -725,8 +709,6 @@ function settOppSideSveip() {
             if (barFolgerPeek) { bar.classList.add('tabbar--drag'); bar.style.transform = `translateX(${bredde()}px)`; }
           }
         } else {
-          linseFra = knappSenter(cur); linseTil = knappSenter(mål);
-          if (ind) ind.style.transition = 'none';
           logoDra = startLogoDra(LOGO_FOR_RUTE[mål]);
         }
       }
@@ -3887,66 +3869,24 @@ function visOm() {
   );
 }
 
-// --- Tab-bar (Mova BottomNav: hvit flate, aktiv fane i aksentfargen).
-// Profil står i midten, litt større enn de andre. ---
-// Sjekker om motoren faktisk rendrer SVG-forvrengning i backdrop-filter.
-// Chromium gjør det; WebKit/Safari (inkl. iOS) gjør det ikke — der beholder vi
-// frost-fallbacken. Kalles én gang; setter .kan-glassrefraksjon på <html>.
-function settGlassrefraksjonFlagg() {
-  const ua = navigator.userAgent || '';
-  const erWebKit = /\bSafari\b/.test(ua) && !/\b(Chrome|Chromium|CriOS|Edg|OPR|SamsungBrowser)\b/.test(ua);
-  const stotter = !erWebKit && (
-    (window.CSS && CSS.supports && (
-      CSS.supports('backdrop-filter', 'url(#x)') ||
-      CSS.supports('-webkit-backdrop-filter', 'url(#x)')
-    )) || false
-  );
-  document.documentElement.classList.toggle('kan-glassrefraksjon', stotter);
-  return stotter;
-}
-
-// Legger inn SVG-filteret som driver glass-refraksjonen (feDisplacementMap på en
-// myk fraktalstøy). Skjult, 0×0, injiseres kun én gang.
-function leggInnGlassFilter() {
-  if (document.getElementById('takt-glass')) return;
-  const NS = 'http://www.w3.org/2000/svg';
-  const svg = document.createElementNS(NS, 'svg');
-  svg.setAttribute('aria-hidden', 'true');
-  svg.setAttribute('width', '0');
-  svg.setAttribute('height', '0');
-  svg.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden';
-  svg.innerHTML = `
-    <filter id="takt-glass" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
-      <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="2" seed="7" result="stoy" />
-      <feGaussianBlur in="stoy" stdDeviation="2" result="mykStoy" />
-      <feDisplacementMap in="SourceGraphic" in2="mykStoy" scale="16" xChannelSelector="R" yChannelSelector="G" />
-    </filter>`;
-  document.body.append(svg);
-}
-
+// --- Tab-bar — klassisk fast bunnbar: hvit flate, hårlinje topp, ikon +
+// etikett per fane, aktiv fane i aksentfargen. Hjem (Takt) står i midten som
+// en hevet aksent-sirkel, med pilar-modulene rundt. Aktiv fane får det fylte
+// ikonet der det finnes (linje-varianten byttes via CSS). ---
 function byggTabbar() {
   if (document.querySelector('.tabbar')) return;
-  settGlassrefraksjonFlagg();
-  leggInnGlassFilter();
-  // Flytende liquid-glass-bar à la Instagram: kun ikoner (etiketten blir aria-
-  // label for skjermlesere), en glidende glass-linse bak aktiv fane, og aktiv
-  // fane får det fylte, svarte ikonet (linje-varianten byttes via CSS).
-  const tab = (rute, ikonNavn, fyllNavn, tekst) => el('a', {
-    class: 'tabbar__knapp', href: `#/${rute}`, 'data-rute': rute, 'aria-label': tekst,
+  const tab = (f) => el('a', {
+    class: 'tabbar__knapp' + (f.id === 'hjem' ? ' tabbar__knapp--stor' : ''),
+    href: `#/${f.rute}`, 'data-rute': f.rute, 'aria-label': f.label,
   }, el('span', { class: 'tabbar__ikon' },
-    ikon(ikonNavn, 'ikon tabikon--linje'),
-    fyllNavn ? ikon(fyllNavn, 'ikon tabikon--fyll') : null,
-  ));
+    ikon(f.ikon, 'ikon tabikon--linje'),
+    f.fyll ? ikon(f.fyll, 'ikon tabikon--fyll') : null,
+  ), el('span', { class: 'tabbar__tekst' }, f.label));
 
   const nav = el('nav', { class: 'tabbar', 'aria-label': 'Hovedmeny' },
-    el('span', { class: 'tabbar__refraksjon', 'aria-hidden': 'true' }),
-    el('span', { class: 'tabbar__linse', 'aria-hidden': 'true' }),
-    ...FANER_DEF.map((f) => tab(f.rute, f.ikon, f.fyll, f.label)),
-    el('span', { class: 'tabbar__flash', 'aria-hidden': 'true' }),
+    ...FANER_DEF.map(tab),
   );
   document.body.append(nav);
-  settOppTabTrykk(nav);
-  settOppTabKrymp();
   settOppReTapp(nav);
 }
 
@@ -4010,106 +3950,6 @@ function refreshFane(tab) {
     // Dypt inne → gå til rot; når roten er tegnet, spill reload over den.
     window.addEventListener('hashchange', () => requestAnimationFrame(kjør), { once: true });
     location.hash = rot;
-  }
-}
-
-// Trykk-effekt: ved pointerdown lysner hele baren (screen-flash) og pulser
-// et hakk. Klassen fjernes/legges på igjen med tvungen reflow så effekten kan
-// re-trigges raskt. (Trykk-sirkelen på fingerpunktet er fjernet.)
-function settOppTabTrykk(nav) {
-  nav.addEventListener('pointerdown', () => {
-    // Berøring vekker baren umiddelbart — veksten starter allerede på
-    // pointerdown, før navigasjonen, så den er godt i gang når linsen glir.
-    vekkTabbar(nav);
-    nav.classList.remove('tabbar--trykk', 'tabbar--puls');
-    void nav.offsetWidth;
-    nav.classList.add('tabbar--trykk', 'tabbar--puls');
-  });
-  // Rydd bort ferdige bar-animasjoner så klassene ikke blir hengende og
-  // påvirker transform-origin (strekk) eller re-trigges av cascade-bytter.
-  nav.addEventListener('animationend', (ev) => {
-    if (ev.animationName === 'bar-strekk') nav.classList.remove('tabbar--strekk-hoyre', 'tabbar--strekk-venstre');
-    else if (ev.animationName === 'bar-puls') nav.classList.remove('tabbar--puls');
-  });
-  // Sprett-veksten (vekkTabbar) er ferdig → tilbake til nøytral easing, så
-  // neste scroll-krymp ikke arver bouncen.
-  nav.addEventListener('transitionend', (ev) => {
-    if (ev.target === nav && ev.propertyName === 'transform') nav.classList.remove('tabbar--vekst');
-  });
-}
-
-// Vekker en kompakt bar med sprett: tilbakeveksten får bounce-easing via
-// .tabbar--vekst (vokser et hint forbi full størrelse og lander), i stedet for
-// den nøytrale scroll-easingen. Klassen ryddes når transform-transisjonen er
-// ferdig (lytteren settes i byggTabbar), så scroll-krympingen forblir rolig.
-function vekkTabbar(nav = document.querySelector('.tabbar')) {
-  if (!nav || !nav.classList.contains('tabbar--kompakt')) return;
-  nav.classList.remove('tabbar--kompakt');
-  nav.classList.add('tabbar--vekst');
-}
-
-// Instagram-aktig: baren krymper litt når man scroller nedover og vokser tilbake
-// når man scroller oppover (eller er nær toppen). Lytter i fangst-fasen så både
-// dokument-scroll og fanesidenes egne scrollflater fanges. Idempotent.
-let _tabKrympSatt = false;
-function settOppTabKrymp() {
-  if (_tabKrympSatt) return;
-  const bar = document.querySelector('.tabbar');
-  if (!bar) return;
-  _tabKrympSatt = true;
-  let sisteY = 0;
-  let venter = false;
-  const lesY = (t) => {
-    const s = (t && t !== document && typeof t.scrollTop === 'number') ? t : (document.scrollingElement || document.documentElement);
-    return s.scrollTop || 0;
-  };
-  const paa = (ev) => {
-    if (venter) return;
-    venter = true;
-    const y = lesY(ev.target);
-    requestAnimationFrame(() => {
-      venter = false;
-      const dy = y - sisteY;
-      sisteY = y; // følg alltid posisjonen — også når krympingen er dempet
-      // Programmatisk scroll-restore (fanebytte) skal aldri krympe baren;
-      // neste ekte scroll måles da mot den gjenopprettede posisjonen.
-      if (performance.now() < krympStilleTil) return;
-      if (y < 32) bar.classList.remove('tabbar--kompakt');       // nær toppen → full
-      else if (dy > 3) bar.classList.add('tabbar--kompakt');     // ned → litt mindre
-      else if (dy < -3) bar.classList.remove('tabbar--kompakt'); // opp → større
-    });
-  };
-  window.addEventListener('scroll', paa, { passive: true, capture: true });
-}
-
-// Glir glass-linsen bak den aktive fanen (sammenheng mellom faner).
-function flyttTabIndikator() {
-  const nav = document.querySelector('.tabbar');
-  const ind = nav?.querySelector('.tabbar__linse');
-  const aktiv = nav?.querySelector('.tabbar__knapp--aktiv');
-  if (!ind) return;
-  if (!aktiv) { ind.style.opacity = '0'; return; }
-  const knapper = nav.querySelectorAll('.tabbar__knapp');
-  const erYtterst = aktiv === knapper[0] || aktiv === knapper[knapper.length - 1];
-  const x = aktiv.offsetLeft + aktiv.offsetWidth / 2;
-  const forrige = Number(ind.dataset.x ?? NaN);
-  ind.dataset.x = String(x);
-  // Ytterfanene: rett easing så pillen bremser inn mot enden i stedet for å
-  // sprette forbi målet og utenfor kapselen. Innerfaner beholder spretten.
-  ind.classList.toggle('tabbar__linse--rett', erYtterst);
-  ind.style.opacity = '1';
-  ind.style.transform = `translateX(${x}px) translateX(-50%)`;
-  // Strekk baren kun ved lange hopp til en ytterfane — det er der pillen
-  // ellers ville truffet kanten. Puls-klassen fjernes så bar-animasjonene
-  // ikke kjemper om scale-egenskapen. Strekken droppes mens baren vokser fra
-  // kompakt (transform ≠ identitet): strekk-klassenes transform-origin-bytte
-  // ville re-ankret krympe-skalaen og fått hele baren til å hoppe.
-  const mt = getComputedStyle(nav).transform;
-  const fullStorrelse = mt === 'none' || mt === 'matrix(1, 0, 0, 1, 0, 0)';
-  if (Number.isFinite(forrige) && erYtterst && fullStorrelse && Math.abs(x - forrige) > aktiv.offsetWidth * 1.5) {
-    nav.classList.remove('tabbar--puls', 'tabbar--strekk-hoyre', 'tabbar--strekk-venstre');
-    void nav.offsetWidth;
-    nav.classList.add(x > forrige ? 'tabbar--strekk-hoyre' : 'tabbar--strekk-venstre');
   }
 }
 

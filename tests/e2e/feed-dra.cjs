@@ -1,8 +1,11 @@
-// Touch-test for sveip mellom hovedsidene: Instagram-stil dra Hjem→feed, samt
-// strip-sveip (feed ← Hjem ← Mat ← Bevegelse ← Ro ← Fellesskap) og at et
-// horisontalt filter-felt scroller i stedet for å navigere. Egen fil fordi den
-// trenger en touch-kontekst (hasTouch) som hoved-røyktesten ikke bruker.
-// Kjøres med `npm run e2e:feed` (samme E2E_CHROMIUM-mekanikk som smoke.cjs).
+// Touch-test for sveip mellom hovedsidene: Instagram-stil dra som følger
+// fingeren, strip-sveip (Mat ← Bevegelse ← Hjem ← Ro ← Fellesskap) og at et
+// horisontalt filter-felt scroller i stedet for å navigere. Feeden er skjult
+// fra stripa (VIS_FEED i js/app.js) — testen sjekker at den IKKE nås med sveip;
+// gjenopprett feed-dra-testene fra git om flagget flippes på igjen. Egen fil
+// fordi den trenger en touch-kontekst (hasTouch) som hoved-røyktesten ikke
+// bruker. Kjøres med `npm run e2e:feed` (samme E2E_CHROMIUM-mekanikk som
+// smoke.cjs).
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -76,15 +79,16 @@ async function dra(page, xs, x2, y = 400) {
     await page.waitForTimeout(700); // la eventuell sync-re-render sette seg
   };
 
-  // 1) Full dra (forbi terskel) → feeden åpnes, peek ryddes, kort tegnes.
-  // .fkort finnes også i peeken under dra-en, så vi venter på at COMMIT-en
-  // (hash → #/feed) er ferdig før vi sjekker — ikke bare på at et kort finnes.
+  // 1) Full dra (forbi terskel) → venstre-naboen i stripa (Bevegelse) åpnes,
+  // peek ryddes. Vi venter på at COMMIT-en (hash-byttet) er ferdig før vi
+  // sjekker — ikke bare på at peek-innhold finnes.
   await friskHjem();
   await dra(page, 40, 360); // dx=320 > 30 % av 390
-  await page.waitForFunction(() => location.hash === '#/feed', null, { timeout: 8000 }).catch(() => {});
-  sjekk('Full dra mot høyre åpner feeden', (await hash()) === '#/feed');
-  await page.waitForSelector('.fkort', { timeout: 20000 });
-  sjekk('Feeden er tegnet', (await page.locator('.fkort').count()) > 0);
+  await page.waitForFunction(() => location.hash === '#/trening', null, { timeout: 8000 }).catch(() => {});
+  sjekk('Full dra mot høyre åpner Bevegelse (venstre-nabo)', (await hash()) === '#/trening');
+  await page.waitForSelector('.bevfilter', { timeout: 20000 });
+  sjekk('Bevegelse er tegnet', (await page.locator('.bevfilter').count()) > 0);
+  await page.waitForTimeout(500); // peeken ryddes ~130 ms etter hash-byttet
   sjekk('Dra-peeken er ryddet', (await page.locator('.feedpeek').count()) === 0);
 
   // 2) Kort dra (under terskel) → spretter tilbake til Hjem.
@@ -94,7 +98,7 @@ async function dra(page, xs, x2, y = 400) {
   sjekk('Kort dra spretter tilbake (blir på Hjem)', (await hash()) === '#/hjem', await hash());
   sjekk('#app-transform nullstilt etter avbrutt dra', (await page.evaluate(() => document.getElementById('app').style.transform)) === '');
 
-  // 3) Vertikal dra åpner IKKE feeden (scroll skal ikke kapres).
+  // 3) Vertikal dra navigerer IKKE (scroll skal ikke kapres).
   await friskHjem();
   await page.evaluate(() => {
     const elm = document.querySelector('.hjemdash-scroll');
@@ -103,9 +107,9 @@ async function dra(page, xs, x2, y = 400) {
     ev('touchstart', 200, 600); for (let i = 1; i <= 6; i++) ev('touchmove', 205, 600 - i * 40); ev('touchend', 205, 360);
   });
   await page.waitForTimeout(500);
-  sjekk('Vertikal dra åpner IKKE feeden', (await hash()) === '#/hjem', await hash());
+  sjekk('Vertikal dra navigerer IKKE', (await hash()) === '#/hjem', await hash());
 
-  // 4) Strip-sveip mellom bunnbar-sidene (feed ← Hjem ← Mat ← Bevegelse ← Ro ←
+  // 4) Strip-sveip mellom bunnbar-sidene (Mat ← Bevegelse ← Hjem ← Ro ←
   //    Fellesskap). Sveip på et ikke-scrollende område (y=200).
   const sveip = async (rute, xs, x2) => {
     await page.goto(`${BASE}/#/${rute}`);
@@ -121,20 +125,25 @@ async function dra(page, xs, x2, y = 400) {
     }, { xs, x2 });
     await page.waitForTimeout(700);
   };
-  await sveip('hjem', 350, 40); sjekk('Hjem → sveip venstre → Mat', (await hash()) === '#/kosthold', await hash());
-  await sveip('trening', 350, 40); sjekk('Bevegelse → sveip venstre → Ro', (await hash()) === '#/ro', await hash());
+  await sveip('hjem', 350, 40); sjekk('Hjem → sveip venstre → Ro', (await hash()) === '#/ro', await hash());
+  await sveip('trening', 350, 40); sjekk('Bevegelse → sveip venstre → Hjem', (await hash()) === '#/hjem', await hash());
   await sveip('trening', 40, 350); sjekk('Bevegelse → sveip høyre → Mat', (await hash()) === '#/kosthold', await hash());
   await sveip('sosialt', 40, 350); sjekk('Fellesskap → sveip høyre → Ro', (await hash()) === '#/ro', await hash());
-  await sveip('feed', 350, 40); sjekk('Feed → sveip venstre → Hjem', (await hash()) === '#/hjem', await hash());
+  await sveip('kosthold', 40, 350); sjekk('Mat → sveip høyre → blir stående (ytterst)', (await hash()) === '#/kosthold', await hash());
+  await sveip('feed', 350, 40); sjekk('Feed (direkte lenke) sveiper ikke — ute av stripa', (await hash()) === '#/feed', await hash());
 
   // 5) Sveip på det horisontale filter-brikke-feltet skal SCROLLE brikkene, ikke
-  //    navigere (ellers kapres karusellene). y≈430 treffer .bevfilter.
+  //    navigere (ellers kapres karusellene). y måles fra selve .bevfilter-raden
+  //    (hero-høyden over varierer med dagens kompass-budskap — aldri hardkod).
   await page.goto(`${BASE}/#/trening`);
   await page.reload();
   await page.waitForSelector('.bevfilter', { timeout: 20000 });
   await page.waitForTimeout(700);
   await page.evaluate(() => {
-    const y = 430; const el = document.elementFromPoint(195, y);
+    const rad = document.querySelector('.bevfilter:not(.bevfilter--under)');
+    const r = rad.getBoundingClientRect();
+    const y = Math.round(r.top + r.height / 2);
+    const el = document.elementFromPoint(195, y) || rad;
     const mk = (x) => new Touch({ identifier: 1, target: el, clientX: x, clientY: y });
     const ev = (type, x) => { const t = mk(x); el.dispatchEvent(new TouchEvent(type, { cancelable: true, bubbles: true, touches: type === 'touchend' ? [] : [t], changedTouches: [t] })); };
     ev('touchstart', 350); for (let i = 1; i <= 8; i++) ev('touchmove', 350 - 310 * i / 8); ev('touchend', 40);

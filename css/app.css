@@ -100,7 +100,7 @@
   --fare: var(--terrakotta);
   --radius: var(--radius-lg);
   --skygge: var(--shadow-sm);
-  --tabbar-h: 74px; /* klaring for den flytende glass-baren */
+  --tabbar-h: 70px; /* bunnbarens høyde over safe-area (padding + ikon + etikett) */
   font-size: 16px;
 }
 
@@ -414,6 +414,8 @@ body {
 .hjemdash-scroll > .innhold {
   flex: 1 1 auto; min-height: 0;
   overflow-y: auto; -webkit-overflow-scrolling: touch;
+  /* Klaring så innholdet ikke ender bak den faste, ugjennomsiktige bunnbaren. */
+  padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 16px);
   overscroll-behavior-y: contain;
 }
 /* Innholdet er selv en flex-kolonne; når det blir en scrollflate må barna
@@ -444,9 +446,11 @@ body {
 .hjemtopp__logo--inn { animation: hjemlogo-inn 0.26s ease 0.1s backwards; will-change: opacity; }
 @keyframes hjemlogo-ut { to { opacity: 0; } }
 @keyframes hjemlogo-inn { from { opacity: 0; } }
-/* Venstre gruppe (feed + tannhjul) og høyre gruppe (profil + varsler). Like
-   brede sider holder wordmarket sentrert. */
-.hjemtopp__side { display: flex; align-items: center; gap: 2px; }
+/* Venstre gruppe (tannhjul, evt. feed) og høyre gruppe (profil + varsler).
+   Sidene deler restbredden likt (flex: 1) så wordmarket står sentrert selv om
+   gruppene har ulikt antall ikoner. */
+.hjemtopp__side { display: flex; align-items: center; gap: 2px; flex: 1 1 0; min-width: 0; }
+.hjemtopp__side--h { justify-content: flex-end; }
 .hjemtopp__varsler { position: relative; }
 
 /* Slide-over: feeden glir inn fra venstre, varsler fra høyre (og hovedappen
@@ -968,8 +972,8 @@ body.enkeltside .innhold {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
-  /* Fullskjerm: innhold helt til bunnkanten (bak den flytende bunnbaren). */
-  padding-bottom: 0;
+  /* Klaring så innholdet ikke ender bak den faste, ugjennomsiktige bunnbaren. */
+  padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 16px);
 }
 /* Faneside-skallet: plass til det faste banneret øverst, og dagsfasebildet
    absolutt bak innholdet (samme proporsjoner/maske som på Min dag). */
@@ -1257,164 +1261,67 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 .oppmuntring__chevron .ikon { width: 18px; height: 18px; }
 
 /* ==========================================================================
-   Tab-bar — flytende «liquid glass»-kapsel à la Instagram: kun ikoner, frostet
-   glass, glidende glass-linse bak aktiv fane. Krymper litt ved scroll ned og
-   vokser tilbake ved scroll opp (js/app.js settOppTabKrymp).
+   Tab-bar — klassisk fast bunnbar (Mova BottomNav): hvit flate, hårlinje topp,
+   ikon + etikett per fane, aktiv fane i aksentfargen. Hjem (Takt) står i
+   midten som en hevet aksent-sirkel, med pilar-modulene rundt.
    ========================================================================== */
 .tabbar {
-  /* Glass-oppskriften (bakgrunn, kant-refleks-skygger, linse) er portet rett
-     fra fooontic sin «Liquid Glass Switcher». Selve forvrengnings-refraksjonen
-     (backdrop url-filter) er utelatt — den er laget for penens eksakte mål og
-     støttes uansett ikke i iOS Safari; frost + kant-refleksene bærer looken. */
-  --c-glass: #bbbbbc; --c-light: #fff; --c-dark: #000;
-  --reflex-l: 1; --reflex-d: 1;
   position: fixed;
-  /* Sitter lavt, tett over hjem-indikatoren som på Instagram. */
-  left: 50%; bottom: max(1px, calc(env(safe-area-inset-bottom) - 9px));
-  translate: -50% 0;
-  width: min(360px, calc(100% - 44px));
-  display: flex; align-items: center; justify-content: space-around;
-  gap: 2px; padding: 9px 8px;
-  border: none; border-radius: 999px;
-  background: color-mix(in srgb, var(--c-light) 40%, transparent);
-  -webkit-backdrop-filter: blur(8px) saturate(150%);
-  backdrop-filter: blur(8px) saturate(150%);
-  /* Myke, diffuse gløder uten skarpe kantlinjer — jevn, linjefri glassflate. */
-  box-shadow:
-    inset 0 12px 20px -14px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 90%), transparent),
-    inset 0 -10px 18px -16px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 25%), transparent),
-    0px 1px 5px 0px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 10%), transparent),
-    0px 6px 16px 0px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 8%), transparent);
+  left: 0; right: 0; bottom: 0;
+  padding: 8px 8px calc(env(safe-area-inset-bottom) + 10px);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: center;
+  background: var(--bg-kort);
+  border-top: 1px solid var(--kant);
   z-index: 20;
-  transform: scale(1); transform-origin: bottom center;
-  transition: transform 0.36s var(--ease-standard), box-shadow 0.3s ease;
 }
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .tabbar { background: color-mix(in srgb, var(--bg-kort) 92%, transparent); }
-}
-/* Diagonal spekulær-glans over øvre kant — antyder lys som treffer glasset
-   uten synlige kantlinjer. Ren maling, virker overalt (også iOS). */
-.tabbar::before {
-  content: ''; position: absolute; inset: 0; border-radius: inherit;
-  pointer-events: none; z-index: 0;
-  background-image: linear-gradient(158deg,
-    rgba(255, 255, 255, 0.28) 0%,
-    rgba(255, 255, 255, 0.05) 34%,
-    rgba(255, 255, 255, 0) 52%);
-}
-/* (1) Ekte refraksjon som progressiv forbedring: en dedikert flate med
-   SVG-forvrengning i backdrop-filter. Slås kun på der den faktisk rendres
-   (Chromium-motorer, via .kan-glassrefraksjon satt i js/app.js) — iOS Safari
-   støtter ikke url()-forvrengning i backdrop og beholder frost-fallbacken. */
-.tabbar__refraksjon {
-  position: absolute; inset: 0; border-radius: inherit;
-  pointer-events: none; z-index: 0;
-}
-@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  html.kan-glassrefraksjon .tabbar__refraksjon {
-    -webkit-backdrop-filter: url(#takt-glass);
-    backdrop-filter: url(#takt-glass);
-  }
-}
-/* Scroll ned → litt mindre; scroll opp → tilbake til full størrelse. */
-.tabbar--kompakt { transform: scale(0.88); }
-/* Vekst fra kompakt ved fanetrykk (vekkTabbar): spretten tilbake — vokser et
-   hint forbi full størrelse og lander, i samme lekne språk som resten.
-   Scroll-drevet krymp/vekst beholder den rolige standard-easingen over. */
-.tabbar--vekst { transition: transform 0.42s var(--ease-bounce), box-shadow 0.3s ease; }
 .tabbar__knapp {
-  position: relative; z-index: 1;
-  flex: 1 1 0; display: grid; place-items: center;
-  /* Alle ikoner i samme nesten-svarte mørkegrå — aktiv fane skilles kun ved
-     at ikonet er fylt (linje → fyll), ikke ved farge. */
-  padding: 10px 0; text-decoration: none; color: #1d1d1f;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 0;
+  text-decoration: none;
+  color: var(--dempet);
+  font-size: 11px;
+  font-weight: 500;
   -webkit-tap-highlight-color: transparent;
   transition: color var(--dur-fast) var(--ease-standard);
 }
+.tabbar__knapp--aktiv { color: var(--aksent); font-weight: 600; }
 .tabbar__ikon { line-height: 1; display: grid; place-items: center; }
-.tabbar__ikon .ikon { width: 25px; height: 25px; stroke-width: 2; }
-/* Aktiv fane: bytt til det fylte ikonet (linje-varianten skjules). */
+.tabbar__ikon .ikon { width: 22px; height: 22px; stroke-width: 2; transition: stroke-width var(--dur-fast) ease; }
+/* Aktiv fane: bytt til det fylte ikonet der det finnes (linje → fyll). */
 .tabikon--fyll { display: none; }
 .tabbar__knapp--aktiv .tabikon--linje { display: none; }
 .tabbar__knapp--aktiv .tabikon--fyll { display: block; }
-/* Aktivitet (puls) er ren strek uten fyll-variant → aktiv = kraftigere svart strek. */
-.tabbar__knapp--aktiv .tabikon--linje:only-child { display: block; stroke-width: 2.7; }
+/* Ro/Fellesskap er ren strek uten fyll-variant → aktiv = kraftigere strek. */
+.tabbar__knapp--aktiv .tabikon--linje:only-child { display: block; stroke-width: 2.4; }
 .tabbar__knapp--aktiv .tabbar__ikon { animation: tab-hopp 0.35s var(--ease-spring); }
-@keyframes tab-hopp { 0% { transform: scale(0.86); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
+@keyframes tab-hopp { 0% { transform: scale(0.86); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
 .tabbar__knapp--synker .tabbar__ikon { animation: synkpuls 1s ease-in-out infinite; }
-/* Glidende glass-linse bak aktiv fane (posisjon settes i flyttTabIndikator). */
-.tabbar__linse {
-  position: absolute; top: 5px; bottom: 5px; left: 0;
-  width: 78px; border-radius: 999px;
-  background-color: color-mix(in srgb, var(--c-glass) 50%, transparent);
-  /* (2) Sterkere spekulær-glans på linsen: lys topp, mørkere bunn → glassaktig. */
-  background-image: linear-gradient(155deg,
-    rgba(255, 255, 255, 0.4) 0%,
-    rgba(255, 255, 255, 0.08) 40%,
-    rgba(0, 0, 0, 0.05) 100%);
-  box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 10%), transparent),
-    inset 2px 1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 90%), transparent),
-    inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 80%), transparent),
-    inset -2px -6px 1px -5px color-mix(in srgb, var(--c-light) calc(var(--reflex-l) * 60%), transparent),
-    inset -1px 2px 3px -1px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 20%), transparent),
-    inset 0px -4px 1px -2px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 10%), transparent),
-    0px 3px 6px 0px color-mix(in srgb, var(--c-dark) calc(var(--reflex-d) * 8%), transparent);
-  opacity: 0; z-index: 0; pointer-events: none;
-  transition: transform 0.25s var(--ease-bounce), opacity 0.2s ease;
-  /* Eget kompositor-lag: gliden fortsetter jevnt selv når sidetegningen
-     blokkerer hovedtråden (fanetrykk tegner den nye siden midt i gliden). */
-  will-change: transform;
-}
-/* Mot ytterfanene ville sprett-easingen svinge pillen forbi målet og utenfor
-   kapselen — dit glir den med rett easing i stedet (klasse fra flyttTabIndikator),
-   så den bremser inn mot enden uten å noensinne stikke ut. */
-.tabbar__linse--rett { transition-timing-function: var(--ease-standard), ease; }
-/* (3) Trykk-effekt (klassen tabbar--trykk settes i settOppTabTrykk):
-   hele baren lysner et blunk som en screen-blanding. */
-.tabbar__flash {
-  position: absolute; inset: 0; border-radius: inherit;
-  pointer-events: none; z-index: 3;
-  background: #fff;
-  mix-blend-mode: screen;
-  opacity: 0;
-}
-.tabbar--trykk .tabbar__flash { animation: bar-flash 0.4s ease-out; }
-@keyframes bar-flash { 0% { opacity: 0.3; } 100% { opacity: 0; } }
-/* Trykk-puls: hele baren vokser et hakk og faller straks tilbake.
-   Bruker scale-egenskapen så den komponerer med transform (kompakt-krympen). */
-.tabbar--puls { animation: bar-puls 0.3s var(--ease-standard); }
-@keyframes bar-puls { 0%, 100% { scale: 1; } 35% { scale: 1.04; } }
-/* Langt hopp til en ytterfane: baren strekker seg i fartsretningen og smalner
-   et hint vertikalt — væske-aktig — som om den gir etter for pillen som
-   glir inn mot enden. Kun ytterfanene: der er det pillen ellers ville truffet
-   kanten. Klassene settes i flyttTabIndikator og ryddes på animationend. */
-.tabbar--strekk-hoyre, .tabbar--strekk-venstre { animation: bar-strekk 0.4s linear; }
-.tabbar--strekk-hoyre { transform-origin: left center; }
-.tabbar--strekk-venstre { transform-origin: right center; }
-/* Kompakt og strekk samtidig (scroll midt i strekken): kompakt-ankeret vinner,
-   så origin-byttet aldri kan re-ankre krympe-skalaen og flytte baren. */
-.tabbar--kompakt.tabbar--strekk-hoyre,
-.tabbar--kompakt.tabbar--strekk-venstre { transform-origin: bottom center; }
-/* Toppen ved 60% ≈ 0,24s = idet pillen lander (glidingen er 0,25s og innenfor
-   1px av målet like før slutt). Ease-in opp: bulingen bygger seg mens pillen
-   nærmer seg enden — ikke før. Myk retur etterpå. */
-@keyframes bar-strekk {
-  0% { scale: 1 1; animation-timing-function: cubic-bezier(0.55, 0, 0.8, 0.4); }
-  60% { scale: 1.05 0.965; animation-timing-function: cubic-bezier(0.25, 0.6, 0.45, 1); }
-  100% { scale: 1 1; }
-}
 @keyframes synkpuls { 50% { opacity: 0.4; } }
+/* Hjem-fanen (midten) — litt større, hevet aksent-sirkel over barkanten. */
+.tabbar__knapp--stor { color: var(--aksent); }
+.tabbar__knapp--stor .tabbar__ikon {
+  width: 48px; height: 48px; margin-top: -24px; border-radius: 50%;
+  background: var(--aksent); color: #fff;
+  box-shadow: var(--shadow-action);
+  border: 3px solid var(--bg-kort);
+}
+.tabbar__knapp--stor .tabbar__ikon .ikon { width: 24px; height: 24px; }
+.tabbar__knapp--stor.tabbar__knapp--aktiv .tabbar__ikon { background: var(--aksent-mork); }
 @media (prefers-reduced-motion: reduce) {
-  .tabbar--trykk .tabbar__flash,
-  .tabbar--puls, .tabbar--strekk-hoyre, .tabbar--strekk-venstre { animation: none; }
+  .tabbar__knapp--aktiv .tabbar__ikon { animation: none; }
 }
 
 /* Fokusmodus: skjul tab-bar under onboarding/review/kjøring */
 .fokusmodus .tabbar { display: none; }
 /* Under et feed→Hjem-drag må baren vises (og gli inn) selv om vi ennå står på
    feeden (fokusmodus). */
-.fokusmodus .tabbar--drag { display: flex; }
+.fokusmodus .tabbar--drag { display: grid; }
 body.fokusmodus { padding-bottom: 0; }
 .topp--kjor { display: flex; align-items: flex-start; gap: 10px; }
 
