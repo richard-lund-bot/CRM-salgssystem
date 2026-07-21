@@ -294,6 +294,9 @@ function navger() {
     tegn();
   }
   forrigeHash = location.hash;
+  // Sidetegningen kan ha endret lås-tilstanden (fane-/dash-laast) — la
+  // viewport-vakta måle på nytt (og evt. dytte) med ferske kroppsklasser.
+  _vaktPoke?.();
 }
 
 function oppdaterNav(rute) {
@@ -3935,6 +3938,7 @@ function byggVinduskort() {
 // safe-area-bunn (--safe-bunn-kjent) så bar-polstringen ikke kollapser.
 // Fokus-sider (feed/kjøring, uten bar) beholder vanlig lerret.
 let _vpGap = 0; let _vpDytt = 0; // leses av Vindusmål-kortet på Om-siden
+let _vaktPoke = null; // navger() pirker vakta rett etter hver sidetegning
 function settOppViewportVakt() {
   const rot = document.documentElement;
   const probe = el('div', { 'aria-hidden': 'true',
@@ -3944,24 +3948,29 @@ function settOppViewportVakt() {
   // Mikro-dytt: chromen «gjemmer seg» når dokumentet scroller (enkeltsidene
   // vipper tilstanden frisk av seg selv), men de LÅSTE sidene kan aldri
   // scrolle dokumentet — der blir spøkelses-chromen stående fra kald start.
-  // Kuren er det gamle Safari-trikset: gjør dokumentet så vidt scrollbart i
-  // ett blunk, dytt det 1px og tilbake, og mål på nytt. Maks tre forsøk per
-  // episode så et evt. uvirksomt dytt ikke løper løpsk; lerret-masken
-  // (html.vp-kort) dekker uansett mens tilstanden består.
+  // Kuren er det gamle Safari-trikset — men merk: overflow: hidden på body
+  // PROPAGERER til viewporten, så låsen må løftes i blunket, ellers er
+  // scroll-skrivingene no-ops (v1-fellen). Dyttet gjør dokumentet reelt
+  // scrollbart, scroller det et ekte stykke ned, holder to frames og rydder.
+  // Ved oppstart skjer det bak splash-skjermen (usynlig); maks tre forsøk
+  // per episode, og lerret-masken (html.vp-kort) dekker uansett imens.
   let dyttForsok = 0; let dytter = false;
   const dyttDokument = () => {
     if (dytter) return;
     dytter = true;
-    const forMin = document.body.style.minHeight;
-    document.body.style.minHeight = 'calc(100% + 2px)';
-    requestAnimationFrame(() => {
-      const s = document.scrollingElement || document.documentElement;
-      s.scrollTop = 1;
+    const b = document.body.style;
+    const forOv = b.overflow; const forMin = b.minHeight;
+    b.overflow = 'visible';            // stopp hidden-propagering til viewporten
+    b.minHeight = 'calc(100% + 80px)'; // gjør dokumentet reelt scrollbart
+    const s = document.scrollingElement || document.documentElement;
+    void s.scrollHeight;               // tving layout med de nye stilene
+    s.scrollTop = 72;                  // et ekte «scroll ned»
+    requestAnimationFrame(() => requestAnimationFrame(() => {
       s.scrollTop = 0;
-      document.body.style.minHeight = forMin;
+      b.overflow = forOv; b.minHeight = forMin;
       dytter = false;
       be(); // mål på nytt — vippet tilstanden?
-    });
+    }));
   };
   const mål = () => {
     planlagt = false;
@@ -3996,6 +4005,7 @@ function settOppViewportVakt() {
   // Belte og bukseseler: tilstanden kan vippe uten at noen av hendelsene over
   // fyrer. Billig puls (kun standalone) fanger de stille byttene.
   if (navigator.standalone === true) setInterval(be, 1500);
+  _vaktPoke = be;
   mål();
 }
 
