@@ -3901,6 +3901,8 @@ function byggVinduskort() {
       const r = bar.getBoundingClientRect();
       ut.push(`bunnbar: topp ${Math.round(r.top)} → bunn ${Math.round(r.bottom)} (vindu ${window.innerHeight})`);
     }
+    const rotStil = getComputedStyle(document.documentElement);
+    ut.push(`vp-gap: ${_vpGap}px · safe-bunn-kjent: ${rotStil.getPropertyValue('--safe-bunn-kjent').trim() || '–'}`);
     ut.push(navigator.userAgent);
     return ut;
   };
@@ -3915,6 +3917,52 @@ function byggVinduskort() {
   window.visualViewport?.addEventListener('resize', paa);
   kort.append(liste);
   return kort;
+}
+
+// iOS 26-vakt: i standalone kan WebKit vippe layout-viewporten inn i en
+// tilstand der den tror ~62pt sammenleggbar nettleser-chrome finnes (WebKit
+// 158055568): innerHeight faller under skjermhøyden, fixed bottom: 0 ankres
+// for høyt og env(safe-area-inset-bottom) kollapser til 0. Prosent-kjeden på
+// de låste sidene fjerner kald-start-tilfellene, men tilstanden kan fortsatt
+// slå inn under navigasjon frem/tilbake. I standalone finnes det ALDRI ekte
+// chrome, så innerHeight < skjermhøyde er et sikkert kjennetegn: vakta måler
+// avviket og kompenserer via --vp-gap (skyver baren ned til den fysiske
+// bunnkanten), og husker siste kjente safe-area-bunn (--safe-bunn-kjent) så
+// bar-polstringen ikke kollapser i den gale tilstanden.
+let _vpGap = 0; // leses av Vindusmål-kortet på Om-siden
+function settOppViewportVakt() {
+  const rot = document.documentElement;
+  const probe = el('div', { 'aria-hidden': 'true',
+    style: 'position:fixed;visibility:hidden;pointer-events:none;height:0;padding-bottom:env(safe-area-inset-bottom)' });
+  document.body.append(probe);
+  let planlagt = false;
+  const mål = () => {
+    planlagt = false;
+    // Husk den ekte safe-area-bunnen fra en frisk tilstand (34pt o.l.) — i
+    // spøkelses-tilstanden rapporterer env() 0 og da trengs den lagrede.
+    const safe = parseFloat(getComputedStyle(probe).paddingBottom) || 0;
+    if (safe > 0) rot.style.setProperty('--safe-bunn-kjent', `${safe}px`);
+    let gap = 0;
+    // Kun stående standalone på full skjermbredde (utelukker iPad-splitt og
+    // liggende, der screen.height ikke kan sammenlignes rett frem).
+    if (navigator.standalone === true && window.innerWidth === screen.width) {
+      const avvik = screen.height - window.innerHeight;
+      if (avvik > 0 && avvik <= 120) gap = avvik;
+    }
+    _vpGap = gap;
+    rot.style.setProperty('--vp-gap', `${gap}px`);
+  };
+  const be = () => { if (!planlagt) { planlagt = true; requestAnimationFrame(mål); } };
+  window.addEventListener('resize', be);
+  window.addEventListener('orientationchange', be);
+  window.addEventListener('pageshow', be);
+  window.addEventListener('hashchange', be); // brukeren ser tilstanden vippe ved frem/tilbake-navigasjon
+  window.visualViewport?.addEventListener('resize', be);
+  document.addEventListener('visibilitychange', be);
+  // Belte og bukseseler: tilstanden kan vippe uten at noen av hendelsene over
+  // fyrer. Billig puls (kun standalone) fanger de stille byttene.
+  if (navigator.standalone === true) setInterval(be, 1500);
+  mål();
 }
 
 // --- Tab-bar — klassisk fast bunnbar: hvit flate, hårlinje topp, ikon +
@@ -4111,6 +4159,7 @@ async function start() {
   // starter på toppen, mens en fane man kommer tilbake til gjenoppretter posisjon.
   window.addEventListener('hashchange', navger);
   settOppSideSveip(); // sveip mellom hovedsidene (og feeden) — én gang på #app
+  settOppViewportVakt(); // iOS 26: kompenser spøkelses-chromen (grå stripe under baren)
 
   // Skysync: fang ev. magic-link-retur, og på en ny enhet som nettopp logget
   // inn — hent ned profilen før vi avgjør om onboarding skal kjøre.

@@ -101,6 +101,13 @@
   --radius: var(--radius-lg);
   --skygge: var(--shadow-sm);
   --tabbar-h: 70px; /* bunnbarens høyde over safe-area (padding + ikon + etikett) */
+  /* iOS 26-spøkelses-chromen (se settOppViewportVakt i js/app.js): når WebKit
+     vipper layout-viewporten inn i kort-tilstanden, settes --vp-gap til
+     avviket (baren skyves ned til den fysiske bunnkanten) og env(safe-area-
+     inset-bottom) kollapser til 0 — derfor bruker bar/klaring --safe-bunn,
+     som faller tilbake på siste kjente verdi (--safe-bunn-kjent, satt i JS). */
+  --vp-gap: 0px;
+  --safe-bunn: max(env(safe-area-inset-bottom, 0px), var(--safe-bunn-kjent, 0px));
   font-size: 16px;
 }
 
@@ -220,7 +227,7 @@ html, body {
 
 body {
   min-height: 100dvh;
-  padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 16px);
+  padding-bottom: calc(var(--tabbar-h) + var(--safe-bunn) + 16px);
 }
 
 .laster {
@@ -415,7 +422,7 @@ body {
   flex: 1 1 auto; min-height: 0;
   overflow-y: auto; -webkit-overflow-scrolling: touch;
   /* Klaring så innholdet ikke ender bak den faste, ugjennomsiktige bunnbaren. */
-  padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 16px);
+  padding-bottom: calc(var(--tabbar-h) + var(--safe-bunn) + 16px);
   overscroll-behavior-y: contain;
 }
 /* Innholdet er selv en flex-kolonne; når det blir en scrollflate må barna
@@ -973,7 +980,7 @@ body.enkeltside .topp { flex: 0 0 auto; }
 body.enkeltside .innhold {
   flex: 1 1 auto;
   justify-content: safe center;
-  padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 16px);
+  padding-bottom: calc(var(--tabbar-h) + var(--safe-bunn) + 16px);
 }
 .hjem-scroll {
   height: 100%;
@@ -982,7 +989,7 @@ body.enkeltside .innhold {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
   /* Klaring så innholdet ikke ender bak den faste, ugjennomsiktige bunnbaren. */
-  padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 16px);
+  padding-bottom: calc(var(--tabbar-h) + var(--safe-bunn) + 16px);
 }
 /* Faneside-skallet: plass til det faste banneret øverst, og dagsfasebildet
    absolutt bak innholdet (samme proporsjoner/maske som på Min dag). */
@@ -1276,8 +1283,11 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
    ========================================================================== */
 .tabbar {
   position: fixed;
-  left: 0; right: 0; bottom: 0;
-  padding: 8px 8px calc(env(safe-area-inset-bottom) + 10px);
+  left: 0; right: 0;
+  /* --vp-gap > 0 = spøkelses-tilstanden: skyv baren ned til den fysiske
+     bunnkanten (layout-viewporten slutter for høyt). Ellers 0 = vanlig. */
+  bottom: calc(0px - var(--vp-gap));
+  padding: 8px 8px calc(var(--safe-bunn) + 10px);
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   align-items: center;
