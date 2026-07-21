@@ -3925,10 +3925,15 @@ function byggVinduskort() {
 // for høyt og env(safe-area-inset-bottom) kollapser til 0. Prosent-kjeden på
 // de låste sidene fjerner kald-start-tilfellene, men tilstanden kan fortsatt
 // slå inn under navigasjon frem/tilbake. I standalone finnes det ALDRI ekte
-// chrome, så innerHeight < skjermhøyde er et sikkert kjennetegn: vakta måler
-// avviket og kompenserer via --vp-gap (skyver baren ned til den fysiske
-// bunnkanten), og husker siste kjente safe-area-bunn (--safe-bunn-kjent) så
-// bar-polstringen ikke kollapser i den gale tilstanden.
+// chrome, så innerHeight < skjermhøyde er et sikkert kjennetegn.
+//
+// Kompensasjonen kan IKKE flytte baren ned: WebKit klipper all element-
+// tegning ved den falske viewport-bunnen (bevist på enhet — en nedskjøvet
+// bar mistet etikettene). Kun lerretet (html-bakgrunnen) males helt ned.
+// Vakta setter derfor html.vp-kort, som farger lerretet som bunnbaren så
+// stripen under ser ut som en forlengelse av den — og husker siste kjente
+// safe-area-bunn (--safe-bunn-kjent) så bar-polstringen ikke kollapser.
+// Fokus-sider (feed/kjøring, uten bar) beholder vanlig lerret.
 let _vpGap = 0; // leses av Vindusmål-kortet på Om-siden
 function settOppViewportVakt() {
   const rot = document.documentElement;
@@ -3950,7 +3955,8 @@ function settOppViewportVakt() {
       if (avvik > 0 && avvik <= 120) gap = avvik;
     }
     _vpGap = gap;
-    rot.style.setProperty('--vp-gap', `${gap}px`);
+    rot.style.setProperty('--vp-gap', `${gap}px`); // diagnostikk (Vindusmål)
+    rot.classList.toggle('vp-kort', gap > 0 && !document.body.classList.contains('fokusmodus'));
   };
   const be = () => { if (!planlagt) { planlagt = true; requestAnimationFrame(mål); } };
   window.addEventListener('resize', be);
