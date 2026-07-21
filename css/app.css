@@ -1276,6 +1276,20 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
   border-top: 1px solid var(--kant);
   z-index: 20;
 }
+/* «Skjørt» under baren: iOS 26 feilberegner tidvis bunn-viewporten (WebKit
+   158055568 — «bottom gap on layouts with viewport-sized fixed containers»),
+   så bottom: 0 kan lande et stykke over den fysiske skjermkanten og etterlate
+   en bar stripe. Flaten under maler stripa i barens farge så baren alltid ser
+   ut til å gå helt til bunnen; med korrekt viewport tegnes den utenfor skjermen
+   og er usynlig. */
+.tabbar::after {
+  content: '';
+  position: absolute;
+  top: 100%; left: 0; right: 0;
+  height: 40vh;
+  background: var(--bg-kort);
+  pointer-events: none;
+}
 .tabbar__knapp {
   display: flex;
   flex-direction: column;
