@@ -3866,7 +3866,55 @@ function visOm() {
       el('p', { class: 'dempet' }, `Motivasjon: ${(profil.motivasjon?.valg || []).join(', ') || '–'}`),
       el('p', { class: 'dempet' }, `Ukemål ${profil.ukemaal}`),
     ),
+    byggVinduskort(),
   );
+}
+
+// Vindusmål på Om-siden: viewport-/safe-area-tall rett fra enheten, til å
+// feilsøke plattform-oppførsel (f.eks. iOS-26-gapet under bunnbaren) uten
+// devtools — et skjermbilde av kortet er nok.
+function byggVinduskort() {
+  const kort = el('div', { class: 'kort' }, el('h2', {}, 'Vindusmål'));
+  // Probene måler det CSS faktisk resolver: env(safe-area-inset-*) og
+  // dvh/svh/lvh kan ikke leses direkte fra JS.
+  const probe = el('div', { style: 'position:absolute;visibility:hidden;pointer-events:none;height:0' });
+  const mål = [
+    ['safe-area topp', 'paddingTop', 'env(safe-area-inset-top)'],
+    ['safe-area bunn', 'paddingBottom', 'env(safe-area-inset-bottom)'],
+    ['100dvh', 'height', '100dvh'], ['100svh', 'height', '100svh'], ['100lvh', 'height', '100lvh'],
+  ];
+  const rader = () => {
+    const vv = window.visualViewport;
+    const ut = [
+      `standalone: ${navigator.standalone === true ? 'ja' : 'nei'} · pixelratio ${window.devicePixelRatio}`,
+      `screen: ${screen.width} × ${screen.height}`,
+      `innerHeight: ${window.innerHeight} · clientHeight: ${document.documentElement.clientHeight}`,
+      vv ? `visualViewport: ${Math.round(vv.width)} × ${Math.round(vv.height)} (offsetTop ${Math.round(vv.offsetTop)})` : 'visualViewport: –',
+    ];
+    for (const [navn, prop, verdi] of mål) {
+      probe.style.height = '0'; probe.style.paddingTop = '0'; probe.style.paddingBottom = '0';
+      probe.style[prop] = verdi;
+      ut.push(`${navn}: ${Math.round(parseFloat(getComputedStyle(probe)[prop]) || 0)}px`);
+    }
+    const bar = document.querySelector('.tabbar');
+    if (bar) {
+      const r = bar.getBoundingClientRect();
+      ut.push(`bunnbar: topp ${Math.round(r.top)} → bunn ${Math.round(r.bottom)} (vindu ${window.innerHeight})`);
+    }
+    ut.push(navigator.userAgent);
+    return ut;
+  };
+  document.body.append(probe);
+  const liste = el('div', {});
+  const tegn = () => { tom(liste); for (const r of rader()) liste.append(el('p', { class: 'dempet dempet--tett', style: 'word-break:break-word' }, r)); };
+  tegn();
+  // Følg med mens siden er åpen: rotasjon/resize/viewport-endringer oppdaterer
+  // tallene live. Ryddes når kortet forlater DOM-en.
+  const paa = () => { if (!kort.isConnected) { window.removeEventListener('resize', paa); window.visualViewport?.removeEventListener('resize', paa); probe.remove(); return; } tegn(); };
+  window.addEventListener('resize', paa);
+  window.visualViewport?.addEventListener('resize', paa);
+  kort.append(liste);
+  return kort;
 }
 
 // --- Tab-bar — klassisk fast bunnbar: hvit flate, hårlinje topp, ikon +
