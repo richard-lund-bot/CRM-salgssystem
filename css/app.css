@@ -946,11 +946,20 @@ body.sideglir { overflow: hidden; }
    dermed på ekte viewport-topp — bakgrunnsbildet ligger bak banneren uten
    negative posisjoner (iOS maler ikke innhold over scroll-origo), og ved
    overskroll glir bildet frem fra bak headeren. */
-body.fane-laast { height: 100dvh; overflow: hidden; padding-bottom: 0; }
+/* Låste sider bruker prosent-kjeden (html → body → #app), IKKE 100dvh: på
+   iOS 26 (verifisert på 26.5.2, standalone) tror WebKit at webappen har
+   ~62pt sammenleggbar nettleser-chrome (100svh < 100lvh), og en body
+   dimensjonert med viewport-enheter vipper layouten over i den korte
+   tilstanden — fixed bottom: 0 ankres da 62pt over den fysiske bunnkanten
+   og etterlater en grå stripe under bunnbaren (jf. WebKit 158055568,
+   «bottom gap on layouts with viewport-sized fixed containers»). Prosent
+   følger den ekte ICB-en og trigger ikke feilen. */
+html { height: 100%; }
+body.fane-laast { height: 100%; overflow: hidden; padding-bottom: 0; }
 body.fane-laast #app { height: 100%; }
 /* Pilar-/Hjem-/matsidene låser body på samme vis, så .hjemdash-scroll blir en
    ekte indre scrollflate (fast .hjemtopp, content bouncer). */
-body.dash-laast { height: 100dvh; overflow: hidden; padding-bottom: 0; }
+body.dash-laast { height: 100%; overflow: hidden; padding-bottom: 0; }
 body.dash-laast #app { height: 100%; }
 body.fane-laast .hjembanner { position: fixed; top: 0; left: 0; right: 0; }
 /* Enkeltsider (skjerm()/Mitt kompass): normal vindusscroll, men #app fyller
