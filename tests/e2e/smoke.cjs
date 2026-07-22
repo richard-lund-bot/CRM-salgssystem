@@ -195,6 +195,7 @@ const FANER = ['kosthold', 'trening', 'hjem', 'sosialt', 'ro']; // bunnbarens re
   sjekk('Oppskrifter viser kort og filtre', (await page.locator('.oppkort').count()) > 0 && (await page.locator('.oppfilter').count()) === 6);
   await page.goto(BASE + '/#/oppskrift?id=linsesalat-ovnsbakte');
   await page.waitForSelector('.oppdetalj', { timeout: 20000 });
+  sjekk('Oppskriften åpner som flytende kort med kryss', (await page.locator('.oppmodal__kort').count()) === 1 && (await page.locator('.oppmodal__lukk').count()) === 1);
   sjekk('Oppskrift-detalj viser steg og handlinger', (await page.locator('.oppsteg__rad').count()) === 4 && (await page.locator('.oppdetalj__handling').count()) === 2);
   await page.goto(BASE + '/#/ukesplan');
   await page.waitForSelector('.planrader', { timeout: 20000 });

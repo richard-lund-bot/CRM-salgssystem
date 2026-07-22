@@ -1374,6 +1374,59 @@ body.fane-laast .innhold { position: relative; z-index: 1; }
 body.fokusmodus { padding-bottom: 0; }
 .topp--kjor { display: flex; align-items: flex-start; gap: 10px; }
 
+/* ==========================================================================
+   Oppskrift-modal — flytende kort som glir opp fra bunnen over den dimmede
+   oppskriftslista. Kryss (sticky) og trykk på skyggen lukker.
+   ========================================================================== */
+.oppmodal {
+  position: fixed; inset: 0;
+  z-index: 50; /* over bunnbaren (20), under bunnarkene (60 — ukesplan/handleliste åpner OVER kortet) */
+  background: rgba(17, 38, 77, 0);
+  display: flex; align-items: flex-end; justify-content: center;
+  transition: background 0.3s ease;
+}
+.oppmodal--apen { background: rgba(17, 38, 77, 0.42); }
+.oppmodal--lukker { background: rgba(17, 38, 77, 0); }
+.oppmodal__kort {
+  position: relative;
+  width: calc(100% - 20px);
+  max-width: 560px;
+  max-height: calc(100% - env(safe-area-inset-top) - 42px);
+  margin: 0 10px calc(env(safe-area-inset-bottom) + 10px);
+  background: var(--bg);
+  border-radius: var(--radius-2xl);
+  box-shadow: 0 10px 44px rgba(20, 28, 20, 0.35);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  transform: translateY(103%);
+  transition: transform 0.52s var(--ease-out);
+}
+.oppmodal--apen .oppmodal__kort { transform: translateY(0); }
+.oppmodal--lukker .oppmodal__kort { transform: translateY(103%); transition-duration: 0.3s; transition-timing-function: ease-in; }
+/* Krysset ligger sticky øverst til høyre (alltid i rekkevidde ved scroll);
+   det negative bunnmarginet gjør at hero-bildet starter på kortets topp. */
+.oppmodal__lukk {
+  position: sticky; top: 12px; z-index: 3;
+  display: flex; /* blokk-nivå så margin-left: auto skyver den til høyre (ikonknapp er ellers inline) */
+  margin: 12px 12px -48px auto; /* 36px knapp + 12px topp — heroen starter på kortets topp */
+  background: color-mix(in srgb, var(--bg-kort) 90%, transparent);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  box-shadow: var(--shadow-sm);
+}
+/* Bokmerket flyter over hero-bildet i motsatt hjørne (scroller med). */
+.oppmodal__merke {
+  position: absolute; top: 12px; left: 12px; z-index: 2;
+  background: color-mix(in srgb, var(--bg-kort) 90%, transparent);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  box-shadow: var(--shadow-sm);
+}
+/* Innholdet gjenbruker oppdetalj-stilene, men uten side-klaring mot bunnbaren. */
+.oppmodal .oppdetalj { padding: 0 0 calc(env(safe-area-inset-bottom) + 20px); }
+@media (prefers-reduced-motion: reduce) {
+  .oppmodal, .oppmodal__kort { transition: none; }
+}
+
 /* Sticky bunn-knapp (generator/review) */
 .fast-bunn {
   position: sticky;

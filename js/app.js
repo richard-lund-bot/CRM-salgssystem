@@ -1192,25 +1192,26 @@ function visOppskrifterSkjerm(mount) {
   tegn();
 }
 
-// --- Oppskrift-detalj ------------------------------------------------------
+// --- Oppskrift-detalj — flytende kort over oppskriftslista -----------------
+// Oppskriften er ikke lenger en egen side, men et kort som glir opp fra
+// bunnen over en dimmet oppskriftsliste, med kryss i hjørnet (og trykk på
+// skyggen) for å lukke. Ruten #/oppskrift?id= består, så dyplenker fra
+// Mat-hjem/ukesplan/handleliste virker — lukking går tilbake dit man kom fra.
 function visOppskriftSkjerm(mount) {
   if (!hentProfil()) { location.hash = '#/hjem'; return; }
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
   const o = oppskriftMedId(params.get('id') || '');
   if (!o) { location.hash = '#/oppskrifter'; return; }
 
-  const merke = el('button', { class: 'ikonknapp ikonknapp--plain' + (erFavoritt(o.id) ? ' er-fav' : ''),
+  // Bakteppe: selve oppskriftslista, dimmet bak kortet.
+  visOppskrifterSkjerm(mount);
+
+  const merke = el('button', { class: 'ikonknapp oppmodal__merke' + (erFavoritt(o.id) ? ' er-fav' : ''),
     type: 'button', 'aria-label': 'Lagre',
     onclick: () => { const på = veksleFavoritt(o.id); merke.classList.toggle('er-fav', på); vibrer(); varsle(på ? 'Lagret' : 'Fjernet', { ikon: 'bokmerke' }); } },
     ikon('bokmerke'));
 
-  tom(mount);
-  const topp = el('header', { class: 'hjemtopp hjemtopp--detalj' },
-    el('button', { class: 'ikonknapp ikonknapp--plain', type: 'button', 'aria-label': 'Tilbake', onclick: () => history.back() }, ikon('pilvenstre')),
-    el('span', { class: 'hjemtopp__logo' }, 'mat', el('span', { class: 'wordmark__prikk' }, '.')),
-    merke);
   const main = el('main', { class: 'innhold oppdetalj' });
-  mount.append(el('div', { class: 'hjemdash-scroll' }, topp, main));
 
   // Meta-chips (tid, porsjoner, første tag).
   const metaChips = [
@@ -1267,6 +1268,26 @@ function visOppskriftSkjerm(mount) {
     el('p', { class: 'oppdetalj__beskrivelse' }, o.beskrivelse),
     el('div', { class: 'oppdetalj__handlinger' }, planKnapp, handleKnapp),
     ingrKort, stegKort, bzRad);
+
+  // Kortet + skyggen. Krysset ligger sticky (alltid i rekkevidde ved scroll),
+  // bokmerket flyter over hero-bildet. Lukking glir kortet ned og går tilbake.
+  let lukker = false;
+  const lukk = () => {
+    if (lukker) return;
+    lukker = true;
+    modal.classList.remove('oppmodal--apen');
+    modal.classList.add('oppmodal--lukker');
+    setTimeout(() => {
+      if (history.length > 1) history.back(); else location.hash = '#/oppskrifter';
+    }, REDUSERT() ? 0 : 300);
+  };
+  const lukkeknapp = el('button', { class: 'ikonknapp oppmodal__lukk', type: 'button', 'aria-label': 'Lukk', onclick: lukk }, ikon('kryss'));
+  const kort = el('div', { class: 'oppmodal__kort', role: 'dialog', 'aria-label': o.navn }, lukkeknapp, merke, main);
+  const modal = el('div', { class: 'oppmodal' }, kort);
+  modal.addEventListener('click', (ev) => { if (ev.target === modal) lukk(); });
+  mount.append(modal);
+  if (REDUSERT()) modal.classList.add('oppmodal--apen');
+  else requestAnimationFrame(() => requestAnimationFrame(() => modal.classList.add('oppmodal--apen')));
 }
 
 // Bunnark: legg en oppskrift i ukesplanen (velg uke + måltid + dag).
