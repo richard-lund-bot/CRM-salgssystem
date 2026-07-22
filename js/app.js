@@ -232,7 +232,7 @@ function navger() {
   if (rute === 'okter' && /[?&]start=/.test(location.hash)) settOpprinnelse(forrigeHash || '#/trening');
   // Et åpent bunnark/flytende kort hører til siden man forlot — lukk det ved
   // ekte navigasjon så det ikke blir hengende som et overlegg på neste skjerm.
-  if (byttet) { document.querySelector('.ark')?.remove(); document.querySelector('.oppmodal')?.remove(); }
+  if (byttet) { document.querySelector('.ark')?.remove(); document.querySelector('.oppmodal:not(.oppmodal--minimert)')?.remove(); }
   // Slide-over: feed/varsler glir inn som paneler i stedet for et umiddelbart
   // sidebytte. Feed ligger til venstre, varsler til høyre; på vei UT av et panel
   // kommer hovedappen tilbake fra motsatt side.
@@ -1197,22 +1197,73 @@ function visOppskrifterSkjerm(mount) {
 // overlegg på body, som bunnarkene — ingen re-tegning). Kryss (sticky) og
 // trykk på skyggen lukker; navger fjerner et åpent kort ved ekte navigasjon.
 function åpneFlytkort({ innhold, aria, hjorne = null, klasse = '', vedLukk = null }) {
+  document.querySelector('.oppmodal')?.remove(); // maks ett kort (også minimerte)
   let lukker = false;
   const lukk = () => {
     if (lukker) return;
     lukker = true;
-    modal.classList.remove('oppmodal--apen');
+    modal.classList.remove('oppmodal--apen', 'oppmodal--minimert');
     modal.classList.add('oppmodal--lukker');
     setTimeout(() => { modal.remove(); vedLukk?.(); }, REDUSERT() ? 0 : 300);
   };
+  // Sveip ned minimerer i stedet for å forkaste: kortet (med scroll, avkryssede
+  // ingredienser osv.) blir liggende i DOM-en, og en markør nede til venstre
+  // henter det opp igjen. Krysset/skyggen lukker for godt.
+  const minimer = () => {
+    modal.classList.remove('oppmodal--apen');
+    modal.classList.add('oppmodal--minimert');
+  };
+  const gjenåpne = () => {
+    modal.classList.remove('oppmodal--minimert');
+    if (REDUSERT()) modal.classList.add('oppmodal--apen');
+    else requestAnimationFrame(() => requestAnimationFrame(() => modal.classList.add('oppmodal--apen')));
+  };
   const lukkeknapp = el('button', { class: 'ikonknapp oppmodal__lukk', type: 'button', 'aria-label': 'Lukk', onclick: lukk }, ikon('kryss'));
   const kort = el('div', { class: 'oppmodal__kort', role: 'dialog', 'aria-label': aria }, lukkeknapp, hjorne, innhold);
-  const modal = el('div', { class: 'oppmodal' + (klasse ? ` ${klasse}` : '') }, kort);
+  const markor = el('button', { class: 'oppmodal__markor', type: 'button', 'aria-label': `Åpne ${aria}`, onclick: gjenåpne },
+    ikon('chevronsopp', 'ikon oppmodal__markorpil'),
+    el('span', { class: 'oppmodal__markortekst' }, aria),
+    el('span', { class: 'oppmodal__markorlukk', role: 'button', 'aria-label': 'Fjern',
+      onclick: (ev) => { ev.stopPropagation(); lukk(); } }, ikon('kryss')));
+  const modal = el('div', { class: 'oppmodal' + (klasse ? ` ${klasse}` : '') }, kort, markor);
   modal.addEventListener('click', (ev) => { if (ev.target === modal) lukk(); });
+  // Dra-ned-gest: engasjerer bare når kortet står på scrolltoppen og draget
+  // går nedover — ellers eier kortets egen scroll bevegelsen. Følger fingeren
+  // 1:1; slipp forbi terskelen minimerer, ellers spretter kortet tilbake.
+  let ty = null; let drar = false; let dy = 0;
+  kort.addEventListener('touchstart', (ev) => {
+    ty = ev.touches[0].clientY; dy = 0; drar = false;
+  }, { passive: true });
+  kort.addEventListener('touchmove', (ev) => {
+    if (ty == null) return;
+    const d = ev.touches[0].clientY - ty;
+    if (!drar) {
+      if (d > 8 && kort.scrollTop <= 0) { drar = true; kort.style.transition = 'none'; }
+      else if (d < -4) { ty = null; return; } // oppover → vanlig scroll
+    }
+    if (drar) {
+      dy = Math.max(0, d);
+      ev.preventDefault();
+      kort.style.transform = `translateY(${dy}px)`;
+    }
+  }, { passive: false });
+  const slippDra = () => {
+    if (!drar) { ty = null; return; }
+    kort.style.transition = ''; kort.style.transform = '';
+    if (dy > 110) minimer(); // klassebyttet glir kortet ned fra dra-posisjonen
+    drar = false; ty = null; dy = 0;
+  };
+  kort.addEventListener('touchend', slippDra, { passive: true });
+  kort.addEventListener('touchcancel', slippDra, { passive: true });
   document.body.append(modal);
   if (REDUSERT()) modal.classList.add('oppmodal--apen');
   else requestAnimationFrame(() => requestAnimationFrame(() => modal.classList.add('oppmodal--apen')));
   return { lukk, modal };
+}
+
+// Frostet etikett-pille til kort-banneret (som streak-pillene på hjemme-heroen).
+function kortBlabel(ikonNavn, tekst) {
+  return el('span', { class: 'oppmodal__blabel' }, ikon(ikonNavn, 'ikon'), el('span', {}, tekst));
 }
 
 // --- Oppskrift-detalj — flytende kort --------------------------------------
@@ -1237,12 +1288,18 @@ function åpneOppskriftKort(o) {
 
   const main = el('main', { class: 'innhold oppdetalj' });
 
-  // Meta-chips (tid, porsjoner, første tag).
-  const metaChips = [
-    el('span', { class: 'matmeta matmeta--pille' }, ikon('klokke', 'ikon matmeta__ikon'), `${o.tidMin} min`),
-    el('span', { class: 'matmeta matmeta--pille' }, ikon('personer', 'ikon matmeta__ikon'), `${o.porsjoner} porsjoner`),
-    ...oppskriftTags(o, 1).map((t) => el('span', { class: 'matmeta matmeta--pille' }, ikon(t.ikon, 'ikon matmeta__ikon'), t.navn)),
-  ];
+  // Banner kant til kant i kortet: oppskriftens hovedbilde (fargeflate + emoji)
+  // med tittelen og hovedinfoen som frostede etiketter — samme språk som
+  // hjemme-heroen.
+  const banner = el('div', { class: 'oppmodal__banner' },
+    matBilde(o, 'matbilde--banner'),
+    el('div', { class: 'oppmodal__bannerscrim', 'aria-hidden': 'true' }),
+    el('div', { class: 'oppmodal__bannertekst' },
+      el('h1', { class: 'oppmodal__bannertittel' }, o.navn),
+      el('div', { class: 'oppmodal__blabels' },
+        kortBlabel('klokke', `${o.tidMin} min`),
+        kortBlabel('personer', `${o.porsjoner} porsjoner`),
+        ...oppskriftTags(o, 1).map((t) => kortBlabel(t.ikon, t.navn)))));
 
   // Handlingsknapper.
   const planKnapp = el('button', { class: 'knapp oppdetalj__handling', type: 'button',
@@ -1286,9 +1343,7 @@ function åpneOppskriftKort(o) {
   const bzRad = bz.length ? el('div', { class: 'matprinsipp matprinsipp--kompakt' }, ...bz.map((p) => prinsippKort(p, 'matprinsipp__kort--kompakt'))) : null;
 
   main.append(
-    el('div', { class: 'oppdetalj__bilde' }, matBilde(o, 'matbilde--hero')),
-    el('h1', { class: 'oppdetalj__navn' }, o.navn),
-    el('div', { class: 'oppdetalj__meta' }, ...metaChips),
+    banner,
     el('p', { class: 'oppdetalj__beskrivelse' }, o.beskrivelse),
     el('div', { class: 'oppdetalj__handlinger' }, planKnapp, handleKnapp),
     ingrKort, stegKort, bzRad);
@@ -1311,12 +1366,22 @@ function åpneOppskriftKort(o) {
 // aapneOkt/?start=-lenkene åpner kortet over gjeldende side i stedet for å
 // navigere til #/review (som fortsatt finnes for direkte-URL-er).
 function åpneOktKort(okt) {
+  // Banner kant til kant: samme naturbilde som hjemme-headeren (dagsfasen),
+  // med øktnavnet og hovedinfoen som frostede etiketter.
+  const fase = dagsfase(new Date().getHours());
+  const banner = el('div', {
+    class: 'oppmodal__banner oppmodal__banner--okt',
+    style: `background-image:url('icons/brand/hero-${fase}.webp')`,
+  },
+    el('div', { class: 'oppmodal__bannerscrim', 'aria-hidden': 'true' }),
+    el('div', { class: 'oppmodal__bannertekst' },
+      el('h1', { class: 'oppmodal__bannertittel' }, okt.navn),
+      el('div', { class: 'oppmodal__blabels' },
+        kortBlabel('klokke', `${okt.varighetMin} min`),
+        okt.utstyr?.length ? kortBlabel('vekt', okt.utstyr.join(', ')) : null,
+        okt.kategori && KATEGORI_NAVN[okt.kategori] ? kortBlabel('loper', KATEGORI_NAVN[okt.kategori]) : null)));
   const main = el('main', { class: 'innhold oppdetalj' },
-    el('h1', { class: 'oppdetalj__navn' }, okt.navn),
-    el('div', { class: 'oppdetalj__meta' },
-      el('span', { class: 'matmeta matmeta--pille' }, ikon('klokke', 'ikon matmeta__ikon'), `${okt.varighetMin} min`),
-      okt.utstyr?.length ? el('span', { class: 'matmeta matmeta--pille' }, ikon('vekt', 'ikon matmeta__ikon'), okt.utstyr.join(', ')) : null,
-    ),
+    banner,
     okt.beskrivelse ? el('p', { class: 'oppdetalj__beskrivelse' }, okt.beskrivelse) : null,
     ...byggReviewInnhold(okt),
     el('div', { class: 'fast-bunn' },

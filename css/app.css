@@ -1423,10 +1423,63 @@ body.fokusmodus { padding-bottom: 0; }
 }
 /* Innholdet gjenbruker oppdetalj-stilene, men uten side-klaring mot bunnbaren. */
 .oppmodal .oppdetalj { padding: 0 0 calc(env(safe-area-inset-bottom) + 20px); }
-/* Økt-kortet har ingen hero — tittelen trenger klaring mot det stickye krysset,
-   og Start-knappen (sticky .fast-bunn) litt luft mot kortkantene. */
-.oppmodal--okt .oppdetalj > h1.oppdetalj__navn { margin-top: 6px; margin-right: 62px; } /* slår barne-regelen (18px) på spesifisitet */
 .oppmodal .fast-bunn { bottom: 10px; }
+/* Banner kant til kant øverst i kortet: hovedbildet (matbilde-flate for
+   oppskrifter, dagsfase-naturbildet for økter) med tittelen og hovedinfoen
+   som frostede etiketter — samme språk som hjemme-heroen. */
+.oppmodal__banner {
+  position: relative;
+  min-height: 196px;
+  display: flex; align-items: flex-end;
+  overflow: hidden;
+  background-size: cover; background-position: center;
+}
+.oppmodal__banner .matbilde { position: absolute; inset: 0; border-radius: 0; place-items: start center; }
+.oppmodal__banner .matbilde__emoji { font-size: 64px; margin-top: 30px; } /* over tittelfeltet */
+.oppmodal__bannerscrim {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(28,42,33,0.06) 0%, rgba(28,42,33,0.28) 55%, rgba(28,42,33,0.52) 100%);
+}
+.oppmodal__bannertekst { position: relative; z-index: 1; width: 100%; padding: 46px 16px 16px; }
+.oppmodal__bannertittel {
+  font-family: var(--font-display); font-size: 26px; font-weight: 700; line-height: 1.12;
+  color: #fff; text-shadow: 0 1px 10px rgba(20, 28, 20, 0.45);
+  margin: 0 40px 12px 0;
+}
+.oppmodal__blabels { display: flex; flex-wrap: wrap; gap: 8px; }
+.oppmodal__blabel {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255, 255, 255, 0.88); color: var(--tekst);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  border-radius: var(--radius-pill); padding: 6px 12px;
+  font-size: 12.5px; font-weight: 600;
+  box-shadow: 0 2px 8px rgba(20, 28, 20, 0.14);
+}
+.oppmodal__blabel .ikon { width: 14px; height: 14px; color: var(--aksent); }
+/* Minimert (sveipet ned): kortet blir liggende i DOM-en (scroll/avkryssinger
+   bevart) mens skyggen slipper siden fri — bare markøren nede til venstre er
+   igjen, og den henter kortet opp igjen. Krysset i markøren lukker for godt. */
+.oppmodal--minimert { background: rgba(17, 38, 77, 0); pointer-events: none; }
+.oppmodal__markor { display: none; }
+.oppmodal--minimert .oppmodal__markor {
+  display: inline-flex; pointer-events: auto;
+  position: absolute; left: 12px; bottom: calc(var(--tabbar-h) + 12px);
+  align-items: center; gap: 8px; max-width: 72%;
+  background: var(--aksent); color: #fff;
+  border: none; border-radius: var(--radius-pill);
+  padding: 10px 10px 10px 14px;
+  font: inherit; font-size: 13.5px; font-weight: 600;
+  box-shadow: var(--shadow-action);
+  cursor: pointer;
+}
+.oppmodal__markorpil { width: 15px; height: 15px; flex: 0 0 auto; }
+.oppmodal__markortekst { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.oppmodal__markorlukk {
+  display: grid; place-items: center; flex: 0 0 auto;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+}
+.oppmodal__markorlukk .ikon { width: 13px; height: 13px; }
 @media (prefers-reduced-motion: reduce) {
   .oppmodal, .oppmodal__kort { transition: none; }
 }
@@ -4371,7 +4424,7 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .hjemtopp--detalj .hjemtopp__logo { font-size: 20px; }
 .oppdetalj { padding: 0 0 calc(var(--tabbar-h) + 24px); }
 .oppdetalj__bilde { width: 100%; aspect-ratio: 16 / 11; overflow: hidden; }
-.oppdetalj > *:not(.oppdetalj__bilde) { margin-left: 18px; margin-right: 18px; }
+.oppdetalj > *:not(.oppdetalj__bilde):not(.oppmodal__banner) { margin-left: 18px; margin-right: 18px; }
 .oppdetalj__navn { font-family: var(--font-display); font-size: 27px; font-weight: 700; line-height: 1.1; margin: 18px 18px 0; color: var(--tekst); }
 .oppdetalj__meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 .oppdetalj__beskrivelse { font-size: 14.5px; color: var(--tekst-2); line-height: 1.5; margin-top: 14px; }
