@@ -1399,11 +1399,11 @@ body.fokusmodus { padding-bottom: 0; }
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
-  transform: translateY(103%);
+  transform: translateY(calc(100% + 90px)); /* + marg og skygge — helt ute av syne når lukket/minimert */
   transition: transform 0.52s var(--ease-out);
 }
 .oppmodal--apen .oppmodal__kort { transform: translateY(0); }
-.oppmodal--lukker .oppmodal__kort { transform: translateY(103%); transition-duration: 0.3s; transition-timing-function: ease-in; }
+.oppmodal--lukker .oppmodal__kort { transform: translateY(calc(100% + 90px)); transition-duration: 0.3s; transition-timing-function: ease-in; }
 /* Krysset ligger sticky øverst til høyre (alltid i rekkevidde ved scroll);
    det negative bunnmarginet gjør at hero-bildet starter på kortets topp. */
 .oppmodal__lukk {
@@ -1463,7 +1463,7 @@ body.fokusmodus { padding-bottom: 0; }
 .oppmodal__markor { display: none; }
 .oppmodal--minimert .oppmodal__markor {
   display: inline-flex; pointer-events: auto;
-  position: absolute; left: 12px; bottom: calc(var(--tabbar-h) + 12px);
+  position: absolute; left: 12px; bottom: calc(var(--tabbar-h) + 30px);
   align-items: center; gap: 8px; max-width: 72%;
   background: var(--aksent); color: #fff;
   border: none; border-radius: var(--radius-pill);
