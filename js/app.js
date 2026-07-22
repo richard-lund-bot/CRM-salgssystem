@@ -125,7 +125,7 @@ const ruter = {
 // Skjermene med egen tilbake-header er fokusmodus (skjuler tab-baren).
 // «sti» (ferdighetsreisen) er bevisst IKKE fokus: bunnbaren blir stående helt
 // til man går inn i en leksjon/kamp (som er egne fullskjerm-overlegg).
-const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel', 'oppskrift', 'post', 'logg-inn', 'bli-medlem', 'beveg-favoritter', 'feed', 'varsler']);
+const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel', 'oppskrift', 'post', 'logg-inn', 'bli-medlem', 'beveg-favoritter', 'feed', 'varsler', 'meny']);
 
 // Feed-funksjonen (M38) er SKJULT fra grensesnittet inntil videre — vi vurderer
 // om den passer i appens image. Koden, dataene og ruten (#/feed, #/post)
@@ -133,10 +133,11 @@ const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovels
 // tilbake feed-ikonet i headeren, Hjem-sveipen og forhåndslastingen.
 const VIS_FEED = false;
 
-// Paneler som glir inn over hovedappen (slide-over): feeden kommer fra venstre
-// (feed-ikonet ligger til venstre), varsler fra høyre (bjella ligger til høyre).
-const SLIDE_VENSTRE = new Set(['feed']);   // panelet ligger til venstre for appen
-const SLIDE_HOYRE = new Set(['varsler']);  // panelet ligger til høyre for appen
+// Paneler som glir inn over hovedappen (slide-over): meny/feed kommer fra
+// venstre (tannhjulet og feed-ikonet ligger til venstre i headeren), varsler
+// fra høyre (bjella ligger til høyre).
+const SLIDE_VENSTRE = new Set(['feed', 'meny']); // panelet ligger til venstre for appen
+const SLIDE_HOYRE = new Set(['varsler']);        // panelet ligger til høyre for appen
 
 // Medlemssidene (auth). Uinnloggede sendes hit; innloggede slippes forbi.
 const AUTH_RUTER = new Set(['logg-inn', 'bli-medlem']);
@@ -3138,8 +3139,10 @@ function tilbakeTilApp() {
 }
 
 // Meny-hub bak tannhjulet: bare en liste med snarveier. «Innstillinger» her er
-// en vanlig lenke til innstillings-kortene (#/innstillinger), som nå er en
-// subside av denne huben. Full faneside (banner) så tannhjulet kan vises aktivt.
+// en vanlig lenke til innstillings-kortene (#/innstillinger), som er en
+// subside av denne huben. Samme form som varsler-panelet — glir inn fra
+// VENSTRE (tannhjulet ligger til venstre, bjella til høyre) med egen
+// tilbake-header (‹) og uten bunnbar (fokusmodus).
 function visMeny() {
   if (!hentProfil()) { location.hash = '#/hjem'; return; }
   const lenke = (ikonNavn, tekst, href) => el('a', { class: 'listerad', href },
@@ -3149,15 +3152,22 @@ function visMeny() {
   );
   // Treningssnarveiene (styrke, øvelsesoppslag, aktivitet) bor nå under
   // Trening-området på Profil — menyen er kun innstillinger og oppslag om appen.
-  fane('Meny', 'Innstillinger og om appen.',
-    el('div', { class: 'kort' },
-      el('div', { class: 'liste' },
-        lenke('sok', 'Utforsk', '#/utforsk'),
-        lenke('kompass', 'Mitt kompass', '#/mening'),
-        lenke('person', 'Profil', '#/merker'),
-        lenke('bok', 'Lær', '#/laer'),
-        lenke('gir', 'Innstillinger', '#/innstillinger'),
-        lenke('info', `Om ${APP_NAME}`, '#/om'),
+  tom(app);
+  app.append(
+    el('header', { class: 'topp topp--kjor' },
+      el('button', { class: 'topp__tilbake', type: 'button', 'aria-label': 'Tilbake', onclick: tilbakeTilApp }, '‹'),
+      el('div', {}, el('h1', { class: 'topp__tittel' }, 'Meny')),
+    ),
+    el('main', { class: 'innhold' },
+      el('div', { class: 'kort' },
+        el('div', { class: 'liste' },
+          lenke('sok', 'Utforsk', '#/utforsk'),
+          lenke('kompass', 'Mitt kompass', '#/mening'),
+          lenke('person', 'Profil', '#/merker'),
+          lenke('bok', 'Lær', '#/laer'),
+          lenke('gir', 'Innstillinger', '#/innstillinger'),
+          lenke('info', `Om ${APP_NAME}`, '#/om'),
+        ),
       ),
     ),
   );
