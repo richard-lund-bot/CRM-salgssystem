@@ -1458,16 +1458,58 @@ body.fokusmodus { padding-bottom: 0; }
 }
 .oppmodal__blabel .ikon { width: 14px; height: 14px; color: var(--aksent); }
 /* Kjøringen i kortet (Start økt bytter gjennomgangen med spilleren):
-   kjøringens egen avslutt/ferdig tar over for kortkrysset, spilleren mister
-   fullskjerm-antakelsene, og bunnknappene blir sticky i kortet. */
+   kjøringens egen avslutt/ferdig tar over for kortkrysset. ONEPAGER: kortet
+   låses til full høyde uten scroll — fast, slank chrome (tittel, tidsstripe,
+   neste-rader, knapper) og ØVELSESBILDET som fleksibel sone som absorberer
+   plassforskjellene mellom økt-typer og skjermstørrelser. */
 .oppmodal__kort--kjor .oppmodal__lukk { display: none; }
-.oppmodal .kjor2 { min-height: 0; padding-bottom: 14px; }
-.oppmodal .kjor2__bunn {
-  position: sticky; bottom: 0; z-index: 5;
-  /* Raden er SØSKEN til .kjor2 (utenfor 16px-polstringen) og spenner allerede
-     hele kortbredden — negative marger gjorde den bredere enn kortet og ga
-     horisontal scroll. */
-  margin: 10px 0 0;
+.oppmodal__kort--kjor { height: calc(100% - env(safe-area-inset-top) - 42px); overflow-y: hidden; }
+.oppmodal__kjoring { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.oppmodal__kjoring .kjor2 {
+  flex: 1 1 auto; min-height: 0;
+  display: flex; flex-direction: column;
+  padding-bottom: 0;
+}
+.oppmodal__kjoring .kjor2__topp { padding: 14px 2px 10px; }
+.oppmodal__kjoring .kjor2__tittel { font-size: 19px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.oppmodal__kjoring .kjor2__stabel { flex: 1 1 auto; min-height: 0; gap: 10px; }
+/* Tidsstripa: samlet og slank */
+.oppmodal__kjoring .kjor2-tid { padding: 8px 12px; }
+.oppmodal__kjoring .kjor2-tid__stor { font-size: 17px; }
+.oppmodal__kjoring .kjor2-tid__blokk { margin-top: 4px; font-size: 12px; }
+/* NÅ-kortet: fleksibel kolonne — bildet krymper/vokser, aldri chromen. Ved
+   ekstremt liten plass (styrke-innmating + tips) får kortet indre scroll som
+   siste utvei i stedet for å klippe kontroller. */
+.oppmodal__kjoring .kjor2-na {
+  flex: 1 1 auto; min-height: 0;
+  display: flex; flex-direction: column;
+  padding: 10px 14px 12px;
+  overflow-y: auto;
+}
+.oppmodal__kjoring .kjor2-na__topp { margin-bottom: 8px; flex: 0 0 auto; }
+.oppmodal__kjoring .kjor2-ring { transform: scale(0.85); transform-origin: right center; }
+.oppmodal__kjoring .kjor2-na__bilde {
+  flex: 1 1 auto; min-height: 88px;
+  aspect-ratio: auto; height: auto;
+  margin-bottom: 8px;
+}
+.oppmodal__kjoring .kjor2-na__navn { font-size: 19px; flex: 0 0 auto; }
+.oppmodal__kjoring .kjor2-na__dose { font-size: 13.5px; margin-top: 2px; flex: 0 0 auto; }
+.oppmodal__kjoring .kjor2-na__tip {
+  margin-top: 6px; font-size: 12.5px; flex: 0 0 auto;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+/* Neste-radene: slanke énlinjere — steglista i neste blokk vises ikke i
+   onepageren (hodet med rolle/tittel/teller er nok). */
+.oppmodal__kjoring .kjor2-neste { padding: 8px 10px; flex: 0 0 auto; }
+.oppmodal__kjoring .kjor2-neste__bilde { width: 40px; height: 40px; }
+.oppmodal__kjoring .kjor2-nb { padding: 8px 12px; flex: 0 0 auto; }
+.oppmodal__kjoring .kjor2-nb__liste { display: none; }
+/* Knappene fast nederst i kolonnen (utenfor .kjor2) */
+.oppmodal__kjoring .kjor2__bunn {
+  position: static; flex: 0 0 auto; z-index: 5;
+  /* Raden er SØSKEN til .kjor2 og spenner allerede hele kortbredden. */
+  margin: 8px 0 0;
 }
 /* Minimert (sveipet ned): kortet blir liggende i DOM-en (scroll/avkryssinger
    bevart) mens skyggen slipper siden fri — bare markøren nede til venstre er
