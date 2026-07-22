@@ -1456,6 +1456,15 @@ body.fokusmodus { padding-bottom: 0; }
   box-shadow: 0 2px 8px rgba(20, 28, 20, 0.14);
 }
 .oppmodal__blabel .ikon { width: 14px; height: 14px; color: var(--aksent); }
+/* Kjøringen i kortet (Start økt bytter gjennomgangen med spilleren):
+   kjøringens egen avslutt/ferdig tar over for kortkrysset, spilleren mister
+   fullskjerm-antakelsene, og bunnknappene blir sticky i kortet. */
+.oppmodal__kort--kjor .oppmodal__lukk { display: none; }
+.oppmodal .kjor2 { min-height: 0; padding-bottom: 14px; }
+.oppmodal .kjor2__bunn {
+  position: sticky; bottom: 0; z-index: 5;
+  margin: 10px -16px 0; /* spenn hele kortbredden (kjor2 har 16px sidepolstring) */
+}
 /* Minimert (sveipet ned): kortet blir liggende i DOM-en (scroll/avkryssinger
    bevart) mens skyggen slipper siden fri — bare markøren nede til venstre er
    igjen, og den henter kortet opp igjen. Krysset i markøren lukker for godt. */

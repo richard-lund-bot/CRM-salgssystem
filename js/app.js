@@ -1385,7 +1385,18 @@ function åpneOktKort(okt) {
     okt.beskrivelse ? el('p', { class: 'oppdetalj__beskrivelse' }, okt.beskrivelse) : null,
     ...byggReviewInnhold(okt),
     el('div', { class: 'fast-bunn' },
-      el('button', { class: 'knapp', type: 'button', onclick: () => { location.hash = '#/kjor'; } }, 'Start økt')),
+      el('button', { class: 'knapp', type: 'button', onclick: (ev) => {
+        // Selve økta kjører i det samme kortet: gjennomgangen byttes med
+        // spilleren (kjøringens egen avslutt/ferdig tar over for krysset, og
+        // sveip ned minimerer fortsatt — en miniplayer mens økta går).
+        // Ferdig-flyten (visBevegelseFerdig) tegner også inn i kortet.
+        const kortEl = ev.target.closest('.oppmodal__kort');
+        const spiller = el('div', { class: 'oppmodal__kjoring' });
+        main.replaceWith(spiller);
+        kortEl.classList.add('oppmodal__kort--kjor');
+        kortEl.scrollTop = 0;
+        visKjoreSkjerm(spiller, { vedAvbrudd: () => åpneOktKort(okt) });
+      } }, 'Start økt')),
   );
   åpneFlytkort({ innhold: main, aria: okt.navn, klasse: 'oppmodal--okt' });
 }

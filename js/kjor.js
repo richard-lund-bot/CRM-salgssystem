@@ -307,7 +307,7 @@ function lagSteg(blk) {
   return steg;
 }
 
-export function visKjoreSkjerm(mount) {
+export function visKjoreSkjerm(mount, { vedAvbrudd = null } = {}) {
   if (!gjeldendeOkt) { location.hash = '#/okter'; return; }
   const okt = gjeldendeOkt;
   stoppTimer();
@@ -659,7 +659,12 @@ export function visKjoreSkjerm(mount) {
 
   function lukk() {
     if (!startet && bIdx === 0 && sIdx === 0) {
-      if (confirm('Avslutte økta? Du kan starte igjen når du vil.')) { stoppTimer(); slippVaaken(); location.hash = '#/review'; }
+      if (confirm('Avslutte økta? Du kan starte igjen når du vil.')) {
+        stoppTimer(); slippVaaken();
+        // I kort-modus (økta kjører i flytkortet) går avbrudd tilbake til
+        // gjennomgangen i kortet; rute-modus navigerer til #/review som før.
+        if (vedAvbrudd) vedAvbrudd(); else location.hash = '#/review';
+      }
       return;
     }
     ferdigTrykk();
