@@ -1492,6 +1492,15 @@ body.fokusmodus { padding-bottom: 0; }
   flex: 1 1 auto; min-height: 88px;
   aspect-ratio: auto; height: auto;
   margin-bottom: 8px;
+  position: relative;
+}
+/* Safari løser height: 100% upålitelig mot flex-bestemte grid-høyder (bildet
+   falt tilbake til naturlig størrelse og «zoomet» ut av syne bak overflow-
+   klippet). Absolutt posisjon i rammen løser prosentene alltid riktig, så
+   øvelses-illustrasjonen garantert fyller og passer feltet. */
+.oppmodal__kjoring .kjor2-na__bilde img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: contain;
 }
 .oppmodal__kjoring .kjor2-na__navn { font-size: 19px; flex: 0 0 auto; }
 .oppmodal__kjoring .kjor2-na__dose { font-size: 13.5px; margin-top: 2px; flex: 0 0 auto; }
