@@ -1397,6 +1397,7 @@ body.fokusmodus { padding-bottom: 0; }
   border-radius: var(--radius-2xl);
   box-shadow: 0 10px 44px rgba(20, 28, 20, 0.35);
   overflow-y: auto;
+  overflow-x: hidden; /* innholdet skal aldri kunne dras sidelengs — sized to fit */
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
   transform: translateY(calc(100% + 90px)); /* + marg og skygge — helt ute av syne når lukket/minimert */
@@ -1463,7 +1464,10 @@ body.fokusmodus { padding-bottom: 0; }
 .oppmodal .kjor2 { min-height: 0; padding-bottom: 14px; }
 .oppmodal .kjor2__bunn {
   position: sticky; bottom: 0; z-index: 5;
-  margin: 10px -16px 0; /* spenn hele kortbredden (kjor2 har 16px sidepolstring) */
+  /* Raden er SØSKEN til .kjor2 (utenfor 16px-polstringen) og spenner allerede
+     hele kortbredden — negative marger gjorde den bredere enn kortet og ga
+     horisontal scroll. */
+  margin: 10px 0 0;
 }
 /* Minimert (sveipet ned): kortet blir liggende i DOM-en (scroll/avkryssinger
    bevart) mens skyggen slipper siden fri — bare markøren nede til venstre er
