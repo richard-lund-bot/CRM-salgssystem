@@ -12,7 +12,7 @@ import {
 import { el, tom, chip, ikon, bryter, visArk } from './ui.js';
 import { APP_VERSION, APP_NAME, APP_TAGLINE } from './config.js';
 import { kjorOnboarding } from './onboarding.js';
-import { visReviewSkjerm, visKjoreSkjerm, settOpprinnelse } from './kjor.js';
+import { visReviewSkjerm, visKjoreSkjerm, settOpprinnelse, byggReviewInnhold } from './kjor.js';
 import { settBib as settBibHist, visAktivitetSkjerm } from './historikk.js';
 import { visHurtigSkjerm, visLoggforSkjerm, aktivHurtig, registrerOgLogg } from './beveg.js';
 import { slippVaaken } from './vaakenlaas.js';
@@ -26,7 +26,7 @@ import { settBib as settBibKal, visKalenderSkjerm } from './kalender.js';
 import { lagFaneside, fanesideMedTittel, settNavger, settUlestSjekk, dagsfase, lagPullOppdatering } from './banner.js';
 import { hentGnistStatus, GNIST_PILARER, hentPilarDager } from './gnist.js';
 import { dagerMedAktivitet, okterHref, beregnStreak } from './bevegelse.js';
-import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, aapneOkt, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN, KATEGORIER, settLaerLenke } from './bibliotek-okter.js';
+import { lastOkter, hentOkter, oktMedId, visOkterSkjerm, aapneOkt, aapneOktId, settOktKortViser, tilfeldigOkt, MODALITET_TIL_KATEGORI, KATEGORI_NAVN, KATEGORIER, settLaerLenke } from './bibliotek-okter.js';
 import { settBib as settBibOpp, settOkterKilde, erAdminEpost, adminModusPaa, settAdminModus } from './opplasing.js';
 import { fyllInn, tallOpp, REDUSERT, lagRing } from './animasjon.js';
 import { settLydAv } from './lyd.js';
@@ -230,9 +230,9 @@ function navger() {
   // flyten kollapser forrigeHash når startOkt bytter hash, så vi fanger
   // opprinnelsen HER — mens forrigeHash fortsatt peker på avreisesiden.
   if (rute === 'okter' && /[?&]start=/.test(location.hash)) settOpprinnelse(forrigeHash || '#/trening');
-  // Et åpent bunnark hører til siden man forlot — lukk det ved ekte navigasjon
-  // så det ikke blir hengende som et usynlig overlegg på neste skjerm.
-  if (byttet) document.querySelector('.ark')?.remove();
+  // Et åpent bunnark/flytende kort hører til siden man forlot — lukk det ved
+  // ekte navigasjon så det ikke blir hengende som et overlegg på neste skjerm.
+  if (byttet) { document.querySelector('.ark')?.remove(); document.querySelector('.oppmodal')?.remove(); }
   // Slide-over: feed/varsler glir inn som paneler i stedet for et umiddelbart
   // sidebytte. Feed ligger til venstre, varsler til høyre; på vei UT av et panel
   // kommer hovedappen tilbake fra motsatt side.
@@ -1192,20 +1192,44 @@ function visOppskrifterSkjerm(mount) {
   tegn();
 }
 
-// --- Oppskrift-detalj — flytende kort over oppskriftslista -----------------
-// Oppskriften er ikke lenger en egen side, men et kort som glir opp fra
-// bunnen over en dimmet oppskriftsliste, med kryss i hjørnet (og trykk på
-// skyggen) for å lukke. Ruten #/oppskrift?id= består, så dyplenker fra
-// Mat-hjem/ukesplan/handleliste virker — lukking går tilbake dit man kom fra.
+// --- Flytende kort (delt: oppskrift + økt) ---------------------------------
+// Glir opp fra bunnen over en dimmet skygge; siden bak står HELT urørt (rent
+// overlegg på body, som bunnarkene — ingen re-tegning). Kryss (sticky) og
+// trykk på skyggen lukker; navger fjerner et åpent kort ved ekte navigasjon.
+function åpneFlytkort({ innhold, aria, hjorne = null, klasse = '', vedLukk = null }) {
+  let lukker = false;
+  const lukk = () => {
+    if (lukker) return;
+    lukker = true;
+    modal.classList.remove('oppmodal--apen');
+    modal.classList.add('oppmodal--lukker');
+    setTimeout(() => { modal.remove(); vedLukk?.(); }, REDUSERT() ? 0 : 300);
+  };
+  const lukkeknapp = el('button', { class: 'ikonknapp oppmodal__lukk', type: 'button', 'aria-label': 'Lukk', onclick: lukk }, ikon('kryss'));
+  const kort = el('div', { class: 'oppmodal__kort', role: 'dialog', 'aria-label': aria }, lukkeknapp, hjorne, innhold);
+  const modal = el('div', { class: 'oppmodal' + (klasse ? ` ${klasse}` : '') }, kort);
+  modal.addEventListener('click', (ev) => { if (ev.target === modal) lukk(); });
+  document.body.append(modal);
+  if (REDUSERT()) modal.classList.add('oppmodal--apen');
+  else requestAnimationFrame(() => requestAnimationFrame(() => modal.classList.add('oppmodal--apen')));
+  return { lukk, modal };
+}
+
+// --- Oppskrift-detalj — flytende kort --------------------------------------
+// Oppskriften er et kort som glir opp fra bunnen; siden man står på blir
+// stående urørt bak skyggen (kort-lenkene fanges av det delegerte klikket i
+// start()). Ruten #/oppskrift?id= består for dyplenker/kald start — da tegnes
+// oppskriftslista som bakteppe, og lukking navigerer tilbake.
 function visOppskriftSkjerm(mount) {
   if (!hentProfil()) { location.hash = '#/hjem'; return; }
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
   const o = oppskriftMedId(params.get('id') || '');
   if (!o) { location.hash = '#/oppskrifter'; return; }
+  visOppskrifterSkjerm(mount); // bakteppe bak kortet
+  åpneOppskriftKort(o);
+}
 
-  // Bakteppe: selve oppskriftslista, dimmet bak kortet.
-  visOppskrifterSkjerm(mount);
-
+function åpneOppskriftKort(o) {
   const merke = el('button', { class: 'ikonknapp oppmodal__merke' + (erFavoritt(o.id) ? ' er-fav' : ''),
     type: 'button', 'aria-label': 'Lagre',
     onclick: () => { const på = veksleFavoritt(o.id); merke.classList.toggle('er-fav', på); vibrer(); varsle(på ? 'Lagret' : 'Fjernet', { ikon: 'bokmerke' }); } },
@@ -1269,25 +1293,36 @@ function visOppskriftSkjerm(mount) {
     el('div', { class: 'oppdetalj__handlinger' }, planKnapp, handleKnapp),
     ingrKort, stegKort, bzRad);
 
-  // Kortet + skyggen. Krysset ligger sticky (alltid i rekkevidde ved scroll),
-  // bokmerket flyter over hero-bildet. Lukking glir kortet ned og går tilbake.
-  let lukker = false;
-  const lukk = () => {
-    if (lukker) return;
-    lukker = true;
-    modal.classList.remove('oppmodal--apen');
-    modal.classList.add('oppmodal--lukker');
-    setTimeout(() => {
-      if (history.length > 1) history.back(); else location.hash = '#/oppskrifter';
-    }, REDUSERT() ? 0 : 300);
-  };
-  const lukkeknapp = el('button', { class: 'ikonknapp oppmodal__lukk', type: 'button', 'aria-label': 'Lukk', onclick: lukk }, ikon('kryss'));
-  const kort = el('div', { class: 'oppmodal__kort', role: 'dialog', 'aria-label': o.navn }, lukkeknapp, merke, main);
-  const modal = el('div', { class: 'oppmodal' }, kort);
-  modal.addEventListener('click', (ev) => { if (ev.target === modal) lukk(); });
-  mount.append(modal);
-  if (REDUSERT()) modal.classList.add('oppmodal--apen');
-  else requestAnimationFrame(() => requestAnimationFrame(() => modal.classList.add('oppmodal--apen')));
+  åpneFlytkort({
+    innhold: main, aria: o.navn, hjorne: merke,
+    // Dyplenke-varianten (ruta #/oppskrift) må navigere vekk ved lukking;
+    // overleggs-varianten (delegert klikk) har aldri rørt hashen.
+    vedLukk: () => {
+      if (location.hash.startsWith('#/oppskrift?')) {
+        if (history.length > 1) history.back(); else location.hash = '#/oppskrifter';
+      }
+    },
+  });
+}
+
+// --- Økt-kortet — treningsøktenes flytende kort ----------------------------
+// Samme kort for treningsøkter: review-gjennomgangen fra kjor.js med
+// Start-knappen sticky nederst. Registreres som økt-kort-viser i start(), så
+// aapneOkt/?start=-lenkene åpner kortet over gjeldende side i stedet for å
+// navigere til #/review (som fortsatt finnes for direkte-URL-er).
+function åpneOktKort(okt) {
+  const main = el('main', { class: 'innhold oppdetalj' },
+    el('h1', { class: 'oppdetalj__navn' }, okt.navn),
+    el('div', { class: 'oppdetalj__meta' },
+      el('span', { class: 'matmeta matmeta--pille' }, ikon('klokke', 'ikon matmeta__ikon'), `${okt.varighetMin} min`),
+      okt.utstyr?.length ? el('span', { class: 'matmeta matmeta--pille' }, ikon('vekt', 'ikon matmeta__ikon'), okt.utstyr.join(', ')) : null,
+    ),
+    okt.beskrivelse ? el('p', { class: 'oppdetalj__beskrivelse' }, okt.beskrivelse) : null,
+    ...byggReviewInnhold(okt),
+    el('div', { class: 'fast-bunn' },
+      el('button', { class: 'knapp', type: 'button', onclick: () => { location.hash = '#/kjor'; } }, 'Start økt')),
+  );
+  åpneFlytkort({ innhold: main, aria: okt.navn, klasse: 'oppmodal--okt' });
 }
 
 // Bunnark: legg en oppskrift i ukesplanen (velg uke + måltid + dag).
@@ -4329,6 +4364,25 @@ async function start() {
   window.addEventListener('hashchange', navger);
   settOppSideSveip(); // sveip mellom hovedsidene (og feeden) — én gang på #app
   settOppViewportVakt(); // iOS 26: kompenser spøkelses-chromen (grå stripe under baren)
+  // Flytende kort: oppskrifts- og økt-lenker åpner kortet som rent overlegg
+  // over gjeldende side (ingen navigasjon — siden bak står urørt). Dyplenker
+  // og direkte URL-er håndteres fortsatt av rutene.
+  settOktKortViser(åpneOktKort);
+  document.addEventListener('click', (ev) => {
+    const a = ev.target.closest('a[href^="#/oppskrift?"], a[href^="#/okter?start="]');
+    if (!a) return;
+    const href = a.getAttribute('href');
+    const p = new URLSearchParams(href.split('?')[1] || '');
+    if (href.startsWith('#/oppskrift?')) {
+      const o = oppskriftMedId(p.get('id') || '');
+      if (!o) return; // ukjent id → la ruteren håndtere
+      ev.preventDefault();
+      åpneOppskriftKort(o);
+    } else {
+      ev.preventDefault();
+      if (!aapneOktId(p.get('start'), p.get('p'))) location.hash = href; // ukjent økt → vanlig rute
+    }
+  });
 
   // Skysync: fang ev. magic-link-retur, og på en ny enhet som nettopp logget
   // inn — hent ned profilen før vi avgjør om onboarding skal kjøre.

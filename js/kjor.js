@@ -81,13 +81,21 @@ export function visReviewSkjerm(mount) {
       () => { location.hash = reviewOpprinnelse || (okt.kategori ? `#/okter?kat=${okt.kategori}` : '#/okter'); }),
     el('main', { class: 'innhold' },
       okt.beskrivelse && el('p', { class: 'dempet' }, okt.beskrivelse),
-      ...okt.blokker.map((blk) => blokkSeksjon(blk)),
-      okt.kilde?.navn && el('p', { class: 'dempet' }, `Basert på: ${okt.kilde.navn}`),
+      ...byggReviewInnhold(okt),
       el('div', { class: 'fast-bunn' },
         el('button', { class: 'knapp', type: 'button', onclick: () => { location.hash = '#/kjor'; } }, 'Start økt'),
       ),
     ),
   );
+}
+
+// Review-innholdet (blokkseksjonene + kilde) — deles med økt-kortet i app.js,
+// som viser samme gjennomgang i et flytende kort over gjeldende side.
+export function byggReviewInnhold(okt) {
+  return [
+    ...okt.blokker.map((blk) => blokkSeksjon(blk)),
+    okt.kilde?.navn ? el('p', { class: 'dempet' }, `Basert på: ${okt.kilde.navn}`) : null,
+  ];
 }
 
 // --- Strukturert blokkvisning (deles av review) -----------------------------

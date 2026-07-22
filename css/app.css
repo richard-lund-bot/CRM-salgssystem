@@ -1423,6 +1423,10 @@ body.fokusmodus { padding-bottom: 0; }
 }
 /* Innholdet gjenbruker oppdetalj-stilene, men uten side-klaring mot bunnbaren. */
 .oppmodal .oppdetalj { padding: 0 0 calc(env(safe-area-inset-bottom) + 20px); }
+/* Økt-kortet har ingen hero — tittelen trenger klaring mot det stickye krysset,
+   og Start-knappen (sticky .fast-bunn) litt luft mot kortkantene. */
+.oppmodal--okt .oppdetalj > h1.oppdetalj__navn { margin-top: 6px; margin-right: 62px; } /* slår barne-regelen (18px) på spesifisitet */
+.oppmodal .fast-bunn { bottom: 10px; }
 @media (prefers-reduced-motion: reduce) {
   .oppmodal, .oppmodal__kort { transition: none; }
 }

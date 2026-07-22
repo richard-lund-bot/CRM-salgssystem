@@ -193,6 +193,15 @@ const FANER = ['kosthold', 'trening', 'hjem', 'sosialt', 'ro']; // bunnbarens re
   await page.goto(BASE + '/#/oppskrifter');
   await page.waitForSelector('.oppkort', { timeout: 20000 });
   sjekk('Oppskrifter viser kort og filtre', (await page.locator('.oppkort').count()) > 0 && (await page.locator('.oppfilter').count()) === 6);
+  // Overleggs-varianten: et trykk på et oppskriftskort åpner det flytende
+  // kortet UTEN navigasjon — lista bak står urørt, og krysset lukker.
+  await page.locator('.oppkort').first().click();
+  await page.waitForSelector('.oppmodal--apen', { timeout: 8000 });
+  sjekk('Oppskriftskort åpner som overlegg uten navigasjon', (await hash()) === '#/oppskrifter');
+  await page.click('.oppmodal__lukk');
+  await page.waitForFunction(() => !document.querySelector('.oppmodal'), null, { timeout: 8000 });
+  sjekk('Krysset lukker kortet (fortsatt på lista)', (await hash()) === '#/oppskrifter');
+  // Dyplenke-varianten: ruta #/oppskrift?id= tegner lista som bakteppe + kortet.
   await page.goto(BASE + '/#/oppskrift?id=linsesalat-ovnsbakte');
   await page.waitForSelector('.oppdetalj', { timeout: 20000 });
   sjekk('Oppskriften åpner som flytende kort med kryss', (await page.locator('.oppmodal__kort').count()) === 1 && (await page.locator('.oppmodal__lukk').count()) === 1);

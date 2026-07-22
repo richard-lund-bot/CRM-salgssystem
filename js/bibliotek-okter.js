@@ -98,11 +98,33 @@ export function tilSpillerOkt(o, planId = null) {
 /** Åpner en økt: låst + ikke-admin → vis låst-ark; ellers start (review).
  *  «Tilbake» fra review skal føre hit tilbake (biblioteket, Ro, favoritter …),
  *  så vi fanger gjeldende side som opprinnelse før vi bytter til review. */
+// Økt-kort-viser (registreres av app.js): åpner review-gjennomgangen som et
+// flytende kort over gjeldende side i stedet for å navigere til #/review.
+// Uten registrert viser (isolerte tester o.l.) faller vi tilbake til siden.
+let _oktKort = null;
+export function settOktKortViser(fn) { _oktKort = fn; }
+
 export function aapneOkt(o, l = oktLast(o)) {
   if (l.laast && !erAdmin()) { visLastArk(o, l); return; }
   settOpprinnelse(location.hash);
-  settØkt(tilSpillerOkt(o));
-  location.hash = '#/review';
+  const s = tilSpillerOkt(o);
+  settØkt(s);
+  if (_oktKort) _oktKort(s); else location.hash = '#/review';
+}
+
+/** Åpner en økt fra en ?start=-lenke (delegert klikk i app.js): samme
+ *  låsesjekk som aapneOkt. Returnerer false hvis økta ikke finnes — da får
+ *  lenken navigere vanlig i stedet. */
+export function aapneOktId(oktId, planId = null) {
+  const o = oktMedId(oktId);
+  if (!o) return false;
+  const l = oktLast(o);
+  if (l.laast && !erAdmin()) { visLastArk(o, l); return true; }
+  settOpprinnelse(location.hash);
+  const s = tilSpillerOkt(o, planId);
+  settØkt(s);
+  if (_oktKort) _oktKort(s); else location.replace('#/review');
+  return true;
 }
 
 /** Starter en bibliotekøkt: sett som gjeldende og gå til review. Kalles via
