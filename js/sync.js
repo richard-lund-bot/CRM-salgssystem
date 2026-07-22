@@ -13,6 +13,7 @@ import {
 import { lesStyrkelogg, settStyrkeloggRå, oktVolum } from './styrke.js';
 import { lesMatlogg, settMatloggRå } from './kosthold.js';
 import { lesSosiallogg, settSosialloggRå } from './sosialt.js';
+import { lesRolog, settRologRå } from './ro.js';
 import { lesHvorfor, settHvorforRå, lesRefleksjoner, settRefleksjonerRå, lesKompass, settKompassRå } from './mening.js';
 
 const AUTH = `${SUPABASE_URL}/auth/v1`;
@@ -233,6 +234,11 @@ async function pull() {
     const rader = await rest('sosial_logs?select=data,oppdatert&order=oppdatert.desc');
     settSosialloggRå(flettPerId(lesSosiallogg(), rader, 'dato'));
   } catch (e) { console.warn('Sosiallogg-pull hoppet over', e.message); }
+  // Ro-vanene (fjerde pilar) synkes isolert, samme mønster.
+  try {
+    const rader = await rest('ro_logs?select=data,oppdatert&order=oppdatert.desc');
+    settRologRå(flettPerId(lesRolog(), rader, 'dato'));
+  } catch (e) { console.warn('Rolog-pull hoppet over', e.message); }
   // Mening: «Mitt hvorfor» + ukens refleksjon synkes isolert.
   try {
     const rader = await rest('mening_logs?select=data,oppdatert&order=oppdatert.desc');
@@ -254,97 +260,113 @@ async function pull() {
   } catch (e) { console.warn('Kompass-pull hoppet over', e.message); }
 }
 
+// Trygg dato for NOT NULL-kolonnen: oppføringens dato, ellers oppdatert-
+// stempelet, ellers i dag.
+function radDato(o) {
+  return ((o.dato || o.oppdatert || new Date().toISOString()) + '').slice(0, 10);
+}
+
 async function push() {
   const uid = hentSesjon()?.uid;
-  if (!uid) return;
+  if (!uid) return { feil: 1 };
+  // Hvert skriv er isolert: én tabell som feiler (skjemadrift, RLS, nett) skal
+  // ALDRI blokkere de andre — det var slik hverdagsbevegelses-rader uten
+  // modalitet stanset mat/mening/kompass-pushene i stillhet. Antall feil
+  // rapporteres opp så synk() kan vise ekte status.
+  let feil = 0;
+  const trygg = async (navn, fn) => {
+    try { await fn(); } catch (e) { feil += 1; console.warn(`${navn}-push hoppet over`, e.message); }
+  };
   const profil = hentProfil();
   if (profil) {
-    await rest('profiles?on_conflict=user_id', {
+    await trygg('Profil', () => rest('profiles?on_conflict=user_id', {
       method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
       body: [{ user_id: uid, data: profil, oppdatert: profil.oppdatert || new Date().toISOString() }],
-    });
+    }));
   }
   const logg = hentLogg();
   if (logg.length) {
-    await rest('session_logs?on_conflict=id', {
+    await trygg('Logg', () => rest('session_logs?on_conflict=id', {
       method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
       body: logg.map((o) => ({
-        id: o.id, user_id: uid, dato: (o.dato || '').slice(0, 10), modalitet: o.modalitet,
+        id: o.id, user_id: uid, dato: radDato(o),
+        // Hverdagsbevegelse har ingen modalitet — kolonnen er NOT NULL.
+        modalitet: o.modalitet || (o.bevegelse ? 'HVERDAG' : 'ANNET'),
         data: o, oppdatert: o.oppdatert || o.dato || new Date().toISOString(),
       })),
-    });
+    }));
   }
   const styrke = lesStyrkelogg();
   if (styrke.length) {
-    try {
-      await rest('styrke_logs?on_conflict=id', {
-        method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
-        body: styrke.map((o) => ({
-          id: o.id, user_id: uid, dato: (o.dato || '').slice(0, 10), okt_navn: o.oktNavn,
-          volum: oktVolum(o.ovelser), data: o, oppdatert: o.oppdatert || o.dato || new Date().toISOString(),
-        })),
-      });
-    } catch (e) { console.warn('Styrkelogg-push hoppet over', e.message); }
+    await trygg('Styrkelogg', () => rest('styrke_logs?on_conflict=id', {
+      method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
+      body: styrke.map((o) => ({
+        id: o.id, user_id: uid, dato: radDato(o), okt_navn: o.oktNavn,
+        volum: oktVolum(o.ovelser), data: o, oppdatert: o.oppdatert || o.dato || new Date().toISOString(),
+      })),
+    }));
   }
   const matlogg = lesMatlogg();
   if (matlogg.length) {
-    try {
-      await rest('meal_logs?on_conflict=id', {
-        method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
-        body: matlogg.map((o) => ({
-          id: o.id, user_id: uid, dato: (o.dato || '').slice(0, 10),
-          antall: Object.values(o.vaner || {}).filter(Boolean).length,
-          data: o, oppdatert: o.oppdatert || o.dato || new Date().toISOString(),
-        })),
-      });
-    } catch (e) { console.warn('Måltidslogg-push hoppet over', e.message); }
+    await trygg('Måltidslogg', () => rest('meal_logs?on_conflict=id', {
+      method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
+      body: matlogg.map((o) => ({
+        id: o.id, user_id: uid, dato: radDato(o),
+        antall: Object.values(o.vaner || {}).filter(Boolean).length,
+        data: o, oppdatert: o.oppdatert || o.dato || new Date().toISOString(),
+      })),
+    }));
   }
   const sosiallogg = lesSosiallogg();
   if (sosiallogg.length) {
-    try {
-      await rest('sosial_logs?on_conflict=id', {
-        method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
-        body: sosiallogg.map((o) => ({
-          id: o.id, user_id: uid, dato: (o.dato || '').slice(0, 10),
-          antall: Object.values(o.vaner || {}).filter(Boolean).length,
-          data: o, oppdatert: o.oppdatert || o.dato || new Date().toISOString(),
-        })),
-      });
-    } catch (e) { console.warn('Sosiallogg-push hoppet over', e.message); }
+    await trygg('Sosiallogg', () => rest('sosial_logs?on_conflict=id', {
+      method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
+      body: sosiallogg.map((o) => ({
+        id: o.id, user_id: uid, dato: radDato(o),
+        antall: Object.values(o.vaner || {}).filter(Boolean).length,
+        data: o, oppdatert: o.oppdatert || o.dato || new Date().toISOString(),
+      })),
+    }));
+  }
+  const rolog = lesRolog();
+  if (rolog.length) {
+    await trygg('Rolog', () => rest('ro_logs?on_conflict=id', {
+      method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
+      body: rolog.map((o) => ({
+        id: o.id || `ro-${radDato(o)}`, user_id: uid, dato: radDato(o),
+        antall: Object.values(o.vaner || {}).filter(Boolean).length,
+        data: o, oppdatert: o.oppdatert || o.dato || new Date().toISOString(),
+      })),
+    }));
   }
   const hvorfor = lesHvorfor();
   if (hvorfor.length) {
-    try {
-      await rest('mening_logs?on_conflict=id', {
-        method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
-        body: hvorfor.map((o) => ({
-          id: o.id, user_id: uid, data: o,
-          oppdatert: o.oppdatert || o.opprettet || new Date().toISOString(),
-        })),
-      });
-    } catch (e) { console.warn('Mening-push hoppet over', e.message); }
+    await trygg('Mening', () => rest('mening_logs?on_conflict=id', {
+      method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
+      body: hvorfor.map((o) => ({
+        id: o.id, user_id: uid, data: o,
+        oppdatert: o.oppdatert || o.opprettet || new Date().toISOString(),
+      })),
+    }));
   }
   const refleksjoner = lesRefleksjoner();
   if (refleksjoner.length) {
-    try {
-      await rest('mening_refleksjoner?on_conflict=id', {
-        method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
-        body: refleksjoner.map((o) => ({
-          id: o.id || o.uke, user_id: uid, uke: o.uke, data: o,
-          oppdatert: o.oppdatert || o.opprettet || new Date().toISOString(),
-        })),
-      });
-    } catch (e) { console.warn('Refleksjon-push hoppet over', e.message); }
+    await trygg('Refleksjon', () => rest('mening_refleksjoner?on_conflict=id', {
+      method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
+      body: refleksjoner.map((o) => ({
+        id: o.id || o.uke, user_id: uid, uke: o.uke, data: o,
+        oppdatert: o.oppdatert || o.opprettet || new Date().toISOString(),
+      })),
+    }));
   }
   const kompass = lesKompass();
   if (kompass) {
-    try {
-      await rest('mening_kompass?on_conflict=user_id', {
-        method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
-        body: [{ user_id: uid, data: kompass, oppdatert: kompass.oppdatert || new Date().toISOString() }],
-      });
-    } catch (e) { console.warn('Kompass-push hoppet over', e.message); }
+    await trygg('Kompass', () => rest('mening_kompass?on_conflict=user_id', {
+      method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
+      body: [{ user_id: uid, data: kompass, oppdatert: kompass.oppdatert || new Date().toISOString() }],
+    }));
   }
+  return { feil };
 }
 
 // --- Orkestrering ---------------------------------------------------------
@@ -362,10 +384,12 @@ export async function synk() {
   try {
     await pull();
     if (etterPull) { try { etterPull(); } catch (e) { console.warn('etterPull feilet', e); } }
-    await push();
+    const resultat = await push();
     localStorage.setItem(LS.sistSynk, new Date().toISOString());
-    meldStatus('synket');
-    return { ok: true };
+    // Delvis feilet push (én tabell nektet) skal ikke se «synket» ut — da
+    // hadde tapte kompass/logger gått under radaren igjen.
+    meldStatus(resultat?.feil ? 'feil' : 'synket');
+    return { ok: !resultat?.feil };
   } catch (e) {
     console.warn('Synk feilet', e);
     meldStatus('feil');
