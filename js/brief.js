@@ -51,6 +51,14 @@ export function skalViseBrief(nå = Date.now()) {
   return !briefVistIdag(nå);
 }
 
+/** Er appen «i ro» slik at dagens brief kan slippes inn? Rene fakta inn (så
+ *  smoke-testen dekker regelen); app.js samler DOM-tilstanden. Briefen skal
+ *  aldri legge seg oppå en aktiv tur/økt, et åpent overlegg eller en dyplenke
+ *  brukeren selv valgte — bare den rolige landingen på Hjem. */
+export function briefIRo({ rute, aktivTur = false, fokusmodus = false, harOverlegg = false } = {}) {
+  return rute === 'hjem' && !aktivTur && !fokusmodus && !harOverlegg;
+}
+
 // --- Dagens spørsmål --------------------------------------------------------
 // Morgenspørsmål i kompassets språk: har brukeren et kompass, roterer
 // spørsmålet blant toppdimensjonene; ellers en nøytral bank. Spørsmålene
@@ -299,6 +307,7 @@ export function visBriefSkjerm(mount, { ferdig } = {}) {
     }
     if (scener[steg].id === 'refleksjon') return; // siste scene styres av valgene
     steg++;
+    alleInne = false; // overgangen har startet — svelg trykk til neste scene er tegnet (ingen hopp)
     if (REDUSERT()) { tegnScene(); return; }
     scene.classList.add('brief__scene--ut');
     timere.push(setTimeout(tegnScene, 460));

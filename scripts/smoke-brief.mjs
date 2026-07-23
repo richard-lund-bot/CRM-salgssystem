@@ -12,7 +12,7 @@ globalThis.localStorage = {
 };
 
 const {
-  skalViseBrief, merkBriefVist, briefVistIdag, dagensBriefSporsmal, byggBriefScener,
+  skalViseBrief, merkBriefVist, briefVistIdag, dagensBriefSporsmal, byggBriefScener, briefIRo,
 } = await import('../js/brief.js');
 const { lagreKompass, slettKompass, toppDimensjoner } = await import('../js/mening.js');
 
@@ -35,6 +35,14 @@ sjekk(!skalViseBrief(anker + DAG), 'skrudd av i Innstillinger → aldri');
 localStorage.setItem('trening.profil', JSON.stringify({ navn: 'Kari', innstillinger: {} }));
 
 // --- Dagens spørsmål: deterministisk og kompassbevisst -----------------------
+// --- «I ro»-gaten: briefen kaprer aldri en aktiv flyt ------------------------
+sjekk(briefIRo({ rute: 'hjem' }), 'ren landing på Hjem → briefen kan vises');
+sjekk(!briefIRo({ rute: 'okter' }), 'dyplenke til en annen rute → aldri (respekter målet)');
+sjekk(!briefIRo({ rute: 'hurtig' }), 'på hurtig-ruta → aldri');
+sjekk(!briefIRo({ rute: 'hjem', aktivTur: true }), 'aktiv hurtig-tur → aldri, selv på Hjem');
+sjekk(!briefIRo({ rute: 'hjem', harOverlegg: true }), 'åpent overlegg (økt i flytkort, leksjon) → aldri');
+sjekk(!briefIRo({ rute: 'hjem', fokusmodus: true }), 'fokusmodus (fullskjermsflyt) → aldri');
+
 const s1 = dagensBriefSporsmal(anker + DAG);
 sjekk(typeof s1 === 'string' && s1.endsWith('?'), 'uten kompass: nøytralt spørsmål');
 sjekk(dagensBriefSporsmal(anker + DAG) === s1, 'samme dag → samme spørsmål (ro i UI-et)');
