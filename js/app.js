@@ -3964,6 +3964,11 @@ function visInnstillinger() {
           }),
         ),
       ),
+      // MIDLERTIDIG (test): kjør briefen når som helst, uavhengig av dagens-
+      // gaten. Fjern denne knapprad-blokken når testingen er ferdig.
+      el('div', { class: 'knapprad' },
+        el('button', { class: 'knapp knapp--sekundaer', type: 'button', onclick: visDagensBrief }, 'Kjør briefen nå (test)'),
+      ),
     ),
     el('div', { class: 'kort' },
       el('h2', {}, 'Profil'),
