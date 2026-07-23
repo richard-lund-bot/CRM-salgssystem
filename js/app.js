@@ -67,6 +67,7 @@ import {
   regnDimensjoner, toppDimensjoner, lagFormuleringer, lagKompassLinje, kompassForklaring, kompassBudskap,
 } from './mening.js';
 import { streakEtter, blaaEtter } from './feiring.js';
+import { skalViseBrief, visBriefSkjerm } from './brief.js';
 
 const app = document.getElementById('app');
 let bib = null;
@@ -118,6 +119,7 @@ const ruter = {
   disiplin: () => visDisiplinSkjerm(app),
   seksjon: () => visSeksjonSkjerm(app),
   om: visOm,
+  brief: () => visBriefSkjerm(app), // Dagens brief — rolig start ved dagens første åpning
   'logg-inn': () => visLoggInnSkjerm(app),
   'bli-medlem': () => visRegistrerSkjerm(app),
 };
@@ -125,7 +127,7 @@ const ruter = {
 // Skjermene med egen tilbake-header er fokusmodus (skjuler tab-baren).
 // «sti» (ferdighetsreisen) er bevisst IKKE fokus: bunnbaren blir stående helt
 // til man går inn i en leksjon/kamp (som er egne fullskjerm-overlegg).
-const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel', 'oppskrift', 'post', 'logg-inn', 'bli-medlem', 'beveg-favoritter', 'feed', 'varsler', 'meny']);
+const FOKUS = new Set(['review', 'kjor', 'hurtig', 'loggfor', 'kalender', 'ovelse', 'artikkel', 'oppskrift', 'post', 'logg-inn', 'bli-medlem', 'beveg-favoritter', 'feed', 'varsler', 'meny', 'brief']);
 
 // Feed-funksjonen (M38) er SKJULT fra grensesnittet inntil videre — vi vurderer
 // om den passer i appens image. Koden, dataene og ruten (#/feed, #/post)
@@ -3920,6 +3922,23 @@ function visInnstillinger() {
       ),
     ),
     el('div', { class: 'kort' },
+      el('h2', {}, 'Dagens brief'),
+      el('p', { class: 'dempet', style: 'margin-top:-4px' },
+        'En rolig start ved dagens første åpning — et blikk på dagen, kompasset ditt og et spørsmål å ta med.'),
+      el('div', { class: 'prefliste' },
+        el('div', { class: 'prefrad bryterrad' },
+          el('div', { class: 'prefrad__hode' },
+            el('span', { class: 'prefrad__ikon' }, ikon('sol')),
+            el('span', { class: 'prefrad__navn' }, 'Vis hver morgen'),
+          ),
+          bryter({
+            på: profil.innstillinger?.brief !== false, etikett: 'Dagens brief',
+            onEndre: (på) => lagreStille((p) => { p.innstillinger = p.innstillinger || {}; p.innstillinger.brief = på; }),
+          }),
+        ),
+      ),
+    ),
+    el('div', { class: 'kort' },
       el('h2', {}, 'Profil'),
       el('input', {
         class: 'sok', type: 'text', placeholder: 'Hva skal vi kalle deg?',
@@ -4493,8 +4512,20 @@ async function start() {
   // En pågående hurtigstart-tur (skjermen slukket / appen ble lukket)
   // gjenopptas rett i timeren — tida har uansett telt videre.
   if (aktivHurtig() && !location.hash.startsWith('#/hurtig')) location.hash = '#/hurtig';
+  // Dagens brief: første åpning i dag starter med et rolig pusterom (M100).
+  // En pågående tur vinner — briefen kaprer aldri en aktiv timer.
+  else if (skalViseBrief()) location.hash = '#/brief';
   navger();
   skjulSplash();
+  // PWA-er gjenopptas oftere enn de relanseres: kommer appen tilbake i
+  // forgrunnen på en ny dag, fortjener dagen samme rolige start. Aldri midt
+  // i en fullskjermsflyt (fokusmodus — kjøring, onboarding, briefen selv).
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'visible') return;
+    if (!sync.erInnlogget() || !harProfil() || aktivHurtig()) return;
+    if (document.body.classList.contains('fokusmodus')) return;
+    if (skalViseBrief()) location.hash = '#/brief';
+  });
 }
 
 // Oppdaterer et lite synk-merke på Meny-fanen når status endrer seg.

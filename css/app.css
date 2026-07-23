@@ -4819,3 +4819,87 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
 .rasktkort__ikon .ikon { width: 21px; height: 21px; }
 .rasktkort__tittel { font-size: 12px; font-weight: 700; line-height: 1.15; overflow-wrap: anywhere; }
 .rasktkort__sub { font-size: 10.5px; color: var(--dempet); line-height: 1.2; }
+
+/* ==========================================================================
+   Dagens brief (M100, js/brief.js) — rolig fullskjermsstart på dagen.
+   Ingen header/banner/tabbar (ruta er fokusmodus): en myk gradient, få ord i
+   serif, linjer som toner sakte inn én og én, og et svevende drag i hele
+   scenen. Natt-laget legger seg helt sort over alt når refleksjonen starter.
+   ========================================================================== */
+.brief {
+  min-height: 100dvh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: max(28px, env(safe-area-inset-top)) 30px calc(max(28px, env(safe-area-inset-bottom)) + 64px);
+  text-align: center;
+  background:
+    radial-gradient(120% 65% at 50% -12%, var(--aksent-svak) 0%, transparent 62%),
+    linear-gradient(180deg, var(--bg-kort) 0%, var(--bg) 100%);
+  cursor: default;
+}
+.brief__scene {
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+  max-width: 36ch;
+  transition: opacity 0.45s var(--ease-standard);
+  animation: brief-svev 9s var(--ease-inout) infinite alternate;
+}
+.brief__scene--ut { opacity: 0; }
+@keyframes brief-svev { from { transform: translateY(5px); } to { transform: translateY(-5px); } }
+.brief__linje {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 21px; line-height: 1.5; color: var(--tekst);
+  text-wrap: balance;
+  opacity: 0; transform: translateY(14px);
+  transition: opacity 1.2s var(--ease-out), transform 1.2s var(--ease-out);
+}
+.brief__linje--inn { opacity: 1; transform: none; }
+.brief__linje--merke {
+  font-family: var(--font-body); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--dempet);
+}
+.brief__linje--stor { font-size: 26px; line-height: 1.4; }
+.brief__linje--sitat { font-style: italic; }
+.brief__linje--dempet { font-size: 16.5px; color: var(--tekst-2); }
+/* Hintet nederst puster svakt når scenen er ferdig tegnet. */
+.brief__hint {
+  position: fixed; left: 0; right: 0; bottom: max(30px, env(safe-area-inset-bottom));
+  margin: 0 auto; padding: 12px 18px; width: max-content; max-width: 90vw;
+  background: none; border: none; font: inherit; font-size: 13.5px; color: var(--dempet);
+  opacity: 0; pointer-events: none; transition: opacity 1s ease;
+}
+.brief__hint--inn { opacity: 0.55; pointer-events: auto; animation: brief-hint-pust 3.6s ease-in-out infinite; }
+@keyframes brief-hint-pust { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.7; } }
+/* Valgene på siste scene toner inn som en egen «linje». */
+.brief__valg {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 12px;
+  opacity: 0; transform: translateY(14px);
+  transition: opacity 1.2s var(--ease-out), transform 1.2s var(--ease-out);
+}
+.brief__valg--inn { opacity: 1; transform: none; }
+.brief__reflekter { min-width: 200px; }
+.brief__hopp {
+  background: none; border: none; padding: 12px 18px; font: inherit;
+  font-size: 14.5px; color: var(--dempet); cursor: pointer;
+}
+/* Natt-laget: skjermen «sovner» øyeblikkelig — helt sort, over alt annet
+   (også toasts). Innholdet toner først fram etter en stund, knapt synlig. */
+.brief-natt { position: fixed; inset: 0; z-index: 4500; background: #000; }
+.brief-natt__innhold {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+  padding: 36px; text-align: center;
+  opacity: 0; transition: opacity 3s ease;
+}
+.brief-natt--hint .brief-natt__innhold { opacity: 1; }
+.brief-natt__sporsmal {
+  margin: 0; max-width: 30ch;
+  font-family: var(--font-display); font-style: italic;
+  font-size: 17px; line-height: 1.5; color: #56564e;
+}
+.brief-natt__hint { margin: 0; font-size: 13px; color: #37372f; }
+@media (prefers-reduced-motion: reduce) {
+  .brief__scene { animation: none; }
+  .brief__linje, .brief__valg { transform: none; transition: opacity 0.2s ease; }
+  .brief__hint--inn { animation: none; opacity: 0.6; }
+  .brief-natt__innhold { transition: opacity 0.3s ease; }
+}
