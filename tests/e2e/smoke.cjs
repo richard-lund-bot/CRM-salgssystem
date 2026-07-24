@@ -120,6 +120,24 @@ const FANER = ['kosthold', 'trening', 'hjem', 'sosialt', 'ro']; // bunnbarens re
   // reload), og bekreft rute + aktiv-markering. Fanetrykk glir dit med
   // sveipens peek-løp (~370ms før hash committes) — vent på hash-byttet.
   for (const rute of ['kosthold', 'trening', 'ro', 'sosialt', 'hjem']) {
+    // DIAGNOSE (midlertidig): dump tab-bar-tilstanden før klikket, så vi ser
+    // HVORFOR knappen ev. er «not visible» på CI.
+    const diag = await page.evaluate((r) => {
+      const bar = document.querySelector('.tabbar');
+      const kn = document.querySelector(`.tabbar__knapp[data-rute="${r}"]`);
+      const cs = bar ? getComputedStyle(bar) : null;
+      const rect = kn ? kn.getBoundingClientRect() : null;
+      return {
+        hash: location.hash,
+        body: document.body.className,
+        html: document.documentElement.className,
+        barDisplay: cs ? cs.display : 'ingen bar',
+        barVis: cs ? cs.visibility : '-',
+        knRect: rect ? `${Math.round(rect.width)}x${Math.round(rect.height)}@${Math.round(rect.top)}` : 'ingen knapp',
+        overlegg: ['.brief', '.brief-natt', '.oppmodal', '.ark', '.feedpeek'].filter((s) => document.querySelector(s)).join(',') || 'ingen',
+      };
+    }, rute);
+    console.log(`DIAG[${rute}]`, JSON.stringify(diag));
     await page.click(`.tabbar__knapp[data-rute="${rute}"]`);
     await page.waitForFunction((r) => location.hash.startsWith(`#/${r}`), rute, { timeout: 8000 }).catch(() => {});
     await page.waitForTimeout(300); // la peek-opprydding + tegning sette seg
