@@ -4882,8 +4882,18 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
   font-size: 14.5px; color: var(--dempet); cursor: pointer;
 }
 /* Natt-laget: skjermen «sovner» øyeblikkelig — helt sort, over alt annet
-   (også toasts). Innholdet toner først fram etter en stund, knapt synlig. */
-.brief-natt { position: fixed; inset: 0; z-index: 4500; background: #000; }
+   (også toasts). Innholdet toner først fram etter en stund, knapt synlig.
+   Ingen transition på selve laget ved påslag (sort med en gang); opacity-
+   transisjonen spiller kun på vei UT (--vaakner). */
+.brief-natt { position: fixed; inset: 0; z-index: 4500; background: #000; transition: opacity 1.1s var(--ease-inout); }
+/* iOS standalone: WebKit klipper element-tegning ved den falske viewport-
+   bunnen (se settOppViewportVakt i js/app.js) — bare lerretet (html-
+   bakgrunnen) males helt ned. Natta må derfor farge selve lerretet sort,
+   ellers står en lys stripe igjen nederst bak hjemmeindikatoren. */
+html.brief-natt-lerret, html.brief-natt-lerret body { background: #000; }
+/* Oppvåkning: hjem ligger alt tegnet under — mørket slipper taket rolig. */
+.brief-natt--vaakner { opacity: 0; pointer-events: none; }
+.brief-natt--vaakner .brief-natt__innhold { opacity: 0; transition: opacity 0.35s ease; }
 .brief-natt__innhold {
   position: absolute; inset: 0;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
@@ -4897,9 +4907,20 @@ a.last-rad:active { transform: scale(0.98); background: var(--aksent-svak); bord
   font-size: 17px; line-height: 1.5; color: #56564e;
 }
 .brief-natt__hint { margin: 0; font-size: 13px; color: #37372f; }
+/* Farvel-sløret («Gå videre uten»): briefens egen bakgrunn lagt over hjem,
+   som toner bort — briefen løser seg opp i dagen i stedet for et hardt bytte. */
+.brief-farvel {
+  position: fixed; inset: 0; z-index: 4500; pointer-events: none;
+  background:
+    radial-gradient(120% 65% at 50% -12%, var(--aksent-svak) 0%, transparent 62%),
+    linear-gradient(180deg, var(--bg-kort) 0%, var(--bg) 100%);
+  transition: opacity 0.9s var(--ease-inout);
+}
+.brief-farvel--borte { opacity: 0; }
 @media (prefers-reduced-motion: reduce) {
   .brief__scene { animation: none; }
   .brief__linje, .brief__valg { transform: none; transition: opacity 0.2s ease; }
   .brief__hint--inn { animation: none; opacity: 0.6; }
   .brief-natt__innhold { transition: opacity 0.3s ease; }
+  .brief-natt, .brief-farvel { transition: none; }
 }

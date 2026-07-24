@@ -237,6 +237,8 @@ const LINJE_KLASSE = {
 export function visBriefSkjerm(mount, { ferdig } = {}) {
   merkBriefVist();
   document.querySelector('.brief-natt')?.remove(); // aldri et hengende natt-lag
+  document.querySelector('.brief-farvel')?.remove();
+  document.documentElement.classList.remove('brief-natt-lerret');
   const over = ferdig || (() => { location.hash = '#/hjem'; });
   const locale = document.documentElement.lang === 'en' ? 'en' : 'nb-NO';
   const scener = byggBriefScener(Date.now(), { locale });
@@ -288,7 +290,7 @@ export function visBriefSkjerm(mount, { ferdig } = {}) {
         }, 'Reflekter'),
         el('button', {
           class: 'brief__hopp', type: 'button',
-          onclick: (ev) => { ev.stopPropagation(); over(); },
+          onclick: (ev) => { ev.stopPropagation(); mykOvergang(over); },
         }, 'Gå videre uten'),
       ));
     }
@@ -319,12 +321,31 @@ export function visBriefSkjerm(mount, { ferdig } = {}) {
   tegnScene();
 }
 
+// Myk overgang ut av briefen: et slør i briefens egen bakgrunn legges over,
+// hjem tegnes under, og sløret toner bort — briefen «løser seg opp» i dagen
+// i stedet for et hardt bytte. Ved redusert bevegelse byttes det rett.
+function mykOvergang(over) {
+  if (REDUSERT()) { over(); return; }
+  const slor = el('div', { class: 'brief-farvel', 'aria-hidden': 'true' });
+  document.body.append(slor);
+  over(); // hjem tegnes under sløret
+  requestAnimationFrame(() => requestAnimationFrame(() => slor.classList.add('brief-farvel--borte')));
+  const fjern = () => slor.remove();
+  slor.addEventListener('transitionend', fjern, { once: true });
+  setTimeout(fjern, 1300); // fallback om transitionend uteblir
+}
+
 // Natt-lag: skjermen «sovner» med en gang man velger å reflektere. Helt sort,
 // våkenlåsen sluppet (telefonen får slukke skjermen selv), og etter en liten
 // stund toner spørsmålet og et hint svakt fram for den som blir sittende med
-// skjermen på. Trykk avslutter og går videre til dagen.
+// skjermen på. Lerretet (html-bakgrunnen) males også sort: i standalone-PWA-er
+// klipper WebKit element-tegning ved den falske viewport-bunnen (se
+// settOppViewportVakt i app.js), så uten lerret-fargen står en lys stripe
+// igjen nederst. Trykk vekker skjermen: hjem tegnes under mørket, og det
+// sorte toner rolig bort — som å våkne inn i dagen.
 function visBriefNatt(sporsmal, over) {
   slippVaaken();
+  document.documentElement.classList.add('brief-natt-lerret');
   const natt = el('div', { class: 'brief-natt', role: 'dialog', 'aria-label': 'Refleksjon' },
     el('div', { class: 'brief-natt__innhold' },
       el('p', { class: 'brief-natt__sporsmal' }, sporsmal),
@@ -332,15 +353,28 @@ function visBriefNatt(sporsmal, over) {
     ));
   document.body.append(natt);
   const hintTimer = setTimeout(() => natt.classList.add('brief-natt--hint'), 5000);
+  let farvel = false;
+  const rydd = () => {
+    document.documentElement.classList.remove('brief-natt-lerret');
+    natt.remove();
+    window.removeEventListener('hashchange', vedHash);
+  };
   // Liten vaktperiode så trykket på «Reflekter» (eller et dobbelttrykk) ikke
   // vekker skjermen igjen med en gang.
   const klar = Date.now() + 700;
   natt.addEventListener('click', () => {
-    if (Date.now() < klar) return;
+    if (Date.now() < klar || farvel) return;
+    farvel = true;
     clearTimeout(hintTimer);
-    natt.remove();
-    over();
+    if (REDUSERT()) { rydd(); over(); return; }
+    natt.classList.add('brief-natt--vaakner');
+    over(); // hjem tegnes under mørket mens det toner bort
+    // transitionend bobler også fra __innhold — reager kun på nattas egen fade.
+    natt.addEventListener('transitionend', (ev) => { if (ev.target === natt) rydd(); });
+    setTimeout(rydd, 1600); // fallback om transitionend uteblir
   });
-  // Navigeres det bort på annet vis, skal ikke natta bli liggende over appen.
-  window.addEventListener('hashchange', () => { clearTimeout(hintTimer); natt.remove(); }, { once: true });
+  // Navigeres det bort på annet vis (ikke vår egen oppvåkning), skal ikke
+  // natta bli liggende over appen.
+  const vedHash = () => { if (!farvel) { clearTimeout(hintTimer); rydd(); } };
+  window.addEventListener('hashchange', vedHash);
 }
