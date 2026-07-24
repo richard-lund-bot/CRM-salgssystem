@@ -55,7 +55,12 @@ const FANER = ['kosthold', 'trening', 'hjem', 'sosialt', 'ro']; // bunnbarens re
   const browser = await chromium.launch(
     process.env.E2E_CHROMIUM ? { executablePath: process.env.E2E_CHROMIUM } : {},
   );
-  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  // Redusert bevegelse for HELE kjøringen: appen hopper da over fane-peek-en
+  // (spillFaneBytte returnerer false) og side-glidene, så navigasjon committer
+  // hash-en umiddelbart. Uten dette kan et fullskjerms peek-overlegg fra en
+  // pågående glid dekke tab-baren når neste klikk lander på en treg CI-runner
+  // («element is not visible»). Ren determinisme — appens egen a11y-kodesti.
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
   page.on('pageerror', (e) => { console.log('SIDEFEIL:', e.message); feil.push('pageerror: ' + e.message); });
 
   // Seed en innlogget økt + ferdig profil (feedInteresser:[] så interesse-arket
@@ -243,9 +248,8 @@ const FANER = ['kosthold', 'trening', 'hjem', 'sosialt', 'ro']; // bunnbarens re
   // --- 4b) Dagens brief (M100): fullskjerm uten skall + refleksjons-natta -----
   // Ruten #/brief er gated på et internt aktiv-flagg (tilbake-knapp/dyplenke
   // skal aldri spille briefen om igjen), så vi starter den slik en bruker gjør:
-  // via den midlertidige testknappen i Innstillinger. Redusert bevegelse gjør
-  // scene-fremdriften umiddelbar (deterministisk).
-  await page.emulateMedia({ reducedMotion: 'reduce' });
+  // via den midlertidige testknappen i Innstillinger. (Redusert bevegelse er
+  // satt globalt på sida, så scene-fremdriften er umiddelbar.)
   await page.goto(BASE + '/#/innstillinger');
   const testKnapp = page.locator('button', { hasText: 'Kjør briefen nå' });
   await testKnapp.waitFor({ timeout: 20000 });
@@ -268,7 +272,6 @@ const FANER = ['kosthold', 'trening', 'hjem', 'sosialt', 'ro']; // bunnbarens re
   await page.click('.brief-natt', { position: { x: 6, y: 6 } });
   await page.waitForTimeout(300);
   sjekk('Brief: trykk på natta avslutter til Hjem', (await hash()) === '#/hjem' && (await page.locator('.brief-natt').count()) === 0);
-  await page.emulateMedia({ reducedMotion: null });
   await page.goto(BASE + '/#/hjem');
   await page.waitForSelector('.hjemdash', { timeout: 20000 });
 
