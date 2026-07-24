@@ -66,7 +66,12 @@ const FANER = ['kosthold', 'trening', 'hjem', 'sosialt', 'ro']; // bunnbarens re
   // Seed en innlogget økt + ferdig profil (feedInteresser:[] så interesse-arket
   // ikke blokkerer), ellers sender medlemsgaten oss til innlogging.
   await page.addInitScript(() => {
-    localStorage.setItem('trening.sesjon', JSON.stringify({ refresh_token: 'fake', access_token: 'fake', epost: 't@t.no' }));
+    // utløp langt fram i tid: gyldigToken() returnerer da access-token uten å
+    // forsøke refresh mot Supabase. Uten dette svarer refresh-endepunktet 400 på
+    // den falske refresh_token-en, sync kaller slettSesjon(), og medlemsgaten
+    // sender neste navigasjon til #/logg-inn (fokusmodus skjuler tab-baren →
+    // «element is not visible» på nettverkstilgjengelige runnere som CI).
+    localStorage.setItem('trening.sesjon', JSON.stringify({ refresh_token: 'fake', access_token: 'fake', utløp: Date.now() + 30 * 86400000, epost: 't@t.no' }));
     localStorage.setItem('trening.profil', JSON.stringify({ navn: 'Test', ukemaal: 3, varighetsklasse: 'standard', globalXp: 100, innstillinger: { lyd: false, haptikk: false, feedInteresser: [] } }));
     localStorage.setItem('trening.logg', '[]');
     // Merk dagens brief som vist, ellers kaprer den (M100) dagens første åpning
@@ -120,24 +125,6 @@ const FANER = ['kosthold', 'trening', 'hjem', 'sosialt', 'ro']; // bunnbarens re
   // reload), og bekreft rute + aktiv-markering. Fanetrykk glir dit med
   // sveipens peek-løp (~370ms før hash committes) — vent på hash-byttet.
   for (const rute of ['kosthold', 'trening', 'ro', 'sosialt', 'hjem']) {
-    // DIAGNOSE (midlertidig): dump tab-bar-tilstanden før klikket, så vi ser
-    // HVORFOR knappen ev. er «not visible» på CI.
-    const diag = await page.evaluate((r) => {
-      const bar = document.querySelector('.tabbar');
-      const kn = document.querySelector(`.tabbar__knapp[data-rute="${r}"]`);
-      const cs = bar ? getComputedStyle(bar) : null;
-      const rect = kn ? kn.getBoundingClientRect() : null;
-      return {
-        hash: location.hash,
-        body: document.body.className,
-        html: document.documentElement.className,
-        barDisplay: cs ? cs.display : 'ingen bar',
-        barVis: cs ? cs.visibility : '-',
-        knRect: rect ? `${Math.round(rect.width)}x${Math.round(rect.height)}@${Math.round(rect.top)}` : 'ingen knapp',
-        overlegg: ['.brief', '.brief-natt', '.oppmodal', '.ark', '.feedpeek'].filter((s) => document.querySelector(s)).join(',') || 'ingen',
-      };
-    }, rute);
-    console.log(`DIAG[${rute}]`, JSON.stringify(diag));
     await page.click(`.tabbar__knapp[data-rute="${rute}"]`);
     await page.waitForFunction((r) => location.hash.startsWith(`#/${r}`), rute, { timeout: 8000 }).catch(() => {});
     await page.waitForTimeout(300); // la peek-opprydding + tegning sette seg
