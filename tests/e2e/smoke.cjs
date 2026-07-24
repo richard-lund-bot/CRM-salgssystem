@@ -64,6 +64,12 @@ const FANER = ['kosthold', 'trening', 'hjem', 'sosialt', 'ro']; // bunnbarens re
     localStorage.setItem('trening.sesjon', JSON.stringify({ refresh_token: 'fake', access_token: 'fake', epost: 't@t.no' }));
     localStorage.setItem('trening.profil', JSON.stringify({ navn: 'Test', ukemaal: 3, varighetsklasse: 'standard', globalXp: 100, innstillinger: { lyd: false, haptikk: false, feedInteresser: [] } }));
     localStorage.setItem('trening.logg', '[]');
+    // Merk dagens brief som vist, ellers kaprer den (M100) dagens første åpning
+    // og booter til #/brief i stedet for Hjem. Den egne brief-testen under
+    // fjerner flagget bevisst for å teste selve flyten.
+    const d = new Date();
+    const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    localStorage.setItem('takt.briefVist', iso);
   });
 
   const hash = () => page.evaluate(() => location.hash);
@@ -231,6 +237,38 @@ const FANER = ['kosthold', 'trening', 'hjem', 'sosialt', 'ro']; // bunnbarens re
   await page.evaluate(() => document.querySelector('.ark')?.remove());
 
   // Tilbake til Hjem så språktesten under finner .hjemdash etter reload.
+  await page.goto(BASE + '/#/hjem');
+  await page.waitForSelector('.hjemdash', { timeout: 20000 });
+
+  // --- 4b) Dagens brief (M100): fullskjerm uten skall + refleksjons-natta -----
+  // Ruten #/brief er gated på et internt aktiv-flagg (tilbake-knapp/dyplenke
+  // skal aldri spille briefen om igjen), så vi starter den slik en bruker gjør:
+  // via den midlertidige testknappen i Innstillinger. Redusert bevegelse gjør
+  // scene-fremdriften umiddelbar (deterministisk).
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto(BASE + '/#/innstillinger');
+  const testKnapp = page.locator('button', { hasText: 'Kjør briefen nå' });
+  await testKnapp.waitFor({ timeout: 20000 });
+  sjekk('Innstillinger har testknappen for briefen', (await testKnapp.count()) === 1);
+  await testKnapp.click();
+  await page.waitForSelector('.brief', { timeout: 20000 });
+  sjekk('Brief: skjuler skallet (body.fokusmodus)', await page.evaluate(() => document.body.classList.contains('fokusmodus')));
+  sjekk('Brief: tab-baren er skjult', await page.evaluate(() => { const t = document.querySelector('.tabbar'); return !t || getComputedStyle(t).display === 'none'; }));
+  // Trykk gjennom scenene til refleksjons-scenen med Reflekter-knappen.
+  for (let i = 0; i < 6 && (await page.locator('.brief__reflekter').count()) === 0; i++) {
+    await page.click('.brief', { position: { x: 6, y: 6 } });
+    await page.waitForTimeout(160);
+  }
+  sjekk('Brief: siste scene har Reflekter-knappen', (await page.locator('.brief__reflekter').count()) === 1);
+  sjekk('Brief: siste scene har «Gå videre uten»', (await page.locator('.brief__hopp').count()) === 1);
+  await page.click('.brief__reflekter');
+  await page.waitForSelector('.brief-natt', { timeout: 5000 });
+  sjekk('Brief: Reflekter legger på det sorte natt-laget', (await page.locator('.brief-natt').count()) === 1);
+  await page.waitForTimeout(850); // klar-vakta (700 ms) før natta tar imot trykk
+  await page.click('.brief-natt', { position: { x: 6, y: 6 } });
+  await page.waitForTimeout(300);
+  sjekk('Brief: trykk på natta avslutter til Hjem', (await hash()) === '#/hjem' && (await page.locator('.brief-natt').count()) === 0);
+  await page.emulateMedia({ reducedMotion: null });
   await page.goto(BASE + '/#/hjem');
   await page.waitForSelector('.hjemdash', { timeout: 20000 });
 
