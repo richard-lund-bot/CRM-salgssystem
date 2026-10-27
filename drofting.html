@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#020d19" />
+  <link rel="icon" type="image/png" href="assets/bd-kube-64.png" />
+  <link rel="stylesheet" href="css/brain.css" />
+  <title>BD Brain – drøftelse</title>
+  <style>
+    .dok { max-width: 980px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; display: flex; flex-direction: column; gap: 1.2rem; }
+    .dok h1 { font-size: clamp(1.9rem, 4vw, 2.8rem); line-height: 1.15; }
+    .dok h2 { font-size: 1.35rem; margin-bottom: 0.6rem; }
+    .dok h3 { font-size: 1rem; margin: 0.9rem 0 0.3rem; color: var(--vann); }
+    .dok p, .dok li { color: #cfdde8; }
+    .dok ul, .dok ol { padding-left: 1.2rem; margin: 0.4rem 0; }
+    .dok li { margin: 0.25rem 0; }
+    .ingress { font-size: 1.15rem; color: var(--tekst) !important; max-width: 46em; }
+    .toc { columns: 2; font-size: 0.92rem; }
+    .toc a { text-decoration: none; }
+    .rute { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.8rem; }
+    .boks { padding: 0.9rem 1rem; border-radius: 12px; background: var(--flate); box-shadow: var(--glod); }
+    .boks b { display: block; color: #fff; margin-bottom: 0.2rem; }
+    .boks p { margin: 0; font-size: 0.9rem; }
+    .nr { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--vann); color: var(--vann); font-weight: 700; margin-bottom: 0.4rem; font-size: 0.85rem; }
+    .lag { display: grid; gap: 0.6rem; }
+    .lag__rad { display: grid; grid-template-columns: 150px 1fr; gap: 0.8rem; align-items: stretch; }
+    .lag__navn { display: flex; align-items: center; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--vann); }
+    .lag__bokser { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .lag__bokser span { padding: 0.5rem 0.8rem; border-radius: 8px; border: 1px solid var(--kant-sterk); background: rgba(0, 87, 141, 0.25); font-size: 0.85rem; }
+    .lag__bokser span.kjerneboks { background: var(--bd-blaa); border-color: var(--vann); box-shadow: 0 0 16px rgba(82, 189, 198, 0.35); }
+    .pil { text-align: center; color: var(--vann); font-size: 0.8rem; letter-spacing: 0.2em; }
+    .faser { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.7rem; }
+    .fase { padding: 1rem; border-radius: 12px; background: var(--flate); box-shadow: var(--glod); border-top: 3px solid var(--bd-blaa-lys); }
+    .fase:first-child { border-top-color: var(--vann); }
+    .fase small { color: var(--vann); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.7rem; }
+    .fase ul { font-size: 0.88rem; }
+    .sitat { border-left: 3px solid var(--vann); padding: 0.4rem 1rem; font-size: 1.1rem; color: #fff; }
+    .sporsmaal li { margin: 0.5rem 0; }
+    @media (max-width: 820px) {
+      .faser { grid-template-columns: 1fr 1fr; }
+      .lag__rad { grid-template-columns: 1fr; }
+      .toc { columns: 1; }
+    }
+    @media (max-width: 520px) { .faser { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="topp">
+    <a class="merke" href="./"><img src="assets/bd-kube-64.png" alt="" width="32" height="32" /><span class="merke__tekst"><b>BD</b> BRAIN</span></a>
+    <div class="topp__midt"><span class="topp__demo">Drøftelse · utkast til diskusjon</span></div>
+    <a class="knapp knapp--liten" href="./">Åpne prototypen</a>
+  </header>
+
+  <main class="dok">
+    <section>
+      <p class="overline">Konsept · Brødrene Dahl</p>
+      <h1>BD Brain: der arbeidsdagen starter</h1>
+      <p class="ingress">En felles arbeidsflate i BD-blått som leser e-posten, intranettet og nyhetene i segmentet ditt, kobler dem mot kunder og kalender, og gir deg en kort talt brief med dagens prioriteringer. Dario blir verktøykassa. Brain bestemmer hvilket verktøy du trenger og når. Hver ansatt får sin variant, og en tilgangstabell styrer hvem som har hva.</p>
+    </section>
+
+    <nav class="panel" aria-label="Innhold">
+      <h2 class="panel__tittel">Innhold</h2>
+      <ol class="toc">
+        <li><a href="#hvorfor">Hvorfor</a></li>
+        <li><a href="#prinsipper">Prinsipper</a></li>
+        <li><a href="#morgen">En morgen med Brain</a></li>
+        <li><a href="#dario">Brain og Dario</a></li>
+        <li><a href="#arkitektur">Arkitektur</a></li>
+        <li><a href="#prioritering">Prioriteringsmotoren</a></li>
+        <li><a href="#varianter">Rollevarianter</a></li>
+        <li><a href="#tilgang">Tilgangstabellen</a></li>
+        <li><a href="#personvern">Personvern og tillit</a></li>
+        <li><a href="#risiko">Risiko og fallgruver</a></li>
+        <li><a href="#faser">Veien dit</a></li>
+        <li><a href="#maaling">Hvordan vi vet at det virker</a></li>
+        <li><a href="#sporsmaal">Åpne spørsmål</a></li>
+      </ol>
+    </nav>
+
+    <section class="panel" id="hvorfor">
+      <h2>1 · Hvorfor</h2>
+      <p>En selger i BD starter i dag dagen i mange vinduer: Outlook, intranettet, ERP og CRM, prislister, Dario, Teams og kanskje en lokalavis. Hvert system har en del av bildet, men ingen setter sammen bitene. Det må selgeren gjøre selv, hver morgen.</p>
+      <div class="rute">
+        <div class="boks"><b>Signaler drukner</b><p>Kunden som venter på et revidert tilbud ligger i innboksen mellom et HR-varsel og et nyhetsbrev.</p></div>
+        <div class="boks"><b>Sammenhengen mangler</b><p>E-posten om Østby Rør, fallende omsetning i CRM og møtet kl. 10:30 hører sammen, men vises tre forskjellige steder.</p></div>
+        <div class="boks"><b>Muligheter går tapt</b><p>Rammetillatelsen i lokalavisa leses først når konkurrenten allerede har vært på besøk.</p></div>
+        <div class="boks"><b>Verktøyene er gode, men ligger hver for seg</b><p>Dario har verktøyene. Brain gir dem et sted å starte fra og innholdet de trenger.</p></div>
+      </div>
+    </section>
+
+    <section class="panel" id="prinsipper">
+      <h2>2 · Prinsipper</h2>
+      <div class="rute">
+        <div class="boks"><span class="nr">1</span><b>Én inngang</b><p>Brain er stedet du starter dagen. Det erstatter ikke systemene, men samler dem.</p></div>
+        <div class="boks"><span class="nr">2</span><b>Forklarbar prioritering</b><p>Hver prioritet viser hvorfor den står der. Ingen svart boks.</p></div>
+        <div class="boks"><span class="nr">3</span><b>Mennesket bestemmer</b><p>Brain foreslår svar og tilbud, men sender aldri noe til en kunde på egen hånd.</p></div>
+        <div class="boks"><span class="nr">4</span><b>Rolle før person</b><p>Tilgang følger rolle-maler. Unntak og delegeringer er synlige og loggføres.</p></div>
+        <div class="boks"><span class="nr">5</span><b>Aldri mer innsyn enn du har</b><p>Brain leser med dine rettigheter. Lederen ser ikke de ansattes innboks.</p></div>
+      </div>
+    </section>
+
+    <section class="panel" id="morgen">
+      <h2>3 · En morgen med Brain</h2>
+      <p>Ida er utesalg i Oslo Øst. Kl. 07:45 åpner hun BD Brain på mobilen.</p>
+      <ol>
+        <li><b>Kl. 06:30 har Brain allerede jobbet.</b> Den har lest nattens e-post, nye intranettsaker, lokale nyheter og anbud, og hentet CRM- og ordrestatus for kundene hennes.</li>
+        <li><b>Talt brief, 60–90 sekunder.</b> «God morgen, Ida. Du har tre avtaler i dag. Først: Østby Rør ber om revidert tilbud før torsdag. Konkurrent er inne, og omsetningen er ned 18 %. Du møter dem kl. 10:30.»</li>
+        <li><b>Visuell rapport.</b> Nøkkeltall, dagens tidslinje med ferdig forberedte kundemøter, pipeline og en segmentradar.</li>
+        <li><b>Fra prioritet til handling med ett trykk.</b> «Lag tilbud i Dario» åpner tilbudsverktøyet med kunde, prosjekt og behov allerede fylt inn fra e-posten.</li>
+        <li><b>Hun kontrollerer og sender.</b> Brain lærer av hva hun faktisk prioriterte.</li>
+      </ol>
+      <p class="sitat">Målet er ikke en ny skjerm å sjekke, men at du er ferdig med morgenrutinen før kaffen er kald.</p>
+    </section>
+
+    <section class="panel" id="dario">
+      <h2>4 · Brain og Dario</h2>
+      <p>Dario er i dag en samling verktøy. Forslaget er en tydelig arbeidsdeling:</p>
+      <div class="rute">
+        <div class="boks"><b>Brain = dirigenten</b><p>Vet hvem du er, hva som haster og hvilken kunde det gjelder. Bestemmer <i>når</i> et verktøy trengs og fyller inn konteksten.</p></div>
+        <div class="boks"><b>Dario = verktøykassa</b><p>Lager tilbudet, regner priser, slår opp produkter. Bestemmer <i>hvordan</i> jobben gjøres.</p></div>
+        <div class="boks"><b>Grensesnittet mellom dem</b><p>Et lite og stabilt kontrakt-API: «lag tilbudsutkast (kunde, prosjekt, behov, vedlegg)» → utkast-ID og lenke. Brain bygger ikke Dario på nytt.</p></div>
+      </div>
+      <p>Dermed kan hvert Dario-verktøy bli en modul i suiten og tildeles i tilgangstabellen som alt annet. <b>Antakelse som må sjekkes:</b> at Dario har, eller kan få, et API som kan kalles med brukerens identitet.</p>
+    </section>
+
+    <section class="panel" id="arkitektur">
+      <h2>5 · Arkitektur</h2>
+      <div class="lag">
+        <div class="lag__rad"><div class="lag__navn">Flater</div><div class="lag__bokser"><span>Web / PWA (mobil først)</span><span>Teams-fane</span><span>Tale (morgenbrief)</span><span>Varsler</span></div></div>
+        <div class="pil">▲ ▼</div>
+        <div class="lag__rad"><div class="lag__navn">Brain-kjernen</div><div class="lag__bokser"><span class="kjerneboks">Prioriteringsmotor</span><span class="kjerneboks">Oppsummering (språkmodell)</span><span>Tilgang og delegering</span><span>Signalindeks per bruker</span><span>Revisjonslogg</span></div></div>
+        <div class="pil">▲ ▼</div>
+        <div class="lag__rad"><div class="lag__navn">Koblinger</div><div class="lag__bokser"><span>Microsoft Graph: e-post og kalender</span><span>Intranett / SharePoint</span><span>Nyheter: RSS, lokalaviser</span><span>Anbud og byggeprosjekter</span><span>ERP / CRM</span><span>Lager og logistikk</span><span>Dario-API</span></div></div>
+      </div>
+      <h3>Viktige valg</h3>
+      <ul>
+        <li><b>Delegerte rettigheter (on-behalf-of).</b> Brain bruker brukerens eget Microsoft-token. Det kan ikke se noe brukeren selv ikke ser, og det trengs ingen «superbruker» som leser alles e-post.</li>
+        <li><b>Signaler, ikke kopier.</b> Brain lagrer et kort sammendrag og en peker til kilden, ikke hele e-posten. Det gir mindre data å beskytte og en enklere sletteplikt.</li>
+        <li><b>Regelmotor først, språkmodell for tekst.</b> Rekkefølgen bestemmes av regler som kan etterprøves. Språkmodellen skriver brief, sammendrag og svarutkast. Modellen kjører i en avtale der data ikke brukes til trening.</li>
+        <li><b>Batch om morgenen og live om dagen.</b> Briefen bygges ferdig før arbeidsdagen begynner. Gjennom dagen oppdateres signalene fortløpende.</li>
+        <li><b>Prototypen</b> i dette repoet er ren HTML/CSS/JS med fiktive data. Logikken for prioritering og tilgang (<code>js/prioritering.js</code>, <code>js/tilgang.js</code>) er skrevet som rene funksjoner, så den kan flyttes til en backend uten å skrives om.</li>
+      </ul>
+    </section>
+
+    <section class="panel" id="prioritering">
+      <h2>6 · Prioriteringsmotoren</h2>
+      <p>Hvert signal får en score som summen av noen få, forståelige faktorer, ganget med rollens fokusvekt:</p>
+      <div class="rute">
+        <div class="boks"><b>Hastegrad</b><p>Frist i dag > i morgen > denne uka.</p></div>
+        <div class="boks"><b>Forventning</b><p>Noen venter på svar, en reklamasjon eller et tilbud som utløper.</p></div>
+        <div class="boks"><b>Verdi</b><p>Kroner i spill, logaritmisk slik at store tall ikke tar over alt.</p></div>
+        <div class="boks"><b>Relasjon</b><p>Nøkkelkunde, frafallsrisiko, møte med kunden i dag.</p></div>
+        <div class="boks"><b>Sammenheng</b><p>Flere signaler om samme kunde forsterker hverandre.</p></div>
+        <div class="boks"><b>Rollefokus</b><p>Utesalg vekter tilbud og prosjekter, innesalg vekter levering, ledere vekter team.</p></div>
+      </div>
+      <p>Hver prioritet viser grunnene sine («Hvorfor er dette viktig?»). Vektene er en tabell som fagmiljøet kan justere. Senere kan de kalibreres mot hva folk faktisk gjør, men bare med samtykke og på aggregert nivå.</p>
+    </section>
+
+    <section class="panel" id="varianter">
+      <h2>7 · Rollevarianter</h2>
+      <div class="tabell-rull"><table class="tabell">
+        <thead><tr><th>Rolle</th><th>Fokus i briefen</th><th>Typiske moduler</th></tr></thead>
+        <tbody>
+          <tr><td><b>Utesalg</b></td><td>Tilbud som haster, nøkkelkunder med fall, nye prosjekter i distriktet</td><td>Brief, e-post, tilbud (Dario), kunder, kalender, segmentnyheter</td></tr>
+          <tr><td><b>Innesalg / kundesenter</b></td><td>Leveringsavvik, reklamasjoner, prisforespørsler</td><td>Brief, e-post, tilbud, lager og levering</td></tr>
+          <tr><td><b>Servicesenterleder</b></td><td>Restordre, kampanjer, interne beskjeder, lokale kunder</td><td>Brief, intranett, lager, kunder, team (se)</td></tr>
+          <tr><td><b>Salgssjef / regionleder</b></td><td>Tilbud som forfaller i regionen, hvem som trenger hjelp, store muligheter</td><td>Team-pipeline, tilgangstabell, kunder, nyheter</td></tr>
+          <tr><td><b>Produktspesialist</b></td><td>Prosjekteringsforespørsler, teknisk dokumentasjon, regelverk og støtteordninger</td><td>Brief, e-post, tilbud, nyheter</td></tr>
+        </tbody>
+      </table></div>
+      <p>Varianten er ikke en egen app. Det er samme suite med en annen rolle-mal, andre fokusvekter og andre nyhetskilder (segment og distrikt).</p>
+    </section>
+
+    <section class="panel" id="tilgang">
+      <h2>8 · Tilgangstabellen</h2>
+      <p>Svaret på «tildele og delegere deler av suiten basert på en tabell»:</p>
+      <ol>
+        <li><b>Rolle-mal</b> (standard): hver rolle har et nivå per modul: <i>ingen · se · bruke · delegere</i>.</li>
+        <li><b>Individuelle unntak</b>: en senior selger kan få «se» på team-pipeline. Unntak merkes med U i tabellen.</li>
+        <li><b>Tidsbegrensede delegeringer</b>: «Tor gir Sander team-pipeline mens han har ferie i uke 45–46.» Delegeringer utløper automatisk og merkes med D.</li>
+      </ol>
+      <ul>
+        <li>Bare den som har nivået «delegere», kan gi bort tilgang, og bare «se» eller «bruke». Det blir ingen kjeder av delegeringer.</li>
+        <li>Alle endringer logges med hvem, hva og når.</li>
+        <li>I produksjon bør rolle-malene speile grupper i Entra ID (Azure AD), slik at nyansatte får riktig suite fra dag én og sluttere mister den automatisk.</li>
+      </ul>
+      <p><a href="./#/tilgang">Prøv tabellen i prototypen →</a> (bytt til «Tor Vik · Salgssjef» for å kunne endre)</p>
+    </section>
+
+    <section class="panel" id="personvern">
+      <h2>9 · Personvern og tillit</h2>
+      <p>Et verktøy som leser e-post, kan fort oppleves som overvåking. Det må vi ta på alvor fra første dag. Ellers blir det ikke tatt i bruk.</p>
+      <ul>
+        <li><b>Brain er den ansattes assistent, ikke lederens kontrollverktøy.</b> Lederflaten (team-pipeline) bygger bare på CRM-data. Lederen ser aldri en ansatts innboks, brief eller hva personen klikket på.</li>
+        <li><b>Kontrolltiltak etter arbeidsmiljøloven kap. 9</b> skal drøftes med tillitsvalgte før innføring, og vernetjenesten/AMU bør involveres.</li>
+        <li><b>GDPR:</b> e-post inneholder personopplysninger om kunder og kolleger. Det krever en vurdering av personvernkonsekvenser (DPIA), databehandleravtaler, dataminimering (signaler i stedet for kopier) og sletting når kilden slettes.</li>
+        <li><b>Språkmodell:</b> den bør kjøre i en bedriftsavtale med europeisk databehandling og uten trening på BD-data. Brain skal aldri sende noe til en kunde uten at et menneske har godkjent.</li>
+        <li><b>Skru av og på:</b> den ansatte kan selv slå av kilder, for eksempel e-postlesing, og fortsatt bruke resten.</li>
+      </ul>
+    </section>
+
+    <section class="panel" id="risiko">
+      <h2>10 · Risiko og fallgruver</h2>
+      <div class="tabell-rull"><table class="tabell">
+        <thead><tr><th>Risiko</th><th>Hva som kan skje</th><th>Tiltak</th></tr></thead>
+        <tbody>
+          <tr><td><b>Nok en skjerm</b></td><td>Brain blir system nr. 7 som ingen åpner</td><td>Start smalt: én rolle, én verdifull brief. Gjør den bedre enn innboksen før vi bygger mer.</td></tr>
+          <tr><td><b>Feil prioritering</b></td><td>Tilliten forsvinner etter første bom</td><td>Vis alltid «hvorfor». La brukeren flytte og avvise forslag, og lær av det.</td></tr>
+          <tr><td><b>Overvåkingsfølelse</b></td><td>Motstand fra ansatte og tillitsvalgte</td><td>Prinsipp 5, tidlig drøfting og ingen lederinnsyn i individdata.</td></tr>
+          <tr><td><b>Integrasjonsgjeld</b></td><td>Hver kobling er et prosjekt i seg selv</td><td>Graph først, fordi den gir mest verdi for minst arbeid. Dario via ett lite API. Resten etter behov.</td></tr>
+          <tr><td><b>Hallusinasjoner</b></td><td>Talt brief sier noe som ikke stemmer</td><td>Manus bygges fra strukturerte fakta. Språkmodellen formulerer, men finner ikke på tall.</td></tr>
+          <tr><td><b>Dario og Brain overlapper</b></td><td>To team bygger det samme</td><td>Tydelig arbeidsdeling: dirigent og verktøykasse. Felles eierskap til kontrakten.</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section class="panel" id="faser">
+      <h2>11 · Veien dit</h2>
+      <div class="faser">
+        <div class="fase"><small>Fase 0 · nå</small><h3>Klikkbar prototype</h3><ul><li>Dette repoet</li><li>Fiktive data</li><li>Brukes til å drøfte form og innhold med selgere og ledere</li></ul></div>
+        <div class="fase"><small>Fase 1 · pilot</small><h3>Lesende brief</h3><ul><li>5–10 selgere i én region</li><li>Graph: e-post og kalender (kun lesing)</li><li>CRM-signaler</li><li>Lenke til Dario</li></ul></div>
+        <div class="fase"><small>Fase 2</small><h3>Handling</h3><ul><li>Tilbud via Dario-API</li><li>Svarutkast</li><li>Rollevarianter: innesalg og servicesenter</li><li>Segmentnyheter og anbud</li></ul></div>
+        <div class="fase"><small>Fase 3</small><h3>Skala</h3><ul><li>Tilgangstabell koblet til Entra ID</li><li>Delegering</li><li>Teams-app og tale</li><li>Kalibrering av vekter</li></ul></div>
+      </div>
+    </section>
+
+    <section class="panel" id="maaling">
+      <h2>12 · Hvordan vi vet at det virker</h2>
+      <p>Forslag til målepunkter for piloten (måles på gruppenivå, ikke per person):</p>
+      <ul>
+        <li>Tid fra arbeidsdagens start til første kundehandling</li>
+        <li>Andel tilbudsforespørsler besvart innen 24 timer</li>
+        <li>Tilbud som utløper uten oppfølging (skal ned)</li>
+        <li>Andel av dagens prioriteringer brukeren faktisk handlet på</li>
+        <li>Hvor mange som åpner briefen frivillig etter fire uker (det viktigste tallet)</li>
+      </ul>
+    </section>
+
+    <section class="panel" id="sporsmaal">
+      <h2>13 · Åpne spørsmål vi bør drøfte</h2>
+      <ol class="sporsmaal">
+        <li>Hva er Dario teknisk i dag? Finnes det API, hvem eier det, og kan verktøyene kalles med brukerens identitet?</li>
+        <li>Hvilket intranett bruker vi (SharePoint/Viva eller noe annet), og har det et API eller RSS?</li>
+        <li>Hvilken kilde er sannheten for kunder og tilbud: ERP, CRM eller begge?</li>
+        <li>Hvilke nyhetskilder per segment: lokalaviser, Doffin, byggeprosjektdatabaser? Hva koster lisensene?</li>
+        <li>Hvem eier rolle-malene: salg, HR eller IT?</li>
+        <li>Skal briefen være talt som standard, eller bare tekst med tale som valg?</li>
+        <li>Hvilken region og hvilke 5–10 personer er gode pilotbrukere, og hvem i de tillitsvalgte bør vi snakke med først?</li>
+        <li>Skal Brain bli en del av Dario-merkevaren, eller være en egen inngang?</li>
+      </ol>
+    </section>
+
+    <p class="dempet liten">Utkast til diskusjon. Personer, kunder og tall i prototypen er fiktive.</p>
+  </main>
+</body>
+</html>

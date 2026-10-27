@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Takt">
-  <rect width="512" height="512" rx="116" fill="#2C4133"/>
-  <g stroke="#F1EAD9" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <path d="M256 130 L256 390"/>
-    <path d="M176 224 L340 221"/>
-    <path d="M190 274 L326 271"/>
-  </g>
-</svg>

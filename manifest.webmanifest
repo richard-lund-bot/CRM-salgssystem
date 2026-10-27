@@ -1,17 +1,15 @@
 {
-  "name": "Takt — Daglige valg, gode år",
-  "short_name": "Takt",
-  "description": "Små daglige valg som blir gode år — bevegelse, læring og ro i én rolig, offline-først app.",
+  "name": "BD Brain",
+  "short_name": "BD Brain",
+  "description": "Der dagen starter: brief, prioriteringer og verktøy for ansatte i Brødrene Dahl.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#F4EFE5",
-  "theme_color": "#F4EFE5",
+  "background_color": "#020d19",
+  "theme_color": "#020d19",
   "lang": "no",
   "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "icons/icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    { "src": "assets/bd-kube-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/bd-kube-512.png", "sizes": "512x512", "type": "image/png" }
   ]
 }

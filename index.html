@@ -2,41 +2,17 @@
 <html lang="no">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover" />
-  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F4EFE5" />
-  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#15201A" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Takt" />
-  <link rel="apple-touch-icon" href="icons/icon-192.png" />
-  <!-- Favicon = app-ikonet (PNG). SVG-merket (takt-ikon.svg) brukes kun på splash. -->
-  <link rel="icon" type="image/png" href="icons/icon-192.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#020d19" />
+  <meta name="description" content="BD Brain – der dagen starter. Prototype av en rollebasert arbeidsflate for Brødrene Dahl." />
+  <link rel="icon" type="image/png" href="assets/bd-kube-64.png" />
+  <link rel="apple-touch-icon" href="assets/bd-kube-192.png" />
   <link rel="manifest" href="manifest.webmanifest" />
-  <script>
-    /* Fargemodus uten FOUC: sett data-mork før CSS males (auto = systemvalg). */
-    (function () {
-      try {
-        var m = localStorage.getItem('trening.fargemodus') || 'auto';
-        var d = m === 'mork' || (m === 'auto' && window.matchMedia
-          && window.matchMedia('(prefers-color-scheme: dark)').matches);
-        if (d) document.documentElement.setAttribute('data-mork', '');
-      } catch (e) { /* ignorer */ }
-    })();
-  </script>
-  <link rel="stylesheet" href="css/app.css" />
-  <title>Takt — Daglige valg, gode år</title>
+  <link rel="stylesheet" href="css/brain.css" />
+  <title>BD Brain</title>
 </head>
 <body>
-  <!-- Splash: males umiddelbart ved fersk åpning (inline-stil så den vises
-       før CSS/JS er lastet); app.js fader den ut når appen er klar. -->
-  <div id="splash" class="splash" aria-hidden="true"
-    style="position:fixed;inset:0;z-index:999;background:#F4EFE5;display:flex;align-items:center;justify-content:center">
-    <img class="splash__bilde" src="icons/takt-ikon.svg" alt="Takt"
-      style="width:128px;height:128px;filter:drop-shadow(0 10px 30px rgba(44,65,51,0.26))" />
-  </div>
-  <div id="app">
-    <div class="laster">Laster…</div>
-  </div>
+  <div id="app"><div class="laster">Starter BD Brain…</div></div>
   <script type="module" src="js/app.js"></script>
 </body>
 </html>
