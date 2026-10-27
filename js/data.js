@@ -1,6 +1,6 @@
-// Demodata for BD Brain-prototypen. ALT her er fiktivt: personer, kunder,
+// Demodata for Dario-prototypen. ALT her er fiktivt: personer, kunder,
 // e-poster, intranettsaker og nyheter. I en ekte løsning kommer dette fra
-// koblingene (Microsoft Graph, intranett, nyhetskilder, ERP/CRM og Dario).
+// koblingene (Microsoft Graph, intranett, nyhetskilder, ERP/CRM og tilbudsverktøyet).
 // Datoer er angitt som dager fra i dag (0 = i dag), så demoen alltid er fersk.
 
 // Modulene i suiten. `kilde` beskriver hvor dataene ville kommet fra.
@@ -9,12 +9,12 @@ export const MODULER = [
   { id: 'epost', navn: 'E-post', ikon: 'mail', kilde: 'Outlook (Microsoft Graph)', beskrivelse: 'Leser innboksen, finner hva som krever svar og hvem som venter.' },
   { id: 'intranett', navn: 'Intranett', ikon: 'news', kilde: 'Intranett / SharePoint', beskrivelse: 'Det som er relevant for din rolle og region, ikke alt som publiseres.' },
   { id: 'nyheter', navn: 'Segmentnyheter', ikon: 'radar', kilde: 'Lokalaviser, anbud, byggeprosjekter', beskrivelse: 'Lokale nyheter og prosjekter i ditt segment og distrikt.' },
-  { id: 'tilbud', navn: 'Tilbud (Dario)', ikon: 'doc', kilde: 'Dario', beskrivelse: 'Skriv tilbud med Dario sine verktøy, startet fra kunde, e-post eller prosjekt.' },
+  { id: 'tilbud', navn: 'Tilbud', ikon: 'doc', kilde: 'Darios tilbudsverktøy', beskrivelse: 'Skriv tilbud startet fra kunde, e-post eller prosjekt.' },
   { id: 'kunder', navn: 'Kunder', ikon: 'users', kilde: 'CRM / ERP', beskrivelse: 'Kunde-360: omsetning, åpne tilbud, siste kontakt og signaler.' },
   { id: 'kalender', navn: 'Kalender', ikon: 'cal', kilde: 'Outlook (Microsoft Graph)', beskrivelse: 'Dagens møter med kundekontekst ferdig forberedt.' },
   { id: 'team', navn: 'Team-pipeline', ikon: 'chart', kilde: 'CRM / ERP', beskrivelse: 'Lederflate: pipeline, tilbud som forfaller og hvem som trenger hjelp.' },
   { id: 'lager', navn: 'Lager og levering', ikon: 'box', kilde: 'ERP / logistikk', beskrivelse: 'Restordre, leveransestatus og avvik for dine kunder.' },
-  { id: 'tilgang', navn: 'Tilgangstabell', ikon: 'key', kilde: 'Brain (intern)', beskrivelse: 'Tildel og deleger deler av suiten per person og rolle.' },
+  { id: 'tilgang', navn: 'Tilgangstabell', ikon: 'key', kilde: 'Dario (intern)', beskrivelse: 'Tildel og deleger deler av suiten per person og rolle.' },
 ];
 
 // Tilgangsnivåer i tabellen. Rekkefølgen er viktig: høyere indeks = mer tilgang.

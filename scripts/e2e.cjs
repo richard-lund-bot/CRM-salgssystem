@@ -37,8 +37,15 @@ const server = http.createServer((req, res) => {
         if (bildeMappe && (id === 'ida' || id === 'tor')) await side.screenshot({ path: path.join(bildeMappe, `${bredde}-${id}-${m.slice(1)}.png`), fullPage: true });
       }
     }
-    // Interaksjon: tilbud fra prioritet, og tilgangstabell som leder.
+    // Interaksjon: Darios stemme spilles av fra innspilte klipp.
     await side.selectOption('#persona', 'ida');
+    await side.goto(base + '#brief');
+    const klipp = side.waitForResponse((r) => /assets\/stemme\/[0-9a-f]+\.mp3$/.test(r.url()) && r.ok(), { timeout: 10000 });
+    await side.click('#spill');
+    await klipp;
+    await side.waitForFunction(() => document.getElementById('teksting').textContent.startsWith('Hei, Ida!'));
+    await side.click('#spill');
+    // Interaksjon: tilbud fra prioritet, og tilgangstabell som leder.
     await side.goto(base + '#tilbud?signal=e1');
     await side.click('#tilbudsskjema button');
     await side.waitForSelector('#tilbudsutkast table');

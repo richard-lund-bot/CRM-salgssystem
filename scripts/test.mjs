@@ -4,7 +4,8 @@ import assert from 'node:assert/strict';
 import { ROLLER, ANSATTE, UNNTAK, DELEGERINGER, MODULER, SIGNALER, KUNDER, KALENDER, PIPELINE } from '../js/data.js';
 import { effektivTilgang, kanDelegere, nesteNivaa, synligeModuler } from '../js/tilgang.js';
 import { prioriter, nokkeltall, gjelder } from '../js/prioritering.js';
-import { lagManus } from '../js/brief.js';
+import { lagManus, klokkeTekst, kroner } from '../js/brief.js';
+import { readFileSync } from 'node:fs';
 
 const finn = (id) => ANSATTE.find((a) => a.id === id);
 const ktx = { roller: ROLLER, unntak: UNNTAK, delegeringer: DELEGERINGER };
@@ -69,12 +70,37 @@ test('nøkkeltall', () => {
 });
 
 console.log('brief');
-test('manus hilser, nevner første avtale og prioriteringer', () => {
-  const ida = finn('ida');
-  const manus = lagManus(ida, { prioriteringer: prioriter(ida, data), nokkel: nokkeltall(ida, data), kalender: KALENDER, time: 7 });
-  assert.equal(manus[0], 'God morgen, Ida. Her er dagen din.');
-  assert.ok(manus.some((s) => s.includes('08:00')));
+const manusFor = (id) => {
+  const a = finn(id);
+  return lagManus(a, { prioriteringer: prioriter(a, data), nokkel: nokkeltall(a, data), kalender: KALENDER });
+};
+test('Dario hilser, nevner første avtale i ord og prioriteringene', () => {
+  const manus = manusFor('ida');
+  assert.equal(manus[0], 'Hei, Ida! Dario her. Skal vi få flyt i dagen?');
+  assert.ok(manus.some((s) => s.includes('klokka åtte')));
   assert.ok(manus.some((s) => s.startsWith('Først:')));
+});
+test('manuset er skrevet for øret', () => {
+  for (const a of ANSATTE) {
+    for (const s of manusFor(a.id)) {
+      assert.ok(!/\d\d:\d\d| %|\bmnd\b|\bkr\b|\bett (person|avtale)\b/.test(s), s);
+    }
+  }
+});
+test('klokkeslett og beløp i ord', () => {
+  assert.equal(klokkeTekst('10:30'), 'halv elleve');
+  assert.equal(klokkeTekst('13:00'), 'ett');
+  assert.equal(klokkeTekst('07:45'), 'kvart på åtte');
+  assert.equal(kroner(3_640_000), '3,6 millioner kroner');
+});
+test('hver setning i manuset har et stemmeklipp (kjør scripts/lag-stemme.py ved endringer)', () => {
+  const { klipp } = JSON.parse(readFileSync(new URL('../assets/stemme/manifest.json', import.meta.url)));
+  for (const a of ANSATTE) {
+    for (const s of manusFor(a.id)) {
+      assert.ok(klipp[s], `mangler klipp: «${s}»`);
+      readFileSync(new URL(`../assets/stemme/${klipp[s]}`, import.meta.url));
+    }
+  }
 });
 
 console.log(`\n${antall} tester OK`);

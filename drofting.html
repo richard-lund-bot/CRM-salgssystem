@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#020d19" />
   <link rel="icon" type="image/png" href="assets/bd-kube-64.png" />
-  <link rel="stylesheet" href="css/brain.css" />
-  <title>BD Brain – drøftelse</title>
+  <link rel="stylesheet" href="css/dario.css" />
+  <title>Dario – drøftelse</title>
   <style>
     .dok { max-width: 980px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; display: flex; flex-direction: column; gap: 1.2rem; }
     .dok h1 { font-size: clamp(1.9rem, 4vw, 2.8rem); line-height: 1.15; }
@@ -47,7 +47,7 @@
 </head>
 <body>
   <header class="topp">
-    <a class="merke" href="./"><img src="assets/bd-kube-64.png" alt="" width="32" height="32" /><span class="merke__tekst"><b>BD</b> BRAIN</span></a>
+    <a class="merke" href="./"><img src="assets/bd-kube-64.png" alt="" width="32" height="32" /><span class="merke__tekst">DARIO</span></a>
     <div class="topp__midt"><span class="topp__demo">Drøftelse · utkast til diskusjon</span></div>
     <a class="knapp knapp--liten" href="./">Åpne prototypen</a>
   </header>
@@ -55,8 +55,8 @@
   <main class="dok">
     <section>
       <p class="overline">Konsept · Brødrene Dahl</p>
-      <h1>BD Brain: der arbeidsdagen starter</h1>
-      <p class="ingress">En felles arbeidsflate i BD-blått som leser e-posten, intranettet og nyhetene i segmentet ditt, kobler dem mot kunder og kalender, og gir deg en kort talt brief med dagens prioriteringer. Dario blir verktøykassa. Brain bestemmer hvilket verktøy du trenger og når. Hver ansatt får sin variant, og en tilgangstabell styrer hvem som har hva.</p>
+      <h1>Dario: der arbeidsdagen starter</h1>
+      <p class="ingress">Dario er i dag en samling verktøy. Forslaget er å gjøre Dario til navnet på hele arbeidsflaten, og til en kollega med stemme. Dario leser e-posten, intranettet og nyhetene i segmentet ditt, kobler dem mot kunder og kalender, og snakker deg gjennom dagens prioriteringer. Verktøyene blir moduler inne i Dario. Hver ansatt får sin variant, og en tilgangstabell styrer hvem som har hva.</p>
     </section>
 
     <nav class="panel" aria-label="Innhold">
@@ -64,8 +64,9 @@
       <ol class="toc">
         <li><a href="#hvorfor">Hvorfor</a></li>
         <li><a href="#prinsipper">Prinsipper</a></li>
-        <li><a href="#morgen">En morgen med Brain</a></li>
-        <li><a href="#dario">Brain og Dario</a></li>
+        <li><a href="#morgen">En morgen med Dario</a></li>
+        <li><a href="#dario">Fra verktøysamling til kollega</a></li>
+        <li><a href="#stemme">Darios stemme og nærvær</a></li>
         <li><a href="#arkitektur">Arkitektur</a></li>
         <li><a href="#prioritering">Prioriteringsmotoren</a></li>
         <li><a href="#varianter">Rollevarianter</a></li>
@@ -80,71 +81,99 @@
 
     <section class="panel" id="hvorfor">
       <h2>1 · Hvorfor</h2>
-      <p>En selger i BD starter i dag dagen i mange vinduer: Outlook, intranettet, ERP og CRM, prislister, Dario, Teams og kanskje en lokalavis. Hvert system har en del av bildet, men ingen setter sammen bitene. Det må selgeren gjøre selv, hver morgen.</p>
+      <p>En selger i BD starter i dag dagen i mange vinduer: Outlook, intranettet, ERP og CRM, prislister, Dario-verktøyene, Teams og kanskje en lokalavis. Hvert system har en del av bildet, men ingen setter sammen bitene. Det må selgeren gjøre selv, hver morgen.</p>
       <div class="rute">
         <div class="boks"><b>Signaler drukner</b><p>Kunden som venter på et revidert tilbud ligger i innboksen mellom et HR-varsel og et nyhetsbrev.</p></div>
         <div class="boks"><b>Sammenhengen mangler</b><p>E-posten om Østby Rør, fallende omsetning i CRM og møtet kl. 10:30 hører sammen, men vises tre forskjellige steder.</p></div>
         <div class="boks"><b>Muligheter går tapt</b><p>Rammetillatelsen i lokalavisa leses først når konkurrenten allerede har vært på besøk.</p></div>
-        <div class="boks"><b>Verktøyene er gode, men ligger hver for seg</b><p>Dario har verktøyene. Brain gir dem et sted å starte fra og innholdet de trenger.</p></div>
+        <div class="boks"><b>Verktøyene er gode, men ligger hver for seg</b><p>Dario-verktøyene finnes allerede. De mangler et sted å starte fra, og innholdet de trenger.</p></div>
       </div>
     </section>
 
     <section class="panel" id="prinsipper">
       <h2>2 · Prinsipper</h2>
       <div class="rute">
-        <div class="boks"><span class="nr">1</span><b>Én inngang</b><p>Brain er stedet du starter dagen. Det erstatter ikke systemene, men samler dem.</p></div>
+        <div class="boks"><span class="nr">1</span><b>Én inngang</b><p>Dario er stedet du starter dagen. Han erstatter ikke systemene, men samler dem.</p></div>
         <div class="boks"><span class="nr">2</span><b>Forklarbar prioritering</b><p>Hver prioritet viser hvorfor den står der. Ingen svart boks.</p></div>
-        <div class="boks"><span class="nr">3</span><b>Mennesket bestemmer</b><p>Brain foreslår svar og tilbud, men sender aldri noe til en kunde på egen hånd.</p></div>
+        <div class="boks"><span class="nr">3</span><b>Mennesket bestemmer</b><p>Dario foreslår svar og tilbud, men sender aldri noe til en kunde på egen hånd.</p></div>
         <div class="boks"><span class="nr">4</span><b>Rolle før person</b><p>Tilgang følger rolle-maler. Unntak og delegeringer er synlige og loggføres.</p></div>
-        <div class="boks"><span class="nr">5</span><b>Aldri mer innsyn enn du har</b><p>Brain leser med dine rettigheter. Lederen ser ikke de ansattes innboks.</p></div>
+        <div class="boks"><span class="nr">5</span><b>Aldri mer innsyn enn du har</b><p>Dario leser med dine rettigheter. Lederen ser ikke de ansattes innboks.</p></div>
       </div>
     </section>
 
     <section class="panel" id="morgen">
-      <h2>3 · En morgen med Brain</h2>
-      <p>Ida er utesalg i Oslo Øst. Kl. 07:45 åpner hun BD Brain på mobilen.</p>
+      <h2>3 · En morgen med Dario</h2>
+      <p>Ida er utesalg i Oslo Øst. Kl. 07:45 åpner hun Dario på mobilen.</p>
       <ol>
-        <li><b>Kl. 06:30 har Brain allerede jobbet.</b> Den har lest nattens e-post, nye intranettsaker, lokale nyheter og anbud, og hentet CRM- og ordrestatus for kundene hennes.</li>
-        <li><b>Talt brief, 60–90 sekunder.</b> «God morgen, Ida. Du har tre avtaler i dag. Først: Østby Rør ber om revidert tilbud før torsdag. Konkurrent er inne, og omsetningen er ned 18 %. Du møter dem kl. 10:30.»</li>
+        <li><b>Kl. 06:30 har Dario allerede jobbet.</b> Han har lest nattens e-post, nye intranettsaker, lokale nyheter og anbud, og hentet CRM- og ordrestatus for kundene hennes.</li>
+        <li><b>Dario snakker, 60–90 sekunder.</b> «Hei, Ida! Dario her. Skal vi få flyt i dagen? Du har tre avtaler i dag … Først: Østby Rør ber om revidert tilbud på Hasle Park. Noen venter på svar, og en konkurrent er inne i bildet.»</li>
         <li><b>Visuell rapport.</b> Nøkkeltall, dagens tidslinje med ferdig forberedte kundemøter, pipeline og en segmentradar.</li>
-        <li><b>Fra prioritet til handling med ett trykk.</b> «Lag tilbud i Dario» åpner tilbudsverktøyet med kunde, prosjekt og behov allerede fylt inn fra e-posten.</li>
-        <li><b>Hun kontrollerer og sender.</b> Brain lærer av hva hun faktisk prioriterte.</li>
+        <li><b>Fra prioritet til handling med ett trykk.</b> «Lag eller oppdater tilbudet» åpner tilbudsverktøyet med kunde, prosjekt og behov allerede fylt inn fra e-posten.</li>
+        <li><b>Hun kontrollerer og sender.</b> Dario lærer av hva hun faktisk prioriterte.</li>
       </ol>
       <p class="sitat">Målet er ikke en ny skjerm å sjekke, men at du er ferdig med morgenrutinen før kaffen er kald.</p>
     </section>
 
     <section class="panel" id="dario">
-      <h2>4 · Brain og Dario</h2>
-      <p>Dario er i dag en samling verktøy. Forslaget er en tydelig arbeidsdeling:</p>
+      <h2>4 · Fra verktøysamling til kollega</h2>
+      <p>I dag er Dario en samling verktøy. Forslaget er å la navnet bære hele arbeidsflaten:</p>
       <div class="rute">
-        <div class="boks"><b>Brain = dirigenten</b><p>Vet hvem du er, hva som haster og hvilken kunde det gjelder. Bestemmer <i>når</i> et verktøy trengs og fyller inn konteksten.</p></div>
-        <div class="boks"><b>Dario = verktøykassa</b><p>Lager tilbudet, regner priser, slår opp produkter. Bestemmer <i>hvordan</i> jobben gjøres.</p></div>
-        <div class="boks"><b>Grensesnittet mellom dem</b><p>Et lite og stabilt kontrakt-API: «lag tilbudsutkast (kunde, prosjekt, behov, vedlegg)» → utkast-ID og lenke. Brain bygger ikke Dario på nytt.</p></div>
+        <div class="boks"><b>Dario er inngangen</b><p>Han vet hvem du er, hva som haster og hvilken kunde det gjelder. Han starter dagen med deg og fyller inn konteksten når du trenger et verktøy.</p></div>
+        <div class="boks"><b>Verktøyene blir moduler</b><p>Tilbud, prisoppslag, produktsøk og de andre verktøyene blir moduler inne i Dario. De tildeles i tilgangstabellen som alt annet.</p></div>
+        <div class="boks"><b>Et lite, stabilt grensesnitt</b><p>Der et verktøy er et eget system, holder det med ett kall som «lag tilbudsutkast (kunde, prosjekt, behov, vedlegg)» som gir tilbake en utkast-ID og en lenke. Verktøyene trenger ikke bygges på nytt.</p></div>
       </div>
-      <p>Dermed kan hvert Dario-verktøy bli en modul i suiten og tildeles i tilgangstabellen som alt annet. <b>Antakelse som må sjekkes:</b> at Dario har, eller kan få, et API som kan kalles med brukerens identitet.</p>
+      <p>Navnet er allerede kjent internt, så Dario trenger ikke introduseres på nytt. Det han får, er en jobb til: å være den som snakker. <b>Antakelse som må sjekkes:</b> at verktøyene har, eller kan få, et API som kan kalles med brukerens identitet.</p>
     </section>
 
-    <section class="panel" id="arkitektur">
-      <h2>5 · Arkitektur</h2>
+    <section class="panel" id="stemme">
+      <h2>5 · Darios stemme og nærvær</h2>
+      <h3>Nærvær: en kule, ikke et fjes</h3>
+      <p>Dario har ingen tegnefigur. Han vises som en svevende kule av punkter og linjer i BD-blått som puster rolig i hvile og beveger seg i takt med stemmen når han snakker. Det er slik AI-assistenter ofte vises, og det har noen fordeler:</p>
+      <ul>
+        <li>Dario later ikke som han er et menneske, og han blir ikke en maskot som går ut på dato.</li>
+        <li>Kula fungerer like godt som et lite ikon i Teams som stor på skjermen om morgenen.</li>
+        <li>Den viser tydelig når Dario snakker og når han lytter.</li>
+      </ul>
+      <h3>Personlighet</h3>
+      <div class="rute">
+        <div class="boks"><b>Blid og kort</b><p>«Hei, Ida! Dario her.» Ingen lange innledninger. Briefen er ferdig på halvannet minutt.</p></div>
+        <div class="boks"><b>Fagstolt</b><p>Han snakker som en erfaren kollega i bransjen: om tilbud, prosjekter og leveranser, ikke om «oppgaver» og «innsikt».</p></div>
+        <div class="boks"><b>Humor med måte</b><p>«Flyt for fagfolk» som avslutning er nok. Ved reklamasjoner og avvik er han helt saklig.</p></div>
+        <div class="boks"><b>Skrevet for øret</b><p>Klokkeslett og beløp i ord («halv elleve», «3,6 millioner kroner»), korte setninger og ingen forkortelser.</p></div>
+      </div>
+      <h3>Stemmen i produksjon</h3>
+      <div class="tabell-rull"><table class="tabell">
+        <thead><tr><th>Alternativ</th><th>Kvalitet</th><th>Fordeler</th><th>Ulemper</th></tr></thead>
+        <tbody>
+          <tr><td><b>Prototypen i dag:</b> Piper, lokal talesyntese med norsk stemme fra Språkbanken (CC0)</td><td>Grei, men hørbart syntetisk</td><td>Gratis, kjører lokalt, ingen data ut</td><td>Ikke god nok til daglig bruk</td></tr>
+          <tr><td><b>Azure AI Speech</b>, norsk nevral mannsstemme</td><td>Naturlig</td><td>Europeisk databehandling og trolig dekket av eksisterende Microsoft-avtale. Kan finjusteres med SSML (tempo, trykk, pauser).</td><td>Stemmen er felles for alle Azure-kunder</td></tr>
+          <tr><td><b>Egen Dario-stemme</b>: Azure Custom Neural Voice eller ElevenLabs, trent på en innleid stemmeskuespiller</td><td>Svært naturlig og unik</td><td>Dario får en stemme som er BDs egen og kjennes igjen</td><td>Krever samtykke og avtale med skuespilleren, godkjenning hos leverandøren og en vurdering av hvor data behandles</td></tr>
+        </tbody>
+      </table></div>
+      <p><b>Anbefaling:</b> Pilot med Azure sin norske nevrale stemme. Hvis brukerne liker å bli snakket til, går vi videre til en egen Dario-stemme med innleid skuespiller. Briefen genereres og leses inn kl. 06:30, så det er ingen ventetid når du åpner Dario.</p>
+    </section>
+
+<section class="panel" id="arkitektur">
+      <h2>6 · Arkitektur</h2>
       <div class="lag">
         <div class="lag__rad"><div class="lag__navn">Flater</div><div class="lag__bokser"><span>Web / PWA (mobil først)</span><span>Teams-fane</span><span>Tale (morgenbrief)</span><span>Varsler</span></div></div>
         <div class="pil">▲ ▼</div>
-        <div class="lag__rad"><div class="lag__navn">Brain-kjernen</div><div class="lag__bokser"><span class="kjerneboks">Prioriteringsmotor</span><span class="kjerneboks">Oppsummering (språkmodell)</span><span>Tilgang og delegering</span><span>Signalindeks per bruker</span><span>Revisjonslogg</span></div></div>
+        <div class="lag__rad"><div class="lag__navn">Dario-kjernen</div><div class="lag__bokser"><span class="kjerneboks">Prioriteringsmotor</span><span class="kjerneboks">Oppsummering (språkmodell)</span><span class="kjerneboks">Stemme (tekst til tale)</span><span>Tilgang og delegering</span><span>Signalindeks per bruker</span><span>Revisjonslogg</span></div></div>
         <div class="pil">▲ ▼</div>
-        <div class="lag__rad"><div class="lag__navn">Koblinger</div><div class="lag__bokser"><span>Microsoft Graph: e-post og kalender</span><span>Intranett / SharePoint</span><span>Nyheter: RSS, lokalaviser</span><span>Anbud og byggeprosjekter</span><span>ERP / CRM</span><span>Lager og logistikk</span><span>Dario-API</span></div></div>
+        <div class="lag__rad"><div class="lag__navn">Koblinger</div><div class="lag__bokser"><span>Microsoft Graph: e-post og kalender</span><span>Intranett / SharePoint</span><span>Nyheter: RSS, lokalaviser</span><span>Anbud og byggeprosjekter</span><span>ERP / CRM</span><span>Lager og logistikk</span><span>Dario-verktøyene (API)</span></div></div>
       </div>
       <h3>Viktige valg</h3>
       <ul>
-        <li><b>Delegerte rettigheter (on-behalf-of).</b> Brain bruker brukerens eget Microsoft-token. Det kan ikke se noe brukeren selv ikke ser, og det trengs ingen «superbruker» som leser alles e-post.</li>
-        <li><b>Signaler, ikke kopier.</b> Brain lagrer et kort sammendrag og en peker til kilden, ikke hele e-posten. Det gir mindre data å beskytte og en enklere sletteplikt.</li>
+        <li><b>Delegerte rettigheter (on-behalf-of).</b> Dario bruker brukerens eget Microsoft-token. Det kan ikke se noe brukeren selv ikke ser, og det trengs ingen «superbruker» som leser alles e-post.</li>
+        <li><b>Signaler, ikke kopier.</b> Dario lagrer et kort sammendrag og en peker til kilden, ikke hele e-posten. Det gir mindre data å beskytte og en enklere sletteplikt.</li>
         <li><b>Regelmotor først, språkmodell for tekst.</b> Rekkefølgen bestemmes av regler som kan etterprøves. Språkmodellen skriver brief, sammendrag og svarutkast. Modellen kjører i en avtale der data ikke brukes til trening.</li>
         <li><b>Batch om morgenen og live om dagen.</b> Briefen bygges ferdig før arbeidsdagen begynner. Gjennom dagen oppdateres signalene fortløpende.</li>
-        <li><b>Prototypen</b> i dette repoet er ren HTML/CSS/JS med fiktive data. Logikken for prioritering og tilgang (<code>js/prioritering.js</code>, <code>js/tilgang.js</code>) er skrevet som rene funksjoner, så den kan flyttes til en backend uten å skrives om.</li>
+        <li><b>Prototypen</b> i dette repoet er ren HTML/CSS/JS med fiktive data. Logikken for prioritering og tilgang (<code>js/prioritering.js</code>, <code>js/tilgang.js</code>) er skrevet som rene funksjoner, så den kan flyttes til en backend uten å skrives om. Stemmen er spilt inn på forhånd (<code>scripts/lag-stemme.py</code>), og kula er ren canvas (<code>js/orb.js</code>).</li>
       </ul>
     </section>
 
     <section class="panel" id="prioritering">
-      <h2>6 · Prioriteringsmotoren</h2>
+      <h2>7 · Prioriteringsmotoren</h2>
       <p>Hvert signal får en score som summen av noen få, forståelige faktorer, ganget med rollens fokusvekt:</p>
       <div class="rute">
         <div class="boks"><b>Hastegrad</b><p>Frist i dag > i morgen > denne uka.</p></div>
@@ -158,11 +187,11 @@
     </section>
 
     <section class="panel" id="varianter">
-      <h2>7 · Rollevarianter</h2>
+      <h2>8 · Rollevarianter</h2>
       <div class="tabell-rull"><table class="tabell">
         <thead><tr><th>Rolle</th><th>Fokus i briefen</th><th>Typiske moduler</th></tr></thead>
         <tbody>
-          <tr><td><b>Utesalg</b></td><td>Tilbud som haster, nøkkelkunder med fall, nye prosjekter i distriktet</td><td>Brief, e-post, tilbud (Dario), kunder, kalender, segmentnyheter</td></tr>
+          <tr><td><b>Utesalg</b></td><td>Tilbud som haster, nøkkelkunder med fall, nye prosjekter i distriktet</td><td>Brief, e-post, tilbud, kunder, kalender, segmentnyheter</td></tr>
           <tr><td><b>Innesalg / kundesenter</b></td><td>Leveringsavvik, reklamasjoner, prisforespørsler</td><td>Brief, e-post, tilbud, lager og levering</td></tr>
           <tr><td><b>Servicesenterleder</b></td><td>Restordre, kampanjer, interne beskjeder, lokale kunder</td><td>Brief, intranett, lager, kunder, team (se)</td></tr>
           <tr><td><b>Salgssjef / regionleder</b></td><td>Tilbud som forfaller i regionen, hvem som trenger hjelp, store muligheter</td><td>Team-pipeline, tilgangstabell, kunder, nyheter</td></tr>
@@ -173,7 +202,7 @@
     </section>
 
     <section class="panel" id="tilgang">
-      <h2>8 · Tilgangstabellen</h2>
+      <h2>9 · Tilgangstabellen</h2>
       <p>Svaret på «tildele og delegere deler av suiten basert på en tabell»:</p>
       <ol>
         <li><b>Rolle-mal</b> (standard): hver rolle har et nivå per modul: <i>ingen · se · bruke · delegere</i>.</li>
@@ -189,44 +218,46 @@
     </section>
 
     <section class="panel" id="personvern">
-      <h2>9 · Personvern og tillit</h2>
+      <h2>10 · Personvern og tillit</h2>
       <p>Et verktøy som leser e-post, kan fort oppleves som overvåking. Det må vi ta på alvor fra første dag. Ellers blir det ikke tatt i bruk.</p>
       <ul>
-        <li><b>Brain er den ansattes assistent, ikke lederens kontrollverktøy.</b> Lederflaten (team-pipeline) bygger bare på CRM-data. Lederen ser aldri en ansatts innboks, brief eller hva personen klikket på.</li>
+        <li><b>Dario er den ansattes assistent, ikke lederens kontrollverktøy.</b> Lederflaten (team-pipeline) bygger bare på CRM-data. Lederen ser aldri en ansatts innboks, brief eller hva personen klikket på.</li>
         <li><b>Kontrolltiltak etter arbeidsmiljøloven kap. 9</b> skal drøftes med tillitsvalgte før innføring, og vernetjenesten/AMU bør involveres.</li>
         <li><b>GDPR:</b> e-post inneholder personopplysninger om kunder og kolleger. Det krever en vurdering av personvernkonsekvenser (DPIA), databehandleravtaler, dataminimering (signaler i stedet for kopier) og sletting når kilden slettes.</li>
-        <li><b>Språkmodell:</b> den bør kjøre i en bedriftsavtale med europeisk databehandling og uten trening på BD-data. Brain skal aldri sende noe til en kunde uten at et menneske har godkjent.</li>
+        <li><b>Språkmodell:</b> den bør kjøre i en bedriftsavtale med europeisk databehandling og uten trening på BD-data. Dario skal aldri sende noe til en kunde uten at et menneske har godkjent.</li>
         <li><b>Skru av og på:</b> den ansatte kan selv slå av kilder, for eksempel e-postlesing, og fortsatt bruke resten.</li>
       </ul>
     </section>
 
     <section class="panel" id="risiko">
-      <h2>10 · Risiko og fallgruver</h2>
+      <h2>11 · Risiko og fallgruver</h2>
       <div class="tabell-rull"><table class="tabell">
         <thead><tr><th>Risiko</th><th>Hva som kan skje</th><th>Tiltak</th></tr></thead>
         <tbody>
-          <tr><td><b>Nok en skjerm</b></td><td>Brain blir system nr. 7 som ingen åpner</td><td>Start smalt: én rolle, én verdifull brief. Gjør den bedre enn innboksen før vi bygger mer.</td></tr>
+          <tr><td><b>Nok en skjerm</b></td><td>Dario blir system nr. 7 som ingen åpner</td><td>Start smalt: én rolle, én verdifull brief. Gjør den bedre enn innboksen før vi bygger mer.</td></tr>
           <tr><td><b>Feil prioritering</b></td><td>Tilliten forsvinner etter første bom</td><td>Vis alltid «hvorfor». La brukeren flytte og avvise forslag, og lær av det.</td></tr>
           <tr><td><b>Overvåkingsfølelse</b></td><td>Motstand fra ansatte og tillitsvalgte</td><td>Prinsipp 5, tidlig drøfting og ingen lederinnsyn i individdata.</td></tr>
-          <tr><td><b>Integrasjonsgjeld</b></td><td>Hver kobling er et prosjekt i seg selv</td><td>Graph først, fordi den gir mest verdi for minst arbeid. Dario via ett lite API. Resten etter behov.</td></tr>
+          <tr><td><b>Integrasjonsgjeld</b></td><td>Hver kobling er et prosjekt i seg selv</td><td>Graph først, fordi den gir mest verdi for minst arbeid. Dario-verktøyene via ett lite API. Resten etter behov.</td></tr>
           <tr><td><b>Hallusinasjoner</b></td><td>Talt brief sier noe som ikke stemmer</td><td>Manus bygges fra strukturerte fakta. Språkmodellen formulerer, men finner ikke på tall.</td></tr>
-          <tr><td><b>Dario og Brain overlapper</b></td><td>To team bygger det samme</td><td>Tydelig arbeidsdeling: dirigent og verktøykasse. Felles eierskap til kontrakten.</td></tr>
+          <tr><td><b>Suiten og verktøyene drives hver for seg</b></td><td>To team bygger det samme</td><td>Ett produkt med ett produktansvar: arbeidsflaten og verktøyene heter Dario og eies samme sted.</td></tr>
+          <tr><td><b>Stemmen går folk på nervene</b></td><td>Briefen slås av etter en uke</td><td>Kort manus, tale som valg og ikke tvang, og samme innhold alltid tilgjengelig som tekst.</td></tr>
+          <tr><td><b>Karakteren blir for søt</b></td><td>Dario oppleves som en gimmick</td><td>Ingen tegnefigur, bare en kule som reagerer på stemmen. Humoren er sparsom og forsvinner helt ved reklamasjoner og avvik.</td></tr>
         </tbody>
       </table></div>
     </section>
 
     <section class="panel" id="faser">
-      <h2>11 · Veien dit</h2>
+      <h2>12 · Veien dit</h2>
       <div class="faser">
         <div class="fase"><small>Fase 0 · nå</small><h3>Klikkbar prototype</h3><ul><li>Dette repoet</li><li>Fiktive data</li><li>Brukes til å drøfte form og innhold med selgere og ledere</li></ul></div>
-        <div class="fase"><small>Fase 1 · pilot</small><h3>Lesende brief</h3><ul><li>5–10 selgere i én region</li><li>Graph: e-post og kalender (kun lesing)</li><li>CRM-signaler</li><li>Lenke til Dario</li></ul></div>
-        <div class="fase"><small>Fase 2</small><h3>Handling</h3><ul><li>Tilbud via Dario-API</li><li>Svarutkast</li><li>Rollevarianter: innesalg og servicesenter</li><li>Segmentnyheter og anbud</li></ul></div>
-        <div class="fase"><small>Fase 3</small><h3>Skala</h3><ul><li>Tilgangstabell koblet til Entra ID</li><li>Delegering</li><li>Teams-app og tale</li><li>Kalibrering av vekter</li></ul></div>
+        <div class="fase"><small>Fase 1 · pilot</small><h3>Lesende brief</h3><ul><li>5–10 selgere i én region</li><li>Graph: e-post og kalender (kun lesing)</li><li>CRM-signaler</li><li>Lenke til tilbudsverktøyet</li></ul></div>
+        <div class="fase"><small>Fase 2</small><h3>Handling</h3><ul><li>Tilbud via API til Dario-verktøyene</li><li>Svarutkast</li><li>Rollevarianter: innesalg og servicesenter</li><li>Segmentnyheter og anbud</li></ul></div>
+        <div class="fase"><small>Fase 3</small><h3>Skala</h3><ul><li>Tilgangstabell koblet til Entra ID</li><li>Delegering</li><li>Teams-app</li><li>Egen Dario-stemme</li><li>Kalibrering av vekter</li></ul></div>
       </div>
     </section>
 
     <section class="panel" id="maaling">
-      <h2>12 · Hvordan vi vet at det virker</h2>
+      <h2>13 · Hvordan vi vet at det virker</h2>
       <p>Forslag til målepunkter for piloten (måles på gruppenivå, ikke per person):</p>
       <ul>
         <li>Tid fra arbeidsdagens start til første kundehandling</li>
@@ -238,16 +269,17 @@
     </section>
 
     <section class="panel" id="sporsmaal">
-      <h2>13 · Åpne spørsmål vi bør drøfte</h2>
+      <h2>14 · Åpne spørsmål vi bør drøfte</h2>
       <ol class="sporsmaal">
-        <li>Hva er Dario teknisk i dag? Finnes det API, hvem eier det, og kan verktøyene kalles med brukerens identitet?</li>
+        <li>Hva er Dario-verktøyene teknisk i dag? Finnes det API, hvem eier dem, og kan de kalles med brukerens identitet?</li>
         <li>Hvilket intranett bruker vi (SharePoint/Viva eller noe annet), og har det et API eller RSS?</li>
         <li>Hvilken kilde er sannheten for kunder og tilbud: ERP, CRM eller begge?</li>
         <li>Hvilke nyhetskilder per segment: lokalaviser, Doffin, byggeprosjektdatabaser? Hva koster lisensene?</li>
         <li>Hvem eier rolle-malene: salg, HR eller IT?</li>
         <li>Skal briefen være talt som standard, eller bare tekst med tale som valg?</li>
         <li>Hvilken region og hvilke 5–10 personer er gode pilotbrukere, og hvem i de tillitsvalgte bør vi snakke med først?</li>
-        <li>Skal Brain bli en del av Dario-merkevaren, eller være en egen inngang?</li>
+        <li>Hvem eier Dario som karakter, altså stemme, tone og bruk utenfor appen?</li>
+        <li>Skal Dario på sikt også snakke med kunder, eller bare med ansatte?</li>
       </ol>
     </section>
 

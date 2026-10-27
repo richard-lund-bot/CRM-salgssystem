@@ -1,9 +1,9 @@
 {
-  "name": "bd-brain",
+  "name": "dario",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "BD Brain – klikkbar prototype av en rollebasert arbeidsflate for Brødrene Dahl. Vanilla HTML/CSS/JS, ingen byggesteg.",
+  "description": "Dario – klikkbar prototype av en rollebasert arbeidsflate for Brødrene Dahl. Vanilla HTML/CSS/JS, ingen byggesteg.",
   "scripts": {
     "start": "python3 -m http.server 8000",
     "test": "node scripts/test.mjs",

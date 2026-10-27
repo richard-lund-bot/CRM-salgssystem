@@ -1,13 +1,14 @@
-// BD Brain – klikkbar prototype. Inngang, ruter og alle visninger.
+// Dario – klikkbar prototype. Inngang, ruter og alle visninger.
 // Ingen byggesteg: ren ES-modul. All data er fiktiv demodata fra data.js.
 import { MODULER, NIVAAER, ROLLER, ANSATTE, UNNTAK, DELEGERINGER, KUNDER, SIGNALER, KALENDER, PIPELINE } from './data.js';
 import { effektivTilgang, kanDelegere, nesteNivaa, synligeModuler } from './tilgang.js';
 import { prioriter, nokkeltall, gjelder, kr } from './prioritering.js';
 import { lagManus } from './brief.js';
+import { lagOrb } from './orb.js';
 
 // ---------- tilstand ----------
 
-const LAGRING = 'bdbrain.v1';
+const LAGRING = 'dario.v1';
 const lagret = (() => {
   try { return JSON.parse(localStorage.getItem(LAGRING)) ?? {}; } catch { return {}; }
 })();
@@ -72,9 +73,9 @@ function skall(innhold, aktiv) {
   const moduler = synligeModuler(a, MODULER, tilgangKontekst());
   return `
     <header class="topp">
-      <a class="merke" href="#brief" aria-label="BD Brain – til Dagens brief">
+      <a class="merke" href="#brief" aria-label="Dario – til Dagens brief">
         <img src="assets/bd-kube-64.png" alt="" width="32" height="32" />
-        <span class="merke__tekst"><b>BD</b> BRAIN</span>
+        <span class="merke__tekst">DARIO</span>
       </a>
       <div class="topp__midt">
         <span class="status-prikk" aria-hidden="true"></span>
@@ -120,17 +121,14 @@ function sideHode(modulId, undertittel) {
 // ---------- Dagens brief ----------
 
 function kjerne() {
-  // «Arc reactor»-kjernen: rene SVG-ringer, animert i CSS. Pulserer når briefen snakker.
+  // Dario: en svevende punktkule (canvas, se orb.js) inne i rolige HUD-ringer.
   return `
     <div class="kjerne" id="kjerne" aria-hidden="true">
       <svg viewBox="0 0 200 200">
-        <circle class="kjerne__ring r1" cx="100" cy="100" r="92" />
-        <circle class="kjerne__ring r2" cx="100" cy="100" r="78" />
-        <circle class="kjerne__ring r3" cx="100" cy="100" r="62" />
-        <circle class="kjerne__ring r4" cx="100" cy="100" r="46" />
-        <circle class="kjerne__glod" cx="100" cy="100" r="30" />
+        <circle class="kjerne__ring r1" cx="100" cy="100" r="96" />
+        <circle class="kjerne__ring r2" cx="100" cy="100" r="88" />
       </svg>
-      <img src="assets/bd-kube-192.png" alt="" class="kjerne__logo" />
+      <canvas id="orb" class="kjerne__orb"></canvas>
     </div>`;
 }
 
@@ -183,7 +181,7 @@ function visBrief() {
   const data = { signaler: SIGNALER, roller: ROLLER, kunder: KUNDER, kalender: KALENDER, pipeline: PIPELINE };
   const prio = prioriter(a, data);
   const nokkel = nokkeltall(a, data);
-  const manus = lagManus(a, { prioriteringer: prio, nokkel, kalender: KALENDER, time: new Date().getHours() });
+  const manus = lagManus(a, { prioriteringer: prio, nokkel, kalender: KALENDER });
   const moter = KALENDER[a.id] ?? [];
   const kan = (m) => NIVAAER.indexOf(nivaa(a, m)) > 0;
   const intra = SIGNALER.filter((s) => s.kilde === 'intranett' && gjelder(s, a)).slice(0, 3);
@@ -194,8 +192,8 @@ function visBrief() {
       ${kjerne()}
       <div class="hero__tekst">
         <p class="overline">Dagens brief · ${esc(ROLLER[a.rolle].navn)} · ${esc(a.region)}</p>
-        <h1 class="hero__tittel">${esc(manus[0])}</h1>
-        <p class="dempet">Brain har lest ${SIGNALER.filter((s) => gjelder(s, a)).length} signaler fra e-post, intranett, nyheter, CRM og lager – og koblet dem mot kalenderen din.</p>
+        <h1 class="hero__tittel">Hei, ${esc(a.navn.split(' ')[0])}!</h1>
+        <p class="dempet">Dario har lest ${SIGNALER.filter((s) => gjelder(s, a)).length} signaler fra e-post, intranett, nyheter, CRM og lager – og koblet dem mot kalenderen din.</p>
         <div class="hero__knapper">
           <button class="knapp knapp--hoved" id="spill">${ikon('play')}<span>Spill av brief</span></button>
           <a class="knapp" href="#tilbud">${ikon('doc')}<span>Nytt tilbud</span></a>
@@ -227,10 +225,12 @@ function visBrief() {
 
     ${seksjon('Koblinger', `
       <ul class="koblinger">
-        ${['Outlook e-post', 'Outlook kalender', 'Intranett', 'Lokale nyheter og anbud', 'CRM / ERP', 'Dario'].map((k) => `<li><span class="status-prikk"></span>${esc(k)} <small>demo</small></li>`).join('')}
+        ${['Outlook e-post', 'Outlook kalender', 'Intranett', 'Lokale nyheter og anbud', 'CRM / ERP', 'Tilbudsverktøy'].map((k) => `<li><span class="status-prikk"></span>${esc(k)} <small>demo</small></li>`).join('')}
       </ul>`, 'panel--smal')}`;
 
   app.innerHTML = skall(html, 'brief');
+  orb?.stopp();
+  orb = lagOrb(document.getElementById('orb'));
   document.getElementById('spill').addEventListener('click', () => spillBrief(manus));
 }
 
@@ -242,40 +242,93 @@ const liste = (signaler) => signaler.length
 
 // ---------- tale ----------
 
+// Darios stemme: ferdig innspilte klipp (scripts/lag-stemme.py) slås opp på
+// setningens tekst. Mangler et klipp, faller vi tilbake til nettleserens
+// norske stemme, og til slutt til bare teksting.
+let orb = null;
 let snakker = false;
+let stemmeKlipp = null;
+const hentKlipp = () => (stemmeKlipp ??= fetch('assets/stemme/manifest.json')
+  .then((r) => (r.ok ? r.json() : { klipp: {} }))
+  .then((m) => m.klipp ?? {})
+  .catch(() => ({})));
 
-function spillBrief(manus) {
+let lyd = null;
+let analysator = null;
+function lydspiller() {
+  if (lyd) return lyd;
+  lyd = new Audio();
+  try {
+    const actx = new (window.AudioContext || window.webkitAudioContext)();
+    const kilde = actx.createMediaElementSource(lyd);
+    analysator = actx.createAnalyser();
+    analysator.fftSize = 512;
+    kilde.connect(analysator);
+    analysator.connect(actx.destination);
+    lyd.addEventListener('play', () => actx.resume());
+  } catch { analysator = null; /* lyd uten visualisering */ }
+  return lyd;
+}
+
+// Lydnivået (RMS) driver kula. Uten analysator: en rolig, syntetisk puls.
+function folgNivaa() {
+  const buffer = analysator ? new Uint8Array(analysator.fftSize) : null;
+  const steg = (tid) => {
+    if (!snakker) { orb?.settNivaa(0); return; }
+    let n;
+    if (buffer) {
+      analysator.getByteTimeDomainData(buffer);
+      let sum = 0;
+      for (const v of buffer) sum += ((v - 128) / 128) ** 2;
+      n = Math.sqrt(sum / buffer.length) * 5;
+    } else {
+      n = 0.35 + Math.abs(Math.sin(tid / 140)) * 0.4;
+    }
+    orb?.settNivaa(n);
+    requestAnimationFrame(steg);
+  };
+  requestAnimationFrame(steg);
+}
+
+async function spillBrief(manus) {
   const knapp = document.getElementById('spill');
   const teksting = document.getElementById('teksting');
   const kjerneEl = document.getElementById('kjerne');
   const stopp = () => {
     snakker = false;
     window.speechSynthesis?.cancel();
+    lyd?.pause();
     kjerneEl?.classList.remove('snakker');
-    if (knapp) knapp.innerHTML = `${ikon('play')}<span>Spill av brief</span>`;
+    if (knapp?.isConnected) knapp.innerHTML = `${ikon('play')}<span>Spill av brief</span>`;
   };
   if (snakker) return stopp();
   snakker = true;
   kjerneEl.classList.add('snakker');
   knapp.innerHTML = `${ikon('stop')}<span>Stopp</span>`;
+  const spiller = lydspiller(); // opprettes i klikket, så nettleseren tillater lyd
+  folgNivaa();
 
+  const klipp = await hentKlipp();
   const synth = window.speechSynthesis;
-  const stemme = synth?.getVoices().find((v) => /^(nb|no|nn)/i.test(v.lang));
+  const nettleserstemme = synth?.getVoices().find((v) => /^(nb|no|nn)/i.test(v.lang));
   let i = 0;
   const neste = () => {
     if (!snakker || i >= manus.length) return stopp();
     const setning = manus[i++];
     teksting.textContent = setning;
-    if (synth && stemme) {
+    if (klipp[setning]) {
+      spiller.src = `assets/stemme/${klipp[setning]}`;
+      spiller.onended = neste;
+      spiller.onerror = neste;
+      spiller.play().catch(neste);
+    } else if (synth && nettleserstemme) {
       const u = new SpeechSynthesisUtterance(setning);
-      u.voice = stemme;
-      u.lang = stemme.lang;
-      u.rate = 1.02;
+      u.voice = nettleserstemme;
+      u.lang = nettleserstemme.lang;
       u.onend = neste;
       u.onerror = neste;
       synth.speak(u);
     } else {
-      // Ingen norsk stemme i nettleseren: vis manuset som teksting i lesetempo.
       setTimeout(neste, 900 + setning.length * 45);
     }
   };
@@ -290,7 +343,7 @@ function visEpost() {
   const bøtte = (p) => (p.signal.fristOm != null && p.signal.fristOm <= 1) || p.signal.flagg.includes('reklamasjon') ? 'Svar i dag'
     : p.signal.flagg.includes('svar-forventet') ? 'Denne uka' : 'Til orientering';
   const grupper = ['Svar i dag', 'Denne uka', 'Til orientering'];
-  const html = `${sideHode('epost', 'Brain har sortert innboksen etter hva som krever deg – ikke etter når det kom.')}
+  const html = `${sideHode('epost', 'Dario har sortert innboksen etter hva som krever deg – ikke etter når det kom.')}
     ${grupper.map((g) => {
       const rader = prio.filter((p) => bøtte(p) === g);
       return seksjon(`${g} (${rader.length})`, rader.length ? rader.map((p) => `
@@ -299,7 +352,7 @@ function visEpost() {
           <p class="grunner">${p.grunner.slice(0, 3).map((x) => `<span class="chip">${esc(x)}</span>`).join('')}</p></div>
           <div class="rad__knapper">
             <button class="knapp knapp--liten" data-utkast="${p.signal.id}">Foreslå svar</button>
-            ${p.signal.type === 'tilbud' ? `<a class="knapp knapp--liten" href="#tilbud?signal=${p.signal.id}">Tilbud i Dario</a>` : ''}
+            ${p.signal.type === 'tilbud' ? `<a class="knapp knapp--liten" href="#tilbud?signal=${p.signal.id}">Lag tilbud</a>` : ''}
           </div>
           <div class="utkast" id="utkast-${p.signal.id}" hidden></div>
         </article>`).join('') : '<p class="dempet">Tomt.</p>');
@@ -343,9 +396,9 @@ function visNyheter() {
   app.innerHTML = skall(html, 'nyheter');
 }
 
-// ---------- Tilbud (Dario) ----------
+// ---------- Tilbud ----------
 
-// Grovt demo-utvalg av varelinjer. I produksjon er dette Dario sitt ansvar.
+// Grovt demo-utvalg av varelinjer. I produksjon gjør tilbudsverktøyet dette med ekte priser.
 const VARELINJER = [
   { ord: /rør|pex/i, linjer: [['PEX-rør 16 mm, rull 100 m', 12, 1890], ['Rør-i-rør-system, sett', 40, 645]] },
   { ord: /armatur|bad/i, linjer: [['Servantbatteri, krom', 40, 1290], ['Termostatisk dusjbatteri', 40, 2350]] },
@@ -359,7 +412,7 @@ function visTilbud(param) {
   const kanBruke = nivaa(a, 'tilbud') !== 'se';
   const s = SIGNALER.find((x) => x.id === param.get('signal'));
   const egne = KUNDER.filter((k) => k.eier === a.id || a.rolle === 'salgssjef' || a.rolle === 'innesalg');
-  const html = `${sideHode('tilbud', 'Brain fyller inn konteksten – Dario lager tilbudet. Du kontrollerer og sender.')}
+  const html = `${sideHode('tilbud', 'Dario fyller inn konteksten og lager utkastet med tilbudsverktøyet. Du kontrollerer og sender.')}
     ${s ? `<div class="melding">Startet fra: <b>${esc(s.tittel)}</b></div>` : ''}
     ${!kanBruke ? '<div class="melding melding--varsel">Du har lesetilgang til tilbud. Be lederen din om «bruke» i tilgangstabellen for å lage tilbud.</div>' : ''}
     <div class="rutenett">
@@ -370,11 +423,11 @@ function visTilbud(param) {
             <label>Prosjekt<input name="prosjekt" value="${esc(s ? s.tittel.split(':').pop().replace(/^.*?på /, '').trim() : '')}" placeholder="F.eks. Hasle Park, blokk C" /></label>
             <label>Behov (fra e-post, notater eller tegning)<textarea name="behov" rows="5" placeholder="Beskriv hva kunden trenger">${esc(s?.utdrag ?? '')}</textarea></label>
             <label class="avkrysning"><input type="checkbox" name="prisliste" checked /> Bruk ny prisliste fra 1. november</label>
-            <button class="knapp knapp--hoved" ${kanBruke ? '' : 'disabled'}>${ikon('doc')}<span>Lag utkast med Dario</span></button>
+            <button class="knapp knapp--hoved" ${kanBruke ? '' : 'disabled'}>${ikon('doc')}<span>Lag utkast</span></button>
           </form>`)}
       </div>
       <div class="kolonne">
-        ${seksjon('2 · Utkast fra Dario', '<div id="tilbudsutkast"><p class="dempet">Utkastet vises her. Ingenting sendes til kunden før du har godkjent.</p></div>')}
+        ${seksjon('2 · Utkast', '<div id="tilbudsutkast"><p class="dempet">Utkastet vises her. Ingenting sendes til kunden før du har godkjent.</p></div>')}
       </div>
     </div>`;
   app.innerHTML = skall(html, 'tilbud');
@@ -393,8 +446,8 @@ function visTilbud(param) {
         <tbody>${linjer.map(([v, ant, pris]) => `<tr><td>${esc(v)}</td><td>${ant}</td><td>${esc(kr(pris))}</td><td>${esc(kr(ant * pris))}</td></tr>`).join('')}</tbody>
         <tfoot><tr><td colspan="3">Sum eks. mva.</td><td>${esc(kr(sum))}</td></tr></tfoot>
       </table>
-      <p class="dempet">Demo: varelinjene er gjettet fra nøkkelord. I den ekte løsningen sender Brain konteksten til Dario, og Dario returnerer tilbudet med riktige netto- og kundepriser.</p>
-      <div class="hero__knapper"><button class="knapp knapp--liten" disabled>Åpne i Dario</button><button class="knapp knapp--liten" disabled>Send til kunde</button></div>`;
+      <p class="dempet">Demo: varelinjene er gjettet fra nøkkelord. I den ekte løsningen henter tilbudsverktøyet riktige netto- og kundepriser.</p>
+      <div class="hero__knapper"><button class="knapp knapp--liten" disabled>Åpne i tilbudsverktøyet</button><button class="knapp knapp--liten" disabled>Send til kunde</button></div>`;
   });
 }
 
@@ -554,7 +607,7 @@ function visDrofting() {
 const VISNINGER = { brief: visBrief, epost: visEpost, intranett: visIntranett, nyheter: visNyheter, tilbud: visTilbud, kunder: visKunder, kalender: visKalender, team: visTeam, lager: visLager, tilgang: visTilgang, drofting: visDrofting };
 
 function rute() {
-  if (snakker) { snakker = false; window.speechSynthesis?.cancel(); }
+  if (snakker) { snakker = false; window.speechSynthesis?.cancel(); lyd?.pause(); }
   const [sti, sporring] = location.hash.replace(/^#\/?/, '').split('?');
   const id = VISNINGER[sti] ? sti : 'brief';
   if (id === 'drofting') {

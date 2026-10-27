@@ -16,7 +16,7 @@ const FLAGG = {
 };
 
 const HANDLING = {
-  tilbud: { tekst: 'Lag/oppdater tilbud i Dario', modul: 'tilbud' },
+  tilbud: { tekst: 'Lag eller oppdater tilbudet', modul: 'tilbud' },
   kunde: { tekst: 'Ring eller besøk kunden', modul: 'kunder' },
   prosjekt: { tekst: 'Book møte og kvalifiser prosjektet', modul: 'kunder' },
   levering: { tekst: 'Sjekk ordren og gi kunden ny dato', modul: 'lager' },
