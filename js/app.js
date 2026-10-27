@@ -72,7 +72,7 @@ function skall(innhold, aktiv) {
   const moduler = synligeModuler(a, MODULER, tilgangKontekst());
   return `
     <header class="topp">
-      <a class="merke" href="#/brief" aria-label="BD Brain – til Dagens brief">
+      <a class="merke" href="#brief" aria-label="BD Brain – til Dagens brief">
         <img src="assets/bd-kube-64.png" alt="" width="32" height="32" />
         <span class="merke__tekst"><b>BD</b> BRAIN</span>
       </a>
@@ -91,10 +91,10 @@ function skall(innhold, aktiv) {
     <div class="ramme">
       <nav class="meny" aria-label="Moduler">
         ${moduler.map((m) => `
-          <a href="#/${m.id}" class="meny__lenke ${m.id === aktiv ? 'aktiv' : ''}" ${m.id === aktiv ? 'aria-current="page"' : ''}>
+          <a href="#${m.id}" class="meny__lenke ${m.id === aktiv ? 'aktiv' : ''}" ${m.id === aktiv ? 'aria-current="page"' : ''}>
             ${ikon(m.ikon)}<span>${esc(m.navn)}</span>
           </a>`).join('')}
-        <a href="drofting.html" class="meny__lenke meny__drofting">${ikon('doc')}<span>Drøftelse</span></a>
+        <a href="#drofting" class="meny__lenke meny__drofting ${aktiv === 'drofting' ? 'aktiv' : ''}">${ikon('doc')}<span>Drøftelse</span></a>
       </nav>
       <main class="innhold" id="innhold">${innhold}</main>
     </div>`;
@@ -173,7 +173,7 @@ function prioritetKort(p, i) {
           <div class="score__spor"><div class="score__fyll" style="width:${Math.min(100, Math.round((p.score / maks) * 100))}%"></div></div>
           <span>${p.score}</span>
         </div>
-        <a class="knapp knapp--liten" href="#/${p.handling.modul}${p.handling.modul === 'tilbud' ? `?signal=${s.id}` : ''}">${esc(p.handling.tekst)} ${ikon('arrow')}</a>
+        <a class="knapp knapp--liten" href="#${p.handling.modul}${p.handling.modul === 'tilbud' ? `?signal=${s.id}` : ''}">${esc(p.handling.tekst)} ${ikon('arrow')}</a>
       </div>
     </article>`;
 }
@@ -198,7 +198,7 @@ function visBrief() {
         <p class="dempet">Brain har lest ${SIGNALER.filter((s) => gjelder(s, a)).length} signaler fra e-post, intranett, nyheter, CRM og lager – og koblet dem mot kalenderen din.</p>
         <div class="hero__knapper">
           <button class="knapp knapp--hoved" id="spill">${ikon('play')}<span>Spill av brief</span></button>
-          <a class="knapp" href="#/tilbud">${ikon('doc')}<span>Nytt tilbud</span></a>
+          <a class="knapp" href="#tilbud">${ikon('doc')}<span>Nytt tilbud</span></a>
         </div>
         <p class="teksting" id="teksting" aria-live="polite"></p>
       </div>
@@ -299,7 +299,7 @@ function visEpost() {
           <p class="grunner">${p.grunner.slice(0, 3).map((x) => `<span class="chip">${esc(x)}</span>`).join('')}</p></div>
           <div class="rad__knapper">
             <button class="knapp knapp--liten" data-utkast="${p.signal.id}">Foreslå svar</button>
-            ${p.signal.type === 'tilbud' ? `<a class="knapp knapp--liten" href="#/tilbud?signal=${p.signal.id}">Tilbud i Dario</a>` : ''}
+            ${p.signal.type === 'tilbud' ? `<a class="knapp knapp--liten" href="#tilbud?signal=${p.signal.id}">Tilbud i Dario</a>` : ''}
           </div>
           <div class="utkast" id="utkast-${p.signal.id}" hidden></div>
         </article>`).join('') : '<p class="dempet">Tomt.</p>');
@@ -523,13 +523,43 @@ function visTilgang() {
 
 // ---------- ruter ----------
 
-const VISNINGER = { brief: visBrief, epost: visEpost, intranett: visIntranett, nyheter: visNyheter, tilbud: visTilbud, kunder: visKunder, kalender: visKalender, team: visTeam, lager: visLager, tilgang: visTilgang };
+// ---------- Drøftelse ----------
+
+// Drøftelsen er en egen side (drofting.html) som også vises inne i appen,
+// slik at alt kan deles som én lenke.
+function visDrofting() {
+  app.innerHTML = skall('<p class="dempet">Laster drøftelsen…</p>', 'drofting');
+  // Ikke skriv over en annen visning hvis brukeren har gått videre mens vi lastet.
+  const fortsattHer = () => location.hash.replace(/^#\/?/, '').startsWith('drofting');
+  fetch('drofting.html').then((r) => r.text()).then((tekst) => {
+    const dok = new DOMParser().parseFromString(tekst, 'text/html');
+    const innhold = document.getElementById('innhold');
+    if (!innhold || !fortsattHer()) return;
+    innhold.innerHTML = [...dok.querySelectorAll('style')].map((s) => s.outerHTML).join('') + dok.querySelector('main').outerHTML;
+    innhold.querySelectorAll('a[href]').forEach((a) => {
+      const href = a.getAttribute('href');
+      if (href.startsWith('./#')) a.setAttribute('href', href.slice(2));
+      else if (href === './') a.setAttribute('href', '#brief');
+      else if (href.startsWith('#') && innhold.querySelector(href)) {
+        // Innholdsfortegnelsen: rull til seksjonen uten å bytte visning.
+        a.addEventListener('click', (e) => { e.preventDefault(); innhold.querySelector(href).scrollIntoView({ behavior: 'smooth' }); });
+      }
+    });
+  }).catch(() => {
+    const innhold = document.getElementById('innhold');
+    if (innhold && fortsattHer()) innhold.innerHTML = '<div class="melding melding--varsel">Fant ikke drøftelsen. Åpne drofting.html direkte.</div>';
+  });
+}
+
+const VISNINGER = { brief: visBrief, epost: visEpost, intranett: visIntranett, nyheter: visNyheter, tilbud: visTilbud, kunder: visKunder, kalender: visKalender, team: visTeam, lager: visLager, tilgang: visTilgang, drofting: visDrofting };
 
 function rute() {
   if (snakker) { snakker = false; window.speechSynthesis?.cancel(); }
   const [sti, sporring] = location.hash.replace(/^#\/?/, '').split('?');
   const id = VISNINGER[sti] ? sti : 'brief';
-  if (NIVAAER.indexOf(nivaa(ansatt(), id)) <= 0) {
+  if (id === 'drofting') {
+    visDrofting();
+  } else if (NIVAAER.indexOf(nivaa(ansatt(), id)) <= 0) {
     app.innerHTML = skall(`${sideHode(id)}<div class="melding melding--varsel">Denne delen av suiten er ikke tildelt deg. Tilgang styres i tilgangstabellen.</div>`, id);
   } else {
     VISNINGER[id](new URLSearchParams(sporring));

@@ -277,3 +277,6 @@ select:focus, input:focus, textarea:focus, .knapp:focus-visible, .meny__lenke:fo
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* Drøftelsen vist inne i appen: fyll kolumnen (auto-marger stopper ellers strekk i flex). */
+.innhold .dok { width: 100%; padding: 0; margin: 0; }

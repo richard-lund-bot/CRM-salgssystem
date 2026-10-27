@@ -28,26 +28,28 @@ const server = http.createServer((req, res) => {
     const ansatte = await side.$$eval('#persona option', (o) => o.map((x) => x.value));
     for (const id of ansatte) {
       await side.selectOption('#persona', id);
-      const moduler = await side.$$eval('.meny__lenke[href^="#/"]', (a) => a.map((x) => x.getAttribute('href')));
+      const moduler = await side.$$eval('.meny__lenke[href^="#"]', (a) => a.map((x) => x.getAttribute('href')));
       for (const m of moduler) {
         await side.goto(base + m);
         await side.waitForSelector('.innhold');
         const bredere = await side.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
         if (bredere) feil.push(`${bredde}px ${id} ${m}: horisontal scroll`);
-        if (bildeMappe && (id === 'ida' || id === 'tor')) await side.screenshot({ path: path.join(bildeMappe, `${bredde}-${id}-${m.slice(2)}.png`), fullPage: true });
+        if (bildeMappe && (id === 'ida' || id === 'tor')) await side.screenshot({ path: path.join(bildeMappe, `${bredde}-${id}-${m.slice(1)}.png`), fullPage: true });
       }
     }
     // Interaksjon: tilbud fra prioritet, og tilgangstabell som leder.
     await side.selectOption('#persona', 'ida');
-    await side.goto(base + '#/tilbud?signal=e1');
+    await side.goto(base + '#tilbud?signal=e1');
     await side.click('#tilbudsskjema button');
     await side.waitForSelector('#tilbudsutkast table');
     await side.selectOption('#persona', 'tor');
-    await side.goto(base + '#/tilgang');
+    await side.goto(base + '#tilgang');
     await side.click('.niva[data-p="ida"][data-m="team"]');
     const etter = await side.textContent('.niva[data-p="ida"][data-m="team"]');
     if (!etter.startsWith('se')) feil.push(`tilgangscelle ble «${etter}», ventet «se»`);
     await side.goto(base + 'drofting.html');
+    await side.goto(base + '#drofting');
+    await side.waitForSelector('.innhold .dok');
     if (bildeMappe) await side.screenshot({ path: path.join(bildeMappe, `${bredde}-drofting.png`), fullPage: true });
     await side.close();
   }
